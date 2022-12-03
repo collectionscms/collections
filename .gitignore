@@ -1,0 +1,23 @@
+package-lock.json
+.idea
+
+# dotenv environment variables file
+.env
+.env.*
+!.env.defaults
+!.env.sample
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependency directories
+node_modules/
+
+# distribution
+dist
+superfast/
+superfast.tar.gz
