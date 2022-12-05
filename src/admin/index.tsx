@@ -1,8 +1,9 @@
 /* eslint-disable import/no-import-module-exports */
 import React from 'react';
 import { createRoot } from 'react-dom/client';
+import { systemStatus } from 'superfast-core';
 
-const Index = () => <>welcome</>;
+const Index = () => <>server status: {systemStatus()}</>;
 
 const container = document.getElementById('app');
 const root = createRoot(container);

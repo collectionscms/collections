@@ -4398,6 +4398,13 @@ strip-json-comments@^3.1.0, strip-json-comments@^3.1.1:
   resolved "https://registry.npmjs.org/strip-json-comments/-/strip-json-comments-3.1.1.tgz"
   integrity sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==
 
+superfast-core@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/superfast-core/-/superfast-core-0.1.1.tgz#dd517bed08b90362f2adf0dd2b89897064a97c91"
+  integrity sha512-pmqDb5TieRFC4staTfOWjbSqfFUf1TdcydXYpRtdWoYhnORXYBFFhJf9ln083tazrlwKkE+e+o7XK2/2NqdoeQ==
+  dependencies:
+    react-dom "^18.2.0"
+
 supports-color@^5.3.0, supports-color@^5.5.0:
   version "5.5.0"
   resolved "https://registry.npmjs.org/supports-color/-/supports-color-5.5.0.tgz"
