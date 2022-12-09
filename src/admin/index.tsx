@@ -1,9 +1,17 @@
 /* eslint-disable import/no-import-module-exports */
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { systemStatus } from 'superfast-core';
+import { BrowserRouter as Router } from 'react-router-dom';
+import Routes from './components/Routes';
+import { ThemeContextProvider } from './components/utilities/Theme';
 
-const Index = () => <>server status: {systemStatus()}</>;
+const Index = () => (
+  <ThemeContextProvider>
+    <Router>
+      <Routes />
+    </Router>
+  </ThemeContextProvider>
+);
 
 const container = document.getElementById('app');
 const root = createRoot(container);

@@ -1,4 +1,7 @@
 const defaultSuperfastConfig: any = {
+  ui: {
+    sidebarWidth: 260,
+  },
   webpack: {
     admin: (config) => config,
   },
