@@ -1,4 +1,4 @@
-import { Box, Drawer, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Drawer, Link, useMediaQuery, useTheme } from '@mui/material';
 import config from '@shared/features/config';
 import React from 'react';
 import ToggleColor from '../ToggleColor';
@@ -16,7 +16,7 @@ const Content = () => {
           p: 3,
         }}
       >
-        <p>Superfast</p>
+        <Link href="/admin">Superfast</Link>
       </Box>
       <ToggleColor />
     </>
