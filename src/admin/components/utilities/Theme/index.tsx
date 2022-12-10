@@ -1,6 +1,7 @@
 import ColorModeContext from '@admin/components/elements/ToggleColor/context';
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
 import React, { useMemo, useState } from 'react';
+import componentsOverrides from './overrides';
 import Palette from './palette';
 import Typography from './typography';
 
@@ -38,6 +39,8 @@ export const ThemeContextProvider: React.FC<{ children: React.ReactNode }> = ({ 
       }),
     [mode, themeTypography]
   );
+
+  theme.components = componentsOverrides(theme);
 
   return (
     <ColorModeContext.Provider value={colorMode}>
