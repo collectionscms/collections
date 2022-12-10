@@ -1,5 +1,5 @@
 import Loader from '@admin/components/elements/Loader';
-import MainLayout from '@admin/components/templates/MainLayout';
+import MainLayout from '@admin/components/layouts/Main';
 import React, { lazy } from 'react';
 
 const Dashboard = Loader(lazy(() => import('@admin/components/views/Dashboard')));
