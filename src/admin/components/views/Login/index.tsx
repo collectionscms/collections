@@ -1,7 +1,7 @@
-import { Box, Button } from '@mui/material';
+import { Box, Button, Link } from '@mui/material';
 import React from 'react';
 
-const RegisterAdmin: React.FC = () => {
+const Login: React.FC = () => {
   return (
     <Box
       sx={{
@@ -12,14 +12,6 @@ const RegisterAdmin: React.FC = () => {
     >
       <p>Welcome to Superfast</p>
       <div>
-        <p>名前（姓）</p>
-        <input type="text" required />
-      </div>
-      <div>
-        <p>名前（名）</p>
-        <input type="text" required />
-      </div>
-      <div>
         <p>Email</p>
         <input type="text" required />
       </div>
@@ -28,14 +20,13 @@ const RegisterAdmin: React.FC = () => {
         <input type="text" required />
       </div>
       <div>
-        <p>パスワード（確認）</p>
-        <input type="text" required />
+        <Link href="/admin/auth/forgot">パスワード忘れ</Link>
       </div>
       <Button variant="contained" sx={{ mt: 2 }}>
-        登録
+        ログイン
       </Button>
     </Box>
   );
 };
 
-export default RegisterAdmin;
+export default Login;
