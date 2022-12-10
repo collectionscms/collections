@@ -1,6 +1,8 @@
+import Loader from '@admin/components/elements/Loader';
 import MainLayout from '@admin/components/templates/MainLayout';
-import Dashboard from '@admin/components/views/Dashboard';
-import React from 'react';
+import React, { lazy } from 'react';
+
+const Dashboard = Loader(lazy(() => import('@admin/components/views/Dashboard')));
 
 const AppRoutes = {
   path: '/admin',
