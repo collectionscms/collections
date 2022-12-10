@@ -6,7 +6,7 @@ import ToggleColor from '../ToggleColor';
 import Minimal from './minimal';
 import { Props } from './types';
 
-const Content = () => {
+const Content: React.FC = () => {
   return (
     <>
       <Box

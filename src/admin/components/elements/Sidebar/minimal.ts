@@ -1,8 +1,8 @@
 import Drawer from '@mui/material/Drawer';
-import { styled } from '@mui/material/styles';
+import { styled, Theme } from '@mui/material/styles';
 import config from '@shared/features/config';
 
-const openedMixin = (theme) => ({
+const openedMixin = (theme: Theme) => ({
   width: config?.ui.sidebarWidth,
   borderRight: `1px solid ${theme.palette.divider}`,
   transition: theme.transitions.create('width', {
