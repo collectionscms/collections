@@ -1,11 +1,12 @@
 import { Box, Drawer, Link, useMediaQuery, useTheme } from '@mui/material';
 import config from '@shared/features/config';
 import React, { useEffect } from 'react';
+import Logo from '../Logo';
 import ToggleColor from '../ToggleColor';
 import Minimal from './minimal';
 import { Props } from './types';
 
-const Content = () => {
+const Content: React.FC = () => {
   return (
     <>
       <Box
@@ -16,7 +17,9 @@ const Content = () => {
           p: 3,
         }}
       >
-        <Link href="/admin">Superfast</Link>
+        <Link href="/admin">
+          <Logo />
+        </Link>
       </Box>
       <ToggleColor />
     </>
