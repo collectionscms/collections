@@ -20,7 +20,7 @@ const RegisterAdmin: React.FC = () => {
         <input type="text" required />
       </div>
       <div>
-        <p>メールアドレス</p>
+        <p>Email</p>
         <input type="text" required />
       </div>
       <div>
