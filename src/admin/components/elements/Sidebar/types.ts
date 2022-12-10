@@ -1,4 +1,4 @@
 export type Props = {
   open: boolean;
-  onClose: () => void;
+  toggleDrawer: () => void;
 };

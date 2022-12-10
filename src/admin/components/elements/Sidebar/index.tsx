@@ -1,6 +1,6 @@
 import { Box, Drawer, Link, useMediaQuery, useTheme } from '@mui/material';
 import config from '@shared/features/config';
-import React from 'react';
+import React, { useEffect } from 'react';
 import ToggleColor from '../ToggleColor';
 import Minimal from './minimal';
 import { Props } from './types';
@@ -23,9 +23,15 @@ const Content = () => {
   );
 };
 
-const MainDrawer: React.FC<Props> = ({ open, onClose }) => {
+const MainDrawer: React.FC<Props> = ({ open, toggleDrawer }) => {
   const theme = useTheme();
   const lgUp = useMediaQuery(theme.breakpoints.up('lg'));
+
+  useEffect(() => {
+    if (open) {
+      toggleDrawer?.();
+    }
+  }, []);
 
   return (
     <Box component="nav" sx={{ flexShrink: { md: 0 }, zIndex: 1300 }}>
@@ -36,7 +42,7 @@ const MainDrawer: React.FC<Props> = ({ open, onClose }) => {
       ) : (
         <Drawer
           anchor="left"
-          onClose={onClose}
+          onClose={toggleDrawer}
           open={open}
           PaperProps={{
             sx: {
