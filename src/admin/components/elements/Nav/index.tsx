@@ -1,28 +1,46 @@
+import groupSidebarItems from '@admin/utilities/groupNavItems';
 import { Box, Drawer, Link, useMediaQuery, useTheme } from '@mui/material';
 import config from '@shared/features/config';
 import React, { useEffect } from 'react';
+import RouterLink from '../Link';
 import Logo from '../Logo';
+import NavGroup from '../NavGroup';
+import NavItem from '../NavItem';
 import ToggleColor from '../ToggleColor';
 import Minimal from './minimal';
 import { Props } from './types';
 
-const Content: React.FC = () => {
+const NavHeader = () => {
   return (
-    <>
-      <Box
-        sx={{
-          width: '100%',
-          alignItems: 'left',
-          fontSize: 20,
-          p: 3,
-        }}
-      >
-        <Link href="/admin">
-          <Logo />
-        </Link>
-      </Box>
-      <ToggleColor />
-    </>
+    <Box
+      component="header"
+      sx={{
+        width: '100%',
+        alignItems: 'left',
+        fontSize: 20,
+        p: 3,
+      }}
+    >
+      <Link component={RouterLink} to="/admin">
+        <Logo />
+      </Link>
+    </Box>
+  );
+};
+
+const NavContent = () => {
+  const groups = groupSidebarItems();
+
+  return (
+    <Box component="nav">
+      {groups.map((group) => (
+        <NavGroup group={group} key={group.id}>
+          {group.items.map((item) => (
+            <NavItem item={item} key={item.id} />
+          ))}
+        </NavGroup>
+      ))}
+    </Box>
   );
 };
 
@@ -40,7 +58,9 @@ const Nav: React.FC<Props> = ({ open, toggleDrawer }) => {
     <Box component="nav" sx={{ flexShrink: { md: 0 }, zIndex: 1300 }}>
       {lgUp ? (
         <Minimal variant="permanent" open={open}>
-          <Content />
+          <NavHeader />
+          <NavContent />
+          <ToggleColor />
         </Minimal>
       ) : (
         <Drawer
@@ -55,7 +75,9 @@ const Nav: React.FC<Props> = ({ open, toggleDrawer }) => {
           sx={{ zIndex: (theme) => theme.zIndex.appBar + 100 }}
           variant="temporary"
         >
-          <Content />
+          <NavHeader />
+          <NavContent />
+          <ToggleColor />
         </Drawer>
       )}
     </Box>
