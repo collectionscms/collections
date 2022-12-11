@@ -1,6 +1,6 @@
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
-import Box from '@mui/material/Box';
+import { Box } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import { useTheme } from '@mui/material/styles';
 import React, { useContext } from 'react';
@@ -13,16 +13,13 @@ const ToggleColor: React.FC = () => {
   return (
     <Box
       sx={{
-        display: 'flex',
         width: '100%',
-        justifyContent: 'left',
-        bgcolor: 'background.default',
-        color: 'text.primary',
-        borderRadius: 1,
-        p: 1,
+        alignItems: 'left',
+        fontSize: 20,
+        p: 3,
       }}
     >
-      <IconButton sx={{ ml: 1 }} onClick={colorMode.toggleColorMode} color="inherit">
+      <IconButton onClick={colorMode.toggleColorMode} color="inherit" sx={{ p: 0 }}>
         {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
       </IconButton>
     </Box>
