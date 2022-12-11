@@ -1,8 +1,16 @@
 import React from 'react';
-import { Link, LinkProps as RouterLinkProps } from 'react-router-dom';
+import { NavLink, LinkProps as RouterLinkProps } from 'react-router-dom';
 
-const RouterLink = React.forwardRef<HTMLAnchorElement, RouterLinkProps>((itemProps, ref) => {
-  return <Link ref={ref} {...itemProps} role={undefined} />;
+const RouterLink = React.forwardRef<HTMLAnchorElement, RouterLinkProps>((props, ref) => {
+  return (
+    <NavLink
+      ref={ref}
+      {...props}
+      role={undefined}
+      className={({ isActive }) => (isActive ? `${props.className} Mui-selected` : props.className)}
+      end
+    />
+  );
 });
 
 export default RouterLink;
