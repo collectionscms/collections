@@ -1,5 +1,5 @@
 import Header from '@admin/components/elements/Header';
-import Sidebar from '@admin/components/elements/Sidebar';
+import Nav from '@admin/components/elements/Nav';
 import { Box, Toolbar } from '@mui/material';
 import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
@@ -14,7 +14,7 @@ const MainLayout: React.FC = () => {
   return (
     <Box sx={{ display: 'flex', width: '100%' }}>
       <Header toggleDrawer={toggleDrawer} />
-      <Sidebar open={open} toggleDrawer={toggleDrawer} />
+      <Nav open={open} toggleDrawer={toggleDrawer} />
       <Box component="main" sx={{ width: '100%', flexGrow: 1, p: { xs: 2, sm: 3 } }}>
         <Toolbar />
         <Outlet />

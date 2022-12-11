@@ -26,7 +26,7 @@ const Header: React.FC<Props> = ({ toggleDrawer }) => {
   );
 
   return lgUp ? (
-    <AppBar color="inherit" sx={{ pl: `${config?.ui.sidebarWidth}px` }}>
+    <AppBar color="inherit" sx={{ pl: `${config?.ui.navWidth}px` }}>
       <Toolbar>
         <SearchIcon fontSize="small" />
       </Toolbar>

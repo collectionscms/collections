@@ -1,6 +1,6 @@
-const defaultSuperfastConfig: any = {
+const defaultConfig: any = {
   ui: {
-    sidebarWidth: 260,
+    navWidth: 260,
   },
   webpack: {
     admin: (config) => config,
@@ -8,7 +8,7 @@ const defaultSuperfastConfig: any = {
 };
 
 const loadConfig = () => {
-  return defaultSuperfastConfig;
+  return defaultConfig;
 };
 
 const config = loadConfig();
