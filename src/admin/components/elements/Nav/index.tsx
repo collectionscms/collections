@@ -26,7 +26,7 @@ const Content: React.FC = () => {
   );
 };
 
-const MainDrawer: React.FC<Props> = ({ open, toggleDrawer }) => {
+const Nav: React.FC<Props> = ({ open, toggleDrawer }) => {
   const theme = useTheme();
   const lgUp = useMediaQuery(theme.breakpoints.up('lg'));
 
@@ -49,7 +49,7 @@ const MainDrawer: React.FC<Props> = ({ open, toggleDrawer }) => {
           open={open}
           PaperProps={{
             sx: {
-              width: config?.ui.sidebarWidth,
+              width: config?.ui.navWidth,
             },
           }}
           sx={{ zIndex: (theme) => theme.zIndex.appBar + 100 }}
@@ -62,4 +62,4 @@ const MainDrawer: React.FC<Props> = ({ open, toggleDrawer }) => {
   );
 };
 
-export default MainDrawer;
+export default Nav;
