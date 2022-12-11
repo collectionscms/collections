@@ -5,7 +5,7 @@ import ListItemIcon from './ListItemIcon';
 import ListSubheader from './ListSubheader';
 
 const componentsOverrides = (theme: Theme) => {
-  return Object.assign(AppBar(theme), ListSubheader(), ListItemButton(), ListItemIcon());
+  return Object.assign(AppBar(theme), ListSubheader(), ListItemButton(theme), ListItemIcon());
 };
 
 export default componentsOverrides;
