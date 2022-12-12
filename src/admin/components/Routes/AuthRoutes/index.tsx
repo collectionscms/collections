@@ -4,6 +4,7 @@ import React, { lazy } from 'react';
 
 const CreateFirstUser = Loader(lazy(() => import('@admin/components/views/CreateFirstUser')));
 const Login = Loader(lazy(() => import('@admin/components/views/Login')));
+const Logout = Loader(lazy(() => import('@admin/pages/Logout')));
 const Forgot = Loader(lazy(() => import('@admin/components/views/Forgot')));
 
 const AuthRoutes = {
@@ -21,6 +22,10 @@ const AuthRoutes = {
     {
       path: 'forgot',
       element: <Forgot />,
+    },
+    {
+      path: 'logout',
+      element: <Logout />,
     },
   ],
 };
