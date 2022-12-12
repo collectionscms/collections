@@ -1,3 +1,4 @@
+import Profile from '@admin/components/poppers/Profile';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import { AppBar, IconButton, Toolbar, useMediaQuery, useTheme } from '@mui/material';
@@ -22,6 +23,7 @@ const Header: React.FC<Props> = ({ toggleDrawer }) => {
       >
         <MenuIcon fontSize="small" />
       </IconButton>
+      <Profile />
     </Toolbar>
   );
 
@@ -29,6 +31,7 @@ const Header: React.FC<Props> = ({ toggleDrawer }) => {
     <AppBar color="inherit" sx={{ pl: `${config?.ui.navWidth}px` }}>
       <Toolbar>
         <SearchIcon fontSize="small" />
+        <Profile />
       </Toolbar>
     </AppBar>
   ) : (

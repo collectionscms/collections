@@ -55,7 +55,7 @@ const Nav: React.FC<Props> = ({ open, toggleDrawer }) => {
   }, []);
 
   return (
-    <Box component="nav" sx={{ flexShrink: { md: 0 }, zIndex: 1300 }}>
+    <Box component="nav" sx={{ flexShrink: { md: 0 }, zIndex: theme.zIndex.appBar + 200 }}>
       {lgUp ? (
         <Minimal variant="permanent" open={open}>
           <NavHeader />

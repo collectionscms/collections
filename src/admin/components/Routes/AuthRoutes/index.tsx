@@ -2,9 +2,10 @@ import Loader from '@admin/components/elements/Loader';
 import MinimalLayout from '@admin/components/layouts/Minimal';
 import React, { lazy } from 'react';
 
-const CreateFirstUser = Loader(lazy(() => import('@admin/components/views/CreateFirstUser')));
-const Login = Loader(lazy(() => import('@admin/components/views/Login')));
-const Forgot = Loader(lazy(() => import('@admin/components/views/Forgot')));
+const CreateFirstUser = Loader(lazy(() => import('@admin/pages/CreateFirstUser')));
+const Login = Loader(lazy(() => import('@admin/pages/Login')));
+const Logout = Loader(lazy(() => import('@admin/pages/Logout')));
+const Forgot = Loader(lazy(() => import('@admin/pages/Forgot')));
 
 const AuthRoutes = {
   path: '/admin/auth',
@@ -21,6 +22,10 @@ const AuthRoutes = {
     {
       path: 'forgot',
       element: <Forgot />,
+    },
+    {
+      path: 'logout',
+      element: <Logout />,
     },
   ],
 };

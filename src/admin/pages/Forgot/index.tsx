@@ -1,15 +1,10 @@
-import { Box, Button, Link } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Forgot: React.FC = () => {
   return (
-    <Box
-      sx={{
-        width: '100%',
-        alignItems: 'left',
-        p: 3,
-      }}
-    >
+    <Box>
       <p>Forgot Password</p>
       <div>
         <p>Email</p>
@@ -19,7 +14,7 @@ const Forgot: React.FC = () => {
         送信
       </Button>
       <div>
-        <Link href="/admin/auth/login">ログインに戻る</Link>
+        <Link to="/admin/auth/login">ログインに戻る</Link>
       </div>
     </Box>
   );

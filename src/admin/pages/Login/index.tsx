@@ -1,15 +1,11 @@
-import { Box, Button, Link } from '@mui/material';
+import RouterLink from '@admin/components/elements/Link';
+import { Box, Button } from '@mui/material';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Login: React.FC = () => {
   return (
-    <Box
-      sx={{
-        width: '100%',
-        alignItems: 'left',
-        p: 3,
-      }}
-    >
+    <Box>
       <p>Welcome to Superfast</p>
       <div>
         <p>Email</p>
@@ -20,9 +16,9 @@ const Login: React.FC = () => {
         <input type="text" required />
       </div>
       <div>
-        <Link href="/admin/auth/forgot">パスワード忘れ</Link>
+        <Link to="/admin/auth/forgot">パスワード忘れ</Link>
       </div>
-      <Button variant="contained" sx={{ mt: 2 }}>
+      <Button variant="contained" component={RouterLink} to="/admin" sx={{ mt: 2 }}>
         ログイン
       </Button>
     </Box>
