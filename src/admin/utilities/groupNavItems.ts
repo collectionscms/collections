@@ -1,4 +1,4 @@
-import { SvgIconComponent } from '@mui/icons-material';
+import { SvgIconComponent, VerifiedUser } from '@mui/icons-material';
 import PeopleIcon from '@mui/icons-material/People';
 
 export type GroupItem = {
@@ -25,6 +25,12 @@ const groupNavItems = (): Group[] => {
           label: 'Users',
           href: '/admin/users',
           Icon: PeopleIcon,
+        },
+        {
+          id: 'roles',
+          label: 'Roles',
+          href: '/admin/roles',
+          Icon: VerifiedUser,
         },
       ],
     },
