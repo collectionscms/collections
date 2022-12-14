@@ -1,4 +1,4 @@
-import Tables from '@admin/components/elements/Table';
+import Table from '@admin/components/elements/Table';
 import { Box } from '@mui/material';
 import React from 'react';
 import buildColumns from './buildColumns';
@@ -22,7 +22,7 @@ const Role: React.FC = () => {
 
   return (
     <Box sx={{ width: '100%' }}>
-      <Tables columns={columns} rows={rows} />
+      <Table columns={columns} rows={rows} />
     </Box>
   );
 };

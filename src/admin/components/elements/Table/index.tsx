@@ -1,6 +1,6 @@
 import {
   Paper,
-  Table,
+  Table as MuiTable,
   TableBody,
   TableCell,
   TableContainer,
@@ -10,10 +10,10 @@ import {
 import React from 'react';
 import { Props } from './types';
 
-const Tables: React.FC<Props> = ({ columns, rows }) => {
+const Table: React.FC<Props> = ({ columns, rows }) => {
   return (
     <TableContainer component={Paper}>
-      <Table aria-label="simple table">
+      <MuiTable aria-label="simple table">
         <TableHead>
           <TableRow>
             {columns.map((column) => (
@@ -35,9 +35,9 @@ const Tables: React.FC<Props> = ({ columns, rows }) => {
             </TableRow>
           ))}
         </TableBody>
-      </Table>
+      </MuiTable>
     </TableContainer>
   );
 };
 
-export default Tables;
+export default Table;
