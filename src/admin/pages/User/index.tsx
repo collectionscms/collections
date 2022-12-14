@@ -1,16 +1,20 @@
+import Table from '@admin/components/elements/Table';
+import { Box } from '@mui/material';
 import React from 'react';
+import buildColumns from './buildColumns';
 
 const User = () => {
-  const columNames = ['name', 'email', 'role', 'username', 'user status'];
-  const collections = [
+  const columns = buildColumns();
+  const rows = [
     {
       id: '1',
       firstName: 'Alice',
       lastName: 'Henderson',
       email: 'alice@example.com',
       role: 'Admin',
-      username: 'alice',
+      userName: 'alice',
       status: 'Active',
+      createdAt: '1670637496808',
     },
     {
       id: '2',
@@ -18,34 +22,16 @@ const User = () => {
       lastName: 'Sanders',
       email: 'bob@example.com',
       role: 'Editor',
-      username: 'bob',
+      userName: 'bob',
       status: 'Invited',
+      createdAt: '1670637496808',
     },
   ];
 
   return (
-    <table>
-      <thead>
-        <tr>
-          {columNames.map((n) => (
-            <th key={n}>{n}</th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {collections.map((u) => (
-          <tr key={u.id}>
-            <td>
-              {u.firstName} {u.lastName}
-            </td>
-            <td>{u.email}</td>
-            <td>{u.role}</td>
-            <td>{u.username}</td>
-            <td>{u.status}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <Box sx={{ width: '100%' }}>
+      <Table columns={columns} rows={rows} />
+    </Box>
   );
 };
 
