@@ -11,6 +11,11 @@ import React from 'react';
 import { Props } from './types';
 
 const Table: React.FC<Props> = ({ columns, rows }) => {
+  const key = (row: unknown): String => {
+    const data = row as Record<keyof { id: number }, unknown>;
+    return data ? data.id.toString() : '';
+  };
+
   return (
     <TableContainer component={Paper}>
       <MuiTable aria-label="simple table">
@@ -22,9 +27,9 @@ const Table: React.FC<Props> = ({ columns, rows }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row, i) => (
+          {rows.map((row) => (
             <TableRow
-              key={`row-${row[columns[i].accessor]}`}
+              key={`row-${key(row)}`}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               {columns.map((col) => (

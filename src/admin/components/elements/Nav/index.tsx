@@ -29,7 +29,7 @@ const NavHeader = () => {
 };
 
 const NavContent = () => {
-  const groups = groupSidebarItems();
+  const groups = groupSidebarItems([{ type: 'Restaurant' }, { type: 'Menu' }]);
 
   return (
     <Box component="nav">
