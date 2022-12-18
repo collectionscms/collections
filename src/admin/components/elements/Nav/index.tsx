@@ -4,6 +4,7 @@ import config from '@shared/features/config';
 import React, { useEffect } from 'react';
 import RouterLink from '../Link';
 import Logo from '../Logo';
+import NavAction from '../NavAction';
 import NavGroup from '../NavGroup';
 import NavItem from '../NavItem';
 import ToggleColor from '../ToggleColor';
@@ -28,11 +29,11 @@ const NavHeader = () => {
   );
 };
 
-const NavContent = () => {
+const NavItemContent = () => {
   const groups = groupSidebarItems([{ type: 'Restaurant' }, { type: 'Menu' }]);
 
   return (
-    <Box component="nav">
+    <Box component="nav" sx={{ overflow: 'auto' }}>
       {groups.map((group) => (
         <NavGroup group={group} key={group.id}>
           {group.items.map((item) => (
@@ -41,6 +42,30 @@ const NavContent = () => {
         </NavGroup>
       ))}
     </Box>
+  );
+};
+
+const NavContent = () => {
+  const theme = useTheme();
+
+  return (
+    <>
+      <NavHeader />
+      <NavItemContent />
+      <ToggleColor />
+      <Box
+        sx={{
+          position: 'absolute',
+          bottom: '0px',
+          p: 3,
+          width: '100%',
+          background: theme.palette.background.default,
+          zIndex: theme.zIndex.appBar + 100,
+        }}
+      >
+        <NavAction />
+      </Box>
+    </>
   );
 };
 
@@ -58,9 +83,7 @@ const Nav: React.FC<Props> = ({ open, toggleDrawer }) => {
     <Box component="nav" sx={{ flexShrink: { md: 0 }, zIndex: theme.zIndex.appBar + 200 }}>
       {lgUp ? (
         <Minimal variant="permanent" open={open}>
-          <NavHeader />
           <NavContent />
-          <ToggleColor />
         </Minimal>
       ) : (
         <Drawer
@@ -75,9 +98,7 @@ const Nav: React.FC<Props> = ({ open, toggleDrawer }) => {
           sx={{ zIndex: (theme) => theme.zIndex.appBar + 100 }}
           variant="temporary"
         >
-          <NavHeader />
           <NavContent />
-          <ToggleColor />
         </Drawer>
       )}
     </Box>
