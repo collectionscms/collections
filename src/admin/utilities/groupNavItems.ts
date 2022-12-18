@@ -17,12 +17,12 @@ export type Group = {
 const groupNavItems = (collections: Record<keyof { type: string }, unknown>[]): Group[] => {
   return [
     {
-      id: 'group-contents',
-      label: 'Contents',
+      id: 'group-collections',
+      label: 'Content Management',
       items: collections.map((collection) => ({
         id: `${collection.type}`,
         label: `${collection.type}`,
-        href: `/admin/contents/${collection.type}`,
+        href: `/admin/collections/${collection.type}`,
         Icon: List,
       })),
     },

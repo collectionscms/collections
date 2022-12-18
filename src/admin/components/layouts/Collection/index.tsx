@@ -1,10 +1,10 @@
-import Header from '@admin/components/elements/Header/Main';
+import Header from '@admin/components/elements/Header/Collection';
 import Nav from '@admin/components/elements/Nav';
 import { Box, Toolbar } from '@mui/material';
 import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 
-const MainLayout: React.FC = () => {
+const CollectionLayout: React.FC = () => {
   const [open, setOpen] = useState(true);
 
   const toggleDrawer = () => {
@@ -23,4 +23,4 @@ const MainLayout: React.FC = () => {
   );
 };
 
-export default MainLayout;
+export default CollectionLayout;
