@@ -14,15 +14,15 @@ export type Group = {
   items: GroupItem[];
 };
 
-const groupNavItems = (collections: Record<keyof { type: string }, unknown>[]): Group[] => {
+const groupNavItems = (collections: Record<keyof { collection: string }, unknown>[]): Group[] => {
   return [
     {
       id: 'group-collections',
       label: 'Content Management',
       items: collections.map((collection) => ({
-        id: `${collection.type}`,
-        label: `${collection.type}`,
-        href: `/admin/collections/${collection.type}`,
+        id: `${collection.collection}`,
+        label: `${collection.collection}`,
+        href: `/admin/collections/${collection.collection}`,
         Icon: Label,
       })),
     },
