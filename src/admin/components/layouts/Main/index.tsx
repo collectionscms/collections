@@ -1,4 +1,4 @@
-import Header from '@admin/components/elements/Header';
+import Header from '@admin/components/elements/Header/Main';
 import Nav from '@admin/components/elements/Nav';
 import { Box, Toolbar } from '@mui/material';
 import React, { useState } from 'react';
