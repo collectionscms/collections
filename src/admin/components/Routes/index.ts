@@ -1,6 +1,6 @@
 import { useRoutes } from 'react-router-dom';
-import AuthRoutes from './AuthRoutes';
-import MainRoutes from './MainRoutes';
+import AuthRoutes from './Auth';
+import MainRoutes from './Main';
 
 export default function Routes() {
   return useRoutes([MainRoutes, AuthRoutes]);
