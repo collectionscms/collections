@@ -1,4 +1,4 @@
-import { List, SvgIconComponent, VerifiedUser } from '@mui/icons-material';
+import { Label, SvgIconComponent, VerifiedUser } from '@mui/icons-material';
 import PeopleIcon from '@mui/icons-material/People';
 
 export type GroupItem = {
@@ -23,7 +23,7 @@ const groupNavItems = (collections: Record<keyof { type: string }, unknown>[]): 
         id: `${collection.type}`,
         label: `${collection.type}`,
         href: `/admin/collections/${collection.type}`,
-        Icon: List,
+        Icon: Label,
       })),
     },
     {
