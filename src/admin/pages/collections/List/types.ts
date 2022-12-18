@@ -1,3 +1,3 @@
 export type Props = {
-  type: string;
+  collection: string;
 };

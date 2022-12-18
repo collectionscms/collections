@@ -31,7 +31,7 @@ const Item = (props: BoxProps) => {
 const Header: React.FC<Props> = ({ toggleDrawer }) => {
   const theme = useTheme();
   const location = useLocation();
-  const collectionType = location.pathname.split('/').pop();
+  const collection = location.pathname.split('/').pop();
   const lgUp = useMediaQuery(theme.breakpoints.up('lg'));
 
   const mainHeader = (
@@ -62,13 +62,13 @@ const Header: React.FC<Props> = ({ toggleDrawer }) => {
           }}
         >
           <Item>
-            <h1>{collectionType}</h1>
+            <h1>{collection}</h1>
           </Item>
           <Item>
             <Button
               variant="contained"
               component={RouterLink}
-              to={`/admin/collections/${collectionType}/create`}
+              to={`/admin/collections/${collection}/create`}
             >
               登録
             </Button>
