@@ -19,10 +19,10 @@ const groupNavItems = (collections: Record<keyof { collection: string }, unknown
     {
       id: 'group-collections',
       label: 'Content Management',
-      items: collections.map((collection) => ({
-        id: `${collection.collection}`,
-        label: `${collection.collection}`,
-        href: `/admin/collections/${collection.collection}`,
+      items: collections.map((meta) => ({
+        id: `${meta.collection}`,
+        label: `${meta.collection}`,
+        href: `/admin/collections/${meta.collection}`,
         Icon: Label,
       })),
     },
