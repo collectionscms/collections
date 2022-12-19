@@ -1,4 +1,4 @@
-import { List, SvgIconComponent, VerifiedUser } from '@mui/icons-material';
+import { Label, SvgIconComponent, VerifiedUser } from '@mui/icons-material';
 import PeopleIcon from '@mui/icons-material/People';
 
 export type GroupItem = {
@@ -14,16 +14,16 @@ export type Group = {
   items: GroupItem[];
 };
 
-const groupNavItems = (collections: Record<keyof { type: string }, unknown>[]): Group[] => {
+const groupNavItems = (collections: Record<keyof { collection: string }, unknown>[]): Group[] => {
   return [
     {
       id: 'group-collections',
       label: 'Content Management',
-      items: collections.map((collection) => ({
-        id: `${collection.type}`,
-        label: `${collection.type}`,
-        href: `/admin/collections/${collection.type}`,
-        Icon: List,
+      items: collections.map((meta) => ({
+        id: `${meta.collection}`,
+        label: `${meta.collection}`,
+        href: `/admin/collections/${meta.collection}`,
+        Icon: Label,
       })),
     },
     {

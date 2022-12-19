@@ -6,7 +6,7 @@ const Dashboard = Loader(lazy(() => import('@admin/pages/Dashboard')));
 const User = Loader(lazy(() => import('@admin/pages/User')));
 const Role = Loader(lazy(() => import('@admin/pages/Role')));
 
-const AppRoutes = {
+const MainRoutes = {
   path: '/admin',
   element: <MainLayout />,
   children: [
@@ -25,4 +25,4 @@ const AppRoutes = {
   ],
 };
 
-export default AppRoutes;
+export default MainRoutes;
