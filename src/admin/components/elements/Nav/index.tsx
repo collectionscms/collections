@@ -30,7 +30,11 @@ const NavHeader = () => {
 };
 
 const NavItemContent = () => {
-  const groups = groupSidebarItems([{ collection: 'Restaurant' }, { collection: 'Menu' }]);
+  const groups = groupSidebarItems([
+    { collection: 'Restaurant' },
+    { collection: 'Menu' },
+    { collection: 'Owner' },
+  ]);
 
   return (
     <Box component="nav" sx={{ overflow: 'auto' }}>
