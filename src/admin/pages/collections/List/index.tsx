@@ -1,46 +1,21 @@
-import RouterLink from '@admin/components/elements/Link';
-import { Box, BoxProps, Button } from '@mui/material';
 import React from 'react';
 import { useParams } from 'react-router-dom';
-
-const Item = (props: BoxProps) => {
-  const { sx, ...other } = props;
-  return (
-    <Box
-      sx={{
-        alignItems: 'center',
-        ...sx,
-      }}
-      {...other}
-    />
-  );
-};
+import Default from './Default';
+import Singleton from './Singleton';
 
 const List: React.FC = () => {
   const { collection } = useParams();
+  const collections = [
+    { collection: 'Restaurant', singleton: false },
+    { collection: 'Menu', singleton: false },
+    { collection: 'Owner', singleton: true },
+  ];
+  const meta = collections.filter((meta) => meta.collection === collection);
 
-  return (
-    <Box
-      sx={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        width: '100%',
-      }}
-    >
-      <Item>
-        <h1>{collection}</h1>
-      </Item>
-      <Item>
-        <Button
-          variant="contained"
-          component={RouterLink}
-          to={`/admin/collections/${collection}/create`}
-        >
-          登録
-        </Button>
-      </Item>
-    </Box>
+  return meta[0].singleton ? (
+    <Singleton collection={collection} />
+  ) : (
+    <Default collection={collection} />
   );
 };
 
