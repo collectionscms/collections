@@ -50,7 +50,7 @@ const Singleton: React.FC<Props> = ({ collection }) => {
       </Box>
       <Grid container spacing={3}>
         {fields.map((field) => (
-          <Grid xs={12} md={6}>
+          <Grid xs={12} md={6} key={field.accessor}>
             <Item>
               <Box>
                 <label>{field.accessor}</label>
