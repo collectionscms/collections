@@ -1,79 +1,134 @@
-import groupSidebarItems from '@admin/utilities/groupNavItems';
-import { Box, Drawer, Link, useMediaQuery, useTheme } from '@mui/material';
+import { AccountCircle, Logout, Settings, Storage } from '@mui/icons-material';
+import {
+  Box,
+  Drawer,
+  Link,
+  ListItemButton,
+  ListItemIcon,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import config from '@shared/features/config';
 import React, { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import RouterLink from '../Link';
 import Logo from '../Logo';
-import NavAction from '../NavAction';
 import NavGroup from '../NavGroup';
 import NavItem from '../NavItem';
 import ToggleColor from '../ToggleColor';
 import Minimal from './minimal';
 import { Props } from './types';
 
+const modules = [
+  { href: '/admin/collections', Icon: Storage },
+  { href: '/admin/settings', Icon: Settings },
+];
+const actions = [
+  { href: '/admin/auth/logout', Icon: Logout },
+  { href: '/admin/users/1', Icon: AccountCircle },
+];
+
 const NavHeader = () => {
   return (
     <Box
       component="header"
       sx={{
-        width: '100%',
-        alignItems: 'left',
-        fontSize: 20,
-        p: 3,
+        width: '60px',
+        height: '60px',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        background: '#fff',
+        border: 1,
+        borderColor: '#f5f5f5',
       }}
     >
-      <Link component={RouterLink} to="/admin">
-        <Logo />
-      </Link>
+      <Logo />
     </Box>
   );
 };
 
-const NavItemContent = () => {
-  const groups = groupSidebarItems([
-    { collection: 'Restaurant' },
-    { collection: 'Menu' },
-    { collection: 'Owner' },
-  ]);
-
-  return (
-    <Box component="nav" sx={{ overflow: 'auto' }}>
-      {groups.map((group) => (
-        <NavGroup group={group} key={group.id}>
-          {group.items.map((item) => (
-            <NavItem item={item} key={item.id} />
-          ))}
-        </NavGroup>
-      ))}
-    </Box>
-  );
-};
-
-const NavContent = () => {
+const NavModuleBar = () => {
   const theme = useTheme();
+  const location = useLocation();
 
   return (
-    <>
+    <Box
+      sx={{
+        alignItems: 'center',
+        width: '60px',
+        background: '#2F2F2F',
+      }}
+    >
       <NavHeader />
-      <NavItemContent />
-      <ToggleColor />
+
+      {modules.map((module) => (
+        <ListItemButton
+          to={module.href}
+          component={RouterLink}
+          selected={location.pathname.includes(module.href)}
+          key={module.href}
+          sx={{ width: '60px', height: '60px' }}
+        >
+          <ListItemIcon>
+            <module.Icon />
+          </ListItemIcon>
+        </ListItemButton>
+      ))}
+
       <Box
         sx={{
           position: 'absolute',
           bottom: '0px',
-          p: 3,
-          width: '100%',
-          background: theme.palette.background.default,
+          width: '60px',
+          background: '#2f2f2f',
           zIndex: theme.zIndex.appBar + 100,
         }}
       >
-        <NavAction />
+        <ToggleColor />
+        {actions.map((action) => (
+          <Link component={RouterLink} to={`${action.href}`} key={action.href}>
+            <Box
+              sx={{
+                width: '60px',
+                height: '60px',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <action.Icon style={{ color: 'f5f5f5' }} />
+            </Box>
+          </Link>
+        ))}
       </Box>
-    </>
+    </Box>
   );
 };
 
-const Nav: React.FC<Props> = ({ open, toggleDrawer }) => {
+const NavContent: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        width: '100%',
+        height: '100%',
+      }}
+    >
+      <NavModuleBar />
+      <Box
+        sx={{
+          alignItems: 'center',
+          width: '100%',
+        }}
+      >
+        {children}
+      </Box>
+    </Box>
+  );
+};
+
+const Nav: React.FC<Props> = ({ open, groups, toggleDrawer }) => {
   const theme = useTheme();
   const lgUp = useMediaQuery(theme.breakpoints.up('lg'));
 
@@ -83,11 +138,25 @@ const Nav: React.FC<Props> = ({ open, toggleDrawer }) => {
     }
   }, []);
 
+  const navContent = (
+    <NavContent>
+      <Box component="nav" sx={{ overflow: 'auto' }}>
+        {groups.map((group) => (
+          <NavGroup group={group} key={group.id}>
+            {group.items.map((item) => (
+              <NavItem item={item} key={item.id} />
+            ))}
+          </NavGroup>
+        ))}
+      </Box>
+    </NavContent>
+  );
+
   return (
     <Box component="nav" sx={{ flexShrink: { md: 0 }, zIndex: theme.zIndex.appBar + 200 }}>
       {lgUp ? (
         <Minimal variant="permanent" open={open}>
-          <NavContent />
+          {navContent}
         </Minimal>
       ) : (
         <Drawer
@@ -102,7 +171,7 @@ const Nav: React.FC<Props> = ({ open, toggleDrawer }) => {
           sx={{ zIndex: (theme) => theme.zIndex.appBar + 100 }}
           variant="temporary"
         >
-          <NavContent />
+          {navContent}
         </Drawer>
       )}
     </Box>

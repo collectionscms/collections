@@ -18,7 +18,7 @@ const Login: React.FC = () => {
       <div>
         <Link to="/admin/auth/forgot">パスワード忘れ</Link>
       </div>
-      <Button variant="contained" component={RouterLink} to="/admin" sx={{ mt: 2 }}>
+      <Button variant="contained" component={RouterLink} to="/admin/collections" sx={{ mt: 2 }}>
         ログイン
       </Button>
     </Box>

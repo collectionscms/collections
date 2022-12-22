@@ -7,12 +7,11 @@ const DefaultLogo: React.FC = () => {
 
   return (
     <svg
-      width="90"
+      width="25"
       height="25"
-      viewBox="0 0 180 50"
-      fill="none"
+      viewBox="0 0 25 25"
       xmlns="http://www.w3.org/2000/svg"
-      className="graphic-logo"
+      className="graphic-icon"
     >
       <style>
         {`
@@ -21,8 +20,8 @@ const DefaultLogo: React.FC = () => {
           }
         `}
       </style>
-      <path d="M19.1531 0L42.049 13.8019V39.9956L24.8049 50V23.8064L1.89795 10.0155L19.1531 0Z" />
-      <path d="M17.4097 48.5454V28.1035L0.132324 38.1301L17.4097 48.5454Z" />
+      <path d="M11.5293 0L23 6.90096V19.9978L14.3608 25V11.9032L2.88452 5.00777L11.5293 0Z" />
+      <path d="M10.6559 24.2727V14.0518L2 19.0651L10.6559 24.2727Z" />
     </svg>
   );
 };
