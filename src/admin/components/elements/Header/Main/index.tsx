@@ -1,4 +1,5 @@
-import MenuIcon from '@mui/icons-material/Menu';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { AppBar, Box, IconButton, Toolbar, useMediaQuery, useTheme } from '@mui/material';
 import config from '@shared/features/config';
 import React from 'react';
@@ -21,7 +22,7 @@ const Header: React.FC<Props> = ({ toggleDrawer }) => {
           },
         }}
       >
-        <MenuIcon fontSize="small" />
+        <FontAwesomeIcon icon={faBars} />
       </IconButton>
     </Toolbar>
   );

@@ -1,16 +1,13 @@
-import { AccountCircle, Logout, Settings, Storage } from '@mui/icons-material';
 import {
-  Box,
-  Drawer,
-  Link,
-  ListItemButton,
-  ListItemIcon,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
+  faArrowRightFromBracket,
+  faDiceD6,
+  faGear,
+  faCircleUser,
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Box, Drawer, Link, useMediaQuery, useTheme } from '@mui/material';
 import config from '@shared/features/config';
 import React, { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
 import RouterLink from '../Link';
 import Logo from '../Logo';
 import NavGroup from '../NavGroup';
@@ -20,12 +17,15 @@ import Minimal from './minimal';
 import { Props } from './types';
 
 const modules = [
-  { href: '/admin/collections', Icon: Storage },
-  { href: '/admin/settings', Icon: Settings },
+  { href: '/admin/collections', icon: <FontAwesomeIcon icon={faDiceD6} size="lg" /> },
+  { href: '/admin/settings', icon: <FontAwesomeIcon icon={faGear} size="lg" /> },
 ];
 const actions = [
-  { href: '/admin/auth/logout', Icon: Logout },
-  { href: '/admin/users/1', Icon: AccountCircle },
+  {
+    href: '/admin/auth/logout',
+    icon: <FontAwesomeIcon icon={faArrowRightFromBracket} size="lg" />,
+  },
+  { href: '/admin/users/1', icon: <FontAwesomeIcon icon={faCircleUser} size="lg" /> },
 ];
 
 const NavHeader = () => {
@@ -50,7 +50,6 @@ const NavHeader = () => {
 
 const NavModuleBar = () => {
   const theme = useTheme();
-  const location = useLocation();
 
   return (
     <Box
@@ -63,17 +62,19 @@ const NavModuleBar = () => {
       <NavHeader />
 
       {modules.map((module) => (
-        <ListItemButton
-          to={module.href}
-          component={RouterLink}
-          selected={location.pathname.includes(module.href)}
-          key={module.href}
-          sx={{ width: '60px', height: '60px' }}
-        >
-          <ListItemIcon>
-            <module.Icon />
-          </ListItemIcon>
-        </ListItemButton>
+        <Link component={RouterLink} to={`${module.href}`} key={module.href}>
+          <Box
+            sx={{
+              width: '60px',
+              height: '60px',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            {module.icon}
+          </Box>
+        </Link>
       ))}
 
       <Box
@@ -97,7 +98,7 @@ const NavModuleBar = () => {
                 alignItems: 'center',
               }}
             >
-              <action.Icon style={{ color: 'f5f5f5' }} />
+              {action.icon}
             </Box>
           </Link>
         ))}

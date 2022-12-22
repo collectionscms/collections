@@ -1,5 +1,4 @@
-import { Label, VerifiedUser } from '@mui/icons-material';
-import PeopleIcon from '@mui/icons-material/People';
+import { faList, faShieldHalved, faUserGroup } from '@fortawesome/free-solid-svg-icons';
 import { Group } from 'config/types';
 
 export const collectionsGroupNavItems = (
@@ -13,7 +12,7 @@ export const collectionsGroupNavItems = (
         id: `${meta.collection}`,
         label: `${meta.collection}`,
         href: `/admin/collections/${meta.collection}`,
-        Icon: Label,
+        icon: faList,
       })),
     },
   ];
@@ -31,13 +30,13 @@ export const settingsGroupNavItems = (): Group[] => {
           id: 'users',
           label: 'Users',
           href: `${path}/users`,
-          Icon: PeopleIcon,
+          icon: faUserGroup,
         },
         {
           id: 'roles',
           label: 'Roles',
           href: `${path}/roles`,
-          Icon: VerifiedUser,
+          icon: faShieldHalved,
         },
       ],
     },

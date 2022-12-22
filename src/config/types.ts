@@ -1,10 +1,10 @@
-import { SvgIconComponent } from '@mui/icons-material';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 export type GroupItem = {
   id: string;
   label: string;
   href: string;
-  Icon: SvgIconComponent;
+  icon: IconProp;
 };
 
 export type Group = {

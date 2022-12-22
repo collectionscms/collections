@@ -1,4 +1,4 @@
-import { Group } from '@admin/utilities/groupNavItems';
+import { Group } from 'config/types';
 import React from 'react';
 
 export type Props = {
