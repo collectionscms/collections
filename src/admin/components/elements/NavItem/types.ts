@@ -1,4 +1,4 @@
-import { GroupItem } from '@admin/utilities/groupNavItems';
+import { GroupItem } from 'config/types';
 
 export type Props = {
   item: GroupItem;
