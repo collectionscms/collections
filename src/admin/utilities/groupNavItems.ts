@@ -1,20 +1,10 @@
-import { Label, SvgIconComponent, VerifiedUser } from '@mui/icons-material';
+import { Label, VerifiedUser } from '@mui/icons-material';
 import PeopleIcon from '@mui/icons-material/People';
+import { Group } from 'config/types';
 
-export type GroupItem = {
-  id: string;
-  label: string;
-  href: string;
-  Icon: SvgIconComponent;
-};
-
-export type Group = {
-  id: string;
-  label: string;
-  items: GroupItem[];
-};
-
-const groupNavItems = (collections: Record<keyof { collection: string }, unknown>[]): Group[] => {
+export const collectionsGroupNavItems = (
+  collections: Record<keyof { collection: string }, unknown>[]
+): Group[] => {
   return [
     {
       id: 'group-collections',
@@ -26,25 +16,30 @@ const groupNavItems = (collections: Record<keyof { collection: string }, unknown
         Icon: Label,
       })),
     },
+  ];
+};
+
+export const settingsGroupNavItems = (): Group[] => {
+  const path = '/admin/settings';
+
+  return [
     {
-      id: 'group-admin',
-      label: 'Admin',
+      id: 'group-settings',
+      label: 'Settings',
       items: [
         {
           id: 'users',
           label: 'Users',
-          href: '/admin/users',
+          href: `${path}/users`,
           Icon: PeopleIcon,
         },
         {
           id: 'roles',
           label: 'Roles',
-          href: '/admin/roles',
+          href: `${path}/roles`,
           Icon: VerifiedUser,
         },
       ],
     },
   ];
 };
-
-export default groupNavItems;

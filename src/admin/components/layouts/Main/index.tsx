@@ -3,8 +3,9 @@ import Nav from '@admin/components/elements/Nav';
 import { Box, Toolbar } from '@mui/material';
 import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
+import { Props } from './types';
 
-const MainLayout: React.FC = () => {
+const MainLayout: React.FC<Props> = ({ groups }) => {
   const [open, setOpen] = useState(true);
 
   const toggleDrawer = () => {
@@ -14,7 +15,7 @@ const MainLayout: React.FC = () => {
   return (
     <Box sx={{ display: 'flex', width: '100%' }}>
       <Header toggleDrawer={toggleDrawer} />
-      <Nav open={open} toggleDrawer={toggleDrawer} />
+      <Nav open={open} groups={groups} toggleDrawer={toggleDrawer} />
       <Box component="main" sx={{ width: '100%', flexGrow: 1, p: { xs: 2, sm: 3 } }}>
         <Toolbar />
         <Outlet />

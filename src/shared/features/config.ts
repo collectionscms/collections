@@ -1,6 +1,6 @@
 const defaultConfig: any = {
   ui: {
-    navWidth: 260,
+    navWidth: 280,
   },
   webpack: {
     admin: (config) => config,
