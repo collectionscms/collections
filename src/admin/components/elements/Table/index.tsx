@@ -22,7 +22,7 @@ const Table: React.FC<Props> = ({ columns, rows }) => {
         <TableHead>
           <TableRow>
             {columns.map((column) => (
-              <TableCell key={`column-${column.accessor}`}>{column.label}</TableCell>
+              <TableCell key={`column-${column.field}`}>{column.label}</TableCell>
             ))}
           </TableRow>
         </TableHead>
@@ -32,9 +32,9 @@ const Table: React.FC<Props> = ({ columns, rows }) => {
               key={`row-${key(row)}`}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
-              {columns.map((col) => (
-                <TableCell key={`cell-${col.accessor}`} component="th" scope="row">
-                  {col.renderCell(row, row[col.accessor])}
+              {columns.map((col, i) => (
+                <TableCell key={`cell-${col.field}`} component="th" scope="row">
+                  {col.renderCell(i, row, row[col.field])}
                 </TableCell>
               ))}
             </TableRow>

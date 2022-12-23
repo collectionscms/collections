@@ -21,8 +21,8 @@ const Item = (props: BoxProps) => {
 const Singleton: React.FC<Props> = ({ collection }) => {
   // TODO Retrieve from DB
   const fields = [
-    { accessor: 'name', type: Type.Text },
-    { accessor: 'address', type: Type.Text },
+    { field: 'name', label: 'Name', type: Type.Text },
+    { field: 'address', label: 'Address', type: Type.Text },
   ];
 
   return (
@@ -50,12 +50,12 @@ const Singleton: React.FC<Props> = ({ collection }) => {
       </Box>
       <Grid container spacing={3}>
         {fields.map((field) => (
-          <Grid xs={12} md={6} key={field.accessor}>
+          <Grid xs={12} md={6} key={field.field}>
             <Item>
               <Box>
-                <label>{field.accessor}</label>
+                <label>{field.label}</label>
               </Box>
-              <TextField id={field.accessor} fullWidth />
+              <TextField id={field.field} fullWidth />
             </Item>
           </Grid>
         ))}

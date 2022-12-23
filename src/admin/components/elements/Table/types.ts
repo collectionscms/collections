@@ -1,9 +1,9 @@
 import React from 'react';
 
 export type Column = {
-  accessor: string;
+  field: string;
   label: string;
-  renderCell: (row: any, data: any) => React.ReactNode;
+  renderCell: (index: number, row: any, data: any) => React.ReactNode;
 };
 
 export type Props = {
