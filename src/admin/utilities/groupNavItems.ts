@@ -1,4 +1,4 @@
-import { faList, faShieldHalved, faUserGroup } from '@fortawesome/free-solid-svg-icons';
+import { faList, faShieldHalved, faTable, faUserGroup } from '@fortawesome/free-solid-svg-icons';
 import { Group } from 'config/types';
 
 export const collectionsGroupNavItems = (
@@ -26,6 +26,12 @@ export const settingsGroupNavItems = (): Group[] => {
       id: 'group-settings',
       label: 'Settings',
       items: [
+        {
+          id: 'content-types',
+          label: 'Content Types',
+          href: `${path}/content-types`,
+          icon: faTable,
+        },
         {
           id: 'users',
           label: 'Users',
