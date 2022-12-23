@@ -1,3 +1,4 @@
+import { Type } from '@admin/components/elements/Table/Cell';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 export type GroupItem = {
@@ -11,4 +12,10 @@ export type Group = {
   id: string;
   label: string;
   items: GroupItem[];
+};
+
+export type Field = {
+  field: string;
+  label: string;
+  type: typeof Type[keyof typeof Type];
 };
