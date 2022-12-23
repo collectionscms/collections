@@ -1,10 +1,20 @@
 import Table from '@admin/components/elements/Table';
+import Cell, { Type } from '@admin/components/elements/Table/Cell';
+import buildColumns from '@admin/utilities/buildColumns';
 import { Box } from '@mui/material';
 import React from 'react';
-import buildColumns from './buildColumns';
+
+const fields = [
+  { field: 'name', label: 'Name', type: Type.Text },
+  { field: 'description', label: 'Description', type: Type.Text },
+  { field: 'createdAt', label: 'Created At', type: Type.Date },
+];
+
+const columns = buildColumns(fields, (i: number, row: any, data: any) => (
+  <Cell colIndex={i} type={fields[i].type} rowData={row} cellData={data} />
+));
 
 const Role: React.FC = () => {
-  const columns = buildColumns();
   const rows = [
     {
       id: 1,
