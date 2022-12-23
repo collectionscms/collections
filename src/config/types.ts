@@ -1,4 +1,4 @@
-import { Type } from '@admin/components/elements/Table/Cell';
+import { Type } from '@admin/components/elements/Table/Cell/types';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 export type GroupItem = {

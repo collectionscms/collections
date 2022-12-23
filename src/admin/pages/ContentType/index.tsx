@@ -1,5 +1,6 @@
 import Table from '@admin/components/elements/Table';
-import Cell, { Type } from '@admin/components/elements/Table/Cell';
+import Cell from '@admin/components/elements/Table/Cell';
+import { Type } from '@admin/components/elements/Table/Cell/types';
 import buildColumns from '@admin/utilities/buildColumns';
 import { Box } from '@mui/material';
 import { Field } from 'config/types';

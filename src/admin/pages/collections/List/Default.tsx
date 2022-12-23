@@ -1,6 +1,7 @@
 import RouterLink from '@admin/components/elements/Link';
 import Table from '@admin/components/elements/Table';
-import Cell, { Type } from '@admin/components/elements/Table/Cell';
+import Cell from '@admin/components/elements/Table/Cell';
+import { Type } from '@admin/components/elements/Table/Cell/types';
 import buildColumns from '@admin/utilities/buildColumns';
 import { Box, BoxProps, Button } from '@mui/material';
 import React from 'react';

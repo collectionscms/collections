@@ -1,5 +1,5 @@
 import RouterLink from '@admin/components/elements/Link';
-import { Type } from '@admin/components/elements/Table/Cell';
+import { Type } from '@admin/components/elements/Table/Cell/types';
 import { Box, BoxProps, Button, TextField } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import React from 'react';
