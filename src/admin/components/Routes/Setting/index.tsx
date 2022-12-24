@@ -10,6 +10,11 @@ const Role = Loader(lazy(() => import('@admin/pages/Role')));
 const ContentType = Loader(lazy(() => import('@admin/pages/ContentType')));
 const group = settingsGroupNavItems();
 
+const props = (id: string) => {
+  const item = group.items.find((group) => group.id == id);
+  return { label: item.label, fields: item.fields };
+};
+
 const SettingRoutes = {
   path: '/admin/settings',
   element: <MainLayout group={group} />,
@@ -18,9 +23,7 @@ const SettingRoutes = {
     {
       path: 'content-types',
       element: (
-        <DocumentInfoProvider
-          label={group.items.find((group) => group.id == 'content-types').label}
-        >
+        <DocumentInfoProvider {...props('content-types')}>
           <ContentType />
         </DocumentInfoProvider>
       ),
@@ -28,7 +31,7 @@ const SettingRoutes = {
     {
       path: 'users',
       element: (
-        <DocumentInfoProvider label={group.items.find((group) => group.id == 'users').label}>
+        <DocumentInfoProvider {...props('users')}>
           <User />
         </DocumentInfoProvider>
       ),
@@ -36,7 +39,7 @@ const SettingRoutes = {
     {
       path: 'roles',
       element: (
-        <DocumentInfoProvider label={group.items.find((group) => group.id == 'roles').label}>
+        <DocumentInfoProvider {...props('roles')}>
           <Role />
         </DocumentInfoProvider>
       ),

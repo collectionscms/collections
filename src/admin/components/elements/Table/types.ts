@@ -1,13 +1,16 @@
+import { Field } from 'config/types';
 import React from 'react';
 
 export type Column = {
-  field: string;
+  field: Field;
   label: string;
-  renderCell: (index: number, row: any, data: any) => React.ReactNode;
+  customRenderCell?: (index: number, row: any, data: any) => React.ReactNode;
 };
 
 export type Props = {
   label: string;
   columns: Column[];
-  rows: unknown[];
+  rows: {
+    [path: string]: unknown;
+  }[];
 };
