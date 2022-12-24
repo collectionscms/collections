@@ -12,6 +12,7 @@ import {
 } from '@mui/material';
 import React from 'react';
 import RouterLink from '../Link';
+import Cell from './Cell';
 import { Props } from './types';
 
 const Item = (props: BoxProps) => {
@@ -57,7 +58,7 @@ const Table: React.FC<Props> = ({ label, columns, rows }) => {
           <TableHead>
             <TableRow>
               {columns.map((column) => (
-                <TableCell key={`column-${column.field}`}>{column.label}</TableCell>
+                <TableCell key={`column-${column.field.field}`}>{column.label}</TableCell>
               ))}
             </TableRow>
           </TableHead>
@@ -68,8 +69,17 @@ const Table: React.FC<Props> = ({ label, columns, rows }) => {
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
                 {columns.map((col, i) => (
-                  <TableCell key={`cell-${col.field}`} component="th" scope="row">
-                    {col.renderCell(i, row, row[col.field])}
+                  <TableCell key={`cell-${col.field.field}`} component="th" scope="row">
+                    {col.customRenderCell ? (
+                      col.customRenderCell(i, row, row[col.field.field])
+                    ) : (
+                      <Cell
+                        colIndex={i}
+                        type={col.field.type}
+                        rowData={row}
+                        cellData={row[col.field.field]}
+                      />
+                    )}
                   </TableCell>
                 ))}
               </TableRow>

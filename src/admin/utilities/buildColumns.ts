@@ -3,12 +3,12 @@ import { Field } from 'config/types';
 
 const buildColumns = (
   fields: Field[],
-  renderCell: (index: number, row: any, data: any) => React.ReactNode
+  customRenderCell?: (index: number, row: any, data: any) => React.ReactNode
 ): Column[] => {
   return fields.map((meta) => ({
-    field: meta.field,
+    field: meta,
     label: meta.label,
-    renderCell,
+    customRenderCell,
   }));
 };
 
