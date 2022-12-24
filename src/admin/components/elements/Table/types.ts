@@ -7,6 +7,7 @@ export type Column = {
 };
 
 export type Props = {
+  label: string;
   columns: Column[];
   rows: unknown[];
 };
