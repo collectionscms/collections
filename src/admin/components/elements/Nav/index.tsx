@@ -129,7 +129,7 @@ const NavContent: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   );
 };
 
-const Nav: React.FC<Props> = ({ open, groups, toggleDrawer }) => {
+const Nav: React.FC<Props> = ({ open, group, toggleDrawer }) => {
   const theme = useTheme();
   const lgUp = useMediaQuery(theme.breakpoints.up('lg'));
 
@@ -142,13 +142,11 @@ const Nav: React.FC<Props> = ({ open, groups, toggleDrawer }) => {
   const navContent = (
     <NavContent>
       <Box component="nav" sx={{ overflow: 'auto' }}>
-        {groups.map((group) => (
-          <NavGroup group={group} key={group.id}>
-            {group.items.map((item) => (
-              <NavItem item={item} key={item.id} />
-            ))}
-          </NavGroup>
-        ))}
+        <NavGroup group={group} key={group.id}>
+          {group.items.map((item) => (
+            <NavItem item={item} key={item.id} />
+          ))}
+        </NavGroup>
       </Box>
     </NavContent>
   );
