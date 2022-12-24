@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Props } from './types';
 
-const MainLayout: React.FC<Props> = ({ groups }) => {
+const MainLayout: React.FC<Props> = ({ group }) => {
   const [open, setOpen] = useState(true);
 
   const toggleDrawer = () => {
@@ -15,7 +15,7 @@ const MainLayout: React.FC<Props> = ({ groups }) => {
   return (
     <Box sx={{ display: 'flex', width: '100%' }}>
       <Header toggleDrawer={toggleDrawer} />
-      <Nav open={open} groups={groups} toggleDrawer={toggleDrawer} />
+      <Nav open={open} group={group} toggleDrawer={toggleDrawer} />
       <Box component="main" sx={{ width: '100%', flexGrow: 1, p: { xs: 2, sm: 3 } }}>
         <Toolbar />
         <Outlet />

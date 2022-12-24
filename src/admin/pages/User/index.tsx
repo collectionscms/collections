@@ -1,8 +1,8 @@
 import Table from '@admin/components/elements/Table';
 import Cell from '@admin/components/elements/Table/Cell';
 import { Type } from '@admin/components/elements/Table/Cell/types';
+import { useDocumentInfo } from '@admin/components/utilities/DocumentInfo';
 import buildColumns from '@admin/utilities/buildColumns';
-import { Box } from '@mui/material';
 import React from 'react';
 
 const fields = [
@@ -28,6 +28,8 @@ const columns = buildColumns(fields, (i: number, row: any, data: any) =>
 );
 
 const User = () => {
+  const documentInfo = useDocumentInfo();
+
   const rows = [
     {
       id: 1,
@@ -51,11 +53,7 @@ const User = () => {
     },
   ];
 
-  return (
-    <Box sx={{ width: '100%' }}>
-      <Table columns={columns} rows={rows} />
-    </Box>
-  );
+  return <Table label={documentInfo.label} columns={columns} rows={rows} />;
 };
 
 export default User;
