@@ -1,5 +1,11 @@
 import { Type } from '@admin/components/elements/Table/Cell/types';
-import { faList, faShieldHalved, faTable, faUserGroup } from '@fortawesome/free-solid-svg-icons';
+import {
+  faList,
+  faShieldHalved,
+  faTable,
+  faUserGroup,
+  faEarthAmerica,
+} from '@fortawesome/free-solid-svg-icons';
 import { Group } from 'config/types';
 
 export const collectionsGroupNavItems = (
@@ -25,6 +31,13 @@ export const settingsGroupNavItems = (): Group => {
     id: 'group-settings',
     label: 'Settings',
     items: [
+      {
+        id: 'project',
+        label: 'Project',
+        href: `${path}/project`,
+        icon: faEarthAmerica,
+        fields: [{ field: 'name', label: 'Project Name', type: Type.Text }],
+      },
       {
         id: 'content-types',
         label: 'Content Types',
