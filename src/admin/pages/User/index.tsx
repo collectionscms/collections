@@ -4,7 +4,7 @@ import { useDocumentInfo } from '@admin/components/utilities/DocumentInfo';
 import buildColumns from '@admin/utilities/buildColumns';
 import React from 'react';
 
-const User = () => {
+const UserPage = () => {
   const { fields, label } = useDocumentInfo();
 
   const columns = buildColumns(fields, (i: number, row: any, data: any) =>
@@ -46,4 +46,4 @@ const User = () => {
   return <Table label={label} columns={columns} rows={rows} />;
 };
 
-export default User;
+export default UserPage;

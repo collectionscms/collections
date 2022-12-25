@@ -15,7 +15,7 @@ const Item = (props: BoxProps) => {
   );
 };
 
-const Project: React.FC = () => {
+const ProjectPage: React.FC = () => {
   const { label } = useDocumentInfo();
 
   return (
@@ -37,4 +37,4 @@ const Project: React.FC = () => {
   );
 };
 
-export default Project;
+export default ProjectPage;

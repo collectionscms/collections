@@ -12,7 +12,7 @@ const columns = buildColumns(fields, (i: number, row: any, data: any) => (
   <Cell colIndex={i} type={fields[i].type} rowData={row} cellData={data} />
 ));
 
-const Default: React.FC<Props> = ({ collection }) => {
+const DefaultListPage: React.FC<Props> = ({ collection }) => {
   const rows = [
     {
       id: 1,
@@ -27,4 +27,4 @@ const Default: React.FC<Props> = ({ collection }) => {
   return <Table label={collection} columns={columns} rows={rows} />;
 };
 
-export default Default;
+export default DefaultListPage;

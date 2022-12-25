@@ -2,7 +2,7 @@ import { Box } from '@mui/material';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const Logout: React.FC = () => {
+const LogoutPage: React.FC = () => {
   return (
     <Box>
       <p>ログアウトしました</p>
@@ -11,4 +11,4 @@ const Logout: React.FC = () => {
   );
 };
 
-export default Logout;
+export default LogoutPage;
