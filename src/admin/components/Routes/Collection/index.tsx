@@ -5,7 +5,6 @@ import React, { lazy } from 'react';
 import { Navigate } from 'react-router-dom';
 
 const List = Loader(lazy(() => import('@admin/pages/collections/List')));
-const Create = Loader(lazy(() => import('@admin/pages/collections/Create')));
 const Edit = Loader(lazy(() => import('@admin/pages/collections/Edit')));
 const group = collectionsGroupNavItems([
   { collection: 'Restaurant' },
@@ -19,7 +18,7 @@ const CollectionRoutes = {
   children: [
     { path: '', element: <Navigate to={group.items[0].href} replace /> },
     { path: ':collection', element: <List /> },
-    { path: ':collection/create', element: <Create /> },
+    { path: ':collection/create', element: <Edit /> },
     { path: ':collection/:id', element: <Edit /> },
   ],
 };

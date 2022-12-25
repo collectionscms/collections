@@ -7,8 +7,11 @@ import { Navigate } from 'react-router-dom';
 
 const Project = Loader(lazy(() => import('@admin/pages/Project')));
 const User = Loader(lazy(() => import('@admin/pages/User')));
+const EditUser = Loader(lazy(() => import('@admin/pages/User/Edit')));
 const Role = Loader(lazy(() => import('@admin/pages/Role')));
+const EditRole = Loader(lazy(() => import('@admin/pages/Role/Edit')));
 const ContentType = Loader(lazy(() => import('@admin/pages/ContentType')));
+const EditContentType = Loader(lazy(() => import('@admin/pages/ContentType/Edit')));
 const group = settingsGroupNavItems();
 
 const props = (id: string) => {
@@ -29,6 +32,10 @@ const SettingRoutes = {
         </DocumentInfoProvider>
       ),
     },
+
+    // /////////////////////////////////////
+    // Content Types
+    // /////////////////////////////////////
     {
       path: 'content-types',
       element: (
@@ -38,6 +45,26 @@ const SettingRoutes = {
       ),
     },
     {
+      path: 'content-types/create',
+      element: (
+        <DocumentInfoProvider {...props('content-types')}>
+          <EditContentType />
+        </DocumentInfoProvider>
+      ),
+    },
+    {
+      path: 'content-types/:id',
+      element: (
+        <DocumentInfoProvider {...props('content-types')}>
+          <EditContentType />
+        </DocumentInfoProvider>
+      ),
+    },
+
+    // /////////////////////////////////////
+    // Users
+    // /////////////////////////////////////
+    {
       path: 'users',
       element: (
         <DocumentInfoProvider {...props('users')}>
@@ -46,10 +73,46 @@ const SettingRoutes = {
       ),
     },
     {
+      path: 'users/create',
+      element: (
+        <DocumentInfoProvider {...props('users')}>
+          <EditUser />
+        </DocumentInfoProvider>
+      ),
+    },
+    {
+      path: 'users/:id',
+      element: (
+        <DocumentInfoProvider {...props('users')}>
+          <EditUser />
+        </DocumentInfoProvider>
+      ),
+    },
+
+    // /////////////////////////////////////
+    // Roles
+    // /////////////////////////////////////
+    {
       path: 'roles',
       element: (
         <DocumentInfoProvider {...props('roles')}>
           <Role />
+        </DocumentInfoProvider>
+      ),
+    },
+    {
+      path: 'roles/create',
+      element: (
+        <DocumentInfoProvider {...props('roles')}>
+          <EditRole />
+        </DocumentInfoProvider>
+      ),
+    },
+    {
+      path: 'roles/:id',
+      element: (
+        <DocumentInfoProvider {...props('roles')}>
+          <EditRole />
         </DocumentInfoProvider>
       ),
     },
