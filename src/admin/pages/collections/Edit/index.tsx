@@ -1,7 +1,10 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
 
-const Edit: React.FC = () => {
-  return <p>Edit</p>;
+const EditPage: React.FC = () => {
+  const { id } = useParams();
+
+  return <>{id ? 'Edit' : 'Create'} collection</>;
 };
 
-export default Edit;
+export default EditPage;
