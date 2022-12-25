@@ -3,7 +3,7 @@ import { Box, Button } from '@mui/material';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const Login: React.FC = () => {
+const LoginPage: React.FC = () => {
   return (
     <Box>
       <p>Welcome to Superfast</p>
@@ -25,4 +25,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default LoginPage;

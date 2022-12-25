@@ -3,7 +3,7 @@ import { useDocumentInfo } from '@admin/components/utilities/DocumentInfo';
 import buildColumns from '@admin/utilities/buildColumns';
 import React from 'react';
 
-const ContentType: React.FC = () => {
+const ContentTypePage: React.FC = () => {
   const { fields, label } = useDocumentInfo();
   const columns = buildColumns(fields);
 
@@ -25,4 +25,4 @@ const ContentType: React.FC = () => {
   return <Table label={label} columns={columns} rows={rows} />;
 };
 
-export default ContentType;
+export default ContentTypePage;

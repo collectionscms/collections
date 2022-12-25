@@ -3,7 +3,7 @@ import { useDocumentInfo } from '@admin/components/utilities/DocumentInfo';
 import buildColumns from '@admin/utilities/buildColumns';
 import React from 'react';
 
-const Role: React.FC = () => {
+const RolePage: React.FC = () => {
   const { fields, label } = useDocumentInfo();
   const columns = buildColumns(fields);
 
@@ -25,4 +25,4 @@ const Role: React.FC = () => {
   return <Table label={label} columns={columns} rows={rows} />;
 };
 
-export default Role;
+export default RolePage;

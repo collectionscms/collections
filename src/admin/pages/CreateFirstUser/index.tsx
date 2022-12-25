@@ -1,7 +1,7 @@
 import { Box, Button } from '@mui/material';
 import React from 'react';
 
-const RegisterAdmin: React.FC = () => {
+const CreateFirstUserPage: React.FC = () => {
   return (
     <Box
       sx={{
@@ -38,4 +38,4 @@ const RegisterAdmin: React.FC = () => {
   );
 };
 
-export default RegisterAdmin;
+export default CreateFirstUserPage;

@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import Default from './Default';
 import Singleton from './Singleton';
 
-const List: React.FC = () => {
+const ListPage: React.FC = () => {
   const { collection } = useParams();
   const collections = [
     { collection: 'Restaurant', singleton: false },
@@ -19,4 +19,4 @@ const List: React.FC = () => {
   );
 };
 
-export default List;
+export default ListPage;

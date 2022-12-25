@@ -18,7 +18,7 @@ const Item = (props: BoxProps) => {
   );
 };
 
-const Singleton: React.FC<Props> = ({ collection }) => {
+const SingletonPage: React.FC<Props> = ({ collection }) => {
   // TODO Retrieve from DB
   const fields = [
     { field: 'name', label: 'Name', type: Type.Text },
@@ -64,4 +64,4 @@ const Singleton: React.FC<Props> = ({ collection }) => {
   );
 };
 
-export default Singleton;
+export default SingletonPage;
