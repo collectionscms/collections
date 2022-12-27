@@ -20,3 +20,9 @@ export type Field = {
   label: string;
   type: typeof Type[keyof typeof Type];
 };
+
+export type User = {
+  id: string;
+  email: string;
+  userName: string;
+};
