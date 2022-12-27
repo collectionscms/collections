@@ -6,6 +6,7 @@ const CreateFirstUser = Loader(lazy(() => import('@admin/pages/CreateFirstUser')
 const Login = Loader(lazy(() => import('@admin/pages/Login')));
 const Logout = Loader(lazy(() => import('@admin/pages/Logout')));
 const Forgot = Loader(lazy(() => import('@admin/pages/Forgot')));
+const ResetPassword = Loader(lazy(() => import('@admin/pages/ResetPassword')));
 
 const AuthRoutes = {
   path: '/admin/auth',
@@ -26,6 +27,10 @@ const AuthRoutes = {
     {
       path: 'logout',
       element: <Logout />,
+    },
+    {
+      path: 'reset-password',
+      element: <ResetPassword />,
     },
   ],
 };

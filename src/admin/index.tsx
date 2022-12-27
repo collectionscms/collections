@@ -3,12 +3,15 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter as Router } from 'react-router-dom';
 import Routes from './components/routes';
+import { AuthProvider } from './components/utilities/Auth';
 import { ThemeContextProvider } from './components/utilities/Theme';
 
 const Index = () => (
   <ThemeContextProvider>
     <Router>
-      <Routes />
+      <AuthProvider>
+        <Routes />
+      </AuthProvider>
     </Router>
   </ThemeContextProvider>
 );

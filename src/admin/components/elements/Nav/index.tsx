@@ -1,3 +1,4 @@
+import { useAuth } from '@admin/components/utilities/Auth';
 import {
   faArrowRightFromBracket,
   faDiceD6,
@@ -5,8 +6,9 @@ import {
   faCircleUser,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Box, Drawer, Link, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Drawer, Link, Tooltip, useMediaQuery, useTheme } from '@mui/material';
 import config from '@shared/features/config';
+import { User } from 'config/types';
 import React, { useEffect } from 'react';
 import RouterLink from '../Link';
 import Logo from '../Logo';
@@ -17,16 +19,44 @@ import Minimal from './minimal';
 import { Props } from './types';
 
 const modules = [
-  { href: '/admin/collections', icon: <FontAwesomeIcon icon={faDiceD6} size="lg" /> },
-  { href: '/admin/settings', icon: <FontAwesomeIcon icon={faGear} size="lg" /> },
-];
-const actions = [
   {
-    href: '/admin/auth/logout',
-    icon: <FontAwesomeIcon icon={faArrowRightFromBracket} size="lg" />,
+    href: '/admin/collections',
+    icon: (
+      <Tooltip title="Content">
+        <FontAwesomeIcon icon={faDiceD6} size="lg" />
+      </Tooltip>
+    ),
   },
-  { href: '/admin/users/1', icon: <FontAwesomeIcon icon={faCircleUser} size="lg" /> },
+  {
+    href: '/admin/settings',
+    icon: (
+      <Tooltip title="Setting">
+        <FontAwesomeIcon icon={faGear} size="lg" />
+      </Tooltip>
+    ),
+  },
 ];
+
+const actions = (user?: User) => {
+  return [
+    {
+      href: '/admin/auth/logout',
+      icon: (
+        <Tooltip title="Logout">
+          <FontAwesomeIcon icon={faArrowRightFromBracket} size="lg" />
+        </Tooltip>
+      ),
+    },
+    {
+      href: `/admin/settings/users/${user?.id}`,
+      icon: (
+        <Tooltip title={user?.userName}>
+          <FontAwesomeIcon icon={faCircleUser} size="lg" />
+        </Tooltip>
+      ),
+    },
+  ];
+};
 
 const NavHeader = () => {
   return (
@@ -50,6 +80,7 @@ const NavHeader = () => {
 
 const NavModuleBar = () => {
   const theme = useTheme();
+  const { user } = useAuth();
 
   return (
     <Box
@@ -87,7 +118,7 @@ const NavModuleBar = () => {
         }}
       >
         <ToggleColor />
-        {actions.map((action) => (
+        {actions(user).map((action) => (
           <Link component={RouterLink} to={`${action.href}`} key={action.href}>
             <Box
               sx={{
