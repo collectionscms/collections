@@ -8,7 +8,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Box, Drawer, Link, Tooltip, useMediaQuery, useTheme } from '@mui/material';
 import config from '@shared/features/config';
-import { User } from 'config/types';
+import { User } from '@shared/types';
 import React, { useEffect } from 'react';
 import RouterLink from '../Link';
 import Logo from '../Logo';

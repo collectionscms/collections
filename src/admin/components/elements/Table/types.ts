@@ -1,4 +1,4 @@
-import { Field } from 'config/types';
+import { Field } from '@shared/types';
 import React from 'react';
 
 export type Column = {

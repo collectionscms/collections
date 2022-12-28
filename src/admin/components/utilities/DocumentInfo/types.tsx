@@ -1,4 +1,4 @@
-import { Field } from 'config/types';
+import { Field } from '@shared/types';
 
 export type ContextType = {
   label: string;

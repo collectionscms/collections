@@ -1,4 +1,4 @@
-import { User } from 'config/types';
+import { User } from '@shared/types';
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { AuthContext } from './types';
 
@@ -15,7 +15,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     const fetchMe = async () => {
       setUser({
-        id: '1',
+        id: 1,
         email: 'user@example.com',
         userName: 'AdminUser',
       });
