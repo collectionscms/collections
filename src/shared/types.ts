@@ -19,4 +19,20 @@ export type User = {
   id: number;
   email: string;
   userName: string;
+  role: Role;
+};
+
+export type Role = {
+  id: number;
+  name: string;
+  adminAccess: boolean;
+  permissions: Permission[];
+};
+
+export type PermissionsAction = 'create' | 'read' | 'update' | 'delete';
+
+export type Permission = {
+  id: number;
+  collection: string;
+  action: PermissionsAction;
 };
