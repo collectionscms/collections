@@ -95,7 +95,6 @@ const NavModuleBar = () => {
       sx={{
         alignItems: 'center',
         width: '60px',
-        background: '#2F2F2F',
       }}
     >
       <NavHeader />
@@ -121,7 +120,6 @@ const NavModuleBar = () => {
           position: 'absolute',
           bottom: '0px',
           width: '60px',
-          background: '#2f2f2f',
           zIndex: theme.zIndex.appBar + 100,
         }}
       >
