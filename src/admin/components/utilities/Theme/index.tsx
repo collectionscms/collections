@@ -20,15 +20,7 @@ export const ThemeContextProvider: React.FC<{ children: React.ReactNode }> = ({ 
 
   const themePalette = Palette(mode);
   const themeTypography = Typography(
-    [
-      'Roboto',
-      'Helvetica',
-      'Arial',
-      'Hiragino Kaku Gothic ProN',
-      'Hiragino Sans',
-      'Meiryo',
-      'sans-serif',
-    ].join(',')
+    ['Roboto', 'Noto Sans JP', 'Helvetica', 'Arial', 'Meiryo', 'sans-serif'].join(',')
   );
 
   const theme = useMemo(
