@@ -24,7 +24,7 @@ const DefaultListPage: React.FC<Props> = ({ collection }) => {
     },
   ];
 
-  return <Table label={collection} columns={columns} rows={rows} />;
+  return <Table label={collection.collection} columns={columns} rows={rows} />;
 };
 
 export default DefaultListPage;

@@ -1,3 +1,4 @@
+import { Group } from '@admin/components/elements/NavItem/types';
 import { Type } from '@admin/components/elements/Table/Cell/types';
 import {
   faList,
@@ -6,11 +7,9 @@ import {
   faUserGroup,
   faEarthAmerica,
 } from '@fortawesome/free-solid-svg-icons';
-import { Group } from 'config/types';
+import { Collection } from '@shared/types';
 
-export const collectionsGroupNavItems = (
-  collections: Record<keyof { collection: string }, unknown>[]
-): Group => {
+export const collectionsGroupNavItems = (collections: Collection[]): Group => {
   return {
     id: 'group-collections',
     label: 'Content Management',

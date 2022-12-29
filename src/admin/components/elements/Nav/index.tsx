@@ -8,7 +8,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Box, Drawer, Link, Tooltip, useMediaQuery, useTheme } from '@mui/material';
 import config from '@shared/features/config';
-import { User } from 'config/types';
+import { User } from '@shared/types';
 import React, { useEffect } from 'react';
 import RouterLink from '../Link';
 import Logo from '../Logo';
@@ -24,14 +24,6 @@ const modules = [
     icon: (
       <Tooltip title="Content">
         <FontAwesomeIcon icon={faDiceD6} size="lg" />
-      </Tooltip>
-    ),
-  },
-  {
-    href: '/admin/settings',
-    icon: (
-      <Tooltip title="Setting">
-        <FontAwesomeIcon icon={faGear} size="lg" />
       </Tooltip>
     ),
   },
@@ -78,6 +70,22 @@ const NavHeader = () => {
   );
 };
 
+const NavIcon: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  return (
+    <Box
+      sx={{
+        width: '60px',
+        height: '60px',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      {children}
+    </Box>
+  );
+};
+
 const NavModuleBar = () => {
   const theme = useTheme();
   const { user } = useAuth();
@@ -94,19 +102,19 @@ const NavModuleBar = () => {
 
       {modules.map((module) => (
         <Link component={RouterLink} to={`${module.href}`} key={module.href}>
-          <Box
-            sx={{
-              width: '60px',
-              height: '60px',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            {module.icon}
-          </Box>
+          <NavIcon>{module.icon}</NavIcon>
         </Link>
       ))}
+
+      {user?.role.adminAccess && (
+        <Link component={RouterLink} to="/admin/settings">
+          <NavIcon>
+            <Tooltip title="Setting">
+              <FontAwesomeIcon icon={faGear} size="lg" />
+            </Tooltip>
+          </NavIcon>
+        </Link>
+      )}
 
       <Box
         sx={{
@@ -120,17 +128,7 @@ const NavModuleBar = () => {
         <ToggleColor />
         {actions(user).map((action) => (
           <Link component={RouterLink} to={`${action.href}`} key={action.href}>
-            <Box
-              sx={{
-                width: '60px',
-                height: '60px',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              {action.icon}
-            </Box>
+            <NavIcon>{action.icon}</NavIcon>
           </Link>
         ))}
       </Box>

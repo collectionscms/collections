@@ -1,4 +1,4 @@
-import { Group } from 'config/types';
+import { Group } from '@admin/components/elements/NavItem/types';
 
 export type Props = {
   group: Group;

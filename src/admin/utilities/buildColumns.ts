@@ -1,5 +1,5 @@
 import { Column } from '@admin/components/elements/Table/types';
-import { Field } from 'config/types';
+import { Field } from '@shared/types';
 
 const buildColumns = (
   fields: Field[],

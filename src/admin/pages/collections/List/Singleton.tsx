@@ -36,7 +36,7 @@ const SingletonPage: React.FC<Props> = ({ collection }) => {
         }}
       >
         <Item>
-          <h1>{collection}</h1>
+          <h1>{collection.collection}</h1>
         </Item>
         <Item>
           <Button
