@@ -4,6 +4,8 @@ import CollectionRoutes from './Collection';
 import RootRoutes from './Root';
 import SettingRoutes from './Setting';
 
-export default function Routes() {
-  return useRoutes([RootRoutes, CollectionRoutes, SettingRoutes, AuthRoutes]);
-}
+const Routes = () => {
+  return useRoutes([RootRoutes, CollectionRoutes(), SettingRoutes, AuthRoutes]);
+};
+
+export default Routes;
