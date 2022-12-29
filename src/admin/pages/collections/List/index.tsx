@@ -1,18 +1,10 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
 import Default from './Default';
 import Singleton from './Singleton';
+import { Props } from './types';
 
-const ListPage: React.FC = () => {
-  const { collection } = useParams();
-  const collections = [
-    { collection: 'Restaurant', singleton: false },
-    { collection: 'Menu', singleton: false },
-    { collection: 'Owner', singleton: true },
-  ];
-  const meta = collections.filter((meta) => meta.collection === collection);
-
-  return meta[0].singleton ? (
+const ListPage: React.FC<Props> = ({ collection }) => {
+  return collection.singleton ? (
     <Singleton collection={collection} />
   ) : (
     <Default collection={collection} />
