@@ -18,6 +18,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         id: 1,
         email: 'user@example.com',
         userName: 'AdminUser',
+        role: {
+          id: 1,
+          name: 'Administrator',
+          adminAccess: true,
+          permissions: [],
+        },
       });
 
       setToken('token');
