@@ -70,6 +70,22 @@ const NavHeader = () => {
   );
 };
 
+const NavIcon: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  return (
+    <Box
+      sx={{
+        width: '60px',
+        height: '60px',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      {children}
+    </Box>
+  );
+};
+
 const NavModuleBar = () => {
   const theme = useTheme();
   const { user } = useAuth();
@@ -86,35 +102,17 @@ const NavModuleBar = () => {
 
       {modules.map((module) => (
         <Link component={RouterLink} to={`${module.href}`} key={module.href}>
-          <Box
-            sx={{
-              width: '60px',
-              height: '60px',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            {module.icon}
-          </Box>
+          <NavIcon>{module.icon}</NavIcon>
         </Link>
       ))}
 
       {user?.role.adminAccess && (
         <Link component={RouterLink} to="/admin/settings">
-          <Box
-            sx={{
-              width: '60px',
-              height: '60px',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
+          <NavIcon>
             <Tooltip title="Setting">
               <FontAwesomeIcon icon={faGear} size="lg" />
             </Tooltip>
-          </Box>
+          </NavIcon>
         </Link>
       )}
 
@@ -130,17 +128,7 @@ const NavModuleBar = () => {
         <ToggleColor />
         {actions(user).map((action) => (
           <Link component={RouterLink} to={`${action.href}`} key={action.href}>
-            <Box
-              sx={{
-                width: '60px',
-                height: '60px',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              {action.icon}
-            </Box>
+            <NavIcon>{action.icon}</NavIcon>
           </Link>
         ))}
       </Box>
