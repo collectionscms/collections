@@ -27,14 +27,6 @@ const modules = [
       </Tooltip>
     ),
   },
-  {
-    href: '/admin/settings',
-    icon: (
-      <Tooltip title="Setting">
-        <FontAwesomeIcon icon={faGear} size="lg" />
-      </Tooltip>
-    ),
-  },
 ];
 
 const actions = (user?: User) => {
@@ -107,6 +99,24 @@ const NavModuleBar = () => {
           </Box>
         </Link>
       ))}
+
+      {user?.role.adminAccess && (
+        <Link component={RouterLink} to="/admin/settings">
+          <Box
+            sx={{
+              width: '60px',
+              height: '60px',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Tooltip title="Setting">
+              <FontAwesomeIcon icon={faGear} size="lg" />
+            </Tooltip>
+          </Box>
+        </Link>
+      )}
 
       <Box
         sx={{
