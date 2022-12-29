@@ -4,16 +4,27 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter as Router } from 'react-router-dom';
 import Routes from './components/routes';
 import { AuthProvider } from './components/utilities/Auth';
+import { ConfigProvider } from './components/utilities/Config';
 import { ThemeContextProvider } from './components/utilities/Theme';
 
 const Index = () => (
-  <ThemeContextProvider>
-    <Router>
-      <AuthProvider>
-        <Routes />
-      </AuthProvider>
-    </Router>
-  </ThemeContextProvider>
+  <ConfigProvider
+    config={{
+      collections: [
+        { collection: 'Restaurant', singleton: false },
+        { collection: 'Menu', singleton: false },
+        { collection: 'Owner', singleton: true },
+      ],
+    }}
+  >
+    <ThemeContextProvider>
+      <Router>
+        <AuthProvider>
+          <Routes />
+        </AuthProvider>
+      </Router>
+    </ThemeContextProvider>
+  </ConfigProvider>
 );
 
 const container = document.getElementById('app');
