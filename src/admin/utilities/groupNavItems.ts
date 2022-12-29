@@ -7,10 +7,9 @@ import {
   faUserGroup,
   faEarthAmerica,
 } from '@fortawesome/free-solid-svg-icons';
+import { Collection } from '@shared/types';
 
-export const collectionsGroupNavItems = (
-  collections: Record<keyof { collection: string }, unknown>[]
-): Group => {
+export const collectionsGroupNavItems = (collections: Collection[]): Group => {
   return {
     id: 'group-collections',
     label: 'Content Management',
