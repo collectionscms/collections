@@ -6,7 +6,7 @@ import {
   faCircleUser,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Box, Drawer, Link, Tooltip, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Drawer, Link, Tooltip, useMediaQuery, useTheme, alpha } from '@mui/material';
 import config from '@shared/features/config';
 import { User } from '@shared/types';
 import React, { useEffect } from 'react';
@@ -95,6 +95,7 @@ const NavModuleBar = () => {
       sx={{
         alignItems: 'center',
         width: '60px',
+        background: alpha(theme.palette.primary.main, 0.6),
       }}
     >
       <NavHeader />
