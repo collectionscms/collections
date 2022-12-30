@@ -23,6 +23,31 @@ export const collectionsGroupNavItems = (collections: Collection[]): Group => {
   };
 };
 
+export const usersGroupNavItems = (): Group => {
+  const path = '/admin';
+
+  return {
+    id: 'group-users',
+    label: 'Users',
+    items: [
+      {
+        id: 'users',
+        label: 'Users',
+        href: `${path}/users`,
+        icon: faUserGroup,
+        fields: [
+          { field: 'name', label: 'Name', type: Type.Text },
+          { field: 'email', label: 'Email', type: Type.Text },
+          { field: 'role', label: 'Role', type: Type.Text },
+          { field: 'userName', label: 'User Name', type: Type.Text },
+          { field: 'status', label: 'Status', type: Type.Text },
+          { field: 'createdAt', label: 'Created At', type: Type.Date },
+        ],
+      },
+    ],
+  };
+};
+
 export const settingsGroupNavItems = (): Group => {
   const path = '/admin/settings';
 
@@ -43,20 +68,6 @@ export const settingsGroupNavItems = (): Group => {
         href: `${path}/content-types`,
         icon: faTable,
         fields: [{ field: 'name', label: 'Name', type: Type.Text }],
-      },
-      {
-        id: 'users',
-        label: 'Users',
-        href: `${path}/users`,
-        icon: faUserGroup,
-        fields: [
-          { field: 'name', label: 'Name', type: Type.Text },
-          { field: 'email', label: 'Email', type: Type.Text },
-          { field: 'role', label: 'Role', type: Type.Text },
-          { field: 'userName', label: 'User Name', type: Type.Text },
-          { field: 'status', label: 'Status', type: Type.Text },
-          { field: 'createdAt', label: 'Created At', type: Type.Date },
-        ],
       },
       {
         id: 'roles',

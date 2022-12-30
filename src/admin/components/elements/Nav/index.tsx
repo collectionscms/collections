@@ -4,6 +4,7 @@ import {
   faCircleUser,
   faDiceD6,
   faGear,
+  faUserGroup,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -32,7 +33,26 @@ const modules = [
     href: '/admin/collections',
     icon: (
       <Tooltip title="Content">
-        <FontAwesomeIcon icon={faDiceD6} />
+        <FontAwesomeIcon icon={faDiceD6} size="sm" />
+      </Tooltip>
+    ),
+  },
+  {
+    href: '/admin/users',
+    icon: (
+      <Tooltip title="User">
+        <FontAwesomeIcon icon={faUserGroup} size="sm" />
+      </Tooltip>
+    ),
+  },
+];
+
+const settings = [
+  {
+    href: '/admin/settings',
+    icon: (
+      <Tooltip title="Setting">
+        <FontAwesomeIcon icon={faGear} size="sm" />
       </Tooltip>
     ),
   },
@@ -49,7 +69,7 @@ const actions = (user?: User) => {
       ),
     },
     {
-      href: `/admin/settings/users/${user?.id}`,
+      href: `/admin/users/${user?.id}`,
       icon: (
         <Tooltip title={user?.userName}>
           <FontAwesomeIcon icon={faCircleUser} />
@@ -115,15 +135,12 @@ const NavModuleBar = () => {
         </Link>
       ))}
 
-      {user?.role.adminAccess && (
-        <Link component={RouterLink} to="/admin/settings">
-          <NavIcon>
-            <Tooltip title="Setting">
-              <FontAwesomeIcon icon={faGear} />
-            </Tooltip>
-          </NavIcon>
-        </Link>
-      )}
+      {user?.role.adminAccess &&
+        settings.map((module) => (
+          <Link component={RouterLink} to={`${module.href}`} key={module.href}>
+            <NavIcon>{module.icon}</NavIcon>
+          </Link>
+        ))}
 
       <Box
         sx={{
