@@ -3,6 +3,7 @@ import { Type } from '@admin/components/elements/Table/Cell/types';
 import { Box, BoxProps, Button, TextField } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Props } from './types';
 
 const Item = (props: BoxProps) => {
@@ -19,6 +20,8 @@ const Item = (props: BoxProps) => {
 };
 
 const SingletonPage: React.FC<Props> = ({ collection }) => {
+  const { t } = useTranslation();
+
   // TODO Retrieve from DB
   const fields = [
     { field: 'name', label: 'Name', type: Type.Text },
@@ -44,7 +47,7 @@ const SingletonPage: React.FC<Props> = ({ collection }) => {
             component={RouterLink}
             to={`/admin/collections/${collection}`}
           >
-            更新
+            {t('button.update')}
           </Button>
         </Item>
       </Box>

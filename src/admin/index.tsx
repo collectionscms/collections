@@ -3,6 +3,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter as Router } from 'react-router-dom';
 import Routes from './components/routes';
+import '../lang/translations/config';
 import { AuthProvider } from './components/utilities/Auth';
 import { ConfigProvider } from './components/utilities/Config';
 import { ThemeContextProvider } from './components/utilities/Theme';
