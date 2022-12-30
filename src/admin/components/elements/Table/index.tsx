@@ -11,6 +11,7 @@ import {
   TableRow,
 } from '@mui/material';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import RouterLink from '../Link';
 import Cell from './Cell';
 import { Props } from './types';
@@ -29,6 +30,8 @@ const Item = (props: BoxProps) => {
 };
 
 const Table: React.FC<Props> = ({ label, columns, rows }) => {
+  const { t } = useTranslation();
+
   const key = (row: unknown): String => {
     const data = row as Record<keyof { id: number }, unknown>;
     return data ? data.id.toString() : '';
@@ -49,7 +52,7 @@ const Table: React.FC<Props> = ({ label, columns, rows }) => {
         </Item>
         <Item>
           <Button variant="contained" component={RouterLink} to="create">
-            登録
+            {t('button.create')}
           </Button>
         </Item>
       </Box>
