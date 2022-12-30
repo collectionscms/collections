@@ -1,12 +1,21 @@
 import { useAuth } from '@admin/components/utilities/Auth';
 import {
   faArrowRightFromBracket,
+  faCircleUser,
   faDiceD6,
   faGear,
-  faCircleUser,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Box, Drawer, Link, Tooltip, useMediaQuery, useTheme, alpha } from '@mui/material';
+import {
+  alpha,
+  Box,
+  Drawer,
+  IconButton,
+  Link,
+  Tooltip,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import config from '@shared/features/config';
 import { User } from '@shared/types';
 import React, { useEffect } from 'react';
@@ -23,7 +32,7 @@ const modules = [
     href: '/admin/collections',
     icon: (
       <Tooltip title="Content">
-        <FontAwesomeIcon icon={faDiceD6} size="lg" />
+        <FontAwesomeIcon icon={faDiceD6} />
       </Tooltip>
     ),
   },
@@ -35,7 +44,7 @@ const actions = (user?: User) => {
       href: '/admin/auth/logout',
       icon: (
         <Tooltip title="Logout">
-          <FontAwesomeIcon icon={faArrowRightFromBracket} size="lg" />
+          <FontAwesomeIcon icon={faArrowRightFromBracket} />
         </Tooltip>
       ),
     },
@@ -43,7 +52,7 @@ const actions = (user?: User) => {
       href: `/admin/settings/users/${user?.id}`,
       icon: (
         <Tooltip title={user?.userName}>
-          <FontAwesomeIcon icon={faCircleUser} size="lg" />
+          <FontAwesomeIcon icon={faCircleUser} />
         </Tooltip>
       ),
     },
@@ -72,7 +81,7 @@ const NavHeader = () => {
 
 const NavIcon: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
-    <Box
+    <IconButton
       sx={{
         width: '60px',
         height: '60px',
@@ -82,7 +91,7 @@ const NavIcon: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       }}
     >
       {children}
-    </Box>
+    </IconButton>
   );
 };
 
@@ -110,7 +119,7 @@ const NavModuleBar = () => {
         <Link component={RouterLink} to="/admin/settings">
           <NavIcon>
             <Tooltip title="Setting">
-              <FontAwesomeIcon icon={faGear} size="lg" />
+              <FontAwesomeIcon icon={faGear} />
             </Tooltip>
           </NavIcon>
         </Link>
