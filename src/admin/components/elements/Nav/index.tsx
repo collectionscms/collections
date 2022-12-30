@@ -1,12 +1,22 @@
 import { useAuth } from '@admin/components/utilities/Auth';
 import {
   faArrowRightFromBracket,
+  faCircleUser,
   faDiceD6,
   faGear,
-  faCircleUser,
+  faUserGroup,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Box, Drawer, Link, Tooltip, useMediaQuery, useTheme } from '@mui/material';
+import {
+  alpha,
+  Box,
+  Drawer,
+  IconButton,
+  Link,
+  Tooltip,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import config from '@shared/features/config';
 import { User } from '@shared/types';
 import React, { useEffect } from 'react';
@@ -23,7 +33,26 @@ const modules = [
     href: '/admin/collections',
     icon: (
       <Tooltip title="Content">
-        <FontAwesomeIcon icon={faDiceD6} size="lg" />
+        <FontAwesomeIcon icon={faDiceD6} size="sm" />
+      </Tooltip>
+    ),
+  },
+  {
+    href: '/admin/users',
+    icon: (
+      <Tooltip title="User">
+        <FontAwesomeIcon icon={faUserGroup} size="sm" />
+      </Tooltip>
+    ),
+  },
+];
+
+const settings = [
+  {
+    href: '/admin/settings',
+    icon: (
+      <Tooltip title="Setting">
+        <FontAwesomeIcon icon={faGear} size="sm" />
       </Tooltip>
     ),
   },
@@ -35,15 +64,15 @@ const actions = (user?: User) => {
       href: '/admin/auth/logout',
       icon: (
         <Tooltip title="Logout">
-          <FontAwesomeIcon icon={faArrowRightFromBracket} size="lg" />
+          <FontAwesomeIcon icon={faArrowRightFromBracket} />
         </Tooltip>
       ),
     },
     {
-      href: `/admin/settings/users/${user?.id}`,
+      href: `/admin/users/${user?.id}`,
       icon: (
         <Tooltip title={user?.userName}>
-          <FontAwesomeIcon icon={faCircleUser} size="lg" />
+          <FontAwesomeIcon icon={faCircleUser} />
         </Tooltip>
       ),
     },
@@ -72,7 +101,7 @@ const NavHeader = () => {
 
 const NavIcon: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
-    <Box
+    <IconButton
       sx={{
         width: '60px',
         height: '60px',
@@ -82,7 +111,7 @@ const NavIcon: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       }}
     >
       {children}
-    </Box>
+    </IconButton>
   );
 };
 
@@ -95,6 +124,7 @@ const NavModuleBar = () => {
       sx={{
         alignItems: 'center',
         width: '60px',
+        background: alpha(theme.palette.primary.main, 0.6),
       }}
     >
       <NavHeader />
@@ -105,15 +135,12 @@ const NavModuleBar = () => {
         </Link>
       ))}
 
-      {user?.role.adminAccess && (
-        <Link component={RouterLink} to="/admin/settings">
-          <NavIcon>
-            <Tooltip title="Setting">
-              <FontAwesomeIcon icon={faGear} size="lg" />
-            </Tooltip>
-          </NavIcon>
-        </Link>
-      )}
+      {user?.role.adminAccess &&
+        settings.map((module) => (
+          <Link component={RouterLink} to={`${module.href}`} key={module.href}>
+            <NavIcon>{module.icon}</NavIcon>
+          </Link>
+        ))}
 
       <Box
         sx={{

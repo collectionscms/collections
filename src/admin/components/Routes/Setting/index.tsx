@@ -6,8 +6,6 @@ import React, { lazy } from 'react';
 import { Navigate } from 'react-router-dom';
 
 const Project = Loader(lazy(() => import('@admin/pages/Project')));
-const User = Loader(lazy(() => import('@admin/pages/User')));
-const EditUser = Loader(lazy(() => import('@admin/pages/User/Edit')));
 const Role = Loader(lazy(() => import('@admin/pages/Role')));
 const EditRole = Loader(lazy(() => import('@admin/pages/Role/Edit')));
 const ContentType = Loader(lazy(() => import('@admin/pages/ContentType')));
@@ -58,34 +56,6 @@ const SettingRoutes = {
       element: (
         <DocumentInfoProvider {...props('content-types')}>
           <EditContentType />
-        </DocumentInfoProvider>
-      ),
-    },
-
-    // /////////////////////////////////////
-    // Users
-    // /////////////////////////////////////
-    {
-      path: 'users',
-      element: (
-        <DocumentInfoProvider {...props('users')}>
-          <User />
-        </DocumentInfoProvider>
-      ),
-    },
-    {
-      path: 'users/create',
-      element: (
-        <DocumentInfoProvider {...props('users')}>
-          <EditUser />
-        </DocumentInfoProvider>
-      ),
-    },
-    {
-      path: 'users/:id',
-      element: (
-        <DocumentInfoProvider {...props('users')}>
-          <EditUser />
         </DocumentInfoProvider>
       ),
     },
