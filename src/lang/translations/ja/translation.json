@@ -2,5 +2,11 @@
   "button": {
     "create": "登録",
     "update": "更新"
+  },
+  "label": {
+    "theme": "テーマ",
+    "automatic": "自動",
+    "light": "ライト",
+    "dark": "ダーク"
   }
 }
