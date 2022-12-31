@@ -1,4 +1,4 @@
-import { Mode, useTheme } from '@admin/components/utilities/Theme';
+import { Mode, useColorMode } from '@admin/components/utilities/ColorMode';
 import { Box, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@mui/material';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -9,7 +9,7 @@ export type OnChange<T = string> = (value: T) => void;
 const EditPage: React.FC = () => {
   const { id } = useParams();
   const { t } = useTranslation();
-  const { mode, setMode, autoMode } = useTheme();
+  const { mode, setMode, autoMode } = useColorMode();
 
   return (
     <>
