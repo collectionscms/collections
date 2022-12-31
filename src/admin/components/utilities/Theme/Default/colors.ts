@@ -7,7 +7,7 @@ const colors: PaletteOptions = {
     default: '#fff',
     paper: '#fff',
   },
-  sidebar: { main: '#ddd' },
+  sidebar: { main: '#4a4a4a' },
 };
 
 export default colors;
