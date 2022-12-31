@@ -7,16 +7,7 @@ import {
   faUserGroup,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  alpha,
-  Box,
-  Drawer,
-  IconButton,
-  Link,
-  Tooltip,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
+import { Box, Drawer, IconButton, Link, Tooltip, useMediaQuery, useTheme } from '@mui/material';
 import config from '@shared/features/config';
 import { User } from '@shared/types';
 import React, { useEffect } from 'react';
@@ -100,7 +91,7 @@ const NavHeader = () => {
 
 const NavIcon: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
-    <IconButton
+    <Box
       sx={{
         width: '60px',
         height: '60px',
@@ -109,8 +100,15 @@ const NavIcon: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         alignItems: 'center',
       }}
     >
-      {children}
-    </IconButton>
+      <IconButton
+        sx={{
+          width: '44px',
+          height: '44px',
+        }}
+      >
+        {children}
+      </IconButton>
+    </Box>
   );
 };
 
@@ -123,7 +121,7 @@ const NavModuleBar = () => {
       sx={{
         alignItems: 'center',
         width: '60px',
-        background: alpha(theme.palette.primary.main, 0.6),
+        bgcolor: 'sidebar.main',
       }}
     >
       <NavHeader />
