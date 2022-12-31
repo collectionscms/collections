@@ -24,7 +24,6 @@ import RouterLink from '../Link';
 import Logo from '../Logo';
 import NavGroup from '../NavGroup';
 import NavItem from '../NavItem';
-import ToggleColor from '../ToggleColor';
 import Minimal from './minimal';
 import { Props } from './types';
 
@@ -150,7 +149,6 @@ const NavModuleBar = () => {
           zIndex: theme.zIndex.appBar + 100,
         }}
       >
-        <ToggleColor />
         {actions(user).map((action) => (
           <Link component={RouterLink} to={`${action.href}`} key={action.href}>
             <NavIcon>{action.icon}</NavIcon>
