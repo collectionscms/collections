@@ -2,11 +2,12 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter as Router } from 'react-router-dom';
-import Routes from './components/routes';
 import '../lang/translations/config';
+import Routes from './components/routes';
 import { AuthProvider } from './components/utilities/Auth';
+import { ColorModeProvider } from './components/utilities/ColorMode';
 import { ConfigProvider } from './components/utilities/Config';
-import { ThemeContextProvider } from './components/utilities/Theme';
+import { ThemeProvider } from './components/utilities/Theme';
 
 const Index = () => (
   <ConfigProvider
@@ -18,13 +19,15 @@ const Index = () => (
       ],
     }}
   >
-    <ThemeContextProvider>
-      <Router>
-        <AuthProvider>
-          <Routes />
-        </AuthProvider>
-      </Router>
-    </ThemeContextProvider>
+    <ColorModeProvider>
+      <ThemeProvider>
+        <Router>
+          <AuthProvider>
+            <Routes />
+          </AuthProvider>
+        </Router>
+      </ThemeProvider>
+    </ColorModeProvider>
   </ConfigProvider>
 );
 
