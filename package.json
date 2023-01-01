@@ -88,7 +88,8 @@
     "webpack-hot-middleware": "^2.25.3",
     "webpack-node-externals": "^3.0.0",
     "webpack-shell-plugin-next": "^2.3.1",
-    "webpackbar": "^5.0.2"
+    "webpackbar": "^5.0.2",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@types/async": "^3.2.15",
