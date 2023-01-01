@@ -1,12 +1,16 @@
 {
   "button": {
     "create": "登録",
-    "update": "更新"
+    "update": "更新",
+    "login": "ログイン",
+    "forgot": "パスワードをお忘れの場合"
   },
   "label": {
     "theme": "テーマ",
     "automatic": "自動",
     "light": "ライト",
-    "dark": "ダーク"
+    "dark": "ダーク",
+    "email": "メールアドレス",
+    "password": "パスワード"
   }
 }

@@ -1,12 +1,16 @@
 {
   "button": {
     "create": "Create",
-    "update": "Update"
+    "update": "Update",
+    "login": "Login",
+    "forgot": "Forgot password"
   },
   "label": {
     "theme": "Theme",
     "automatic": "Automatic",
     "light": "Light",
-    "dark": "Dark"
+    "dark": "Dark",
+    "email": "Email",
+    "password": "Password"
   }
 }
