@@ -1,16 +1,10 @@
-import locale from '@admin/fields/locales/ja/locale';
-import { loginSchema } from '@admin/fields/validate';
+import loginSchema, { FormValues } from '@admin/fields/schemas/loginSchema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Stack, TextField } from '@mui/material';
 import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
-
-type FormData = {
-  email: string;
-  password: string;
-};
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -19,12 +13,12 @@ const LoginPage: React.FC = () => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>({
+  } = useForm<FormValues>({
     defaultValues: { email: 'admin@example.com', password: '************' },
-    resolver: yupResolver(loginSchema(locale)),
+    resolver: yupResolver(loginSchema),
   });
 
-  const onSubmit: SubmitHandler<FormData> = (form: FormData) => {
+  const onSubmit: SubmitHandler<FormValues> = (form: FormValues) => {
     console.log(form.email);
     console.log(form.password);
     navigate('/admin/collections');
