@@ -1,9 +1,6 @@
 import * as yup from 'yup';
-import { LocaleObject } from 'yup/lib/locale';
+import locale from './locale';
 
-export const Yup = (locale?: LocaleObject) => {
-  if (locale) yup.setLocale(locale);
-  return yup;
-};
+yup.setLocale(locale);
 
-export default Yup;
+export default yup;
