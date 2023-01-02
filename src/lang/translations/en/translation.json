@@ -1,12 +1,62 @@
 {
   "button": {
     "create": "Create",
-    "update": "Update"
+    "update": "Update",
+    "login": "Login",
+    "forgot": "Forgot password"
   },
   "label": {
     "theme": "Theme",
     "automatic": "Automatic",
     "light": "Light",
-    "dark": "Dark"
+    "dark": "Dark",
+    "email": "Email",
+    "password": "Password"
+  },
+  "yup": {
+    "mixed": {
+      "default": "Input Error.",
+      "required": "Please enter.",
+      "oneOf": "Please Enter one of the following values. {{values}}",
+      "notOneOf": "One of the following values cannot be entered in the {{label}}. {{values}}",
+      "notType": "Please Enter it in the correct format.",
+      "defined": "Not defined."
+    },
+    "string": {
+      "length": "Please Enter {{length}} characters.",
+      "min": "Please Enter at least {{min}} characters.",
+      "max": "Please enter up to {{max}} characters.",
+      "matches": "Please enter a value that matches the following. {{regex}}",
+      "email": "Please enter in the form of an email address.",
+      "url": "Please enter a valid URL",
+      "uuid": "Please enter a valid UUID",
+      "trim": "Please enter trimmed values.",
+      "lowercase": "Please enter a lowercase value.",
+      "uppercase": "Please enter uppercase values."
+    },
+    "number": {
+      "min": "Please enter {{min}} or more.",
+      "max": "Please enter less than or equal to {{max}}.",
+      "lessThan": "Please enter a value less than {{less}}.",
+      "moreThan": "Please enter a value greater than {{more}}.",
+      "positive": "Please enter a value greater than or equal to 0.",
+      "negative": "Please enter a value less than 0.",
+      "integer": "Please enter an integer."
+    },
+    "date": {
+      "min": "Enter future date from {{min}}.",
+      "max": "Please enter a date past {{max}}."
+    },
+    "object": {
+      "noUnknown": "Cannot contain keys not specified in the object shape."
+    },
+    "array": {
+      "length": "{{length}} number of items required.",
+      "min": "At least {{min}} items are required.",
+      "max": "{{max}} following items are required."
+    },
+    "boolean": {
+      "isValue": "Must be {{value}}."
+    }
   }
 }

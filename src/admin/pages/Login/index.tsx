@@ -1,27 +1,69 @@
-import RouterLink from '@admin/components/elements/Link';
-import { Box, Button } from '@mui/material';
+import loginSchema, { FormValues } from '@admin/fields/schemas/loginSchema';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Button, Stack, TextField } from '@mui/material';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { Link, useNavigate } from 'react-router-dom';
 
 const LoginPage: React.FC = () => {
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormValues>({
+    defaultValues: { email: 'admin@example.com', password: '************' },
+    resolver: yupResolver(loginSchema),
+  });
+
+  const onSubmit: SubmitHandler<FormValues> = (form: FormValues) => {
+    console.log(form.email);
+    console.log(form.password);
+    navigate('/admin/collections');
+  };
+
   return (
-    <Box>
+    <Stack component="form" onSubmit={handleSubmit(onSubmit)} spacing={4} sx={{ width: '400px' }}>
       <p>Welcome to Superfast</p>
+      <Controller
+        name="email"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            required
+            {...field}
+            variant="filled"
+            type="text"
+            label={t('label.email')}
+            error={errors.email !== undefined}
+            helperText={errors.email?.message}
+          />
+        )}
+      />
+      <Controller
+        name="password"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            required
+            {...field}
+            variant="filled"
+            type="password"
+            label={t('label.password')}
+            error={errors.password !== undefined}
+            helperText={errors.password?.message}
+          />
+        )}
+      />
       <div>
-        <p>Email</p>
-        <input type="text" required />
+        <Link to="/admin/auth/forgot">{t('button.forgot')}</Link>
       </div>
-      <div>
-        <p>パスワード</p>
-        <input type="text" required />
-      </div>
-      <div>
-        <Link to="/admin/auth/forgot">パスワード忘れ</Link>
-      </div>
-      <Button variant="contained" component={RouterLink} to="/admin/collections" sx={{ mt: 2 }}>
-        ログイン
+      <Button variant="contained" type="submit" sx={{ mt: 2 }}>
+        {t('button.login')}
       </Button>
-    </Box>
+    </Stack>
   );
 };
 
