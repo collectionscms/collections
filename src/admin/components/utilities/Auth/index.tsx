@@ -1,14 +1,16 @@
 import { PermissionsAction, User } from '@shared/types';
 import jwtDecode from 'jwt-decode';
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { AuthContext } from './types';
 import { useCookies } from 'react-cookie';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from './types';
 
 const Context = createContext({} as AuthContext);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>();
   const [cookies, setCookie] = useCookies(['superfast-token']);
+  const navigate = useNavigate();
 
   const setToken = useCallback((token: string) => {
     const decoded = jwtDecode<User>(token);
@@ -37,6 +39,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (token) {
         const decoded = jwtDecode<User>(token);
         setUser(decoded);
+      } else {
+        // TODO API取得のインターセプトで実装するので後で消す
+        navigate('/admin/auth/login');
       }
     };
     fetchMe();
