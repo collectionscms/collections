@@ -1,12 +1,5 @@
 import React, { createContext, useCallback, useContext, useMemo, useState } from 'react';
-
-export type Mode = 'light' | 'dark';
-
-export type ModeContext = {
-  mode: Mode;
-  setMode: (mode: Mode) => void;
-  autoMode: boolean;
-};
+import { Mode, ModeContext } from './types';
 
 const localStorageKey = 'superfast-color-mode';
 
