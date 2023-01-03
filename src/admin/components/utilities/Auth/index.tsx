@@ -1,43 +1,41 @@
 import { User } from '@shared/types';
+import jwtDecode from 'jwt-decode';
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { AuthContext } from './types';
+import { useCookies } from 'react-cookie';
 
 const Context = createContext({} as AuthContext);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>();
-  const [tokenInMemory, setTokenInMemory] = useState<string>();
+  const [cookies, setCookie] = useCookies(['superfast-token']);
 
   const setToken = useCallback((token: string) => {
-    setTokenInMemory(token);
+    const decoded = jwtDecode<User>(token);
+    setUser(decoded);
+    // TODO 手動実装につき後で消す
+    setCookie('superfast-token', token);
   }, []);
 
   useEffect(() => {
     const fetchMe = async () => {
-      setUser({
-        id: 1,
-        email: 'user@example.com',
-        userName: 'AdminUser',
-        role: {
-          id: 1,
-          name: 'Administrator',
-          adminAccess: true,
-          permissions: [],
-        },
-      });
+      // TODO 手動実装につき後で消す
+      const token = cookies['superfast-token'];
 
-      setToken('token');
+      if (token) {
+        const decoded = jwtDecode<User>(token);
+        setUser(decoded);
+      }
     };
-
     fetchMe();
   }, [setToken]);
 
   const value = useMemo(
     () => ({
       user,
-      token: tokenInMemory,
+      setToken,
     }),
-    [user, tokenInMemory]
+    [user, setToken]
   );
 
   return <Context.Provider value={value}>{children}</Context.Provider>;
