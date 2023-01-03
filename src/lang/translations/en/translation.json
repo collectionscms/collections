@@ -11,7 +11,9 @@
     "light": "Light",
     "dark": "Dark",
     "email": "Email",
-    "password": "Password"
+    "password": "Password",
+    "language": "Language",
+    "japanese": "Japanese"
   },
   "yup": {
     "mixed": {
