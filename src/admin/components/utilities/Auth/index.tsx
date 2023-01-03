@@ -1,4 +1,4 @@
-import { User } from '@shared/types';
+import { PermissionsAction, User } from '@shared/types';
 import jwtDecode from 'jwt-decode';
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { AuthContext } from './types';
@@ -17,6 +17,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setCookie('superfast-token', token);
   }, []);
 
+  const hasPermission = useCallback(
+    (collection: string, action: PermissionsAction) => {
+      return user.role.permissions.some(
+        (permission) => permission.collection === collection && permission.action === action
+      );
+    },
+    [user]
+  );
+
   useEffect(() => {
     const fetchMe = async () => {
       // TODO 手動実装につき後で消す
@@ -34,8 +43,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     () => ({
       user,
       setToken,
+      hasPermission,
     }),
-    [user, setToken]
+    [user, setToken, hasPermission]
   );
 
   return <Context.Provider value={value}>{children}</Context.Provider>;
