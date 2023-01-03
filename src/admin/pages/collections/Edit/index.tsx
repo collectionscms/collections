@@ -49,7 +49,6 @@ const EditPage: React.FC<Props> = ({ collection }) => {
           </Button>
         </Item>
       </Box>
-      {}
     </>
   );
 };
