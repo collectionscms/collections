@@ -1,23 +1,10 @@
 import RouterLink from '@admin/components/elements/Link';
 import { Type } from '@admin/components/elements/Table/Cell/types';
-import { Box, BoxProps, Button, TextField } from '@mui/material';
+import { Button, FormLabel, Stack, TextField } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Props } from './types';
-
-const Item = (props: BoxProps) => {
-  const { sx, ...other } = props;
-  return (
-    <Box
-      sx={{
-        alignItems: 'center',
-        ...sx,
-      }}
-      {...other}
-    />
-  );
-};
 
 const SingletonPage: React.FC<Props> = ({ collection }) => {
   const { t } = useTranslation();
@@ -29,41 +16,31 @@ const SingletonPage: React.FC<Props> = ({ collection }) => {
   ];
 
   return (
-    <Box sx={{ width: '100%' }}>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          width: '100%',
-        }}
-      >
-        <Item>
+    <Stack rowGap={3}>
+      <Grid container spacing={2}>
+        <Grid xs>
           <h1>{collection.collection}</h1>
-        </Item>
-        <Item>
-          <Button
-            variant="contained"
-            component={RouterLink}
-            to={`/admin/collections/${collection}`}
-          >
-            {t('button.update')}
-          </Button>
-        </Item>
-      </Box>
-      <Grid container spacing={3}>
+        </Grid>
+        <Grid container columnSpacing={2} alignItems="center">
+          <Grid>
+            <Button
+              variant="contained"
+              component={RouterLink}
+              to={`/admin/collections/${collection}`}
+            >
+              {t('button.update')}
+            </Button>
+          </Grid>
+        </Grid>
+      </Grid>
+      <Grid container spacing={3} xs={12} xl={6}>
         {fields.map((field) => (
           <Grid xs={12} md={6} key={field.field}>
-            <Item>
-              <Box>
-                <label>{field.label}</label>
-              </Box>
-              <TextField id={field.field} fullWidth />
-            </Item>
+            <FormLabel>{field.label}</FormLabel> <TextField id={field.field} fullWidth />
           </Grid>
         ))}
       </Grid>
-    </Box>
+    </Stack>
   );
 };
 

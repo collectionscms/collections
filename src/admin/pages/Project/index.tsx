@@ -1,39 +1,26 @@
 import { useDocumentInfo } from '@admin/components/utilities/DocumentInfo';
-import { Box, BoxProps, Button } from '@mui/material';
+import { Button, Stack } from '@mui/material';
+import Grid from '@mui/material/Unstable_Grid2';
 import React from 'react';
-
-const Item = (props: BoxProps) => {
-  const { sx, ...other } = props;
-  return (
-    <Box
-      sx={{
-        alignItems: 'center',
-        ...sx,
-      }}
-      {...other}
-    />
-  );
-};
+import { useTranslation } from 'react-i18next';
 
 const ProjectPage: React.FC = () => {
   const { label } = useDocumentInfo();
+  const { t } = useTranslation();
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        width: '100%',
-      }}
-    >
-      <Item>
-        <h1>{label}</h1>
-      </Item>
-      <Item>
-        <Button variant="contained">更新</Button>
-      </Item>
-    </Box>
+    <Stack rowGap={3}>
+      <Grid container spacing={2}>
+        <Grid xs>
+          <h1>{label}</h1>
+        </Grid>
+        <Grid container columnSpacing={2} alignItems="center">
+          <Grid>
+            <Button variant="contained">{t('button.update')}</Button>
+          </Grid>
+        </Grid>
+      </Grid>
+    </Stack>
   );
 };
 

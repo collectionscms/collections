@@ -1,15 +1,16 @@
 import RouterLink from '@admin/components/elements/Link';
 import {
   Box,
-  BoxProps,
   Button,
   Checkbox,
   Drawer,
+  FormLabel,
   List,
   ListItem,
   ListItemButton,
   ListItemText,
   Paper,
+  Stack,
   Table,
   TableBody,
   TableCell,
@@ -20,22 +21,11 @@ import {
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import React from 'react';
-
-const Item = (props: BoxProps) => {
-  const { sx, ...other } = props;
-  return (
-    <Box
-      sx={{
-        alignItems: 'center',
-        ...sx,
-      }}
-      {...other}
-    />
-  );
-};
+import { useTranslation } from 'react-i18next';
 
 const EditPage: React.FC = () => {
   const theme = useTheme();
+  const { t } = useTranslation();
 
   const [state, setState] = React.useState(false);
 
@@ -71,24 +61,19 @@ const EditPage: React.FC = () => {
   );
 
   return (
-    <>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          width: '100%',
-        }}
-      >
-        <Item>
+    <Stack rowGap={3}>
+      <Grid container spacing={2}>
+        <Grid xs>
           <h1>Edit ContentType</h1>
-        </Item>
-        <Item>
-          <Button variant="contained" component={RouterLink} to="../content-types">
-            更新
-          </Button>
-        </Item>
-      </Box>
+        </Grid>
+        <Grid container columnSpacing={2} alignItems="center">
+          <Grid>
+            <Button variant="contained" component={RouterLink} to="../content-types">
+              {t('button.update')}
+            </Button>
+          </Grid>
+        </Grid>
+      </Grid>
       <TableContainer component={Paper}>
         <Table aria-label="simple table">
           <TableBody>
@@ -111,26 +96,18 @@ const EditPage: React.FC = () => {
       >
         {list()}
       </Drawer>
-
-      <Grid container spacing={3} xs={12} xl={6} sx={{ mt: 4 }}>
+      <Grid container spacing={3} xs={12} xl={6}>
         <Grid xs={12} md={6}>
-          <Item>
-            <Box>
-              <label>Name</label>
-            </Box>
-            <TextField id="name" fullWidth />
-          </Item>
+          <FormLabel>Name</FormLabel> <TextField id="name" fullWidth />
         </Grid>
         <Grid xs={12} md={6}>
-          <Item>
-            <Box>
-              <label>Singleton</label>
-            </Box>
+          <FormLabel>Singleton</FormLabel>
+          <Box>
             <Checkbox {...{ inputProps: { 'aria-label': 'Checkbox demo' } }} defaultChecked />
-          </Item>
+          </Box>
         </Grid>
       </Grid>
-    </>
+    </Stack>
   );
 };
 
