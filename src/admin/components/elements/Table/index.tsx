@@ -1,7 +1,4 @@
 import {
-  Box,
-  BoxProps,
-  Button,
   Paper,
   Table as MuiTable,
   TableBody,
@@ -11,27 +8,10 @@ import {
   TableRow,
 } from '@mui/material';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
-import RouterLink from '../Link';
 import Cell from './Cell';
 import { Props } from './types';
 
-const Item = (props: BoxProps) => {
-  const { sx, ...other } = props;
-  return (
-    <Box
-      sx={{
-        alignItems: 'center',
-        ...sx,
-      }}
-      {...other}
-    />
-  );
-};
-
-const Table: React.FC<Props> = ({ label, columns, rows }) => {
-  const { t } = useTranslation();
-
+const Table: React.FC<Props> = ({ columns, rows }) => {
   const key = (row: unknown): String => {
     const data = row as Record<keyof { id: number }, unknown>;
     return data ? data.id.toString() : '';
@@ -39,23 +19,6 @@ const Table: React.FC<Props> = ({ label, columns, rows }) => {
 
   return (
     <>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          width: '100%',
-        }}
-      >
-        <Item>
-          <h1>{label}</h1>
-        </Item>
-        <Item>
-          <Button variant="contained" component={RouterLink} to="create">
-            {t('button.create')}
-          </Button>
-        </Item>
-      </Box>
       <TableContainer component={Paper}>
         <MuiTable aria-label="simple table">
           <TableHead>
