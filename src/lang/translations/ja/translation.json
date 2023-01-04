@@ -3,7 +3,9 @@
     "create": "登録",
     "update": "更新",
     "login": "ログイン",
-    "forgot": "パスワードをお忘れの場合"
+    "forgot": "パスワードをお忘れの場合",
+    "apiPreview": "APIプレビュー",
+    "fetch": "取得"
   },
   "label": {
     "theme": "テーマ",
