@@ -1,6 +1,7 @@
 import { Type } from '@admin/components/elements/Table/Cell/types';
 
 export type Config = {
+  serverUrl: string;
   collections: Collection[];
 };
 
@@ -19,6 +20,7 @@ export type User = {
   id: number;
   email: string;
   userName: string;
+  token: string | null;
   role: Role;
 };
 
