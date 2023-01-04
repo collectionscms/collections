@@ -1,8 +1,8 @@
 import { createTheme } from '@mui/material';
-import colors from './colors';
+import palette from './palette';
 import typography from './typography';
 
 export default createTheme({
-  palette: colors,
+  palette,
   typography,
 });
