@@ -20,7 +20,7 @@ const modules = [
   {
     href: '/admin/collections',
     icon: (
-      <Tooltip title="Content">
+      <Tooltip title="Content" placement="right">
         <FontAwesomeIcon icon={faDiceD6} size="sm" />
       </Tooltip>
     ),
@@ -31,7 +31,7 @@ const settings = [
   {
     href: '/admin/settings',
     icon: (
-      <Tooltip title="Setting">
+      <Tooltip title="Setting" placement="right">
         <FontAwesomeIcon icon={faGear} size="sm" />
       </Tooltip>
     ),
@@ -43,7 +43,7 @@ const actions = () => {
     {
       href: '/admin/auth/logout',
       icon: (
-        <Tooltip title="Logout">
+        <Tooltip title="Logout" placement="right">
           <FontAwesomeIcon icon={faArrowRightFromBracket} />
         </Tooltip>
       ),
@@ -51,7 +51,7 @@ const actions = () => {
     {
       href: `/admin/me`,
       icon: (
-        <Tooltip title="Me">
+        <Tooltip title="Me" placement="right">
           <FontAwesomeIcon icon={faCircleUser} />
         </Tooltip>
       ),
