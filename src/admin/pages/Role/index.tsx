@@ -1,11 +1,16 @@
+import RouterLink from '@admin/components/elements/Link';
 import Table from '@admin/components/elements/Table';
 import { useDocumentInfo } from '@admin/components/utilities/DocumentInfo';
 import buildColumns from '@admin/utilities/buildColumns';
+import { Button, Stack } from '@mui/material';
+import Grid from '@mui/material/Unstable_Grid2';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 const RolePage: React.FC = () => {
   const { fields, label } = useDocumentInfo();
   const columns = buildColumns(fields);
+  const { t } = useTranslation();
 
   const rows = [
     {
@@ -22,7 +27,23 @@ const RolePage: React.FC = () => {
     },
   ];
 
-  return <Table label={label} columns={columns} rows={rows} />;
+  return (
+    <Stack rowGap={3}>
+      <Grid container spacing={2}>
+        <Grid xs>
+          <h1>{label}</h1>
+        </Grid>
+        <Grid container columnSpacing={2} alignItems="center">
+          <Grid>
+            <Button variant="contained" component={RouterLink} to="create">
+              {t('button.create')}
+            </Button>
+          </Grid>
+        </Grid>
+      </Grid>
+      <Table columns={columns} rows={rows} />
+    </Stack>
+  );
 };
 
 export default RolePage;
