@@ -3,7 +3,9 @@
     "create": "Create",
     "update": "Update",
     "login": "Login",
-    "forgot": "Forgot password"
+    "forgot": "Forgot password",
+    "apiPreview": "API Preview",
+    "fetch": "Fetch"
   },
   "label": {
     "theme": "Theme",

@@ -12,6 +12,7 @@ import { ThemeProvider } from './components/utilities/Theme';
 const Index = () => (
   <ConfigProvider
     config={{
+      serverUrl: 'http://localhost:4000',
       collections: [
         { collection: 'Restaurant', singleton: false },
         { collection: 'Menu', singleton: false },
