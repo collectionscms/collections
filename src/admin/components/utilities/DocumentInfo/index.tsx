@@ -4,12 +4,11 @@ import { ContextType, Props } from './types';
 const Context = createContext({} as ContextType);
 
 export const DocumentInfoProvider: React.FC<Props> = (props) => {
-  const { label, fields, children } = props;
+  const { label, children } = props;
 
   const value = useMemo(
     () => ({
       label,
-      fields,
     }),
     [props]
   );

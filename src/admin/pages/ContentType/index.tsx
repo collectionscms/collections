@@ -6,10 +6,14 @@ import { Button, Stack } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useTranslation } from 'react-i18next';
 import React from 'react';
+import { Type } from '@admin/components/elements/Table/Cell/types';
+
+const fields = [{ field: 'name', label: 'Name', type: Type.Text }];
 
 const ContentTypePage: React.FC = () => {
-  const { fields, label } = useDocumentInfo();
+  const { label } = useDocumentInfo();
   const { t } = useTranslation();
+
   const columns = buildColumns(fields);
 
   const rows = [

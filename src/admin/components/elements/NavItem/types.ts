@@ -6,7 +6,7 @@ export type GroupItem = {
   label: string;
   href: string;
   icon: IconProp;
-  fields: Field[];
+  // fields: Field[];
 };
 
 export type Group = {

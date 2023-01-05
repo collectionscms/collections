@@ -17,7 +17,7 @@ const group = settingsGroupNavItems();
 
 const props = (id: string) => {
   const item = group.items.find((group) => group.id == id);
-  return { label: item.label, fields: item.fields };
+  return { label: item.label };
 };
 
 const SettingRoutes = {
