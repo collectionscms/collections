@@ -62,7 +62,7 @@ const UserPage = () => {
     <Stack rowGap={3}>
       <Grid container spacing={2}>
         <Grid xs>
-          <h1>{label}</h1>
+          <h1>{t(`page.index.${label}` as unknown as TemplateStringsArray)}</h1>
         </Grid>
         <Grid container columnSpacing={2} alignItems="center">
           <Grid>

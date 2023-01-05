@@ -48,25 +48,25 @@ export const settingsGroupNavItems = (): Group => {
     items: [
       {
         id: 'project',
-        label: 'Project',
+        label: 'project_settings',
         href: `${path}/project`,
         icon: faEarthAmerica,
       },
       {
         id: 'content-types',
-        label: 'Content Types',
+        label: 'content_types',
         href: `${path}/content-types`,
         icon: faTable,
       },
       {
         id: 'roles',
-        label: 'Roles',
+        label: 'roles',
         href: `${path}/roles`,
         icon: faShieldHalved,
       },
       {
         id: 'users',
-        label: 'Users',
+        label: 'users',
         href: `${path}/users`,
         icon: faUserGroup,
       },
