@@ -1,5 +1,4 @@
 import { t } from 'i18next';
-import { values } from 'lodash';
 import { LocaleObject } from 'yup/lib/locale';
 import { MessageParams } from 'yup/lib/types';
 
@@ -7,10 +6,10 @@ const locale: LocaleObject = {
   mixed: {
     default: t('yup.mixed.default'),
     required: t('yup.mixed.required'),
-    oneOf: (msg: MessageParams & { values: any }) => t('yup.mixed.oneOf', { values: msg.values }),
+    oneOf: (msg: MessageParams & { values: any }) => t('yup.mixed.one_of', { values: msg.values }),
     notOneOf: (msg: MessageParams & { values: any }) =>
-      t('yup.mixed.notOneOf', { label: msg.label, values: msg.values }),
-    notType: t('yup.mixed.required'),
+      t('yup.mixed.not_one_of', { label: msg.label, values: msg.values }),
+    notType: t('yup.mixed.not_type'),
     defined: t('yup.mixed.defined'),
   },
   string: {
@@ -31,9 +30,9 @@ const locale: LocaleObject = {
     min: (msg: MessageParams & { min: number }) => t('yup.number.min', { min: msg.min }),
     max: (msg: MessageParams & { max: number }) => t('yup.number.max', { max: msg.max }),
     lessThan: (msg: MessageParams & { less: number }) =>
-      t('yup.number.lessThan', { less: msg.less }),
+      t('yup.number.less_than', { less: msg.less }),
     moreThan: (msg: MessageParams & { more: number }) =>
-      t('yup.number.moreThan', { more: msg.more }),
+      t('yup.number.more_than', { more: msg.more }),
     positive: t('yup.number.positive'),
     negative: t('yup.number.negative'),
     integer: t('yup.number.integer'),
@@ -43,7 +42,7 @@ const locale: LocaleObject = {
     max: (msg: MessageParams & { max: Date | string }) => t('yup.date.max', { max: msg.max }),
   },
   object: {
-    noUnknown: t('yup.object.noUnknown'),
+    noUnknown: t('yup.object.no_unknown'),
   },
   array: {
     length: (msg: MessageParams & { length: number }) =>
@@ -53,7 +52,7 @@ const locale: LocaleObject = {
   },
   boolean: {
     isValue: (msg: MessageParams & { value: any }) =>
-      t('yup.boolean.isValue', { value: msg.value }),
+      t('yup.boolean.is_value', { value: msg.value }),
   },
 };
 

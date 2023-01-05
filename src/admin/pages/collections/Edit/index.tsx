@@ -47,7 +47,7 @@ const EditPage: React.FC<Props> = ({ collection }) => {
             {id && (
               <Grid>
                 <Button variant="contained" onClick={toggleDrawer(true)}>
-                  {t('button.apiPreview')}
+                  {t('button.api_preview')}
                 </Button>
               </Grid>
             )}
