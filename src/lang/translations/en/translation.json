@@ -17,6 +17,17 @@
     "language": "Language",
     "japanese": "Japanese"
   },
+  "page": {
+    "index": {
+      "project_settings": "Project Settings",
+      "content_types": "Content Types",
+      "roles": "Roles",
+      "users": "Users"
+    },
+    "edit": {
+      "users": "Editing User"
+    }
+  },
   "yup": {
     "mixed": {
       "default": "Input Error.",

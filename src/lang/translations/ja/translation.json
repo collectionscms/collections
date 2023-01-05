@@ -17,6 +17,17 @@
     "language": "言語",
     "japanese": "日本語"
   },
+  "page": {
+    "index": {
+      "project_settings": "プロジェクト設定",
+      "content_types": "コンテンツタイプ",
+      "roles": "ロール",
+      "users": "ユーザー"
+    },
+    "edit": {
+      "users": "ユーザー 編集"
+    }
+  },
   "yup": {
     "mixed": {
       "default": "入力エラーです",
