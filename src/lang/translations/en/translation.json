@@ -4,7 +4,7 @@
     "update": "Update",
     "login": "Login",
     "forgot": "Forgot password",
-    "apiPreview": "API Preview",
+    "api_preview": "API Preview",
     "fetch": "Fetch"
   },
   "label": {
@@ -21,9 +21,9 @@
     "mixed": {
       "default": "Input Error.",
       "required": "Please enter.",
-      "oneOf": "Please Enter one of the following values. {{values}}",
-      "notOneOf": "One of the following values cannot be entered in the {{label}}. {{values}}",
-      "notType": "Please Enter it in the correct format.",
+      "one_of": "Please Enter one of the following values. {{values}}",
+      "not_one_of": "One of the following values cannot be entered in the {{label}}. {{values}}",
+      "not_type": "Please Enter it in the correct format.",
       "defined": "Not defined."
     },
     "string": {
@@ -41,8 +41,8 @@
     "number": {
       "min": "Please enter {{min}} or more.",
       "max": "Please enter less than or equal to {{max}}.",
-      "lessThan": "Please enter a value less than {{less}}.",
-      "moreThan": "Please enter a value greater than {{more}}.",
+      "less_than": "Please enter a value less than {{less}}.",
+      "more_than": "Please enter a value greater than {{more}}.",
       "positive": "Please enter a value greater than or equal to 0.",
       "negative": "Please enter a value less than 0.",
       "integer": "Please enter an integer."
@@ -52,7 +52,7 @@
       "max": "Please enter a date past {{max}}."
     },
     "object": {
-      "noUnknown": "Cannot contain keys not specified in the object shape."
+      "no_unknown": "Cannot contain keys not specified in the object shape."
     },
     "array": {
       "length": "{{length}} number of items required.",
@@ -60,7 +60,7 @@
       "max": "{{max}} following items are required."
     },
     "boolean": {
-      "isValue": "Must be {{value}}."
+      "is_value": "Must be {{value}}."
     }
   }
 }

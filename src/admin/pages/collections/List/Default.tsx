@@ -62,7 +62,7 @@ const DefaultListPage: React.FC<Props> = ({ collection }) => {
         <Grid container columnSpacing={2} alignItems="center">
           <Grid>
             <Button variant="contained" onClick={toggleDrawer(true)}>
-              {t('button.apiPreview')}
+              {t('button.api_preview')}
             </Button>
           </Grid>
           <Grid>
