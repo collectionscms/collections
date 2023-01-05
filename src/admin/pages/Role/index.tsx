@@ -1,5 +1,6 @@
 import RouterLink from '@admin/components/elements/Link';
 import Table from '@admin/components/elements/Table';
+import { Type } from '@admin/components/elements/Table/Cell/types';
 import { useDocumentInfo } from '@admin/components/utilities/DocumentInfo';
 import buildColumns from '@admin/utilities/buildColumns';
 import { Button, Stack } from '@mui/material';
@@ -7,10 +8,17 @@ import Grid from '@mui/material/Unstable_Grid2';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
+const fields = [
+  { field: 'name', label: 'Name', type: Type.Text },
+  { field: 'description', label: 'Description', type: Type.Text },
+  { field: 'createdAt', label: 'Created At', type: Type.Date },
+];
+
 const RolePage: React.FC = () => {
-  const { fields, label } = useDocumentInfo();
-  const columns = buildColumns(fields);
   const { t } = useTranslation();
+  const { label } = useDocumentInfo();
+
+  const columns = buildColumns(fields);
 
   const rows = [
     {

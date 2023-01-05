@@ -4,12 +4,10 @@ import {
   faCircleUser,
   faDiceD6,
   faGear,
-  faUserGroup,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Box, Drawer, IconButton, Link, Tooltip, useMediaQuery, useTheme } from '@mui/material';
 import config from '@shared/features/config';
-import { User } from '@shared/types';
 import React, { useEffect } from 'react';
 import RouterLink from '../Link';
 import Logo from '../Logo';
@@ -22,16 +20,8 @@ const modules = [
   {
     href: '/admin/collections',
     icon: (
-      <Tooltip title="Content">
+      <Tooltip title="Content" placement="right">
         <FontAwesomeIcon icon={faDiceD6} size="sm" />
-      </Tooltip>
-    ),
-  },
-  {
-    href: '/admin/users',
-    icon: (
-      <Tooltip title="User">
-        <FontAwesomeIcon icon={faUserGroup} size="sm" />
       </Tooltip>
     ),
   },
@@ -41,27 +31,27 @@ const settings = [
   {
     href: '/admin/settings',
     icon: (
-      <Tooltip title="Setting">
+      <Tooltip title="Setting" placement="right">
         <FontAwesomeIcon icon={faGear} size="sm" />
       </Tooltip>
     ),
   },
 ];
 
-const actions = (user?: User) => {
+const actions = () => {
   return [
     {
       href: '/admin/auth/logout',
       icon: (
-        <Tooltip title="Logout">
+        <Tooltip title="Logout" placement="right">
           <FontAwesomeIcon icon={faArrowRightFromBracket} />
         </Tooltip>
       ),
     },
     {
-      href: `/admin/users/${user?.id}`,
+      href: `/admin/me`,
       icon: (
-        <Tooltip title={user?.userName}>
+        <Tooltip title="Me" placement="right">
           <FontAwesomeIcon icon={faCircleUser} />
         </Tooltip>
       ),
@@ -148,7 +138,7 @@ const NavModuleBar = () => {
           zIndex: theme.zIndex.appBar + 100,
         }}
       >
-        {actions(user).map((action) => (
+        {actions().map((action) => (
           <Link component={RouterLink} to={`${action.href}`} key={action.href}>
             <NavIcon>{action.icon}</NavIcon>
           </Link>
