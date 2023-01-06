@@ -15,7 +15,8 @@
     "email": "メールアドレス",
     "password": "パスワード",
     "language": "言語",
-    "japanese": "日本語"
+    "japanese": "日本語",
+    "project_name": "プロジェクト名"
   },
   "page": {
     "index": {

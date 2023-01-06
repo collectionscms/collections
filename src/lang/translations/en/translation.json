@@ -15,7 +15,8 @@
     "email": "Email",
     "password": "Password",
     "language": "Language",
-    "japanese": "Japanese"
+    "japanese": "Japanese",
+    "project_name": "Project Name"
   },
   "page": {
     "index": {
