@@ -38,3 +38,7 @@ export type Permission = {
   collection: string;
   action: PermissionsAction;
 };
+
+export type ProjectSetting = {
+  name: string;
+};
