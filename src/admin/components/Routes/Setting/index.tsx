@@ -15,11 +15,6 @@ const User = Loader(lazy(() => import('@admin/pages/User')));
 const EditUser = Loader(lazy(() => import('@admin/pages/User/Edit')));
 const group = settingsGroupNavItems();
 
-const props = (id: string) => {
-  const item = group.items.find((group) => group.id == id);
-  return { label: item.label };
-};
-
 const SettingRoutes = {
   path: '/admin/settings',
   element: <MainLayout group={group} />,
@@ -28,7 +23,7 @@ const SettingRoutes = {
     {
       path: 'project',
       element: (
-        <DocumentInfoProvider {...props('project')}>
+        <DocumentInfoProvider label="index.project_setting">
           <Project />
         </DocumentInfoProvider>
       ),
@@ -40,7 +35,7 @@ const SettingRoutes = {
     {
       path: 'content-types',
       element: (
-        <DocumentInfoProvider {...props('content-types')}>
+        <DocumentInfoProvider label="index.content_type">
           <ContentType />
         </DocumentInfoProvider>
       ),
@@ -48,7 +43,7 @@ const SettingRoutes = {
     {
       path: 'content-types/create',
       element: (
-        <DocumentInfoProvider {...props('content-types')}>
+        <DocumentInfoProvider label="create.content_type">
           <CreateContentType />
         </DocumentInfoProvider>
       ),
@@ -56,7 +51,7 @@ const SettingRoutes = {
     {
       path: 'content-types/:id',
       element: (
-        <DocumentInfoProvider {...props('content-types')}>
+        <DocumentInfoProvider label="edit.content_type">
           <EditContentType />
         </DocumentInfoProvider>
       ),
@@ -68,7 +63,7 @@ const SettingRoutes = {
     {
       path: 'roles',
       element: (
-        <DocumentInfoProvider {...props('roles')}>
+        <DocumentInfoProvider label="index.role">
           <Role />
         </DocumentInfoProvider>
       ),
@@ -76,7 +71,7 @@ const SettingRoutes = {
     {
       path: 'roles/create',
       element: (
-        <DocumentInfoProvider {...props('roles')}>
+        <DocumentInfoProvider label="create.role">
           <EditRole />
         </DocumentInfoProvider>
       ),
@@ -84,7 +79,7 @@ const SettingRoutes = {
     {
       path: 'roles/:id',
       element: (
-        <DocumentInfoProvider {...props('roles')}>
+        <DocumentInfoProvider label="edit.role">
           <EditRole />
         </DocumentInfoProvider>
       ),
@@ -96,7 +91,7 @@ const SettingRoutes = {
     {
       path: 'users',
       element: (
-        <DocumentInfoProvider {...props('users')}>
+        <DocumentInfoProvider label="index.user">
           <User />
         </DocumentInfoProvider>
       ),
@@ -104,7 +99,7 @@ const SettingRoutes = {
     {
       path: 'users/create',
       element: (
-        <DocumentInfoProvider {...props('users')}>
+        <DocumentInfoProvider label="create.user">
           <EditUser />
         </DocumentInfoProvider>
       ),
@@ -112,7 +107,7 @@ const SettingRoutes = {
     {
       path: 'users/:id',
       element: (
-        <DocumentInfoProvider {...props('users')}>
+        <DocumentInfoProvider label="edit.user">
           <EditUser />
         </DocumentInfoProvider>
       ),

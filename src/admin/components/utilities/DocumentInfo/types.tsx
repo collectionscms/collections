@@ -1,7 +1,5 @@
-import { Field } from '@shared/types';
-
 export type ContextType = {
-  label: string;
+  localizedLabel: string;
 };
 
 export type Props = {

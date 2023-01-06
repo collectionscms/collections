@@ -14,7 +14,7 @@ const NavItem: React.FC<Props> = ({ item }) => {
       <ListItemIcon>
         <FontAwesomeIcon icon={icon} />
       </ListItemIcon>
-      <ListItemText primary={t(`page.index.${label}` as unknown as TemplateStringsArray)} />
+      <ListItemText primary={t(`${label}` as unknown as TemplateStringsArray)} />
     </ListItemButton>
   );
 };

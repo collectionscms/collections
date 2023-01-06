@@ -1,6 +1,7 @@
 import RouterLink from '@admin/components/elements/Link';
 import { useColorMode } from '@admin/components/utilities/ColorMode';
 import { Mode } from '@admin/components/utilities/ColorMode/types';
+import { useDocumentInfo } from '@admin/components/utilities/DocumentInfo';
 import {
   Button,
   FormControl,
@@ -22,6 +23,7 @@ export type OnChange<T = string> = (value: T) => void;
 
 const MePage: React.FC = () => {
   const { id } = useParams();
+  const { localizedLabel } = useDocumentInfo();
   const { t, i18n } = useTranslation();
   const { mode, setMode, autoMode } = useColorMode();
 
@@ -33,7 +35,7 @@ const MePage: React.FC = () => {
     <Stack rowGap={3}>
       <Grid container spacing={2}>
         <Grid xs>
-          <h1>Profile</h1>
+          <h1>{localizedLabel}</h1>
         </Grid>
         <Grid container columnSpacing={2} alignItems="center">
           <Grid>

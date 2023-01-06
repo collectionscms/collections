@@ -16,7 +16,7 @@ const fields = [
 
 const RolePage: React.FC = () => {
   const { t } = useTranslation();
-  const { label } = useDocumentInfo();
+  const { localizedLabel } = useDocumentInfo();
 
   const columns = buildColumns(fields);
 
@@ -39,7 +39,7 @@ const RolePage: React.FC = () => {
     <Stack rowGap={3}>
       <Grid container spacing={2}>
         <Grid xs>
-          <h1>{label}</h1>
+          <h1>{localizedLabel}</h1>
         </Grid>
         <Grid container columnSpacing={2} alignItems="center">
           <Grid>

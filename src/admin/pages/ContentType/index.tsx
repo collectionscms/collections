@@ -11,7 +11,7 @@ import { Type } from '@admin/components/elements/Table/Cell/types';
 const fields = [{ field: 'name', label: 'Name', type: Type.Text }];
 
 const ContentTypePage: React.FC = () => {
-  const { label } = useDocumentInfo();
+  const { localizedLabel } = useDocumentInfo();
   const { t } = useTranslation();
 
   const columns = buildColumns(fields);
@@ -35,7 +35,7 @@ const ContentTypePage: React.FC = () => {
     <Stack rowGap={3}>
       <Grid container spacing={2}>
         <Grid xs>
-          <h1>{label}</h1>
+          <h1>{localizedLabel}</h1>
         </Grid>
         <Grid container columnSpacing={2} alignItems="center">
           <Grid>

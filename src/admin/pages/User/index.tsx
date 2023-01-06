@@ -19,7 +19,7 @@ const fields = [
 ];
 
 const UserPage = () => {
-  const { label } = useDocumentInfo();
+  const { localizedLabel } = useDocumentInfo();
   const { t } = useTranslation();
 
   const columns = buildColumns(fields, (i: number, row: any, data: any) =>
@@ -62,7 +62,7 @@ const UserPage = () => {
     <Stack rowGap={3}>
       <Grid container spacing={2}>
         <Grid xs>
-          <h1>{t(`page.index.${label}` as unknown as TemplateStringsArray)}</h1>
+          <h1>{localizedLabel}</h1>
         </Grid>
         <Grid container columnSpacing={2} alignItems="center">
           <Grid>

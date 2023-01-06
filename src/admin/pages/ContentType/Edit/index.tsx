@@ -1,4 +1,5 @@
 import RouterLink from '@admin/components/elements/Link';
+import { useDocumentInfo } from '@admin/components/utilities/DocumentInfo';
 import {
   Box,
   Button,
@@ -26,6 +27,7 @@ import { useTranslation } from 'react-i18next';
 const EditPage: React.FC = () => {
   const theme = useTheme();
   const { t } = useTranslation();
+  const { localizedLabel } = useDocumentInfo();
 
   const [state, setState] = React.useState(false);
 
@@ -64,7 +66,7 @@ const EditPage: React.FC = () => {
     <Stack rowGap={3}>
       <Grid container spacing={2}>
         <Grid xs>
-          <h1>Edit ContentType</h1>
+          <h1>{localizedLabel}</h1>
         </Grid>
         <Grid container columnSpacing={2} alignItems="center">
           <Grid>

@@ -183,9 +183,9 @@ const Nav: React.FC<Props> = ({ open, group, toggleDrawer }) => {
   const navContent = (
     <NavContent>
       <Box component="nav" sx={{ overflow: 'auto' }}>
-        <NavGroup group={group} key={group.id}>
+        <NavGroup group={group} key={group.label}>
           {group.items.map((item) => (
-            <NavItem item={item} key={item.id} />
+            <NavItem item={item} key={item.label} />
           ))}
         </NavGroup>
       </Box>

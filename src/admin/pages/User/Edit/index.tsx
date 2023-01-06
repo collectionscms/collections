@@ -10,14 +10,14 @@ export type OnChange<T = string> = (value: T) => void;
 
 const EditPage: React.FC = () => {
   const { id } = useParams();
-  const { label } = useDocumentInfo();
+  const { localizedLabel } = useDocumentInfo();
   const { t } = useTranslation();
 
   return (
     <Stack rowGap={3}>
       <Grid container spacing={2}>
         <Grid xs>
-          <h1>{t(`page.edit.${label}` as unknown as TemplateStringsArray)}</h1>
+          <h1>{localizedLabel}</h1>
         </Grid>
         <Grid container columnSpacing={2} alignItems="center">
           <Grid>

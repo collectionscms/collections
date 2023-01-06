@@ -6,7 +6,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 const ProjectPage: React.FC = () => {
-  const { label } = useDocumentInfo();
+  const { localizedLabel } = useDocumentInfo();
   const { t } = useTranslation();
 
   const data: ProjectSetting = { name: 'superfast' };
@@ -15,7 +15,7 @@ const ProjectPage: React.FC = () => {
     <Stack rowGap={3}>
       <Grid container spacing={2}>
         <Grid xs>
-          <h1>{t(`page.index.${label}` as unknown as TemplateStringsArray)}</h1>
+          <h1>{localizedLabel}</h1>
         </Grid>
         <Grid container columnSpacing={2} alignItems="center">
           <Grid>
