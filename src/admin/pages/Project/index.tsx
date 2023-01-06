@@ -1,23 +1,32 @@
 import { useDocumentInfo } from '@admin/components/utilities/DocumentInfo';
-import { Button, Stack } from '@mui/material';
+import { Button, InputLabel, Stack, TextField } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
+import { ProjectSetting } from '@shared/types';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 const ProjectPage: React.FC = () => {
-  const { label } = useDocumentInfo();
+  const { localizedLabel } = useDocumentInfo();
   const { t } = useTranslation();
+
+  const data: ProjectSetting = { name: 'superfast' };
 
   return (
     <Stack rowGap={3}>
       <Grid container spacing={2}>
         <Grid xs>
-          <h1>{label}</h1>
+          <h1>{localizedLabel}</h1>
         </Grid>
         <Grid container columnSpacing={2} alignItems="center">
           <Grid>
             <Button variant="contained">{t('button.update')}</Button>
           </Grid>
+        </Grid>
+      </Grid>
+      <Grid container spacing={3} xs={12} xl={6}>
+        <Grid xs={12} md={6}>
+          <InputLabel required>{t('label.project_name')}</InputLabel>
+          <TextField id="name" type="text" fullWidth value={data.name} />
         </Grid>
       </Grid>
     </Stack>

@@ -11,10 +11,8 @@ import { Collection } from '@shared/types';
 
 export const collectionsGroupNavItems = (collections: Collection[]): Group => {
   return {
-    id: 'group-collections',
-    label: 'Content Management',
+    label: 'index.content_management',
     items: collections.map((meta) => ({
-      id: `${meta.collection}`,
       label: `${meta.collection}`,
       href: `/admin/collections/${meta.collection}`,
       icon: faList,
@@ -26,12 +24,10 @@ export const profileNavItems = (): Group => {
   const path = '/admin';
 
   return {
-    id: 'group-profiles',
-    label: 'Profile',
+    label: 'index.profile',
     items: [
       {
-        id: 'profile',
-        label: 'Profile',
+        label: 'index.profile',
         href: `${path}/me`,
         icon: faUser,
       },
@@ -43,30 +39,25 @@ export const settingsGroupNavItems = (): Group => {
   const path = '/admin/settings';
 
   return {
-    id: 'group-settings',
-    label: 'Settings',
+    label: 'index.setting',
     items: [
       {
-        id: 'project',
-        label: 'Project',
+        label: 'index.project_setting',
         href: `${path}/project`,
         icon: faEarthAmerica,
       },
       {
-        id: 'content-types',
-        label: 'Content Types',
+        label: 'index.content_type',
         href: `${path}/content-types`,
         icon: faTable,
       },
       {
-        id: 'roles',
-        label: 'Roles',
+        label: 'index.role',
         href: `${path}/roles`,
         icon: faShieldHalved,
       },
       {
-        id: 'users',
-        label: 'Users',
+        label: 'index.user',
         href: `${path}/users`,
         icon: faUserGroup,
       },

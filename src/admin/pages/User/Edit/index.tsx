@@ -1,4 +1,5 @@
 import RouterLink from '@admin/components/elements/Link';
+import { useDocumentInfo } from '@admin/components/utilities/DocumentInfo';
 import { Button, Stack } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import React from 'react';
@@ -9,13 +10,14 @@ export type OnChange<T = string> = (value: T) => void;
 
 const EditPage: React.FC = () => {
   const { id } = useParams();
+  const { localizedLabel } = useDocumentInfo();
   const { t } = useTranslation();
 
   return (
     <Stack rowGap={3}>
       <Grid container spacing={2}>
         <Grid xs>
-          <h1>{id ? 'Edit' : 'Create'} User</h1>
+          <h1>{localizedLabel}</h1>
         </Grid>
         <Grid container columnSpacing={2} alignItems="center">
           <Grid>

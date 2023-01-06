@@ -15,7 +15,27 @@
     "email": "メールアドレス",
     "password": "パスワード",
     "language": "言語",
-    "japanese": "日本語"
+    "japanese": "日本語",
+    "project_name": "プロジェクト名"
+  },
+  "index": {
+    "user": "ユーザー",
+    "role": "ロール",
+    "project_setting": "プロジェクト設定",
+    "content_type": "コンテンツタイプ",
+    "content_management": "コンテンツ管理",
+    "setting": "設定",
+    "profile": "プロフィール"
+  },
+  "create": {
+    "user": "ユーザー 新規登録",
+    "role": "ロール 新規登録",
+    "content_type": "コンテンツタイプ 新規登録"
+  },
+  "edit": {
+    "user": "ユーザー 編集",
+    "role": "ロール 編集",
+    "content_type": "コンテンツタイプ 編集"
   },
   "yup": {
     "mixed": {
