@@ -1,3 +1,4 @@
+import DeleteCollection from '@admin/components/elements/DeleteCollection';
 import RouterLink from '@admin/components/elements/Link';
 import { useAuth } from '@admin/components/utilities/Auth';
 import { Button, Drawer, Stack, useTheme } from '@mui/material';
@@ -38,29 +39,48 @@ const EditPage: React.FC<Props> = ({ collection }) => {
           <ApiPreview path={`${collection.collection}/${id}`} />
         </Drawer>
         <Grid container spacing={2}>
-          <Grid xs>
+          <Grid xs={12} sm>
             <h1>
               {id ? 'Update' : 'Create'} {collection.collection}
             </h1>
           </Grid>
           <Grid container columnSpacing={2} alignItems="center">
-            {id && (
+            {id ? (
+              <>
+                <Grid>
+                  <DeleteCollection
+                    id={id}
+                    collection={collection.collection}
+                    disabled={!hasPermission(collection.collection, 'delete')}
+                  />
+                </Grid>
+                <Grid>
+                  <Button variant="contained" onClick={toggleDrawer(true)}>
+                    {t('api_preview')}
+                  </Button>
+                </Grid>
+                <Grid>
+                  <Button
+                    variant="contained"
+                    disabled={!hasPermission(collection.collection, 'update')}
+                    component={RouterLink}
+                    to={`../${collection.collection}`}
+                  >
+                    {t('update')}
+                  </Button>
+                </Grid>
+              </>
+            ) : (
               <Grid>
-                <Button variant="contained" onClick={toggleDrawer(true)}>
-                  {t('api_preview')}
+                <Button
+                  variant="contained"
+                  component={RouterLink}
+                  to={`../${collection.collection}`}
+                >
+                  {t('create_new')}
                 </Button>
               </Grid>
             )}
-            <Grid>
-              <Button
-                variant="contained"
-                disabled={!hasPermission(collection.collection, id ? 'update' : 'create')}
-                component={RouterLink}
-                to="create"
-              >
-                {id ? t('update') : t('create_new')}
-              </Button>
-            </Grid>
           </Grid>
         </Grid>
       </Stack>
