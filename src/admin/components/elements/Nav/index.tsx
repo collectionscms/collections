@@ -8,55 +8,13 @@ import {
 import { Box, Drawer, IconButton, Link, Tooltip, useMediaQuery, useTheme } from '@mui/material';
 import config from '@shared/features/config';
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import RouterLink from '../Link';
 import Logo from '../Logo';
 import NavGroup from '../NavGroup';
 import NavItem from '../NavItem';
 import Minimal from './minimal';
 import { Props } from './types';
-
-const modules = [
-  {
-    href: '/admin/collections',
-    icon: (
-      <Tooltip title="Content" placement="right">
-        <AppRegistrationOutlined />
-      </Tooltip>
-    ),
-  },
-];
-
-const settings = [
-  {
-    href: '/admin/settings',
-    icon: (
-      <Tooltip title="Setting" placement="right">
-        <SettingsOutlined />
-      </Tooltip>
-    ),
-  },
-];
-
-const actions = () => {
-  return [
-    {
-      href: '/admin/auth/logout',
-      icon: (
-        <Tooltip title="Logout" placement="right">
-          <LogoutOutlined />
-        </Tooltip>
-      ),
-    },
-    {
-      href: `/admin/me`,
-      icon: (
-        <Tooltip title="Me" placement="right">
-          <AccountCircleOutlined />
-        </Tooltip>
-      ),
-    },
-  ];
-};
 
 const NavHeader = () => {
   return (
@@ -105,6 +63,50 @@ const NavIcon: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 const NavModuleBar = () => {
   const theme = useTheme();
   const { user } = useAuth();
+  const { t } = useTranslation();
+
+  const modules = [
+    {
+      href: '/admin/collections',
+      icon: (
+        <Tooltip title={t('content_management')} placement="right">
+          <AppRegistrationOutlined />
+        </Tooltip>
+      ),
+    },
+  ];
+
+  const settings = [
+    {
+      href: '/admin/settings',
+      icon: (
+        <Tooltip title={t('setting')} placement="right">
+          <SettingsOutlined />
+        </Tooltip>
+      ),
+    },
+  ];
+
+  const actions = () => {
+    return [
+      {
+        href: '/admin/auth/logout',
+        icon: (
+          <Tooltip title={t('logout')} placement="right">
+            <LogoutOutlined />
+          </Tooltip>
+        ),
+      },
+      {
+        href: `/admin/me`,
+        icon: (
+          <Tooltip title="Me" placement="right">
+            <AccountCircleOutlined />
+          </Tooltip>
+        ),
+      },
+    ];
+  };
 
   return (
     <Box

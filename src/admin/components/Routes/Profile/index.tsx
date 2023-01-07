@@ -16,7 +16,7 @@ const ProfileRoutes = {
     {
       path: 'me',
       element: (
-        <DocumentInfoProvider label="index.profile">
+        <DocumentInfoProvider label="profile">
           <Profile />
         </DocumentInfoProvider>
       ),

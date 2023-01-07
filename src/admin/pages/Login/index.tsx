@@ -48,7 +48,7 @@ const LoginPage: React.FC = () => {
             {...field}
             variant="filled"
             type="text"
-            label={t('label.email')}
+            label={t('email')}
             error={errors.email !== undefined}
             helperText={errors.email?.message}
           />
@@ -63,17 +63,17 @@ const LoginPage: React.FC = () => {
             {...field}
             variant="filled"
             type="password"
-            label={t('label.password')}
+            label={t('password')}
             error={errors.password !== undefined}
             helperText={errors.password?.message}
           />
         )}
       />
       <div>
-        <Link to="/admin/auth/forgot">{t('button.forgot')}</Link>
+        <Link to="/admin/auth/forgot">{t('forgot')}</Link>
       </div>
       <Button variant="contained" type="submit" sx={{ mt: 2 }}>
-        {t('button.login')}
+        {t('login')}
       </Button>
     </Stack>
   );

@@ -62,12 +62,12 @@ const DefaultListPage: React.FC<Props> = ({ collection }) => {
         <Grid container columnSpacing={2} alignItems="center">
           <Grid>
             <Button variant="contained" onClick={toggleDrawer(true)}>
-              {t('button.api_preview')}
+              {t('api_preview')}
             </Button>
           </Grid>
           <Grid>
             <Button variant="contained" component={RouterLink} to="create">
-              {t('button.create')}
+              {t('create_new')}
             </Button>
           </Grid>
         </Grid>

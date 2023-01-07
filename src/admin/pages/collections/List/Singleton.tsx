@@ -47,7 +47,7 @@ const SingletonPage: React.FC<Props> = ({ collection }) => {
         <Grid container columnSpacing={2} alignItems="center">
           <Grid>
             <Button variant="contained" onClick={toggleDrawer(true)}>
-              {t('button.api_preview')}
+              {t('api_preview')}
             </Button>
           </Grid>
           <Grid>
@@ -56,7 +56,7 @@ const SingletonPage: React.FC<Props> = ({ collection }) => {
               component={RouterLink}
               to={`/admin/collections/${collection}`}
             >
-              {t('button.update')}
+              {t('update')}
             </Button>
           </Grid>
         </Grid>

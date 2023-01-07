@@ -40,7 +40,7 @@ const MePage: React.FC = () => {
         <Grid container columnSpacing={2} alignItems="center">
           <Grid>
             <Button variant="contained" component={RouterLink} to="../content-types/1">
-              {id ? t('button.update') : t('button.create')}
+              {id ? t('update') : t('create_new')}
             </Button>
           </Grid>
         </Grid>
@@ -48,7 +48,7 @@ const MePage: React.FC = () => {
       <Grid container spacing={3} xs={12} xl={6}>
         <Grid xs={12} md={6}>
           <FormControl fullWidth>
-            <FormLabel>{t('label.language')}</FormLabel>
+            <FormLabel>{t('language')}</FormLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
@@ -56,22 +56,22 @@ const MePage: React.FC = () => {
               value={i18n.language}
               onChange={handleChange}
             >
-              <MenuItem value="ja">{t('label.japanese')}</MenuItem>
+              <MenuItem value="ja">{t('japanese')}</MenuItem>
               <MenuItem value="en">English</MenuItem>
             </Select>
           </FormControl>
         </Grid>
         <Grid xs={12} md={6}>
           <FormControl>
-            <FormLabel>{t('label.theme')}</FormLabel>
+            <FormLabel>{t('theme')}</FormLabel>
             <RadioGroup
               row
               value={autoMode ? 'auto' : mode}
               onChange={(e) => setMode(e.target.value as Mode)}
             >
-              <FormControlLabel value="auto" control={<Radio />} label={t('label.automatic')} />
-              <FormControlLabel value="light" control={<Radio />} label={t('label.light')} />
-              <FormControlLabel value="dark" control={<Radio />} label={t('label.dark')} />
+              <FormControlLabel value="auto" control={<Radio />} label={t('automatic')} />
+              <FormControlLabel value="light" control={<Radio />} label={t('light')} />
+              <FormControlLabel value="dark" control={<Radio />} label={t('dark')} />
             </RadioGroup>
           </FormControl>
         </Grid>

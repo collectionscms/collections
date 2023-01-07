@@ -19,13 +19,13 @@ const ProjectPage: React.FC = () => {
         </Grid>
         <Grid container columnSpacing={2} alignItems="center">
           <Grid>
-            <Button variant="contained">{t('button.update')}</Button>
+            <Button variant="contained">{t('update')}</Button>
           </Grid>
         </Grid>
       </Grid>
       <Grid container spacing={3} xs={12} xl={6}>
         <Grid xs={12} md={6}>
-          <InputLabel required>{t('label.project_name')}</InputLabel>
+          <InputLabel required>{t('project_name')}</InputLabel>
           <TextField id="name" type="text" fullWidth value={data.name} />
         </Grid>
       </Grid>
