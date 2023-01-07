@@ -20,7 +20,7 @@ const ApiPreview: React.FC<Props> = ({ path }) => {
           {apiUrl}/{path}
         </Grid>
         <Grid>
-          <Button variant="contained">{t('button.fetch')}</Button>
+          <Button variant="contained">{t('fetch')}</Button>
         </Grid>
       </Grid>
       <p>your token: {user.token}</p>

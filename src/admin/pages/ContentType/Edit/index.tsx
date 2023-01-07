@@ -71,7 +71,7 @@ const EditPage: React.FC = () => {
         <Grid container columnSpacing={2} alignItems="center">
           <Grid>
             <Button variant="contained" component={RouterLink} to="../content-types">
-              {t('button.update')}
+              {t('update')}
             </Button>
           </Grid>
         </Grid>

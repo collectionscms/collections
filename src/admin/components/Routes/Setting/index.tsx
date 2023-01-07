@@ -23,7 +23,7 @@ const SettingRoutes = {
     {
       path: 'project',
       element: (
-        <DocumentInfoProvider label="index.project_setting">
+        <DocumentInfoProvider label="project_setting">
           <Project />
         </DocumentInfoProvider>
       ),
@@ -35,7 +35,7 @@ const SettingRoutes = {
     {
       path: 'content-types',
       element: (
-        <DocumentInfoProvider label="index.content_type">
+        <DocumentInfoProvider label="content_type">
           <ContentType />
         </DocumentInfoProvider>
       ),
@@ -63,7 +63,7 @@ const SettingRoutes = {
     {
       path: 'roles',
       element: (
-        <DocumentInfoProvider label="index.role">
+        <DocumentInfoProvider label="role">
           <Role />
         </DocumentInfoProvider>
       ),
@@ -91,7 +91,7 @@ const SettingRoutes = {
     {
       path: 'users',
       element: (
-        <DocumentInfoProvider label="index.user">
+        <DocumentInfoProvider label="user">
           <User />
         </DocumentInfoProvider>
       ),

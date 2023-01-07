@@ -47,7 +47,7 @@ const EditPage: React.FC<Props> = ({ collection }) => {
             {id && (
               <Grid>
                 <Button variant="contained" onClick={toggleDrawer(true)}>
-                  {t('button.api_preview')}
+                  {t('api_preview')}
                 </Button>
               </Grid>
             )}
@@ -58,7 +58,7 @@ const EditPage: React.FC<Props> = ({ collection }) => {
                 component={RouterLink}
                 to="create"
               >
-                {id ? t('button.update') : t('button.create')}
+                {id ? t('update') : t('create_new')}
               </Button>
             </Grid>
           </Grid>

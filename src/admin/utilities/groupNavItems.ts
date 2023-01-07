@@ -11,7 +11,7 @@ import { Collection } from '@shared/types';
 
 export const collectionsGroupNavItems = (collections: Collection[]): Group => {
   return {
-    label: 'index.content_management',
+    label: 'content_management',
     items: collections.map((meta) => ({
       label: `${meta.collection}`,
       href: `/admin/collections/${meta.collection}`,
@@ -24,10 +24,10 @@ export const profileNavItems = (): Group => {
   const path = '/admin';
 
   return {
-    label: 'index.profile',
+    label: 'profile',
     items: [
       {
-        label: 'index.profile',
+        label: 'profile',
         href: `${path}/me`,
         Icon: AccountCircleOutlined,
       },
@@ -39,25 +39,25 @@ export const settingsGroupNavItems = (): Group => {
   const path = '/admin/settings';
 
   return {
-    label: 'index.setting',
+    label: 'setting',
     items: [
       {
-        label: 'index.project_setting',
+        label: 'project_setting',
         href: `${path}/project`,
         Icon: PublicOutlined,
       },
       {
-        label: 'index.content_type',
+        label: 'content_type',
         href: `${path}/content-types`,
         Icon: TableViewOutlined,
       },
       {
-        label: 'index.role',
+        label: 'role',
         href: `${path}/roles`,
         Icon: AdminPanelSettingsOutlined,
       },
       {
-        label: 'index.user',
+        label: 'user',
         href: `${path}/users`,
         Icon: GroupOutlined,
       },

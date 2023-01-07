@@ -18,7 +18,7 @@ const CreatePage: React.FC = () => {
         <Grid container columnSpacing={2} alignItems="center">
           <Grid>
             <Button variant="contained" component={RouterLink} to="../content-types/1">
-              {t('button.create')}
+              {t('create_new')}
             </Button>
           </Grid>
         </Grid>
