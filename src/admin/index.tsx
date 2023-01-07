@@ -1,4 +1,5 @@
 /* eslint-disable import/no-import-module-exports */
+import { SnackbarProvider } from 'notistack';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter as Router } from 'react-router-dom';
@@ -10,26 +11,33 @@ import { ConfigProvider } from './components/utilities/Config';
 import { ThemeProvider } from './components/utilities/Theme';
 
 const Index = () => (
-  <ConfigProvider
-    config={{
-      serverUrl: 'http://localhost:4000',
-      collections: [
-        { collection: 'Restaurant', singleton: false },
-        { collection: 'Menu', singleton: false },
-        { collection: 'Owner', singleton: true },
-      ],
-    }}
-  >
-    <ColorModeProvider>
-      <ThemeProvider>
-        <Router>
-          <AuthProvider>
-            <Routes />
-          </AuthProvider>
-        </Router>
-      </ThemeProvider>
-    </ColorModeProvider>
-  </ConfigProvider>
+  <>
+    <ConfigProvider
+      config={{
+        serverUrl: 'http://localhost:4000',
+        collections: [
+          { collection: 'Restaurant', singleton: false },
+          { collection: 'Menu', singleton: false },
+          { collection: 'Owner', singleton: true },
+        ],
+      }}
+    >
+      <ColorModeProvider>
+        <ThemeProvider>
+          <Router>
+            <AuthProvider>
+              <SnackbarProvider
+                maxSnack={3}
+                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+              >
+                <Routes />
+              </SnackbarProvider>
+            </AuthProvider>
+          </Router>
+        </ThemeProvider>
+      </ColorModeProvider>
+    </ConfigProvider>
+  </>
 );
 
 const container = document.getElementById('app');
