@@ -1,3 +1,4 @@
+import { useConfig } from '@admin/components/utilities/Config';
 import { DeleteOutlineOutlined } from '@mui/icons-material';
 import {
   Button,
@@ -10,12 +11,11 @@ import {
 import { t } from 'i18next';
 import { useSnackbar } from 'notistack';
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Props } from './types';
 
-const DeleteCollection: React.FC<Props> = ({ id, collection, disabled }) => {
+const DeleteDocument: React.FC<Props> = ({ id, slug, disabled = false, onSuccess }) => {
   const [open, setOpen] = useState(false);
-  const navigate = useNavigate();
+  const { serverUrl } = useConfig();
   const { enqueueSnackbar } = useSnackbar();
 
   const handleClickOpen = () => {
@@ -27,9 +27,12 @@ const DeleteCollection: React.FC<Props> = ({ id, collection, disabled }) => {
   };
 
   const handleDelete = () => {
+    const endpoint = `${serverUrl}/${slug}/${id}`;
+    console.log(`api endpoint: ${endpoint}`);
+
     enqueueSnackbar(t('toast.deleted_successfully'), { variant: 'success' });
-    navigate(`/admin/collections/${collection}`);
     setOpen(false);
+    onSuccess();
   };
 
   return (
@@ -63,4 +66,4 @@ const DeleteCollection: React.FC<Props> = ({ id, collection, disabled }) => {
   );
 };
 
-export default DeleteCollection;
+export default DeleteDocument;
