@@ -1,5 +1,4 @@
-import { faBars } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { MenuOutlined } from '@mui/icons-material';
 import { AppBar, IconButton, Toolbar, useMediaQuery, useTheme } from '@mui/material';
 import React from 'react';
 import { Props } from './types';
@@ -19,7 +18,7 @@ const NavHeader: React.FC<Props> = ({ toggleDrawer }) => {
           },
         }}
       >
-        <FontAwesomeIcon icon={faBars} />
+        <MenuOutlined />
       </IconButton>
     </Toolbar>
   );
