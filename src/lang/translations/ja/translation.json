@@ -22,6 +22,16 @@
   "api_preview": "APIプレビュー",
   "fetch": "取得",
   "create_new": "登録",
+  "delete": "削除",
+  "ok": "OK",
+  "cancel": "キャンセル",
+  "dialog": {
+    "confirm_deletion_title": "削除の確認",
+    "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？"
+  },
+  "toast": {
+    "deleted_successfully": "削除しました"
+  },
   "create": {
     "user": "ユーザー 新規登録",
     "role": "ロール 新規登録",

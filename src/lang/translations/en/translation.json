@@ -22,6 +22,16 @@
   "api_preview": "API Preview",
   "fetch": "Fetch",
   "create_new": "Create New",
+  "delete": "Delete",
+  "ok": "OK",
+  "cancel": "Cancel",
+  "dialog": {
+    "confirm_deletion_title": "Confirm deletion.",
+    "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?"
+  },
+  "toast": {
+    "deleted_successfully": "Deleted successfully."
+  },
   "create": {
     "user": "Create User",
     "role": "Create Role",
