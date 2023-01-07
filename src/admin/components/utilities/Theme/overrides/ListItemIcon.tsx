@@ -3,7 +3,7 @@ const ListItemIcon = () => {
     MuiListItemIcon: {
       defaultProps: {
         sx: {
-          minWidth: '40px',
+          minWidth: '32px',
         },
       },
     },

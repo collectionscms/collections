@@ -1,9 +1,9 @@
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
+import { SvgIconProps } from '@mui/material';
 
 export type GroupItem = {
   label: string;
   href: string;
-  icon: IconProp;
+  Icon: (props: SvgIconProps) => JSX.Element;
 };
 
 export type Group = {

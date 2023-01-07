@@ -1,11 +1,10 @@
 import { useAuth } from '@admin/components/utilities/Auth';
 import {
-  faArrowRightFromBracket,
-  faCircleUser,
-  faDiceD6,
-  faGear,
-} from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+  AccountCircleOutlined,
+  AppRegistrationOutlined,
+  LogoutOutlined,
+  SettingsOutlined,
+} from '@mui/icons-material';
 import { Box, Drawer, IconButton, Link, Tooltip, useMediaQuery, useTheme } from '@mui/material';
 import config from '@shared/features/config';
 import React, { useEffect } from 'react';
@@ -21,7 +20,7 @@ const modules = [
     href: '/admin/collections',
     icon: (
       <Tooltip title="Content" placement="right">
-        <FontAwesomeIcon icon={faDiceD6} size="sm" />
+        <AppRegistrationOutlined />
       </Tooltip>
     ),
   },
@@ -32,7 +31,7 @@ const settings = [
     href: '/admin/settings',
     icon: (
       <Tooltip title="Setting" placement="right">
-        <FontAwesomeIcon icon={faGear} size="sm" />
+        <SettingsOutlined />
       </Tooltip>
     ),
   },
@@ -44,7 +43,7 @@ const actions = () => {
       href: '/admin/auth/logout',
       icon: (
         <Tooltip title="Logout" placement="right">
-          <FontAwesomeIcon icon={faArrowRightFromBracket} />
+          <LogoutOutlined />
         </Tooltip>
       ),
     },
@@ -52,7 +51,7 @@ const actions = () => {
       href: `/admin/me`,
       icon: (
         <Tooltip title="Me" placement="right">
-          <FontAwesomeIcon icon={faCircleUser} />
+          <AccountCircleOutlined />
         </Tooltip>
       ),
     },

@@ -1,12 +1,12 @@
 import { Group } from '@admin/components/elements/NavItem/types';
 import {
-  faEarthAmerica,
-  faList,
-  faShieldHalved,
-  faTable,
-  faUser,
-  faUserGroup,
-} from '@fortawesome/free-solid-svg-icons';
+  AccountCircleOutlined,
+  AdminPanelSettingsOutlined,
+  GroupOutlined,
+  LabelOutlined,
+  PublicOutlined,
+  TableViewOutlined,
+} from '@mui/icons-material';
 import { Collection } from '@shared/types';
 
 export const collectionsGroupNavItems = (collections: Collection[]): Group => {
@@ -15,7 +15,7 @@ export const collectionsGroupNavItems = (collections: Collection[]): Group => {
     items: collections.map((meta) => ({
       label: `${meta.collection}`,
       href: `/admin/collections/${meta.collection}`,
-      icon: faList,
+      Icon: LabelOutlined,
     })),
   };
 };
@@ -29,7 +29,7 @@ export const profileNavItems = (): Group => {
       {
         label: 'index.profile',
         href: `${path}/me`,
-        icon: faUser,
+        Icon: AccountCircleOutlined,
       },
     ],
   };
@@ -44,22 +44,22 @@ export const settingsGroupNavItems = (): Group => {
       {
         label: 'index.project_setting',
         href: `${path}/project`,
-        icon: faEarthAmerica,
+        Icon: PublicOutlined,
       },
       {
         label: 'index.content_type',
         href: `${path}/content-types`,
-        icon: faTable,
+        Icon: TableViewOutlined,
       },
       {
         label: 'index.role',
         href: `${path}/roles`,
-        icon: faShieldHalved,
+        Icon: AdminPanelSettingsOutlined,
       },
       {
         label: 'index.user',
         href: `${path}/users`,
-        icon: faUserGroup,
+        Icon: GroupOutlined,
       },
     ],
   };
