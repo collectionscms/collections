@@ -1,3 +1,4 @@
+import DeleteDocument from '@admin/components/elements/DeleteDocument';
 import RouterLink from '@admin/components/elements/Link';
 import { useDocumentInfo } from '@admin/components/utilities/DocumentInfo';
 import {
@@ -21,15 +22,17 @@ import {
   useTheme,
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const EditPage: React.FC = () => {
+  const [state, setState] = useState(false);
+  const { id } = useParams();
   const theme = useTheme();
   const { t } = useTranslation();
   const { localizedLabel } = useDocumentInfo();
-
-  const [state, setState] = React.useState(false);
+  const navigate = useNavigate();
 
   const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
     if (
@@ -41,6 +44,10 @@ const EditPage: React.FC = () => {
     }
 
     setState(open);
+  };
+
+  const handleDeletionSuccess = () => {
+    navigate(`../content-types`);
   };
 
   const list = () => (
@@ -69,6 +76,9 @@ const EditPage: React.FC = () => {
           <h1>{localizedLabel}</h1>
         </Grid>
         <Grid container columnSpacing={2} alignItems="center">
+          <Grid>
+            <DeleteDocument id={id} slug={`roles`} onSuccess={handleDeletionSuccess} />
+          </Grid>
           <Grid>
             <Button variant="contained" component={RouterLink} to="../content-types">
               {t('update')}
