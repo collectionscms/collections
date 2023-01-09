@@ -25,6 +25,8 @@
   "delete": "Delete",
   "ok": "OK",
   "cancel": "Cancel",
+  "search_by": "Search by {{field_name}}",
+  "user_name": "User Name",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion.",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?"

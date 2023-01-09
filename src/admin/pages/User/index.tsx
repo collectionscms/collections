@@ -4,23 +4,25 @@ import Cell from '@admin/components/elements/Table/Cell';
 import { Type } from '@admin/components/elements/Table/Cell/types';
 import { useDocumentInfo } from '@admin/components/utilities/DocumentInfo';
 import buildColumns from '@admin/utilities/buildColumns';
-import { Stack, Button } from '@mui/material';
+import { Button, Stack } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-const fields = [
-  { field: 'name', label: 'Name', type: Type.Text },
-  { field: 'email', label: 'Email', type: Type.Text },
-  { field: 'role', label: 'Role', type: Type.Text },
-  { field: 'userName', label: 'User Name', type: Type.Text },
-  { field: 'status', label: 'Status', type: Type.Text },
-  { field: 'createdAt', label: 'Created At', type: Type.Date },
-];
+import SearchFilter from '@admin/components/elements/SearchFilter';
 
-const UserPage = () => {
+const UserPage: React.FC = () => {
   const { localizedLabel } = useDocumentInfo();
   const { t } = useTranslation();
+
+  const fields = [
+    { field: 'userName', label: t('user_name'), type: Type.Text },
+    { field: 'name', label: 'Name', type: Type.Text },
+    { field: 'email', label: 'Email', type: Type.Text },
+    { field: 'role', label: 'Role', type: Type.Text },
+    { field: 'status', label: 'Status', type: Type.Text },
+    { field: 'createdAt', label: 'Created At', type: Type.Date },
+  ];
 
   const columns = buildColumns(fields, (i: number, row: any, data: any) =>
     fields[i].field == 'name' ? (
@@ -72,6 +74,7 @@ const UserPage = () => {
           </Grid>
         </Grid>
       </Grid>
+      <SearchFilter fieldName="userName" fieldLabel={t('user_name')} />
       <Table columns={columns} rows={rows} />
     </Stack>
   );
