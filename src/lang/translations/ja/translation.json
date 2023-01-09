@@ -25,6 +25,8 @@
   "delete": "削除",
   "ok": "OK",
   "cancel": "キャンセル",
+  "search_by": "{{field_name}}で検索",
+  "user_name": "ユーザー名",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？"
