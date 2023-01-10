@@ -1,11 +1,14 @@
 import chalk from 'chalk';
 import express from 'express';
 import Hooks from './hooks';
+import { users } from 'superfast-core';
 
 const launch = async () => {
   try {
     const app = express();
     await Hooks.doAction('server/init', app);
+
+    app.get('/users', users);
 
     app.use(async (_req, res) => {
       const response = await Hooks.applyFilters(
