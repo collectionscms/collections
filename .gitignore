@@ -21,3 +21,7 @@ node_modules/
 dist
 superfast/
 superfast.tar.gz
+
+# db
+prisma/dev.db
+prisma/dev.db-journal
