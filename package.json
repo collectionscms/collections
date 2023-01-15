@@ -3,6 +3,9 @@
   "version": "0.1.2",
   "description": "Free and Open-source Headless CMS and Application Framework built with TypeScript, Node.js, React.",
   "license": "MIT",
+  "engines": {
+    "node": ">=16.0.0"
+  },
   "main": "index.js",
   "scripts": {
     "lint": "eslint ./src --ignore-path .gitignore",
@@ -100,6 +103,7 @@
     "yup": "^0.32.11"
   },
   "devDependencies": {
+    "@tsconfig/node16": "^1.0.3",
     "@types/async": "^3.2.15",
     "@types/dotenv-flow": "^3.2.0",
     "@types/express": "^4.17.14",
