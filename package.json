@@ -59,7 +59,7 @@
     "babel-plugin-transform-typescript-metadata": "^0.3.2",
     "browserify-zlib": "^0.2.0",
     "chalk": "^4.1.2",
-    "commander": "^9.4.1",
+    "commander": "^10.0.0",
     "cross-env": "^7.0.3",
     "date-fns": "^2.29.3",
     "dotenv-flow": "^3.2.0",
