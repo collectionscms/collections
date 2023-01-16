@@ -9,7 +9,7 @@ import { webpackAdminConfigure, webpackServerConfigure } from '../webpack.config
 const scriptBuild = async () => {
   const serverBuildDirectory = PathUtil.build();
 
-  await rimraf(serverBuildDirectory, (error) => error && console.log(error));
+  rimraf(serverBuildDirectory);
 
   const webpackServerConfig = webpackServerConfigure((webpackConfig) => {
     webpackConfig.entry = PathUtil.root('scripts', 'entry', 'build');
