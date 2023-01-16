@@ -20,7 +20,7 @@ const scriptBuild = async () => {
 
   const webpackAdminConfig = webpackAdminConfigure((webpackConfig) => {
     webpackConfig.entry = PathUtil.admin('index');
-    webpackConfig.output.path = PathUtil.build('admin');
+    webpackConfig.output!.path = PathUtil.build('admin');
 
     return webpackConfig;
   });
