@@ -9,6 +9,7 @@
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "node",
     "checkJs": true,
+    "resolveJsonModule": true,
     "jsx": "react",
     "outDir": "./dist",
     "baseUrl": "src",

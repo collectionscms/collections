@@ -9,8 +9,8 @@ import { webpackServerConfigure } from '../webpack.config';
 const scriptDev = async () => {
   const webpackServerConfig = webpackServerConfigure((webpackConfig) => {
     webpackConfig.entry = PathUtil.root('scripts', 'entry', 'dev');
-    webpackConfig.output.path = PathUtil.devBuild();
-    webpackConfig.plugins.push(
+    webpackConfig.output!.path = PathUtil.devBuild();
+    webpackConfig.plugins!.push(
       new WebpackShellPlugin({
         onBuildEnd: {
           scripts: [
