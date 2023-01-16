@@ -13,14 +13,14 @@
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx}\" --ignore-path .gitignore",
     "test": "jest",
     "compile": "rimraf dist/ && ttsc -p ./tsconfig.production.json",
-    "start": "cross-env NODE_ENV=development ts-node -T -r tsconfig-paths/register ./src/superfast.ts start",
-    "dev": "cross-env NODE_ENV=development ts-node -T -r tsconfig-paths/register ./src/superfast.ts dev",
-    "build": "cross-env NODE_ENV=production ts-node -T -r tsconfig-paths/register ./src/superfast.ts build",
+    "start": "cross-env NODE_ENV=development ts-node -T -r tsconfig-paths/register ./src/cli/run.ts start",
+    "dev": "cross-env NODE_ENV=development ts-node -T -r tsconfig-paths/register ./src/cli/run.ts dev",
+    "build": "cross-env NODE_ENV=production ts-node -T -r tsconfig-paths/register ./src/cli/run.ts build",
     "prisma:migrate": "prisma migrate dev",
     "prisma:seed": "ts-node prisma/seed.ts"
   },
   "bin": {
-    "superfast": "./src/superfast.js"
+    "superfastcms": "./src/cli/run.js"
   },
   "author": {
     "email": "hello@rocketa.co.jp",
