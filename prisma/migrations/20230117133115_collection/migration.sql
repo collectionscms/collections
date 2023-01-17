@@ -38,15 +38,15 @@ CREATE TABLE "Superfast_FieldOption" (
 -- CreateTable
 CREATE TABLE "Superfast_Relation" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "many_collection" TEXT NOT NULL,
-    "many_field" TEXT NOT NULL,
-    "one_collection" TEXT NOT NULL,
-    "one_field" TEXT NOT NULL,
-    "one_collection_field" TEXT NOT NULL,
-    "one_allowed_collections" TEXT NOT NULL,
-    "junction_field" TEXT NOT NULL,
-    "sort_field" TEXT NOT NULL,
-    "one_deselect_action" TEXT NOT NULL,
+    "many_collection" TEXT,
+    "many_field" TEXT,
+    "one_collection" TEXT,
+    "one_field" TEXT,
+    "one_collection_field" TEXT,
+    "one_allowed_collections" TEXT,
+    "junction_field" TEXT,
+    "sort_field" TEXT,
+    "one_deselect_action" TEXT,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
@@ -55,4 +55,4 @@ CREATE TABLE "Superfast_Relation" (
 CREATE UNIQUE INDEX "Superfast_Collection_collection_key" ON "Superfast_Collection"("collection");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Superfast_Field_collection_key" ON "Superfast_Field"("collection");
+CREATE UNIQUE INDEX "Superfast_Field_id_collection_key" ON "Superfast_Field"("id", "collection");
