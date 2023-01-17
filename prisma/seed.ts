@@ -1,5 +1,4 @@
 import { PrismaClient, Prisma } from '@prisma/client';
-import { finished } from 'stream';
 
 const prisma = new PrismaClient();
 
