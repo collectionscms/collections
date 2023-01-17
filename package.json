@@ -16,7 +16,8 @@
     "dev": "cross-env NODE_ENV=development ts-node -T -r tsconfig-paths/register ./src/superfast.ts dev",
     "build": "cross-env NODE_ENV=production ts-node -T -r tsconfig-paths/register ./src/superfast.ts build",
     "prisma:migrate": "prisma migrate dev",
-    "prisma:seed": "ts-node prisma/seed.ts"
+    "prisma:seed": "ts-node prisma/seed.ts",
+    "prisma:format": "prisma format"
   },
   "bin": {
     "superfast": "./src/superfast.js"

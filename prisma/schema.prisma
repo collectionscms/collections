@@ -46,3 +46,60 @@ model Superfast_Permission {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 }
+
+model Superfast_Collection {
+  id         Int     @id @default(autoincrement())
+  collection String  @unique
+  singleton  Boolean @default(false)
+  hidden     Boolean
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model Superfast_Field {
+  id         Int     @id @default(autoincrement())
+  collection String
+  field      String
+  label      String
+  special    String?
+  interface  String?
+  readonly   Boolean
+  required   Boolean
+  hidden     Boolean
+  sort       Int?
+
+  createdAt             DateTime                @default(now())
+  updatedAt             DateTime                @default(now())
+  Superfast_FieldOption Superfast_FieldOption[]
+
+  @@unique([id, collection])
+}
+
+model Superfast_FieldOption {
+  id    Int    @id @default(autoincrement())
+  key   String
+  value String
+
+  superfast_Field   Superfast_Field @relation(fields: [superfast_FieldId], references: [id])
+  superfast_FieldId Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model Superfast_Relation {
+  id                      Int     @id @default(autoincrement())
+  many_collection         String?
+  many_field              String?
+  one_collection          String?
+  one_field               String?
+  one_collection_field    String?
+  one_allowed_collections String?
+  junction_field          String?
+  sort_field              String?
+  one_deselect_action     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
