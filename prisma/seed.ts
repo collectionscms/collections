@@ -14,6 +14,7 @@ async function main() {
   await prisma.superfast_Relation.deleteMany();
   await prisma.superfast_Field.deleteMany();
   await prisma.$queryRaw`DROP TABLE IF EXISTS Restaurant;`;
+  await prisma.$queryRaw`DROP TABLE IF EXISTS Company;`;
 
   // Role作成
   const roleData: Prisma.Superfast_RoleCreateInput[] = [
@@ -266,6 +267,17 @@ async function main() {
     "published_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
   )`;
   console.log('Created Restaurant Table!');
+
+  // Company作成(動的なコレクションテーブル)
+  console.log('Creating Company Table...');
+  await prisma.$queryRaw`CREATE TABLE Company (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "action" TEXT NOT NULL,
+    "created_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "published_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+  )`;
+  console.log('Created Company Table!');
 
   console.log(`Seeding finished.`);
 }
