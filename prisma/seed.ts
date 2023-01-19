@@ -261,7 +261,7 @@ async function main() {
   console.log('Creating Restaurant Table...');
   await prisma.$queryRaw`CREATE TABLE Restaurant (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "action" TEXT NOT NULL,
+    "status" TEXT NOT NULL,
     "created_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "published_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -272,7 +272,7 @@ async function main() {
   console.log('Creating Company Table...');
   await prisma.$queryRaw`CREATE TABLE Company (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "action" TEXT NOT NULL,
+    "status" TEXT NOT NULL,
     "created_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "published_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
