@@ -38,8 +38,8 @@ CREATE TABLE "Superfast_FieldOption" (
 -- CreateTable
 CREATE TABLE "Superfast_Relation" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "many_collection" TEXT,
-    "many_field" TEXT,
+    "many_collection" TEXT NOT NULL,
+    "many_field" TEXT NOT NULL,
     "one_collection" TEXT,
     "one_field" TEXT,
     "one_collection_field" TEXT,

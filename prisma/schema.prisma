@@ -90,8 +90,8 @@ model Superfast_FieldOption {
 
 model Superfast_Relation {
   id                      Int     @id @default(autoincrement())
-  many_collection         String?
-  many_field              String?
+  many_collection         String
+  many_field              String
   one_collection          String?
   one_field               String?
   one_collection_field    String?
