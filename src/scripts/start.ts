@@ -4,7 +4,6 @@ import PathUtil from './utilities/pathUtil';
 import fs from 'fs-extra';
 
 const scriptStart = async () => {
-  process.env.NODE_ENV = process.env.NODE_ENV ?? 'production';
   const scriptPath = PathUtil.build('main.js');
   const scriptExists = await fs.pathExists(scriptPath);
 

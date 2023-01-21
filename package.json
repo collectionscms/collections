@@ -1,6 +1,6 @@
 {
   "name": "superfastcms",
-  "version": "0.1.2",
+  "version": "0.1.14",
   "description": "Free and Open-source Headless CMS and Application Framework built with TypeScript, Node.js, React.",
   "license": "MIT",
   "engines": {
@@ -11,16 +11,19 @@
     "lint": "eslint ./src --ignore-path .gitignore",
     "lint:fix": "npm run lint -- --fix",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx}\" --ignore-path .gitignore",
+    "copyfiles": "ncp LICENSE dist/LICENSE && ncp README.md dist/README.md && ts-node -T misc/copyStaticFiles.ts",
+    "compile:tsc": "ttsc -p ./tsconfig.production.json && ts-node -T misc/correctTypes.ts",
+    "compile": "yarn compile:tsc && yarn compile:tsc && yarn copyfiles",
+    "clean": "rimraf dist",
     "test": "jest",
-    "compile": "rimraf dist/ && ttsc -p ./tsconfig.production.json",
-    "start": "cross-env NODE_ENV=development ts-node -T -r tsconfig-paths/register ./src/cli/run.ts start",
-    "dev": "cross-env NODE_ENV=development ts-node -T -r tsconfig-paths/register ./src/cli/run.ts dev",
-    "build": "cross-env NODE_ENV=production ts-node -T -r tsconfig-paths/register ./src/cli/run.ts build",
+    "start": "cross-env NODE_ENV=development ts-node -T -r tsconfig-paths/register ./src/bin.ts start",
+    "dev": "cross-env NODE_ENV=development ts-node -T -r tsconfig-paths/register ./src/bin.ts dev",
+    "build": "cross-env NODE_ENV=production ts-node -T -r tsconfig-paths/register ./src/bin.ts build",
     "prisma:migrate": "prisma migrate dev",
     "prisma:seed": "ts-node prisma/seed.ts"
   },
   "bin": {
-    "superfastcms": "./src/cli/run.js"
+    "superfastcms": "./src/bin.js"
   },
   "author": {
     "email": "hello@rocketa.co.jp",
@@ -61,6 +64,8 @@
     "browserify-zlib": "^0.2.0",
     "chalk": "^4.1.2",
     "commander": "^10.0.0",
+    "cookie-parser": "^1.4.6",
+    "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
     "date-fns": "^2.29.3",
     "dotenv-flow": "^3.2.0",
@@ -76,6 +81,7 @@
     "jwt-decode": "^3.1.2",
     "lodash": "^4.17.21",
     "mini-css-extract-plugin": "^2.7.0",
+    "ncp": "^2.0.0",
     "node-notifier": "^10.0.0",
     "nodemon": "^2.0.20",
     "notistack": "^2.0.8",
