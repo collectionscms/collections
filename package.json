@@ -20,7 +20,7 @@
     "prisma:seed": "ts-node prisma/seed.ts"
   },
   "bin": {
-    "superfastcms": "./src/cli/run.js"
+    "superfastcms": "./src/bin.js"
   },
   "author": {
     "email": "hello@rocketa.co.jp",
