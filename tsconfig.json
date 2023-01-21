@@ -1,23 +1,31 @@
 {
-  // see: https://github.com/tsconfig/bases/blob/main/bases/node16-strictest.combined.json
   "compilerOptions": {
     "module": "commonjs",
-    "target": "es2021",
-    "strict": true,
+    "target": "es6",
+    "strict": false,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "node",
-    "checkJs": true,
     "resolveJsonModule": true,
     "jsx": "react",
     "outDir": "./dist",
+    "checkJs": true,
+    "incremental": false,
+    "allowJs": true,
+    "sourceMap": false,
+    "noImplicitAny": false,
+    "strictNullChecks": false,
+    "strictFunctionTypes": false,
     "baseUrl": "src",
     "paths": {
       "@admin/*": ["admin/*"],
       "@scripts/*": ["scripts/*"],
+      "@server/*": ["server/*"],
       "@shared/*": ["shared/*"]
-    }
+    },
+    "experimentalDecorators": true /* Enables experimental support for ES7 decorators. */,
+    "emitDecoratorMetadata": true /* Enables experimental support for emitting type metadata for decorators. */
   },
   "include": ["*.ts", "src/**/*.ts", "*.tsx", "src/**/*.tsx", "src/admin/index.html"],
   "exclude": ["node_modules"]
