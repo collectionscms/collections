@@ -13,7 +13,7 @@
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx}\" --ignore-path .gitignore",
     "copyfiles": "ncp LICENSE dist/LICENSE && ncp README.md dist/README.md && ts-node -T misc/copyStaticFiles.ts",
     "compile:tsc": "ttsc -p ./tsconfig.production.json && ts-node -T misc/correctTypes.ts",
-    "compile": "yarn compile:tsc && yarn compile:tsc && yarn copyfiles",
+    "compile": "yarn clean && yarn compile:tsc && yarn copyfiles",
     "clean": "rimraf dist",
     "test": "jest",
     "start": "cross-env NODE_ENV=development ts-node -T -r tsconfig-paths/register ./src/bin.ts start",
