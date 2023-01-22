@@ -2,6 +2,9 @@
 import { Command } from 'commander';
 import packageJSON from '../package.json';
 import initScript from '@scripts/commands/init';
+import startScript from '@scripts/commands/start';
+import buildScript from '@scripts/commands/build';
+import devScript from '@scripts/commands/dev';
 
 const program = new Command();
 
@@ -11,17 +14,17 @@ const init = async (str) => {
 
 const start = async () => {
   process.env.NODE_ENV = process.env.NODE_ENV ?? 'production';
-  await require('@scripts/start').default();
+  await startScript();
 };
 
 const build = async () => {
   process.env.NODE_ENV = process.env.NODE_ENV ?? 'production';
-  await require('@scripts/build').default();
+  await buildScript();
 };
 
 const dev = async () => {
   process.env.NODE_ENV = process.env.NODE_ENV ?? 'development';
-  await require('@scripts/dev').default();
+  await devScript();
 };
 
 // Initial program setup
