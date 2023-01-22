@@ -1,0 +1,16 @@
+{
+  "name": "my-superfast-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "superfastcms dev",
+    "build": "superfastcms build",
+    "start": "node superfast/build/main.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "superfastcms": "^0.1.21"
+  }
+}

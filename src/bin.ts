@@ -1,8 +1,13 @@
 #!/usr/bin/env node
 import { Command } from 'commander';
 import packageJSON from '../package.json';
+import initScript from '@scripts/commands/init';
 
 const program = new Command();
+
+const init = async (str) => {
+  await initScript(str.projectName.trim());
+};
 
 const start = async () => {
   process.env.NODE_ENV = process.env.NODE_ENV ?? 'production';
@@ -36,6 +41,11 @@ program
     process.exit(0);
   });
 
+program
+  .command('init')
+  .description('Initialize your Superfast application')
+  .requiredOption('-p, --project-name <name>', 'project name option')
+  .action(init);
 program.command('start').description('Start your Superfast application').action(start);
 program.command('build').description('Build your Superfast application').action(build);
 program.command('dev').description('Develop your Superfast server').action(dev);
