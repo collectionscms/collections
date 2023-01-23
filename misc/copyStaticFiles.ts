@@ -6,7 +6,14 @@ import copyFiles from 'copyfiles';
 (async () => {
   await new Promise<void>((resolve) => {
     copyFiles(
-      ['src/**/*.d.ts', 'src/**/*.html', 'src/**/**/*.scss', 'src/**/**/*.svg', 'dist/src'],
+      [
+        'src/**/*.d.ts',
+        'src/**/*.html',
+        'src/**/**/*.scss',
+        'src/**/**/*.svg',
+        'src/**/**/*.json',
+        'dist/src',
+      ],
       1,
       () => resolve()
     );

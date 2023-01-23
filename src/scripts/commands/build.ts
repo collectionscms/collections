@@ -4,7 +4,7 @@ import { compilerRun } from '@scripts/utilities/webpackUtil';
 import config from '@shared/features/config';
 import rimraf from 'rimraf';
 import webpack from 'webpack';
-import { webpackAdminConfigure, webpackServerConfigure } from '../webpack.config';
+import { webpackAdminConfigure, webpackServerConfigure } from '../../webpack.config';
 
 const scriptBuild = async () => {
   const serverBuildDirectory = PathUtil.build();
