@@ -4,7 +4,8 @@
   "description": "Free and Open-source Headless CMS and Application Framework built with TypeScript, Node.js, React.",
   "license": "MIT",
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=16.0.0",
+    "npm": ">=8.19.0"
   },
   "main": "index.js",
   "scripts": {
@@ -145,8 +146,6 @@
   "peerDependencies": {
     "path-to-regexp": "^6.2.1"
   },
-  "node": ">=12.x.x <=16.x.x",
-  "npm": ">=6.0.0",
   "keywords": [
     "cms",
     "headless",
