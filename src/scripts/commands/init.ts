@@ -1,3 +1,5 @@
+import Output from '@scripts/utilities/output';
+import chalk from 'chalk';
 import fs from 'fs-extra';
 import path from 'path';
 
@@ -8,18 +10,19 @@ const scriptInit = async (projectName: string) => {
   const requirementsExist = await Promise.all([fs.pathExists(templateDir)]);
 
   if (!requirementsExist.every((requirement) => requirement === true)) {
-    console.error('One of the dependency folders was not found template. Exiting.');
+    Output.error('One of the dependency folders was not found template. Exiting.');
     process.exit(1);
   }
 
   try {
     await Promise.all([fs.copy(templateDir, projectDir)]);
   } catch (e) {
-    console.error(e.message);
+    Output.error(e.message);
     process.exit(1);
   }
 
-  console.log('Successfully copied files!');
+  Output.success(`Successfully copied files to directory ${chalk.magentaBright(projectName)}.`);
+
   process.exit(0);
 };
 

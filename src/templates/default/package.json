@@ -11,6 +11,6 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "superfastcms": "^0.1.21"
+    "superfastcms": "^0.1.28"
   }
 }
