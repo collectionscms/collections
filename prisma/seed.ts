@@ -98,17 +98,17 @@ async function main() {
       superfast_Role: { connect: { id: adminRole!.id } },
     },
     {
-      collection: 'Menu',
+      collection: 'Company',
       action: 'read',
       superfast_Role: { connect: { id: adminRole!.id } },
     },
     {
-      collection: 'Menu',
+      collection: 'Company',
       action: 'create',
       superfast_Role: { connect: { id: adminRole!.id } },
     },
     {
-      collection: 'Menu',
+      collection: 'Company',
       action: 'update',
       superfast_Role: { connect: { id: adminRole!.id } },
     },
@@ -119,7 +119,7 @@ async function main() {
       superfast_Role: { connect: { id: editorRole!.id } },
     },
     {
-      collection: 'Menu',
+      collection: 'Company',
       action: 'read',
       superfast_Role: { connect: { id: editorRole!.id } },
     },
@@ -243,9 +243,9 @@ async function main() {
   // Relation作成
   const relationData: Prisma.Superfast_RelationCreateInput[] = [
     {
-      many_collection: 'Menu',
-      many_field: 'memu_id',
-      one_collection: 'Restaurant',
+      many_collection: 'Restaurant',
+      many_field: 'restaurant_id',
+      one_collection: 'Company',
       one_field: 'relational_one_to_many',
     },
   ];
