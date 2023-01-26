@@ -12,6 +12,7 @@ import copyFiles from 'copyfiles';
         'src/**/**/*.scss',
         'src/**/**/*.svg',
         'src/**/**/*.json',
+        'src/**/**/*.md',
         'dist/src',
       ],
       1,
