@@ -1,25 +1,52 @@
-import fs from 'fs-extra';
+import Output from '@scripts/utilities/output';
+import execa from 'execa';
+import ora from 'ora';
 import path from 'path';
+import { copyCommonFiles } from './copyCommonFiles';
+import { writeEnvFile } from './writeEnvFile';
 
 const scriptInit = async (projectName: string) => {
   const projectDir = path.join(process.cwd(), projectName);
-  const templateDir = path.join(__dirname, '../../', 'templates', 'default');
 
-  const requirementsExist = await Promise.all([fs.pathExists(templateDir)]);
-
-  if (!requirementsExist.every((requirement) => requirement === true)) {
-    console.error('One of the dependency folders was not found template. Exiting.');
+  const onError = ({ err }) => {
+    if (err) {
+      Output.error(err.message || 'Unknown error');
+    }
     process.exit(1);
+  };
+
+  try {
+    await copyCommonFiles(projectDir, projectName);
+  } catch (err) {
+    onError({ err });
   }
 
   try {
-    await Promise.all([fs.copy(templateDir, projectDir)]);
-  } catch (e) {
-    console.error(e.message);
-    process.exit(1);
+    await writeEnvFile(projectDir, 'dev');
+  } catch (err) {
+    onError({ err });
   }
 
-  console.log('Successfully copied files!');
+  const spinner = ora('Installing dependencies...').start();
+
+  try {
+    await execa('npm', ['install'], { cwd: projectDir });
+  } catch (err) {
+    onError({ err });
+  }
+
+  spinner.stop();
+
+  try {
+    await execa('npx', ['prisma', 'migrate', 'dev', '--name', 'init'], {
+      cwd: projectDir,
+    });
+  } catch (err) {
+    onError({ err });
+  }
+
+  Output.success(`Your database is now in sync with your schema.`);
+
   process.exit(0);
 };
 
