@@ -1,17 +1,18 @@
 {
   "name": "superfastcms",
-  "version": "0.1.28",
+  "version": "0.1.38",
   "description": "Free and Open-source Headless CMS and Application Framework built with TypeScript, Node.js, React.",
   "license": "MIT",
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=16.0.0",
+    "npm": ">=8.19.0"
   },
   "main": "index.js",
   "scripts": {
     "lint": "eslint ./src --ignore-path .gitignore",
     "lint:fix": "npm run lint -- --fix",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx}\" --ignore-path .gitignore",
-    "copyfiles": "ncp LICENSE dist/LICENSE && ncp README.md dist/README.md && ts-node -T misc/copyStaticFiles.ts",
+    "copyfiles": "ts-node -T misc/copyPrismaFiles.ts && ts-node -T misc/copyStaticFiles.ts",
     "compile:tsc": "ttsc -p ./tsconfig.production.json && ts-node -T misc/correctTypes.ts",
     "compile": "yarn clean && yarn compile:tsc && yarn copyfiles",
     "clean": "rimraf dist",
@@ -70,6 +71,7 @@
     "cross-env": "^7.0.3",
     "date-fns": "^2.29.3",
     "dotenv-flow": "^3.2.0",
+    "execa": "5.1.1",
     "express": "^4.18.2",
     "file-loader": "^6.2.0",
     "fs-extra": "^11.1.0",
@@ -82,10 +84,10 @@
     "jwt-decode": "^3.1.2",
     "lodash": "^4.17.21",
     "mini-css-extract-plugin": "^2.7.0",
-    "ncp": "^2.0.0",
     "node-notifier": "^10.0.0",
     "nodemon": "^2.0.20",
     "notistack": "^2.0.8",
+    "ora": "5.4.1",
     "path-to-regexp": "^6.2.1",
     "prisma": "^4.8.1",
     "qs": "^6.11.0",
@@ -146,8 +148,6 @@
   "peerDependencies": {
     "path-to-regexp": "^6.2.1"
   },
-  "node": ">=12.x.x <=16.x.x",
-  "npm": ">=6.0.0",
   "keywords": [
     "cms",
     "headless",
