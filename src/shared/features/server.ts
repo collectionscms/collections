@@ -1,10 +1,13 @@
 import chalk from 'chalk';
 import express from 'express';
+import { launchApi } from './api';
 import Hooks from './hooks';
 
 const launch = async () => {
   try {
     const app = express();
+    const apiApp = await launchApi();
+    app.use('/api', apiApp);
     await Hooks.doAction('server/init', app);
 
     app.use(async (_req, res) => {
