@@ -8,6 +8,7 @@ declare global {
   namespace Superfast {
     interface IActions {
       'server/init': [Express];
+      'api/init': [Express];
 
       [key: string]: any[];
     }
