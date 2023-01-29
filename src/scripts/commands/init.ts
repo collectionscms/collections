@@ -1,3 +1,4 @@
+import { createFirstUser } from '@scripts/utilities/createFirstUser';
 import Output from '@scripts/utilities/output';
 import execa from 'execa';
 import ora from 'ora';
@@ -46,6 +47,12 @@ const scriptInit = async (projectName: string) => {
   }
 
   Output.success(`Your database is now in sync with your schema.`);
+
+  try {
+    await createFirstUser(projectDir);
+  } catch (err) {
+    onError({ err });
+  }
 
   process.exit(0);
 };
