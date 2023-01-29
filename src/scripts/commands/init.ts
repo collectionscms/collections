@@ -1,9 +1,10 @@
+import { createFirstUser } from '@scripts/utilities/createFirstUser';
 import Output from '@scripts/utilities/output';
 import execa from 'execa';
 import ora from 'ora';
 import path from 'path';
-import { copyCommonFiles } from './copyCommonFiles';
-import { writeEnvFile } from './writeEnvFile';
+import { copyCommonFiles } from '../utilities/copyCommonFiles';
+import { writeEnvFile } from '../utilities/writeEnvFile';
 
 const scriptInit = async (projectName: string) => {
   const projectDir = path.join(process.cwd(), projectName);
@@ -46,6 +47,12 @@ const scriptInit = async (projectName: string) => {
   }
 
   Output.success(`Your database is now in sync with your schema.`);
+
+  try {
+    await createFirstUser(projectDir);
+  } catch (err) {
+    onError({ err });
+  }
 
   process.exit(0);
 };

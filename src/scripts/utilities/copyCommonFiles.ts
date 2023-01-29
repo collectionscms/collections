@@ -7,6 +7,8 @@ export const copyCommonFiles = async (projectDir: string, projectName: string): 
   const templateDir = path.join(__dirname, '../../', 'templates', 'default');
   const prismaDir = path.join(__dirname, '../../../', 'prisma');
 
+  Output.info(`Copy files to directory ${chalk.magentaBright(projectName)}.`);
+
   // schema.prisma
   await fse.copy(prismaDir, `${projectDir}/prisma`, {
     filter: (dest) => {
@@ -19,6 +21,4 @@ export const copyCommonFiles = async (projectDir: string, projectName: string): 
 
   // template
   await fse.copy(templateDir, projectDir);
-
-  Output.success(`Successfully copied files to directory ${chalk.magentaBright(projectName)}.`);
 };

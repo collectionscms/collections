@@ -6,11 +6,12 @@
   "scripts": {
     "dev": "superfastcms dev",
     "build": "superfastcms build",
-    "start": "node superfast/build/main.js"
+    "start": "node superfast/build/main.js",
+    "seed": "node ./seed.js"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "superfastcms": "^0.1.38"
+    "superfastcms": "^0.1.56"
   }
 }
