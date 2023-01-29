@@ -3,8 +3,8 @@ import Output from '@scripts/utilities/output';
 import execa from 'execa';
 import ora from 'ora';
 import path from 'path';
-import { copyCommonFiles } from './copyCommonFiles';
-import { writeEnvFile } from './writeEnvFile';
+import { copyCommonFiles } from '../utilities/copyCommonFiles';
+import { writeEnvFile } from '../utilities/writeEnvFile';
 
 const scriptInit = async (projectName: string) => {
   const projectDir = path.join(process.cwd(), projectName);
