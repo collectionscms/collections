@@ -1,6 +1,6 @@
 {
   "name": "superfastcms",
-  "version": "0.1.51",
+  "version": "0.1.56",
   "description": "Free and Open-source Headless CMS and Application Framework built with TypeScript, Node.js, React.",
   "license": "MIT",
   "engines": {
@@ -81,6 +81,8 @@
     "https-browserify": "^1.0.0",
     "i18next": "^22.4.6",
     "i18next-browser-languagedetector": "^7.0.1",
+    "inquirer": "^8.2.5",
+    "joi": "^17.7.0",
     "jwt-decode": "^3.1.2",
     "lodash": "^4.17.21",
     "mini-css-extract-plugin": "^2.7.0",
