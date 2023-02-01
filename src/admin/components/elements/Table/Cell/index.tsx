@@ -22,7 +22,7 @@ const Cell: React.FC<Props> = (props) => {
       case Type.Text || Type.Number:
         return cellData;
       case Type.Date:
-        return format(new Date(Number(cellData)), 'yyyy-MM-dd HH:mm');
+        return format(new Date(String(cellData)), 'yyyy-MM-dd HH:mm');
       case Type.Object:
         return JSON.stringify(cellData);
       default:

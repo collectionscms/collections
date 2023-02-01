@@ -18,14 +18,9 @@ app.get(
         userName: user.userName,
         email: user.email,
         isActive: user.isActive,
-        role: {
-          id: user.superfast_Role.id,
-          name: user.superfast_Role.name,
-          description: user.superfast_Role.description,
-          adminAccess: user.superfast_Role.adminAccess,
-        },
-        createdAt: user.createdAt.getTime(),
-        updatedAt: user.updatedAt.getTime(),
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+        role: user.superfast_Role,
       })),
     });
   })
