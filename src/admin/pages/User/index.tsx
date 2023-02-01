@@ -6,14 +6,17 @@ import { useDocumentInfo } from '@admin/components/utilities/DocumentInfo';
 import buildColumns from '@admin/utilities/buildColumns';
 import { Button, Stack } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-
 import SearchFilter from '@admin/components/elements/SearchFilter';
+import { UserContextProvider, useUser } from '@admin/stores/User';
+import ComposeWrapper from '@admin/components/utilities/ComposeWrapper';
+import { User } from '@shared/types';
 
 const UserPage: React.FC = () => {
   const { localizedLabel } = useDocumentInfo();
   const { t } = useTranslation();
+  const { getUsers, users } = useUser();
 
   const fields = [
     { field: 'userName', label: t('user_name'), type: Type.Text },
@@ -24,7 +27,7 @@ const UserPage: React.FC = () => {
     { field: 'createdAt', label: 'Created At', type: Type.Date },
   ];
 
-  const columns = buildColumns(fields, (i: number, row: any, data: any) =>
+  const columns = buildColumns(fields, (i: number, row: User, data: any) =>
     fields[i].field == 'name' ? (
       <Cell
         colIndex={i}
@@ -32,33 +35,23 @@ const UserPage: React.FC = () => {
         rowData={row}
         cellData={`${row.lastName} ${row.firstName}`}
       />
+    ) : fields[i].field == 'role' ? (
+      <Cell colIndex={i} type={fields[i].type} rowData={row} cellData={row.role.name} />
+    ) : fields[i].field == 'status' ? (
+      <Cell
+        colIndex={i}
+        type={fields[i].type}
+        rowData={row}
+        cellData={row.isActive === true ? 'Yes' : 'No'}
+      />
     ) : (
       <Cell colIndex={i} type={fields[i].type} rowData={row} cellData={data} />
     )
   );
 
-  const rows = [
-    {
-      id: 1,
-      firstName: 'Alice',
-      lastName: 'Henderson',
-      email: 'alice@example.com',
-      role: 'Admin',
-      userName: 'alice',
-      status: 'Active',
-      createdAt: '1670637496808',
-    },
-    {
-      id: 2,
-      firstName: 'Bob',
-      lastName: 'Sanders',
-      email: 'bob@example.com',
-      role: 'Editor',
-      userName: 'bob',
-      status: 'Invited',
-      createdAt: '1670637496808',
-    },
-  ];
+  useEffect(() => {
+    getUsers();
+  }, []);
 
   return (
     <Stack rowGap={3}>
@@ -75,9 +68,9 @@ const UserPage: React.FC = () => {
         </Grid>
       </Grid>
       <SearchFilter fieldName="userName" fieldLabel={t('user_name')} />
-      <Table columns={columns} rows={rows} />
+      <Table columns={columns} rows={users} />
     </Stack>
   );
 };
 
-export default UserPage;
+export default ComposeWrapper({ context: UserContextProvider })(UserPage);
