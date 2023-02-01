@@ -13,20 +13,24 @@ export type Collection = {
 export type Field = {
   field: string;
   label: string;
-  type: typeof Type[keyof typeof Type];
+  type: (typeof Type)[keyof typeof Type];
 };
 
 export type User = {
   id: number;
   email: string;
+  firstName: string;
+  lastName: string;
   userName: string;
   token: string | null;
-  role: Role;
+  isActive: boolean;
+  role?: Role;
 };
 
 export type Role = {
   id: number;
   name: string;
+  description: string;
   adminAccess: boolean;
   permissions: Permission[];
 };
