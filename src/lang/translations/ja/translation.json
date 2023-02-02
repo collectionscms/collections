@@ -29,7 +29,7 @@
   "user_name": "ユーザー名",
   "name": "名前",
   "status": "状態",
-  "created_at": "登録日",
+  "updated_at": "更新日時",
   "valid": "有効",
   "invalid": "無効",
   "dialog": {
