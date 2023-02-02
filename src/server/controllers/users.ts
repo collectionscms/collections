@@ -8,19 +8,13 @@ const app = express();
 app.get(
   '/users',
   asyncMiddleware(async (req: Request, res: Response) => {
-    const users = await prisma.superfast_User.findMany({ include: { superfast_Role: true } });
+    const users = await prisma.superfastUser.findMany({ include: { superfastRole: true } });
 
     res.json({
-      users: users.flatMap((user) => ({
-        id: user.id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        userName: user.userName,
-        email: user.email,
-        isActive: user.isActive,
-        createdAt: user.createdAt,
-        updatedAt: user.updatedAt,
-        role: user.superfast_Role,
+      users: users.flatMap(({ password, ...user }) => ({
+        ...user,
+        role: user.superfastRole,
+        ...(delete user.superfastRole && user),
       })),
     });
   })
