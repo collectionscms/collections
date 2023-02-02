@@ -142,7 +142,7 @@ async function main() {
     },
     {
       collection: 'Company',
-      singleton: false,
+      singleton: true,
       hidden: false,
     },
   ];
