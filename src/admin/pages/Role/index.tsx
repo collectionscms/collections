@@ -1,39 +1,31 @@
 import RouterLink from '@admin/components/elements/Link';
 import Table from '@admin/components/elements/Table';
 import { Type } from '@admin/components/elements/Table/Cell/types';
+import ComposeWrapper from '@admin/components/utilities/ComposeWrapper';
 import { useDocumentInfo } from '@admin/components/utilities/DocumentInfo';
+import { RoleContextProvider, useRole } from '@admin/stores/Role';
 import buildColumns from '@admin/utilities/buildColumns';
 import { Button, Stack } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-
-const fields = [
-  { field: 'name', label: 'Name', type: Type.Text },
-  { field: 'description', label: 'Description', type: Type.Text },
-  { field: 'createdAt', label: 'Created At', type: Type.Date },
-];
 
 const RolePage: React.FC = () => {
   const { t } = useTranslation();
   const { localizedLabel } = useDocumentInfo();
+  const { getRoles, roles } = useRole();
+
+  const fields = [
+    { field: 'name', label: t('name'), type: Type.Text },
+    { field: 'description', label: t('description'), type: Type.Text },
+    { field: 'updatedAt', label: t('updated_at'), type: Type.Date },
+  ];
 
   const columns = buildColumns(fields);
 
-  const rows = [
-    {
-      id: 1,
-      name: 'Admin',
-      description: 'Super Admins can access and manage all features and settings.',
-      createdAt: '1670637496808',
-    },
-    {
-      id: 2,
-      name: 'Editor',
-      description: 'Editors can manage and publish contents including those of other users.',
-      createdAt: '1670648096808',
-    },
-  ];
+  useEffect(() => {
+    getRoles();
+  }, []);
 
   return (
     <Stack rowGap={3}>
@@ -49,9 +41,9 @@ const RolePage: React.FC = () => {
           </Grid>
         </Grid>
       </Grid>
-      <Table columns={columns} rows={rows} />
+      <Table columns={columns} rows={roles} />
     </Stack>
   );
 };
 
-export default RolePage;
+export default ComposeWrapper({ context: RoleContextProvider })(RolePage);
