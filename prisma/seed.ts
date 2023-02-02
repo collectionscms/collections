@@ -6,18 +6,18 @@ async function main() {
   console.log(`Start seeding ...`);
 
   // リセット
-  await prisma.superfast_Permission.deleteMany();
-  await prisma.superfast_User.deleteMany();
-  await prisma.superfast_Role.deleteMany();
-  await prisma.superfast_Collection.deleteMany();
-  await prisma.superfast_FieldOption.deleteMany();
-  await prisma.superfast_Relation.deleteMany();
-  await prisma.superfast_Field.deleteMany();
+  await prisma.superfastPermission.deleteMany();
+  await prisma.superfastUser.deleteMany();
+  await prisma.superfastRole.deleteMany();
+  await prisma.superfastCollection.deleteMany();
+  await prisma.superfastFieldOption.deleteMany();
+  await prisma.superfastRelation.deleteMany();
+  await prisma.superfastField.deleteMany();
   await prisma.$queryRaw`DROP TABLE IF EXISTS Restaurant;`;
   await prisma.$queryRaw`DROP TABLE IF EXISTS Company;`;
 
   // Role作成
-  const roleData: Prisma.Superfast_RoleCreateInput[] = [
+  const roleData: Prisma.SuperfastRoleCreateInput[] = [
     {
       name: 'Administrator',
       description: '管理者',
@@ -32,25 +32,25 @@ async function main() {
 
   console.log('Creating users...');
   for (const data of roleData) {
-    await prisma.superfast_Role.create({
+    await prisma.superfastRole.create({
       data,
     });
   }
   console.log('Created Users!');
 
   // User作成
-  const adminRole = await prisma.superfast_Role.findUnique({
+  const adminRole = await prisma.superfastRole.findUnique({
     where: {
       name: 'Administrator',
     },
   });
 
-  const editorRole = await prisma.superfast_Role.findUnique({
+  const editorRole = await prisma.superfastRole.findUnique({
     where: {
       name: 'Editor',
     },
   });
-  const userData: Prisma.Superfast_UserCreateInput[] = [
+  const userData: Prisma.SuperfastUserCreateInput[] = [
     {
       firstName: '花子',
       lastName: '山田',
@@ -58,7 +58,7 @@ async function main() {
       email: 'hanako-yamada@example.com',
       password: 'hanako-xxxxxxxxx',
       isActive: true,
-      superfast_Role: { connect: { id: adminRole!.id } },
+      superfastRole: { connect: { id: adminRole!.id } },
     },
     {
       firstName: '太郎',
@@ -67,74 +67,74 @@ async function main() {
       email: 'taro-tanaka@example.com',
       password: 'taro-xxxxxxxxx',
       isActive: true,
-      superfast_Role: { connect: { id: editorRole!.id } },
+      superfastRole: { connect: { id: editorRole!.id } },
     },
   ];
 
   console.log('Creating Roles...');
   for (const data of userData) {
-    await prisma.superfast_User.create({
+    await prisma.superfastUser.create({
       data,
     });
   }
   console.log('Created Roles!');
 
   // Permission作成
-  const permissionData: Prisma.Superfast_PermissionCreateInput[] = [
+  const permissionData: Prisma.SuperfastPermissionCreateInput[] = [
     // 管理者
     {
       collection: 'Restaurant',
       action: 'read',
-      superfast_Role: { connect: { id: adminRole!.id } },
+      superfastRole: { connect: { id: adminRole!.id } },
     },
     {
       collection: 'Restaurant',
       action: 'create',
-      superfast_Role: { connect: { id: adminRole!.id } },
+      superfastRole: { connect: { id: adminRole!.id } },
     },
     {
       collection: 'Restaurant',
       action: 'update',
-      superfast_Role: { connect: { id: adminRole!.id } },
+      superfastRole: { connect: { id: adminRole!.id } },
     },
     {
       collection: 'Company',
       action: 'read',
-      superfast_Role: { connect: { id: adminRole!.id } },
+      superfastRole: { connect: { id: adminRole!.id } },
     },
     {
       collection: 'Company',
       action: 'create',
-      superfast_Role: { connect: { id: adminRole!.id } },
+      superfastRole: { connect: { id: adminRole!.id } },
     },
     {
       collection: 'Company',
       action: 'update',
-      superfast_Role: { connect: { id: adminRole!.id } },
+      superfastRole: { connect: { id: adminRole!.id } },
     },
     // エディター
     {
       collection: 'Restaurant',
       action: 'read',
-      superfast_Role: { connect: { id: editorRole!.id } },
+      superfastRole: { connect: { id: editorRole!.id } },
     },
     {
       collection: 'Company',
       action: 'read',
-      superfast_Role: { connect: { id: editorRole!.id } },
+      superfastRole: { connect: { id: editorRole!.id } },
     },
   ];
 
   console.log('Creating Permissions...');
   for (const data of permissionData) {
-    await prisma.superfast_Permission.create({
+    await prisma.superfastPermission.create({
       data,
     });
   }
   console.log('Created Permissions!');
 
   // Collection作成
-  const collectionData: Prisma.Superfast_CollectionCreateInput[] = [
+  const collectionData: Prisma.SuperfastCollectionCreateInput[] = [
     {
       collection: 'Restaurant',
       singleton: false,
@@ -149,14 +149,14 @@ async function main() {
 
   console.log('Creating Collections...');
   for (const data of collectionData) {
-    await prisma.superfast_Collection.create({
+    await prisma.superfastCollection.create({
       data,
     });
   }
   console.log('Created Collections!');
 
   // Field作成
-  const fieldData: Prisma.Superfast_FieldCreateInput[] = [
+  const fieldData: Prisma.SuperfastFieldCreateInput[] = [
     // Collection Restaurantに紐づくフィールド
     {
       collection: 'Restaurant',
@@ -168,7 +168,7 @@ async function main() {
       required: false,
       hidden: false,
       sort: 1,
-      Superfast_FieldOption: { create: [{ key: 'length', value: '100' }] },
+      superfastFieldOption: { create: [{ key: 'length', value: '100' }] },
     },
     {
       collection: 'Restaurant',
@@ -180,7 +180,7 @@ async function main() {
       required: false,
       hidden: false,
       sort: 2,
-      Superfast_FieldOption: { create: [{ key: 'length', value: '200' }] },
+      superfastFieldOption: { create: [{ key: 'length', value: '200' }] },
     },
     {
       collection: 'Restaurant',
@@ -192,7 +192,7 @@ async function main() {
       required: false,
       hidden: false,
       sort: 3,
-      Superfast_FieldOption: { create: [{ key: 'length', value: '300' }] },
+      superfastFieldOption: { create: [{ key: 'length', value: '300' }] },
     },
     // Collection Companyに紐づくフィールド
     {
@@ -205,7 +205,7 @@ async function main() {
       required: false,
       hidden: false,
       sort: 1,
-      Superfast_FieldOption: { create: [{ key: 'length', value: '100' }] },
+      superfastFieldOption: { create: [{ key: 'length', value: '100' }] },
     },
     {
       collection: 'Company',
@@ -217,7 +217,7 @@ async function main() {
       required: false,
       hidden: false,
       sort: 2,
-      Superfast_FieldOption: { create: [{ key: 'length', value: '200' }] },
+      superfastFieldOption: { create: [{ key: 'length', value: '200' }] },
     },
     {
       collection: 'Company',
@@ -229,19 +229,19 @@ async function main() {
       required: false,
       hidden: false,
       sort: 3,
-      Superfast_FieldOption: { create: [{ key: 'length', value: '300' }] },
+      superfastFieldOption: { create: [{ key: 'length', value: '300' }] },
     },
   ];
   console.log('Creating Fields...');
   for (const data of fieldData) {
-    await prisma.superfast_Field.create({
+    await prisma.superfastField.create({
       data,
     });
   }
   console.log('Created Fields!');
 
   // Relation作成
-  const relationData: Prisma.Superfast_RelationCreateInput[] = [
+  const relationData: Prisma.SuperfastRelationCreateInput[] = [
     {
       many_collection: 'Restaurant',
       many_field: 'restaurant_id',
@@ -251,7 +251,7 @@ async function main() {
   ];
   console.log('Creating Relations...');
   for (const data of relationData) {
-    await prisma.superfast_Relation.create({
+    await prisma.superfastRelation.create({
       data,
     });
   }
