@@ -1,4 +1,5 @@
 import users from '../controllers/users';
+import roles from '../controllers/roles';
 import Hooks from '@shared/features/hooks';
 import cookieParser from 'cookie-parser';
 import express, { Express } from 'express';
@@ -21,6 +22,7 @@ Hooks.addAction(
     app.use(express.urlencoded({ limit: process.env.REQ_LIMIT, extended: true }));
 
     app.use(users);
+    app.use(roles);
   },
   { id: 'core/controllers' }
 );
