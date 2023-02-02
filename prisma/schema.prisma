@@ -10,7 +10,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Superfast_User {
+model SuperfastUser {
   id               Int            @id @default(autoincrement())
   firstName        String
   lastName         String
@@ -19,35 +19,41 @@ model Superfast_User {
   password         String
   isActive         Boolean        @default(false)
   token            String?
-  superfast_Role   Superfast_Role @relation(fields: [superfast_RoleId], references: [id])
-  superfast_RoleId Int
+  superfastRole   SuperfastRole @relation(fields: [superfastRoleId], references: [id])
+  superfastRoleId Int
   createdAt        DateTime       @default(now())
   updatedAt        DateTime       @default(now())
+
+  @@map("Superfast_User")
 }
 
-model Superfast_Role {
+model SuperfastRole {
   id                   Int                    @id @default(autoincrement())
   name                 String                 @unique
   description          String?
   adminAccess          Boolean                @default(false)
   createdAt            DateTime               @default(now())
   updatedAt            DateTime               @default(now())
-  Superfast_User       Superfast_User[]
-  Superfast_Permission Superfast_Permission[]
+  superfastUser       SuperfastUser[]
+  superfastPermission SuperfastPermission[]
+
+  @@map("Superfast_Role")
 }
 
-model Superfast_Permission {
+model SuperfastPermission {
   id               Int            @id @default(autoincrement())
   collection       String
   action           String
-  superfast_Role   Superfast_Role @relation(fields: [superfast_RoleId], references: [id])
-  superfast_RoleId Int
+  superfastRole   SuperfastRole @relation(fields: [superfastRoleId], references: [id])
+  superfastRoleId Int
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
+
+  @@map("Superfast_Permission")
 }
 
-model Superfast_Collection {
+model SuperfastCollection {
   id         Int     @id @default(autoincrement())
   collection String  @unique
   singleton  Boolean @default(false)
@@ -55,9 +61,11 @@ model Superfast_Collection {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
+
+  @@map("Superfast_Collection")
 }
 
-model Superfast_Field {
+model SuperfastField {
   id         Int     @id @default(autoincrement())
   collection String
   field      String
@@ -71,24 +79,27 @@ model Superfast_Field {
 
   createdAt             DateTime                @default(now())
   updatedAt             DateTime                @default(now())
-  Superfast_FieldOption Superfast_FieldOption[]
+  superfastFieldOption SuperfastFieldOption[]
 
+  @@map("Superfast_Field")
   @@unique([id, collection])
 }
 
-model Superfast_FieldOption {
+model SuperfastFieldOption {
   id    Int    @id @default(autoincrement())
   key   String
   value String
 
-  superfast_Field   Superfast_Field @relation(fields: [superfast_FieldId], references: [id])
-  superfast_FieldId Int
+  superfastField   SuperfastField @relation(fields: [superfastFieldId], references: [id])
+  superfastFieldId Int
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
+
+  @@map("Superfast_Field_Option")
 }
 
-model Superfast_Relation {
+model SuperfastRelation {
   id                      Int     @id @default(autoincrement())
   many_collection         String
   many_field              String
@@ -102,4 +113,6 @@ model Superfast_Relation {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
+
+  @@map("Superfast_Relation")
 }
