@@ -168,7 +168,7 @@ async function main() {
       required: false,
       hidden: false,
       sort: 1,
-      superfastFieldOption: { create: [{ key: 'length', value: '100' }] },
+      superfastFieldOptions: { create: [{ key: 'length', value: '100' }] },
     },
     {
       collection: 'Restaurant',
@@ -180,7 +180,7 @@ async function main() {
       required: false,
       hidden: false,
       sort: 2,
-      superfastFieldOption: { create: [{ key: 'length', value: '200' }] },
+      superfastFieldOptions: { create: [{ key: 'length', value: '200' }] },
     },
     {
       collection: 'Restaurant',
@@ -192,7 +192,7 @@ async function main() {
       required: false,
       hidden: false,
       sort: 3,
-      superfastFieldOption: { create: [{ key: 'length', value: '300' }] },
+      superfastFieldOptions: { create: [{ key: 'length', value: '300' }] },
     },
     // Collection Companyに紐づくフィールド
     {
@@ -205,7 +205,7 @@ async function main() {
       required: false,
       hidden: false,
       sort: 1,
-      superfastFieldOption: { create: [{ key: 'length', value: '100' }] },
+      superfastFieldOptions: { create: [{ key: 'length', value: '100' }] },
     },
     {
       collection: 'Company',
@@ -217,7 +217,7 @@ async function main() {
       required: false,
       hidden: false,
       sort: 2,
-      superfastFieldOption: { create: [{ key: 'length', value: '200' }] },
+      superfastFieldOptions: { create: [{ key: 'length', value: '200' }] },
     },
     {
       collection: 'Company',
@@ -229,7 +229,7 @@ async function main() {
       required: false,
       hidden: false,
       sort: 3,
-      superfastFieldOption: { create: [{ key: 'length', value: '300' }] },
+      superfastFieldOptions: { create: [{ key: 'length', value: '300' }] },
     },
   ];
   console.log('Creating Fields...');
