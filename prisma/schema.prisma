@@ -34,8 +34,8 @@ model SuperfastRole {
   adminAccess          Boolean                @default(false)
   createdAt            DateTime               @default(now())
   updatedAt            DateTime               @default(now())
-  superfastUser       SuperfastUser[]
-  superfastPermission SuperfastPermission[]
+  superfastUsers       SuperfastUser[]
+  superfastPermissions SuperfastPermission[]
 
   @@map("Superfast_Role")
 }
@@ -79,7 +79,7 @@ model SuperfastField {
 
   createdAt             DateTime                @default(now())
   updatedAt             DateTime                @default(now())
-  superfastFieldOption SuperfastFieldOption[]
+  superfastFieldOptions SuperfastFieldOption[]
 
   @@map("Superfast_Field")
   @@unique([id, collection])
