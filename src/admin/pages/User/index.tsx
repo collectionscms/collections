@@ -20,11 +20,11 @@ const UserPage: React.FC = () => {
 
   const fields = [
     { field: 'userName', label: t('user_name'), type: Type.Text },
-    { field: 'name', label: 'Name', type: Type.Text },
-    { field: 'email', label: 'Email', type: Type.Text },
-    { field: 'role', label: 'Role', type: Type.Text },
-    { field: 'status', label: 'Status', type: Type.Text },
-    { field: 'createdAt', label: 'Created At', type: Type.Date },
+    { field: 'name', label: t('name'), type: Type.Text },
+    { field: 'email', label: t('email'), type: Type.Text },
+    { field: 'role', label: t('role'), type: Type.Text },
+    { field: 'status', label: t('status'), type: Type.Text },
+    { field: 'createdAt', label: t('created_at'), type: Type.Date },
   ];
 
   const columns = buildColumns(fields, (i: number, row: User, data: any) =>
@@ -42,7 +42,7 @@ const UserPage: React.FC = () => {
         colIndex={i}
         type={fields[i].type}
         rowData={row}
-        cellData={row.isActive === true ? 'Yes' : 'No'}
+        cellData={row.isActive === true ? t('valid') : t('invalid')}
       />
     ) : (
       <Cell colIndex={i} type={fields[i].type} rowData={row} cellData={data} />
