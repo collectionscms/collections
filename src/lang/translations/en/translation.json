@@ -27,6 +27,12 @@
   "cancel": "Cancel",
   "search_by": "Search by {{field_name}}",
   "user_name": "User Name",
+  "name": "Name",
+  "status": "Status",
+  "updated_at": "Updated Date",
+  "valid": "Valid",
+  "invalid": "Invalid",
+  "description": "Description",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion.",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?"

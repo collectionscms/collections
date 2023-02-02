@@ -29,9 +29,10 @@
   "user_name": "ユーザー名",
   "name": "名前",
   "status": "状態",
-  "created_at": "登録日",
+  "updated_at": "更新日時",
   "valid": "有効",
   "invalid": "無効",
+  "description": "説明",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？"

@@ -2,12 +2,12 @@ import { User } from '@shared/types';
 import axios from 'axios';
 import React, { createContext, useContext, useState } from 'react';
 
-type UserContextType = {
+type ContextType = {
   getUsers: () => Promise<User[]>;
   users: User[];
 };
 
-const Context = createContext<UserContextType>({} as any);
+const Context = createContext<ContextType>({} as any);
 
 export const UserContextProvider = ({ children }) => {
   const [users, setUsers] = useState<User[]>([]);

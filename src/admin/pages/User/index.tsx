@@ -24,7 +24,7 @@ const UserPage: React.FC = () => {
     { field: 'email', label: t('email'), type: Type.Text },
     { field: 'role', label: t('role'), type: Type.Text },
     { field: 'status', label: t('status'), type: Type.Text },
-    { field: 'createdAt', label: t('created_at'), type: Type.Date },
+    { field: 'updatedAt', label: t('updated_at'), type: Type.Date },
   ];
 
   const columns = buildColumns(fields, (i: number, row: User, data: any) =>
