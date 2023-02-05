@@ -38,6 +38,7 @@
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？"
   },
   "toast": {
+    "created_successfully": "登録しました",
     "deleted_successfully": "削除しました"
   },
   "create": {
