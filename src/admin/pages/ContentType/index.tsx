@@ -14,9 +14,9 @@ import { useTranslation } from 'react-i18next';
 const ContentTypePage: React.FC = () => {
   const { localizedLabel } = useDocumentInfo();
   const { t } = useTranslation();
-  const { getCollections, collections } = useCollection();
+  const { getCollections } = useCollection();
   const { enqueueSnackbar } = useSnackbar();
-  const { error } = getCollections();
+  const { data, error } = getCollections();
 
   const fields = [{ field: 'collection', label: t('name'), type: Type.Text }];
 
@@ -41,7 +41,7 @@ const ContentTypePage: React.FC = () => {
           </Grid>
         </Grid>
       </Grid>
-      <Table columns={columns} rows={collections} />
+      <Table columns={columns} rows={data || []} />
     </Stack>
   );
 };

@@ -1,32 +1,27 @@
 import { User } from '@shared/types';
 import axios from 'axios';
+import useSWR, { SWRResponse } from 'swr';
 import React, { createContext, useContext, useState } from 'react';
 
 type ContextType = {
-  getUsers: () => Promise<User[]>;
-  users: User[];
+  getUsers: () => SWRResponse<User[]>;
 };
 
 const Context = createContext<ContextType>({} as any);
 
 export const UserContextProvider = ({ children }) => {
-  const [users, setUsers] = useState<User[]>([]);
-
-  const getUsers = async () => {
-    try {
-      const response = await axios.get<{ users: User[] }>('/api/users');
-      setUsers(response.data.users);
-      return response.data.users;
-    } catch (e) {
-      throw e.response.data;
-    }
-  };
+  const getUsers = () =>
+    useSWR('/api/users', (url) =>
+      axios
+        .get<{ users: User[] }>(url)
+        .then((res) => res.data.users)
+        .catch((err) => Promise.reject(err.message))
+    );
 
   return (
     <Context.Provider
       value={{
         getUsers,
-        users,
       }}
     >
       {children}
