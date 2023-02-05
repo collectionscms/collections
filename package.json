@@ -104,6 +104,7 @@
     "rimraf": "^4.0.5",
     "stream-browserify": "^3.0.0",
     "stream-http": "^3.2.0",
+    "swr": "^2.0.3",
     "terser-webpack-plugin": "^5.3.6",
     "url-loader": "^4.1.1",
     "webpack": "^5.75.0",
