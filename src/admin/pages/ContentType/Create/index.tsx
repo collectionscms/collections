@@ -35,8 +35,6 @@ const CreatePage: React.FC = () => {
     navigate(`../content-types/${data.id}`);
   }, [data]);
 
-  console.log(data);
-
   const onSubmit: SubmitHandler<FormValues> = (form: FormValues) => {
     trigger({ collection: form.name, singleton: form.singleton, hidden: false });
   };
