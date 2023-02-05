@@ -38,6 +38,7 @@
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?"
   },
   "toast": {
+    "created_successfully": "Created successfully.",
     "deleted_successfully": "Deleted successfully."
   },
   "create": {
