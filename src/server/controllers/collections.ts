@@ -1,5 +1,5 @@
 import asyncMiddleware from '../middleware/async';
-import { PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
 import express, { Request, Response } from 'express';
 
 const prisma = new PrismaClient();
@@ -15,6 +15,21 @@ app.get(
         ...collection,
       })),
     });
+  })
+);
+
+app.post(
+  '/collections',
+  asyncMiddleware(async (req: Request, res: Response) => {
+    const data: Prisma.SuperfastCollectionCreateInput = req.body;
+    const collection = await prisma.$transaction(async (prisma) => {
+      await prisma.$queryRawUnsafe(
+        `CREATE TABLE ${req.body.collection}(id integer NOT NULL PRIMARY KEY)`
+      );
+      return await prisma.superfastCollection.create({ data });
+    });
+
+    res.json({ collection: collection });
   })
 );
 
