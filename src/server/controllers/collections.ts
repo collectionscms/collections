@@ -1,6 +1,6 @@
-import asyncMiddleware from '../middleware/async';
 import { Prisma, PrismaClient } from '@prisma/client';
 import express, { Request, Response } from 'express';
+import asyncMiddleware from '../middleware/async';
 
 const prisma = new PrismaClient();
 const app = express();
@@ -30,6 +30,21 @@ app.post(
     });
 
     res.json({ collection: collection });
+  })
+);
+
+app.delete(
+  '/collections/:id',
+  asyncMiddleware(async (req: Request, res: Response) => {
+    const id = Number(req.params.id);
+    const meta = await prisma.superfastCollection.findUnique({ where: { id: id } });
+
+    await prisma.$transaction(async (prisma) => {
+      await prisma.$queryRawUnsafe(`DROP TABLE ${meta.collection}`);
+      await prisma.superfastCollection.delete({ where: { collection: meta.collection } });
+    });
+
+    res.status(204).end();
   })
 );
 
