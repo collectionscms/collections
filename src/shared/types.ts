@@ -6,6 +6,7 @@ export type Config = {
 };
 
 export type Collection = {
+  id: number;
   collection: string;
   singleton: boolean;
 };
