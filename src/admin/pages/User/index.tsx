@@ -17,9 +17,9 @@ import { useSnackbar } from 'notistack';
 const UserPage: React.FC = () => {
   const { localizedLabel } = useDocumentInfo();
   const { t } = useTranslation();
-  const { getUsers, users } = useUser();
+  const { getUsers } = useUser();
   const { enqueueSnackbar } = useSnackbar();
-  const { error } = getUsers();
+  const { data, error } = getUsers();
 
   const fields = [
     { field: 'userName', label: t('user_name'), type: Type.Text },
@@ -72,7 +72,7 @@ const UserPage: React.FC = () => {
         </Grid>
       </Grid>
       <SearchFilter fieldName="userName" fieldLabel={t('user_name')} />
-      <Table columns={columns} rows={users} />
+      <Table columns={columns} rows={data || []} />
     </Stack>
   );
 };

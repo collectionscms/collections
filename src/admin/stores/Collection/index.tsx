@@ -7,22 +7,16 @@ import React, { createContext, useContext, useState } from 'react';
 type ContextType = {
   getCollections: () => SWRResponse<Collection[]>;
   createCollection: SWRMutationResponse<Collection>;
-  collections: Collection[];
 };
 
 const Context = createContext<ContextType>({} as any);
 
 export const CollectionContextProvider = ({ children }) => {
-  const [collections, setCollections] = useState<Collection[]>([]);
-
   const getCollections = () =>
     useSWR('/api/collections', (url) =>
       axios
         .get<{ collections: Collection[] }>(url)
-        .then((res) => {
-          setCollections(res.data.collections);
-          return res.data.collections;
-        })
+        .then((res) => res.data.collections)
         .catch((err) => Promise.reject(err.message))
     );
 
@@ -41,7 +35,6 @@ export const CollectionContextProvider = ({ children }) => {
       value={{
         getCollections,
         createCollection,
-        collections,
       }}
     >
       {children}

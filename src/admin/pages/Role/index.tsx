@@ -14,9 +14,9 @@ import { useTranslation } from 'react-i18next';
 const RolePage: React.FC = () => {
   const { t } = useTranslation();
   const { localizedLabel } = useDocumentInfo();
-  const { getRoles, roles } = useRole();
+  const { getRoles } = useRole();
   const { enqueueSnackbar } = useSnackbar();
-  const { error } = getRoles();
+  const { data, error } = getRoles();
 
   const fields = [
     { field: 'name', label: t('name'), type: Type.Text },
@@ -45,7 +45,7 @@ const RolePage: React.FC = () => {
           </Grid>
         </Grid>
       </Grid>
-      <Table columns={columns} rows={roles} />
+      <Table columns={columns} rows={data || []} />
     </Stack>
   );
 };
