@@ -7,6 +7,7 @@ import { RoleContextProvider, useRole } from '@admin/stores/Role';
 import buildColumns from '@admin/utilities/buildColumns';
 import { Button, Stack } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
+import { useSnackbar } from 'notistack';
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -14,6 +15,8 @@ const RolePage: React.FC = () => {
   const { t } = useTranslation();
   const { localizedLabel } = useDocumentInfo();
   const { getRoles, roles } = useRole();
+  const { enqueueSnackbar } = useSnackbar();
+  const { error } = getRoles();
 
   const fields = [
     { field: 'name', label: t('name'), type: Type.Text },
@@ -24,8 +27,9 @@ const RolePage: React.FC = () => {
   const columns = buildColumns(fields);
 
   useEffect(() => {
-    getRoles();
-  }, []);
+    if (error === undefined) return;
+    enqueueSnackbar(error, { variant: 'error' });
+  }, [error]);
 
   return (
     <Stack rowGap={3}>
