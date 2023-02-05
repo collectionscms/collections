@@ -1,5 +1,5 @@
 import { SchemaOf } from 'yup';
-import yup from '../yup';
+import yup from '../../yup';
 
 export type FormValues = {
   email: string;
