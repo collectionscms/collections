@@ -128,7 +128,7 @@
     "@types/node-notifier": "^8.0.2",
     "@types/react": "^18.0.25",
     "@types/react-dom": "^18.0.9",
-    "@types/rimraf": "^3.0.2",
+    "@types/rimraf": "^4.0.5",
     "@types/webpack-env": "^1.18.0",
     "@typescript-eslint/eslint-plugin": "^5.43.0",
     "@typescript-eslint/parser": "^5.43.0",
