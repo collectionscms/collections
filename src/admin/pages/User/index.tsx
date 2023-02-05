@@ -12,11 +12,14 @@ import SearchFilter from '@admin/components/elements/SearchFilter';
 import { UserContextProvider, useUser } from '@admin/stores/User';
 import ComposeWrapper from '@admin/components/utilities/ComposeWrapper';
 import { User } from '@shared/types';
+import { useSnackbar } from 'notistack';
 
 const UserPage: React.FC = () => {
   const { localizedLabel } = useDocumentInfo();
   const { t } = useTranslation();
   const { getUsers, users } = useUser();
+  const { enqueueSnackbar } = useSnackbar();
+  const { error } = getUsers();
 
   const fields = [
     { field: 'userName', label: t('user_name'), type: Type.Text },
@@ -50,8 +53,9 @@ const UserPage: React.FC = () => {
   );
 
   useEffect(() => {
-    getUsers();
-  }, []);
+    if (error === undefined) return;
+    enqueueSnackbar(error, { variant: 'error' });
+  }, [error]);
 
   return (
     <Stack rowGap={3}>
