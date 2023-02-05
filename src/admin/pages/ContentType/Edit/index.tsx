@@ -77,7 +77,7 @@ const EditPage: React.FC = () => {
         </Grid>
         <Grid container columnSpacing={2} alignItems="center">
           <Grid>
-            <DeleteDocument id={id} slug={`roles`} onSuccess={handleDeletionSuccess} />
+            <DeleteDocument id={id} slug={`collections`} onSuccess={handleDeletionSuccess} />
           </Grid>
           <Grid>
             <Button variant="contained" component={RouterLink} to="../content-types">

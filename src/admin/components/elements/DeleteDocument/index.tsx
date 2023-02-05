@@ -1,4 +1,5 @@
-import { useConfig } from '@admin/components/utilities/Config';
+import ComposeWrapper from '@admin/components/utilities/ComposeWrapper';
+import { DocumentContextProvider, useDocument } from '@admin/stores/Document';
 import { DeleteOutlineOutlined } from '@mui/icons-material';
 import {
   Button,
@@ -10,13 +11,14 @@ import {
 } from '@mui/material';
 import { t } from 'i18next';
 import { useSnackbar } from 'notistack';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Props } from './types';
 
 const DeleteDocument: React.FC<Props> = ({ id, slug, disabled = false, onSuccess }) => {
   const [open, setOpen] = useState(false);
-  const { serverUrl } = useConfig();
   const { enqueueSnackbar } = useSnackbar();
+  const { deleteDocument } = useDocument();
+  const { data, trigger, isMutating } = deleteDocument(id, slug);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -27,13 +29,15 @@ const DeleteDocument: React.FC<Props> = ({ id, slug, disabled = false, onSuccess
   };
 
   const handleDelete = () => {
-    const endpoint = `${serverUrl}/${slug}/${id}`;
-    console.log(`api endpoint: ${endpoint}`);
+    trigger();
+  };
 
+  useEffect(() => {
+    if (data === undefined) return;
     enqueueSnackbar(t('toast.deleted_successfully'), { variant: 'success' });
     setOpen(false);
     onSuccess();
-  };
+  }, [data]);
 
   return (
     <>
@@ -49,7 +53,7 @@ const DeleteDocument: React.FC<Props> = ({ id, slug, disabled = false, onSuccess
         </DialogContent>
         <DialogActions sx={{ px: 3, pb: 2 }}>
           <Button onClick={handleClose}>{t('cancel')}</Button>
-          <Button variant="contained" onClick={handleDelete} autoFocus>
+          <Button variant="contained" onClick={handleDelete} disabled={isMutating} autoFocus>
             {t('ok')}
           </Button>
         </DialogActions>
@@ -66,4 +70,4 @@ const DeleteDocument: React.FC<Props> = ({ id, slug, disabled = false, onSuccess
   );
 };
 
-export default DeleteDocument;
+export default ComposeWrapper({ context: DocumentContextProvider })(DeleteDocument);
