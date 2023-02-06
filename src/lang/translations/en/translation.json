@@ -95,6 +95,9 @@
     },
     "boolean": {
       "is_value": "Must be {{value}}."
+    },
+    "custom": {
+      "alphanumeric_and_underscore": "Please enter single-byte alphanumeric characters and underscore (_)."
     }
   }
 }
