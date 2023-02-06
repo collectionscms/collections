@@ -26,7 +26,7 @@ const CreatePage: React.FC = () => {
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: { name: '', singleton: false },
-    resolver: yupResolver(createCollectionSchema),
+    resolver: yupResolver(createCollectionSchema(t)),
   });
 
   useEffect(() => {
