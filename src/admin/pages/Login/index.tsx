@@ -1,5 +1,5 @@
 import { useAuth } from '@admin/components/utilities/Auth';
-import loginSchema, { FormValues } from '@admin/fields/schemas/loginSchema';
+import loginSchema, { FormValues } from '@admin/fields/schemas/authentications/loginSchema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Stack, TextField } from '@mui/material';
 import React from 'react';
