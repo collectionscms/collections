@@ -6,6 +6,25 @@ const prisma = new PrismaClient();
 const app = express();
 
 app.get(
+  '/collections/:id',
+  asyncMiddleware(async (req: Request, res: Response) => {
+    const id = Number(req.params.id);
+    const collection = await prisma.superfastCollection.findUnique({
+      where: { id: id },
+      include: { superfastFields: true },
+    });
+
+    res.json({
+      collection: {
+        ...collection,
+        fields: collection.superfastFields,
+        ...(delete collection.superfastFields && collection),
+      },
+    });
+  })
+);
+
+app.get(
   '/collections',
   asyncMiddleware(async (req: Request, res: Response) => {
     const collections = await prisma.superfastCollection.findMany();
