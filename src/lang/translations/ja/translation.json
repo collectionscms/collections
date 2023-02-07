@@ -33,6 +33,7 @@
   "valid": "有効",
   "invalid": "無効",
   "description": "説明",
+  "create_field": "フィールドを作成",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？"
