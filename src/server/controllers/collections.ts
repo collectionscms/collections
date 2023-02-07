@@ -6,6 +6,25 @@ const prisma = new PrismaClient();
 const app = express();
 
 app.get(
+  '/collections/:id',
+  asyncMiddleware(async (req: Request, res: Response) => {
+    const id = Number(req.params.id);
+    const collection = await prisma.superfastCollection.findUnique({
+      where: { id: id },
+      include: { superfastFields: true },
+    });
+
+    res.json({
+      collection: {
+        ...collection,
+        fields: collection.superfastFields,
+        ...(delete collection.superfastFields && collection),
+      },
+    });
+  })
+);
+
+app.get(
   '/collections',
   asyncMiddleware(async (req: Request, res: Response) => {
     const collections = await prisma.superfastCollection.findMany();
@@ -21,26 +40,40 @@ app.get(
 app.post(
   '/collections',
   asyncMiddleware(async (req: Request, res: Response) => {
-    const meta: Prisma.SuperfastCollectionCreateInput = req.body;
-    const field: Prisma.SuperfastFieldCreateInput = {
-      collection: meta.collection,
-      field: 'id',
-      label: 'id',
-      interface: 'input',
-      required: true,
-      readonly: true,
-      hidden: true,
+    const meta: Prisma.SuperfastCollectionCreateInput = {
+      ...req.body,
+      superfastFields: {
+        create: [
+          {
+            field: 'id',
+            label: 'id',
+            interface: 'input',
+            required: true,
+            readonly: true,
+            hidden: true,
+          },
+        ],
+      },
     };
 
     const collection = await prisma.$transaction(async (prisma) => {
       await prisma.$queryRawUnsafe(
         `CREATE TABLE ${req.body.collection}(id integer NOT NULL PRIMARY KEY)`
       );
-      await prisma.superfastField.create({ data: field });
       return await prisma.superfastCollection.create({ data: meta });
     });
 
     res.json({ collection: collection });
+  })
+);
+
+app.patch(
+  '/collections/:id',
+  asyncMiddleware(async (req: Request, res: Response) => {
+    const id = Number(req.params.id);
+    await prisma.superfastCollection.update({ where: { id: id }, data: req.body });
+
+    res.status(204).end();
   })
 );
 
@@ -52,7 +85,6 @@ app.delete(
 
     await prisma.$transaction(async (prisma) => {
       await prisma.$queryRawUnsafe(`DROP TABLE ${meta.collection}`);
-      await prisma.superfastField.deleteMany({ where: { collection: meta.collection } });
       await prisma.superfastCollection.delete({ where: { collection: meta.collection } });
     });
 

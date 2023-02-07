@@ -1,18 +1,31 @@
 import { Collection } from '@shared/types';
 import axios from 'axios';
-import useSWR, { SWRResponse } from 'swr';
+import React, { createContext, useContext } from 'react';
+import useSWR, { SWRConfiguration, SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
-import React, { createContext, useContext, useState } from 'react';
 
 type ContextType = {
+  getCollection: (id: string, config?: SWRConfiguration) => SWRResponse<Collection>;
   getCollections: () => SWRResponse<Collection[]>;
   createCollection: SWRMutationResponse<Collection>;
+  updateCollection: (id: string) => SWRMutationResponse<Collection>;
 };
 
 const Context = createContext<ContextType>({} as any);
 
 export const CollectionContextProvider = ({ children }) => {
-  const getCollections = () =>
+  const getCollection = (id: string, config?: SWRConfiguration): SWRResponse =>
+    useSWR(
+      `/api/collections/${id}`,
+      (url) =>
+        axios
+          .get<{ collection: Collection }>(url)
+          .then((res) => res.data.collection)
+          .catch((err) => Promise.reject(err.message)),
+      config
+    );
+
+  const getCollections = (): SWRResponse =>
     useSWR('/api/collections', (url) =>
       axios
         .get<{ collections: Collection[] }>(url)
@@ -30,11 +43,21 @@ export const CollectionContextProvider = ({ children }) => {
     }
   );
 
+  const updateCollection = (id: string): SWRMutationResponse =>
+    useSWRMutation(`/api/collections/${id}`, async (url: string, { arg }) => {
+      return axios
+        .patch<{ collection: Collection }>(url, arg)
+        .then((res) => res.data)
+        .catch((err) => Promise.reject(err.message));
+    });
+
   return (
     <Context.Provider
       value={{
+        getCollection,
         getCollections,
         createCollection,
+        updateCollection,
       }}
     >
       {children}

@@ -1,12 +1,18 @@
 import DeleteDocument from '@admin/components/elements/DeleteDocument';
-import RouterLink from '@admin/components/elements/Link';
+import Loading from '@admin/components/elements/Loading';
+import ComposeWrapper from '@admin/components/utilities/ComposeWrapper';
 import { useDocumentInfo } from '@admin/components/utilities/DocumentInfo';
+import updateCollectionSchema, {
+  FormValues,
+} from '@admin/fields/schemas/collections/updateCollection';
+import { CollectionContextProvider, useCollection } from '@admin/stores/Collection';
+import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Box,
   Button,
   Checkbox,
   Drawer,
-  FormLabel,
+  FormControlLabel,
   List,
   ListItem,
   ListItemButton,
@@ -18,11 +24,12 @@ import {
   TableCell,
   TableContainer,
   TableRow,
-  TextField,
   useTheme,
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
-import React, { useState } from 'react';
+import { useSnackbar } from 'notistack';
+import React, { Suspense, useEffect, useState } from 'react';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -31,8 +38,20 @@ const EditPage: React.FC = () => {
   const { id } = useParams();
   const theme = useTheme();
   const { t } = useTranslation();
-  const { localizedLabel } = useDocumentInfo();
   const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
+  const { localizedLabel } = useDocumentInfo();
+  const { getCollection, updateCollection } = useCollection();
+  const { data: meta, error } = getCollection(id, { suspense: true });
+  const { data, trigger, isMutating } = updateCollection(id);
+  const {
+    control,
+    handleSubmit,
+    formState: {},
+  } = useForm<FormValues>({
+    defaultValues: { hidden: meta.hidden, singleton: meta.singleton },
+    resolver: yupResolver(updateCollectionSchema()),
+  });
 
   const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
     if (
@@ -50,77 +69,126 @@ const EditPage: React.FC = () => {
     navigate(`../content-types`);
   };
 
-  const list = () => (
-    <Box
-      sx={{ width: 400 }}
-      role="presentation"
-      onClick={toggleDrawer(false)}
-      onKeyDown={toggleDrawer(false)}
-    >
-      <List>
-        {['Input', 'Textarea', 'Code', 'Markdown'].map((text) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-    </Box>
-  );
+  const onSubmit: SubmitHandler<FormValues> = (form: FormValues) => {
+    trigger({ singleton: form.singleton, hidden: form.hidden });
+  };
+
+  useEffect(() => {
+    if (data === undefined) return;
+    enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
+    navigate('../content-types');
+  }, [data]);
+
+  useEffect(() => {
+    if (error === undefined) return;
+    enqueueSnackbar(error, { variant: 'error' });
+  }, [error]);
 
   return (
-    <Stack rowGap={3}>
-      <Grid container spacing={2}>
-        <Grid xs>
-          <h1>{localizedLabel}</h1>
-        </Grid>
-        <Grid container columnSpacing={2} alignItems="center">
-          <Grid>
-            <DeleteDocument id={id} slug={`collections`} onSuccess={handleDeletionSuccess} />
+    <Suspense fallback={<Loading />}>
+      <Stack component="form" onSubmit={handleSubmit(onSubmit)} rowGap={3}>
+        <Grid container spacing={2}>
+          <Grid xs>
+            <h1>{localizedLabel}</h1>
           </Grid>
-          <Grid>
-            <Button variant="contained" component={RouterLink} to="../content-types">
-              {t('update')}
+          <Grid container columnSpacing={2} alignItems="center">
+            <Grid>
+              <DeleteDocument id={id} slug={`collections`} onSuccess={handleDeletionSuccess} />
+            </Grid>
+            <Grid>
+              <Button variant="contained" type="submit" disabled={isMutating}>
+                {t('update')}
+              </Button>
+            </Grid>
+          </Grid>
+        </Grid>
+        <Grid container xs={12} xl={6}>
+          <Grid xs={12}>
+            <TableContainer component={Paper}>
+              <Table aria-label="simple table">
+                <TableBody>
+                  {meta.fields.map((field) => {
+                    return (
+                      <TableRow
+                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                        key={field.field}
+                      >
+                        <TableCell component="th" scope="row">
+                          <span>{field.field}</span>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <Drawer
+              anchor="right"
+              open={state}
+              onClose={toggleDrawer(false)}
+              sx={{ zIndex: theme.zIndex.appBar + 200 }}
+            >
+              <Box
+                sx={{ width: 400 }}
+                role="presentation"
+                onClick={toggleDrawer(false)}
+                onKeyDown={toggleDrawer(false)}
+              >
+                <List>
+                  {['Input', 'Textarea', 'Code', 'Markdown'].map((text) => (
+                    <ListItem key={text} disablePadding>
+                      <ListItemButton>
+                        <ListItemText primary={text} />
+                      </ListItemButton>
+                    </ListItem>
+                  ))}
+                </List>
+              </Box>
+            </Drawer>
+            <Button
+              variant="contained"
+              onClick={toggleDrawer(true)}
+              sx={{ width: '100%', mt: '12px' }}
+            >
+              {t('create_field')}
             </Button>
           </Grid>
         </Grid>
-      </Grid>
-      <TableContainer component={Paper}>
-        <Table aria-label="simple table">
-          <TableBody>
-            <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-              <TableCell component="th" scope="row">
-                <span>id</span>
-              </TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <Button variant="contained" onClick={toggleDrawer(true)} sx={{ width: '100%', mt: '12px' }}>
-        フィールドを追加
-      </Button>
-      <Drawer
-        anchor="right"
-        open={state}
-        onClose={toggleDrawer(false)}
-        sx={{ zIndex: theme.zIndex.appBar + 200 }}
-      >
-        {list()}
-      </Drawer>
-      <Grid container spacing={3} xs={12} xl={6}>
-        <Grid xs={12} md={6}>
-          <FormLabel>Name</FormLabel> <TextField id="name" fullWidth />
+        <Grid container spacing={3} xs={12} xl={6}>
+          <Grid xs={12} md={6}>
+            <Box>
+              <Controller
+                name="hidden"
+                control={control}
+                render={({ field }) => (
+                  <FormControlLabel
+                    {...field}
+                    label={'Hidden'}
+                    control={<Checkbox defaultChecked={meta.hidden} />}
+                  />
+                )}
+              />
+            </Box>
+          </Grid>
+          <Grid xs={12} md={6}>
+            <Box>
+              <Controller
+                name="singleton"
+                control={control}
+                render={({ field }) => (
+                  <FormControlLabel
+                    {...field}
+                    label={'Singleton'}
+                    control={<Checkbox defaultChecked={meta.singleton} />}
+                  />
+                )}
+              />
+            </Box>
+          </Grid>
         </Grid>
-        <Grid xs={12} md={6}>
-          <FormLabel>Singleton</FormLabel>
-          <Box>
-            <Checkbox {...{ inputProps: { 'aria-label': 'Checkbox demo' } }} defaultChecked />
-          </Box>
-        </Grid>
-      </Grid>
-    </Stack>
+      </Stack>
+    </Suspense>
   );
 };
 
-export default EditPage;
+export default ComposeWrapper({ context: CollectionContextProvider })(EditPage);

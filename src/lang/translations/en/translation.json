@@ -33,12 +33,14 @@
   "valid": "Valid",
   "invalid": "Invalid",
   "description": "Description",
+  "create_field": "Create Field",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion.",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?"
   },
   "toast": {
     "created_successfully": "Created successfully.",
+    "updated_successfully": "Updated successfully.",
     "deleted_successfully": "Deleted successfully."
   },
   "create": {

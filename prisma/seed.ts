@@ -156,10 +156,21 @@ async function main() {
   console.log('Created Collections!');
 
   // Field作成
+  const restaurantCollection = await prisma.superfastCollection.findUnique({
+    where: {
+      collection: 'Restaurant',
+    },
+  });
+
+  const companyCollection = await prisma.superfastCollection.findUnique({
+    where: {
+      collection: 'Company',
+    },
+  });
+
   const fieldData: Prisma.SuperfastFieldCreateInput[] = [
     // Collection Restaurantに紐づくフィールド
     {
-      collection: 'Restaurant',
       field: 'name',
       label: '名前',
       special: 'one 2 many',
@@ -168,10 +179,10 @@ async function main() {
       required: false,
       hidden: false,
       sort: 1,
+      superfastCollection: { connect: { id: restaurantCollection?.id } },
       superfastFieldOptions: { create: [{ key: 'length', value: '100' }] },
     },
     {
-      collection: 'Restaurant',
       field: 'nick_name',
       label: 'ニックネーム',
       special: 'one 2 many',
@@ -180,10 +191,10 @@ async function main() {
       required: false,
       hidden: false,
       sort: 2,
+      superfastCollection: { connect: { id: restaurantCollection?.id } },
       superfastFieldOptions: { create: [{ key: 'length', value: '200' }] },
     },
     {
-      collection: 'Restaurant',
       field: 'adress',
       label: '住所',
       special: 'one 2 many',
@@ -192,11 +203,11 @@ async function main() {
       required: false,
       hidden: false,
       sort: 3,
+      superfastCollection: { connect: { id: restaurantCollection?.id } },
       superfastFieldOptions: { create: [{ key: 'length', value: '300' }] },
     },
     // Collection Companyに紐づくフィールド
     {
-      collection: 'Company',
       field: 'name',
       label: '会社名',
       special: 'one 2 many',
@@ -205,10 +216,10 @@ async function main() {
       required: false,
       hidden: false,
       sort: 1,
+      superfastCollection: { connect: { id: companyCollection?.id } },
       superfastFieldOptions: { create: [{ key: 'length', value: '100' }] },
     },
     {
-      collection: 'Company',
       field: 'phone_number',
       label: '電話番号',
       special: 'one 2 many',
@@ -217,10 +228,10 @@ async function main() {
       required: false,
       hidden: false,
       sort: 2,
+      superfastCollection: { connect: { id: companyCollection?.id } },
       superfastFieldOptions: { create: [{ key: 'length', value: '200' }] },
     },
     {
-      collection: 'Company',
       field: 'adress',
       label: '住所',
       special: 'one 2 many',
@@ -229,6 +240,7 @@ async function main() {
       required: false,
       hidden: false,
       sort: 3,
+      superfastCollection: { connect: { id: companyCollection?.id } },
       superfastFieldOptions: { create: [{ key: 'length', value: '300' }] },
     },
   ];

@@ -54,10 +54,11 @@ model SuperfastPermission {
 }
 
 model SuperfastCollection {
-  id         Int     @id @default(autoincrement())
-  collection String  @unique
-  singleton  Boolean @default(false)
-  hidden     Boolean
+  id                  Int     @id @default(autoincrement())
+  collection          String  @unique
+  singleton           Boolean @default(false)
+  hidden              Boolean
+  superfastFields     SuperfastField[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
@@ -67,7 +68,6 @@ model SuperfastCollection {
 
 model SuperfastField {
   id         Int     @id @default(autoincrement())
-  collection String
   field      String
   label      String
   special    String?
@@ -76,13 +76,14 @@ model SuperfastField {
   required   Boolean
   hidden     Boolean
   sort       Int?
+  superfastCollection   SuperfastCollection @relation(fields: [superfastCollectionId], references: [id], onDelete: Cascade)
+  superfastCollectionId Int
 
   createdAt             DateTime                @default(now())
   updatedAt             DateTime                @default(now())
   superfastFieldOptions SuperfastFieldOption[]
 
   @@map("Superfast_Field")
-  @@unique([id, collection])
 }
 
 model SuperfastFieldOption {
@@ -90,7 +91,7 @@ model SuperfastFieldOption {
   key   String
   value String
 
-  superfastField   SuperfastField @relation(fields: [superfastFieldId], references: [id])
+  superfastField   SuperfastField @relation(fields: [superfastFieldId], references: [id], onDelete: Cascade)
   superfastFieldId Int
 
   createdAt DateTime @default(now())

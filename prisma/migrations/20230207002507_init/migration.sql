@@ -48,7 +48,6 @@ CREATE TABLE "Superfast_Collection" (
 -- CreateTable
 CREATE TABLE "Superfast_Field" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "collection" TEXT NOT NULL,
     "field" TEXT NOT NULL,
     "label" TEXT NOT NULL,
     "special" TEXT,
@@ -57,8 +56,10 @@ CREATE TABLE "Superfast_Field" (
     "required" BOOLEAN NOT NULL,
     "hidden" BOOLEAN NOT NULL,
     "sort" INTEGER,
+    "superfastCollectionId" INTEGER NOT NULL,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+    "updatedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "Superfast_Field_superfastCollectionId_fkey" FOREIGN KEY ("superfastCollectionId") REFERENCES "Superfast_Collection" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -69,7 +70,7 @@ CREATE TABLE "Superfast_Field_Option" (
     "superfastFieldId" INTEGER NOT NULL,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT "Superfast_Field_Option_superfastFieldId_fkey" FOREIGN KEY ("superfastFieldId") REFERENCES "Superfast_Field" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT "Superfast_Field_Option_superfastFieldId_fkey" FOREIGN KEY ("superfastFieldId") REFERENCES "Superfast_Field" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -96,6 +97,3 @@ CREATE UNIQUE INDEX "Superfast_Role_name_key" ON "Superfast_Role"("name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Superfast_Collection_collection_key" ON "Superfast_Collection"("collection");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Superfast_Field_id_collection_key" ON "Superfast_Field"("id", "collection");
