@@ -21,22 +21,26 @@ app.get(
 app.post(
   '/collections',
   asyncMiddleware(async (req: Request, res: Response) => {
-    const meta: Prisma.SuperfastCollectionCreateInput = req.body;
-    const field: Prisma.SuperfastFieldCreateInput = {
-      collection: meta.collection,
-      field: 'id',
-      label: 'id',
-      interface: 'input',
-      required: true,
-      readonly: true,
-      hidden: true,
+    const meta: Prisma.SuperfastCollectionCreateInput = {
+      ...req.body,
+      superfastFields: {
+        create: [
+          {
+            field: 'id',
+            label: 'id',
+            interface: 'input',
+            required: true,
+            readonly: true,
+            hidden: true,
+          },
+        ],
+      },
     };
 
     const collection = await prisma.$transaction(async (prisma) => {
       await prisma.$queryRawUnsafe(
         `CREATE TABLE ${req.body.collection}(id integer NOT NULL PRIMARY KEY)`
       );
-      await prisma.superfastField.create({ data: field });
       return await prisma.superfastCollection.create({ data: meta });
     });
 
@@ -52,7 +56,6 @@ app.delete(
 
     await prisma.$transaction(async (prisma) => {
       await prisma.$queryRawUnsafe(`DROP TABLE ${meta.collection}`);
-      await prisma.superfastField.deleteMany({ where: { collection: meta.collection } });
       await prisma.superfastCollection.delete({ where: { collection: meta.collection } });
     });
 

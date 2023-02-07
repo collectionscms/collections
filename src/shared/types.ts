@@ -9,6 +9,7 @@ export type Collection = {
   id: number;
   collection: string;
   singleton: boolean;
+  fields: Field[];
 };
 
 export type Field = {
