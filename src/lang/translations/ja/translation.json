@@ -39,6 +39,7 @@
   },
   "toast": {
     "created_successfully": "登録しました",
+    "updated_successfully": "更新しました",
     "deleted_successfully": "削除しました"
   },
   "create": {
