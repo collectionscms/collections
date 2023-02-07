@@ -8,6 +8,7 @@ type ContextType = {
   getCollection: (id: string, config?: SWRConfiguration) => SWRResponse<Collection>;
   getCollections: () => SWRResponse<Collection[]>;
   createCollection: SWRMutationResponse<Collection>;
+  updateCollection: (id: string) => SWRMutationResponse<Collection>;
 };
 
 const Context = createContext<ContextType>({} as any);
@@ -42,12 +43,21 @@ export const CollectionContextProvider = ({ children }) => {
     }
   );
 
+  const updateCollection = (id: string): SWRMutationResponse =>
+    useSWRMutation(`/api/collections/${id}`, async (url: string, { arg }) => {
+      return axios
+        .patch<{ collection: Collection }>(url, arg)
+        .then((res) => res.data)
+        .catch((err) => Promise.reject(err.message));
+    });
+
   return (
     <Context.Provider
       value={{
         getCollection,
         getCollections,
         createCollection,
+        updateCollection,
       }}
     >
       {children}

@@ -67,6 +67,16 @@ app.post(
   })
 );
 
+app.patch(
+  '/collections/:id',
+  asyncMiddleware(async (req: Request, res: Response) => {
+    const id = Number(req.params.id);
+    await prisma.superfastCollection.update({ where: { id: id }, data: req.body });
+
+    res.status(204).end();
+  })
+);
+
 app.delete(
   '/collections/:id',
   asyncMiddleware(async (req: Request, res: Response) => {
