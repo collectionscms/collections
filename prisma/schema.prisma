@@ -78,12 +78,13 @@ model SuperfastField {
   sort       Int?
   superfastCollection   SuperfastCollection @relation(fields: [superfastCollectionId], references: [id], onDelete: Cascade)
   superfastCollectionId Int
+  superfastFieldOptions SuperfastFieldOption[]
 
   createdAt             DateTime                @default(now())
   updatedAt             DateTime                @default(now())
-  superfastFieldOptions SuperfastFieldOption[]
 
   @@map("Superfast_Field")
+  @@unique([superfastCollectionId, field])
 }
 
 model SuperfastFieldOption {

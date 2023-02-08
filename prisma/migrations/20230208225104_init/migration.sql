@@ -97,3 +97,6 @@ CREATE UNIQUE INDEX "Superfast_Role_name_key" ON "Superfast_Role"("name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Superfast_Collection_collection_key" ON "Superfast_Collection"("collection");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Superfast_Field_superfastCollectionId_field_key" ON "Superfast_Field"("superfastCollectionId", "field");
