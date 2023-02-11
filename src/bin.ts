@@ -5,6 +5,8 @@ import initScript from '@scripts/commands/init';
 import startScript from '@scripts/commands/start';
 import buildScript from '@scripts/commands/build';
 import devScript from '@scripts/commands/dev';
+import migrate from '@server/database/migrate';
+import seedDev from '@server/database/seeds/dev';
 
 const program = new Command();
 
@@ -52,5 +54,23 @@ program
 program.command('start').description('Start your Superfast application').action(start);
 program.command('build').description('Build your Superfast application').action(build);
 program.command('dev').description('Develop your Superfast server').action(dev);
+
+const dbCommand = program.command('database');
+dbCommand
+  .command('migrate:up')
+  .description('Upgrade the database')
+  .action(() => migrate('up'));
+dbCommand
+  .command('migrate:down')
+  .description('Downgrade the database')
+  .action(() => migrate('down'));
+dbCommand
+  .command('migrate:latest')
+  .description('Upgrade the database')
+  .action(() => migrate('latest'));
+dbCommand
+  .command('seed:dev')
+  .description('Inserting seed data')
+  .action(() => seedDev());
 
 program.parseAsync(process.argv);

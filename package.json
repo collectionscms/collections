@@ -20,9 +20,9 @@
     "start": "cross-env NODE_ENV=development ts-node -T -r tsconfig-paths/register ./src/bin.ts start",
     "dev": "cross-env NODE_ENV=development ts-node -T -r tsconfig-paths/register ./src/bin.ts dev",
     "build": "cross-env NODE_ENV=production ts-node -T -r tsconfig-paths/register ./src/bin.ts build",
-    "prisma:migrate": "prisma migrate dev",
-    "prisma:seed": "ts-node prisma/seed.ts",
-    "prisma:format": "prisma format"
+    "migrate:latest": "cross-env NODE_ENV=production ts-node -T -r tsconfig-paths/register ./src/bin.ts database migrate:latest",
+    "migrate:down": "cross-env NODE_ENV=production ts-node -T -r tsconfig-paths/register ./src/bin.ts database migrate:down",
+    "seed:dev": "cross-env NODE_ENV=production ts-node -T -r tsconfig-paths/register ./src/bin.ts database seed:dev"
   },
   "bin": {
     "superfastcms": "./src/bin.js"
