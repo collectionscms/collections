@@ -1,6 +1,10 @@
 import knex, { Knex } from 'knex';
 
+let database: Knex | null = null;
+
 export const getDatabase = (): Knex => {
+  if (database) return database;
+
   const config: Knex.Config = {
     client: 'sqlite3',
     connection: {
@@ -19,7 +23,8 @@ export const getDatabase = (): Knex => {
     },
   };
 
-  return knex(config);
+  database = knex(config);
+  return database;
 };
 
 const convertToCamel = (row: any): any => {
@@ -33,5 +38,6 @@ const convertToCamel = (row: any): any => {
     let newKey = key.replace(/_([a-z])/g, (p, m) => m.toUpperCase());
     newData[newKey] = convertToCamel(row[key]);
   }
+
   return newData;
 };
