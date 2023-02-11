@@ -1,5 +1,4 @@
 import Output from '@scripts/utilities/output';
-import { SuperfastField, SuperfastRole } from '@shared/types';
 import { Knex } from 'knex';
 import { getDatabase } from '../connection';
 
@@ -43,14 +42,11 @@ const seedingData = async (database: Knex): Promise<void> => {
 
   // User
   Output.info('Creating users...');
-  const adminRole = await database<SuperfastRole>('superfast_roles')
+  const adminRole = await database('superfast_roles')
     .select('id')
     .where('name', 'Administrator')
     .first();
-  const editorRole = await database<SuperfastRole>('superfast_roles')
-    .select('id')
-    .where('name', 'Editor')
-    .first();
+  const editorRole = await database('superfast_roles').select('id').where('name', 'Editor').first();
 
   await database('superfast_users').insert([
     {
@@ -149,11 +145,11 @@ const seedingData = async (database: Knex): Promise<void> => {
 
   // Field
   Output.info('Creating fields...');
-  const restaurant = await database<SuperfastField>('superfast_collections')
+  const restaurant = await database('superfast_collections')
     .select('id')
     .where('collection', 'Restaurant')
     .first();
-  const company = await database<SuperfastField>('superfast_collections')
+  const company = await database('superfast_collections')
     .select('id')
     .where('collection', 'Company')
     .first();
