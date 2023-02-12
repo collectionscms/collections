@@ -984,7 +984,7 @@
     "@babel/helper-validator-option" "^7.18.6"
     "@babel/plugin-transform-typescript" "^7.18.6"
 
-"@babel/runtime@^7.12.5", "@babel/runtime@^7.15.4", "@babel/runtime@^7.18.3", "@babel/runtime@^7.19.4", "@babel/runtime@^7.20.6", "@babel/runtime@^7.20.7", "@babel/runtime@^7.5.5", "@babel/runtime@^7.8.4", "@babel/runtime@^7.8.7":
+"@babel/runtime@^7.12.5", "@babel/runtime@^7.18.3", "@babel/runtime@^7.19.4", "@babel/runtime@^7.20.6", "@babel/runtime@^7.20.7", "@babel/runtime@^7.5.5", "@babel/runtime@^7.8.4", "@babel/runtime@^7.8.7":
   version "7.20.7"
   resolved "https://registry.npmjs.org/@babel/runtime/-/runtime-7.20.7.tgz"
   integrity sha512-UF0tvkUtxwAgZ5W/KrkHf0Rn0fdnLDU9ScxBrEVNUprE/MzirjK4MJUX1/BVDv00Sv8cljtukVK1aky++X1SjQ==
@@ -1912,7 +1912,7 @@
   dependencies:
     "@types/node" "*"
 
-"@types/lodash@^4.14.175", "@types/lodash@^4.14.189":
+"@types/lodash@^4.14.189":
   version "4.14.191"
   resolved "https://registry.npmjs.org/@types/lodash/-/lodash-4.14.191.tgz"
   integrity sha512-BdZ5BCCvho3EIXw6wUCXHe7rS53AIDPLE+JzwgT+OsJk53oBfbSmZZ7CX4VaRoN78N+TJpFi9QPlfIVNmJYWxQ==
@@ -5571,11 +5571,6 @@ locate-path@^6.0.0:
   dependencies:
     p-locate "^5.0.0"
 
-lodash-es@^4.17.21:
-  version "4.17.21"
-  resolved "https://registry.npmjs.org/lodash-es/-/lodash-es-4.17.21.tgz"
-  integrity sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==
-
 lodash.debounce@^4.0.8:
   version "4.0.8"
   resolved "https://registry.npmjs.org/lodash.debounce/-/lodash.debounce-4.0.8.tgz"
@@ -5844,11 +5839,6 @@ mute-stream@0.0.8:
   version "0.0.8"
   resolved "https://registry.npmjs.org/mute-stream/-/mute-stream-0.0.8.tgz"
   integrity sha512-nnbWWOkoWyUsTjKrhgD0dcz22mdkSnpYqbEjIm2nhwhuxlSkpywJmBo8h0ZqJdkp73mb90SssHkN4rsRaBAfAA==
-
-nanoclone@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.npmjs.org/nanoclone/-/nanoclone-0.2.1.tgz"
-  integrity sha512-wynEP02LmIbLpcYw8uBKpcfF6dmg2vcpKqxeH5UcoKEYdExslsdUA4ugFauuaeYdTB76ez6gJW8XAZ6CgkXYxA==
 
 natural-compare-lite@^1.4.0:
   version "1.4.0"
@@ -6381,9 +6371,9 @@ prop-types@^15.6.2, prop-types@^15.8.1:
     object-assign "^4.1.1"
     react-is "^16.13.1"
 
-property-expr@^2.0.4:
+property-expr@^2.0.5:
   version "2.0.5"
-  resolved "https://registry.npmjs.org/property-expr/-/property-expr-2.0.5.tgz"
+  resolved "https://registry.yarnpkg.com/property-expr/-/property-expr-2.0.5.tgz#278bdb15308ae16af3e3b9640024524f4dc02cb4"
   integrity sha512-IJUkICM5dP5znhCckHSv30Q4b5/JA5enCtkRHYaOVOAocnH/1BQEYTC5NMfT3AVl/iXKdr3aqQbQn9DxyWknwA==
 
 proxy-addr@~2.0.7:
@@ -7250,6 +7240,11 @@ tildify@2.0.0:
   resolved "https://registry.yarnpkg.com/tildify/-/tildify-2.0.0.tgz#f205f3674d677ce698b7067a99e949ce03b4754a"
   integrity sha512-Cc+OraorugtXNfs50hU9KS369rFXCfgGLpfCfvlc+Ud5u6VWmUQsOAa9HbTvheQdYnrdJqqv1e5oIqXppMYnSw==
 
+tiny-case@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/tiny-case/-/tiny-case-1.0.3.tgz#d980d66bc72b5d5a9ca86fb7c9ffdb9c898ddd03"
+  integrity sha512-Eet/eeMhkO6TX8mnUteS9zgPbUMQa4I6Kkp5ORiBD5476/m+PIRiumP5tmh5ioJpH7k51Kehawy2UDfsnxxY8Q==
+
 tmp@^0.0.33:
   version "0.0.33"
   resolved "https://registry.npmjs.org/tmp/-/tmp-0.0.33.tgz"
@@ -7389,6 +7384,11 @@ type-fest@^0.21.3:
   version "0.21.3"
   resolved "https://registry.npmjs.org/type-fest/-/type-fest-0.21.3.tgz"
   integrity sha512-t0rzBq87m3fVcduHDUFhKmyyX+9eo6WQjZvf51Ea/M0Q7+T374Jp1aUiyUl0GKxp8M/OETVHSDvmkyPgvX+X2w==
+
+type-fest@^2.19.0:
+  version "2.19.0"
+  resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-2.19.0.tgz#88068015bb33036a598b952e55e9311a60fd3a9b"
+  integrity sha512-RAH822pAdBgcNMAfWnCBU3CFZcfZ/i1eZjwFU/dsLKumyuuP3niueg2UAukXYF0E2AAoc82ZSSf9J0WQBinzHA==
 
 type-is@~1.6.18:
   version "1.6.18"
@@ -7822,15 +7822,12 @@ yocto-queue@^0.1.0:
   resolved "https://registry.npmjs.org/yocto-queue/-/yocto-queue-0.1.0.tgz"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
 
-yup@^0.32.11:
-  version "0.32.11"
-  resolved "https://registry.npmjs.org/yup/-/yup-0.32.11.tgz"
-  integrity sha512-Z2Fe1bn+eLstG8DRR6FTavGD+MeAwyfmouhHsIUgaADz8jvFKbO/fXc2trJKZg+5EBjh4gGm3iU/t3onKlXHIg==
+yup@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/yup/-/yup-1.0.0.tgz#de4e32f9d2e45b1ab428076fc916c84db861b8ce"
+  integrity sha512-bRZIyMkoe212ahGJTE32cr2dLkJw53Va+Uw5mzsBKpcef9zCGQ23k/xtpQUfGwdWPKvCIlR8CzFwchs2rm2XpQ==
   dependencies:
-    "@babel/runtime" "^7.15.4"
-    "@types/lodash" "^4.14.175"
-    lodash "^4.17.21"
-    lodash-es "^4.17.21"
-    nanoclone "^0.2.1"
-    property-expr "^2.0.4"
+    property-expr "^2.0.5"
+    tiny-case "^1.0.3"
     toposort "^2.0.2"
+    type-fest "^2.19.0"
