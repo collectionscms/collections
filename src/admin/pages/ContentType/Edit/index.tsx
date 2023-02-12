@@ -42,7 +42,7 @@ const EditPage: React.FC = () => {
   const { enqueueSnackbar } = useSnackbar();
   const { localizedLabel } = useDocumentInfo();
   const { getCollection, updateCollection } = useCollection();
-  const { data: meta, error } = getCollection(id, { suspense: true });
+  const { data: meta } = getCollection(id, { suspense: true });
   const { data, trigger, isMutating } = updateCollection(id);
   const {
     control,
@@ -78,11 +78,6 @@ const EditPage: React.FC = () => {
     enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
     navigate('../content-types');
   }, [data]);
-
-  useEffect(() => {
-    if (error === undefined) return;
-    enqueueSnackbar(error, { variant: 'error' });
-  }, [error]);
 
   return (
     <Suspense fallback={<Loading />}>
