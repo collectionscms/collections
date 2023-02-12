@@ -28,8 +28,8 @@ const resetAll = async (database: Knex): Promise<void> => {
   await database('superfast_field_options').delete();
   await database('superfast_relations').delete();
   await database('superfast_project_settings').delete();
-  await database.schema.dropTable('Restaurant');
-  await database.schema.dropTable('Company');
+  await database.schema.dropTableIfExists('Restaurant');
+  await database.schema.dropTableIfExists('Company');
 };
 
 const seedingData = async (database: Knex): Promise<void> => {
