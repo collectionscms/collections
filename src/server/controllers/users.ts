@@ -1,20 +1,37 @@
-import asyncMiddleware from '../middleware/async';
-import { PrismaClient } from '@prisma/client';
 import express, { Request, Response } from 'express';
+import { getDatabase } from '../database/connection';
+import asyncMiddleware from '../middleware/async';
 
-const prisma = new PrismaClient();
 const app = express();
 
 app.get(
   '/users',
   asyncMiddleware(async (req: Request, res: Response) => {
-    const users = await prisma.superfastUser.findMany({ include: { superfastRole: true } });
+    const database = await getDatabase();
+    const users = await database
+      .select('u.*', {
+        role_id: 'r.id',
+        role_name: 'r.name',
+        role_description: 'r.description',
+        role_admin_access: 'r.admin_access',
+      })
+      .from('superfast_users AS u')
+      .join('superfast_roles AS r', 'r.id', 'u.superfast_role_id');
 
     res.json({
       users: users.flatMap(({ password, ...user }) => ({
         ...user,
-        role: user.superfastRole,
-        ...(delete user.superfastRole && user),
+        role: {
+          id: user.roleId,
+          name: user.roleName,
+          description: user.roleDescription,
+          adminAccess: user.roleAdminAccess,
+        },
+        ...(delete user.roleId &&
+          delete user.roleName &&
+          delete user.roleDescription &&
+          delete user.roleAdminAccess &&
+          user),
       })),
     });
   })
