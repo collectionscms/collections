@@ -49,7 +49,7 @@ const EditPage: React.FC = () => {
     handleSubmit,
     formState: {},
   } = useForm<FormValues>({
-    defaultValues: { hidden: meta.hidden, singleton: meta.singleton },
+    defaultValues: { hidden: Boolean(meta.hidden), singleton: Boolean(meta.singleton) },
     resolver: yupResolver(updateCollectionSchema()),
   });
 
@@ -164,7 +164,7 @@ const EditPage: React.FC = () => {
                   <FormControlLabel
                     {...field}
                     label={'Hidden'}
-                    control={<Checkbox defaultChecked={meta.hidden} />}
+                    control={<Checkbox checked={field.value} />}
                   />
                 )}
               />
@@ -179,7 +179,7 @@ const EditPage: React.FC = () => {
                   <FormControlLabel
                     {...field}
                     label={'Singleton'}
-                    control={<Checkbox defaultChecked={meta.singleton} />}
+                    control={<Checkbox checked={field.value} />}
                   />
                 )}
               />
