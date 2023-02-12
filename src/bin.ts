@@ -7,6 +7,7 @@ import buildScript from '@scripts/commands/build';
 import devScript from '@scripts/commands/dev';
 import migrate from '@server/database/migrate';
 import seedDev from '@server/database/seeds/dev';
+import seedProduction from '@server/database/seeds/production';
 
 const program = new Command();
 
@@ -27,6 +28,12 @@ const build = async () => {
 const dev = async () => {
   process.env.NODE_ENV = process.env.NODE_ENV ?? 'development';
   await devScript();
+};
+
+const runSeed = async (str) => {
+  const email = str.email.trim();
+  const password = str.password.trim();
+  await seedProduction(email, password);
 };
 
 // Initial program setup
@@ -72,5 +79,11 @@ dbCommand
   .command('seed:dev')
   .description('Inserting seed data')
   .action(() => seedDev());
+dbCommand
+  .command('seed:production')
+  .description('Inserting seed data')
+  .requiredOption('-e, --email <email>', 'email option')
+  .requiredOption('-p, --password <password>', 'password option')
+  .action(runSeed);
 
 program.parseAsync(process.argv);
