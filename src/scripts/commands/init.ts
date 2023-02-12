@@ -23,7 +23,7 @@ const scriptInit = async (projectName: string) => {
   }
 
   try {
-    await writeEnvFile(projectDir, 'dev');
+    await writeEnvFile(projectDir, 'data');
   } catch (err) {
     onError({ err });
   }
@@ -39,7 +39,7 @@ const scriptInit = async (projectName: string) => {
   spinner.stop();
 
   try {
-    await execa('npx', ['prisma', 'migrate', 'dev', '--name', 'init'], {
+    await execa('npm', ['run', 'migrate:latest'], {
       cwd: projectDir,
     });
   } catch (err) {

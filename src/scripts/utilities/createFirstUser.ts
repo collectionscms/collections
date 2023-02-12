@@ -31,11 +31,7 @@ export const createFirstUser = async (projectDir: string): Promise<void> => {
     },
   ]);
 
-  await execa(
-    'npm',
-    ['run', 'seed', 'init', '--', '-e', firstUser.email, '-p', firstUser.password],
-    {
-      cwd: projectDir,
-    }
-  );
+  await execa('npm', ['run', 'seed', '--', '-e', firstUser.email, '-p', firstUser.password], {
+    cwd: projectDir,
+  });
 };
