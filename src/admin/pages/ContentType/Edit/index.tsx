@@ -41,8 +41,9 @@ const EditPage: React.FC = () => {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const { localizedLabel } = useDocumentInfo();
-  const { getCollection, updateCollection } = useCollection();
-  const { data: meta, error } = getCollection(id, { suspense: true });
+  const { getCollection, updateCollection, getFields } = useCollection();
+  const { data: meta } = getCollection(id, { suspense: true });
+  const { data: fields } = getFields(id, { suspense: true });
   const { data, trigger, isMutating } = updateCollection(id);
   const {
     control,
@@ -79,11 +80,6 @@ const EditPage: React.FC = () => {
     navigate('../content-types');
   }, [data]);
 
-  useEffect(() => {
-    if (error === undefined) return;
-    enqueueSnackbar(error, { variant: 'error' });
-  }, [error]);
-
   return (
     <Suspense fallback={<Loading />}>
       <Stack component="form" onSubmit={handleSubmit(onSubmit)} rowGap={3}>
@@ -107,7 +103,7 @@ const EditPage: React.FC = () => {
             <TableContainer component={Paper}>
               <Table aria-label="simple table">
                 <TableBody>
-                  {meta.fields.map((field) => {
+                  {fields.map((field) => {
                     return (
                       <TableRow
                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}

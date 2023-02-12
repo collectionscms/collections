@@ -1,4 +1,4 @@
-import { Collection } from '@shared/types';
+import { Collection, Field } from '@shared/types';
 import axios from 'axios';
 import React, { createContext, useContext } from 'react';
 import useSWR, { SWRConfiguration, SWRResponse } from 'swr';
@@ -9,6 +9,7 @@ type ContextType = {
   getCollections: () => SWRResponse<Collection[]>;
   createCollection: SWRMutationResponse<Collection>;
   updateCollection: (id: string) => SWRMutationResponse<Collection>;
+  getFields: (id: string, config?: SWRConfiguration) => SWRResponse<Collection>;
 };
 
 const Context = createContext<ContextType>({} as any);
@@ -51,6 +52,17 @@ export const CollectionContextProvider = ({ children }) => {
         .catch((err) => Promise.reject(err.message));
     });
 
+  const getFields = (id: string, config?: SWRConfiguration): SWRResponse =>
+    useSWR(
+      `/api/collections/${id}/fields`,
+      (url) =>
+        axios
+          .get<{ fields: Field[] }>(url)
+          .then((res) => res.data.fields)
+          .catch((err) => Promise.reject(err.message)),
+      config
+    );
+
   return (
     <Context.Provider
       value={{
@@ -58,6 +70,7 @@ export const CollectionContextProvider = ({ children }) => {
         getCollections,
         createCollection,
         updateCollection,
+        getFields,
       }}
     >
       {children}

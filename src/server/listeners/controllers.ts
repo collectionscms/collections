@@ -1,6 +1,7 @@
 import users from '../controllers/users';
 import roles from '../controllers/roles';
 import collections from '../controllers/collections';
+import fields from '../controllers/fields';
 import Hooks from '@shared/features/hooks';
 import cookieParser from 'cookie-parser';
 import express, { Express } from 'express';
@@ -25,6 +26,7 @@ Hooks.addAction(
     app.use(users);
     app.use(roles);
     app.use(collections);
+    app.use(fields);
   },
   { id: 'core/controllers' }
 );
