@@ -87,6 +87,7 @@ app.delete(
       try {
         await tx.schema.dropTable(meta.collection);
         await tx('superfast_collections').where('id', id).delete();
+        await tx('superfast_fields').where('superfast_collection_id', id).delete();
         await tx.commit();
         res.status(204).end();
       } catch (e) {
