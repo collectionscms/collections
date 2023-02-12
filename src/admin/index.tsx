@@ -16,9 +16,9 @@ const Index = () => (
       config={{
         serverUrl: 'http://localhost:4000',
         collections: [
-          { collection: 'Restaurant', singleton: false },
-          { collection: 'Menu', singleton: false },
-          { collection: 'Owner', singleton: true },
+          { id: 1, collection: 'Restaurant', singleton: false, hidden: false, fields: [] },
+          { id: 2, collection: 'Menu', singleton: false, hidden: false, fields: [] },
+          { id: 3, collection: 'Owner', singleton: true, hidden: false, fields: [] },
         ],
       }}
     >
