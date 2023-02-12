@@ -79,11 +79,6 @@ const EditPage: React.FC = () => {
     navigate('../content-types');
   }, [data]);
 
-  useEffect(() => {
-    if (error === undefined) return;
-    enqueueSnackbar(error, { variant: 'error' });
-  }, [error]);
-
   return (
     <Suspense fallback={<Loading />}>
       <Stack component="form" onSubmit={handleSubmit(onSubmit)} rowGap={3}>
