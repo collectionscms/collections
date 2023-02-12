@@ -9,7 +9,7 @@ type ContextType = {
   getCollections: () => SWRResponse<Collection[]>;
   createCollection: SWRMutationResponse<Collection>;
   updateCollection: (id: string) => SWRMutationResponse<Collection>;
-  getFields: (id: string, config?: SWRConfiguration) => SWRResponse<Collection>;
+  getFields: (id: string, config?: SWRConfiguration) => SWRResponse<Field[]>;
 };
 
 const Context = createContext<ContextType>({} as any);
