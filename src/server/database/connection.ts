@@ -1,9 +1,11 @@
 import knex, { Knex } from 'knex';
+import path from 'path';
 
 let database: Knex | null = null;
 
-export const getDatabase = (): Knex => {
+export const getDatabase = async (): Promise<Knex> => {
   if (database) return database;
+  let migrationFiles = path.join(__dirname, 'migrations');
 
   const config: Knex.Config = {
     client: 'sqlite3',
@@ -12,7 +14,7 @@ export const getDatabase = (): Knex => {
     },
     useNullAsDefault: true,
     migrations: {
-      directory: './src/server/database/migrations',
+      directory: migrationFiles,
     },
     postProcessResponse: (result) => {
       if (Array.isArray(result)) {

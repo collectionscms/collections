@@ -2,7 +2,7 @@ import Output from '@scripts/utilities/output';
 import { getDatabase } from './connection';
 
 const migrate = async (direction: 'up' | 'down' | 'latest'): Promise<void> => {
-  const database = getDatabase();
+  const database = await getDatabase();
 
   try {
     if (direction === 'up') await database.migrate.up();

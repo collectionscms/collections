@@ -7,7 +7,7 @@ const app = express();
 app.get(
   '/users',
   asyncMiddleware(async (req: Request, res: Response) => {
-    const database = getDatabase();
+    const database = await getDatabase();
     const users = await database
       .select('u.*', {
         role_id: 'r.id',

@@ -8,7 +8,7 @@ const app = express();
 app.get(
   '/collections/:id',
   asyncMiddleware(async (req: Request, res: Response) => {
-    const database = getDatabase();
+    const database = await getDatabase();
     const id = Number(req.params.id);
     const collection = await database('superfast_collections').where('id', id).first();
 
@@ -24,7 +24,7 @@ app.get(
 app.get(
   '/collections',
   asyncMiddleware(async (req: Request, res: Response) => {
-    const database = getDatabase();
+    const database = await getDatabase();
     const collections = await database('superfast_collections');
 
     res.json({ collections: collections });
@@ -34,7 +34,7 @@ app.get(
 app.post(
   '/collections',
   asyncMiddleware(async (req: Request, res: Response) => {
-    const database = getDatabase();
+    const database = await getDatabase();
     const collection = await database.transaction(async (tx) => {
       try {
         await tx('superfast_fields').insert({
@@ -64,7 +64,7 @@ app.post(
 app.patch(
   '/collections/:id',
   asyncMiddleware(async (req: Request, res: Response) => {
-    const database = getDatabase();
+    const database = await getDatabase();
     const id = Number(req.params.id);
     await database('superfast_collections').where('id', id).update(req.body);
 
@@ -75,7 +75,7 @@ app.patch(
 app.delete(
   '/collections/:id',
   asyncMiddleware(async (req: Request, res: Response) => {
-    const database = getDatabase();
+    const database = await getDatabase();
     const id = Number(req.params.id);
     const meta = await database<Collection>('superfast_collections').where('id', id).first();
 

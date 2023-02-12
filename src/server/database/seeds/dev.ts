@@ -3,7 +3,7 @@ import { Knex } from 'knex';
 import { getDatabase } from '../connection';
 
 const seedDev = async (): Promise<void> => {
-  const database = getDatabase();
+  const database = await getDatabase();
 
   try {
     await resetAll(database);

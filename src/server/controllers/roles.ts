@@ -7,7 +7,7 @@ const app = express();
 app.get(
   '/roles',
   asyncMiddleware(async (req: Request, res: Response) => {
-    const database = getDatabase();
+    const database = await getDatabase();
     const roles = await database('superfast_roles');
     res.json({ roles: roles });
   })
