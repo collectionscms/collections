@@ -1,6 +1,6 @@
 {
   "name": "superfastcms",
-  "version": "0.1.56",
+  "version": "0.2.0",
   "description": "Free and Open-source Headless CMS and Application Framework built with TypeScript, Node.js, React.",
   "license": "MIT",
   "engines": {
@@ -70,6 +70,7 @@
     "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
     "date-fns": "^2.29.3",
+    "dotenv": "^16.0.3",
     "dotenv-flow": "^3.2.0",
     "execa": "5.1.1",
     "express": "^4.18.2",
@@ -128,7 +129,6 @@
     "@types/node-notifier": "^8.0.2",
     "@types/react": "^18.0.25",
     "@types/react-dom": "^18.0.9",
-    "@types/rimraf": "^4.0.5",
     "@types/webpack-env": "^1.18.0",
     "@typescript-eslint/eslint-plugin": "^5.43.0",
     "@typescript-eslint/parser": "^5.43.0",
