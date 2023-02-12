@@ -7,11 +7,13 @@
     "dev": "superfastcms dev",
     "build": "superfastcms build",
     "start": "node superfast/build/main.js",
-    "seed": "node ./seed.js"
+    "migrate:latest": "superfastcms database migrate:latest",
+    "seed": "superfastcms database seed:production"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "superfastcms": "^0.1.56"
+    "superfastcms": "^0.2.0",
+    "sqlite3": "^5.1.4"
   }
 }
