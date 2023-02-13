@@ -11,12 +11,7 @@ import {
   Box,
   Button,
   Checkbox,
-  Drawer,
   FormControlLabel,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
   Paper,
   Stack,
   Table,
@@ -27,11 +22,13 @@ import {
   useTheme,
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
+import { Field } from '@shared/types';
 import { useSnackbar } from 'notistack';
 import React, { Suspense, useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
+import CreateField from './CreateField';
 
 const EditPage: React.FC = () => {
   const [state, setState] = useState(false);
@@ -54,24 +51,20 @@ const EditPage: React.FC = () => {
     resolver: yupResolver(updateCollectionSchema()),
   });
 
-  const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
-    if (
-      event.type === 'keydown' &&
-      ((event as React.KeyboardEvent).key === 'Tab' ||
-        (event as React.KeyboardEvent).key === 'Shift')
-    ) {
-      return;
-    }
-
-    setState(open);
-  };
-
   const handleDeletionSuccess = () => {
     navigate(`../content-types`);
   };
 
   const onSubmit: SubmitHandler<FormValues> = (form: FormValues) => {
     trigger({ singleton: form.singleton, hidden: form.hidden });
+  };
+
+  const handleCreateFieldSuccess = (_: Field) => {
+    setState(false);
+  };
+
+  const onToggleCreateField = (state: boolean) => {
+    setState(state);
   };
 
   useEffect(() => {
@@ -82,6 +75,12 @@ const EditPage: React.FC = () => {
 
   return (
     <Suspense fallback={<Loading />}>
+      <CreateField
+        id={id}
+        openState={state}
+        onSuccess={(field) => handleCreateFieldSuccess(field)}
+        onClose={() => onToggleCreateField(false)}
+      />
       <Stack component="form" onSubmit={handleSubmit(onSubmit)} rowGap={3}>
         <Grid container spacing={2}>
           <Grid xs>
@@ -98,60 +97,39 @@ const EditPage: React.FC = () => {
             </Grid>
           </Grid>
         </Grid>
-        <Grid container xs={12} xl={6}>
-          <Grid xs={12}>
-            <TableContainer component={Paper}>
-              <Table aria-label="simple table">
-                <TableBody>
-                  {fields.map((field) => {
-                    return (
-                      <TableRow
-                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                        key={field.field}
-                      >
-                        <TableCell component="th" scope="row">
-                          <span>{field.field}</span>
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </Table>
-            </TableContainer>
-            <Drawer
-              anchor="right"
-              open={state}
-              onClose={toggleDrawer(false)}
-              sx={{ zIndex: theme.zIndex.appBar + 200 }}
-            >
-              <Box
-                sx={{ width: 400 }}
-                role="presentation"
-                onClick={toggleDrawer(false)}
-                onKeyDown={toggleDrawer(false)}
+        <Grid container gap={2} columns={{ xs: 1, md: 2 }}>
+          <Grid xs={1}>
+            <Stack gap={2}>
+              <TableContainer component={Paper}>
+                <Table aria-label="simple table">
+                  <TableBody>
+                    {fields.map((field) => {
+                      return (
+                        <TableRow
+                          sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                          key={field.field}
+                        >
+                          <TableCell component="th" scope="row">
+                            <span>{field.field}</span>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              <Button
+                variant="contained"
+                onClick={() => onToggleCreateField(true)}
+                sx={{ width: '100%' }}
               >
-                <List>
-                  {['Input', 'Textarea', 'Code', 'Markdown'].map((text) => (
-                    <ListItem key={text} disablePadding>
-                      <ListItemButton>
-                        <ListItemText primary={text} />
-                      </ListItemButton>
-                    </ListItem>
-                  ))}
-                </List>
-              </Box>
-            </Drawer>
-            <Button
-              variant="contained"
-              onClick={toggleDrawer(true)}
-              sx={{ width: '100%', mt: '12px' }}
-            >
-              {t('create_field')}
-            </Button>
+                {t('add_field')}
+              </Button>
+            </Stack>
           </Grid>
         </Grid>
-        <Grid container spacing={3} xs={12} xl={6}>
-          <Grid xs={12} md={6}>
+        <Grid container spacing={3} columns={{ xs: 1, md: 4 }}>
+          <Grid xs={1}>
             <Box>
               <Controller
                 name="hidden"
@@ -166,7 +144,7 @@ const EditPage: React.FC = () => {
               />
             </Box>
           </Grid>
-          <Grid xs={12} md={6}>
+          <Grid xs={1}>
             <Box>
               <Controller
                 name="singleton"
