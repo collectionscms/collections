@@ -1,4 +1,4 @@
-import { SchemaOf } from 'yup';
+import { ObjectSchema } from 'yup';
 import yup from '../../yup';
 
 export type FormValues = {
@@ -6,7 +6,7 @@ export type FormValues = {
   password: string;
 };
 
-export const loginSchema: SchemaOf<FormValues> = yup.object().shape({
+export const loginSchema: ObjectSchema<FormValues> = yup.object().shape({
   email: yup.string().email().required(),
   password: yup.string().required(),
 });

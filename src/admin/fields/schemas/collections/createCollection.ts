@@ -1,5 +1,5 @@
 import { TFunction } from 'i18next';
-import { SchemaOf } from 'yup';
+import { ObjectSchema } from 'yup';
 import yup from '../../yup';
 
 export type FormValues = {
@@ -7,7 +7,7 @@ export type FormValues = {
   singleton: boolean;
 };
 
-export const createCollection = (t: TFunction): SchemaOf<FormValues> => {
+export const createCollection = (t: TFunction): ObjectSchema<FormValues> => {
   return yup.object().shape({
     name: yup
       .string()
