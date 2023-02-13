@@ -1,5 +1,3 @@
-import { Type } from '@admin/components/elements/Table/Cell/types';
-
 export type Config = {
   serverUrl: string;
   collections: Collection[];
@@ -13,10 +11,26 @@ export type Collection = {
   fields: Field[];
 };
 
+export type FieldInterface =
+  | 'input'
+  | 'input-multiline'
+  | 'input-rich-text-html'
+  | 'input-rich-text-md';
+
 export type Field = {
+  id: number;
   field: string;
   label: string;
-  type: (typeof Type)[keyof typeof Type];
+  interface: FieldInterface;
+  required: boolean;
+  readonly: boolean;
+  hidden: boolean;
+  fieldOptions: FieldOption[];
+};
+
+export type FieldOption = {
+  key: string;
+  value: string;
 };
 
 export type User = {

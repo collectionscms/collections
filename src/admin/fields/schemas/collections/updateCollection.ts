@@ -1,4 +1,4 @@
-import { SchemaOf } from 'yup';
+import { ObjectSchema } from 'yup';
 import yup from '../../yup';
 
 export type FormValues = {
@@ -6,7 +6,7 @@ export type FormValues = {
   singleton: boolean;
 };
 
-export const updateCollection = (): SchemaOf<FormValues> => {
+export const updateCollection = (): ObjectSchema<FormValues> => {
   return yup.object().shape({
     hidden: yup.boolean(),
     singleton: yup.boolean(),

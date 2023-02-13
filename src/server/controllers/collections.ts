@@ -35,8 +35,16 @@ app.post(
   '/collections',
   asyncMiddleware(async (req: Request, res: Response) => {
     const database = await getDatabase();
-    const collection = await database.transaction(async (tx) => {
+
+    await database.transaction(async (tx) => {
       try {
+        await tx.schema.createTable(req.body.collection, function (table) {
+          table.increments();
+          table.timestamps(true, true);
+        });
+
+        const collections = await tx('superfast_collections').insert(req.body, '*');
+
         await tx('superfast_fields').insert({
           field: 'id',
           label: 'id',
@@ -44,20 +52,16 @@ app.post(
           required: true,
           readonly: true,
           hidden: true,
+          superfast_collection_id: collections[0].id,
         });
-        await tx.schema.createTable(req.body.collection, function (table) {
-          table.increments();
-          table.timestamps(true, true);
-        });
-        const collection = await tx('superfast_collections').insert(req.body).returning('*');
 
-        return collection[0];
+        await tx.commit();
+        res.json({ collection: collections[0] });
       } catch (e) {
-        tx.rollback();
+        await tx.rollback();
+        res.status(500).end();
       }
     });
-
-    res.json({ collection: collection });
   })
 );
 
@@ -83,12 +87,14 @@ app.delete(
       try {
         await tx.schema.dropTable(meta.collection);
         await tx('superfast_collections').where('id', id).delete();
+        await tx('superfast_fields').where('superfast_collection_id', id).delete();
+        await tx.commit();
+        res.status(204).end();
       } catch (e) {
-        tx.rollback();
+        await tx.rollback();
+        res.status(500).end();
       }
     });
-
-    res.status(204).end();
   })
 );
 

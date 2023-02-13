@@ -1,8 +1,7 @@
-import { Column } from '@admin/components/elements/Table/types';
-import { Field } from '@shared/types';
+import { Column, ColumnField } from '@admin/components/elements/Table/types';
 
 const buildColumns = (
-  fields: Field[],
+  fields: ColumnField[],
   customRenderCell?: (index: number, row: any, data: any) => React.ReactNode
 ): Column[] => {
   return fields.map((meta) => ({

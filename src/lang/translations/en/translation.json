@@ -33,7 +33,16 @@
   "valid": "Valid",
   "invalid": "Invalid",
   "description": "Description",
-  "create_field": "Create Field",
+  "add_field": "Add Field",
+  "field": "Field Name",
+  "label": "Label",
+  "input-placeholder": "ex:",
+  "field_type": "Field Type",
+  "text_field": "Text Field",
+  "textarea": "Textarea",
+  "field_property": "Field Property",
+  "required_fields": "Required Fields",
+  "required_at_creation": "Require value at creation",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion.",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?"
