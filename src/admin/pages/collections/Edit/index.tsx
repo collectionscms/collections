@@ -1,4 +1,4 @@
-import DeleteDocument from '@admin/components/elements/DeleteDocument';
+import DeleteHeaderButton from '@admin/components/elements/DeleteHeaderButton';
 import RouterLink from '@admin/components/elements/Link';
 import { useAuth } from '@admin/components/utilities/Auth';
 import { Button, Drawer, Stack, useTheme } from '@mui/material';
@@ -53,7 +53,7 @@ const EditPage: React.FC<Props> = ({ collection }) => {
             {id ? (
               <>
                 <Grid>
-                  <DeleteDocument
+                  <DeleteHeaderButton
                     id={id}
                     slug={`collections/${collection.collection}`}
                     disabled={!hasPermission(collection.collection, 'delete')}
