@@ -1,10 +1,16 @@
-import { Field } from '@shared/types';
+import { Type } from './Cell/types';
 import React from 'react';
 
 export type Column = {
-  field: Field;
+  field: ColumnField;
   label: string;
   customRenderCell?: (index: number, row: any, data: any) => React.ReactNode;
+};
+
+export type ColumnField = {
+  field: string;
+  label: string;
+  type: (typeof Type)[keyof typeof Type];
 };
 
 export type Props = {
