@@ -17,7 +17,7 @@ const DeleteDocument: React.FC<Props> = ({ id, slug, openState, onSuccess, onClo
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
   const { deleteDocument } = useDocument();
-  const { data, trigger, isMutating } = deleteDocument(id, slug);
+  const { data, trigger, error, reset, isMutating } = deleteDocument(id, slug);
 
   const handleClose = () => {
     onClose();
@@ -31,6 +31,7 @@ const DeleteDocument: React.FC<Props> = ({ id, slug, openState, onSuccess, onClo
     if (data === undefined) return;
     enqueueSnackbar(t('toast.deleted_successfully'), { variant: 'success' });
     onSuccess();
+    reset();
   }, [data]);
 
   return (
