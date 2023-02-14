@@ -1,11 +1,12 @@
 import { DeleteOutlineOutlined } from '@mui/icons-material';
 import { Button } from '@mui/material';
-import { t } from 'i18next';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import DeleteDocument from '../DeleteDocument';
 import { Props } from './types';
 
 const DeleteHeaderButton: React.FC<Props> = ({ id, slug, disabled, onSuccess }) => {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
