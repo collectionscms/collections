@@ -9,13 +9,14 @@ import {
   DialogContentText,
   DialogTitle,
 } from '@mui/material';
-import { t } from 'i18next';
 import { useSnackbar } from 'notistack';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Props } from './types';
 
 const DeleteDocument: React.FC<Props> = ({ id, slug, disabled = false, onSuccess }) => {
   const [open, setOpen] = useState(false);
+  const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
   const { deleteDocument } = useDocument();
   const { data, trigger, isMutating } = deleteDocument(id, slug);
