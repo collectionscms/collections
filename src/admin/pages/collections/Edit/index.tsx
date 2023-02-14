@@ -3,8 +3,8 @@ import RouterLink from '@admin/components/elements/Link';
 import { useAuth } from '@admin/components/utilities/Auth';
 import { Button, Drawer, Stack, useTheme } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
-import { t } from 'i18next';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import ApiPreview from '../ApiPreview';
 import { Props } from './types';
@@ -12,6 +12,7 @@ import { Props } from './types';
 const EditPage: React.FC<Props> = ({ collection }) => {
   const { id } = useParams();
   const theme = useTheme();
+  const { t } = useTranslation();
   const { hasPermission } = useAuth();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const navigate = useNavigate();

@@ -21,14 +21,15 @@ import {
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { FieldInterface } from '@shared/types';
-import { t } from 'i18next';
 import React, { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { Props } from './types';
 
 const CreateField: React.FC<Props> = ({ id, openState, onSuccess, onClose }) => {
   const [fieldInterface, setFieldInterface] = useState<FieldInterface>();
   const theme = useTheme();
+  const { t } = useTranslation();
   const { createField } = useField();
   const { data, trigger, isMutating } = createField(id);
   const {
