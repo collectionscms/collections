@@ -6,8 +6,8 @@ import buildColumns from '@admin/utilities/buildColumns';
 import { Button, Drawer, useTheme } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { Stack } from '@mui/system';
-import { t } from 'i18next';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import ApiPreview from '../ApiPreview';
 import { Props } from './types';
 
@@ -20,6 +20,7 @@ const columns = buildColumns(fields, (i: number, row: any, data: any) => (
 
 const DefaultListPage: React.FC<Props> = ({ collection }) => {
   const theme = useTheme();
+  const { t } = useTranslation();
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
