@@ -47,6 +47,35 @@ app.post(
   })
 );
 
+app.delete(
+  '/collections/:collectionId/fields/:id',
+  asyncMiddleware(async (req: Request, res: Response) => {
+    const database = await getDatabase();
+    const collectionId = Number(req.params.collectionId);
+    const id = Number(req.params.id);
+
+    const metaCollection = await database('superfast_collections')
+      .where('id', collectionId)
+      .first();
+    const metaField = await database('superfast_fields').where('id', id).first();
+
+    await database.transaction(async (tx) => {
+      try {
+        await tx('superfast_fields').where('id', id).delete();
+        await tx.schema.alterTable(metaCollection.collection, function (table) {
+          table.dropColumn(metaField.field);
+        });
+
+        await tx.commit();
+        res.status(204).end();
+      } catch (e) {
+        await tx.rollback();
+        res.status(500).end();
+      }
+    });
+  })
+);
+
 const addColumnToTable = (field: Field, table: Knex.CreateTableBuilder) => {
   var column = null;
 
