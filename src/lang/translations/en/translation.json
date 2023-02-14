@@ -67,7 +67,7 @@
       "default": "Input Error.",
       "required": "Please enter.",
       "one_of": "Please Enter one of the following values. {{values}}",
-      "not_one_of": "One of the following values cannot be entered in the {{label}}. {{values}}",
+      "not_one_of": "One of the following values cannot be entered. {{values}}",
       "not_type": "Please Enter it in the correct format.",
       "defined": "Not defined."
     },
