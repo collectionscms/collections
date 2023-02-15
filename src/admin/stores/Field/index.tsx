@@ -4,14 +4,14 @@ import React, { createContext, useContext } from 'react';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
 
 type ContextType = {
-  createField: (id: string) => SWRMutationResponse<Field>;
+  createField: (slug: string) => SWRMutationResponse<Field>;
 };
 
 const Context = createContext<ContextType>({} as any);
 
 export const FieldContextProvider = ({ children }) => {
-  const createField = (id: string): SWRMutationResponse =>
-    useSWRMutation(`/api/collections/${id}/fields`, async (url: string, { arg }) => {
+  const createField = (slug: string): SWRMutationResponse =>
+    useSWRMutation(`/api/collections/${slug}/fields`, async (url: string, { arg }) => {
       return axios
         .post<{ field: Field }>(url, arg)
         .then((res) => res.data.field)

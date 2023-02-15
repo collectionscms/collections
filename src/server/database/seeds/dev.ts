@@ -158,6 +158,7 @@ const seedingData = async (database: Knex): Promise<void> => {
     // Fields related to collection Restaurant
     {
       id: 1,
+      collection: 'Restaurant',
       field: 'id',
       label: 'id',
       special: null,
@@ -166,10 +167,10 @@ const seedingData = async (database: Knex): Promise<void> => {
       required: true,
       hidden: true,
       sort: 1,
-      superfast_collection_id: restaurant!.id,
     },
     {
       id: 2,
+      collection: 'Restaurant',
       field: 'name',
       label: '名前',
       special: null,
@@ -178,10 +179,10 @@ const seedingData = async (database: Knex): Promise<void> => {
       required: false,
       hidden: false,
       sort: 2,
-      superfast_collection_id: restaurant!.id,
     },
     {
       id: 3,
+      collection: 'Restaurant',
       field: 'nick_name',
       label: 'ニックネーム',
       special: null,
@@ -190,10 +191,10 @@ const seedingData = async (database: Knex): Promise<void> => {
       required: false,
       hidden: false,
       sort: 3,
-      superfast_collection_id: restaurant!.id,
     },
     {
       id: 4,
+      collection: 'Restaurant',
       field: 'adress',
       label: '住所',
       special: null,
@@ -202,11 +203,11 @@ const seedingData = async (database: Knex): Promise<void> => {
       required: false,
       hidden: false,
       sort: 4,
-      superfast_collection_id: restaurant!.id,
     },
     // Fields related to collection Company
     {
       id: 5,
+      collection: 'Company',
       field: 'id',
       label: 'id',
       special: null,
@@ -215,10 +216,10 @@ const seedingData = async (database: Knex): Promise<void> => {
       required: true,
       hidden: true,
       sort: 1,
-      superfast_collection_id: company!.id,
     },
     {
       id: 6,
+      collection: 'Company',
       field: 'name',
       label: '会社名',
       special: null,
@@ -227,10 +228,10 @@ const seedingData = async (database: Knex): Promise<void> => {
       required: false,
       hidden: false,
       sort: 2,
-      superfast_collection_id: company!.id,
     },
     {
       id: 7,
+      collection: 'Company',
       field: 'phone_number',
       label: '電話番号',
       special: null,
@@ -239,10 +240,10 @@ const seedingData = async (database: Knex): Promise<void> => {
       required: false,
       hidden: false,
       sort: 3,
-      superfast_collection_id: company!.id,
     },
     {
       id: 8,
+      collection: 'Company',
       field: 'adress',
       label: '住所',
       special: null,
@@ -251,7 +252,6 @@ const seedingData = async (database: Knex): Promise<void> => {
       required: false,
       hidden: false,
       sort: 4,
-      superfast_collection_id: company!.id,
     },
   ]);
 

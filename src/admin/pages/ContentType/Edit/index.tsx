@@ -42,7 +42,7 @@ const EditPage: React.FC = () => {
   const { localizedLabel } = useDocumentInfo();
   const { getCollection, updateCollection, getFields } = useCollection();
   const { data: meta } = getCollection(id, { suspense: true });
-  const { data: fields, mutate } = getFields(id, { suspense: true });
+  const { data: fields, mutate } = getFields(meta.collection, { suspense: true });
   const { data, trigger, isMutating } = updateCollection(id);
   const {
     control,
@@ -89,7 +89,7 @@ const EditPage: React.FC = () => {
   return (
     <Suspense fallback={<Loading />}>
       <CreateField
-        id={id}
+        slug={meta.collection}
         openState={state}
         onSuccess={(field) => handleCreateFieldSuccess(field)}
         onClose={() => onToggleCreateField(false)}

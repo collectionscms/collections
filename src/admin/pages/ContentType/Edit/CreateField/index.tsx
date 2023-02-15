@@ -26,12 +26,12 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Props } from './types';
 
-const CreateField: React.FC<Props> = ({ id, openState, onSuccess, onClose }) => {
+const CreateField: React.FC<Props> = ({ slug, openState, onSuccess, onClose }) => {
   const [fieldInterface, setFieldInterface] = useState<FieldInterface>();
   const theme = useTheme();
   const { t } = useTranslation();
   const { createField } = useField();
-  const { data, trigger, isMutating } = createField(id);
+  const { data, trigger, isMutating } = createField(slug);
   const {
     control,
     handleSubmit,
@@ -58,6 +58,7 @@ const CreateField: React.FC<Props> = ({ id, openState, onSuccess, onClose }) => 
 
   const onSubmit: SubmitHandler<FormValues> = (form: FormValues) => {
     trigger({
+      collection: slug,
       field: form.field,
       label: form.label,
       interface: fieldInterface,

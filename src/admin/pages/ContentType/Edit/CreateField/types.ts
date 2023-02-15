@@ -1,7 +1,7 @@
 import { Field } from '@shared/types';
 
 export type Props = {
-  id: string;
+  slug: string;
   openState: boolean;
   onSuccess: (field: Field) => void;
   onClose: () => void;

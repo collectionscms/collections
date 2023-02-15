@@ -50,6 +50,7 @@ export async function up(knex: Knex): Promise<void> {
 
   await knex.schema.createTable('superfast_fields', (table) => {
     table.increments('id').primary().notNullable();
+    table.string('collection', 64).notNullable();
     table.string('field', 64).notNullable();
     table.string('label', 64).notNullable();
     table.string('special', 64);
@@ -58,12 +59,6 @@ export async function up(knex: Knex): Promise<void> {
     table.boolean('required').notNullable().defaultTo(0);
     table.boolean('hidden').notNullable().defaultTo(0);
     table.integer('sort', 8);
-    table
-      .integer('superfast_collection_id')
-      .unsigned()
-      .index()
-      .references('id')
-      .inTable('superfast_collections');
     table.timestamps(true, true);
   });
 
