@@ -7,7 +7,6 @@ export type Collection = {
   collection: string;
   singleton: boolean;
   hidden: boolean;
-  fields: Field[];
 };
 
 export type FieldInterface =
@@ -18,6 +17,7 @@ export type FieldInterface =
 
 export type Field = {
   id: number;
+  collection: string;
   field: string;
   label: string;
   interface: FieldInterface;

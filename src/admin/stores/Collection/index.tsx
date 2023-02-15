@@ -9,7 +9,7 @@ type ContextType = {
   getCollections: () => SWRResponse<Collection[]>;
   createCollection: SWRMutationResponse<Collection>;
   updateCollection: (id: string) => SWRMutationResponse<Collection>;
-  getFields: (id: string, config?: SWRConfiguration) => SWRResponse<Field[]>;
+  getFields: (slug: string, config?: SWRConfiguration) => SWRResponse<Field[]>;
 };
 
 const Context = createContext<ContextType>({} as any);
@@ -52,9 +52,9 @@ export const CollectionContextProvider = ({ children }) => {
         .catch((err) => Promise.reject(err.message));
     });
 
-  const getFields = (id: string, config?: SWRConfiguration): SWRResponse =>
+  const getFields = (slug: string, config?: SWRConfiguration): SWRResponse =>
     useSWR(
-      `/api/collections/${id}/fields`,
+      `/api/collections/${slug}/fields`,
       (url) =>
         axios
           .get<{ fields: Field[] }>(url)

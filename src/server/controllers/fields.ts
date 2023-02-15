@@ -7,11 +7,11 @@ import asyncMiddleware from '../middleware/async';
 const app = express();
 
 app.get(
-  '/collections/:id/fields',
+  '/collections/:slug/fields',
   asyncMiddleware(async (req: Request, res: Response) => {
     const database = await getDatabase();
-    const id = Number(req.params.id);
-    const fields = await database('superfast_fields').where('superfast_collection_id', id);
+    const slug = req.params.slug;
+    const fields = await database('superfast_fields').where('collection', slug);
 
     res.json({
       fields: fields,
@@ -20,19 +20,17 @@ app.get(
 );
 
 app.post(
-  '/collections/:id/fields',
+  '/collections/:slug/fields',
   asyncMiddleware(async (req: Request, res: Response) => {
     const database = await getDatabase();
-    const id = Number(req.params.id);
-    const meta = await database<Collection>('superfast_collections').where('id', id).first();
-    const addField = {
-      ...req.body,
-      superfast_collection_id: meta.id,
-    };
+    const slug = req.params.slug;
+    const meta = await database<Collection>('superfast_collections')
+      .where('collection', slug)
+      .first();
 
     await database.transaction(async (tx) => {
       try {
-        const field = await tx('superfast_fields').insert(addField);
+        const field = await tx('superfast_fields').insert(req.body);
         await tx.schema.alterTable(meta.collection, function (table) {
           addColumnToTable(req.body, table);
         });

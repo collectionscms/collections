@@ -46,13 +46,13 @@ app.post(
         const collections = await tx('superfast_collections').insert(req.body, '*');
 
         await tx('superfast_fields').insert({
+          collection: req.body.collection,
           field: 'id',
           label: 'id',
           interface: 'input',
           required: true,
           readonly: true,
           hidden: true,
-          superfast_collection_id: collections[0].id,
         });
 
         await tx.commit();
@@ -87,7 +87,7 @@ app.delete(
       try {
         await tx.schema.dropTable(meta.collection);
         await tx('superfast_collections').where('id', id).delete();
-        await tx('superfast_fields').where('superfast_collection_id', id).delete();
+        await tx('superfast_fields').where('collection', meta.collection).delete();
         await tx.commit();
         res.status(204).end();
       } catch (e) {
