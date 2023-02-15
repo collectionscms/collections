@@ -1,4 +1,4 @@
-import DeleteDocument from '@admin/components/elements/DeleteDocument';
+import DeleteHeaderButton from '@admin/components/elements/DeleteHeaderButton';
 import RouterLink from '@admin/components/elements/Link';
 import { useDocumentInfo } from '@admin/components/utilities/DocumentInfo';
 import { Button, Stack } from '@mui/material';
@@ -30,7 +30,7 @@ const EditPage: React.FC = () => {
             {id ? (
               <>
                 <Grid>
-                  <DeleteDocument id={id} slug={`users`} onSuccess={handleDeletionSuccess} />
+                  <DeleteHeaderButton id={id} slug={`users`} onSuccess={handleDeletionSuccess} />
                 </Grid>
                 <Grid>
                   <Button variant="contained" component={RouterLink} to="../users">

@@ -1,7 +1,7 @@
 export type Props = {
   id: string;
-  slug: string;
-  openState: boolean;
+  collectionId: string;
+  menu: any;
   onSuccess: () => void;
   onClose: () => void;
 };

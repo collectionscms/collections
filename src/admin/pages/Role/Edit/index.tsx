@@ -1,11 +1,11 @@
-import React from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import Grid from '@mui/material/Unstable_Grid2';
+import DeleteHeaderButton from '@admin/components/elements/DeleteHeaderButton';
 import RouterLink from '@admin/components/elements/Link';
-import { Stack, Button } from '@mui/material';
-import { useTranslation } from 'react-i18next';
 import { useDocumentInfo } from '@admin/components/utilities/DocumentInfo';
-import DeleteDocument from '@admin/components/elements/DeleteDocument';
+import { Button, Stack } from '@mui/material';
+import Grid from '@mui/material/Unstable_Grid2';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const EditPage: React.FC = () => {
   const { id } = useParams();
@@ -27,7 +27,7 @@ const EditPage: React.FC = () => {
           {id ? (
             <>
               <Grid>
-                <DeleteDocument id={id} slug={`roles`} onSuccess={handleDeletionSuccess} />
+                <DeleteHeaderButton id={id} slug={`roles`} onSuccess={handleDeletionSuccess} />
               </Grid>
               <Grid>
                 <Button variant="contained" component={RouterLink} to="../roles">

@@ -1,7 +1,6 @@
 export type Props = {
   id: string;
   slug: string;
-  openState: boolean;
+  disabled?: boolean;
   onSuccess: () => void;
-  onClose: () => void;
 };
