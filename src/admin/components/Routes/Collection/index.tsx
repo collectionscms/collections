@@ -5,25 +5,36 @@ import { useConfig } from '@admin/components/utilities/Config';
 import Edit from '@admin/pages/collections/Edit';
 import List from '@admin/pages/collections/List';
 import { collectionsGroupNavItems } from '@admin/utilities/groupNavItems';
-import React, { lazy } from 'react';
+import { Collection } from '@shared/types';
+import React, { lazy, useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 
 const Unauthorized = Loader(lazy(() => import('@admin/pages/Unauthorized')));
 
 const CollectionRoutes = () => {
+  const [permittedCollections, setPermittedCollections] = useState([]);
+  const [group, setGroup] = useState(collectionsGroupNavItems([]));
   const { user } = useAuth();
   const { collections } = useConfig();
 
-  const permissions = user ? user.role.permissions : [];
-  const adminAccessEnabled = user ? user.role.adminAccess : false;
+  const filteredPermittedCollections = (): Collection[] => {
+    if (!user) return [];
+    if (user.role.adminAccess) return collections;
 
-  const permittedCollections = collections.filter(
-    (collection) =>
-      adminAccessEnabled ||
-      permissions.some((permission) => permission.collection == collection.collection)
-  );
+    const permissions = user.role.permissions;
 
-  const group = collectionsGroupNavItems(permittedCollections);
+    return collections.filter((collection) =>
+      permissions.some((permission) => permission.collection === collection.collection)
+    );
+  };
+
+  useEffect(() => {
+    if (collections === undefined) return;
+    const permitted = filteredPermittedCollections();
+    setPermittedCollections(permitted);
+    const group = collectionsGroupNavItems(permitted);
+    setGroup(group);
+  }, [user, collections]);
 
   return {
     path: '/admin/collections',

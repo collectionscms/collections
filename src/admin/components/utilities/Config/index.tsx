@@ -1,11 +1,32 @@
-import { Config } from '@shared/types';
-import React, { createContext, useContext } from 'react';
+import { Collection, Config } from '@shared/types';
+import axios from 'axios';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import useSWR from 'swr';
 
-const Context = createContext<Config>({} as Config);
+type ContextType = {
+  collections: Collection[];
+  config: Config;
+};
+
+const Context = createContext<ContextType>({} as any);
 
 export const ConfigProvider: React.FC<{ config: Config; children: React.ReactNode }> = ({
   children,
   config,
-}) => <Context.Provider value={config}>{children}</Context.Provider>;
+}) => {
+  const [collections, setCollections] = useState([]);
+  const { data } = useSWR('/api/collections', (url) =>
+    axios
+      .get<{ collections: Collection[] }>(url)
+      .then((res) => res.data.collections)
+      .catch((err) => Promise.reject(err.message))
+  );
 
-export const useConfig = (): Config => useContext(Context);
+  useEffect(() => {
+    setCollections(data);
+  }, [data]);
+
+  return <Context.Provider value={{ collections, config }}>{children}</Context.Provider>;
+};
+
+export const useConfig = () => useContext(Context);

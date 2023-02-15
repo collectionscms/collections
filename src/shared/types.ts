@@ -1,6 +1,5 @@
 export type Config = {
   serverUrl: string;
-  collections: Collection[];
 };
 
 export type Collection = {

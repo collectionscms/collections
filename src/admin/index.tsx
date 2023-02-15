@@ -15,11 +15,6 @@ const Index = () => (
     <ConfigProvider
       config={{
         serverUrl: 'http://localhost:4000',
-        collections: [
-          { id: 1, collection: 'Restaurant', singleton: false, hidden: false, fields: [] },
-          { id: 2, collection: 'Menu', singleton: false, hidden: false, fields: [] },
-          { id: 3, collection: 'Owner', singleton: true, hidden: false, fields: [] },
-        ],
       }}
     >
       <ColorModeProvider>
