@@ -1,27 +1,29 @@
 import RouterLink from '@admin/components/elements/Link';
 import Table from '@admin/components/elements/Table';
 import Cell from '@admin/components/elements/Table/Cell';
-import { Type } from '@admin/components/elements/Table/Cell/types';
+import { Column } from '@admin/components/elements/Table/types';
+import ComposeWrapper from '@admin/components/utilities/ComposeWrapper';
+import { ContentContextProvider, useContent } from '@admin/stores/Content';
 import buildColumns from '@admin/utilities/buildColumns';
 import { Button, Drawer, useTheme } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { Stack } from '@mui/system';
-import React, { useState } from 'react';
+import { useSnackbar } from 'notistack';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ApiPreview from '../ApiPreview';
+import buildColumnFields from './buildColumnFields';
 import { Props } from './types';
 
-// TODO Retrieve from DB
-const fields = [{ field: 'name', label: 'Name', type: Type.Text }];
-
-const columns = buildColumns(fields, (i: number, row: any, data: any) => (
-  <Cell colIndex={i} type={fields[i].type} rowData={row} cellData={data} />
-));
-
 const DefaultListPage: React.FC<Props> = ({ collection }) => {
+  const [columns, setColumns] = useState<Column[]>([]);
   const theme = useTheme();
   const { t } = useTranslation();
+  const { enqueueSnackbar } = useSnackbar();
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const { getContents, getFields } = useContent();
+  const { data: metaFields, error: getFieldsError } = getFields(collection.collection);
+  const { data: contents, error: getContentsError } = getContents(collection.collection);
 
   const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
     if (
@@ -35,16 +37,24 @@ const DefaultListPage: React.FC<Props> = ({ collection }) => {
     setDrawerOpen(open);
   };
 
-  const rows = [
-    {
-      id: 1,
-      name: 'collection1',
-    },
-    {
-      id: 2,
-      name: 'collection2',
-    },
-  ];
+  useEffect(() => {
+    if (metaFields === undefined) return;
+    const columnFields = buildColumnFields(metaFields);
+    const columns = buildColumns(columnFields, (i: number, row: any, data: any) => (
+      <Cell colIndex={i} type={columnFields[i].type} rowData={row} cellData={data} />
+    ));
+    setColumns(columns);
+  }, [metaFields]);
+
+  useEffect(() => {
+    if (getFieldsError === undefined) return;
+    enqueueSnackbar(getFieldsError, { variant: 'error' });
+  }, [getFieldsError]);
+
+  useEffect(() => {
+    if (getContentsError === undefined) return;
+    enqueueSnackbar(getContentsError, { variant: 'error' });
+  }, [getContentsError]);
 
   return (
     <Stack rowGap={3}>
@@ -73,9 +83,9 @@ const DefaultListPage: React.FC<Props> = ({ collection }) => {
           </Grid>
         </Grid>
       </Grid>
-      <Table columns={columns} rows={rows} />
+      <Table columns={columns} rows={contents || []} />
     </Stack>
   );
 };
 
-export default DefaultListPage;
+export default ComposeWrapper({ context: ContentContextProvider })(DefaultListPage);
