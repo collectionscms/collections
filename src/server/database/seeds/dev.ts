@@ -281,13 +281,17 @@ const createCollectionTables = async (database: Knex): Promise<void> => {
   Output.info('Creating collection tables...');
   await database.schema.createTable('Restaurant', function (table) {
     table.increments();
-    table.string('status', 64).notNullable();
+    table.string('name', 255);
+    table.string('nick_name', 255);
+    table.string('adress', 255);
     table.timestamps(true, true);
   });
 
   await database.schema.createTable('Company', function (table) {
     table.increments();
-    table.string('status', 64).notNullable();
+    table.string('name', 255);
+    table.string('phone_number', 255);
+    table.string('adress', 255);
     table.timestamps(true, true);
   });
 };
