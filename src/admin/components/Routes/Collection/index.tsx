@@ -1,4 +1,3 @@
-import Loader from '@admin/components/elements/Loader';
 import MainLayout from '@admin/components/layouts/Main';
 import { useAuth } from '@admin/components/utilities/Auth';
 import { useConfig } from '@admin/components/utilities/Config';
@@ -6,10 +5,8 @@ import Edit from '@admin/pages/collections/Edit';
 import List from '@admin/pages/collections/List';
 import { collectionsGroupNavItems } from '@admin/utilities/groupNavItems';
 import { Collection } from '@shared/types';
-import React, { lazy, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
-
-const Unauthorized = Loader(lazy(() => import('@admin/pages/Unauthorized')));
 
 const CollectionRoutes = () => {
   const [permittedCollections, setPermittedCollections] = useState([]);
@@ -60,7 +57,7 @@ const CollectionRoutes = () => {
       ]),
       {
         path: '*',
-        element: <Unauthorized />,
+        element: <></>,
       },
     ],
   };
