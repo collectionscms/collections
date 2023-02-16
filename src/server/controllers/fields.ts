@@ -88,10 +88,6 @@ const addColumnToTable = (field: Field, table: Knex.CreateTableBuilder) => {
       break;
   }
 
-  if (field.required) {
-    column.notNullable();
-  }
-
   return column;
 };
 
