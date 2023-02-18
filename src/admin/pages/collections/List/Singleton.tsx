@@ -1,8 +1,11 @@
-import RouterLink from '@admin/components/elements/Link';
-import { Type } from '@admin/components/elements/Table/Cell/types';
-import { Button, Drawer, FormLabel, Stack, TextField, useTheme } from '@mui/material';
+import RenderFields from '@admin/components/forms/RenderFields';
+import ComposeWrapper from '@admin/components/utilities/ComposeWrapper';
+import { ContentContextProvider, useContent } from '@admin/stores/Content';
+import { Button, Drawer, Stack, useTheme } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
-import React, { useState } from 'react';
+import { useSnackbar } from 'notistack';
+import React, { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import ApiPreview from '../ApiPreview';
 import { Props } from './types';
@@ -10,7 +13,16 @@ import { Props } from './types';
 const SingletonPage: React.FC<Props> = ({ collection }) => {
   const theme = useTheme();
   const { t } = useTranslation();
+  const { enqueueSnackbar } = useSnackbar();
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const { getContents, getFields } = useContent();
+  const { data: metaFields, error: getFieldsError } = getFields(collection.collection);
+  const { data: contents, error: getContentsError } = getContents(collection.collection);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
     if (
@@ -24,14 +36,23 @@ const SingletonPage: React.FC<Props> = ({ collection }) => {
     setDrawerOpen(open);
   };
 
-  // TODO Retrieve from DB
-  const fields = [
-    { field: 'name', label: 'Name', type: Type.Text },
-    { field: 'address', label: 'Address', type: Type.Text },
-  ];
+  useEffect(() => {
+    if (getFieldsError === undefined) return;
+    enqueueSnackbar(getFieldsError, { variant: 'error' });
+  }, [getFieldsError]);
+
+  useEffect(() => {
+    if (getContentsError === undefined) return;
+    enqueueSnackbar(getContentsError, { variant: 'error' });
+  }, [getContentsError]);
+
+  const onSubmit = (data) => {
+    console.log('post data');
+    console.log(data);
+  };
 
   return (
-    <Stack rowGap={3}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <Drawer
         anchor="right"
         open={drawerOpen}
@@ -51,25 +72,21 @@ const SingletonPage: React.FC<Props> = ({ collection }) => {
             </Button>
           </Grid>
           <Grid>
-            <Button
-              variant="contained"
-              component={RouterLink}
-              to={`/admin/collections/${collection}`}
-            >
+            <Button variant="contained" type="submit">
               {t('update')}
             </Button>
           </Grid>
         </Grid>
       </Grid>
-      <Grid container spacing={3} xs={12} xl={6}>
-        {fields.map((field) => (
-          <Grid xs={12} md={6} key={field.field}>
-            <FormLabel>{field.label}</FormLabel> <TextField id={field.field} fullWidth />
-          </Grid>
-        ))}
+      <Grid container columns={{ xs: 1, lg: 2 }}>
+        <Grid xs={1}>
+          <Stack rowGap={3}>
+            <RenderFields register={register} errors={errors} fields={metaFields || []} />
+          </Stack>
+        </Grid>
       </Grid>
-    </Stack>
+    </form>
   );
 };
 
-export default SingletonPage;
+export default ComposeWrapper({ context: ContentContextProvider })(SingletonPage);
