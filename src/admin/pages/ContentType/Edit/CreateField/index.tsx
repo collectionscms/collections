@@ -108,8 +108,8 @@ const CreateField: React.FC<Props> = ({ slug, openState, onSuccess, onClose }) =
                 </Grid>
                 <Grid xs={1} sm={2} md={2}>
                   <Button
-                    variant={fieldInterface === 'input-multiline' ? 'contained' : 'outlined'}
-                    onClick={() => onSelectedFieldInterface('input-multiline')}
+                    variant={fieldInterface === 'inputMultiline' ? 'contained' : 'outlined'}
+                    onClick={() => onSelectedFieldInterface('inputMultiline')}
                     fullWidth
                   >
                     {t('textarea')}

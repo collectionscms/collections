@@ -9,11 +9,7 @@ export type Collection = {
   hidden: boolean;
 };
 
-export type FieldInterface =
-  | 'input'
-  | 'input-multiline'
-  | 'input-rich-text-html'
-  | 'input-rich-text-md';
+export type FieldInterface = 'input' | 'inputMultiline' | 'inputRichTextHtml' | 'inputRichTextMd';
 
 export type Field = {
   id: number;
