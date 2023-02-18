@@ -16,8 +16,7 @@ const CollectionRoutes = () => {
 
   const filteredPermittedCollections = (): Collection[] => {
     if (!user) return [];
-    if (user.role.adminAccess) return collections;
-
+    if (user.role.admin_access) return collections;
     const permissions = user.role.permissions;
 
     return collections.filter((collection) =>
