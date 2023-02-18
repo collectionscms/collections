@@ -1,4 +1,4 @@
-import { Collection, Field } from '@shared/types';
+import { Field } from '@shared/types';
 import axios from 'axios';
 import React, { createContext, useContext } from 'react';
 import useSWR, { SWRConfiguration, SWRResponse } from 'swr';
@@ -6,6 +6,7 @@ import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
 
 type ContextType = {
   getContents: (slug: string, config?: SWRConfiguration) => SWRResponse<any[]>;
+  getContent: (slug: string, id: string, config?: SWRConfiguration) => SWRResponse<any>;
   getFields: (slug: string, config?: SWRConfiguration) => SWRResponse<Field[]>;
   createContent: (slug: string) => SWRMutationResponse<unknown>;
   updateContent: (slug: string, id: string) => SWRMutationResponse<unknown>;
@@ -21,6 +22,17 @@ export const ContentContextProvider = ({ children }) => {
         axios
           .get<{ contents: unknown[] }>(url)
           .then((res) => res.data.contents)
+          .catch((err) => Promise.reject(err.message)),
+      config
+    );
+
+  const getContent = (slug: string, id: string, config?: SWRConfiguration): SWRResponse =>
+    useSWR(
+      `/api/collections/${slug}/contents/${id}`,
+      (url) =>
+        axios
+          .get<{ content: unknown }>(url)
+          .then((res) => res.data.content)
           .catch((err) => Promise.reject(err.message)),
       config
     );
@@ -56,6 +68,7 @@ export const ContentContextProvider = ({ children }) => {
     <Context.Provider
       value={{
         getContents,
+        getContent,
         getFields,
         createContent,
         updateContent,
