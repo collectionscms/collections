@@ -44,15 +44,15 @@ const CollectionRoutes = () => {
       ...permittedCollections.flatMap((collection) => [
         {
           path: `${collection.collection}`,
-          element: <List collection={collection} />,
+          element: <List key={collection.collection} collection={collection} />,
         },
         {
           path: `${collection.collection}/create`,
-          element: <Edit collection={collection} />,
+          element: <Edit key={collection.collection} collection={collection} />,
         },
         {
           path: `${collection.collection}/:id`,
-          element: <Edit collection={collection} />,
+          element: <Edit key={collection.collection} collection={collection} />,
         },
       ]),
       {
