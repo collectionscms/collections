@@ -22,15 +22,15 @@ app.get(
       users: users.flatMap(({ password, ...user }) => ({
         ...user,
         role: {
-          id: user.roleId,
-          name: user.roleName,
-          description: user.roleDescription,
-          adminAccess: user.roleAdminAccess,
+          id: user.role_id,
+          name: user.role_name,
+          description: user.role_description,
+          admin_access: user.role_admin_access,
         },
-        ...(delete user.roleId &&
-          delete user.roleName &&
-          delete user.roleDescription &&
-          delete user.roleAdminAccess &&
+        ...(delete user.role_id &&
+          delete user.role_name &&
+          delete user.role_description &&
+          delete user.role_admin_access &&
           user),
       })),
     });

@@ -22,7 +22,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const hasPermission = useCallback(
     (collection: string, action: PermissionsAction) => {
       return (
-        user.role.adminAccess ||
+        user.role.admin_access ||
         user.role.permissions.some(
           (permission) => permission.collection === collection && permission.action === action
         )

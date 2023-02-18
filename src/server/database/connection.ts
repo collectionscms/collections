@@ -18,30 +18,8 @@ export const getDatabase = async (): Promise<Knex> => {
       directory: migrationFiles,
       loadExtensions: [process.env.MIGRATE_EXTENSIONS],
     },
-    postProcessResponse: (result) => {
-      if (Array.isArray(result)) {
-        return result.map((row) => convertToCamel(row));
-      } else {
-        return convertToCamel(result);
-      }
-    },
   };
 
   database = knex(config);
   return database;
-};
-
-const convertToCamel = (row: any): any => {
-  if (typeof row != 'object' || !row) return row;
-  if (Array.isArray(row)) {
-    return row.map((item) => convertToCamel(item));
-  }
-
-  const newData: any = {};
-  for (let key in row) {
-    let newKey = key.replace(/_([a-z])/g, (p, m) => m.toUpperCase());
-    newData[newKey] = convertToCamel(row[key]);
-  }
-
-  return newData;
 };
