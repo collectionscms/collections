@@ -17,9 +17,9 @@ const buildColumnFields = (fields: Field[]): ColumnField[] => {
 const toType = (fieldInterface: string): (typeof Type)[keyof typeof Type] => {
   switch (fieldInterface) {
     case 'input':
-    case 'input-multiline':
-    case 'input-rich-text-html':
-    case 'input-rich-text-md':
+    case 'inputMultiline':
+    case 'inputRichTextHtml':
+    case 'inputRichTextMd':
       return Type.Text;
   }
 

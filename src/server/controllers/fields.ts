@@ -81,9 +81,9 @@ const addColumnToTable = (field: Field, table: Knex.CreateTableBuilder) => {
     case 'input':
       column = table.string(field.field, 255);
       break;
-    case 'input-multiline':
-    case 'input-rich-text-html':
-    case 'input-rich-text-md':
+    case 'inputMultiline':
+    case 'inputRichTextHtml':
+    case 'inputRichTextMd':
       column = table.text(field.field);
       break;
   }
