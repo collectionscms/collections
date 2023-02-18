@@ -17,6 +17,20 @@ app.get(
   })
 );
 
+app.get(
+  '/collections/:slug/contents/:id',
+  asyncMiddleware(async (req: Request, res: Response) => {
+    const database = await getDatabase();
+    const slug = req.params.slug;
+    const id = req.params.id;
+    const content = await database(slug).where('id', id).first();
+
+    res.json({
+      content: content,
+    });
+  })
+);
+
 app.post(
   '/collections/:slug/contents',
   asyncMiddleware(async (req: Request, res: Response) => {
