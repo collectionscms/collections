@@ -11,16 +11,28 @@ import ApiPreview from '../ApiPreview';
 import { Props } from './types';
 
 const SingletonPage: React.FC<Props> = ({ collection }) => {
+  const [content, setContent] = useState(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const theme = useTheme();
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const { getContents, getFields } = useContent();
+  const { getContents, getFields, createContent, updateContent } = useContent();
   const { data: metaFields, error: getFieldsError } = getFields(collection.collection);
   const { data: contents, error: getContentsError } = getContents(collection.collection);
   const {
+    data: createdContent,
+    trigger: createTrigger,
+    isMutating: isCreateMutating,
+  } = createContent(collection.collection);
+  const {
+    data: updatedContent,
+    trigger: updateTrigger,
+    isMutating: isUpdateMutating,
+  } = updateContent(collection.collection, content?.id);
+  const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm();
 
@@ -36,6 +48,20 @@ const SingletonPage: React.FC<Props> = ({ collection }) => {
     setDrawerOpen(open);
   };
 
+  const setDefaultValue = (content: Record<string, any>) => {
+    metaFields
+      .filter((field) => !field.hidden)
+      .forEach((field) => {
+        setValue(field.field, content[field.field]);
+      });
+  };
+
+  useEffect(() => {
+    if (contents?.[0] === undefined) return;
+    setContent(contents?.[0]);
+    setDefaultValue(contents?.[0]);
+  }, [contents]);
+
   useEffect(() => {
     if (getFieldsError === undefined) return;
     enqueueSnackbar(getFieldsError, { variant: 'error' });
@@ -46,9 +72,22 @@ const SingletonPage: React.FC<Props> = ({ collection }) => {
     enqueueSnackbar(getContentsError, { variant: 'error' });
   }, [getContentsError]);
 
+  useEffect(() => {
+    if (createdContent === undefined) return;
+    enqueueSnackbar(t('toast.created_successfully'), { variant: 'success' });
+  }, [createdContent]);
+
+  useEffect(() => {
+    if (updatedContent === undefined) return;
+    enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
+  }, [updatedContent]);
+
   const onSubmit = (data) => {
-    console.log('post data');
-    console.log(data);
+    if (content?.id) {
+      updateTrigger(data);
+    } else {
+      createTrigger(data);
+    }
   };
 
   return (
@@ -72,7 +111,11 @@ const SingletonPage: React.FC<Props> = ({ collection }) => {
             </Button>
           </Grid>
           <Grid>
-            <Button variant="contained" type="submit">
+            <Button
+              variant="contained"
+              type="submit"
+              disabled={isCreateMutating || isUpdateMutating}
+            >
               {t('update')}
             </Button>
           </Grid>
