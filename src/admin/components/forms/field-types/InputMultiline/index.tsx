@@ -3,18 +3,18 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Props } from '../types';
 
-const InputMultiline: React.FC<Props> = ({ register, errors, field: meta }) => {
+const InputMultiline: React.FC<Props> = ({ register, errors, field }) => {
   const { t } = useTranslation();
-  const required = meta.required && { required: t('yup.mixed.required') };
+  const required = field.required && { required: t('yup.mixed.required') };
 
   return (
     <TextField
       type="text"
       multiline
       rows={5}
-      name={meta.field}
-      {...register(meta.field, { ...required })}
-      error={errors[meta.field] !== undefined}
+      name={field.field}
+      {...register(field.field, { ...required })}
+      error={errors[field.field] !== undefined}
       fullWidth
     />
   );
