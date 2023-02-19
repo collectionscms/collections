@@ -55,12 +55,14 @@
   "create": {
     "user": "ユーザー 新規登録",
     "role": "ロール 新規登録",
-    "content_type": "コンテンツタイプ 新規登録"
+    "content_type": "コンテンツタイプ 新規登録",
+    "custom": "{{page}} 新規登録"
   },
   "edit": {
     "user": "ユーザー 編集",
     "role": "ロール 編集",
-    "content_type": "コンテンツタイプ 編集"
+    "content_type": "コンテンツタイプ 編集",
+    "custom": "{{page}} 編集"
   },
   "yup": {
     "mixed": {

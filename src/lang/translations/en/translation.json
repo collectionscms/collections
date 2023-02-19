@@ -55,12 +55,14 @@
   "create": {
     "user": "Create User",
     "role": "Create Role",
-    "content_type": "Create Content Type"
+    "content_type": "Create Content Type",
+    "custom": "Create {{page}}"
   },
   "edit": {
     "user": "Edit User",
     "role": "Edit Role",
-    "content_type": "Edit Content Type"
+    "content_type": "Edit Content Type",
+    "custom": "Edit {{page}}"
   },
   "yup": {
     "mixed": {
