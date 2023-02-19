@@ -124,7 +124,7 @@ const EditPage: React.FC<Props> = ({ collection }) => {
               <Grid>
                 <DeleteHeaderButton
                   id={id}
-                  slug={`collections/${collection.collection}`}
+                  slug={`collections/${collection.collection}/contents`}
                   disabled={!hasPermission(collection.collection, 'delete')}
                   onSuccess={handleDeletionSuccess}
                 />
