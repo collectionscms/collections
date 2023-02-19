@@ -30,6 +30,10 @@ const seedProduction = async (email: string, password: string): Promise<void> =>
       },
     ]);
 
+    // Project
+    Output.info('Creating project settings...');
+    await database('superfast_project_settings').insert([{ name: 'Superfast' }]);
+
     process.exit(0);
   } catch (e) {
     Output.error(e);
