@@ -58,4 +58,17 @@ app.patch(
   })
 );
 
+app.delete(
+  '/collections/:slug/contents/:id',
+  asyncMiddleware(async (req: Request, res: Response) => {
+    const database = await getDatabase();
+    const slug = req.params.slug;
+    const id = Number(req.params.id);
+
+    await database(slug).where('id', id).delete();
+
+    res.status(204).end();
+  })
+);
+
 export default app;
