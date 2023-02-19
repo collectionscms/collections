@@ -1,4 +1,5 @@
 import Output from '@scripts/utilities/output';
+import { oneWayHash } from '@server/utilities/oneWayHash';
 import { Knex } from 'knex';
 import { getDatabase } from '../connection';
 
@@ -47,6 +48,7 @@ const seedingData = async (database: Knex): Promise<void> => {
     .where('name', 'Administrator')
     .first();
   const editorRole = await database('superfast_roles').select('id').where('name', 'Editor').first();
+  const password = await oneWayHash('password');
 
   await database('superfast_users').insert([
     {
@@ -55,7 +57,7 @@ const seedingData = async (database: Knex): Promise<void> => {
       last_name: '山田',
       user_name: 'hanako',
       email: 'hanako-yamada@example.com',
-      password: 'hanako-xxxxxxxxx',
+      password: password,
       is_active: true,
       superfast_role_id: adminRole!.id,
     },
@@ -65,7 +67,7 @@ const seedingData = async (database: Knex): Promise<void> => {
       last_name: '田中',
       user_name: 'taro',
       email: 'taro-tanaka@example.com',
-      password: 'taro-xxxxxxxxx',
+      password: password,
       is_active: false,
       superfast_role_id: editorRole!.id,
     },
