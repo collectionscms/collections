@@ -113,7 +113,9 @@ const EditPage: React.FC<Props> = ({ collection }) => {
       <Grid container spacing={2}>
         <Grid xs={12} sm>
           <h1>
-            {id ? 'Update' : 'Create'} {collection.collection}
+            {id
+              ? t('edit.custom', { page: collection.collection })
+              : t('create.custom', { page: collection.collection })}
           </h1>
         </Grid>
         <Grid container columnSpacing={2} alignItems="center">
