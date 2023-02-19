@@ -58,6 +58,7 @@
     "@mui/material": "^5.10.16",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.9",
     "@soda/friendly-errors-webpack-plugin": "^1.8.1",
+    "argon2": "^0.30.3",
     "async": "^3.2.4",
     "axios": "^1.2.6",
     "babel-loader": "^9.1.0",
