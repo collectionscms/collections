@@ -124,7 +124,7 @@ const NavModuleBar = () => {
         </Link>
       ))}
 
-      {user?.role.admin_access &&
+      {user?.admin_access &&
         settings.map((module) => (
           <Link component={RouterLink} to={`${module.href}`} key={module.href}>
             <NavIcon>{module.icon}</NavIcon>

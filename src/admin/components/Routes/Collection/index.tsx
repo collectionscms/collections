@@ -11,13 +11,12 @@ import { Navigate } from 'react-router-dom';
 const CollectionRoutes = () => {
   const [permittedCollections, setPermittedCollections] = useState([]);
   const [group, setGroup] = useState(collectionsGroupNavItems([]));
-  const { user } = useAuth();
+  const { user, permissions } = useAuth();
   const { collections } = useConfig();
 
   const filteredPermittedCollections = (): Collection[] => {
     if (!user) return [];
-    if (user.role.admin_access) return collections;
-    const permissions = user.role.permissions;
+    if (user.admin_access) return collections;
 
     return collections.filter((collection) =>
       permissions.some((permission) => permission.collection === collection.collection)
