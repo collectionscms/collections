@@ -28,6 +28,12 @@ export type FieldOption = {
   value: string;
 };
 
+export type AuthUser = {
+  id: number;
+  user_name: string;
+  admin_access: boolean;
+};
+
 export type User = {
   id: number;
   email: string;

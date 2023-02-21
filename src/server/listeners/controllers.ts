@@ -1,12 +1,13 @@
-import users from '../controllers/users';
-import roles from '../controllers/roles';
-import collections from '../controllers/collections';
-import fields from '../controllers/fields';
-import contents from '../controllers/contents';
-import projectSettings from '../controllers/projectSettings';
 import Hooks from '@shared/features/hooks';
 import cookieParser from 'cookie-parser';
 import express, { Express } from 'express';
+import authentications from '../controllers/authentications';
+import collections from '../controllers/collections';
+import contents from '../controllers/contents';
+import fields from '../controllers/fields';
+import projectSettings from '../controllers/projectSettings';
+import roles from '../controllers/roles';
+import users from '../controllers/users';
 
 Hooks.addAction(
   'api/init',
@@ -31,6 +32,7 @@ Hooks.addAction(
     app.use(fields);
     app.use(contents);
     app.use(projectSettings);
+    app.use(authentications);
   },
   { id: 'core/controllers' }
 );
