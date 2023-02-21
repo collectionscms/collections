@@ -29,7 +29,7 @@ const CollectionRoutes = () => {
     setPermittedCollections(permitted);
     const group = collectionsGroupNavItems(permitted);
     setGroup(group);
-  }, [user, collections]);
+  }, [permissions, collections]);
 
   return {
     path: '/admin/collections',
