@@ -7,7 +7,7 @@ const app = express();
 app.get(
   '/collections/:slug/contents',
   asyncMiddleware(async (req: Request, res: Response) => {
-    const database = await getDatabase();
+    const database = await getDatabase(false);
     const slug = req.params.slug;
     const contents = await database(slug);
 
@@ -20,7 +20,7 @@ app.get(
 app.get(
   '/collections/:slug/contents/:id',
   asyncMiddleware(async (req: Request, res: Response) => {
-    const database = await getDatabase();
+    const database = await getDatabase(false);
     const slug = req.params.slug;
     const id = req.params.id;
     const content = await database(slug).where('id', id).first();
@@ -34,7 +34,7 @@ app.get(
 app.post(
   '/collections/:slug/contents',
   asyncMiddleware(async (req: Request, res: Response) => {
-    const database = await getDatabase();
+    const database = await getDatabase(false);
     const slug = req.params.slug;
 
     const content = await database(slug).insert(req.body);
@@ -48,7 +48,7 @@ app.post(
 app.patch(
   '/collections/:slug/contents/:id',
   asyncMiddleware(async (req: Request, res: Response) => {
-    const database = await getDatabase();
+    const database = await getDatabase(false);
     const slug = req.params.slug;
     const id = Number(req.params.id);
 
@@ -61,7 +61,7 @@ app.patch(
 app.delete(
   '/collections/:slug/contents/:id',
   asyncMiddleware(async (req: Request, res: Response) => {
-    const database = await getDatabase();
+    const database = await getDatabase(false);
     const slug = req.params.slug;
     const id = Number(req.params.id);
 
