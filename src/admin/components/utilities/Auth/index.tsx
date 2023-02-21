@@ -1,4 +1,4 @@
-import { AuthUser, PermissionsAction, User } from '@shared/types';
+import { AuthUser, Permission, PermissionsAction } from '@shared/types';
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
@@ -14,6 +14,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [permissions, setPermissions] = useState([]);
   const [cookies, setCookie] = useCookies(['superfast-token']);
   const navigate = useNavigate();
+  const { data, trigger } = useSWRMutation(
+    user?.id ? `/api/roles/${user.id}/permissions` : null,
+    async (url: string, { arg }) => {
+      return axios
+        .get<{ permissions: Permission[] }>(url, arg)
+        .then((res) => {
+          return res.data.permissions;
+        })
+        .catch((err) => Promise.reject(err.message));
+    }
+  );
 
   const setToken = useCallback((token: string) => {
     const decoded = jwtDecode<AuthUser>(token);
@@ -45,13 +56,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
 
   useEffect(() => {
+    if (data === undefined) return;
+    setPermissions(data);
+  }, [data]);
+
+  useEffect(() => {
     const fetchMe = async () => {
       // TODO 手動実装につき後で消す
       const token = cookies['superfast-token'];
 
       if (token) {
-        const decoded = jwtDecode<AuthUser>(token);
-        setUser(decoded);
+        setToken(token);
       } else {
         // TODO API取得のインターセプトで実装するので後で消す
         navigate('/admin/auth/login');
@@ -59,6 +74,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
     fetchMe();
   }, [setToken]);
+
+  useEffect(() => {
+    if (user) {
+      trigger();
+    }
+  }, [user]);
 
   return (
     <Context.Provider
