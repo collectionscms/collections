@@ -85,6 +85,7 @@
     "i18next-browser-languagedetector": "^7.0.1",
     "inquirer": "^8.2.5",
     "joi": "^17.7.0",
+    "jsonwebtoken": "^9.0.0",
     "jwt-decode": "^3.1.2",
     "knex": "^2.4.2",
     "lodash": "^4.17.21",
