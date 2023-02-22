@@ -20,7 +20,7 @@ export type Field = {
   required: boolean;
   readonly: boolean;
   hidden: boolean;
-  field_options: FieldOption[];
+  fieldOptions: FieldOption[];
 };
 
 export type FieldOption = {
@@ -30,18 +30,18 @@ export type FieldOption = {
 
 export type AuthUser = {
   id: number;
-  user_name: string;
-  admin_access: boolean;
+  userName: string;
+  adminAccess: boolean;
 };
 
 export type User = {
   id: number;
   email: string;
-  first_name: string;
-  last_name: string;
-  user_name: string;
+  firstName: string;
+  lastName: string;
+  userName: string;
   token: string | null;
-  is_active: boolean;
+  isActive: boolean;
   role?: Role;
 };
 
@@ -49,7 +49,7 @@ export type Role = {
   id: number;
   name: string;
   description: string;
-  admin_access: boolean;
+  adminAccess: boolean;
   permissions: Permission[];
 };
 
