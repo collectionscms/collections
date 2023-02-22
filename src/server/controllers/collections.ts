@@ -8,9 +8,12 @@ const app = express();
 app.get(
   '/collections/:id',
   asyncMiddleware(async (req: Request, res: Response) => {
-    const database = await getDatabase(false);
+    const database = await getDatabase();
     const id = Number(req.params.id);
-    const collection = await database('superfast_collections').where('id', id).first();
+    const collection = await database('superfast_collections')
+      .queryContext({ snakeToCamel: false })
+      .where('id', id)
+      .first();
 
     res.json({
       collection: {
@@ -24,8 +27,10 @@ app.get(
 app.get(
   '/collections',
   asyncMiddleware(async (req: Request, res: Response) => {
-    const database = await getDatabase(false);
-    const collections = await database('superfast_collections');
+    const database = await getDatabase();
+    const collections = await database('superfast_collections').queryContext({
+      snakeToCamel: false,
+    });
 
     res.json({ collections: collections });
   })
@@ -34,7 +39,7 @@ app.get(
 app.post(
   '/collections',
   asyncMiddleware(async (req: Request, res: Response) => {
-    const database = await getDatabase(false);
+    const database = await getDatabase();
 
     await database.transaction(async (tx) => {
       try {
@@ -43,7 +48,9 @@ app.post(
           table.timestamps(true, true);
         });
 
-        const collections = await tx('superfast_collections').insert(req.body, '*');
+        const collections = await tx('superfast_collections')
+          .queryContext({ snakeToCamel: false })
+          .insert(req.body, '*');
 
         await tx('superfast_fields').insert({
           collection: req.body.collection,
@@ -68,7 +75,7 @@ app.post(
 app.patch(
   '/collections/:id',
   asyncMiddleware(async (req: Request, res: Response) => {
-    const database = await getDatabase(false);
+    const database = await getDatabase();
     const id = Number(req.params.id);
     await database('superfast_collections').where('id', id).update(req.body);
 
@@ -79,7 +86,7 @@ app.patch(
 app.delete(
   '/collections/:id',
   asyncMiddleware(async (req: Request, res: Response) => {
-    const database = await getDatabase(false);
+    const database = await getDatabase();
     const id = Number(req.params.id);
     const meta = await database<Collection>('superfast_collections').where('id', id).first();
 
