@@ -25,8 +25,8 @@ app.post(
 
     const payload = {
       id: user.id,
-      user_name: user.user_name,
-      admin_access: user.role_admin_access,
+      userName: user.userName,
+      adminAccess: user.roleAdminAccess,
     };
 
     const token = jwt.sign(payload, process.env.SECRET, {
