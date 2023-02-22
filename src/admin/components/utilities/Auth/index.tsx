@@ -29,7 +29,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const setToken = useCallback((token: string) => {
     const decoded = jwtDecode<AuthUser>(token);
     setUser(decoded);
-    setCookie('superfast-token', token, { path: '/' });
+    setCookie('superfast-token', token);
   }, []);
 
   const hasPermission = useCallback(
