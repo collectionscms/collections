@@ -65,6 +65,7 @@
     "babel-plugin-module-resolver": "^5.0.0",
     "babel-plugin-transform-typescript-metadata": "^0.3.2",
     "browserify-zlib": "^0.2.0",
+    "camelcase-keys": "^7.0.2",
     "chalk": "^4.1.2",
     "commander": "^10.0.0",
     "cookie-parser": "^1.4.6",

@@ -7,9 +7,9 @@ const app = express();
 app.get(
   '/collections/:slug/contents',
   asyncMiddleware(async (req: Request, res: Response) => {
-    const database = await getDatabase(false);
+    const database = await getDatabase();
     const slug = req.params.slug;
-    const contents = await database(slug);
+    const contents = await database(slug).queryContext({ snakeToCamel: false });
 
     res.json({
       contents: contents,
@@ -20,10 +20,13 @@ app.get(
 app.get(
   '/collections/:slug/contents/:id',
   asyncMiddleware(async (req: Request, res: Response) => {
-    const database = await getDatabase(false);
+    const database = await getDatabase();
     const slug = req.params.slug;
     const id = req.params.id;
-    const content = await database(slug).where('id', id).first();
+    const content = await database(slug)
+      .queryContext({ snakeToCamel: false })
+      .where('id', id)
+      .first();
 
     res.json({
       content: content,
@@ -34,10 +37,10 @@ app.get(
 app.post(
   '/collections/:slug/contents',
   asyncMiddleware(async (req: Request, res: Response) => {
-    const database = await getDatabase(false);
+    const database = await getDatabase();
     const slug = req.params.slug;
 
-    const content = await database(slug).insert(req.body);
+    const content = await database(slug).queryContext({ snakeToCamel: false }).insert(req.body);
 
     res.json({
       content: content,
@@ -48,7 +51,7 @@ app.post(
 app.patch(
   '/collections/:slug/contents/:id',
   asyncMiddleware(async (req: Request, res: Response) => {
-    const database = await getDatabase(false);
+    const database = await getDatabase();
     const slug = req.params.slug;
     const id = Number(req.params.id);
 
@@ -61,7 +64,7 @@ app.patch(
 app.delete(
   '/collections/:slug/contents/:id',
   asyncMiddleware(async (req: Request, res: Response) => {
-    const database = await getDatabase(false);
+    const database = await getDatabase();
     const slug = req.params.slug;
     const id = Number(req.params.id);
 
