@@ -1,15 +1,12 @@
 import { User } from '@shared/types';
 import axios from 'axios';
-import useSWR, { SWRResponse } from 'swr';
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext } from 'react';
+import useSWR from 'swr';
+import { UserContext } from './type';
 
-type ContextType = {
-  getUsers: () => SWRResponse<User[]>;
-};
+const Context = createContext({} as UserContext);
 
-const Context = createContext<ContextType>({} as any);
-
-export const UserContextProvider = ({ children }) => {
+export const UserContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const getUsers = () =>
     useSWR('/api/users', (url) =>
       axios
