@@ -1,7 +1,7 @@
 import { User } from '@shared/types';
 import axios from 'axios';
-import React, { createContext, useContext } from 'react';
 import useSWR, { SWRResponse } from 'swr';
+import React, { createContext, useContext, useState } from 'react';
 
 type ContextType = {
   getUsers: () => SWRResponse<User[]>;

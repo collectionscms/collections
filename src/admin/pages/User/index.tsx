@@ -9,7 +9,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import SearchFilter from '@admin/components/elements/SearchFilter';
-import { UserContextProvider, useUser } from '@admin/pages/User/Context';
+import { UserContextProvider, useUser } from '@admin/stores/User';
 import ComposeWrapper from '@admin/components/utilities/ComposeWrapper';
 import { User } from '@shared/types';
 import { useSnackbar } from 'notistack';
@@ -45,7 +45,7 @@ const UserPage: React.FC = () => {
         colIndex={i}
         type={fields[i].type}
         rowData={row}
-        cellData={Boolean(row.isActive) === true ? t('valid') : t('invalid')}
+        cellData={row.isActive === true ? t('valid') : t('invalid')}
       />
     ) : (
       <Cell colIndex={i} type={fields[i].type} rowData={row} cellData={data} />
