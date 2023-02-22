@@ -22,12 +22,12 @@ const UserPage: React.FC = () => {
   const { data, error } = getUsers();
 
   const fields = [
-    { field: 'userName', label: t('user_name'), type: Type.Text },
+    { field: 'user_name', label: t('user_name'), type: Type.Text },
     { field: 'name', label: t('name'), type: Type.Text },
     { field: 'email', label: t('email'), type: Type.Text },
     { field: 'role', label: t('role'), type: Type.Text },
     { field: 'status', label: t('status'), type: Type.Text },
-    { field: 'updatedAt', label: t('updated_at'), type: Type.Date },
+    { field: 'updated_at', label: t('updated_at'), type: Type.Date },
   ];
 
   const columns = buildColumns(fields, (i: number, row: User, data: any) =>
@@ -36,7 +36,7 @@ const UserPage: React.FC = () => {
         colIndex={i}
         type={fields[i].type}
         rowData={row}
-        cellData={`${row.lastName} ${row.firstName}`}
+        cellData={`${row.last_name} ${row.first_name}`}
       />
     ) : fields[i].field == 'role' ? (
       <Cell colIndex={i} type={fields[i].type} rowData={row} cellData={row.role.name} />
@@ -45,7 +45,7 @@ const UserPage: React.FC = () => {
         colIndex={i}
         type={fields[i].type}
         rowData={row}
-        cellData={row.isActive === true ? t('valid') : t('invalid')}
+        cellData={row.is_active === true ? t('valid') : t('invalid')}
       />
     ) : (
       <Cell colIndex={i} type={fields[i].type} rowData={row} cellData={data} />
