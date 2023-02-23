@@ -17,7 +17,7 @@ export async function up(knex: Knex): Promise<void> {
     table.string('email', 255).unique().notNullable();
     table.string('password', 255).notNullable();
     table.boolean('is_active').notNullable().defaultTo(0);
-    table.string('token', 255);
+    table.string('api_key', 255);
     table
       .integer('superfast_role_id')
       .unsigned()

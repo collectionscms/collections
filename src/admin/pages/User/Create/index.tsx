@@ -43,7 +43,7 @@ const CreateUserPage: React.FC = () => {
       userName: '',
       email: '',
       password: '',
-      token: '',
+      apiKey: '',
       isActive: true,
       roleId: roles ? roles[0]?.id.toString() : '',
     },
@@ -168,21 +168,21 @@ const CreateUserPage: React.FC = () => {
         </Grid>
         <Grid container spacing={3} columns={{ xs: 1, md: 4 }}>
           <Grid xs={1}>
-            <InputLabel>{t('token')}</InputLabel>
+            <InputLabel>{t('api_key')}</InputLabel>
             <Controller
-              name="token"
+              name="apiKey"
               control={control}
               render={({ field }) => (
                 <TextField
-                  name="token"
+                  name="apiKey"
                   {...field}
                   type="text"
                   fullWidth
-                  error={errors.token !== undefined}
+                  error={errors.apiKey !== undefined}
                 />
               )}
             />
-            <FormHelperText error>{errors.token?.message}</FormHelperText>
+            <FormHelperText error>{errors.apiKey?.message}</FormHelperText>
           </Grid>
           <Grid xs={1}>
             <InputLabel>{t('role')}</InputLabel>

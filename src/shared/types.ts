@@ -41,7 +41,7 @@ export type User = {
   firstName: string;
   lastName: string;
   userName: string;
-  token: string | null;
+  apiKey: string | null;
   isActive: boolean;
   role?: Role;
 };
