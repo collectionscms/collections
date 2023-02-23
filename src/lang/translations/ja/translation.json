@@ -49,6 +49,7 @@
   "is_active": "有効にする",
   "generate_api_key": "APIキーを作成",
   "generate_api_key_placeholder": "ボタンをクリックすると新しいAPIキーが作成されます",
+  "hidden_for_security": "セキュリティのため非表示",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？"
