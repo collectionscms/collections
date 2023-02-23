@@ -3,16 +3,20 @@ import ComposeWrapper from '@admin/components/utilities/ComposeWrapper';
 import { useDocumentInfo } from '@admin/components/utilities/DocumentInfo';
 import createUserSchema, { FormValues } from '@admin/fields/schemas/users/createUser';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { CachedOutlined } from '@mui/icons-material';
 import {
   Button,
   Checkbox,
   FormControlLabel,
   FormHelperText,
+  IconButton,
+  InputAdornment,
   InputLabel,
   MenuItem,
   Select,
   Stack,
   TextField,
+  Tooltip,
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useSnackbar } from 'notistack';
@@ -20,6 +24,7 @@ import React, { Suspense, useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 import { UserContextProvider, useUser } from '../Context';
 
 export type OnChange<T = string> = (value: T) => void;
@@ -35,6 +40,7 @@ const CreateUserPage: React.FC = () => {
   const {
     control,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
@@ -55,6 +61,10 @@ const CreateUserPage: React.FC = () => {
     enqueueSnackbar(t('toast.created_successfully'), { variant: 'success' });
     navigate('../users');
   }, [createdUser]);
+
+  const onGenerateApiKey = () => {
+    setValue('apiKey', uuidv4());
+  };
 
   const onSubmit: SubmitHandler<FormValues> = (form: FormValues) => {
     trigger(form);
@@ -167,7 +177,7 @@ const CreateUserPage: React.FC = () => {
           </Grid>
         </Grid>
         <Grid container spacing={3} columns={{ xs: 1, md: 4 }}>
-          <Grid xs={1}>
+          <Grid xs={1} md={2}>
             <InputLabel>{t('api_key')}</InputLabel>
             <Controller
               name="apiKey"
@@ -177,13 +187,28 @@ const CreateUserPage: React.FC = () => {
                   name="apiKey"
                   {...field}
                   type="text"
+                  placeholder={t('generate_api_key_placeholder')}
                   fullWidth
+                  InputProps={{
+                    readOnly: true,
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <Tooltip title={t('generate_api_key')} placement="top">
+                          <IconButton aria-label="generate api key" onClick={onGenerateApiKey}>
+                            <CachedOutlined />
+                          </IconButton>
+                        </Tooltip>
+                      </InputAdornment>
+                    ),
+                  }}
                   error={errors.apiKey !== undefined}
                 />
               )}
             />
             <FormHelperText error>{errors.apiKey?.message}</FormHelperText>
           </Grid>
+        </Grid>
+        <Grid container spacing={3} columns={{ xs: 1, md: 4 }}>
           <Grid xs={1}>
             <InputLabel>{t('role')}</InputLabel>
             <Controller
@@ -201,8 +226,6 @@ const CreateUserPage: React.FC = () => {
               )}
             />
           </Grid>
-        </Grid>
-        <Grid container spacing={3} columns={{ xs: 1, md: 4 }}>
           <Grid xs={1}>
             <InputLabel>{t('status')}</InputLabel>
             <Controller
