@@ -4,7 +4,7 @@ import { useDocumentInfo } from '@admin/components/utilities/DocumentInfo';
 import updateProjectSettingSchema, {
   FormValues,
 } from '@admin/fields/schemas/projectSettings/updateProjectSetting';
-import { ProjectSettingContextProvider, useProjectSetting } from '@admin/stores/ProjectSetting';
+import { ProjectSettingContextProvider, useProjectSetting } from '@admin/pages/Project/Context';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, FormHelperText, InputLabel, Stack, TextField } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
