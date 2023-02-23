@@ -111,6 +111,7 @@
     "swr": "^2.0.3",
     "terser-webpack-plugin": "^5.3.6",
     "url-loader": "^4.1.1",
+    "uuidv4": "^6.2.13",
     "webpack": "^5.75.0",
     "webpack-dev-middleware": "^6.0.1",
     "webpack-hot-middleware": "^2.25.3",
