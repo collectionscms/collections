@@ -1,14 +1,11 @@
 import axios from 'axios';
 import React, { createContext, useContext } from 'react';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
+import { DocumentContext } from './type';
 
-type ContextType = {
-  deleteDocument: (id: string, slug: string) => SWRMutationResponse;
-};
+const Context = createContext({} as DocumentContext);
 
-const Context = createContext<ContextType>({} as any);
-
-export const DocumentContextProvider = ({ children }) => {
+export const DocumentContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const deleteDocument = (id: string, slug: string): SWRMutationResponse =>
     useSWRMutation(`/api/${slug}/${id}`, async (url: string, { arg }) => {
       return axios
