@@ -19,8 +19,6 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 
-export type OnChange<T = string> = (value: T) => void;
-
 const MePage: React.FC = () => {
   const { id } = useParams();
   const { localizedLabel } = useDocumentInfo();
