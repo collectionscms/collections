@@ -8,8 +8,8 @@ app.get(
   '/project_settings',
   asyncMiddleware(async (req: Request, res: Response) => {
     const database = await getDatabase();
-    const project_setting = await database('superfast_project_settings').first();
-    res.json({ project_setting: project_setting });
+    const projectSetting = await database('superfast_project_settings').first();
+    res.json({ projectSetting: projectSetting });
   })
 );
 

@@ -15,8 +15,8 @@ export const ProjectSettingContextProvider: React.FC<{ children: React.ReactNode
       '/api/project_settings',
       (url) =>
         axios
-          .get<{ project_setting: ProjectSetting }>(url)
-          .then((res) => res.data.project_setting)
+          .get<{ projectSetting: ProjectSetting }>(url)
+          .then((res) => res.data.projectSetting)
           .catch((err) => Promise.reject(err.message)),
       config
     );
