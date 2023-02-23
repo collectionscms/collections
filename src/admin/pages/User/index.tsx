@@ -13,6 +13,9 @@ import { UserContextProvider, useUser } from '@admin/pages/User/Context';
 import ComposeWrapper from '@admin/components/utilities/ComposeWrapper';
 import { User } from '@shared/types';
 import { useSnackbar } from 'notistack';
+import fields from '@server/controllers/fields';
+import { error } from 'console';
+import { t } from 'i18next';
 
 const UserPage: React.FC = () => {
   const { localizedLabel } = useDocumentInfo();
@@ -25,8 +28,8 @@ const UserPage: React.FC = () => {
     { field: 'userName', label: t('user_name'), type: Type.Text },
     { field: 'name', label: t('name'), type: Type.Text },
     { field: 'email', label: t('email'), type: Type.Text },
+    { field: 'apiKey', label: t('api_key'), type: Type.Text },
     { field: 'role', label: t('role'), type: Type.Text },
-    { field: 'status', label: t('status'), type: Type.Text },
     { field: 'updatedAt', label: t('updated_at'), type: Type.Date },
   ];
 
@@ -38,15 +41,10 @@ const UserPage: React.FC = () => {
         rowData={row}
         cellData={`${row.lastName} ${row.firstName}`}
       />
+    ) : fields[i].field == 'apiKey' ? (
+      <Cell colIndex={i} type={fields[i].type} rowData={row} cellData={row.apiKey && t('valid')} />
     ) : fields[i].field == 'role' ? (
       <Cell colIndex={i} type={fields[i].type} rowData={row} cellData={row.role.name} />
-    ) : fields[i].field == 'status' ? (
-      <Cell
-        colIndex={i}
-        type={fields[i].type}
-        rowData={row}
-        cellData={Boolean(row.isActive) === true ? t('valid') : t('invalid')}
-      />
     ) : (
       <Cell colIndex={i} type={fields[i].type} rowData={row} cellData={data} />
     )
