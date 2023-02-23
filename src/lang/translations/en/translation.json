@@ -110,6 +110,7 @@
       "is_value": "Must be {{value}}."
     },
     "custom": {
+      "alphanumeric": "Please enter single-byte alphanumeric characters.",
       "alphanumeric_and_underscore": "Please enter single-byte alphanumeric characters and underscore (_)."
     }
   }
