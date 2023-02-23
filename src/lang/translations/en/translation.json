@@ -43,6 +43,10 @@
   "field_property": "Field Property",
   "required_fields": "Required Fields",
   "required_at_creation": "Require value at creation",
+  "last_name": "Last Name",
+  "first_name": "First Name",
+  "token": "Token",
+  "is_active": "Active",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion.",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?"
@@ -111,7 +115,10 @@
     },
     "custom": {
       "alphanumeric": "Please enter single-byte alphanumeric characters.",
-      "alphanumeric_and_underscore": "Please enter single-byte alphanumeric characters and underscore (_)."
+      "alphanumeric_and_underscore": "Please enter single-byte alphanumeric characters and underscore (_).",
+      "one_character": "Please enter at least 1 single-byte alphabetical character.",
+      "one_number": "Please enter at least one one-byte number.",
+      "one_special_character": "Please enter at least one symbol '@$! %*#?&'."
     }
   }
 }
