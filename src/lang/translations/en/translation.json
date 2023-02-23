@@ -45,7 +45,7 @@
   "required_at_creation": "Require value at creation",
   "last_name": "Last Name",
   "first_name": "First Name",
-  "token": "Token",
+  "api_key": "API Key",
   "is_active": "Active",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion.",

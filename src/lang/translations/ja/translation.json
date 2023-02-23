@@ -45,7 +45,7 @@
   "required_at_creation": "登録時に入力が必須",
   "last_name": "姓",
   "first_name": "名",
-  "token": "トークン",
+  "api_key": "APIキー",
   "is_active": "有効にする",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
