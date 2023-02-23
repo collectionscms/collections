@@ -11,7 +11,7 @@ app.get(
     const database = await getDatabase();
     const id = Number(req.params.id);
     const collection = await database('superfast_collections')
-      .queryContext({ snakeToCamel: false })
+      .queryContext({ toCamel: false })
       .where('id', id)
       .first();
 
@@ -29,7 +29,7 @@ app.get(
   asyncMiddleware(async (req: Request, res: Response) => {
     const database = await getDatabase();
     const collections = await database('superfast_collections').queryContext({
-      snakeToCamel: false,
+      toCamel: false,
     });
 
     res.json({ collections: collections });
@@ -49,7 +49,7 @@ app.post(
         });
 
         const collections = await tx('superfast_collections')
-          .queryContext({ snakeToCamel: false })
+          .queryContext({ toCamel: false })
           .insert(req.body, '*');
 
         await tx('superfast_fields').insert({

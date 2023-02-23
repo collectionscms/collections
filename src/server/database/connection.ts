@@ -1,7 +1,8 @@
-import knex, { Knex } from 'knex';
-import path from 'path';
-import 'dotenv/config';
 import camelcaseKeys from 'camelcase-keys';
+import 'dotenv/config';
+import knex, { Knex } from 'knex';
+import { snakeCase } from 'lodash';
+import path from 'path';
 
 let database: Knex | null = null;
 
@@ -20,11 +21,11 @@ export const getDatabase = async (): Promise<Knex> => {
       loadExtensions: [process.env.MIGRATE_EXTENSIONS],
     },
     postProcessResponse: (result, queryContext) => {
-      if (queryContext !== undefined && !queryContext['snakeToCamel']) {
+      // Key Type Conversion for Json Response.
+      if (queryContext && !queryContext.toCamel) {
         return result;
-      } else {
-        return camelcaseKeys(result);
       }
+      return camelcaseKeys(result);
     },
   };
 
