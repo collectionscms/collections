@@ -47,6 +47,8 @@
   "first_name": "First Name",
   "api_key": "API Key",
   "is_active": "Active",
+  "generate_api_key": "Generate API Key",
+  "generate_api_key_placeholder": "Click the button to create a new API Key.",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion.",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?"
