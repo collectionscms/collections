@@ -2,7 +2,7 @@ import DeleteHeaderButton from '@admin/components/elements/DeleteHeaderButton';
 import RenderFields from '@admin/components/forms/RenderFields';
 import { useAuth } from '@admin/components/utilities/Auth';
 import ComposeWrapper from '@admin/components/utilities/ComposeWrapper';
-import { ContentContextProvider, useContent } from '@admin/stores/Content';
+import { ContentContextProvider, useContent } from '@admin/pages/collections/Context';
 import { Button, Drawer, Stack, useTheme } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useSnackbar } from 'notistack';
