@@ -27,8 +27,6 @@ import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { UserContextProvider, useUser } from '../Context';
 
-export type OnChange<T = string> = (value: T) => void;
-
 const CreateUserPage: React.FC = () => {
   const { localizedLabel } = useDocumentInfo();
   const { t } = useTranslation();

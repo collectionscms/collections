@@ -44,6 +44,7 @@ export type User = {
   apiKey: string | null;
   isActive: boolean;
   role?: Role;
+  updatedAt: Date;
 };
 
 export type Role = {
