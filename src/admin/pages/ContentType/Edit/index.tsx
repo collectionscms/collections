@@ -5,7 +5,7 @@ import { useDocumentInfo } from '@admin/components/utilities/DocumentInfo';
 import updateCollectionSchema, {
   FormValues,
 } from '@admin/fields/schemas/collections/updateCollection';
-import { CollectionContextProvider, useCollection } from '@admin/stores/Collection';
+import { CollectionContextProvider, useCollection } from '@admin/pages/ContentType/Context';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { MoreVertOutlined } from '@mui/icons-material';
 import {

@@ -3,18 +3,13 @@ import axios from 'axios';
 import React, { createContext, useContext } from 'react';
 import useSWR, { SWRConfiguration, SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
+import { CollectionContext } from './type';
 
-type ContextType = {
-  getCollection: (id: string, config?: SWRConfiguration) => SWRResponse<Collection>;
-  getCollections: () => SWRResponse<Collection[]>;
-  createCollection: SWRMutationResponse<Collection>;
-  updateCollection: (id: string) => SWRMutationResponse<Collection>;
-  getFields: (slug: string, config?: SWRConfiguration) => SWRResponse<Field[]>;
-};
+const Context = createContext({} as CollectionContext);
 
-const Context = createContext<ContextType>({} as any);
-
-export const CollectionContextProvider = ({ children }) => {
+export const CollectionContextProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const getCollection = (id: string, config?: SWRConfiguration): SWRResponse =>
     useSWR(
       `/api/collections/${id}`,
