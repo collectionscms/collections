@@ -35,6 +35,14 @@ export const UserContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
         .catch((err) => Promise.reject(err.message));
     });
 
+  const updateUser = (id: string): SWRMutationResponse =>
+    useSWRMutation(`/api/users/${id}`, async (url: string, { arg }) => {
+      return axios
+        .patch(url, arg)
+        .then((res) => res.data)
+        .catch((err) => Promise.reject(err.message));
+    });
+
   const getRoles = (config?: SWRConfiguration) =>
     useSWR(
       '/api/roles',
@@ -53,6 +61,7 @@ export const UserContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
         getUser,
         getRoles,
         createUser,
+        updateUser,
       }}
     >
       {children}
