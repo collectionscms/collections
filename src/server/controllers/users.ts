@@ -1,3 +1,5 @@
+import { oneWayHash } from '../utilities/oneWayHash';
+import { Role, User } from '@shared/types';
 import express, { Request, Response } from 'express';
 import { getDatabase } from '../database/connection';
 import asyncMiddleware from '../middleware/async';
@@ -33,6 +35,30 @@ app.get(
           delete user.roleAdminAccess &&
           user),
       })),
+    });
+  })
+);
+
+app.post(
+  '/users',
+  asyncMiddleware(async (req: Request, res: Response) => {
+    const database = await getDatabase();
+    const role = await database<Role>('superfast_roles').where('id', req.body.roleId).first();
+    const password = await oneWayHash(req.body.password);
+
+    const data = {
+      ...req.body,
+      password: password,
+      superfastRoleId: role.id,
+      ...(delete req.body.roleId && delete req.body.password, req.body),
+    };
+
+    const user = await database<User>('superfast_users')
+      .queryContext({ toSnake: true })
+      .insert(data);
+
+    res.json({
+      user: user,
     });
   })
 );

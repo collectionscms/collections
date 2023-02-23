@@ -1,0 +1,228 @@
+import Loading from '@admin/components/elements/Loading';
+import ComposeWrapper from '@admin/components/utilities/ComposeWrapper';
+import { useDocumentInfo } from '@admin/components/utilities/DocumentInfo';
+import createUserSchema, { FormValues } from '@admin/fields/schemas/users/createUser';
+import { yupResolver } from '@hookform/resolvers/yup';
+import {
+  Button,
+  Checkbox,
+  FormControlLabel,
+  FormHelperText,
+  InputLabel,
+  MenuItem,
+  Select,
+  Stack,
+  TextField,
+} from '@mui/material';
+import Grid from '@mui/material/Unstable_Grid2';
+import { useSnackbar } from 'notistack';
+import React, { Suspense, useEffect } from 'react';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import { UserContextProvider, useUser } from '../Context';
+
+export type OnChange<T = string> = (value: T) => void;
+
+const CreateUserPage: React.FC = () => {
+  const { localizedLabel } = useDocumentInfo();
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
+  const { createUser, getRoles } = useUser();
+  const { data: createdUser, trigger, isMutating } = createUser();
+  const { data: roles } = getRoles({ suspense: true });
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormValues>({
+    defaultValues: {
+      firstName: '',
+      lastName: '',
+      userName: '',
+      email: '',
+      password: '',
+      token: '',
+      isActive: true,
+      roleId: roles ? roles[0]?.id.toString() : '',
+    },
+    resolver: yupResolver(createUserSchema(t)),
+  });
+
+  useEffect(() => {
+    if (createdUser === undefined) return;
+    enqueueSnackbar(t('toast.created_successfully'), { variant: 'success' });
+    navigate('../users');
+  }, [createdUser]);
+
+  const onSubmit: SubmitHandler<FormValues> = (form: FormValues) => {
+    trigger(form);
+  };
+
+  return (
+    <Suspense fallback={<Loading />}>
+      <Stack component="form" onSubmit={handleSubmit(onSubmit)} rowGap={3}>
+        <Grid container spacing={2}>
+          <Grid xs={12} sm>
+            <h1>{localizedLabel}</h1>
+          </Grid>
+          <Grid container columnSpacing={2} alignItems="center">
+            <Grid>
+              <Button variant="contained" type="submit" disabled={isMutating}>
+                {t('create_new')}
+              </Button>
+            </Grid>
+          </Grid>
+        </Grid>
+        <Grid container spacing={3} columns={{ xs: 1, md: 4 }}>
+          <Grid xs={1}>
+            <InputLabel required>{t('last_name')}</InputLabel>
+            <Controller
+              name="lastName"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  name="lastName"
+                  {...field}
+                  type="text"
+                  fullWidth
+                  error={errors.lastName !== undefined}
+                />
+              )}
+            />
+            <FormHelperText error>{errors.lastName?.message}</FormHelperText>
+          </Grid>
+          <Grid xs={1}>
+            <InputLabel required>{t('first_name')}</InputLabel>
+            <Controller
+              name="firstName"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  name="firstName"
+                  {...field}
+                  type="text"
+                  fullWidth
+                  error={errors.firstName !== undefined}
+                />
+              )}
+            />
+            <FormHelperText error>{errors.firstName?.message}</FormHelperText>
+          </Grid>
+        </Grid>
+        <Grid container spacing={3} columns={{ xs: 1, md: 4 }}>
+          <Grid xs={1}>
+            <InputLabel required>{t('user_name')}</InputLabel>
+            <Controller
+              name="userName"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  name="userName"
+                  {...field}
+                  type="text"
+                  fullWidth
+                  error={errors.userName !== undefined}
+                />
+              )}
+            />
+            <FormHelperText error>{errors.userName?.message}</FormHelperText>
+          </Grid>
+          <Grid xs={1}>
+            <InputLabel required>{t('email')}</InputLabel>
+            <Controller
+              name="email"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  name="email"
+                  {...field}
+                  type="text"
+                  fullWidth
+                  error={errors.email !== undefined}
+                />
+              )}
+            />
+            <FormHelperText error>{errors.email?.message}</FormHelperText>
+          </Grid>
+        </Grid>
+        <Grid container spacing={3} columns={{ xs: 1, md: 4 }}>
+          <Grid xs={1}>
+            <InputLabel required>{t('password')}</InputLabel>
+            <Controller
+              name="password"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  name="password"
+                  {...field}
+                  type="password"
+                  fullWidth
+                  error={errors.password !== undefined}
+                />
+              )}
+            />
+            <FormHelperText error>{errors.password?.message}</FormHelperText>
+          </Grid>
+        </Grid>
+        <Grid container spacing={3} columns={{ xs: 1, md: 4 }}>
+          <Grid xs={1}>
+            <InputLabel>{t('token')}</InputLabel>
+            <Controller
+              name="token"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  name="token"
+                  {...field}
+                  type="text"
+                  fullWidth
+                  error={errors.token !== undefined}
+                />
+              )}
+            />
+            <FormHelperText error>{errors.token?.message}</FormHelperText>
+          </Grid>
+          <Grid xs={1}>
+            <InputLabel>{t('role')}</InputLabel>
+            <Controller
+              name="roleId"
+              control={control}
+              render={({ field }) => (
+                <Select name="roleId" {...field} fullWidth>
+                  {roles &&
+                    roles.map((role) => (
+                      <MenuItem value={role.id} key={role.id}>
+                        {role.name}
+                      </MenuItem>
+                    ))}
+                </Select>
+              )}
+            />
+          </Grid>
+        </Grid>
+        <Grid container spacing={3} columns={{ xs: 1, md: 4 }}>
+          <Grid xs={1}>
+            <InputLabel>{t('status')}</InputLabel>
+            <Controller
+              name="isActive"
+              control={control}
+              render={({ field }) => (
+                <FormControlLabel
+                  name="isActive"
+                  {...field}
+                  label={t('is_active')}
+                  control={<Checkbox checked={field.value} />}
+                />
+              )}
+            />
+            <FormHelperText error>{errors.isActive?.message}</FormHelperText>
+          </Grid>
+        </Grid>
+      </Stack>
+    </Suspense>
+  );
+};
+
+export default ComposeWrapper({ context: UserContextProvider })(CreateUserPage);

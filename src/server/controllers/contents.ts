@@ -9,7 +9,7 @@ app.get(
   asyncMiddleware(async (req: Request, res: Response) => {
     const database = await getDatabase();
     const slug = req.params.slug;
-    const contents = await database(slug).queryContext({ snakeToCamel: false });
+    const contents = await database(slug).queryContext({ toCamel: false });
 
     res.json({
       contents: contents,
@@ -23,10 +23,7 @@ app.get(
     const database = await getDatabase();
     const slug = req.params.slug;
     const id = req.params.id;
-    const content = await database(slug)
-      .queryContext({ snakeToCamel: false })
-      .where('id', id)
-      .first();
+    const content = await database(slug).queryContext({ toCamel: false }).where('id', id).first();
 
     res.json({
       content: content,
@@ -40,7 +37,7 @@ app.post(
     const database = await getDatabase();
     const slug = req.params.slug;
 
-    const content = await database(slug).queryContext({ snakeToCamel: false }).insert(req.body);
+    const content = await database(slug).queryContext({ toCamel: false }).insert(req.body);
 
     res.json({
       content: content,

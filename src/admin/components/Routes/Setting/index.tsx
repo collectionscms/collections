@@ -12,6 +12,7 @@ const ContentType = Loader(lazy(() => import('@admin/pages/ContentType')));
 const CreateContentType = Loader(lazy(() => import('@admin/pages/ContentType/Create')));
 const EditContentType = Loader(lazy(() => import('@admin/pages/ContentType/Edit')));
 const User = Loader(lazy(() => import('@admin/pages/User')));
+const CreateUser = Loader(lazy(() => import('@admin/pages/User/Create')));
 const EditUser = Loader(lazy(() => import('@admin/pages/User/Edit')));
 const group = settingsGroupNavItems();
 
@@ -100,7 +101,7 @@ const SettingRoutes = {
       path: 'users/create',
       element: (
         <DocumentInfoProvider label="create.user">
-          <EditUser />
+          <CreateUser />
         </DocumentInfoProvider>
       ),
     },
