@@ -20,6 +20,13 @@ export const getDatabase = async (): Promise<Knex> => {
       directory: migrationFiles,
       loadExtensions: [process.env.MIGRATE_EXTENSIONS],
     },
+    wrapIdentifier(value, wrapIdentifier, queryContext) {
+      // Key Type Conversion for Post Data.
+      if (queryContext && queryContext.toSnake) {
+        return wrapIdentifier(snakeCase(value));
+      }
+      return value;
+    },
     postProcessResponse: (result, queryContext) => {
       // Key Type Conversion for Json Response.
       if (queryContext && !queryContext.toCamel) {
