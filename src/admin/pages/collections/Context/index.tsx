@@ -3,18 +3,11 @@ import axios from 'axios';
 import React, { createContext, useContext } from 'react';
 import useSWR, { SWRConfiguration, SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
+import { ContentContext } from './type';
 
-type ContextType = {
-  getContents: (slug: string, config?: SWRConfiguration) => SWRResponse<any[]>;
-  getContent: (slug: string, id: string, config?: SWRConfiguration) => SWRResponse<any>;
-  getFields: (slug: string, config?: SWRConfiguration) => SWRResponse<Field[]>;
-  createContent: (slug: string) => SWRMutationResponse<unknown>;
-  updateContent: (slug: string, id: string) => SWRMutationResponse<unknown>;
-};
+const Context = createContext({} as ContentContext);
 
-const Context = createContext<ContextType>({} as any);
-
-export const ContentContextProvider = ({ children }) => {
+export const ContentContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const getContents = (slug: string, config?: SWRConfiguration): SWRResponse =>
     useSWR(
       `/api/collections/${slug}/contents`,

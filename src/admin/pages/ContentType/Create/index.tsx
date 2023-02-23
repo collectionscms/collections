@@ -3,7 +3,7 @@ import { useDocumentInfo } from '@admin/components/utilities/DocumentInfo';
 import createCollectionSchema, {
   FormValues,
 } from '@admin/fields/schemas/collections/createCollection';
-import { CollectionContextProvider, useCollection } from '@admin/stores/Collection';
+import { CollectionContextProvider, useCollection } from '@admin/pages/ContentType/Context';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, Checkbox, FormControlLabel, Stack, TextField } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';

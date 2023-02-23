@@ -3,7 +3,7 @@ import Table from '@admin/components/elements/Table';
 import { Type } from '@admin/components/elements/Table/Cell/types';
 import ComposeWrapper from '@admin/components/utilities/ComposeWrapper';
 import { useDocumentInfo } from '@admin/components/utilities/DocumentInfo';
-import { RoleContextProvider, useRole } from '@admin/stores/Role';
+import { RoleContextProvider, useRole } from '@admin/pages/Role/Context';
 import buildColumns from '@admin/utilities/buildColumns';
 import { Button, Stack } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';

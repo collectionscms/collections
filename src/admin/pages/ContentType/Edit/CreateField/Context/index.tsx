@@ -2,14 +2,11 @@ import { Field } from '@shared/types';
 import axios from 'axios';
 import React, { createContext, useContext } from 'react';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
+import { FieldContext } from './type';
 
-type ContextType = {
-  createField: (slug: string) => SWRMutationResponse<Field>;
-};
+const Context = createContext({} as FieldContext);
 
-const Context = createContext<ContextType>({} as any);
-
-export const FieldContextProvider = ({ children }) => {
+export const FieldContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const createField = (slug: string): SWRMutationResponse =>
     useSWRMutation(`/api/collections/${slug}/fields`, async (url: string, { arg }) => {
       return axios

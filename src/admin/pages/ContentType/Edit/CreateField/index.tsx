@@ -1,6 +1,6 @@
 import ComposeWrapper from '@admin/components/utilities/ComposeWrapper';
 import createFieldSchema, { FormValues } from '@admin/fields/schemas/collectionFields/createField';
-import { FieldContextProvider, useField } from '@admin/stores/Field';
+import { FieldContextProvider, useField } from '@admin/pages/ContentType/Edit/CreateField/Context';
 import { yupResolver } from '@hookform/resolvers/yup';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {

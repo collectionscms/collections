@@ -1,15 +1,12 @@
 import { Role } from '@shared/types';
 import axios from 'axios';
-import React, { createContext, useContext, useState } from 'react';
-import useSWR, { SWRResponse } from 'swr';
+import React, { createContext, useContext } from 'react';
+import useSWR from 'swr';
+import { RoleContext } from './type';
 
-type ContextType = {
-  getRoles: () => SWRResponse<Role[]>;
-};
+const Context = createContext({} as RoleContext);
 
-const Context = createContext<ContextType>({} as any);
-
-export const RoleContextProvider = ({ children }) => {
+export const RoleContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const getRoles = () =>
     useSWR('/api/roles', (url) =>
       axios

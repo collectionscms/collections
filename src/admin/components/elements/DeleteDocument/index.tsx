@@ -1,5 +1,8 @@
 import ComposeWrapper from '@admin/components/utilities/ComposeWrapper';
-import { DocumentContextProvider, useDocument } from '@admin/stores/Document';
+import {
+  DocumentContextProvider,
+  useDocument,
+} from '@admin/components/elements/DeleteDocument/Context';
 import {
   Button,
   Dialog,
