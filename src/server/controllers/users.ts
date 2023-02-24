@@ -17,8 +17,8 @@ app.get(
         roleDescription: 'r.description',
         roleAdminAccess: 'r.admin_access',
       })
-      .from('superfast_users AS u')
-      .join('superfast_roles AS r', 'r.id', 'u.superfast_role_id');
+      .from(`${USER_TABLE_NAME} AS u`)
+      .join(`${ROLE_TABLE_NAME} AS r`, 'r.id', 'u.superfast_role_id');
 
     res.json({
       users: users.flatMap(({ password, ...user }) => payload(user)),
@@ -39,10 +39,12 @@ app.get(
         roleDescription: 'r.description',
         roleAdminAccess: 'r.admin_access',
       })
-      .from('superfast_users AS u')
-      .join('superfast_roles AS r', 'r.id', 'u.superfast_role_id')
+      .from(`${USER_TABLE_NAME} AS u`)
+      .join(`${ROLE_TABLE_NAME} AS r`, 'r.id', 'u.superfast_role_id')
       .where('u.id', id)
       .first();
+
+    if (!user) return res.status(400).end();
 
     res.json({
       user: payload(user),
@@ -54,7 +56,7 @@ app.post(
   '/users',
   asyncMiddleware(async (req: Request, res: Response) => {
     const database = await getDatabase();
-    const role = await database<Role>('superfast_roles').where('id', req.body.roleId).first();
+    const role = await database<Role>(ROLE_TABLE_NAME).where('id', req.body.roleId).first();
     const password = await oneWayHash(req.body.password);
 
     const data = {
@@ -64,7 +66,7 @@ app.post(
       ...(delete req.body.roleId && delete req.body.password, req.body),
     };
 
-    const users = await database<User>('superfast_users')
+    const users = await database<User>(USER_TABLE_NAME)
       .queryContext({ toSnake: true })
       .insert(data, 'id');
 
@@ -79,7 +81,7 @@ app.patch(
   asyncMiddleware(async (req: Request, res: Response) => {
     const database = await getDatabase();
     const id = Number(req.params.id);
-    const role = await database<Role>('superfast_roles').where('id', req.body.roleId).first();
+    const role = await database<Role>(ROLE_TABLE_NAME).where('id', req.body.roleId).first();
 
     const data = {
       ...req.body,
@@ -91,7 +93,19 @@ app.patch(
       data.password = await oneWayHash(req.body.password);
     }
 
-    await database('superfast_users').queryContext({ toSnake: true }).where('id', id).update(data);
+    await database(USER_TABLE_NAME).queryContext({ toSnake: true }).where('id', id).update(data);
+
+    res.status(204).end();
+  })
+);
+
+app.delete(
+  '/users/:id',
+  asyncMiddleware(async (req: Request, res: Response) => {
+    const database = await getDatabase();
+    const id = Number(req.params.id);
+
+    await database(USER_TABLE_NAME).where('id', id).delete();
 
     res.status(204).end();
   })
@@ -115,5 +129,7 @@ const payload = (user: any) => {
     },
   };
 };
+const USER_TABLE_NAME = 'superfast_users';
+const ROLE_TABLE_NAME = 'superfast_roles';
 
 export default app;
