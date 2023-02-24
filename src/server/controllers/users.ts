@@ -44,6 +44,8 @@ app.get(
       .where('u.id', id)
       .first();
 
+    if (!user) return res.status(400).end();
+
     res.json({
       user: payload(user),
     });
