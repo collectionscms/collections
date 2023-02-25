@@ -1,14 +1,19 @@
+import { InvalidCredentialsException } from '../../shared/exceptions/invalidCredentials';
 import { Role, User } from '@shared/types';
 import express, { Request, Response } from 'express';
 import { getDatabase } from '../database/connection';
-import asyncMiddleware from '../middleware/async';
+import asyncHandler from '../middleware/asyncHandler';
 import { oneWayHash } from '../utilities/oneWayHash';
 
 const app = express();
 
 app.get(
   '/users',
-  asyncMiddleware(async (req: Request, res: Response) => {
+  asyncHandler(async (req: Request, res: Response) => {
+    if (!req.user) {
+      throw new InvalidCredentialsException();
+    }
+
     const database = await getDatabase();
     const users = await database
       .select('u.*', {
@@ -28,7 +33,7 @@ app.get(
 
 app.get(
   '/users/:id',
-  asyncMiddleware(async (req: Request, res: Response) => {
+  asyncHandler(async (req: Request, res: Response) => {
     const database = await getDatabase();
     const id = req.params.id;
 
@@ -54,7 +59,7 @@ app.get(
 
 app.post(
   '/users',
-  asyncMiddleware(async (req: Request, res: Response) => {
+  asyncHandler(async (req: Request, res: Response) => {
     const database = await getDatabase();
     const role = await database<Role>(ROLE_TABLE_NAME).where('id', req.body.roleId).first();
     const password = await oneWayHash(req.body.password);
@@ -78,7 +83,7 @@ app.post(
 
 app.patch(
   '/users/:id',
-  asyncMiddleware(async (req: Request, res: Response) => {
+  asyncHandler(async (req: Request, res: Response) => {
     const database = await getDatabase();
     const id = Number(req.params.id);
     const role = await database<Role>(ROLE_TABLE_NAME).where('id', req.body.roleId).first();
@@ -101,7 +106,7 @@ app.patch(
 
 app.delete(
   '/users/:id',
-  asyncMiddleware(async (req: Request, res: Response) => {
+  asyncHandler(async (req: Request, res: Response) => {
     const database = await getDatabase();
     const id = Number(req.params.id);
 

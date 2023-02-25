@@ -1,13 +1,13 @@
 import { Permission, Role } from '@shared/types';
 import express, { Request, Response } from 'express';
 import { getDatabase } from '../database/connection';
-import asyncMiddleware from '../middleware/async';
+import asyncHandler from '../middleware/asyncHandler';
 
 const app = express();
 
 app.get(
   '/roles',
-  asyncMiddleware(async (req: Request, res: Response) => {
+  asyncHandler(async (req: Request, res: Response) => {
     const database = await getDatabase();
     const roles = await database<Role>('superfast_roles');
     res.json({ roles: roles });
@@ -16,7 +16,7 @@ app.get(
 
 app.get(
   '/roles/:id/permissions',
-  asyncMiddleware(async (req: Request, res: Response) => {
+  asyncHandler(async (req: Request, res: Response) => {
     const database = await getDatabase();
     const id = req.params.id;
 

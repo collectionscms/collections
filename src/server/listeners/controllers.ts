@@ -8,6 +8,9 @@ import fields from '../controllers/fields';
 import projectSettings from '../controllers/projectSettings';
 import roles from '../controllers/roles';
 import users from '../controllers/users';
+import authenticate from '../middleware/authenticate';
+import errorHandler from '../middleware/errorHandler';
+import extractToken from '../middleware/extractToken';
 
 Hooks.addAction(
   'api/init',
@@ -26,6 +29,9 @@ Hooks.addAction(
     app.use(express.json({ limit: process.env.REQ_LIMIT }));
     app.use(express.urlencoded({ limit: process.env.REQ_LIMIT, extended: true }));
 
+    app.use(extractToken);
+    app.use(authenticate);
+
     app.use(users);
     app.use(roles);
     app.use(collections);
@@ -33,6 +39,8 @@ Hooks.addAction(
     app.use(contents);
     app.use(projectSettings);
     app.use(authentications);
+
+    app.use(errorHandler);
   },
   { id: 'core/controllers' }
 );

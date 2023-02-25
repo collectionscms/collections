@@ -1,16 +1,16 @@
 import { Role, User } from '@shared/types';
-import axios from 'axios';
 import React, { createContext, useContext } from 'react';
 import useSWR, { SWRConfiguration } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
+import api from '../../../utilities/api';
 import { UserContext } from './type';
 
 const Context = createContext({} as UserContext);
 
 export const UserContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const getUsers = () =>
-    useSWR('/api/users', (url) =>
-      axios
+    useSWR('/users', (url) =>
+      api
         .get<{ users: User[] }>(url)
         .then((res) => res.data.users)
         .catch((err) => Promise.reject(err.message))
@@ -18,9 +18,9 @@ export const UserContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
 
   const getUser = (id: string, config?: SWRConfiguration) =>
     useSWR(
-      `/api/users/${id}`,
+      `/users/${id}`,
       (url) =>
-        axios
+        api
           .get<{ user: User }>(url)
           .then((res) => res.data.user)
           .catch((err) => Promise.reject(err.message)),
@@ -28,16 +28,16 @@ export const UserContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
     );
 
   const createUser = (): SWRMutationResponse =>
-    useSWRMutation(`/api/users`, async (url: string, { arg }) => {
-      return axios
+    useSWRMutation(`/users`, async (url: string, { arg }) => {
+      return api
         .post<{ user: User }>(url, arg)
         .then((res) => res.data.user)
         .catch((err) => Promise.reject(err.message));
     });
 
   const updateUser = (id: string): SWRMutationResponse =>
-    useSWRMutation(`/api/users/${id}`, async (url: string, { arg }) => {
-      return axios
+    useSWRMutation(`/users/${id}`, async (url: string, { arg }) => {
+      return api
         .patch(url, arg)
         .then((res) => res.data)
         .catch((err) => Promise.reject(err.message));
@@ -45,9 +45,9 @@ export const UserContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
 
   const getRoles = (config?: SWRConfiguration) =>
     useSWR(
-      '/api/roles',
+      '/roles',
       (url) =>
-        axios
+        api
           .get<{ roles: Role[] }>(url)
           .then((res) => res.data.roles)
           .catch((err) => Promise.reject(err.message)),

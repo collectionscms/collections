@@ -1,13 +1,13 @@
 import { Collection } from '@shared/types';
 import express, { Request, Response } from 'express';
 import { getDatabase } from '../database/connection';
-import asyncMiddleware from '../middleware/async';
+import asyncHandler from '../middleware/asyncHandler';
 
 const app = express();
 
 app.get(
   '/collections/:id',
-  asyncMiddleware(async (req: Request, res: Response) => {
+  asyncHandler(async (req: Request, res: Response) => {
     const database = await getDatabase();
     const id = Number(req.params.id);
     const collection = await database('superfast_collections')
@@ -26,7 +26,7 @@ app.get(
 
 app.get(
   '/collections',
-  asyncMiddleware(async (req: Request, res: Response) => {
+  asyncHandler(async (req: Request, res: Response) => {
     const database = await getDatabase();
     const collections = await database('superfast_collections').queryContext({
       toCamel: false,
@@ -38,7 +38,7 @@ app.get(
 
 app.post(
   '/collections',
-  asyncMiddleware(async (req: Request, res: Response) => {
+  asyncHandler(async (req: Request, res: Response) => {
     const database = await getDatabase();
 
     await database.transaction(async (tx) => {
@@ -74,7 +74,7 @@ app.post(
 
 app.patch(
   '/collections/:id',
-  asyncMiddleware(async (req: Request, res: Response) => {
+  asyncHandler(async (req: Request, res: Response) => {
     const database = await getDatabase();
     const id = Number(req.params.id);
     await database('superfast_collections').where('id', id).update(req.body);
@@ -85,7 +85,7 @@ app.patch(
 
 app.delete(
   '/collections/:id',
-  asyncMiddleware(async (req: Request, res: Response) => {
+  asyncHandler(async (req: Request, res: Response) => {
     const database = await getDatabase();
     const id = Number(req.params.id);
     const meta = await database<Collection>('superfast_collections').where('id', id).first();
