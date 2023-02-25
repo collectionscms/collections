@@ -1,5 +1,13 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button, FormHelperText, InputLabel, Stack, TextField } from '@mui/material';
+import {
+  Button,
+  Checkbox,
+  FormControlLabel,
+  FormHelperText,
+  InputLabel,
+  Stack,
+  TextField,
+} from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useSnackbar } from 'notistack';
 import React, { useEffect } from 'react';
@@ -26,6 +34,7 @@ const CreateRolePage: React.FC = () => {
     defaultValues: {
       name: '',
       description: '',
+      adminAccess: false,
     },
     resolver: yupResolver(createRoleSchema()),
   });
@@ -55,7 +64,7 @@ const CreateRolePage: React.FC = () => {
         </Grid>
       </Grid>
       <Grid container spacing={3} columns={{ xs: 1, md: 4 }}>
-        <Grid xs={1} md={2}>
+        <Grid xs={1}>
           <InputLabel required>{t('name')}</InputLabel>
           <Controller
             name="name"
@@ -72,10 +81,26 @@ const CreateRolePage: React.FC = () => {
           />
           <FormHelperText error>{errors.name?.message}</FormHelperText>
         </Grid>
+        <Grid xs={1}>
+          <InputLabel>{t('admin_access')}</InputLabel>
+          <Controller
+            name="adminAccess"
+            control={control}
+            render={({ field }) => (
+              <FormControlLabel
+                name="isActive"
+                {...field}
+                label={t('is_active')}
+                control={<Checkbox checked={field.value} />}
+              />
+            )}
+          />
+          <FormHelperText error>{errors.adminAccess?.message}</FormHelperText>
+        </Grid>
       </Grid>
       <Grid container spacing={3} columns={{ xs: 1, md: 4 }}>
         <Grid xs={1} md={2}>
-          <InputLabel required>{t('description')}</InputLabel>
+          <InputLabel>{t('description')}</InputLabel>
           <Controller
             name="description"
             control={control}

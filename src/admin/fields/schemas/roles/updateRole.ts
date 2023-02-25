@@ -7,7 +7,7 @@ export type FormValues = {
   adminAccess: boolean;
 };
 
-export const createRole = (): ObjectSchema<FormValues> => {
+export const updateRole = (): ObjectSchema<FormValues> => {
   return yup.object().shape({
     name: yup.string().required().max(60),
     description: yup.string().max(250),
@@ -15,4 +15,4 @@ export const createRole = (): ObjectSchema<FormValues> => {
   });
 };
 
-export default createRole;
+export default updateRole;

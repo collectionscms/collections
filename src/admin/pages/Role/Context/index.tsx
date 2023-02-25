@@ -1,7 +1,7 @@
 import React, { createContext, useContext } from 'react';
-import useSWR from 'swr';
+import useSWR, { SWRConfiguration, SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
-import { Role } from '../../../../shared/types';
+import { Collection, Role } from '../../../../shared/types';
 import api from '../../../utilities/api';
 import { RoleContext } from './type';
 
@@ -16,6 +16,17 @@ export const RoleContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
         .catch((err) => Promise.reject(err.message))
     );
 
+  const getRole = (id: string, config?: SWRConfiguration) =>
+    useSWR(
+      `/roles/${id}`,
+      (url) =>
+        api
+          .get<{ role: Role }>(url)
+          .then((res) => res.data.role)
+          .catch((err) => Promise.reject(err.message)),
+      config
+    );
+
   const createRole = (): SWRMutationResponse =>
     useSWRMutation(`/roles`, async (url: string, { arg }) => {
       return api
@@ -24,11 +35,33 @@ export const RoleContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
         .catch((err) => Promise.reject(err.message));
     });
 
+  const updateRole = (id: string): SWRMutationResponse =>
+    useSWRMutation(`/roles/${id}`, async (url: string, { arg }) => {
+      return api
+        .patch(url, arg)
+        .then((res) => res.data)
+        .catch((err) => Promise.reject(err.message));
+    });
+
+  const getCollections = (config?: SWRConfiguration): SWRResponse =>
+    useSWR(
+      '/collections',
+      (url) =>
+        api
+          .get<{ collections: Collection[] }>(url)
+          .then((res) => res.data.collections)
+          .catch((err) => Promise.reject(err.message)),
+      config
+    );
+
   return (
     <Context.Provider
       value={{
         getRoles,
+        getRole,
         createRole,
+        updateRole,
+        getCollections,
       }}
     >
       {children}
