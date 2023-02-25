@@ -7,6 +7,7 @@ import { Navigate } from 'react-router-dom';
 
 const Project = Loader(lazy(() => import('@admin/pages/Project')));
 const Role = Loader(lazy(() => import('@admin/pages/Role')));
+const CreateRole = Loader(lazy(() => import('@admin/pages/Role/Create')));
 const EditRole = Loader(lazy(() => import('@admin/pages/Role/Edit')));
 const ContentType = Loader(lazy(() => import('@admin/pages/ContentType')));
 const CreateContentType = Loader(lazy(() => import('@admin/pages/ContentType/Create')));
@@ -73,7 +74,7 @@ const SettingRoutes = {
       path: 'roles/create',
       element: (
         <DocumentInfoProvider label="create.role">
-          <EditRole />
+          <CreateRole />
         </DocumentInfoProvider>
       ),
     },
