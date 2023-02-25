@@ -1,12 +1,12 @@
 import express, { Request, Response } from 'express';
 import { getDatabase } from '../database/connection';
-import asyncMiddleware from '../middleware/async';
+import asyncHandler from '../middleware/asyncHandler';
 
 const app = express();
 
 app.get(
   '/collections/:slug/contents',
-  asyncMiddleware(async (req: Request, res: Response) => {
+  asyncHandler(async (req: Request, res: Response) => {
     const database = await getDatabase();
     const slug = req.params.slug;
     const contents = await database(slug).queryContext({ toCamel: false });
@@ -19,7 +19,7 @@ app.get(
 
 app.get(
   '/collections/:slug/contents/:id',
-  asyncMiddleware(async (req: Request, res: Response) => {
+  asyncHandler(async (req: Request, res: Response) => {
     const database = await getDatabase();
     const slug = req.params.slug;
     const id = req.params.id;
@@ -33,7 +33,7 @@ app.get(
 
 app.post(
   '/collections/:slug/contents',
-  asyncMiddleware(async (req: Request, res: Response) => {
+  asyncHandler(async (req: Request, res: Response) => {
     const database = await getDatabase();
     const slug = req.params.slug;
 
@@ -47,7 +47,7 @@ app.post(
 
 app.patch(
   '/collections/:slug/contents/:id',
-  asyncMiddleware(async (req: Request, res: Response) => {
+  asyncHandler(async (req: Request, res: Response) => {
     const database = await getDatabase();
     const slug = req.params.slug;
     const id = Number(req.params.id);
@@ -60,7 +60,7 @@ app.patch(
 
 app.delete(
   '/collections/:slug/contents/:id',
-  asyncMiddleware(async (req: Request, res: Response) => {
+  asyncHandler(async (req: Request, res: Response) => {
     const database = await getDatabase();
     const slug = req.params.slug;
     const id = Number(req.params.id);

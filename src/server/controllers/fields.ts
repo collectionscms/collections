@@ -2,13 +2,13 @@ import { Knex } from 'knex';
 import { Collection, Field } from '@shared/types';
 import express, { Request, Response } from 'express';
 import { getDatabase } from '../database/connection';
-import asyncMiddleware from '../middleware/async';
+import asyncHandler from '../middleware/asyncHandler';
 
 const app = express();
 
 app.get(
   '/collections/:slug/fields',
-  asyncMiddleware(async (req: Request, res: Response) => {
+  asyncHandler(async (req: Request, res: Response) => {
     const database = await getDatabase();
     const slug = req.params.slug;
     const fields = await database('superfast_fields').where('collection', slug);
@@ -21,7 +21,7 @@ app.get(
 
 app.post(
   '/collections/:slug/fields',
-  asyncMiddleware(async (req: Request, res: Response) => {
+  asyncHandler(async (req: Request, res: Response) => {
     const database = await getDatabase();
     const slug = req.params.slug;
     const meta = await database<Collection>('superfast_collections')
@@ -47,7 +47,7 @@ app.post(
 
 app.delete(
   '/collections/:collectionId/fields/:id',
-  asyncMiddleware(async (req: Request, res: Response) => {
+  asyncHandler(async (req: Request, res: Response) => {
     const database = await getDatabase();
     const collectionId = Number(req.params.collectionId);
     const id = Number(req.params.id);

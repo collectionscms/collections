@@ -2,13 +2,13 @@ import argon2 from 'argon2';
 import express, { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import { getDatabase } from '../database/connection';
-import asyncMiddleware from '../middleware/async';
+import asyncHandler from '../middleware/asyncHandler';
 
 const app = express();
 
 app.post(
   '/authentications/login',
-  asyncMiddleware(async (req: Request, res: Response) => {
+  asyncHandler(async (req: Request, res: Response) => {
     const database = await getDatabase();
     const user = await database
       .select('u.id', 'u.user_name', 'u.password', {
