@@ -1,8 +1,8 @@
 import { Field } from '@shared/types';
-import axios from 'axios';
 import React, { createContext, useContext } from 'react';
 import useSWR, { SWRConfiguration, SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
+import api from '../../../utilities/api';
 import { ContentContext } from './type';
 
 const Context = createContext({} as ContentContext);
@@ -10,9 +10,9 @@ const Context = createContext({} as ContentContext);
 export const ContentContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const getContents = (slug: string, config?: SWRConfiguration): SWRResponse =>
     useSWR(
-      `/api/collections/${slug}/contents`,
+      `/collections/${slug}/contents`,
       (url) =>
-        axios
+        api
           .get<{ contents: unknown[] }>(url)
           .then((res) => res.data.contents)
           .catch((err) => Promise.reject(err.message)),
@@ -21,9 +21,9 @@ export const ContentContextProvider: React.FC<{ children: React.ReactNode }> = (
 
   const getContent = (slug: string, id: string, config?: SWRConfiguration): SWRResponse =>
     useSWR(
-      `/api/collections/${slug}/contents/${id}`,
+      `/collections/${slug}/contents/${id}`,
       (url) =>
-        axios
+        api
           .get<{ content: unknown }>(url)
           .then((res) => res.data.content)
           .catch((err) => Promise.reject(err.message)),
@@ -32,9 +32,9 @@ export const ContentContextProvider: React.FC<{ children: React.ReactNode }> = (
 
   const getFields = (slug: string, config?: SWRConfiguration): SWRResponse =>
     useSWR(
-      `/api/collections/${slug}/fields`,
+      `/collections/${slug}/fields`,
       (url) =>
-        axios
+        api
           .get<{ fields: Field[] }>(url)
           .then((res) => res.data.fields)
           .catch((err) => Promise.reject(err.message)),
@@ -42,16 +42,16 @@ export const ContentContextProvider: React.FC<{ children: React.ReactNode }> = (
     );
 
   const createContent = (slug: string): SWRMutationResponse =>
-    useSWRMutation(`/api/collections/${slug}/contents`, async (url: string, { arg }) => {
-      return axios
+    useSWRMutation(`/collections/${slug}/contents`, async (url: string, { arg }) => {
+      return api
         .post<{ content: unknown }>(url, arg)
         .then((res) => res.data.content)
         .catch((err) => Promise.reject(err.message));
     });
 
   const updateContent = (slug: string, id: string): SWRMutationResponse =>
-    useSWRMutation(`/api/collections/${slug}/contents/${id}`, async (url: string, { arg }) => {
-      return axios
+    useSWRMutation(`/collections/${slug}/contents/${id}`, async (url: string, { arg }) => {
+      return api
         .patch<{ content: unknown }>(url, arg)
         .then((res) => res.data)
         .catch((err) => Promise.reject(err.message));

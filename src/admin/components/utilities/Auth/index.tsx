@@ -1,12 +1,11 @@
 import { AuthUser, Permission, PermissionsAction } from '@shared/types';
-import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
-import { AuthContext } from './types';
 import api, { setAuthorization } from '../../../utilities/api';
+import { AuthContext } from './types';
 
 const Context = createContext({} as AuthContext);
 
@@ -16,9 +15,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [cookies, setCookie] = useCookies(['superfast-token']);
   const navigate = useNavigate();
   const { data, trigger } = useSWRMutation(
-    user?.id ? `/api/roles/${user.id}/permissions` : null,
+    user?.id ? `/roles/${user.id}/permissions` : null,
     async (url: string, { arg }) => {
-      return axios
+      return api
         .get<{ permissions: Permission[] }>(url, arg)
         .then((res) => {
           return res.data.permissions;
@@ -47,8 +46,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   );
 
   const login = (): SWRMutationResponse =>
-    useSWRMutation(`/api/authentications/login`, async (url: string, { arg }) => {
-      return axios
+    useSWRMutation(`/authentications/login`, async (url: string, { arg }) => {
+      return api
         .post<{ token: string }>(url, arg)
         .then((res) => {
           setToken(res.data.token);
