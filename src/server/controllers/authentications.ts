@@ -11,7 +11,7 @@ app.post(
   asyncHandler(async (req: Request, res: Response) => {
     const database = await getDatabase();
     const user = await database
-      .select('u.id', 'u.user_name', 'u.password', {
+      .select('u.id', 'u.user_name', 'u.password', 'u.api_key', {
         role_admin_access: 'r.admin_access',
       })
       .from('superfast_users AS u')
@@ -27,6 +27,7 @@ app.post(
       id: user.id,
       userName: user.userName,
       adminAccess: user.roleAdminAccess,
+      apiKey: user.apiKey,
     };
 
     const token = jwt.sign(payload, process.env.SECRET, {
