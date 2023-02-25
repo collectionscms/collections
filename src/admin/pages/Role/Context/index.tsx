@@ -1,6 +1,7 @@
-import { Role } from '@shared/types';
 import React, { createContext, useContext } from 'react';
 import useSWR from 'swr';
+import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
+import { Role } from '../../../../shared/types';
 import api from '../../../utilities/api';
 import { RoleContext } from './type';
 
@@ -15,10 +16,19 @@ export const RoleContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
         .catch((err) => Promise.reject(err.message))
     );
 
+  const createRole = (): SWRMutationResponse =>
+    useSWRMutation(`/roles`, async (url: string, { arg }) => {
+      return api
+        .post<{ role: Role }>(url, arg)
+        .then((res) => res.data.role)
+        .catch((err) => Promise.reject(err.message));
+    });
+
   return (
     <Context.Provider
       value={{
         getRoles,
+        createRole,
       }}
     >
       {children}
