@@ -6,6 +6,7 @@ import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
 import { AuthContext } from './types';
+import api, { setAuthorization } from '../../../utilities/api';
 
 const Context = createContext({} as AuthContext);
 
@@ -30,6 +31,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const decoded = jwtDecode<AuthUser>(token);
     setUser(decoded);
     setCookie('superfast-token', token, { path: '/' });
+    setAuthorization(token);
   }, []);
 
   const hasPermission = useCallback(
