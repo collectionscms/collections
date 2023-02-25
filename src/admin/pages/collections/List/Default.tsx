@@ -5,7 +5,7 @@ import { Column } from '@admin/components/elements/Table/types';
 import ComposeWrapper from '@admin/components/utilities/ComposeWrapper';
 import { ContentContextProvider, useContent } from '@admin/pages/collections/Context';
 import buildColumns from '@admin/utilities/buildColumns';
-import { Button, Drawer, useTheme } from '@mui/material';
+import { Button } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { Stack } from '@mui/system';
 import { useSnackbar } from 'notistack';
@@ -17,25 +17,11 @@ import { Props } from './types';
 
 const DefaultListPage: React.FC<Props> = ({ collection }) => {
   const [columns, setColumns] = useState<Column[]>([]);
-  const theme = useTheme();
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
-  const [drawerOpen, setDrawerOpen] = useState(false);
   const { getContents, getFields } = useContent();
   const { data: metaFields, error: getFieldsError } = getFields(collection.collection);
   const { data: contents, error: getContentsError } = getContents(collection.collection);
-
-  const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
-    if (
-      event.type === 'keydown' &&
-      ((event as React.KeyboardEvent).key === 'Tab' ||
-        (event as React.KeyboardEvent).key === 'Shift')
-    ) {
-      return;
-    }
-
-    setDrawerOpen(open);
-  };
 
   useEffect(() => {
     if (metaFields === undefined) return;
@@ -58,23 +44,13 @@ const DefaultListPage: React.FC<Props> = ({ collection }) => {
 
   return (
     <Stack rowGap={3}>
-      <Drawer
-        anchor="right"
-        open={drawerOpen}
-        onClose={toggleDrawer(false)}
-        sx={{ zIndex: theme.zIndex.appBar + 200 }}
-      >
-        <ApiPreview path={collection.collection} />
-      </Drawer>
       <Grid container spacing={2}>
         <Grid xs>
           <h1>{collection.collection}</h1>
         </Grid>
         <Grid container columnSpacing={2} alignItems="center">
           <Grid>
-            <Button variant="contained" onClick={toggleDrawer(true)}>
-              {t('api_preview')}
-            </Button>
+            <ApiPreview slug={collection.collection} singleton={collection.singleton} />
           </Grid>
           <Grid>
             <Button variant="contained" component={RouterLink} to="create">

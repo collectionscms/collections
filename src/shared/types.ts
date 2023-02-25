@@ -32,6 +32,7 @@ export type AuthUser = {
   id: number;
   userName: string;
   adminAccess: boolean;
+  apiKey: string | null;
 };
 
 export type User = {
