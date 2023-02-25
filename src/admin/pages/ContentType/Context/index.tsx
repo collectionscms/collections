@@ -1,8 +1,8 @@
 import { Collection, Field } from '@shared/types';
-import axios from 'axios';
 import React, { createContext, useContext } from 'react';
 import useSWR, { SWRConfiguration, SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
+import api from '../../../utilities/api';
 import { CollectionContext } from './type';
 
 const Context = createContext({} as CollectionContext);
@@ -12,9 +12,9 @@ export const CollectionContextProvider: React.FC<{ children: React.ReactNode }> 
 }) => {
   const getCollection = (id: string, config?: SWRConfiguration): SWRResponse =>
     useSWR(
-      `/api/collections/${id}`,
+      `/collections/${id}`,
       (url) =>
-        axios
+        api
           .get<{ collection: Collection }>(url)
           .then((res) => res.data.collection)
           .catch((err) => Promise.reject(err.message)),
@@ -22,17 +22,17 @@ export const CollectionContextProvider: React.FC<{ children: React.ReactNode }> 
     );
 
   const getCollections = (): SWRResponse =>
-    useSWR('/api/collections', (url) =>
-      axios
+    useSWR('/collections', (url) =>
+      api
         .get<{ collections: Collection[] }>(url)
         .then((res) => res.data.collections)
         .catch((err) => Promise.reject(err.message))
     );
 
   const createCollection: SWRMutationResponse = useSWRMutation(
-    '/api/collections',
+    '/collections',
     async (url: string, { arg }) => {
-      return axios
+      return api
         .post<{ collection: Collection }>(url, arg)
         .then((res) => res.data.collection)
         .catch((err) => Promise.reject(err.message));
@@ -40,8 +40,8 @@ export const CollectionContextProvider: React.FC<{ children: React.ReactNode }> 
   );
 
   const updateCollection = (id: string): SWRMutationResponse =>
-    useSWRMutation(`/api/collections/${id}`, async (url: string, { arg }) => {
-      return axios
+    useSWRMutation(`/collections/${id}`, async (url: string, { arg }) => {
+      return api
         .patch<{ collection: Collection }>(url, arg)
         .then((res) => res.data)
         .catch((err) => Promise.reject(err.message));
@@ -49,9 +49,9 @@ export const CollectionContextProvider: React.FC<{ children: React.ReactNode }> 
 
   const getFields = (slug: string, config?: SWRConfiguration): SWRResponse =>
     useSWR(
-      `/api/collections/${slug}/fields`,
+      `/collections/${slug}/fields`,
       (url) =>
-        axios
+        api
           .get<{ fields: Field[] }>(url)
           .then((res) => res.data.fields)
           .catch((err) => Promise.reject(err.message)),

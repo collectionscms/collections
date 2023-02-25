@@ -1,8 +1,8 @@
 import { ProjectSetting } from '@shared/types';
-import axios from 'axios';
 import React, { createContext, useContext } from 'react';
 import useSWR, { SWRConfiguration } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
+import api from '../../../utilities/api';
 import { ProjectSettingContext } from './type';
 
 const Context = createContext({} as ProjectSettingContext);
@@ -12,9 +12,9 @@ export const ProjectSettingContextProvider: React.FC<{ children: React.ReactNode
 }) => {
   const getProjectSetting = (config?: SWRConfiguration) =>
     useSWR(
-      '/api/project_settings',
+      '/project_settings',
       (url) =>
-        axios
+        api
           .get<{ projectSetting: ProjectSetting }>(url)
           .then((res) => res.data.projectSetting)
           .catch((err) => Promise.reject(err.message)),
@@ -22,8 +22,8 @@ export const ProjectSettingContextProvider: React.FC<{ children: React.ReactNode
     );
 
   const updateProjectSetting = (): SWRMutationResponse =>
-    useSWRMutation('/api/project_settings', async (url: string, { arg }) => {
-      return axios
+    useSWRMutation('/project_settings', async (url: string, { arg }) => {
+      return api
         .patch(url, arg)
         .then((res) => res.data)
         .catch((err) => Promise.reject(err.message));
