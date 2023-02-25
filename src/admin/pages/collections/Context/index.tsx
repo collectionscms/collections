@@ -41,6 +41,14 @@ export const ContentContextProvider: React.FC<{ children: React.ReactNode }> = (
       config
     );
 
+  const getPreviewContents = (slug: string): SWRMutationResponse =>
+    useSWRMutation(`/collections/${slug}/contents`, async (url: string, { arg }) => {
+      return api
+        .get<{ contents: unknown[] }>(url, arg)
+        .then((res) => res.data.contents)
+        .catch((err) => Promise.reject(err.message));
+    });
+
   const createContent = (slug: string): SWRMutationResponse =>
     useSWRMutation(`/collections/${slug}/contents`, async (url: string, { arg }) => {
       return api
@@ -63,6 +71,7 @@ export const ContentContextProvider: React.FC<{ children: React.ReactNode }> = (
         getContents,
         getContent,
         getFields,
+        getPreviewContents,
         createContent,
         updateContent,
       }}
