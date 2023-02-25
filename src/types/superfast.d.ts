@@ -20,24 +20,6 @@ declare global {
     }
   }
 
-  namespace Express {
-    interface Request {
-      data: {
-        user?: User;
-        session?: UserSession;
-        [key: string]: any;
-      };
-
-      validate: (schema: any, type?: 'body' | 'query' | 'params') => Promise<void>;
-    }
-
-    namespace Multer {
-      interface File {
-        key?: string;
-      }
-    }
-  }
-
   interface Window {
     Hooks: typeof Hooks;
   }
