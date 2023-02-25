@@ -15,6 +15,17 @@ app.get(
 );
 
 app.get(
+  '/roles/:id',
+  asyncHandler(async (req: Request, res: Response) => {
+    const database = await getDatabase();
+    const id = req.params.id;
+    const role = await database<Role>(ROLE_TABLE_NAME).where('id', id).first();
+
+    res.json({ role: role });
+  })
+);
+
+app.get(
   '/roles/:id/permissions',
   asyncHandler(async (req: Request, res: Response) => {
     const database = await getDatabase();
