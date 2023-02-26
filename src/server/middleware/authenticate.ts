@@ -12,14 +12,14 @@ const authHandler: RequestHandler = async (req: Request, res: Response, next: Ne
         req.user = user.id;
         req.adminAccess = user.adminAccess;
       } else {
-        return next(new InvalidCredentialsException());
+        return next(new InvalidCredentialsException('invalid_user_credentials'));
       }
     }
 
     return next();
   } catch (e) {
     return next(
-      new InvalidCredentialsException('Invalid user credentials', { message: e.message })
+      new InvalidCredentialsException('invalid_user_credentials', { message: e.message })
     );
   }
 };
