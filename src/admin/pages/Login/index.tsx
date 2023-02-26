@@ -1,12 +1,12 @@
-import { useAuth } from '@admin/components/utilities/Auth';
-import loginSchema, { FormValues } from '@admin/fields/schemas/authentications/loginSchema';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Box, Button, InputLabel, Stack, TextField } from '@mui/material';
+import { Box, Button, FormHelperText, InputLabel, Stack, TextField } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import React, { useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../components/utilities/Auth';
+import loginSchema, { FormValues } from '../../fields/schemas/authentications/loginSchema';
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -42,23 +42,18 @@ const LoginPage: React.FC = () => {
     <Stack component="form" onSubmit={handleSubmit(onSubmit)} spacing={4} sx={{ width: '400px' }}>
       <p>Welcome to Superfast</p>
       <Stack>
-        <InputLabel required>{t('email')}</InputLabel>
+        <InputLabel>{t('email')}</InputLabel>
         <Controller
           name="email"
           control={control}
           render={({ field }) => (
-            <TextField
-              name="email"
-              {...field}
-              type="text"
-              error={errors.email !== undefined}
-              helperText={errors.email?.message}
-            />
+            <TextField name="email" {...field} type="text" error={errors.email !== undefined} />
           )}
         />
+        <FormHelperText error>{errors.email?.message}</FormHelperText>
       </Stack>
       <Stack>
-        <InputLabel required>{t('password')}</InputLabel>
+        <InputLabel>{t('password')}</InputLabel>
         <Controller
           name="password"
           control={control}
@@ -67,11 +62,11 @@ const LoginPage: React.FC = () => {
               name="password"
               {...field}
               type="password"
-              error={errors.password !== undefined}
-              helperText={errors.password?.message}
+              error={errors.email !== undefined}
             />
           )}
         />
+        <FormHelperText error>{errors.password?.message}</FormHelperText>
       </Stack>
       <Box>
         <Link to="/admin/auth/forgot">{t('forgot')}</Link>

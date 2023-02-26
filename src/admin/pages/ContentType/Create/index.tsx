@@ -1,17 +1,26 @@
-import ComposeWrapper from '@admin/components/utilities/ComposeWrapper';
-import { useDocumentInfo } from '@admin/components/utilities/DocumentInfo';
-import createCollectionSchema, {
-  FormValues,
-} from '@admin/fields/schemas/collections/createCollection';
-import { CollectionContextProvider, useCollection } from '@admin/pages/ContentType/Context';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Box, Button, Checkbox, FormControlLabel, Stack, TextField } from '@mui/material';
+import {
+  Box,
+  Button,
+  Checkbox,
+  FormControlLabel,
+  FormHelperText,
+  InputLabel,
+  Stack,
+  TextField,
+} from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useSnackbar } from 'notistack';
 import React, { useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import ComposeWrapper from '../../../components/utilities/ComposeWrapper';
+import { useDocumentInfo } from '../../../components/utilities/DocumentInfo';
+import createCollectionSchema, {
+  FormValues,
+} from '../../../fields/schemas/collections/createCollection';
+import { CollectionContextProvider, useCollection } from '../../../pages/ContentType/Context';
 
 const CreatePage: React.FC = () => {
   const navigate = useNavigate();
@@ -55,33 +64,25 @@ const CreatePage: React.FC = () => {
       </Grid>
       <Grid container spacing={3} xs={12} xl={6}>
         <Grid xs={12} md={6}>
+          <InputLabel required>{t('name')}</InputLabel>
           <Controller
             name="name"
             control={control}
             render={({ field }) => (
-              <TextField
-                required
-                {...field}
-                variant="filled"
-                type="text"
-                fullWidth
-                label={t('name')}
-                error={errors.name !== undefined}
-                helperText={errors.name?.message}
-              />
+              <TextField {...field} type="text" fullWidth error={errors.name !== undefined} />
             )}
           />
+          <FormHelperText error>{errors.name?.message}</FormHelperText>
         </Grid>
         <Grid xs={12} md={6}>
-          <Box>
-            <Controller
-              name="singleton"
-              control={control}
-              render={({ field }) => (
-                <FormControlLabel {...field} label={'Singleton'} control={<Checkbox />} />
-              )}
-            />
-          </Box>
+          <InputLabel>{t('content_data_type')}</InputLabel>
+          <Controller
+            name="singleton"
+            control={control}
+            render={({ field }) => (
+              <FormControlLabel {...field} label={'Singleton'} control={<Checkbox />} />
+            )}
+          />
         </Grid>
       </Grid>
     </Stack>

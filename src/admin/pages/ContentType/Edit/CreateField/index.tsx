@@ -16,6 +16,7 @@ import {
   Input,
   InputLabel,
   Stack,
+  TextField,
   Typography,
   useTheme,
 } from '@mui/material';
@@ -133,15 +134,12 @@ const CreateField: React.FC<Props> = ({ slug, openState, onSuccess, onClose }) =
               <Stack component="form" onSubmit={handleSubmit(onSubmit)} rowGap={3}>
                 <Grid container spacing={3} columns={{ xs: 1, sm: 4 }}>
                   <Grid xs={1} sm={2}>
-                    <InputLabel shrink htmlFor="field">
-                      {t('field')}
-                    </InputLabel>
+                    <InputLabel required>{t('field')}</InputLabel>
                     <Controller
                       name="field"
                       control={control}
                       render={({ field }) => (
-                        <Input
-                          id="field"
+                        <TextField
                           {...field}
                           type="text"
                           fullWidth
@@ -153,15 +151,12 @@ const CreateField: React.FC<Props> = ({ slug, openState, onSuccess, onClose }) =
                     <FormHelperText error>{errors.field?.message}</FormHelperText>
                   </Grid>
                   <Grid xs={1} sm={2}>
-                    <InputLabel shrink htmlFor="label">
-                      {t('label')}
-                    </InputLabel>
+                    <InputLabel required>{t('label')}</InputLabel>
                     <Controller
                       name="label"
                       control={control}
                       render={({ field }) => (
-                        <Input
-                          id="label"
+                        <TextField
                           {...field}
                           type="text"
                           fullWidth
