@@ -11,7 +11,7 @@ app.get(
   '/users',
   asyncHandler(async (req: Request, res: Response) => {
     if (!req.user) {
-      throw new InvalidCredentialsException();
+      throw new InvalidCredentialsException('invalid_user_credentials');
     }
 
     const database = await getDatabase();
