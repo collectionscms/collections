@@ -75,6 +75,11 @@
     "content_type": "Edit Content Type",
     "custom": "Edit {{page}}"
   },
+  "error": {
+    "invalid_user_credentials": "Invalid user credentials.",
+    "can_not_delete_role_in_use": "Cannot delete roles in use.",
+    "can_not_delete_last_admin_role": "Cannot delete the last admin role."
+  },
   "yup": {
     "mixed": {
       "default": "Input Error.",
