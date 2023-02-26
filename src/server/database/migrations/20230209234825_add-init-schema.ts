@@ -38,6 +38,7 @@ export async function up(knex: Knex): Promise<void> {
       .references('id')
       .inTable('superfast_roles');
     table.timestamps(true, true);
+    table.unique(['collection', 'action', 'superfast_role_id']);
   });
 
   await knex.schema.createTable('superfast_collections', (table) => {
