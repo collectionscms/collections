@@ -1,5 +1,5 @@
-import { Permission, Role } from '@shared/types';
 import express, { Request, Response } from 'express';
+import { Permission, Role } from '../.../../../shared/types';
 import { getDatabase } from '../database/connection';
 import asyncHandler from '../middleware/asyncHandler';
 
@@ -22,20 +22,6 @@ app.get(
     const role = await database<Role>(ROLE_TABLE_NAME).where('id', id).first();
 
     res.json({ role: role });
-  })
-);
-
-app.get(
-  '/roles/:id/permissions',
-  asyncHandler(async (req: Request, res: Response) => {
-    const database = await getDatabase();
-    const id = req.params.id;
-
-    const permissions = await database<Permission>('superfast_permissions').where(
-      'superfast_role_id',
-      id
-    );
-    res.json({ permissions: permissions });
   })
 );
 
@@ -69,6 +55,54 @@ app.patch(
   })
 );
 
+app.get(
+  '/roles/:id/permissions',
+  asyncHandler(async (req: Request, res: Response) => {
+    const database = await getDatabase();
+    const id = req.params.id;
+
+    const permissions = await database<Permission>(PERMISSION_TABLE_NAME).where(
+      'superfast_role_id',
+      id
+    );
+    res.json({ permissions: permissions });
+  })
+);
+
+app.post(
+  '/roles/:id/permissions',
+  asyncHandler(async (req: Request, res: Response) => {
+    const database = await getDatabase();
+    const id = Number(req.params.id);
+
+    const data = {
+      ...req.body,
+      superfast_role_id: id,
+    };
+
+    const permissions = await database<Permission>(PERMISSION_TABLE_NAME)
+      .queryContext({ toSnake: true })
+      .insert(data, 'id');
+
+    res.json({
+      permission: permissions[0],
+    });
+  })
+);
+
+app.delete(
+  '/roles/:id/permissions/:permissionId',
+  asyncHandler(async (req: Request, res: Response) => {
+    const database = await getDatabase();
+    const permissionId = Number(req.params.permissionId);
+
+    await database(PERMISSION_TABLE_NAME).where('id', permissionId).delete();
+
+    res.status(204).end();
+  })
+);
+
 const ROLE_TABLE_NAME = 'superfast_roles';
+const PERMISSION_TABLE_NAME = 'superfast_permissions';
 
 export default app;
