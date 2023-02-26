@@ -3,6 +3,7 @@
   "role": "ロール",
   "project_setting": "プロジェクト設定",
   "content_type": "コンテンツタイプ",
+  "content_data_type": "データの型",
   "content_management": "コンテンツ管理",
   "setting": "設定",
   "profile": "プロフィール",

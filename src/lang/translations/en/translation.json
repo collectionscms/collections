@@ -3,6 +3,7 @@
   "role": "Role",
   "project_setting": "Project Settings",
   "content_type": "Content Type",
+  "content_data_type": "Data Type",
   "content_management": "Content Management",
   "setting": "Setting",
   "profile": "Profile",
