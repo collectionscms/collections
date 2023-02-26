@@ -1,21 +1,17 @@
-import RouterLink from '@admin/components/elements/Link';
-import Table from '@admin/components/elements/Table';
-import Cell from '@admin/components/elements/Table/Cell';
-import { Type } from '@admin/components/elements/Table/Cell/types';
-import { useDocumentInfo } from '@admin/components/utilities/DocumentInfo';
-import buildColumns from '@admin/utilities/buildColumns';
 import { Button, Stack } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
+import { useSnackbar } from 'notistack';
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import SearchFilter from '@admin/components/elements/SearchFilter';
-import { UserContextProvider, useUser } from '@admin/pages/User/Context';
-import ComposeWrapper from '@admin/components/utilities/ComposeWrapper';
-import { User } from '@shared/types';
-import { useSnackbar } from 'notistack';
-import fields from '@server/controllers/fields';
-import { error } from 'console';
-import { t } from 'i18next';
+import { User } from '../../../shared/types';
+import RouterLink from '../../components/elements/Link';
+import Table from '../../components/elements/Table';
+import Cell from '../../components/elements/Table/Cell';
+import { Type } from '../../components/elements/Table/Cell/types';
+import ComposeWrapper from '../../components/utilities/ComposeWrapper';
+import { useDocumentInfo } from '../../components/utilities/DocumentInfo';
+import { UserContextProvider, useUser } from '../../pages/User/Context';
+import buildColumns from '../../utilities/buildColumns';
 
 const UserPage: React.FC = () => {
   const { localizedLabel } = useDocumentInfo();
@@ -69,7 +65,7 @@ const UserPage: React.FC = () => {
           </Grid>
         </Grid>
       </Grid>
-      <SearchFilter fieldName="userName" fieldLabel={t('user_name')} />
+      {/* <SearchFilter fieldName="userName" fieldLabel={t('user_name')} /> */}
       <Table columns={columns} rows={data || []} />
     </Stack>
   );
