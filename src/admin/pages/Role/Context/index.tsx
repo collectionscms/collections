@@ -1,7 +1,7 @@
 import React, { createContext, useContext } from 'react';
 import useSWR, { SWRConfiguration, SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
-import { Collection, Role } from '../../../../shared/types';
+import { Collection, Permission, Role } from '../../../../shared/types';
 import api from '../../../utilities/api';
 import { RoleContext } from './type';
 
@@ -54,6 +54,33 @@ export const RoleContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       config
     );
 
+  const getPermissions = (id: string, config?: SWRConfiguration): SWRResponse =>
+    useSWR(
+      `/roles/${id}/permissions`,
+      (url) =>
+        api
+          .get<{ permissions: Permission[] }>(url)
+          .then((res) => res.data.permissions)
+          .catch((err) => Promise.reject(err.message)),
+      config
+    );
+
+  const createPermission = (id: string): SWRMutationResponse =>
+    useSWRMutation(`/roles/${id}/permissions`, async (url: string, { arg }) => {
+      return api
+        .post<{ permission: Permission }>(url, arg)
+        .then((res) => res.data.permission)
+        .catch((err) => Promise.reject(err.message));
+    });
+
+  const deletePermission = (id: string, permissionId: string): SWRMutationResponse =>
+    useSWRMutation(`/roles/${id}/permissions/${permissionId}`, async (url: string, { arg }) => {
+      return api
+        .delete(url, arg)
+        .then((res) => res.data)
+        .catch((err) => Promise.reject(err.message));
+    });
+
   return (
     <Context.Provider
       value={{
@@ -62,6 +89,9 @@ export const RoleContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
         createRole,
         updateRole,
         getCollections,
+        getPermissions,
+        createPermission,
+        deletePermission,
       }}
     >
       {children}
