@@ -55,6 +55,8 @@
   "allow": "Allow",
   "not_allow": "Not Allow",
   "admin_has_all_permissions": "Admin has all permissions",
+  "log_back_in": "Log back in",
+  "logged_out": "Logged out",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion.",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?"
