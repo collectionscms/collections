@@ -1,6 +1,6 @@
 import { SWRConfiguration, SWRResponse } from 'swr';
 import { SWRMutationResponse } from 'swr/mutation';
-import { Collection, Role } from '../../../../shared/types';
+import { Collection, Permission, Role } from '../../../../shared/types';
 
 export type RoleContext = {
   getRoles: () => SWRResponse<Role[]>;
@@ -8,4 +8,7 @@ export type RoleContext = {
   createRole: () => SWRMutationResponse<Role>;
   updateRole: (id: string) => SWRMutationResponse;
   getCollections: (config?: SWRConfiguration) => SWRResponse<Collection[]>;
+  getPermissions: (id: string, config?: SWRConfiguration) => SWRResponse<Permission[]>;
+  createPermission: (id: string) => SWRMutationResponse<Permission>;
+  deletePermission: (id: string, permissionId: string) => SWRMutationResponse;
 };

@@ -51,6 +51,9 @@
   "generate_api_key_placeholder": "Click the button to create a new API Key",
   "hidden_for_security": "Hidden for security",
   "admin_access": "Admin Access",
+  "allow": "Allow",
+  "not_allow": "Not Allow",
+  "admin_has_all_permissions": "Admin has all permissions",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion.",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?"

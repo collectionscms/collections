@@ -5,6 +5,12 @@ import { useDocumentInfo } from '@admin/components/utilities/DocumentInfo';
 import updateRoleSchema, { FormValues } from '@admin/fields/schemas/roles/updateRole';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
+  AddOutlined,
+  DeleteOutlineOutlined,
+  ModeEditOutlineOutlined,
+  VisibilityOutlined,
+} from '@mui/icons-material';
+import {
   Box,
   Button,
   Checkbox,
@@ -17,6 +23,7 @@ import {
   TableBody,
   TableCell,
   TableContainer,
+  TableHead,
   TableRow,
   TextField,
 } from '@mui/material';
@@ -26,7 +33,9 @@ import React, { Suspense, useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
+import { PermissionsAction } from '../../../../shared/types';
 import { RoleContextProvider, useRole } from '../Context';
+import PermissionToggleButton from './ToggleButton';
 
 const EditRolePage: React.FC = () => {
   const { id } = useParams();
@@ -34,9 +43,10 @@ const EditRolePage: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
-  const { getRole, getCollections, updateRole } = useRole();
+  const { getRole, getCollections, getPermissions, updateRole } = useRole();
   const { data: role } = getRole(id, { suspense: true });
   const { data: collections } = getCollections({ suspense: true });
+  const { data: permissions, mutate } = getPermissions(id, { suspense: true });
   const {
     data: updatedRole,
     trigger: updateRoleTrigger,
@@ -50,20 +60,25 @@ const EditRolePage: React.FC = () => {
     defaultValues: {
       name: role.name,
       description: role.description,
-      adminAccess: role.adminAccess,
+      adminAccess: Boolean(role.adminAccess),
     },
     resolver: yupResolver(updateRoleSchema()),
   });
-
-  const handleDeletionSuccess = () => {
-    navigate(`../roles`);
-  };
+  const actions: PermissionsAction[] = ['create', 'read', 'update', 'delete'];
 
   useEffect(() => {
     if (updatedRole === undefined) return;
     enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
     navigate('../roles');
   }, [updatedRole]);
+
+  const handleDeletionSuccess = () => {
+    navigate(`../roles`);
+  };
+
+  const handlePermissionSuccess = (permissionId: number) => {
+    mutate(permissions.filter((permission) => permission.id !== permissionId));
+  };
 
   const onSubmit: SubmitHandler<FormValues> = (form: FormValues) => {
     updateRoleTrigger(form);
@@ -89,26 +104,67 @@ const EditRolePage: React.FC = () => {
         </Grid>
         <Grid container spacing={3} columns={{ xs: 1, md: 4 }}>
           <Grid xs={1} md={2}>
-            <TableContainer component={Paper}>
-              <Table aria-label="simple table">
-                <TableBody>
-                  {collections.map((collection) => {
-                    return (
-                      <TableRow
-                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                        key={collection.id}
-                      >
-                        <TableCell component="th" scope="row" sx={{ py: 0 }}>
-                          <Box display="flex" justifyContent="space-between" alignItems="center">
-                            <p>{collection.collection}</p>
-                          </Box>
+            {role.adminAccess ? (
+              <span>{t('admin_has_all_permissions')}</span>
+            ) : (
+              <TableContainer component={Paper}>
+                <Table aria-label="simple table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell component="th" scope="row">
+                        {t('content_type')}
+                      </TableCell>
+                      {actions.map((action) => (
+                        <TableCell
+                          component="th"
+                          scope="row"
+                          align="center"
+                          key={action}
+                          sx={{ width: 40 }}
+                        >
+                          {action === 'create' ? (
+                            <AddOutlined />
+                          ) : action === 'read' ? (
+                            <VisibilityOutlined />
+                          ) : action === 'update' ? (
+                            <ModeEditOutlineOutlined />
+                          ) : (
+                            <DeleteOutlineOutlined />
+                          )}
                         </TableCell>
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </Table>
-            </TableContainer>
+                      ))}
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {collections.map((collection) => {
+                      return (
+                        <TableRow
+                          sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                          key={collection.id}
+                        >
+                          <TableCell component="td" scope="row" sx={{ py: 0 }}>
+                            <Box display="flex" justifyContent="space-between" alignItems="center">
+                              <p>{collection.collection}</p>
+                            </Box>
+                          </TableCell>
+                          {actions.map((action) => (
+                            <TableCell component="td" scope="row" key={action} sx={{ py: 0 }}>
+                              <PermissionToggleButton
+                                roleId={id}
+                                permissions={permissions}
+                                collection={collection.collection}
+                                action={action}
+                                onSuccess={handlePermissionSuccess}
+                              />
+                            </TableCell>
+                          ))}
+                        </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            )}
           </Grid>
         </Grid>
         <Grid container spacing={3} columns={{ xs: 1, md: 4 }}>

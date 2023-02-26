@@ -51,6 +51,9 @@
   "generate_api_key_placeholder": "ボタンをクリックすると新しいAPIキーが作成されます",
   "hidden_for_security": "セキュリティのため非表示",
   "admin_access": "管理者権限",
+  "allow": "許可",
+  "not_allow": "許可しない",
+  "admin_has_all_permissions": "管理者は全ての権限を持っています",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？"
