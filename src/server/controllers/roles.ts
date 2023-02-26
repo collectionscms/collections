@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import { Permission, Role } from '../.../../../shared/types';
+import { UnprocessableEntityException } from '../../shared/exceptions/unprocessableEntity';
 import { getDatabase } from '../database/connection';
 import asyncHandler from '../middleware/asyncHandler';
 
@@ -55,6 +56,48 @@ app.patch(
   })
 );
 
+const checkForOtherAdminRoles = async () => {
+  const database = await getDatabase();
+  const adminRole = await database(ROLE_TABLE_NAME)
+    .count('*', { as: 'count' })
+    .where('admin_access', true)
+    .first();
+
+  if (adminRole.count === 1) {
+    throw new UnprocessableEntityException('can_not_delete_last_admin_role');
+  }
+};
+
+app.delete(
+  '/roles/:id',
+  asyncHandler(async (req: Request, res: Response) => {
+    const database = await getDatabase();
+    const id = Number(req.params.id);
+
+    const users = await database(USER_TABLE_NAME).where('superfast_role_id', id);
+    if (users.length > 0) {
+      throw new UnprocessableEntityException('can_not_delete_role_in_use');
+    }
+
+    const role = await database<Role>(ROLE_TABLE_NAME).where('id', id).first();
+    if (role.adminAccess) {
+      await checkForOtherAdminRoles();
+    }
+
+    await database.transaction(async (tx) => {
+      try {
+        await tx(ROLE_TABLE_NAME).where('id', id).delete();
+        await tx(PERMISSION_TABLE_NAME).where('superfast_role_id', id).delete();
+        await tx.commit();
+        res.status(204).end();
+      } catch (e) {
+        await tx.rollback();
+        res.status(500).end();
+      }
+    });
+  })
+);
+
 app.get(
   '/roles/:id/permissions',
   asyncHandler(async (req: Request, res: Response) => {
@@ -102,6 +145,7 @@ app.delete(
   })
 );
 
+const USER_TABLE_NAME = 'superfast_users';
 const ROLE_TABLE_NAME = 'superfast_roles';
 const PERMISSION_TABLE_NAME = 'superfast_permissions';
 
