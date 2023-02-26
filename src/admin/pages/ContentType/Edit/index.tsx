@@ -1,11 +1,3 @@
-import HeaderDeleteButton from '@admin/components/elements/DeleteHeaderButton';
-import Loading from '@admin/components/elements/Loading';
-import ComposeWrapper from '@admin/components/utilities/ComposeWrapper';
-import { useDocumentInfo } from '@admin/components/utilities/DocumentInfo';
-import updateCollectionSchema, {
-  FormValues,
-} from '@admin/fields/schemas/collections/updateCollection';
-import { CollectionContextProvider, useCollection } from '@admin/pages/ContentType/Context';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { MoreVertOutlined } from '@mui/icons-material';
 import {
@@ -28,6 +20,14 @@ import React, { Suspense, useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
+import HeaderDeleteButton from '../../../components/elements/DeleteHeaderButton';
+import Loading from '../../../components/elements/Loading';
+import ComposeWrapper from '../../../components/utilities/ComposeWrapper';
+import { useDocumentInfo } from '../../../components/utilities/DocumentInfo';
+import updateCollectionSchema, {
+  FormValues,
+} from '../../../fields/schemas/collections/updateCollection';
+import { CollectionContextProvider, useCollection } from '../../../pages/ContentType/Context';
 import CreateField from './CreateField';
 import EditMenu from './Menu';
 
