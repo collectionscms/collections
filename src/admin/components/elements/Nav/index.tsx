@@ -31,7 +31,14 @@ const NavHeader = () => {
         borderColor: '#f5f5f5',
       }}
     >
-      <Logo />
+      <Box
+        sx={{
+          width: '30px',
+          height: '30px',
+        }}
+      >
+        <Logo />
+      </Box>
     </Box>
   );
 };
