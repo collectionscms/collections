@@ -1,0 +1,22 @@
+{
+  "name": "@superfastcms/website",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "dev": "next dev -p 8000",
+    "build": "next build",
+    "start": "next start -p 8000"
+  },
+  "dependencies": {
+    "next": "^13.0.6",
+    "nextra": "latest",
+    "nextra-theme-docs": "latest",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "18.11.10",
+    "typescript": "^4.9.3"
+  }
+}

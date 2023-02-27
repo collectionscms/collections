@@ -1,0 +1,15 @@
+{
+  "index": "Home",
+  "get-started": "Get Started",
+  "roadmap": "ロードマップ",
+  "about": {
+    "title": "私たちについて",
+    "type": "page"
+  },
+  "contact": {
+    "title": "連絡先 ↗",
+    "type": "page",
+    "href": "https://github.com/kazaneshimizu",
+    "newWindow": true
+  }
+}
