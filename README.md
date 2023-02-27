@@ -1,5 +1,9 @@
 # Superfast CMS
 
+## Usage & Documentation
+
+Our extended documentation in Japanese is available on our [website](https://superfastcms.vercel.app/).
+
 ## Installation
 
 The easiest way to get started with Superfast is to use the create-superfast-app package:
@@ -14,6 +18,7 @@ When you're ready for production, run `npm run build` then `npm run start`.
 ## Tech Stack
 
 - Self-hosted - know where your data is stored!
+- DB - RDB(SQLite), MySQL and PostgreSQL will be supported in the future.
 - Backend - Node.js, Express
 - Admin - React, MUI
 
