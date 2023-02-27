@@ -9,8 +9,9 @@ const Context = createContext({} as ContentContext);
 
 export const ContentContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const getContents = (slug: string, config?: SWRConfiguration): SWRResponse =>
+    // Fetching data that depends on fields.
     useSWR(
-      `/collections/${slug}/contents`,
+      () => `/collections/${slug}/contents`,
       (url) =>
         api
           .get<{ contents: unknown[] }>(url)
