@@ -5,8 +5,11 @@ import React, { useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
+import Logo from '../../components/elements/Logo';
 import { useAuth } from '../../components/utilities/Auth';
+import ComposeWrapper from '../../components/utilities/ComposeWrapper';
 import loginSchema, { FormValues } from '../../fields/schemas/authentications/loginSchema';
+import { LoginContextProvider, useLogin } from './Context';
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -14,6 +17,8 @@ const LoginPage: React.FC = () => {
   const { enqueueSnackbar } = useSnackbar();
   const { login } = useAuth();
   const { data: token, trigger, isMutating, error } = login();
+  const { getProjectSetting } = useLogin();
+  const { data: projectSetting } = getProjectSetting();
 
   const {
     control,
@@ -40,7 +45,12 @@ const LoginPage: React.FC = () => {
 
   return (
     <Stack component="form" onSubmit={handleSubmit(onSubmit)} spacing={4} sx={{ width: '400px' }}>
-      <p>Welcome to Superfast</p>
+      <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
+        <Box sx={{ width: '60px', height: '60px' }}>
+          <Logo />
+        </Box>
+        <h1>{projectSetting?.name}</h1>
+      </Stack>
       <Stack>
         <InputLabel>{t('email')}</InputLabel>
         <Controller
@@ -71,11 +81,11 @@ const LoginPage: React.FC = () => {
       <Box>
         <Link to="/admin/auth/forgot">{t('forgot')}</Link>
       </Box>
-      <Button variant="contained" type="submit" disabled={isMutating}>
+      <Button variant="contained" type="submit" size="large" disabled={isMutating}>
         {t('login')}
       </Button>
     </Stack>
   );
 };
 
-export default LoginPage;
+export default ComposeWrapper({ context: LoginContextProvider })(LoginPage);
