@@ -1,15 +1,15 @@
-import DeleteHeaderButton from '@admin/components/elements/DeleteHeaderButton';
-import RenderFields from '@admin/components/forms/RenderFields';
-import { useAuth } from '@admin/components/utilities/Auth';
-import ComposeWrapper from '@admin/components/utilities/ComposeWrapper';
-import { ContentContextProvider, useContent } from '@admin/pages/collections/Context';
-import { Button, Drawer, Stack, useTheme } from '@mui/material';
+import { Button, Stack, useTheme } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useSnackbar } from 'notistack';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
+import DeleteHeaderButton from '../../../components/elements/DeleteHeaderButton';
+import RenderFields from '../../../components/forms/RenderFields';
+import { useAuth } from '../../../components/utilities/Auth';
+import ComposeWrapper from '../../../components/utilities/ComposeWrapper';
+import { ContentContextProvider, useContent } from '../../../pages/collections/Context';
 import ApiPreview from '../ApiPreview';
 import { Props } from './types';
 
@@ -40,18 +40,6 @@ const EditPage: React.FC<Props> = ({ collection }) => {
     setValue,
     formState: { errors },
   } = useForm();
-
-  const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
-    if (
-      event.type === 'keydown' &&
-      ((event as React.KeyboardEvent).key === 'Tab' ||
-        (event as React.KeyboardEvent).key === 'Shift')
-    ) {
-      return;
-    }
-
-    setDrawerOpen(open);
-  };
 
   const setDefaultValue = (content: Record<string, any>) => {
     metaFields
@@ -102,14 +90,6 @@ const EditPage: React.FC<Props> = ({ collection }) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Drawer
-        anchor="right"
-        open={drawerOpen}
-        onClose={toggleDrawer(false)}
-        sx={{ zIndex: theme.zIndex.appBar + 200 }}
-      >
-        <ApiPreview path={`${collection.collection}/${id}`} />
-      </Drawer>
       <Grid container spacing={2}>
         <Grid xs={12} sm>
           <h1>
@@ -130,9 +110,7 @@ const EditPage: React.FC<Props> = ({ collection }) => {
                 />
               </Grid>
               <Grid>
-                <Button variant="contained" onClick={toggleDrawer(true)}>
-                  {t('api_preview')}
-                </Button>
+                <ApiPreview slug={collection.collection} singleton={collection.singleton} />
               </Grid>
               <Grid>
                 <Button
