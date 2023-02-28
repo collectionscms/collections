@@ -24,6 +24,7 @@
   "fetch": "取得",
   "create_new": "登録",
   "delete": "削除",
+  "read": "閲覧",
   "ok": "OK",
   "cancel": "キャンセル",
   "search_by": "{{field_name}}で検索",

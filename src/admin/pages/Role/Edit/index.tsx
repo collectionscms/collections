@@ -1,15 +1,4 @@
-import DeleteHeaderButton from '@admin/components/elements/DeleteHeaderButton';
-import Loading from '@admin/components/elements/Loading';
-import ComposeWrapper from '@admin/components/utilities/ComposeWrapper';
-import { useDocumentInfo } from '@admin/components/utilities/DocumentInfo';
-import updateRoleSchema, { FormValues } from '@admin/fields/schemas/roles/updateRole';
 import { yupResolver } from '@hookform/resolvers/yup';
-import {
-  AddOutlined,
-  DeleteOutlineOutlined,
-  ModeEditOutlineOutlined,
-  VisibilityOutlined,
-} from '@mui/icons-material';
 import {
   Box,
   Button,
@@ -34,7 +23,13 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { PermissionsAction } from '../../../../shared/types';
+import DeleteHeaderButton from '../../../components/elements/DeleteHeaderButton';
+import Loading from '../../../components/elements/Loading';
+import ComposeWrapper from '../../../components/utilities/ComposeWrapper';
+import { useDocumentInfo } from '../../../components/utilities/DocumentInfo';
+import updateRoleSchema, { FormValues } from '../../../fields/schemas/roles/updateRole';
 import { RoleContextProvider, useRole } from '../Context';
+import PermissionHeaderCell from './HeaderCell';
 import PermissionToggleButton from './ToggleButton';
 
 const EditRolePage: React.FC = () => {
@@ -122,15 +117,7 @@ const EditRolePage: React.FC = () => {
                           key={action}
                           sx={{ width: 40 }}
                         >
-                          {action === 'create' ? (
-                            <AddOutlined />
-                          ) : action === 'read' ? (
-                            <VisibilityOutlined />
-                          ) : action === 'update' ? (
-                            <ModeEditOutlineOutlined />
-                          ) : (
-                            <DeleteOutlineOutlined />
-                          )}
+                          <PermissionHeaderCell action={action} />
                         </TableCell>
                       ))}
                     </TableRow>
