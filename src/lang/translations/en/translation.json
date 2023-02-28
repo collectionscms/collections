@@ -24,6 +24,7 @@
   "fetch": "Fetch",
   "create_new": "Create New",
   "delete": "Delete",
+  "read": "Read",
   "ok": "OK",
   "cancel": "Cancel",
   "search_by": "Search by {{field_name}}",
