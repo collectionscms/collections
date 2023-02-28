@@ -1,4 +1,5 @@
-import Output from '@scripts/utilities/output';
+import Output from '../../../scripts/utilities/output';
+import { oneWayHash } from '../../../server/utilities/oneWayHash';
 import { getDatabase } from '../connection';
 
 const seedProduction = async (email: string, password: string): Promise<void> => {
@@ -18,13 +19,16 @@ const seedProduction = async (email: string, password: string): Promise<void> =>
       .where('name', 'Administrator')
       .first();
 
+    // Password
+    const hashed = await oneWayHash(password);
+
     await database('superfast_users').insert([
       {
         first_name: 'Admin',
         last_name: 'User',
         user_name: 'admin',
         email: email,
-        password: password,
+        password: hashed,
         is_active: true,
         superfast_role_id: adminRole!.id,
       },
