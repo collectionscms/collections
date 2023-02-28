@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import { InvalidCredentialsException } from '../../shared/exceptions/invalidCredentials';
+import { UnprocessableEntityException } from '../../shared/exceptions/unprocessableEntity';
 import { Role, User } from '../../shared/types';
 import { getDatabase } from '../database/connection';
 import asyncHandler from '../middleware/asyncHandler';
@@ -110,6 +111,14 @@ app.delete(
   asyncHandler(async (req: Request, res: Response) => {
     const database = await getDatabase();
     const id = Number(req.params.id);
+
+    if (!req.user) {
+      throw new InvalidCredentialsException('invalid_user_credentials');
+    }
+
+    if (req.user === id) {
+      throw new UnprocessableEntityException('can_not_delete_itself');
+    }
 
     await database(USER_TABLE_NAME).where('id', id).delete();
 
