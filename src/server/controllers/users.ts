@@ -1,6 +1,6 @@
-import { InvalidCredentialsException } from '../../shared/exceptions/invalidCredentials';
-import { Role, User } from '@shared/types';
 import express, { Request, Response } from 'express';
+import { InvalidCredentialsException } from '../../shared/exceptions/invalidCredentials';
+import { Role, User } from '../../shared/types';
 import { getDatabase } from '../database/connection';
 import asyncHandler from '../middleware/asyncHandler';
 import { oneWayHash } from '../utilities/oneWayHash';
@@ -64,11 +64,12 @@ app.post(
     const role = await database<Role>(ROLE_TABLE_NAME).where('id', req.body.roleId).first();
     const password = await oneWayHash(req.body.password);
 
+    delete req.body.roleId;
+    delete req.body.password;
     const data = {
       ...req.body,
       password: password,
       superfastRoleId: role.id,
-      ...(delete req.body.roleId && delete req.body.password, req.body),
     };
 
     const users = await database<User>(USER_TABLE_NAME)
@@ -88,10 +89,10 @@ app.patch(
     const id = Number(req.params.id);
     const role = await database<Role>(ROLE_TABLE_NAME).where('id', req.body.roleId).first();
 
+    delete req.body.roleId;
     const data = {
       ...req.body,
       superfastRoleId: role.id,
-      ...(delete req.body.roleId && delete req.body.password, req.body),
     };
 
     if (req.body.password) {
