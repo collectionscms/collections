@@ -1,6 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
-  Box,
   Button,
   Checkbox,
   FormControlLabel,
@@ -26,8 +25,8 @@ const CreatePage: React.FC = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { localizedLabel } = useDocumentInfo();
-  const { createCollection } = useCollection();
   const { enqueueSnackbar } = useSnackbar();
+  const { createCollection } = useCollection();
   const { data, trigger, isMutating } = createCollection;
   const {
     control,
