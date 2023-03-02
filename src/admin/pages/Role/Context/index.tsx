@@ -28,7 +28,7 @@ export const RoleContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
     );
 
   const createRole = (): SWRMutationResponse =>
-    useSWRMutation(`/roles`, async (url: string, { arg }) => {
+    useSWRMutation(`/roles`, async (url: string, { arg }: { arg: string }) => {
       return api
         .post<{ role: Role }>(url, arg)
         .then((res) => res.data.role)
