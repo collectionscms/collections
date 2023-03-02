@@ -9,10 +9,7 @@ const Context = createContext({} as FieldContext);
 export const FieldContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const createField = (slug: string): SWRMutationResponse =>
     useSWRMutation(`/collections/${slug}/fields`, async (url: string, { arg }: { arg: string }) => {
-      return api
-        .post<{ field: Field }>(url, arg)
-        .then((res) => res.data.field)
-        .catch((err) => Promise.reject(err.message));
+      return api.post<{ field: Field }>(url, arg).then((res) => res.data.field);
     });
 
   return (

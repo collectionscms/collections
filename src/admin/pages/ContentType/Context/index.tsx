@@ -13,29 +13,19 @@ export const CollectionContextProvider: React.FC<{ children: React.ReactNode }> 
   const getCollection = (id: string, config?: SWRConfiguration): SWRResponse =>
     useSWR(
       `/collections/${id}`,
-      (url) =>
-        api
-          .get<{ collection: Collection }>(url)
-          .then((res) => res.data.collection)
-          .catch((err) => Promise.reject(err.message)),
+      (url) => api.get<{ collection: Collection }>(url).then((res) => res.data.collection),
       config
     );
 
   const getCollections = (): SWRResponse =>
     useSWR('/collections', (url) =>
-      api
-        .get<{ collections: Collection[] }>(url)
-        .then((res) => res.data.collections)
-        .catch((err) => Promise.reject(err.message))
+      api.get<{ collections: Collection[] }>(url).then((res) => res.data.collections)
     );
 
   const createCollection: SWRMutationResponse = useSWRMutation(
     '/collections',
     async (url: string, { arg }: { arg: Record<string, any> }) => {
-      return api
-        .post<{ collection: Collection }>(url, arg)
-        .then((res) => res.data.collection)
-        .catch((err) => Promise.reject(err.message));
+      return api.post<{ collection: Collection }>(url, arg).then((res) => res.data.collection);
     }
   );
 
@@ -43,21 +33,14 @@ export const CollectionContextProvider: React.FC<{ children: React.ReactNode }> 
     useSWRMutation(
       `/collections/${id}`,
       async (url: string, { arg }: { arg: Record<string, any> }) => {
-        return api
-          .patch<{ collection: Collection }>(url, arg)
-          .then((res) => res.data)
-          .catch((err) => Promise.reject(err.message));
+        return api.patch<{ collection: Collection }>(url, arg).then((res) => res.data);
       }
     );
 
   const getFields = (slug: string, config?: SWRConfiguration): SWRResponse =>
     useSWR(
       `/collections/${slug}/fields`,
-      (url) =>
-        api
-          .get<{ fields: Field[] }>(url)
-          .then((res) => res.data.fields)
-          .catch((err) => Promise.reject(err.message)),
+      (url) => api.get<{ fields: Field[] }>(url).then((res) => res.data.fields),
       config
     );
 

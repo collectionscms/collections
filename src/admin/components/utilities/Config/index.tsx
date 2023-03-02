@@ -16,10 +16,7 @@ export const ConfigProvider: React.FC<{ config: Config; children: React.ReactNod
 }) => {
   const [collections, setCollections] = useState([]);
   const { data } = useSWR('/collections', (url) =>
-    api
-      .get<{ collections: Collection[] }>(url)
-      .then((res) => res.data.collections)
-      .catch((err) => Promise.reject(err.message))
+    api.get<{ collections: Collection[] }>(url).then((res) => res.data.collections)
   );
 
   useEffect(() => {
