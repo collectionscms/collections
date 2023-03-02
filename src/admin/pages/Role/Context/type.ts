@@ -9,6 +9,6 @@ export type RoleContext = {
   updateRole: (id: string) => SWRMutationResponse<void, any, Record<string, any>, any>;
   getCollections: (config?: SWRConfiguration) => SWRResponse<Collection[]>;
   getPermissions: (id: string, config?: SWRConfiguration) => SWRResponse<Permission[]>;
-  createPermission: (id: string) => SWRMutationResponse<Permission>;
+  createPermission: (id: string) => SWRMutationResponse<Permission, any, Record<string, any>, any>;
   deletePermission: (id: string, permissionId: string) => SWRMutationResponse;
 };
