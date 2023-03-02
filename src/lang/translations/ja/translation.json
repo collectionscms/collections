@@ -81,6 +81,7 @@
   },
   "error": {
     "invalid_user_credentials": "無効なユーザ認証情報です。",
+    "incorrect_email_or_password": "メールアドレスまたはパスワードが正しくありません。",
     "can_not_delete_role_in_use": "使用中のため削除できません。",
     "can_not_delete_last_admin_role": "最後の管理者ロールを削除することはできません。",
     "can_not_delete_itself": "自分のアカウントは削除できません。"
