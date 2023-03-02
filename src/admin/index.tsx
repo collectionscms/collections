@@ -8,6 +8,7 @@ import Routes from './components/routes';
 import { AuthProvider } from './components/utilities/Auth';
 import { ColorModeProvider } from './components/utilities/ColorMode';
 import { ConfigProvider } from './components/utilities/Config';
+import SWRConfigure from './components/utilities/SWRConfigure';
 import { ThemeProvider } from './components/utilities/Theme';
 
 const Index = () => (
@@ -20,14 +21,16 @@ const Index = () => (
       <ColorModeProvider>
         <ThemeProvider>
           <Router>
-            <AuthProvider>
-              <SnackbarProvider
-                maxSnack={3}
-                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-              >
-                <Routes />
-              </SnackbarProvider>
-            </AuthProvider>
+            <SnackbarProvider
+              maxSnack={3}
+              anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+            >
+              <SWRConfigure>
+                <AuthProvider>
+                  <Routes />
+                </AuthProvider>
+              </SWRConfigure>
+            </SnackbarProvider>
           </Router>
         </ThemeProvider>
       </ColorModeProvider>
