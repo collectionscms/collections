@@ -36,7 +36,7 @@ export const RoleContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
     });
 
   const updateRole = (id: string): SWRMutationResponse =>
-    useSWRMutation(`/roles/${id}`, async (url: string, { arg }) => {
+    useSWRMutation(`/roles/${id}`, async (url: string, { arg }: { arg: string }) => {
       return api
         .patch(url, arg)
         .then((res) => res.data)
