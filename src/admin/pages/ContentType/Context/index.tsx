@@ -40,12 +40,15 @@ export const CollectionContextProvider: React.FC<{ children: React.ReactNode }> 
   );
 
   const updateCollection = (id: string): SWRMutationResponse =>
-    useSWRMutation(`/collections/${id}`, async (url: string, { arg }) => {
-      return api
-        .patch<{ collection: Collection }>(url, arg)
-        .then((res) => res.data)
-        .catch((err) => Promise.reject(err.message));
-    });
+    useSWRMutation(
+      `/collections/${id}`,
+      async (url: string, { arg }: { arg: Record<string, any> }) => {
+        return api
+          .patch<{ collection: Collection }>(url, arg)
+          .then((res) => res.data)
+          .catch((err) => Promise.reject(err.message));
+      }
+    );
 
   const getFields = (slug: string, config?: SWRConfiguration): SWRResponse =>
     useSWR(

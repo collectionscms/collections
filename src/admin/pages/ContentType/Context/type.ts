@@ -6,6 +6,6 @@ export type CollectionContext = {
   getCollection: (id: string, config?: SWRConfiguration) => SWRResponse<Collection>;
   getCollections: () => SWRResponse<Collection[]>;
   createCollection: SWRMutationResponse<Collection, any, Record<string, any>, any>;
-  updateCollection: (id: string) => SWRMutationResponse<Collection>;
+  updateCollection: (id: string) => SWRMutationResponse<void, any, Record<string, any>, any>;
   getFields: (slug: string, config?: SWRConfiguration) => SWRResponse<Field[]>;
 };
