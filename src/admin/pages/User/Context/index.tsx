@@ -1,7 +1,7 @@
-import { Role, User } from '@shared/types';
 import React, { createContext, useContext } from 'react';
 import useSWR, { SWRConfiguration } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
+import { Role, User } from '../../../../shared/types';
 import api from '../../../utilities/api';
 import { UserContext } from './type';
 
@@ -28,7 +28,7 @@ export const UserContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
     );
 
   const createUser = (): SWRMutationResponse =>
-    useSWRMutation(`/users`, async (url: string, { arg }) => {
+    useSWRMutation(`/users`, async (url: string, { arg }: { arg: string }) => {
       return api
         .post<{ user: User }>(url, arg)
         .then((res) => res.data.user)
@@ -36,7 +36,7 @@ export const UserContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
     });
 
   const updateUser = (id: string): SWRMutationResponse =>
-    useSWRMutation(`/users/${id}`, async (url: string, { arg }) => {
+    useSWRMutation(`/users/${id}`, async (url: string, { arg }: { arg: string }) => {
       return api
         .patch(url, arg)
         .then((res) => res.data)

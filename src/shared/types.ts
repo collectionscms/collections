@@ -28,6 +28,10 @@ export type FieldOption = {
   value: string;
 };
 
+export type Token = {
+  token: string;
+};
+
 export type AuthUser = {
   id: number;
   userName: string;

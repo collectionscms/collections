@@ -1,7 +1,7 @@
-import { Collection, Field } from '@shared/types';
 import React, { createContext, useContext } from 'react';
 import useSWR, { SWRConfiguration, SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
+import { Collection, Field } from '../../../../shared/types';
 import api from '../../../utilities/api';
 import { CollectionContext } from './type';
 
@@ -31,7 +31,7 @@ export const CollectionContextProvider: React.FC<{ children: React.ReactNode }> 
 
   const createCollection: SWRMutationResponse = useSWRMutation(
     '/collections',
-    async (url: string, { arg }) => {
+    async (url: string, { arg }: { arg: Record<string, any> }) => {
       return api
         .post<{ collection: Collection }>(url, arg)
         .then((res) => res.data.collection)
@@ -40,12 +40,15 @@ export const CollectionContextProvider: React.FC<{ children: React.ReactNode }> 
   );
 
   const updateCollection = (id: string): SWRMutationResponse =>
-    useSWRMutation(`/collections/${id}`, async (url: string, { arg }) => {
-      return api
-        .patch<{ collection: Collection }>(url, arg)
-        .then((res) => res.data)
-        .catch((err) => Promise.reject(err.message));
-    });
+    useSWRMutation(
+      `/collections/${id}`,
+      async (url: string, { arg }: { arg: Record<string, any> }) => {
+        return api
+          .patch<{ collection: Collection }>(url, arg)
+          .then((res) => res.data)
+          .catch((err) => Promise.reject(err.message));
+      }
+    );
 
   const getFields = (slug: string, config?: SWRConfiguration): SWRResponse =>
     useSWR(

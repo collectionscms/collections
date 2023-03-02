@@ -4,5 +4,5 @@ import { SWRMutationResponse } from 'swr/mutation';
 
 export type ProjectSettingContext = {
   getProjectSetting: (config?: SWRConfiguration) => SWRResponse<ProjectSetting>;
-  updateProjectSetting: () => SWRMutationResponse;
+  updateProjectSetting: () => SWRMutationResponse<void, any, Record<string, any>, any>;
 };
