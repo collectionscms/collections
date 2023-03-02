@@ -1,7 +1,7 @@
-import { ProjectSetting } from '@shared/types';
 import React, { createContext, useContext } from 'react';
 import useSWR, { SWRConfiguration } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
+import { ProjectSetting } from '../../../../shared/types';
 import api from '../../../utilities/api';
 import { ProjectSettingContext } from './type';
 
@@ -22,7 +22,7 @@ export const ProjectSettingContextProvider: React.FC<{ children: React.ReactNode
     );
 
   const updateProjectSetting = (): SWRMutationResponse =>
-    useSWRMutation('/project_settings', async (url: string, { arg }) => {
+    useSWRMutation('/project_settings', async (url: string, { arg }: { arg: string }) => {
       return api
         .patch(url, arg)
         .then((res) => res.data)
