@@ -8,7 +8,6 @@ import buildColumns from '@admin/utilities/buildColumns';
 import { Button } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { Stack } from '@mui/system';
-import { useSnackbar } from 'notistack';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ApiPreview from '../ApiPreview';
@@ -18,10 +17,9 @@ import { Props } from './types';
 const DefaultListPage: React.FC<Props> = ({ collection }) => {
   const [columns, setColumns] = useState<Column[]>([]);
   const { t } = useTranslation();
-  const { enqueueSnackbar } = useSnackbar();
   const { getContents, getFields } = useContent();
-  const { data: metaFields, error: getFieldsError } = getFields(collection.collection);
-  const { data: contents, error: getContentsError } = getContents(collection.collection);
+  const { data: metaFields } = getFields(collection.collection);
+  const { data: contents } = getContents(collection.collection);
 
   useEffect(() => {
     if (metaFields === undefined) return;
@@ -31,16 +29,6 @@ const DefaultListPage: React.FC<Props> = ({ collection }) => {
     ));
     setColumns(columns);
   }, [metaFields]);
-
-  useEffect(() => {
-    if (getFieldsError === undefined) return;
-    enqueueSnackbar(getFieldsError, { variant: 'error' });
-  }, [getFieldsError]);
-
-  useEffect(() => {
-    if (getContentsError === undefined) return;
-    enqueueSnackbar(getContentsError, { variant: 'error' });
-  }, [getContentsError]);
 
   return (
     <Stack rowGap={3}>

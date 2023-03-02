@@ -1,7 +1,6 @@
 import { Button, Stack } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
-import { useSnackbar } from 'notistack';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { User } from '../../../shared/types';
 import RouterLink from '../../components/elements/Link';
@@ -17,8 +16,7 @@ const UserPage: React.FC = () => {
   const { localizedLabel } = useDocumentInfo();
   const { t } = useTranslation();
   const { getUsers } = useUser();
-  const { enqueueSnackbar } = useSnackbar();
-  const { data, error } = getUsers();
+  const { data } = getUsers();
 
   const fields = [
     { field: 'userName', label: t('user_name'), type: Type.Text },
@@ -45,11 +43,6 @@ const UserPage: React.FC = () => {
       <Cell colIndex={i} type={fields[i].type} rowData={row} cellData={data} />
     )
   );
-
-  useEffect(() => {
-    if (error === undefined) return;
-    enqueueSnackbar(error, { variant: 'error' });
-  }, [error]);
 
   return (
     <Stack rowGap={3}>
