@@ -32,8 +32,13 @@ const LoginPage: React.FC = () => {
     navigate('/admin/collections');
   }, [token]);
 
-  const onSubmit: SubmitHandler<FormValues> = (form: FormValues) => {
-    trigger(form);
+  const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
+    try {
+      await trigger(form);
+    } catch (e) {
+      // TODO install logger
+      console.log(e);
+    }
   };
 
   return (
