@@ -7,5 +7,5 @@ export type UserContext = {
   getUser: (id: string, config?: SWRConfiguration) => SWRResponse<User>;
   getRoles: (config?: SWRConfiguration) => SWRResponse<Role[]>;
   createUser: () => SWRMutationResponse<User, any, Record<string, any>, any>;
-  updateUser: (id: string) => SWRMutationResponse;
+  updateUser: (id: string) => SWRMutationResponse<void, any, Record<string, any>, any>;
 };

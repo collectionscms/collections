@@ -36,7 +36,7 @@ export const UserContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
     });
 
   const updateUser = (id: string): SWRMutationResponse =>
-    useSWRMutation(`/users/${id}`, async (url: string, { arg }) => {
+    useSWRMutation(`/users/${id}`, async (url: string, { arg }: { arg: string }) => {
       return api
         .patch(url, arg)
         .then((res) => res.data)
