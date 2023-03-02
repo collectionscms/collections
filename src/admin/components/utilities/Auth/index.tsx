@@ -46,15 +46,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   );
 
   const login = (): SWRMutationResponse =>
-    useSWRMutation(`/authentications/login`, async (url: string, { arg }) => {
-      return api
-        .post<{ token: string }>(url, arg)
-        .then((res) => {
-          setToken(res.data.token);
-          return res.data;
-        })
-        .catch((err) => Promise.reject(err.message));
-    });
+    useSWRMutation(
+      `/authentications/login`,
+      async (url: string, { arg }: { arg: Record<string, any> }) => {
+        return api
+          .post<{ token: string }>(url, arg)
+          .then((res) => {
+            setToken(res.data.token);
+            return res.data;
+          })
+          .catch((err) => Promise.reject(err.message));
+      }
+    );
 
   useEffect(() => {
     if (data === undefined) return;
