@@ -1,6 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, FormHelperText, InputLabel, Stack, TextField } from '@mui/material';
-import { useSnackbar } from 'notistack';
 import React, { useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -14,9 +13,8 @@ import { LoginContextProvider, useLogin } from './Context';
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { enqueueSnackbar } = useSnackbar();
   const { login } = useAuth();
-  const { data: token, trigger, isMutating, error } = login();
+  const { data: token, trigger, isMutating } = login();
   const { getProjectSetting } = useLogin();
   const { data: projectSetting } = getProjectSetting();
 
@@ -33,11 +31,6 @@ const LoginPage: React.FC = () => {
     if (token === undefined) return;
     navigate('/admin/collections');
   }, [token]);
-
-  useEffect(() => {
-    if (error === undefined) return;
-    enqueueSnackbar(error, { variant: 'error' });
-  }, [error]);
 
   const onSubmit: SubmitHandler<FormValues> = (form: FormValues) => {
     trigger(form);

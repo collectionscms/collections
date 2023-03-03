@@ -9,48 +9,29 @@ const Context = createContext({} as UserContext);
 
 export const UserContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const getUsers = () =>
-    useSWR('/users', (url) =>
-      api
-        .get<{ users: User[] }>(url)
-        .then((res) => res.data.users)
-        .catch((err) => Promise.reject(err.message))
-    );
+    useSWR('/users', (url) => api.get<{ users: User[] }>(url).then((res) => res.data.users));
 
   const getUser = (id: string, config?: SWRConfiguration) =>
     useSWR(
       `/users/${id}`,
-      (url) =>
-        api
-          .get<{ user: User }>(url)
-          .then((res) => res.data.user)
-          .catch((err) => Promise.reject(err.message)),
+      (url) => api.get<{ user: User }>(url).then((res) => res.data.user),
       config
     );
 
   const createUser = (): SWRMutationResponse =>
     useSWRMutation(`/users`, async (url: string, { arg }: { arg: string }) => {
-      return api
-        .post<{ user: User }>(url, arg)
-        .then((res) => res.data.user)
-        .catch((err) => Promise.reject(err.message));
+      return api.post<{ user: User }>(url, arg).then((res) => res.data.user);
     });
 
   const updateUser = (id: string): SWRMutationResponse =>
     useSWRMutation(`/users/${id}`, async (url: string, { arg }: { arg: string }) => {
-      return api
-        .patch(url, arg)
-        .then((res) => res.data)
-        .catch((err) => Promise.reject(err.message));
+      return api.patch(url, arg).then((res) => res.data);
     });
 
   const getRoles = (config?: SWRConfiguration) =>
     useSWR(
       '/roles',
-      (url) =>
-        api
-          .get<{ roles: Role[] }>(url)
-          .then((res) => res.data.roles)
-          .catch((err) => Promise.reject(err.message)),
+      (url) => api.get<{ roles: Role[] }>(url).then((res) => res.data.roles),
       config
     );
 

@@ -12,58 +12,37 @@ export const ContentContextProvider: React.FC<{ children: React.ReactNode }> = (
     // Fetching data that depends on fields.
     useSWR(
       () => `/collections/${slug}/contents`,
-      (url) =>
-        api
-          .get<{ contents: unknown[] }>(url)
-          .then((res) => res.data.contents)
-          .catch((err) => Promise.reject(err.message)),
+      (url) => api.get<{ contents: unknown[] }>(url).then((res) => res.data.contents),
       config
     );
 
   const getContent = (slug: string, id: string, config?: SWRConfiguration): SWRResponse =>
     useSWR(
       `/collections/${slug}/contents/${id}`,
-      (url) =>
-        api
-          .get<{ content: unknown }>(url)
-          .then((res) => res.data.content)
-          .catch((err) => Promise.reject(err.message)),
+      (url) => api.get<{ content: unknown }>(url).then((res) => res.data.content),
       config
     );
 
   const getFields = (slug: string, config?: SWRConfiguration): SWRResponse =>
     useSWR(
       `/collections/${slug}/fields`,
-      (url) =>
-        api
-          .get<{ fields: Field[] }>(url)
-          .then((res) => res.data.fields)
-          .catch((err) => Promise.reject(err.message)),
+      (url) => api.get<{ fields: Field[] }>(url).then((res) => res.data.fields),
       config
     );
 
   const getPreviewContents = (slug: string): SWRMutationResponse =>
     useSWRMutation(`/collections/${slug}/contents`, async (url: string, { arg }) => {
-      return api
-        .get<{ contents: unknown[] }>(url, arg)
-        .then((res) => res.data.contents)
-        .catch((err) => Promise.reject(err.message));
+      return api.get<{ contents: unknown[] }>(url, arg).then((res) => res.data.contents);
     });
 
   const createContent = (slug: string): SWRMutationResponse =>
     useSWRMutation(`/collections/${slug}/contents`, async (url: string, { arg }) => {
-      return api
-        .post<{ content: unknown }>(url, arg)
-        .then((res) => res.data.content)
-        .catch((err) => Promise.reject(err.message));
+      return api.post<{ content: unknown }>(url, arg).then((res) => res.data.content);
     });
 
   const updateContent = (slug: string, id: string): SWRMutationResponse =>
     useSWRMutation(`/collections/${slug}/contents/${id}`, async (url: string, { arg }) => {
-      return api
-        .patch<{ content: unknown }>(url, arg)
-        .then((res) => res.data)
-        .catch((err) => Promise.reject(err.message));
+      return api.patch<{ content: unknown }>(url, arg).then((res) => res.data);
     });
 
   return (

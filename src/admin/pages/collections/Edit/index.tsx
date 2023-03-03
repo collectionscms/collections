@@ -1,7 +1,7 @@
-import { Button, Stack, useTheme } from '@mui/material';
+import { Button, Stack } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useSnackbar } from 'notistack';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -14,16 +14,14 @@ import ApiPreview from '../ApiPreview';
 import { Props } from './types';
 
 const EditPage: React.FC<Props> = ({ collection }) => {
-  const [drawerOpen, setDrawerOpen] = useState(false);
   const { id } = useParams();
-  const theme = useTheme();
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
   const { hasPermission } = useAuth();
   const navigate = useNavigate();
   const { getContent, getFields, createContent, updateContent } = useContent();
-  const { data: metaFields, error: getFieldsError } = getFields(collection.collection);
-  const { data: content, error: getContentError } = getContent(collection.collection, id);
+  const { data: metaFields } = getFields(collection.collection);
+  const { data: content } = getContent(collection.collection, id);
   const {
     data: createdContent,
     trigger: createTrigger,
@@ -53,16 +51,6 @@ const EditPage: React.FC<Props> = ({ collection }) => {
     if (content === undefined) return;
     setDefaultValue(content);
   }, [content]);
-
-  useEffect(() => {
-    if (getFieldsError === undefined) return;
-    enqueueSnackbar(getFieldsError, { variant: 'error' });
-  }, [getFieldsError]);
-
-  useEffect(() => {
-    if (getContentError === undefined) return;
-    enqueueSnackbar(getContentError, { variant: 'error' });
-  }, [getContentError]);
 
   useEffect(() => {
     if (createdContent === undefined) return;

@@ -7,25 +7,18 @@ import { CollectionContextProvider, useCollection } from '@admin/pages/ContentTy
 import buildColumns from '@admin/utilities/buildColumns';
 import { Button, Stack } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
-import { useSnackbar } from 'notistack';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 const ContentTypePage: React.FC = () => {
   const { localizedLabel } = useDocumentInfo();
   const { t } = useTranslation();
   const { getCollections } = useCollection();
-  const { enqueueSnackbar } = useSnackbar();
-  const { data, error } = getCollections();
+  const { data } = getCollections();
 
   const fields = [{ field: 'collection', label: t('name'), type: Type.Text }];
 
   const columns = buildColumns(fields);
-
-  useEffect(() => {
-    if (error === undefined) return;
-    enqueueSnackbar(error, { variant: 'error' });
-  }, [error]);
 
   return (
     <Stack rowGap={3}>

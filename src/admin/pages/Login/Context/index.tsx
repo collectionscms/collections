@@ -11,10 +11,7 @@ export const LoginContextProvider: React.FC<{ children: React.ReactNode }> = ({ 
     useSWR(
       '/project_settings',
       (url) =>
-        api
-          .get<{ projectSetting: ProjectSetting }>(url)
-          .then((res) => res.data.projectSetting)
-          .catch((err) => Promise.reject(err.message)),
+        api.get<{ projectSetting: ProjectSetting }>(url).then((res) => res.data.projectSetting),
       config
     );
 

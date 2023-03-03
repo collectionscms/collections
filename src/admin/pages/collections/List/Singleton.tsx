@@ -15,8 +15,8 @@ const SingletonPage: React.FC<Props> = ({ collection }) => {
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
   const { getContents, getFields, createContent, updateContent } = useContent();
-  const { data: metaFields, error: getFieldsError } = getFields(collection.collection);
-  const { data: contents, error: getContentsError } = getContents(collection.collection);
+  const { data: metaFields } = getFields(collection.collection);
+  const { data: contents } = getContents(collection.collection);
   const {
     data: createdContent,
     trigger: createTrigger,
@@ -47,16 +47,6 @@ const SingletonPage: React.FC<Props> = ({ collection }) => {
     setContent(contents?.[0]);
     setDefaultValue(contents?.[0]);
   }, [contents]);
-
-  useEffect(() => {
-    if (getFieldsError === undefined) return;
-    enqueueSnackbar(getFieldsError, { variant: 'error' });
-  }, [getFieldsError]);
-
-  useEffect(() => {
-    if (getContentsError === undefined) return;
-    enqueueSnackbar(getContentsError, { variant: 'error' });
-  }, [getContentsError]);
 
   useEffect(() => {
     if (createdContent === undefined) return;

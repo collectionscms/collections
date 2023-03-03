@@ -17,12 +17,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const { data, trigger } = useSWRMutation(
     user?.id ? `/roles/${user.id}/permissions` : null,
     async (url: string, { arg }) => {
-      return api
-        .get<{ permissions: Permission[] }>(url, arg)
-        .then((res) => {
-          return res.data.permissions;
-        })
-        .catch((err) => Promise.reject(err.message));
+      return api.get<{ permissions: Permission[] }>(url, arg).then((res) => {
+        return res.data.permissions;
+      });
     }
   );
 
@@ -49,13 +46,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     useSWRMutation(
       `/authentications/login`,
       async (url: string, { arg }: { arg: Record<string, any> }) => {
-        return api
-          .post<{ token: string }>(url, arg)
-          .then((res) => {
-            setToken(res.data.token);
-            return res.data;
-          })
-          .catch((err) => Promise.reject(err.message));
+        return api.post<{ token: string }>(url, arg).then((res) => {
+          setToken(res.data.token);
+          return res.data;
+        });
       }
     );
 

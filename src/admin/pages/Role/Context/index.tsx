@@ -9,76 +9,47 @@ const Context = createContext({} as RoleContext);
 
 export const RoleContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const getRoles = () =>
-    useSWR('/roles', (url) =>
-      api
-        .get<{ roles: Role[] }>(url)
-        .then((res) => res.data.roles)
-        .catch((err) => Promise.reject(err.message))
-    );
+    useSWR('/roles', (url) => api.get<{ roles: Role[] }>(url).then((res) => res.data.roles));
 
   const getRole = (id: string, config?: SWRConfiguration) =>
     useSWR(
       `/roles/${id}`,
-      (url) =>
-        api
-          .get<{ role: Role }>(url)
-          .then((res) => res.data.role)
-          .catch((err) => Promise.reject(err.message)),
+      (url) => api.get<{ role: Role }>(url).then((res) => res.data.role),
       config
     );
 
   const createRole = (): SWRMutationResponse =>
     useSWRMutation(`/roles`, async (url: string, { arg }: { arg: string }) => {
-      return api
-        .post<{ role: Role }>(url, arg)
-        .then((res) => res.data.role)
-        .catch((err) => Promise.reject(err.message));
+      return api.post<{ role: Role }>(url, arg).then((res) => res.data.role);
     });
 
   const updateRole = (id: string): SWRMutationResponse =>
     useSWRMutation(`/roles/${id}`, async (url: string, { arg }: { arg: string }) => {
-      return api
-        .patch(url, arg)
-        .then((res) => res.data)
-        .catch((err) => Promise.reject(err.message));
+      return api.patch(url, arg).then((res) => res.data);
     });
 
   const getCollections = (config?: SWRConfiguration): SWRResponse =>
     useSWR(
       '/collections',
-      (url) =>
-        api
-          .get<{ collections: Collection[] }>(url)
-          .then((res) => res.data.collections)
-          .catch((err) => Promise.reject(err.message)),
+      (url) => api.get<{ collections: Collection[] }>(url).then((res) => res.data.collections),
       config
     );
 
   const getPermissions = (id: string, config?: SWRConfiguration): SWRResponse =>
     useSWR(
       `/roles/${id}/permissions`,
-      (url) =>
-        api
-          .get<{ permissions: Permission[] }>(url)
-          .then((res) => res.data.permissions)
-          .catch((err) => Promise.reject(err.message)),
+      (url) => api.get<{ permissions: Permission[] }>(url).then((res) => res.data.permissions),
       config
     );
 
   const createPermission = (id: string): SWRMutationResponse =>
     useSWRMutation(`/roles/${id}/permissions`, async (url: string, { arg }: { arg: string }) => {
-      return api
-        .post<{ permission: Permission }>(url, arg)
-        .then((res) => res.data.permission)
-        .catch((err) => Promise.reject(err.message));
+      return api.post<{ permission: Permission }>(url, arg).then((res) => res.data.permission);
     });
 
   const deletePermission = (id: string, permissionId: string): SWRMutationResponse =>
     useSWRMutation(`/roles/${id}/permissions/${permissionId}`, async (url: string, { arg }) => {
-      return api
-        .delete(url, arg)
-        .then((res) => res.data)
-        .catch((err) => Promise.reject(err.message));
+      return api.delete(url, arg).then((res) => res.data);
     });
 
   return (

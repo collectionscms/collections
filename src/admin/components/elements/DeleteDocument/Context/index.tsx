@@ -8,10 +8,7 @@ const Context = createContext({} as DocumentContext);
 export const DocumentContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const deleteDocument = (id: string, slug: string): SWRMutationResponse =>
     useSWRMutation(`/${slug}/${id}`, async (url: string, { arg }) => {
-      return api
-        .delete(url, arg)
-        .then((res) => res.data)
-        .catch((err) => Promise.reject(err.message));
+      return api.delete(url, arg).then((res) => res.data);
     });
 
   return (

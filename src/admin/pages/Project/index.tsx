@@ -18,15 +18,10 @@ const ProjectPage: React.FC = () => {
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
   const { getProjectSetting, updateProjectSetting } = useProjectSetting();
-  const { data: projectSetting, error: getProjectSettingError } = getProjectSetting({
+  const { data: projectSetting } = getProjectSetting({
     suspense: true,
   });
-  const {
-    data: updatedProjectSetting,
-    trigger,
-    isMutating,
-    error: updateProjectSettingError,
-  } = updateProjectSetting();
+  const { data: updatedProjectSetting, trigger, isMutating } = updateProjectSetting();
   const {
     control,
     handleSubmit,
@@ -35,16 +30,6 @@ const ProjectPage: React.FC = () => {
     defaultValues: { name: projectSetting.name },
     resolver: yupResolver(updateProjectSettingSchema()),
   });
-
-  useEffect(() => {
-    if (getProjectSettingError === undefined) return;
-    enqueueSnackbar(getProjectSettingError, { variant: 'error' });
-  }, [getProjectSettingError]);
-
-  useEffect(() => {
-    if (updateProjectSettingError === undefined) return;
-    enqueueSnackbar(updateProjectSettingError, { variant: 'error' });
-  }, [updateProjectSettingError]);
 
   useEffect(() => {
     if (updatedProjectSetting === undefined) return;
