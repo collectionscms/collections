@@ -1,6 +1,7 @@
 import argon2 from 'argon2';
 import express, { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
+import { InvalidCredentialsException } from '../../shared/exceptions/invalidCredentials';
 import { getDatabase } from '../database/connection';
 import asyncHandler from '../middleware/asyncHandler';
 
@@ -20,7 +21,7 @@ app.post(
       .first();
 
     if (!user || !(await argon2.verify(user.password, req.body.password))) {
-      return res.status(401).end();
+      throw new InvalidCredentialsException('incorrect_email_or_password');
     }
 
     const payload = {
