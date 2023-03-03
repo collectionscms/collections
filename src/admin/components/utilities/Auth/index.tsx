@@ -57,6 +57,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     removeCookie('superfast-token', { path: '/' });
   };
 
+  const { trigger: fetchMeTrigger } = useSWRMutation(`/me`, async (url: string) => {
+    return api.get<{ token: string }>(url).then((res) => {
+      return res.data.token;
+    });
+  });
+
   useEffect(() => {
     if (data === undefined) return;
     setPermissions(data);
@@ -64,17 +70,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     const fetchMe = async () => {
-      // TODO 手動実装につき後で消す
-      const token = cookies['superfast-token'];
-
-      if (token) {
-        setToken(token);
-      } else {
-        // TODO API取得のインターセプトで実装するので後で消す
+      try {
+        const newToken = await fetchMeTrigger();
+        setToken(newToken);
+      } catch (e) {
+        // TODO install logger
+        console.log(e);
+        logout();
         navigate('/admin/auth/login');
       }
     };
-    fetchMe();
+
+    const token = cookies['superfast-token'];
+    if (token) {
+      setToken(token);
+      fetchMe();
+    }
   }, [setToken]);
 
   useEffect(() => {
