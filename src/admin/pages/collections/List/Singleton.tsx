@@ -1,12 +1,12 @@
-import RenderFields from '@admin/components/forms/RenderFields';
-import ComposeWrapper from '@admin/components/utilities/ComposeWrapper';
-import { ContentContextProvider, useContent } from '@admin/pages/collections/Context';
 import { Button, Stack } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useSnackbar } from 'notistack';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import RenderFields from '../../../components/forms/RenderFields';
+import ComposeWrapper from '../../../components/utilities/ComposeWrapper';
+import { ContentContextProvider, useContent } from '../../../pages/collections/Context';
 import ApiPreview from '../ApiPreview';
 import { Props } from './types';
 
@@ -26,6 +26,7 @@ const SingletonPage: React.FC<Props> = ({ collection }) => {
     data: updatedContent,
     trigger: updateTrigger,
     isMutating: isUpdateMutating,
+    reset,
   } = updateContent(collection.collection, content?.id);
   const {
     register,
@@ -59,6 +60,8 @@ const SingletonPage: React.FC<Props> = ({ collection }) => {
   }, [updatedContent]);
 
   const onSubmit = (data) => {
+    reset();
+
     if (content?.id) {
       updateTrigger(data);
     } else {
