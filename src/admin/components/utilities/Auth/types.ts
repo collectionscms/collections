@@ -7,4 +7,5 @@ export type AuthContext<T = AuthUser> = {
   setToken: (token: string) => void;
   hasPermission: (collection: string, action: PermissionsAction) => boolean;
   login: () => SWRMutationResponse<Token, any, Record<string, any>, any>;
+  logout: () => void;
 };
