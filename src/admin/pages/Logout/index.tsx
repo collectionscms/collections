@@ -1,13 +1,16 @@
 import { Button, Stack } from '@mui/material';
-import React from 'react';
-import { useCookies } from 'react-cookie';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import RouterLink from '../../components/elements/Link';
+import { useAuth } from '../../components/utilities/Auth';
 
 const LogoutPage: React.FC = () => {
   const { t } = useTranslation();
-  const [cookie, setCookie, removeCookie] = useCookies(['superfast-token']);
-  removeCookie('superfast-token', { path: '/' });
+  const { logout } = useAuth();
+
+  useEffect(() => {
+    logout();
+  }, []);
 
   return (
     <Stack rowGap={3}>
