@@ -17,22 +17,22 @@ import {
   useTheme,
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
-import { FieldInterface } from '@shared/types';
 import React, { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import ComposeWrapper from '../../../../../admin/components/utilities/ComposeWrapper';
+import { FieldInterface } from '../../../../../shared/types';
+import ComposeWrapper from '../../../../components/utilities/ComposeWrapper';
 import createFieldSchema, {
   FormValues,
-} from '../../../../../admin/fields/schemas/collectionFields/createField';
+} from '../../../../fields/schemas/collectionFields/createField';
 import {
   FieldContextProvider,
   useField,
-} from '../../../../../admin/pages/ContentType/Edit/CreateField/Context';
+} from '../../../../pages/ContentType/Edit/CreateField/Context';
 import { Props } from './types';
 
 const CreateField: React.FC<Props> = ({ slug, openState, onSuccess, onClose }) => {
-  const [fieldInterface, setFieldInterface] = useState<FieldInterface>();
+  const [fieldInterface, setFieldInterface] = useState<FieldInterface>(null);
   const theme = useTheme();
   const { t } = useTranslation();
   const { createField } = useField();
@@ -40,6 +40,7 @@ const CreateField: React.FC<Props> = ({ slug, openState, onSuccess, onClose }) =
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: { field: '', label: '', required: false },
@@ -73,9 +74,15 @@ const CreateField: React.FC<Props> = ({ slug, openState, onSuccess, onClose }) =
     });
   };
 
+  const resetForm = () => {
+    reset();
+    setFieldInterface(null);
+  };
+
   useEffect(() => {
     if (data === undefined) return;
     onSuccess(data);
+    resetForm();
   }, [data]);
 
   return (
@@ -123,10 +130,7 @@ const CreateField: React.FC<Props> = ({ slug, openState, onSuccess, onClose }) =
               </Grid>
             </AccordionDetails>
           </Accordion>
-          <Accordion
-            disabled={fieldInterface === undefined}
-            expanded={fieldInterface !== undefined}
-          >
+          <Accordion disabled={fieldInterface === null} expanded={fieldInterface !== null}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel2a-content"
@@ -172,9 +176,7 @@ const CreateField: React.FC<Props> = ({ slug, openState, onSuccess, onClose }) =
                     <FormHelperText error>{errors.label?.message}</FormHelperText>
                   </Grid>
                   <Grid xs={1} sm={2}>
-                    <InputLabel shrink htmlFor="field">
-                      {t('required_fields')}
-                    </InputLabel>
+                    <InputLabel htmlFor="field">{t('required_fields')}</InputLabel>
                     <Controller
                       name="required"
                       control={control}
