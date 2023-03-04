@@ -1,7 +1,7 @@
 import jwtDecode from 'jwt-decode';
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
-import { useNavigate } from 'react-router-dom';
+import useSWR from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
 import { AuthUser, Permission, PermissionsAction } from '../../../../shared/types';
 import api, { removeAuthorization, setAuthorization } from '../../../utilities/api';
@@ -13,7 +13,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<AuthUser | null>();
   const [permissions, setPermissions] = useState([]);
   const [cookies, setCookie, removeCookie] = useCookies(['superfast-token']);
-  const navigate = useNavigate();
+  useSWR(user ? '/me' : null, (url) =>
+    api.get<{ token: string }>(url).then((res) => {
+      setToken(res.data.token);
+    })
+  );
+
   const { data, trigger } = useSWRMutation(
     user?.id ? `/roles/${user.id}/permissions` : null,
     async (url: string, { arg }) => {
@@ -59,36 +64,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     removeAuthorization();
   };
 
-  const { trigger: fetchMeTrigger } = useSWRMutation(`/me`, async (url: string) => {
-    return api.get<{ token: string }>(url).then((res) => {
-      return res.data.token;
-    });
-  });
+  // On mount, set token and get user
+  useEffect(() => {
+    const token = cookies['superfast-token'];
+    if (token) {
+      setToken(token);
+    } else {
+      setUser(null);
+    }
+  }, []);
 
   useEffect(() => {
     if (data === undefined) return;
     setPermissions(data);
   }, [data]);
-
-  useEffect(() => {
-    const fetchMe = async () => {
-      try {
-        const newToken = await fetchMeTrigger();
-        setToken(newToken);
-      } catch (e) {
-        // TODO install logger
-        console.log(e);
-        logout();
-        navigate('/admin/auth/login');
-      }
-    };
-
-    const token = cookies['superfast-token'];
-    if (token) {
-      setToken(token);
-      fetchMe();
-    }
-  }, [setToken]);
 
   useEffect(() => {
     if (user) {
