@@ -42,7 +42,7 @@ const CreateRolePage: React.FC = () => {
   useEffect(() => {
     if (data === undefined) return;
     enqueueSnackbar(t('toast.created_successfully'), { variant: 'success' });
-    navigate('../roles');
+    navigate(`../roles/${data.id}`);
   }, [data]);
 
   const onSubmit: SubmitHandler<FormValues> = (form: FormValues) => {
