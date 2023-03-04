@@ -1,5 +1,5 @@
-import { Collection } from '@shared/types';
 import express, { Request, Response } from 'express';
+import { Collection } from '../../shared/types';
 import { getDatabase } from '../database/connection';
 import asyncHandler from '../middleware/asyncHandler';
 
@@ -95,6 +95,8 @@ app.delete(
         await tx.schema.dropTable(meta.collection);
         await tx('superfast_collections').where('id', id).delete();
         await tx('superfast_fields').where('collection', meta.collection).delete();
+        await tx('superfast_permissions').where('collection', meta.collection).delete();
+        await tx('superfast_relations').where('many_collection', meta.collection).delete();
         await tx.commit();
         res.status(204).end();
       } catch (e) {
