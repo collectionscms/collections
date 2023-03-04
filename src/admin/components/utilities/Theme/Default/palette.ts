@@ -8,8 +8,8 @@ const palette: PaletteOptions = {
     default: colorBase.color_base_0,
     paper: colorBase.color_base_0,
   },
-  sidebar: { main: colorBase.color_base_700 },
-  sidebarIcon: { main: colorBase.color_base_400 },
+  sidebar: { main: colorBase.color_base_100 },
+  sidebarIcon: { main: colorBase.color_base_500 },
 };
 
 export default palette;

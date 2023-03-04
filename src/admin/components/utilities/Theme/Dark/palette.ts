@@ -10,7 +10,7 @@ const palette: PaletteOptions = {
     paper: colorBase.color_base_900,
   },
   sidebar: { main: colorBase.color_base_800 },
-  sidebarIcon: { main: colorBase.color_base_600 },
+  sidebarIcon: { main: colorBase.color_base_400 },
 };
 
 export default palette;

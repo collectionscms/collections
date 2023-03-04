@@ -26,15 +26,13 @@ const NavHeader = () => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        background: '#fff',
-        border: 1,
-        borderColor: '#f5f5f5',
       }}
     >
       <Box
         sx={{
           width: '30px',
           height: '30px',
+          color: 'white',
         }}
       >
         <Logo />
