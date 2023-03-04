@@ -12,4 +12,8 @@ export const setAuthorization = (token: string) => {
   api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 };
 
+export const removeAuthorization = () => {
+  delete api.defaults.headers.common.Authorization;
+};
+
 export default api;

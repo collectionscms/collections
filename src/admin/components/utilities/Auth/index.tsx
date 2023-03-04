@@ -55,6 +55,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const logout = () => {
     removeCookie('superfast-token', { path: '/' });
+    setUser(null);
+    removeAuthorization();
   };
 
   const { trigger: fetchMeTrigger } = useSWRMutation(`/me`, async (url: string) => {
