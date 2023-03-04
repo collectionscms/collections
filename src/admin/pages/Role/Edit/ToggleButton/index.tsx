@@ -48,6 +48,7 @@ const PermissionToggleButton: React.FC<Props> = (props) => {
       {permission ? (
         <IconButton
           aria-label="delete"
+          color="success"
           onClick={(e) => openMenu(e.currentTarget, permission.id, collection, action)}
         >
           <CheckOutlined />
@@ -55,6 +56,7 @@ const PermissionToggleButton: React.FC<Props> = (props) => {
       ) : (
         <IconButton
           aria-label="create"
+          color="error"
           onClick={(e) => openMenu(e.currentTarget, null, collection, action)}
         >
           <ClearOutlined />
