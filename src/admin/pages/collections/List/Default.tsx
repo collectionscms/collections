@@ -1,21 +1,23 @@
-import RouterLink from '@admin/components/elements/Link';
-import Table from '@admin/components/elements/Table';
-import Cell from '@admin/components/elements/Table/Cell';
-import { Column } from '@admin/components/elements/Table/types';
-import ComposeWrapper from '@admin/components/utilities/ComposeWrapper';
-import { ContentContextProvider, useContent } from '@admin/pages/collections/Context';
-import buildColumns from '@admin/utilities/buildColumns';
 import { Button } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { Stack } from '@mui/system';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import RouterLink from '../../../components/elements/Link';
+import Table from '../../../components/elements/Table';
+import Cell from '../../../components/elements/Table/Cell';
+import { Column } from '../../../components/elements/Table/types';
+import { useAuth } from '../../../components/utilities/Auth';
+import ComposeWrapper from '../../../components/utilities/ComposeWrapper';
+import { ContentContextProvider, useContent } from '../../../pages/collections/Context';
+import buildColumns from '../../../utilities/buildColumns';
 import ApiPreview from '../ApiPreview';
 import buildColumnFields from './buildColumnFields';
 import { Props } from './types';
 
 const DefaultListPage: React.FC<Props> = ({ collection }) => {
   const [columns, setColumns] = useState<Column[]>([]);
+  const { hasPermission } = useAuth();
   const { t } = useTranslation();
   const { getContents, getFields } = useContent();
   const { data: metaFields } = getFields(collection.collection);
@@ -41,7 +43,12 @@ const DefaultListPage: React.FC<Props> = ({ collection }) => {
             <ApiPreview slug={collection.collection} singleton={collection.singleton} />
           </Grid>
           <Grid>
-            <Button variant="contained" component={RouterLink} to="create">
+            <Button
+              variant="contained"
+              component={RouterLink}
+              disabled={!hasPermission(collection.collection, 'create')}
+              to="create"
+            >
               {t('create_new')}
             </Button>
           </Grid>

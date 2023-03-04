@@ -112,7 +112,11 @@ const EditPage: React.FC<Props> = ({ collection }) => {
             </>
           ) : (
             <Grid>
-              <Button variant="contained" type="submit" disabled={isCreateMutating}>
+              <Button
+                variant="contained"
+                type="submit"
+                disabled={!hasPermission(collection.collection, 'create') || isCreateMutating}
+              >
                 {t('create_new')}
               </Button>
             </Grid>
