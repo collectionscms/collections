@@ -13,19 +13,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<AuthUser | null>();
   const [permissions, setPermissions] = useState([]);
   const [cookies, setCookie, removeCookie] = useCookies(['superfast-token']);
+
   useSWR(user ? '/me' : null, (url) =>
     api.get<{ token: string }>(url).then((res) => {
       setToken(res.data.token);
     })
   );
-
-  const { data, trigger } = useSWRMutation(
-    user?.id ? `/roles/${user.id}/permissions` : null,
-    async (url: string, { arg }) => {
-      return api.get<{ permissions: Permission[] }>(url, arg).then((res) => {
-        return res.data.permissions;
-      });
-    }
+  useSWR(user ? `/roles/${user.id}/permissions` : null, (url) =>
+    api.get<{ permissions: Permission[] }>(url).then((res) => {
+      setPermissions(res.data.permissions);
+    })
   );
 
   const setToken = useCallback((token: string) => {
@@ -73,17 +70,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setUser(null);
     }
   }, []);
-
-  useEffect(() => {
-    if (data === undefined) return;
-    setPermissions(data);
-  }, [data]);
-
-  useEffect(() => {
-    if (user) {
-      trigger();
-    }
-  }, [user]);
 
   return (
     <Context.Provider
