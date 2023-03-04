@@ -1,10 +1,10 @@
 import jwtDecode from 'jwt-decode';
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
-import { useNavigate } from 'react-router-dom';
+import useSWR from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
 import { AuthUser, Permission, PermissionsAction } from '../../../../shared/types';
-import api, { setAuthorization } from '../../../utilities/api';
+import api, { removeAuthorization, setAuthorization } from '../../../utilities/api';
 import { AuthContext } from './types';
 
 const Context = createContext({} as AuthContext);
@@ -13,14 +13,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<AuthUser | null>();
   const [permissions, setPermissions] = useState([]);
   const [cookies, setCookie, removeCookie] = useCookies(['superfast-token']);
-  const navigate = useNavigate();
-  const { data, trigger } = useSWRMutation(
-    user?.id ? `/roles/${user.id}/permissions` : null,
-    async (url: string, { arg }) => {
-      return api.get<{ permissions: Permission[] }>(url, arg).then((res) => {
-        return res.data.permissions;
-      });
-    }
+
+  useSWR(user ? '/me' : null, (url) =>
+    api.get<{ token: string }>(url).then((res) => {
+      setToken(res.data.token);
+    })
+  );
+  useSWR(user ? `/roles/${user.id}/permissions` : null, (url) =>
+    api.get<{ permissions: Permission[] }>(url).then((res) => {
+      setPermissions(res.data.permissions);
+    })
   );
 
   const setToken = useCallback((token: string) => {
@@ -59,31 +61,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     removeAuthorization();
   };
 
+  // On mount, set token and get user
   useEffect(() => {
-    if (data === undefined) return;
-    setPermissions(data);
-  }, [data]);
-
-  useEffect(() => {
-    const fetchMe = async () => {
-      // TODO 手動実装につき後で消す
-      const token = cookies['superfast-token'];
-
-      if (token) {
-        setToken(token);
-      } else {
-        // TODO API取得のインターセプトで実装するので後で消す
-        navigate('/admin/auth/login');
-      }
-    };
-    fetchMe();
-  }, [setToken]);
-
-  useEffect(() => {
-    if (user) {
-      trigger();
+    const token = cookies['superfast-token'];
+    if (token) {
+      setToken(token);
+    } else {
+      setUser(null);
     }
-  }, [user]);
+  }, []);
 
   return (
     <Context.Provider
