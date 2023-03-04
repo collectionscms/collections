@@ -4,7 +4,7 @@ import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
 import { AuthUser, Permission, PermissionsAction } from '../../../../shared/types';
-import api, { setAuthorization } from '../../../utilities/api';
+import api, { removeAuthorization, setAuthorization } from '../../../utilities/api';
 import { AuthContext } from './types';
 
 const Context = createContext({} as AuthContext);
