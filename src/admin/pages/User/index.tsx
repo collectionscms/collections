@@ -1,3 +1,4 @@
+import { AddOutlined } from '@mui/icons-material';
 import { Button, Stack } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import React from 'react';
@@ -46,13 +47,18 @@ const UserPage: React.FC = () => {
 
   return (
     <Stack rowGap={3}>
-      <Grid container spacing={2}>
-        <Grid xs>
-          <h1>{localizedLabel}</h1>
-        </Grid>
-        <Grid container columnSpacing={2} alignItems="center">
+      <Grid container>
+        <Grid container alignItems="center" spacing={3}>
           <Grid>
-            <Button variant="contained" component={RouterLink} to="create">
+            <h1>{localizedLabel}</h1>
+          </Grid>
+          <Grid>
+            <Button
+              variant="outlined"
+              startIcon={<AddOutlined />}
+              component={RouterLink}
+              to="create"
+            >
               {t('create_new')}
             </Button>
           </Grid>

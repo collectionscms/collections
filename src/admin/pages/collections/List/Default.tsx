@@ -1,3 +1,4 @@
+import { AddOutlined } from '@mui/icons-material';
 import { Button } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { Stack } from '@mui/system';
@@ -34,23 +35,28 @@ const DefaultListPage: React.FC<Props> = ({ collection }) => {
 
   return (
     <Stack rowGap={3}>
-      <Grid container spacing={2}>
+      <Grid container>
         <Grid xs>
-          <h1>{collection.collection}</h1>
+          <Grid container alignItems="center" spacing={3}>
+            <Grid>
+              <h1>{collection.collection}</h1>
+            </Grid>
+            <Grid>
+              <Button
+                variant="outlined"
+                startIcon={<AddOutlined />}
+                component={RouterLink}
+                disabled={!hasPermission(collection.collection, 'create')}
+                to="create"
+              >
+                {t('create_new')}
+              </Button>
+            </Grid>
+          </Grid>
         </Grid>
         <Grid container columnSpacing={2} alignItems="center">
           <Grid>
             <ApiPreview slug={collection.collection} singleton={collection.singleton} />
-          </Grid>
-          <Grid>
-            <Button
-              variant="contained"
-              component={RouterLink}
-              disabled={!hasPermission(collection.collection, 'create')}
-              to="create"
-            >
-              {t('create_new')}
-            </Button>
           </Grid>
         </Grid>
       </Grid>

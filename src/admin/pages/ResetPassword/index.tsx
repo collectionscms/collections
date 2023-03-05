@@ -1,6 +1,6 @@
-import RouterLink from '@admin/components/elements/Link';
 import { Box, Button } from '@mui/material';
 import React from 'react';
+import RouterLink from '../../components/elements/Link';
 
 const ResetPassword: React.FC = () => {
   return (
@@ -14,7 +14,7 @@ const ResetPassword: React.FC = () => {
         <p>Confirm Password</p>
         <input type="password" required />
       </div>
-      <Button variant="contained" component={RouterLink} to="/admin/collections" sx={{ mt: 2 }}>
+      <Button variant="outlined" component={RouterLink} to="/admin/collections" sx={{ mt: 2 }}>
         Change Password
       </Button>
     </Box>

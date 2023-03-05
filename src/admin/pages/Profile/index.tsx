@@ -1,9 +1,4 @@
-import RouterLink from '@admin/components/elements/Link';
-import { useColorMode } from '@admin/components/utilities/ColorMode';
-import { Mode } from '@admin/components/utilities/ColorMode/types';
-import { useDocumentInfo } from '@admin/components/utilities/DocumentInfo';
 import {
-  Button,
   FormControl,
   FormControlLabel,
   FormLabel,
@@ -18,6 +13,9 @@ import Grid from '@mui/material/Unstable_Grid2';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
+import { useColorMode } from '../../components/utilities/ColorMode';
+import { Mode } from '../../components/utilities/ColorMode/types';
+import { useDocumentInfo } from '../../components/utilities/DocumentInfo';
 
 const MePage: React.FC = () => {
   const { id } = useParams();
@@ -34,13 +32,6 @@ const MePage: React.FC = () => {
       <Grid container spacing={2}>
         <Grid xs>
           <h1>{localizedLabel}</h1>
-        </Grid>
-        <Grid container columnSpacing={2} alignItems="center">
-          <Grid>
-            <Button variant="contained" component={RouterLink} to="../content-types/1">
-              {id ? t('update') : t('create_new')}
-            </Button>
-          </Grid>
         </Grid>
       </Grid>
       <Grid container spacing={3} xs={12} xl={6}>
