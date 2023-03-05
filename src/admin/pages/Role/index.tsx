@@ -44,7 +44,7 @@ const RolePage: React.FC = () => {
           </Grid>
         </Grid>
       </Grid>
-      <Table columns={columns} rows={data || []} />
+      <Table columns={columns} rows={data} />
     </Stack>
   );
 };
