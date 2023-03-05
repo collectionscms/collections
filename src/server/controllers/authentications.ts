@@ -63,7 +63,7 @@ const fetchMe = async (params: { email?: string; id?: number }): Promise<MeUser>
   const user = await database
     .select('u.id', 'u.user_name', 'u.password', 'u.api_key', {
       role_id: 'r.id',
-      role_admin_access: 'r.admin_access',
+      admin_access: 'r.admin_access',
     })
     .from('superfast_users AS u')
     .join('superfast_roles AS r', 'r.id', 'u.superfast_role_id')
