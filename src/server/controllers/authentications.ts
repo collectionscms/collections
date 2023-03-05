@@ -39,15 +39,16 @@ app.get(
   })
 );
 
-type AuthUser = {
+type MeUser = {
   id: number;
+  roleId: number;
   userName: string;
   password: string;
+  adminAccess: boolean;
   apiKey: string | null;
-  roleAdminAccess: boolean;
 };
 
-const fetchMe = async (params: { email?: string; id?: number }): Promise<AuthUser> => {
+const fetchMe = async (params: { email?: string; id?: number }): Promise<MeUser> => {
   const condition = {};
 
   if (params.email) {
@@ -61,6 +62,7 @@ const fetchMe = async (params: { email?: string; id?: number }): Promise<AuthUse
   const database = await getDatabase();
   const user = await database
     .select('u.id', 'u.user_name', 'u.password', 'u.api_key', {
+      role_id: 'r.id',
       role_admin_access: 'r.admin_access',
     })
     .from('superfast_users AS u')
@@ -71,15 +73,9 @@ const fetchMe = async (params: { email?: string; id?: number }): Promise<AuthUse
   return user;
 };
 
-const toToken = (user: AuthUser) => {
-  const payload = {
-    id: user.id,
-    userName: user.userName,
-    adminAccess: user.roleAdminAccess,
-    apiKey: user.apiKey,
-  };
-
-  const token = jwt.sign(payload, process.env.SECRET, {
+const toToken = (user: MeUser) => {
+  delete user.password;
+  const token = jwt.sign(user, process.env.SECRET, {
     expiresIn: process.env.ACCESS_TOKEN_TTL,
   });
 

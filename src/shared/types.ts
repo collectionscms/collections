@@ -34,6 +34,7 @@ export type Token = {
 
 export type AuthUser = {
   id: number;
+  roleId: number;
   userName: string;
   adminAccess: boolean;
   apiKey: string | null;
