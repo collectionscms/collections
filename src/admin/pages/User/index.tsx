@@ -65,7 +65,7 @@ const UserPage: React.FC = () => {
         </Grid>
       </Grid>
       {/* <SearchFilter fieldName="userName" fieldLabel={t('user_name')} /> */}
-      <Table columns={columns} rows={data || []} />
+      <Table columns={columns} rows={data} />
     </Stack>
   );
 };
