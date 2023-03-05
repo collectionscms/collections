@@ -117,7 +117,7 @@ const EditPage: React.FC<Props> = ({ collection }) => {
                 type="submit"
                 disabled={!hasPermission(collection.collection, 'create') || isCreateMutating}
               >
-                {t('create_new')}
+                {t('save')}
               </Button>
             </Grid>
           )}

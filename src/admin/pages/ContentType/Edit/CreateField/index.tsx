@@ -192,7 +192,7 @@ const CreateField: React.FC<Props> = ({ slug, openState, onSuccess, onClose }) =
                   </Grid>
                 </Grid>
                 <Button variant="contained" type="submit" disabled={isMutating} fullWidth>
-                  {t('create_new')}
+                  {t('save')}
                 </Button>
               </Stack>
             </AccordionDetails>

@@ -1,7 +1,3 @@
-import Loading from '@admin/components/elements/Loading';
-import ComposeWrapper from '@admin/components/utilities/ComposeWrapper';
-import { useDocumentInfo } from '@admin/components/utilities/DocumentInfo';
-import createUserSchema, { FormValues } from '@admin/fields/schemas/users/createUser';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { CachedOutlined } from '@mui/icons-material';
 import {
@@ -25,6 +21,10 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
+import Loading from '../../../components/elements/Loading';
+import ComposeWrapper from '../../../components/utilities/ComposeWrapper';
+import { useDocumentInfo } from '../../../components/utilities/DocumentInfo';
+import createUserSchema, { FormValues } from '../../../fields/schemas/users/createUser';
 import { UserContextProvider, useUser } from '../Context';
 
 const CreateUserPage: React.FC = () => {
@@ -78,7 +78,7 @@ const CreateUserPage: React.FC = () => {
           <Grid container columnSpacing={2} alignItems="center">
             <Grid>
               <Button variant="contained" type="submit" disabled={isMutating}>
-                {t('create_new')}
+                {t('save')}
               </Button>
             </Grid>
           </Grid>
