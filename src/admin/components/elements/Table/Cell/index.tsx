@@ -18,6 +18,10 @@ const Cell: React.FC<Props> = (props) => {
   }
 
   const sanitizedCellData = () => {
+    if (cellData === '') {
+      return 'No data';
+    }
+
     switch (type) {
       case Type.Text || Type.Number:
         return cellData;
