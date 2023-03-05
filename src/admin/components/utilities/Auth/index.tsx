@@ -19,7 +19,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setToken(res.data.token);
     })
   );
-  useSWR(user ? `/roles/${user.id}/permissions` : null, (url) =>
+  useSWR(user ? `/roles/${user.roleId}/permissions` : null, (url) =>
     api.get<{ permissions: Permission[] }>(url).then((res) => {
       setPermissions(res.data.permissions);
     })
