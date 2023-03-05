@@ -15,7 +15,7 @@ export type ColumnField = {
 
 export type Props = {
   columns: Column[];
-  rows: {
+  rows?: {
     [path: string]: unknown;
   }[];
 };
