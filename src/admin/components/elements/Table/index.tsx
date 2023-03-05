@@ -9,7 +9,6 @@ import {
 } from '@mui/material';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import Loading from '../Loading';
 import Cell from './Cell';
 import { Props } from './types';
 
@@ -19,8 +18,6 @@ const Table: React.FC<Props> = ({ columns, rows }) => {
     const data = row as Record<keyof { id: number }, unknown>;
     return data ? data.id.toString() : '';
   };
-
-  if (rows === undefined) return <Loading />;
 
   return (
     <>

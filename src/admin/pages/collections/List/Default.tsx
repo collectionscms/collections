@@ -60,7 +60,7 @@ const DefaultListPage: React.FC<Props> = ({ collection }) => {
           </Grid>
         </Grid>
       </Grid>
-      <Table columns={columns} rows={contents} />
+      {contents !== undefined && <Table columns={columns} rows={contents} />}
     </Stack>
   );
 };
