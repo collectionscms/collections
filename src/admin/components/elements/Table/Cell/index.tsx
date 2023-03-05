@@ -1,6 +1,6 @@
 import { format } from 'date-fns';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import RouterLink from '../../Link';
 import { Props, Type } from './types';
 
 const Cell: React.FC<Props> = (props) => {
@@ -13,7 +13,7 @@ const Cell: React.FC<Props> = (props) => {
   } = {};
 
   if (colIndex === 0) {
-    WrapElement = Link;
+    WrapElement = RouterLink;
     wrapElementProps.to = `${rowData.id}`;
   }
 

@@ -56,7 +56,7 @@ const CreatePage: React.FC = () => {
         <Grid container columnSpacing={2} alignItems="center">
           <Grid>
             <Button variant="contained" type="submit" disabled={isMutating}>
-              {t('create_new')}
+              {t('save')}
             </Button>
           </Grid>
         </Grid>
