@@ -42,17 +42,18 @@ const DefaultListPage: React.FC<Props> = ({ collection }) => {
             <Grid>
               <h1>{collection.collection}</h1>
             </Grid>
-            <Grid>
-              <Button
-                variant="outlined"
-                startIcon={<AddOutlined />}
-                component={RouterLink}
-                disabled={!hasPermission(collection.collection, 'create')}
-                to="create"
-              >
-                {t('create_new')}
-              </Button>
-            </Grid>
+            {hasPermission(collection.collection, 'create') && (
+              <Grid>
+                <Button
+                  variant="outlined"
+                  startIcon={<AddOutlined />}
+                  component={RouterLink}
+                  to="create"
+                >
+                  {t('create_new')}
+                </Button>
+              </Grid>
+            )}
           </Grid>
         </Grid>
         <Grid container columnSpacing={2} alignItems="center">
