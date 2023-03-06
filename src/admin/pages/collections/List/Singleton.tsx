@@ -16,7 +16,9 @@ const SingletonPage: React.FC<Props> = ({ collection }) => {
   const { enqueueSnackbar } = useSnackbar();
   const { getContents, getFields, createContent, updateContent } = useContent();
   const { data: metaFields } = getFields(collection.collection);
-  const { data: contents } = getContents(collection.collection);
+  const fieldFetched = metaFields !== undefined;
+  const { data: contents } = getContents(fieldFetched, collection.collection);
+
   const {
     data: createdContent,
     trigger: createTrigger,

@@ -1,17 +1,17 @@
-import { Field } from '@shared/types';
 import React, { createContext, useContext } from 'react';
 import useSWR, { SWRConfiguration, SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
+import { Field } from '../../../../shared/types';
 import api from '../../../utilities/api';
 import { ContentContext } from './type';
 
 const Context = createContext({} as ContentContext);
 
 export const ContentContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const getContents = (slug: string, config?: SWRConfiguration): SWRResponse =>
+  const getContents = (canFetch: boolean, slug: string, config?: SWRConfiguration): SWRResponse =>
     // Fetching data that depends on fields.
     useSWR(
-      () => `/collections/${slug}/contents`,
+      canFetch ? `/collections/${slug}/contents` : null,
       (url) => api.get<{ contents: unknown[] }>(url).then((res) => res.data.contents),
       config
     );

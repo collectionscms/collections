@@ -22,7 +22,8 @@ const DefaultListPage: React.FC<Props> = ({ collection }) => {
   const { t } = useTranslation();
   const { getContents, getFields } = useContent();
   const { data: metaFields } = getFields(collection.collection);
-  const { data: contents } = getContents(collection.collection);
+  const fieldFetched = metaFields !== undefined;
+  const { data: contents } = getContents(fieldFetched, collection.collection);
 
   useEffect(() => {
     if (metaFields === undefined) return;
