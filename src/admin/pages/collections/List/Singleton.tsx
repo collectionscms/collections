@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import RenderFields from '../../../components/forms/RenderFields';
+import { useAuth } from '../../../components/utilities/Auth';
 import ComposeWrapper from '../../../components/utilities/ComposeWrapper';
 import { ContentContextProvider, useContent } from '../../../pages/collections/Context';
 import ApiPreview from '../ApiPreview';
@@ -12,6 +13,7 @@ import { Props } from './types';
 
 const SingletonPage: React.FC<Props> = ({ collection }) => {
   const [content, setContent] = useState(null);
+  const { hasPermission } = useAuth();
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
   const { getContents, getFields, createContent, updateContent } = useContent();
@@ -85,7 +87,11 @@ const SingletonPage: React.FC<Props> = ({ collection }) => {
             <Button
               variant="contained"
               type="submit"
-              disabled={isCreateMutating || isUpdateMutating}
+              disabled={
+                !hasPermission(collection.collection, 'update') ||
+                isCreateMutating ||
+                isUpdateMutating
+              }
             >
               {t('update')}
             </Button>
