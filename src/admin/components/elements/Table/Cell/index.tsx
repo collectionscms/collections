@@ -18,7 +18,7 @@ const Cell: React.FC<Props> = (props) => {
   }
 
   const sanitizedCellData = () => {
-    if (cellData === '') {
+    if (colIndex === 0 && (!cellData || String(cellData).trim() === '')) {
       return 'No data';
     }
 
