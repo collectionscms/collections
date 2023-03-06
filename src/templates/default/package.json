@@ -13,7 +13,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "superfastcms": "^0.2.4",
+    "superfastcms": "^0.3.0",
     "sqlite3": "^5.1.4"
   }
 }
