@@ -60,6 +60,7 @@
   "log_back_in": "Log back in",
   "logged_out": "Logged out",
   "no_contents": "There are no contents yet.",
+  "back_to_home": "Back to Home",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion.",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?"
