@@ -60,6 +60,7 @@
   "log_back_in": "ログインし直す",
   "logged_out": "ログアウトしました",
   "no_contents": "まだコンテンツはありません",
+  "back_to_home": "ホームに戻る",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？"
