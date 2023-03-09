@@ -1,5 +1,5 @@
 import jwtDecode from 'jwt-decode';
-import React, { createContext, useCallback, useContext, useState } from 'react';
+import React, { createContext, useCallback, useContext } from 'react';
 import { useCookies } from 'react-cookie';
 import useSWR from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
@@ -11,7 +11,6 @@ import { AuthContext } from './types';
 const Context = createContext({} as AuthContext);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [permissions, setPermissions] = useState([]);
   const [cookies, setCookie, removeCookie] = useCookies(['superfast-token']);
   const token = cookies['superfast-token'];
   if (token) {
@@ -37,10 +36,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return newToken ? jwtDecode<AuthUser>(newToken) : null;
   }, [newToken]);
 
-  useSWR(user() ? `/roles/${user().roleId}/permissions` : null, (url) =>
-    api.get<{ permissions: Permission[] }>(url).then((res) => {
-      setPermissions(res.data.permissions);
-    })
+  const { data: permissions } = useSWR(
+    user() ? `/roles/${user().roleId}/permissions` : null,
+    (url) =>
+      api
+        .get<{ permissions: Permission[] }>(url)
+        .then((res) => res.data.permissions)
+        .catch((e) => {
+          logger.error(e);
+          return null;
+        }),
+    { suspense: true }
   );
 
   const setToken = useCallback((token: string) => {
