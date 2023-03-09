@@ -1,15 +1,18 @@
 /* eslint-disable import/no-import-module-exports */
 import { SnackbarProvider } from 'notistack';
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter as Router } from 'react-router-dom';
 import '../lang/translations/config';
+import Loader from './components/elements/Loader';
 import Routes from './components/routes';
 import { AuthProvider } from './components/utilities/Auth';
 import { ColorModeProvider } from './components/utilities/ColorMode';
 import { ConfigProvider } from './components/utilities/Config';
 import SWRConfigure from './components/utilities/SWRConfigure';
 import { ThemeProvider } from './components/utilities/Theme';
+
+const Loading = Loader(lazy(() => import('./components/elements/Loading')));
 
 const Index = () => (
   <>
@@ -26,9 +29,11 @@ const Index = () => (
               anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
               <SWRConfigure>
-                <AuthProvider>
-                  <Routes />
-                </AuthProvider>
+                <Suspense fallback={<Loading />}>
+                  <AuthProvider>
+                    <Routes />
+                  </AuthProvider>
+                </Suspense>
               </SWRConfigure>
             </SnackbarProvider>
           </Router>
