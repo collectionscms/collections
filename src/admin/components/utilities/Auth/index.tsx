@@ -1,5 +1,5 @@
 import jwtDecode from 'jwt-decode';
-import React, { createContext, useCallback, useContext } from 'react';
+import React, { createContext, useCallback, useContext, useMemo } from 'react';
 import { useCookies } from 'react-cookie';
 import useSWR from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
@@ -32,12 +32,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   );
 
-  const user = useCallback(() => {
+  const user = useMemo(() => {
     return newToken ? jwtDecode<AuthUser>(newToken) : null;
   }, [newToken]);
 
   const { data: permissions } = useSWR(
-    user() ? `/roles/${user().roleId}/permissions` : null,
+    user ? `/roles/${user.roleId}/permissions` : null,
     (url) =>
       api
         .get<{ permissions: Permission[] }>(url)
@@ -57,7 +57,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const hasPermission = useCallback(
     (collection: string, action: PermissionsAction) => {
       return (
-        user().adminAccess ||
+        user.adminAccess ||
         permissions.some(
           (permission) => permission.collection === collection && permission.action === action
         )
@@ -85,7 +85,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   return (
     <Context.Provider
       value={{
-        user: user(),
+        user,
         permissions,
         setToken,
         hasPermission,
