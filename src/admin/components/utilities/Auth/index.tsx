@@ -4,6 +4,7 @@ import { useCookies } from 'react-cookie';
 import useSWR from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
 import { AuthUser, Permission, PermissionsAction } from '../../../../shared/types';
+import logger from '../../../../utilities/logger';
 import api, { removeAuthorization, setAuthorization } from '../../../utilities/api';
 import { AuthContext } from './types';
 
@@ -23,7 +24,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       api
         .get<{ token: string }>(url)
         .then(({ data }) => data.token)
-        .catch((e) => null),
+        .catch((e) => {
+          logger.error(e);
+          return null;
+        }),
     {
       suspense: true,
     }
