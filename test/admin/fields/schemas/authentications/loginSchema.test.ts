@@ -1,4 +1,4 @@
-import loginSchema from '../../../../src/admin/fields/schemas/loginSchema';
+import loginSchema from '../../../../../src/admin/fields/schemas/authentications/loginSchema';
 
 describe('ログインバリデーション', () => {
   test('成功', async () => {
