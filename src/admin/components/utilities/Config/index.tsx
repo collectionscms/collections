@@ -1,5 +1,5 @@
 import { Collection, Config } from '@shared/types';
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext } from 'react';
 import useSWR from 'swr';
 import api from '../../../utilities/api';
 
@@ -14,14 +14,11 @@ export const ConfigProvider: React.FC<{ config: Config; children: React.ReactNod
   children,
   config,
 }) => {
-  const [collections, setCollections] = useState([]);
-  const { data } = useSWR('/collections', (url) =>
-    api.get<{ collections: Collection[] }>(url).then((res) => res.data.collections)
+  const { data: collections } = useSWR(
+    '/collections',
+    (url) => api.get<{ collections: Collection[] }>(url).then((res) => res.data.collections),
+    { suspense: true }
   );
-
-  useEffect(() => {
-    setCollections(data);
-  }, [data]);
 
   return <Context.Provider value={{ collections, config }}>{children}</Context.Provider>;
 };

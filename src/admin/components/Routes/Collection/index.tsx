@@ -1,4 +1,4 @@
-import React, { lazy, useEffect, useState } from 'react';
+import React, { lazy, useMemo } from 'react';
 import { Navigate } from 'react-router-dom';
 import { Collection } from '../../../../shared/types';
 import Edit from '../../../pages/collections/Edit';
@@ -14,8 +14,6 @@ const CollectionNotFound = Loader(lazy(() => import('./NotFound')));
 const CreateFirstCollection = Loader(lazy(() => import('./CreateFirstCollection')));
 
 const CollectionRoutes = () => {
-  const [permittedCollections, setPermittedCollections] = useState([]);
-  const [group, setGroup] = useState(collectionsGroupNavItems([]));
   const { user, permissions } = useAuth();
   const { collections } = useConfig();
 
@@ -28,12 +26,10 @@ const CollectionRoutes = () => {
     );
   };
 
-  useEffect(() => {
-    if (collections === undefined) return;
-    const permitted = filteredPermittedCollections();
-    setPermittedCollections(permitted);
-    const group = collectionsGroupNavItems(permitted);
-    setGroup(group);
+  const { permittedCollections, group } = useMemo(() => {
+    const permittedCollections = filteredPermittedCollections();
+    const group = collectionsGroupNavItems(permittedCollections);
+    return { permittedCollections, group };
   }, [permissions, collections]);
 
   if (!user) {
