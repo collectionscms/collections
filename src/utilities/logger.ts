@@ -2,12 +2,11 @@ import { Request, RequestHandler } from 'express';
 import pino, { LoggerOptions } from 'pino';
 import pinoHTTP, { stdSerializers } from 'pino-http';
 import { env } from 'process';
-import { URL } from 'url';
 
 const pinoOptions: LoggerOptions = {
   level: env.LOG_LEVEL || 'info',
   redact: {
-    paths: ['req.headers.authorization', `req.cookies.${env.REFRESH_TOKEN_COOKIE_NAME}`],
+    paths: ['req.headers.authorization', 'req.headers.cookie'],
     censor: '--redacted--',
   },
 };
@@ -15,7 +14,7 @@ const pinoOptions: LoggerOptions = {
 const httpLoggerOptions: LoggerOptions = {
   level: env.LOG_LEVEL || 'info',
   redact: {
-    paths: ['req.headers.authorization', `req.cookies.${env.REFRESH_TOKEN_COOKIE_NAME}`],
+    paths: ['req.headers.authorization', 'req.headers.cookie'],
     censor: '--redacted--',
   },
 };
