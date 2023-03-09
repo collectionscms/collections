@@ -61,6 +61,9 @@
   "logged_out": "Logged out",
   "no_contents": "There are no contents yet.",
   "back_to_home": "Back to Home",
+  "collection_not_found": "Collection Not Found",
+  "register_content_type": "Register Content Type",
+  "go_to_registration": "Go to Content Type",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion.",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?"

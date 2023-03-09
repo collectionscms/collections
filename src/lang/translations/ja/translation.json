@@ -61,6 +61,9 @@
   "logged_out": "ログアウトしました",
   "no_contents": "まだコンテンツはありません",
   "back_to_home": "ホームに戻る",
+  "collection_not_found": "登録されたコンテンツはありません",
+  "register_content_type": "コンテンツタイプを登録しよう",
+  "go_to_registration": "登録に進む",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？"
