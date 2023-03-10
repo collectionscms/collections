@@ -8,9 +8,9 @@ import fields from '../controllers/fields';
 import projectSettings from '../controllers/projectSettings';
 import roles from '../controllers/roles';
 import users from '../controllers/users';
-import authenticate from '../middleware/authenticate';
+import authHandler from '../middleware/authHandler';
 import errorHandler from '../middleware/errorHandler';
-import extractToken from '../middleware/extractToken';
+import extractTokenHandler from '../middleware/extractTokenHandler';
 import { expressLogger } from '../../utilities/logger';
 
 Hooks.addAction(
@@ -31,8 +31,8 @@ Hooks.addAction(
     app.use(express.urlencoded({ limit: process.env.REQ_LIMIT, extended: true }));
     app.use(expressLogger);
 
-    app.use(extractToken);
-    app.use(authenticate);
+    app.use(extractTokenHandler);
+    app.use(authHandler);
 
     app.use(users);
     app.use(roles);
