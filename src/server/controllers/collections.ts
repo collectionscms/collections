@@ -2,11 +2,13 @@ import express, { Request, Response } from 'express';
 import { Collection } from '../../shared/types';
 import { getDatabase } from '../database/connection';
 import asyncHandler from '../middleware/asyncHandler';
+import permissionsHandler from '../middleware/permissionsHandler';
 
 const app = express();
 
 app.get(
   '/collections/:id',
+  permissionsHandler([{ collection: 'superfast_collections', action: 'read' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const database = await getDatabase();
     const id = Number(req.params.id);
@@ -26,6 +28,7 @@ app.get(
 
 app.get(
   '/collections',
+  permissionsHandler([{ collection: 'superfast_collections', action: 'read' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const database = await getDatabase();
     const collections = await database('superfast_collections').queryContext({
@@ -38,6 +41,7 @@ app.get(
 
 app.post(
   '/collections',
+  permissionsHandler([{ collection: 'superfast_collections', action: 'create' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const database = await getDatabase();
 
@@ -74,6 +78,7 @@ app.post(
 
 app.patch(
   '/collections/:id',
+  permissionsHandler([{ collection: 'superfast_collections', action: 'update' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const database = await getDatabase();
     const id = Number(req.params.id);
@@ -85,6 +90,7 @@ app.patch(
 
 app.delete(
   '/collections/:id',
+  permissionsHandler([{ collection: 'superfast_collections', action: 'delete' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const database = await getDatabase();
     const id = Number(req.params.id);

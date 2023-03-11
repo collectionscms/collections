@@ -1,11 +1,13 @@
 import express, { Request, Response } from 'express';
 import { getDatabase } from '../database/connection';
 import asyncHandler from '../middleware/asyncHandler';
+import { collectionPermissionsHandler } from '../middleware/permissionsHandler';
 
 const app = express();
 
 app.get(
   '/collections/:slug/contents',
+  collectionPermissionsHandler('read'),
   asyncHandler(async (req: Request, res: Response) => {
     const database = await getDatabase();
     const slug = req.params.slug;
@@ -19,6 +21,7 @@ app.get(
 
 app.get(
   '/collections/:slug/contents/:id',
+  collectionPermissionsHandler('read'),
   asyncHandler(async (req: Request, res: Response) => {
     const database = await getDatabase();
     const slug = req.params.slug;
@@ -33,6 +36,7 @@ app.get(
 
 app.post(
   '/collections/:slug/contents',
+  collectionPermissionsHandler('create'),
   asyncHandler(async (req: Request, res: Response) => {
     const database = await getDatabase();
     const slug = req.params.slug;
@@ -47,6 +51,7 @@ app.post(
 
 app.patch(
   '/collections/:slug/contents/:id',
+  collectionPermissionsHandler('update'),
   asyncHandler(async (req: Request, res: Response) => {
     const database = await getDatabase();
     const slug = req.params.slug;
@@ -60,6 +65,7 @@ app.patch(
 
 app.delete(
   '/collections/:slug/contents/:id',
+  collectionPermissionsHandler('delete'),
   asyncHandler(async (req: Request, res: Response) => {
     const database = await getDatabase();
     const slug = req.params.slug;

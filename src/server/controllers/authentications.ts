@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import { InvalidCredentialsException } from '../../shared/exceptions/invalidCredentials';
 import { getDatabase } from '../database/connection';
 import asyncHandler from '../middleware/asyncHandler';
+import permissionsHandler from '../middleware/permissionsHandler';
 
 const app = express();
 
@@ -25,12 +26,9 @@ app.post(
 
 app.get(
   '/me',
+  permissionsHandler([{ collection: 'superfast_users', action: 'read' }]),
   asyncHandler(async (req: Request, res: Response) => {
-    if (!req.user) {
-      throw new InvalidCredentialsException('invalid_user_credentials');
-    }
-
-    const user = await fetchMe({ id: req.user });
+    const user = await fetchMe({ id: req.userId });
     const token = toToken(user);
 
     res.json({
