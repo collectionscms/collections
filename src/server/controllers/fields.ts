@@ -1,13 +1,15 @@
-import { Knex } from 'knex';
-import { Collection, Field } from '@shared/types';
 import express, { Request, Response } from 'express';
+import { Knex } from 'knex';
+import { Collection, Field } from '../../shared/types';
 import { getDatabase } from '../database/connection';
 import asyncHandler from '../middleware/asyncHandler';
+import permissionsHandler from '../middleware/permissionsHandler';
 
 const app = express();
 
 app.get(
   '/collections/:slug/fields',
+  permissionsHandler([{ collection: 'superfast_fields', action: 'read' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const database = await getDatabase();
     const slug = req.params.slug;
@@ -21,6 +23,7 @@ app.get(
 
 app.post(
   '/collections/:slug/fields',
+  permissionsHandler([{ collection: 'superfast_fields', action: 'create' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const database = await getDatabase();
     const slug = req.params.slug;
@@ -47,6 +50,7 @@ app.post(
 
 app.delete(
   '/collections/:collectionId/fields/:id',
+  permissionsHandler([{ collection: 'superfast_fields', action: 'delete' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const database = await getDatabase();
     const collectionId = Number(req.params.collectionId);

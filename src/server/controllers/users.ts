@@ -4,12 +4,14 @@ import { UnprocessableEntityException } from '../../shared/exceptions/unprocessa
 import { Role, User } from '../../shared/types';
 import { getDatabase } from '../database/connection';
 import asyncHandler from '../middleware/asyncHandler';
+import permissionsHandler from '../middleware/permissionsHandler';
 import { oneWayHash } from '../utilities/oneWayHash';
 
 const app = express();
 
 app.get(
   '/users',
+  permissionsHandler([{ collection: 'superfast_users', action: 'read' }]),
   asyncHandler(async (req: Request, res: Response) => {
     if (!req.userId) {
       throw new InvalidCredentialsException('invalid_user_credentials');
@@ -23,8 +25,8 @@ app.get(
         roleDescription: 'r.description',
         roleAdminAccess: 'r.admin_access',
       })
-      .from(`${USER_TABLE_NAME} AS u`)
-      .join(`${ROLE_TABLE_NAME} AS r`, 'r.id', 'u.superfast_role_id');
+      .from('superfast_users AS u')
+      .join('superfast_roles AS r', 'r.id', 'u.superfast_role_id');
 
     res.json({
       users: users.flatMap(({ password, ...user }) => payload(user)),
@@ -34,6 +36,7 @@ app.get(
 
 app.get(
   '/users/:id',
+  permissionsHandler([{ collection: 'superfast_users', action: 'read' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const database = await getDatabase();
     const id = req.params.id;
@@ -45,8 +48,8 @@ app.get(
         roleDescription: 'r.description',
         roleAdminAccess: 'r.admin_access',
       })
-      .from(`${USER_TABLE_NAME} AS u`)
-      .join(`${ROLE_TABLE_NAME} AS r`, 'r.id', 'u.superfast_role_id')
+      .from('superfast_users AS u')
+      .join('superfast_roles AS r', 'r.id', 'u.superfast_role_id')
       .where('u.id', id)
       .first();
 
@@ -60,9 +63,10 @@ app.get(
 
 app.post(
   '/users',
+  permissionsHandler([{ collection: 'superfast_users', action: 'create' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const database = await getDatabase();
-    const role = await database<Role>(ROLE_TABLE_NAME).where('id', req.body.roleId).first();
+    const role = await database<Role>('superfast_roles').where('id', req.body.roleId).first();
     const password = await oneWayHash(req.body.password);
 
     delete req.body.roleId;
@@ -73,7 +77,7 @@ app.post(
       superfastRoleId: role.id,
     };
 
-    const users = await database<User>(USER_TABLE_NAME)
+    const users = await database<User>('superfast_users')
       .queryContext({ toSnake: true })
       .insert(data, 'id');
 
@@ -85,10 +89,11 @@ app.post(
 
 app.patch(
   '/users/:id',
+  permissionsHandler([{ collection: 'superfast_users', action: 'update' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const database = await getDatabase();
     const id = Number(req.params.id);
-    const role = await database<Role>(ROLE_TABLE_NAME).where('id', req.body.roleId).first();
+    const role = await database<Role>('superfast_roles').where('id', req.body.roleId).first();
 
     delete req.body.roleId;
     const data = {
@@ -100,7 +105,7 @@ app.patch(
       data.password = await oneWayHash(req.body.password);
     }
 
-    await database(USER_TABLE_NAME).queryContext({ toSnake: true }).where('id', id).update(data);
+    await database('superfast_users').queryContext({ toSnake: true }).where('id', id).update(data);
 
     res.status(204).end();
   })
@@ -108,6 +113,7 @@ app.patch(
 
 app.delete(
   '/users/:id',
+  permissionsHandler([{ collection: 'superfast_users', action: 'delete' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const database = await getDatabase();
     const id = Number(req.params.id);
@@ -120,7 +126,7 @@ app.delete(
       throw new UnprocessableEntityException('can_not_delete_itself');
     }
 
-    await database(USER_TABLE_NAME).where('id', id).delete();
+    await database('superfast_users').where('id', id).delete();
 
     res.status(204).end();
   })
@@ -144,7 +150,5 @@ const payload = (user: any) => {
     },
   };
 };
-const USER_TABLE_NAME = 'superfast_users';
-const ROLE_TABLE_NAME = 'superfast_roles';
 
 export default app;
