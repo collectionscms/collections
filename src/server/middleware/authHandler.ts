@@ -9,7 +9,7 @@ const authHandler: RequestHandler = async (req: Request, res: Response, next: Ne
     if (req.token) {
       const user = decodeJwt(req.token) || (await fetchUserByApiKey(req.token));
       if (user) {
-        req.user = user.id;
+        req.userId = user.id;
         req.adminAccess = user.adminAccess;
       } else {
         return next(new InvalidCredentialsException('invalid_user_credentials'));

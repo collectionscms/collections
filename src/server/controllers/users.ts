@@ -11,7 +11,7 @@ const app = express();
 app.get(
   '/users',
   asyncHandler(async (req: Request, res: Response) => {
-    if (!req.user) {
+    if (!req.userId) {
       throw new InvalidCredentialsException('invalid_user_credentials');
     }
 
@@ -112,11 +112,11 @@ app.delete(
     const database = await getDatabase();
     const id = Number(req.params.id);
 
-    if (!req.user) {
+    if (!req.userId) {
       throw new InvalidCredentialsException('invalid_user_credentials');
     }
 
-    if (req.user === id) {
+    if (req.userId === id) {
       throw new UnprocessableEntityException('can_not_delete_itself');
     }
 
