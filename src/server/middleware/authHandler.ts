@@ -11,6 +11,7 @@ const authHandler: RequestHandler = async (req: Request, res: Response, next: Ne
       if (user) {
         req.userId = user.id;
         req.adminAccess = user.adminAccess;
+        req.roleId = user.roleId;
       } else {
         return next(new InvalidCredentialsException('invalid_user_credentials'));
       }

@@ -5,6 +5,7 @@ declare global {
     export interface Request {
       token: string | null;
       userId?: number | null;
+      roleId?: number | null;
       adminAccess?: boolean | null;
       permissions?: Permission[] | null;
     }
