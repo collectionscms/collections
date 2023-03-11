@@ -27,7 +27,17 @@ const authHandler: RequestHandler = async (req: Request, res: Response, next: Ne
 
 const fetchUserByApiKey = async (token: string) => {
   const database = await getDatabase();
-  return await database('superfast_users').where('api_key', token).first();
+  const user = await database
+    .select('u.id', {
+      roleId: 'r.id',
+      adminAccess: 'r.admin_access',
+    })
+    .from('superfast_users AS u')
+    .join('superfast_roles AS r', 'r.id', 'u.superfast_role_id')
+    .where('u.api_key', token)
+    .first();
+
+  return user;
 };
 
 export default asyncHandler(authHandler);
