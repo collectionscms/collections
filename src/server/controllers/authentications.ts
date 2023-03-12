@@ -26,7 +26,7 @@ app.post(
 
 app.get(
   '/me',
-  permissionsHandler([{ collection: 'superfast_users', action: 'read' }]),
+  permissionsHandler(),
   asyncHandler(async (req: Request, res: Response) => {
     const user = await fetchMe({ id: req.userId });
     const token = toToken(user);

@@ -8,7 +8,7 @@ const app = express();
 
 app.get(
   '/collections/:id',
-  permissionsHandler([{ collection: 'superfast_collections', action: 'read' }]),
+  permissionsHandler(),
   asyncHandler(async (req: Request, res: Response) => {
     const database = await getDatabase();
     const id = Number(req.params.id);
@@ -28,7 +28,7 @@ app.get(
 
 app.get(
   '/collections',
-  permissionsHandler([{ collection: 'superfast_collections', action: 'read' }]),
+  permissionsHandler(),
   asyncHandler(async (req: Request, res: Response) => {
     const database = await getDatabase();
     const collections = await database('superfast_collections').queryContext({
