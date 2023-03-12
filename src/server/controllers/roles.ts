@@ -106,7 +106,7 @@ app.delete(
 
 app.get(
   '/roles/:id/permissions',
-  permissionsHandler([{ collection: 'superfast_permissions', action: 'read' }]),
+  permissionsHandler(),
   asyncHandler(async (req: Request, res: Response) => {
     const database = await getDatabase();
     const id = req.params.id;

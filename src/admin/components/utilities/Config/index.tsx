@@ -2,6 +2,7 @@ import { Collection, Config } from '@shared/types';
 import React, { createContext, useContext } from 'react';
 import useSWR from 'swr';
 import api from '../../../utilities/api';
+import { useAuth } from '../Auth';
 
 type ContextType = {
   collections: Collection[];
@@ -14,8 +15,10 @@ export const ConfigProvider: React.FC<{ config: Config; children: React.ReactNod
   children,
   config,
 }) => {
+  const { user } = useAuth();
+
   const { data: collections } = useSWR(
-    '/collections',
+    user ? '/collections' : null,
     (url) => api.get<{ collections: Collection[] }>(url).then((res) => res.data.collections),
     { suspense: true }
   );
