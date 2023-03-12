@@ -9,7 +9,7 @@ app.get(
   '/collections/:slug/contents',
   collectionPermissionsHandler('read'),
   asyncHandler(async (req: Request, res: Response) => {
-    const database = await getDatabase();
+    const database = getDatabase();
     const slug = req.params.slug;
     const contents = await database(slug).queryContext({ toCamel: false });
 
@@ -23,7 +23,7 @@ app.get(
   '/collections/:slug/contents/:id',
   collectionPermissionsHandler('read'),
   asyncHandler(async (req: Request, res: Response) => {
-    const database = await getDatabase();
+    const database = getDatabase();
     const slug = req.params.slug;
     const id = req.params.id;
     const content = await database(slug).queryContext({ toCamel: false }).where('id', id).first();
@@ -38,7 +38,7 @@ app.post(
   '/collections/:slug/contents',
   collectionPermissionsHandler('create'),
   asyncHandler(async (req: Request, res: Response) => {
-    const database = await getDatabase();
+    const database = getDatabase();
     const slug = req.params.slug;
 
     const content = await database(slug).queryContext({ toCamel: false }).insert(req.body);
@@ -53,7 +53,7 @@ app.patch(
   '/collections/:slug/contents/:id',
   collectionPermissionsHandler('update'),
   asyncHandler(async (req: Request, res: Response) => {
-    const database = await getDatabase();
+    const database = getDatabase();
     const slug = req.params.slug;
     const id = Number(req.params.id);
 
@@ -67,7 +67,7 @@ app.delete(
   '/collections/:slug/contents/:id',
   collectionPermissionsHandler('delete'),
   asyncHandler(async (req: Request, res: Response) => {
-    const database = await getDatabase();
+    const database = getDatabase();
     const slug = req.params.slug;
     const id = Number(req.params.id);
 

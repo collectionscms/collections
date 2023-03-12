@@ -26,7 +26,7 @@ const authHandler: RequestHandler = async (req: Request, res: Response, next: Ne
 };
 
 const fetchUserByApiKey = async (token: string) => {
-  const database = await getDatabase();
+  const database = getDatabase();
   const user = await database
     .select('u.id', {
       roleId: 'r.id',

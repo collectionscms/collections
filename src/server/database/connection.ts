@@ -6,7 +6,7 @@ import path from 'path';
 
 let database: Knex | null = null;
 
-export const getDatabase = async (): Promise<Knex> => {
+export const getDatabase = (): Knex => {
   if (database) return database;
   let migrationFiles = path.join(__dirname, 'migrations');
 

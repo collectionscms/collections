@@ -11,7 +11,7 @@ export const collectionPermissionsHandler =
     }
 
     if (!req.adminAccess) {
-      const database = await getDatabase();
+      const database = getDatabase();
       const userPermissions = await database<Permission>('superfast_permissions').where(
         'superfast_role_id',
         req.roleId
@@ -38,7 +38,7 @@ const permissionsHandler =
     }
 
     if (!req.adminAccess && permissions.length > 0) {
-      const database = await getDatabase();
+      const database = getDatabase();
       const userPermissions = await database<Permission>('superfast_permissions').where(
         'superfast_role_id',
         req.roleId

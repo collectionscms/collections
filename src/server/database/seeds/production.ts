@@ -3,7 +3,7 @@ import { oneWayHash } from '../../../server/utilities/oneWayHash';
 import { getDatabase } from '../connection';
 
 const seedProduction = async (email: string, password: string): Promise<void> => {
-  const database = await getDatabase();
+  const database = getDatabase();
 
   try {
     // Role
