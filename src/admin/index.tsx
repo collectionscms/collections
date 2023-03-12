@@ -17,28 +17,28 @@ const Loading = Loader(lazy(() => import('./components/elements/Loading')));
 const Index = () => (
   <>
     <Suspense fallback={<Loading />}>
-      <ConfigProvider
-        config={{
-          serverUrl: 'http://localhost:4000',
-        }}
-      >
-        <ColorModeProvider>
-          <ThemeProvider>
-            <Router>
-              <SnackbarProvider
-                maxSnack={3}
-                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-              >
-                <SWRConfigure>
-                  <AuthProvider>
+      <ColorModeProvider>
+        <ThemeProvider>
+          <Router>
+            <SnackbarProvider
+              maxSnack={3}
+              anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+            >
+              <SWRConfigure>
+                <AuthProvider>
+                  <ConfigProvider
+                    config={{
+                      serverUrl: 'http://localhost:4000',
+                    }}
+                  >
                     <Routes />
-                  </AuthProvider>
-                </SWRConfigure>
-              </SnackbarProvider>
-            </Router>
-          </ThemeProvider>
-        </ColorModeProvider>
-      </ConfigProvider>
+                  </ConfigProvider>
+                </AuthProvider>
+              </SWRConfigure>
+            </SnackbarProvider>
+          </Router>
+        </ThemeProvider>
+      </ColorModeProvider>
     </Suspense>
   </>
 );
