@@ -7,7 +7,7 @@ import { getDatabase } from '../database/connection';
 export const collectionPermissionsHandler =
   (action: PermissionsAction) => async (req: Request, res: Response, next: NextFunction) => {
     if (!req.userId) {
-      next(new InvalidCredentialsException('invalid_user_credentials'));
+      return next(new InvalidCredentialsException('invalid_user_credentials'));
     }
 
     if (!req.adminAccess) {
@@ -34,7 +34,7 @@ const permissionsHandler =
   (permissions: { collection: string; action: PermissionsAction }[] = []) =>
   async (req: Request, res: Response, next: NextFunction) => {
     if (!req.userId) {
-      next(new InvalidCredentialsException('invalid_user_credentials'));
+      return next(new InvalidCredentialsException('invalid_user_credentials'));
     }
 
     if (!req.adminAccess && permissions.length > 0) {
