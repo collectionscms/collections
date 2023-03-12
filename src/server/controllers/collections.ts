@@ -10,7 +10,7 @@ app.get(
   '/collections/:id',
   permissionsHandler(),
   asyncHandler(async (req: Request, res: Response) => {
-    const database = await getDatabase();
+    const database = getDatabase();
     const id = Number(req.params.id);
     const collection = await database('superfast_collections')
       .queryContext({ toCamel: false })
@@ -30,7 +30,7 @@ app.get(
   '/collections',
   permissionsHandler(),
   asyncHandler(async (req: Request, res: Response) => {
-    const database = await getDatabase();
+    const database = getDatabase();
     const collections = await database('superfast_collections').queryContext({
       toCamel: false,
     });
@@ -43,7 +43,7 @@ app.post(
   '/collections',
   permissionsHandler([{ collection: 'superfast_collections', action: 'create' }]),
   asyncHandler(async (req: Request, res: Response) => {
-    const database = await getDatabase();
+    const database = getDatabase();
 
     await database.transaction(async (tx) => {
       try {
@@ -80,7 +80,7 @@ app.patch(
   '/collections/:id',
   permissionsHandler([{ collection: 'superfast_collections', action: 'update' }]),
   asyncHandler(async (req: Request, res: Response) => {
-    const database = await getDatabase();
+    const database = getDatabase();
     const id = Number(req.params.id);
     await database('superfast_collections').where('id', id).update(req.body);
 
@@ -92,7 +92,7 @@ app.delete(
   '/collections/:id',
   permissionsHandler([{ collection: 'superfast_collections', action: 'delete' }]),
   asyncHandler(async (req: Request, res: Response) => {
-    const database = await getDatabase();
+    const database = getDatabase();
     const id = Number(req.params.id);
     const meta = await database<Collection>('superfast_collections').where('id', id).first();
 

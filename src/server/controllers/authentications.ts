@@ -57,7 +57,7 @@ const fetchMe = async (params: { email?: string; id?: number }): Promise<MeUser>
     condition['u.id'] = params.id;
   }
 
-  const database = await getDatabase();
+  const database = getDatabase();
   const user = await database
     .select('u.id', 'u.user_name', 'u.password', 'u.api_key', {
       role_id: 'r.id',

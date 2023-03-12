@@ -8,7 +8,7 @@ const app = express();
 app.get(
   '/project_settings',
   asyncHandler(async (req: Request, res: Response) => {
-    const database = await getDatabase();
+    const database = getDatabase();
     const projectSetting = await database('superfast_project_settings').first();
     res.json({ projectSetting: projectSetting });
   })
@@ -18,7 +18,7 @@ app.patch(
   '/project_settings',
   permissionsHandler([{ collection: 'superfast_project_settings', action: 'update' }]),
   asyncHandler(async (req: Request, res: Response) => {
-    const database = await getDatabase();
+    const database = getDatabase();
     await database('superfast_project_settings').first().update(req.body);
 
     res.status(204).end();

@@ -17,7 +17,7 @@ app.get(
       throw new InvalidCredentialsException('invalid_user_credentials');
     }
 
-    const database = await getDatabase();
+    const database = getDatabase();
     const users = await database
       .select('u.*', {
         roleId: 'r.id',
@@ -38,7 +38,7 @@ app.get(
   '/users/:id',
   permissionsHandler([{ collection: 'superfast_users', action: 'read' }]),
   asyncHandler(async (req: Request, res: Response) => {
-    const database = await getDatabase();
+    const database = getDatabase();
     const id = req.params.id;
 
     const user = await database
@@ -65,7 +65,7 @@ app.post(
   '/users',
   permissionsHandler([{ collection: 'superfast_users', action: 'create' }]),
   asyncHandler(async (req: Request, res: Response) => {
-    const database = await getDatabase();
+    const database = getDatabase();
     const role = await database<Role>('superfast_roles').where('id', req.body.roleId).first();
     const password = await oneWayHash(req.body.password);
 
@@ -91,7 +91,7 @@ app.patch(
   '/users/:id',
   permissionsHandler([{ collection: 'superfast_users', action: 'update' }]),
   asyncHandler(async (req: Request, res: Response) => {
-    const database = await getDatabase();
+    const database = getDatabase();
     const id = Number(req.params.id);
     const role = await database<Role>('superfast_roles').where('id', req.body.roleId).first();
 
@@ -115,7 +115,7 @@ app.delete(
   '/users/:id',
   permissionsHandler([{ collection: 'superfast_users', action: 'delete' }]),
   asyncHandler(async (req: Request, res: Response) => {
-    const database = await getDatabase();
+    const database = getDatabase();
     const id = Number(req.params.id);
 
     if (!req.userId) {

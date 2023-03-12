@@ -11,7 +11,7 @@ app.get(
   '/collections/:slug/fields',
   collectionPermissionsHandler('read'),
   asyncHandler(async (req: Request, res: Response) => {
-    const database = await getDatabase();
+    const database = getDatabase();
     const slug = req.params.slug;
     const fields = await database('superfast_fields').where('collection', slug);
 
@@ -25,7 +25,7 @@ app.post(
   '/collections/:slug/fields',
   permissionsHandler([{ collection: 'superfast_fields', action: 'create' }]),
   asyncHandler(async (req: Request, res: Response) => {
-    const database = await getDatabase();
+    const database = getDatabase();
     const slug = req.params.slug;
     const meta = await database<Collection>('superfast_collections')
       .where('collection', slug)
@@ -52,7 +52,7 @@ app.delete(
   '/collections/:collectionId/fields/:id',
   permissionsHandler([{ collection: 'superfast_fields', action: 'delete' }]),
   asyncHandler(async (req: Request, res: Response) => {
-    const database = await getDatabase();
+    const database = getDatabase();
     const collectionId = Number(req.params.collectionId);
     const id = Number(req.params.id);
 

@@ -11,7 +11,7 @@ app.get(
   '/roles',
   permissionsHandler([{ collection: 'superfast_roles', action: 'read' }]),
   asyncHandler(async (req: Request, res: Response) => {
-    const database = await getDatabase();
+    const database = getDatabase();
     const roles = await database<Role>('superfast_roles');
     res.json({ roles: roles });
   })
@@ -21,7 +21,7 @@ app.get(
   '/roles/:id',
   permissionsHandler([{ collection: 'superfast_roles', action: 'read' }]),
   asyncHandler(async (req: Request, res: Response) => {
-    const database = await getDatabase();
+    const database = getDatabase();
     const id = req.params.id;
     const role = await database<Role>('superfast_roles').where('id', id).first();
 
@@ -33,7 +33,7 @@ app.post(
   '/roles',
   permissionsHandler([{ collection: 'superfast_roles', action: 'create' }]),
   asyncHandler(async (req: Request, res: Response) => {
-    const database = await getDatabase();
+    const database = getDatabase();
 
     const roles = await database<Role>('superfast_roles')
       .queryContext({ toSnake: true })
@@ -49,7 +49,7 @@ app.patch(
   '/roles/:id',
   permissionsHandler([{ collection: 'superfast_roles', action: 'update' }]),
   asyncHandler(async (req: Request, res: Response) => {
-    const database = await getDatabase();
+    const database = getDatabase();
     const id = Number(req.params.id);
 
     await database('superfast_roles')
@@ -62,7 +62,7 @@ app.patch(
 );
 
 const checkForOtherAdminRoles = async () => {
-  const database = await getDatabase();
+  const database = getDatabase();
   const adminRole = await database('superfast_roles')
     .count('*', { as: 'count' })
     .where('admin_access', true)
@@ -77,7 +77,7 @@ app.delete(
   '/roles/:id',
   permissionsHandler([{ collection: 'superfast_roles', action: 'delete' }]),
   asyncHandler(async (req: Request, res: Response) => {
-    const database = await getDatabase();
+    const database = getDatabase();
     const id = Number(req.params.id);
 
     const users = await database('superfast_users').where('superfast_role_id', id);
@@ -108,7 +108,7 @@ app.get(
   '/roles/:id/permissions',
   permissionsHandler(),
   asyncHandler(async (req: Request, res: Response) => {
-    const database = await getDatabase();
+    const database = getDatabase();
     const id = req.params.id;
 
     const permissions = await database<Permission>('superfast_permissions').where(
@@ -123,7 +123,7 @@ app.post(
   '/roles/:id/permissions',
   permissionsHandler([{ collection: 'superfast_permissions', action: 'create' }]),
   asyncHandler(async (req: Request, res: Response) => {
-    const database = await getDatabase();
+    const database = getDatabase();
     const id = Number(req.params.id);
 
     const data = {
@@ -145,7 +145,7 @@ app.delete(
   '/roles/:id/permissions/:permissionId',
   permissionsHandler([{ collection: 'superfast_permissions', action: 'delete' }]),
   asyncHandler(async (req: Request, res: Response) => {
-    const database = await getDatabase();
+    const database = getDatabase();
     const permissionId = Number(req.params.permissionId);
 
     await database('superfast_permissions').where('id', permissionId).delete();
