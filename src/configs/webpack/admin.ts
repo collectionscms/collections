@@ -3,7 +3,6 @@ import notify from '@scripts/utilities/notifierUtil';
 import PathUtil from '@scripts/utilities/pathUtil';
 import FriendlyErrorsWebpackPlugin from '@soda/friendly-errors-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
 import webpack from 'webpack';
 import WebpackBar from 'webpackbar';
@@ -184,11 +183,6 @@ const adminDefaultWebpack = {
     new HtmlWebpackPlugin({
       inject: true,
       template: PathUtil.admin('index.html'),
-    }),
-    new MiniCssExtractPlugin({
-      filename: '[name].[chunkhash].css',
-      chunkFilename: '[name].[chunkhash].chunkhash.css',
-      ignoreOrder: true,
     }),
     process.env.NODE_ENV === 'production' && new WebpackBar({ name: 'Admin', color: '#8f47d4' }),
   ].filter(Boolean),
