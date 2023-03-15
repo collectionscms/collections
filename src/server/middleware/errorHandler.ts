@@ -1,5 +1,6 @@
 import { BaseException } from '../../shared/exceptions/base';
 import { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
+import logger from '../../utilities/logger';
 
 const errorHandler: ErrorRequestHandler = (
   err: Error,
@@ -7,6 +8,8 @@ const errorHandler: ErrorRequestHandler = (
   res: Response,
   _next: NextFunction
 ) => {
+  logger.error(err);
+
   if (!(err instanceof BaseException)) {
     res.status(500).end();
   }
