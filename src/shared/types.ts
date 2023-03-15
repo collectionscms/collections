@@ -1,32 +1,14 @@
+// /////////////////////////////////////
+// Configure
+// /////////////////////////////////////
+
 export type Config = {
   serverUrl: string;
 };
 
-export type Collection = {
-  id: number;
-  collection: string;
-  singleton: boolean;
-  hidden: boolean;
-};
-
-export type FieldInterface = 'input' | 'inputMultiline' | 'inputRichTextHtml' | 'inputRichTextMd';
-
-export type Field = {
-  id: number;
-  collection: string;
-  field: string;
-  label: string;
-  interface: FieldInterface;
-  required: boolean;
-  readonly: boolean;
-  hidden: boolean;
-  fieldOptions: FieldOption[];
-};
-
-export type FieldOption = {
-  key: string;
-  value: string;
-};
+// /////////////////////////////////////
+// Authentication
+// /////////////////////////////////////
 
 export type Token = {
   token: string;
@@ -40,8 +22,37 @@ export type AuthUser = {
   apiKey: string | null;
 };
 
-export type User = {
+// /////////////////////////////////////
+// Schema
+// /////////////////////////////////////
+
+type PrimaryKey = {
   id: number;
+};
+
+export type Collection = {
+  collection: string;
+  singleton: boolean;
+  hidden: boolean;
+} & PrimaryKey;
+
+export type FieldInterface = 'input' | 'inputMultiline' | 'inputRichTextHtml' | 'inputRichTextMd';
+export type FieldOption = {
+  key: string;
+  value: string;
+};
+export type Field = {
+  collection: string;
+  field: string;
+  label: string;
+  interface: FieldInterface;
+  required: boolean;
+  readonly: boolean;
+  hidden: boolean;
+  fieldOptions: FieldOption[];
+} & PrimaryKey;
+
+export type User = {
   email: string;
   password: string;
   firstName: string;
@@ -51,24 +62,21 @@ export type User = {
   isActive: boolean;
   role?: Role;
   updatedAt: Date;
-};
+} & PrimaryKey;
 
 export type Role = {
-  id: number;
   name: string;
   description: string;
   adminAccess: boolean;
   permissions: Permission[];
-};
+} & PrimaryKey;
 
 export type PermissionsAction = 'create' | 'read' | 'update' | 'delete';
-
 export type Permission = {
-  id: number;
   collection: string;
   action: PermissionsAction;
-};
+} & PrimaryKey;
 
 export type ProjectSetting = {
   name: string;
-};
+} & PrimaryKey;
