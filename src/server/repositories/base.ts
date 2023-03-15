@@ -9,8 +9,8 @@ type AbstractRepository<T> = {
   read(data: Partial<T>): Promise<T[]>;
   readOne(id: number | Partial<T>): Promise<T>;
   create(item: Omit<T, 'id'>): Promise<T>;
-  update(id: number, item: Partial<T>): Promise<void>;
-  delete(id: number): Promise<void>;
+  update(id: number, item: Partial<T>): Promise<boolean>;
+  delete(id: number): Promise<boolean>;
 };
 
 export abstract class BaseRepository<T> implements AbstractRepository<T> {
@@ -40,11 +40,11 @@ export abstract class BaseRepository<T> implements AbstractRepository<T> {
     return output as Promise<T>;
   }
 
-  update(id: number, item: Partial<T>): Promise<void> {
+  update(id: number, item: Partial<T>): Promise<boolean> {
     return this.queryBuilder.where('id', id).update(item);
   }
 
-  delete(id: number): Promise<void> {
+  delete(id: number): Promise<boolean> {
     return this.queryBuilder.where('id', id).del();
   }
 }
