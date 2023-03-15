@@ -17,9 +17,9 @@ export abstract class BaseRepository<T> implements AbstractRepository<T> {
   collection: string;
   knex: Knex;
 
-  constructor(collection: string, options: AbstractRepositoryOptions) {
+  constructor(collection: string, options?: AbstractRepositoryOptions) {
     this.collection = collection;
-    this.knex = options.knex || getDatabase();
+    this.knex = options?.knex || getDatabase();
     return this;
   }
 
