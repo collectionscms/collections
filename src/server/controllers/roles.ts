@@ -1,9 +1,10 @@
 import express, { Request, Response } from 'express';
-import { Permission, Role } from '../.../../../shared/types';
+import { Permission } from '../.../../../shared/types';
 import { UnprocessableEntityException } from '../../shared/exceptions/unprocessableEntity';
 import { getDatabase } from '../database/connection';
 import asyncHandler from '../middleware/asyncHandler';
 import permissionsHandler from '../middleware/permissionsHandler';
+import { RolesRepository } from '../repositories/roles';
 
 const app = express();
 
@@ -11,8 +12,10 @@ app.get(
   '/roles',
   permissionsHandler([{ collection: 'superfast_roles', action: 'read' }]),
   asyncHandler(async (req: Request, res: Response) => {
-    const database = getDatabase();
-    const roles = await database<Role>('superfast_roles');
+    const repository = new RolesRepository();
+
+    const roles = await repository.read({});
+
     res.json({ roles: roles });
   })
 );
@@ -21,9 +24,10 @@ app.get(
   '/roles/:id',
   permissionsHandler([{ collection: 'superfast_roles', action: 'read' }]),
   asyncHandler(async (req: Request, res: Response) => {
-    const database = getDatabase();
-    const id = req.params.id;
-    const role = await database<Role>('superfast_roles').where('id', id).first();
+    const id = Number(req.params.id);
+    const repository = new RolesRepository();
+
+    const role = await repository.readOne(id);
 
     res.json({ role: role });
   })
@@ -33,14 +37,12 @@ app.post(
   '/roles',
   permissionsHandler([{ collection: 'superfast_roles', action: 'create' }]),
   asyncHandler(async (req: Request, res: Response) => {
-    const database = getDatabase();
+    const repository = new RolesRepository();
 
-    const roles = await database<Role>('superfast_roles')
-      .queryContext({ toSnake: true })
-      .insert(req.body, 'id');
+    const role = await repository.create(req.body);
 
     res.json({
-      role: roles[0],
+      role: role,
     });
   })
 );
@@ -49,29 +51,14 @@ app.patch(
   '/roles/:id',
   permissionsHandler([{ collection: 'superfast_roles', action: 'update' }]),
   asyncHandler(async (req: Request, res: Response) => {
-    const database = getDatabase();
     const id = Number(req.params.id);
+    const repository = new RolesRepository();
 
-    await database('superfast_roles')
-      .queryContext({ toSnake: true })
-      .where('id', id)
-      .update(req.body);
+    await repository.update(id, req.body);
 
     res.status(204).end();
   })
 );
-
-const checkForOtherAdminRoles = async () => {
-  const database = getDatabase();
-  const adminRole = await database('superfast_roles')
-    .count('*', { as: 'count' })
-    .where('admin_access', true)
-    .first();
-
-  if (adminRole.count === 1) {
-    throw new UnprocessableEntityException('can_not_delete_last_admin_role');
-  }
-};
 
 app.delete(
   '/roles/:id',
@@ -79,25 +66,29 @@ app.delete(
   asyncHandler(async (req: Request, res: Response) => {
     const database = getDatabase();
     const id = Number(req.params.id);
+    const repository = new RolesRepository();
 
     const users = await database('superfast_users').where('superfast_role_id', id);
     if (users.length > 0) {
       throw new UnprocessableEntityException('can_not_delete_role_in_use');
     }
 
-    const role = await database<Role>('superfast_roles').where('id', id).first();
+    const role = await repository.readOne(id);
     if (role.adminAccess) {
-      await checkForOtherAdminRoles();
+      const roles = await repository.read({ adminAccess: true });
+      if (roles.length === 1) {
+        throw new UnprocessableEntityException('can_not_delete_last_admin_role');
+      }
     }
 
-    await database.transaction(async (tx) => {
+    await repository.transaction(async (tx) => {
       try {
-        await tx('superfast_roles').where('id', id).delete();
-        await tx('superfast_permissions').where('superfast_role_id', id).delete();
-        await tx.commit();
+        await repository.transacting(tx).delete(id);
+        await tx.transaction('superfast_permissions').where('superfast_role_id', id).delete();
+        await tx.transaction.commit();
         res.status(204).end();
       } catch (e) {
-        await tx.rollback();
+        await tx.transaction.rollback();
         res.status(500).end();
       }
     });

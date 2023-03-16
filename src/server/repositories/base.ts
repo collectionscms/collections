@@ -13,15 +13,28 @@ type AbstractRepository<T> = {
   delete(id: number): Promise<boolean>;
 };
 
+export class BaseTransaction {
+  constructor(readonly transaction: Knex.Transaction<any, any[]>) {}
+}
+
 export abstract class BaseRepository<T> implements AbstractRepository<T> {
   collection: string;
   knex: Knex;
 
-  constructor(collection: string, options: AbstractRepositoryOptions) {
+  constructor(collection: string, options?: AbstractRepositoryOptions) {
     this.collection = collection;
-    this.knex = options.knex || getDatabase();
+    this.knex = options?.knex || getDatabase();
     return this;
   }
+
+  async transaction<T>(callback: (trx: BaseTransaction) => Promise<T>) {
+    return await this.knex.transaction(async (knexTrx) => {
+      const baseTrx = new BaseTransaction(knexTrx);
+      return await callback(baseTrx);
+    });
+  }
+
+  abstract transacting(trx: BaseTransaction): BaseRepository<T>;
 
   public get queryBuilder(): Knex.QueryBuilder {
     return this.knex(this.collection);
@@ -36,12 +49,16 @@ export abstract class BaseRepository<T> implements AbstractRepository<T> {
   }
 
   async create(item: Omit<T, 'id'>): Promise<T> {
-    const [output] = await this.queryBuilder.insert<T>(item).returning('*');
+    const [output] = await this.queryBuilder
+      .queryContext({ toSnake: true })
+      .insert(item)
+      .returning('id');
+
     return output as Promise<T>;
   }
 
   update(id: number, item: Partial<T>): Promise<boolean> {
-    return this.queryBuilder.where('id', id).update(item);
+    return this.queryBuilder.where('id', id).queryContext({ toSnake: true }).update(item);
   }
 
   delete(id: number): Promise<boolean> {
