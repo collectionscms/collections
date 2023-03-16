@@ -68,7 +68,7 @@ app.delete(
     const id = Number(req.params.id);
     const repository = new RolesRepository();
 
-    const users = await database('superfast_users').where('superfast_role_id', id);
+    const users = await database('superfast_users').where('role_id', id);
     if (users.length > 0) {
       throw new UnprocessableEntityException('can_not_delete_role_in_use');
     }
@@ -84,7 +84,7 @@ app.delete(
     await repository.transaction(async (tx) => {
       try {
         await repository.transacting(tx).delete(id);
-        await tx.transaction('superfast_permissions').where('superfast_role_id', id).delete();
+        await tx.transaction('superfast_permissions').where('role_id', id).delete();
         await tx.transaction.commit();
         res.status(204).end();
       } catch (e) {
@@ -102,10 +102,7 @@ app.get(
     const database = getDatabase();
     const id = req.params.id;
 
-    const permissions = await database<Permission>('superfast_permissions').where(
-      'superfast_role_id',
-      id
-    );
+    const permissions = await database<Permission>('superfast_permissions').where('role_id', id);
     res.json({ permissions: permissions });
   })
 );
@@ -119,7 +116,7 @@ app.post(
 
     const data = {
       ...req.body,
-      superfast_role_id: id,
+      role_id: id,
     };
 
     const permissions = await database<Permission>('superfast_permissions')
