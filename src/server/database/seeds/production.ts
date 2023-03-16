@@ -30,7 +30,7 @@ const seedProduction = async (email: string, password: string): Promise<void> =>
         email: email,
         password: hashed,
         is_active: true,
-        superfast_role_id: adminRole!.id,
+        role_id: adminRole!.id,
       },
     ]);
 

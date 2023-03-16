@@ -64,7 +64,7 @@ const fetchMe = async (params: { email?: string; id?: number }): Promise<MeUser>
       admin_access: 'r.admin_access',
     })
     .from('superfast_users AS u')
-    .join('superfast_roles AS r', 'r.id', 'u.superfast_role_id')
+    .join('superfast_roles AS r', 'r.id', 'u.role_id')
     .where(condition)
     .first();
 

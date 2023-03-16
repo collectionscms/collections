@@ -59,7 +59,7 @@ const seedingData = async (database: Knex): Promise<void> => {
       email: 'hanako-yamada@example.com',
       password: password,
       is_active: true,
-      superfast_role_id: adminRole!.id,
+      role_id: adminRole!.id,
     },
     {
       id: 2,
@@ -69,7 +69,7 @@ const seedingData = async (database: Knex): Promise<void> => {
       email: 'taro-tanaka@example.com',
       password: password,
       is_active: false,
-      superfast_role_id: editorRole!.id,
+      role_id: editorRole!.id,
     },
   ]);
 
@@ -81,50 +81,50 @@ const seedingData = async (database: Knex): Promise<void> => {
       id: 1,
       collection: 'Restaurant',
       action: 'read',
-      superfast_role_id: adminRole!.id,
+      role_id: adminRole!.id,
     },
     {
       id: 2,
       collection: 'Restaurant',
       action: 'create',
-      superfast_role_id: adminRole!.id,
+      role_id: adminRole!.id,
     },
     {
       id: 3,
       collection: 'Restaurant',
       action: 'update',
-      superfast_role_id: adminRole!.id,
+      role_id: adminRole!.id,
     },
     {
       id: 4,
       collection: 'Company',
       action: 'read',
-      superfast_role_id: adminRole!.id,
+      role_id: adminRole!.id,
     },
     {
       id: 5,
       collection: 'Company',
       action: 'create',
-      superfast_role_id: adminRole!.id,
+      role_id: adminRole!.id,
     },
     {
       id: 6,
       collection: 'Company',
       action: 'update',
-      superfast_role_id: adminRole!.id,
+      role_id: adminRole!.id,
     },
     // Edditor
     {
       id: 7,
       collection: 'Restaurant',
       action: 'read',
-      superfast_role_id: editorRole!.id,
+      role_id: editorRole!.id,
     },
     {
       id: 8,
       collection: 'Company',
       action: 'read',
-      superfast_role_id: editorRole!.id,
+      role_id: editorRole!.id,
     },
   ]);
 
