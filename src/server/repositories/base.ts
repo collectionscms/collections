@@ -13,6 +13,10 @@ type AbstractRepository<T> = {
   delete(id: number): Promise<boolean>;
 };
 
+export class BaseTransaction {
+  constructor(readonly transaction: Knex.Transaction<any, any[]>) {}
+}
+
 export abstract class BaseRepository<T> implements AbstractRepository<T> {
   collection: string;
   knex: Knex;
@@ -22,6 +26,15 @@ export abstract class BaseRepository<T> implements AbstractRepository<T> {
     this.knex = options?.knex || getDatabase();
     return this;
   }
+
+  async transaction<T>(callback: (trx: BaseTransaction) => Promise<T>) {
+    return await this.knex.transaction(async (knexTrx) => {
+      const baseTrx = new BaseTransaction(knexTrx);
+      return await callback(baseTrx);
+    });
+  }
+
+  abstract transacting(trx: BaseTransaction): BaseRepository<T>;
 
   public get queryBuilder(): Knex.QueryBuilder {
     return this.knex(this.collection);
