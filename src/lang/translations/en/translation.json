@@ -141,6 +141,7 @@
     "custom": {
       "alphanumeric": "Please enter single-byte alphanumeric characters.",
       "alphanumeric_and_underscore": "Please enter single-byte alphanumeric characters and underscore (_).",
+      "lower_case_alphanumerics_and_underscore": "Please enter single-byte lower-case alphanumeric characters and underscore (_).",
       "one_character": "Please enter at least 1 single-byte alphabetical character.",
       "one_number": "Please enter at least one one-byte number.",
       "one_special_character": "Please enter at least one symbol '@$! %*#?&'."
