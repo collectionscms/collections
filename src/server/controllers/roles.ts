@@ -1,9 +1,9 @@
 import express, { Request, Response } from 'express';
-import { Permission } from '../.../../../shared/types';
 import { UnprocessableEntityException } from '../../shared/exceptions/unprocessableEntity';
 import { getDatabase } from '../database/connection';
 import asyncHandler from '../middleware/asyncHandler';
 import permissionsHandler from '../middleware/permissionsHandler';
+import { PermissionsRepository } from '../repositories/permissions';
 import { RolesRepository } from '../repositories/roles';
 
 const app = express();
@@ -67,6 +67,7 @@ app.delete(
     const database = getDatabase();
     const id = Number(req.params.id);
     const repository = new RolesRepository();
+    const permissionsRepository = new PermissionsRepository();
 
     const users = await database('superfast_users').where('role_id', id);
     if (users.length > 0) {
@@ -84,7 +85,7 @@ app.delete(
     await repository.transaction(async (tx) => {
       try {
         await repository.transacting(tx).delete(id);
-        await tx.transaction('superfast_permissions').where('role_id', id).delete();
+        await permissionsRepository.transacting(tx).deleteAll({ roleId: id });
         await tx.transaction.commit();
         res.status(204).end();
       } catch (e) {
@@ -99,10 +100,11 @@ app.get(
   '/roles/:id/permissions',
   permissionsHandler(),
   asyncHandler(async (req: Request, res: Response) => {
-    const database = getDatabase();
-    const id = req.params.id;
+    const id = Number(req.params.id);
+    const permissionsRepository = new PermissionsRepository();
 
-    const permissions = await database<Permission>('superfast_permissions').where('role_id', id);
+    const permissions = await permissionsRepository.read({ roleId: id });
+
     res.json({ permissions: permissions });
   })
 );
@@ -111,18 +113,18 @@ app.post(
   '/roles/:id/permissions',
   permissionsHandler([{ collection: 'superfast_permissions', action: 'create' }]),
   asyncHandler(async (req: Request, res: Response) => {
-    const database = getDatabase();
     const id = Number(req.params.id);
+    const permissionsRepository = new PermissionsRepository();
 
     const data = {
       ...req.body,
       role_id: id,
     };
 
-    const permissions = await database<Permission>('superfast_permissions').insert(data, 'id');
+    const permission = await permissionsRepository.create(data);
 
     res.json({
-      permission: permissions[0],
+      permission: permission,
     });
   })
 );
@@ -131,10 +133,10 @@ app.delete(
   '/roles/:id/permissions/:permissionId',
   permissionsHandler([{ collection: 'superfast_permissions', action: 'delete' }]),
   asyncHandler(async (req: Request, res: Response) => {
-    const database = getDatabase();
     const permissionId = Number(req.params.permissionId);
+    const permissionsRepository = new PermissionsRepository();
 
-    await database('superfast_permissions').where('id', permissionId).delete();
+    await permissionsRepository.delete(permissionId);
 
     res.status(204).end();
   })

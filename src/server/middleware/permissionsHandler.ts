@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import { ForbiddenException } from '../../shared/exceptions/forbidden';
 import { InvalidCredentialsException } from '../../shared/exceptions/invalidCredentials';
-import { Permission, PermissionsAction } from '../../shared/types';
-import { getDatabase } from '../database/connection';
+import { PermissionsAction } from '../../shared/types';
+import { PermissionsRepository } from '../repositories/permissions';
 
 export const collectionPermissionsHandler =
   (action: PermissionsAction) => async (req: Request, res: Response, next: NextFunction) => {
@@ -11,11 +11,8 @@ export const collectionPermissionsHandler =
     }
 
     if (!req.adminAccess) {
-      const database = getDatabase();
-      const userPermissions = await database<Permission>('superfast_permissions').where(
-        'role_id',
-        req.roleId
-      );
+      const repository = new PermissionsRepository();
+      const userPermissions = await repository.read({ roleId: req.roleId });
 
       const hasPermission = userPermissions.some(
         (userPermission) =>
@@ -38,11 +35,8 @@ const permissionsHandler =
     }
 
     if (!req.adminAccess && permissions.length > 0) {
-      const database = getDatabase();
-      const userPermissions = await database<Permission>('superfast_permissions').where(
-        'role_id',
-        req.roleId
-      );
+      const repository = new PermissionsRepository();
+      const userPermissions = await repository.read({ roleId: req.roleId });
 
       const hasPermission = permissions.every((permission) =>
         userPermissions.some(
