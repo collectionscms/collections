@@ -20,18 +20,13 @@ export const getDatabase = (): Knex => {
       directory: migrationFiles,
       loadExtensions: [process.env.MIGRATE_EXTENSIONS],
     },
-    wrapIdentifier(value, wrapIdentifier, queryContext) {
-      // Key Type Conversion for Post Data.
-      if (queryContext && queryContext.toSnake) {
-        return wrapIdentifier(snakeCase(value));
-      }
-      return value;
+    wrapIdentifier(value, wrapIdentifier) {
+      // Convert field to snake case.
+      const snakedValue = snakeCase(value) || value;
+      return wrapIdentifier(snakedValue);
     },
-    postProcessResponse: (result, queryContext) => {
-      // Key Type Conversion for Json Response.
-      if (queryContext && !queryContext.toCamel) {
-        return result;
-      }
+    postProcessResponse: (result) => {
+      // Convert field to camel case.
       return camelcaseKeys(result);
     },
   };
