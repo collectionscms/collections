@@ -9,7 +9,7 @@ app.get(
   '/project_settings',
   asyncHandler(async (req: Request, res: Response) => {
     const repository = new ProjectSettingsRepository();
-    const data = await repository.read({});
+    const data = await repository.read();
 
     res.json({ projectSetting: data[0] });
   })
@@ -20,7 +20,7 @@ app.patch(
   permissionsHandler([{ collection: 'superfast_project_settings', action: 'update' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const repository = new ProjectSettingsRepository();
-    const data = await repository.read({});
+    const data = await repository.read();
 
     await repository.update(data[0].id, req.body);
     res.status(204).end();

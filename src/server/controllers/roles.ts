@@ -14,7 +14,7 @@ app.get(
   asyncHandler(async (req: Request, res: Response) => {
     const repository = new RolesRepository();
 
-    const roles = await repository.read({});
+    const roles = await repository.read();
 
     res.json({ roles: roles });
   })
