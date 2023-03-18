@@ -49,7 +49,7 @@ export type Field = {
   required: boolean;
   readonly: boolean;
   hidden: boolean;
-  fieldOptions: FieldOption[];
+  fieldOptions?: FieldOption[];
 } & PrimaryKey;
 
 export type User = {
