@@ -75,6 +75,7 @@ export type PermissionsAction = 'create' | 'read' | 'update' | 'delete';
 export type Permission = {
   collection: string;
   action: PermissionsAction;
+  roleId: number;
 } & PrimaryKey;
 
 export type ProjectSetting = {
