@@ -1,10 +1,12 @@
 import express, { Request, Response } from 'express';
 import { Knex } from 'knex';
 import { camelCase } from 'lodash';
-import { Collection, Field } from '../../shared/types';
-import { getDatabase } from '../database/connection';
+import { Field } from '../../shared/types';
+import logger from '../../utilities/logger';
 import asyncHandler from '../middleware/asyncHandler';
 import permissionsHandler, { collectionPermissionsHandler } from '../middleware/permissionsHandler';
+import { CollectionsRepository } from '../repositories/collections';
+import { FieldsRepository } from '../repositories/fields';
 
 const app = express();
 
@@ -12,9 +14,10 @@ app.get(
   '/collections/:slug/fields',
   collectionPermissionsHandler('read'),
   asyncHandler(async (req: Request, res: Response) => {
-    const database = getDatabase();
     const slug = req.params.slug;
-    const fields = await database('superfast_fields').where('collection', slug);
+    const repository = new FieldsRepository();
+
+    const fields = await repository.read({ collection: slug });
 
     fields.forEach((field) => {
       field.field = camelCase(field.field);
@@ -30,23 +33,24 @@ app.post(
   '/collections/:slug/fields',
   permissionsHandler([{ collection: 'superfast_fields', action: 'create' }]),
   asyncHandler(async (req: Request, res: Response) => {
-    const database = getDatabase();
     const slug = req.params.slug;
-    const meta = await database<Collection>('superfast_collections')
-      .where('collection', slug)
-      .first();
+    const repository = new FieldsRepository();
+    const collectionsRepository = new CollectionsRepository();
 
-    await database.transaction(async (tx) => {
+    const collections = await collectionsRepository.read({ collection: slug });
+
+    await repository.transaction(async (tx) => {
       try {
-        const field = await tx('superfast_fields').insert(req.body);
-        await tx.schema.alterTable(meta.collection, function (table) {
+        const field = await repository.transacting(tx).create(req.body);
+        await tx.transaction.schema.alterTable(collections[0].collection, function (table) {
           addColumnToTable(req.body, table);
         });
 
-        await tx.commit();
+        await tx.transaction.commit();
         res.json({ field: field });
       } catch (e) {
-        await tx.rollback();
+        logger.error(e);
+        await tx.transaction.rollback();
         res.status(500).end();
       }
     });
@@ -57,26 +61,26 @@ app.delete(
   '/collections/:collectionId/fields/:id',
   permissionsHandler([{ collection: 'superfast_fields', action: 'delete' }]),
   asyncHandler(async (req: Request, res: Response) => {
-    const database = getDatabase();
     const collectionId = Number(req.params.collectionId);
     const id = Number(req.params.id);
+    const repository = new FieldsRepository();
+    const collectionsRepository = new CollectionsRepository();
 
-    const metaCollection = await database('superfast_collections')
-      .where('id', collectionId)
-      .first();
-    const metaField = await database('superfast_fields').where('id', id).first();
+    const collection = await collectionsRepository.readOne(collectionId);
+    const field = await repository.readOne(id);
 
-    await database.transaction(async (tx) => {
+    await repository.transaction(async (tx) => {
       try {
-        await tx('superfast_fields').where('id', id).delete();
-        await tx.schema.alterTable(metaCollection.collection, function (table) {
-          table.dropColumn(metaField.field);
+        await repository.transacting(tx).delete(id);
+        await tx.transaction.schema.alterTable(collection.collection, function (table) {
+          table.dropColumn(field.field);
         });
 
-        await tx.commit();
+        await tx.transaction.commit();
         res.status(204).end();
       } catch (e) {
-        await tx.rollback();
+        logger.error(e);
+        await tx.transaction.rollback();
         res.status(500).end();
       }
     });

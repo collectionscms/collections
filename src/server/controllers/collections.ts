@@ -1,7 +1,9 @@
 import express, { Request, Response } from 'express';
+import logger from '../../utilities/logger';
 import asyncHandler from '../middleware/asyncHandler';
 import permissionsHandler from '../middleware/permissionsHandler';
 import { CollectionsRepository } from '../repositories/collections';
+import { FieldsRepository } from '../repositories/fields';
 
 const app = express();
 
@@ -40,6 +42,7 @@ app.post(
   permissionsHandler([{ collection: 'superfast_collections', action: 'create' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const repository = new CollectionsRepository();
+    const fieldsRepository = new FieldsRepository();
 
     await repository.transaction(async (tx) => {
       try {
@@ -50,7 +53,7 @@ app.post(
 
         const collection = await repository.transacting(tx).create(req.body);
 
-        await tx.transaction('superfast_fields').insert({
+        await fieldsRepository.transacting(tx).create({
           collection: req.body.collection,
           field: 'id',
           label: 'id',
@@ -63,6 +66,7 @@ app.post(
         await tx.transaction.commit();
         res.json({ collection: collection });
       } catch (e) {
+        logger.error(e);
         await tx.transaction.rollback();
         res.status(500).end();
       }
@@ -89,22 +93,29 @@ app.delete(
   asyncHandler(async (req: Request, res: Response) => {
     const id = Number(req.params.id);
     const repository = new CollectionsRepository();
+    const fieldsRepository = new FieldsRepository();
 
-    const meta = await repository.readOne(id);
+    const collection = await repository.readOne(id);
 
     await repository.transaction(async (tx) => {
       try {
-        await tx.transaction.schema.dropTable(meta.collection);
+        await tx.transaction.schema.dropTable(collection.collection);
         await repository.transacting(tx).delete(id);
-        await tx.transaction('superfast_fields').where('collection', meta.collection).delete();
-        await tx.transaction('superfast_permissions').where('collection', meta.collection).delete();
+        await fieldsRepository.transacting(tx).deleteAll({ collection: collection.collection });
+
+        await tx
+          .transaction('superfast_permissions')
+          .where('collection', collection.collection)
+          .delete();
         await tx
           .transaction('superfast_relations')
-          .where('many_collection', meta.collection)
+          .where('many_collection', collection.collection)
           .delete();
+
         await tx.transaction.commit();
         res.status(204).end();
       } catch (e) {
+        logger.error(e);
         await tx.transaction.rollback();
         res.status(500).end();
       }
