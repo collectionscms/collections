@@ -1,10 +1,10 @@
 import express, { Request, Response } from 'express';
 import { UnprocessableEntityException } from '../../shared/exceptions/unprocessableEntity';
-import { getDatabase } from '../database/connection';
 import asyncHandler from '../middleware/asyncHandler';
 import permissionsHandler from '../middleware/permissionsHandler';
 import { PermissionsRepository } from '../repositories/permissions';
 import { RolesRepository } from '../repositories/roles';
+import { UsersRepository } from '../repositories/users';
 
 const app = express();
 
@@ -64,12 +64,12 @@ app.delete(
   '/roles/:id',
   permissionsHandler([{ collection: 'superfast_roles', action: 'delete' }]),
   asyncHandler(async (req: Request, res: Response) => {
-    const database = getDatabase();
     const id = Number(req.params.id);
     const repository = new RolesRepository();
     const permissionsRepository = new PermissionsRepository();
+    const usersRepository = new UsersRepository();
 
-    const users = await database('superfast_users').where('role_id', id);
+    const users = await usersRepository.read({ roleId: id });
     if (users.length > 0) {
       throw new UnprocessableEntityException('can_not_delete_role_in_use');
     }

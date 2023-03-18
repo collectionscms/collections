@@ -1,14 +1,5 @@
-import { User } from '../../shared/types';
+import { MeUser, User } from '../../shared/types';
 import { AbstractRepositoryOptions, BaseRepository, BaseTransaction } from './base';
-
-export type MeUser = {
-  id: number;
-  roleId: number;
-  userName: string;
-  password: string;
-  adminAccess: boolean;
-  apiKey: string | null;
-};
 
 export class UsersRepository extends BaseRepository<User> {
   constructor(options?: AbstractRepositoryOptions) {

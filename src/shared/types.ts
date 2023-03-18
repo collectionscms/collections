@@ -22,6 +22,15 @@ export type AuthUser = {
   apiKey: string | null;
 };
 
+export type MeUser = {
+  id: number;
+  roleId: number;
+  userName: string;
+  password: string;
+  adminAccess: boolean;
+  apiKey: string | null;
+};
+
 // /////////////////////////////////////
 // Schema
 // /////////////////////////////////////
