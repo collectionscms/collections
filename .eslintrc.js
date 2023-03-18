@@ -3,6 +3,7 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 12,
     sourceType: 'module',
+    project: './tsconfig.json',
   },
   extends: ['airbnb', 'airbnb-typescript', 'prettier'],
   ignorePatterns: ['project/*', 'misc/*', 'dist/*', 'superfast/*'],
