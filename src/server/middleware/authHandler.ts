@@ -1,13 +1,15 @@
 import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { InvalidCredentialsException } from '../../shared/exceptions/invalidCredentials';
-import { getDatabase } from '../database/connection';
+import { UsersRepository } from '../repositories/users';
 import { decodeJwt } from '../utilities/decodeJwt';
 import asyncHandler from './asyncHandler';
 
 const authHandler: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
+  const repository = new UsersRepository();
+
   try {
     if (req.token) {
-      const user = decodeJwt(req.token) || (await fetchUserByApiKey(req.token));
+      const user = decodeJwt(req.token) || (await repository.readMe({ token: req.token }));
       if (user) {
         req.userId = user.id;
         req.adminAccess = user.adminAccess;
@@ -23,21 +25,6 @@ const authHandler: RequestHandler = async (req: Request, res: Response, next: Ne
       new InvalidCredentialsException('invalid_user_credentials', { message: e.message })
     );
   }
-};
-
-const fetchUserByApiKey = async (token: string) => {
-  const database = getDatabase();
-  const user = await database
-    .select('u.id', {
-      roleId: 'r.id',
-      adminAccess: 'r.admin_access',
-    })
-    .from('superfast_users AS u')
-    .join('superfast_roles AS r', 'r.id', 'u.role_id')
-    .where('u.api_key', token)
-    .first();
-
-  return user;
 };
 
 export default asyncHandler(authHandler);
