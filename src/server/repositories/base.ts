@@ -49,16 +49,13 @@ export abstract class BaseRepository<T> implements AbstractRepository<T> {
   }
 
   async create(item: Omit<T, 'id'>): Promise<T> {
-    const [output] = await this.queryBuilder
-      .queryContext({ toSnake: true })
-      .insert(item)
-      .returning('id');
+    const [output] = await this.queryBuilder.insert(item).returning('id');
 
     return output as Promise<T>;
   }
 
   update(id: number, item: Partial<T>): Promise<boolean> {
-    return this.queryBuilder.where('id', id).queryContext({ toSnake: true }).update(item);
+    return this.queryBuilder.where('id', id).update(item);
   }
 
   delete(id: number): Promise<boolean> {

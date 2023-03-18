@@ -11,7 +11,7 @@ app.get(
   asyncHandler(async (req: Request, res: Response) => {
     const database = getDatabase();
     const slug = req.params.slug;
-    const contents = await database(slug).queryContext({ toCamel: false });
+    const contents = await database(slug);
 
     res.json({
       contents: contents,
@@ -26,7 +26,7 @@ app.get(
     const database = getDatabase();
     const slug = req.params.slug;
     const id = req.params.id;
-    const content = await database(slug).queryContext({ toCamel: false }).where('id', id).first();
+    const content = await database(slug).where('id', id).first();
 
     res.json({
       content: content,
@@ -41,7 +41,7 @@ app.post(
     const database = getDatabase();
     const slug = req.params.slug;
 
-    const content = await database(slug).queryContext({ toCamel: false }).insert(req.body);
+    const content = await database(slug).insert(req.body);
 
     res.json({
       content: content,

@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import { Knex } from 'knex';
+import { camelCase } from 'lodash';
 import { Collection, Field } from '../../shared/types';
 import { getDatabase } from '../database/connection';
 import asyncHandler from '../middleware/asyncHandler';
@@ -14,6 +15,10 @@ app.get(
     const database = getDatabase();
     const slug = req.params.slug;
     const fields = await database('superfast_fields').where('collection', slug);
+
+    fields.forEach((field) => {
+      field.field = camelCase(field.field);
+    });
 
     res.json({
       fields: fields,

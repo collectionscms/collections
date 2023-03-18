@@ -68,9 +68,7 @@ app.post(
     const database = getDatabase();
     req.body.password = await oneWayHash(req.body.password);
 
-    const users = await database<User>('superfast_users')
-      .queryContext({ toSnake: true })
-      .insert(req.body, 'id');
+    const users = await database<User>('superfast_users').insert(req.body, 'id');
 
     res.json({
       user: users[0],
@@ -89,10 +87,7 @@ app.patch(
       req.body.password = await oneWayHash(req.body.password);
     }
 
-    await database('superfast_users')
-      .queryContext({ toSnake: true })
-      .where('id', id)
-      .update(req.body);
+    await database('superfast_users').where('id', id).update(req.body);
 
     res.status(204).end();
   })

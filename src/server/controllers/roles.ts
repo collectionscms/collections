@@ -119,9 +119,7 @@ app.post(
       role_id: id,
     };
 
-    const permissions = await database<Permission>('superfast_permissions')
-      .queryContext({ toSnake: true })
-      .insert(data, 'id');
+    const permissions = await database<Permission>('superfast_permissions').insert(data, 'id');
 
     res.json({
       permission: permissions[0],
