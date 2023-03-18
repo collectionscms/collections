@@ -4,6 +4,7 @@ import asyncHandler from '../middleware/asyncHandler';
 import permissionsHandler from '../middleware/permissionsHandler';
 import { CollectionsRepository } from '../repositories/collections';
 import { FieldsRepository } from '../repositories/fields';
+import { PermissionsRepository } from '../repositories/permissions';
 
 const app = express();
 
@@ -94,6 +95,7 @@ app.delete(
     const id = Number(req.params.id);
     const repository = new CollectionsRepository();
     const fieldsRepository = new FieldsRepository();
+    const permissionsRepository = new PermissionsRepository();
 
     const collection = await repository.readOne(id);
 
@@ -102,11 +104,10 @@ app.delete(
         await tx.transaction.schema.dropTable(collection.collection);
         await repository.transacting(tx).delete(id);
         await fieldsRepository.transacting(tx).deleteAll({ collection: collection.collection });
+        await permissionsRepository
+          .transacting(tx)
+          .deleteAll({ collection: collection.collection });
 
-        await tx
-          .transaction('superfast_permissions')
-          .where('collection', collection.collection)
-          .delete();
         await tx
           .transaction('superfast_relations')
           .where('many_collection', collection.collection)
