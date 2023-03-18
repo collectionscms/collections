@@ -40,7 +40,7 @@ export abstract class BaseRepository<T> implements AbstractRepository<T> {
     return this.knex(this.collection);
   }
 
-  read(data: Partial<T>): Promise<T[]> {
+  read(data: Partial<T> = {}): Promise<T[]> {
     return this.queryBuilder.where(data).select();
   }
 
