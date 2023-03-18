@@ -60,6 +60,7 @@ export type User = {
   userName: string;
   apiKey: string | null;
   isActive: boolean;
+  roleId: number;
   role?: Role;
   updatedAt: Date;
 } & PrimaryKey;
