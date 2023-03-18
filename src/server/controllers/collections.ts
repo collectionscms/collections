@@ -12,10 +12,7 @@ app.get(
   asyncHandler(async (req: Request, res: Response) => {
     const database = getDatabase();
     const id = Number(req.params.id);
-    const collection = await database('superfast_collections')
-      .queryContext({ toCamel: false })
-      .where('id', id)
-      .first();
+    const collection = await database('superfast_collections').where('id', id).first();
 
     res.json({
       collection: {
@@ -31,9 +28,7 @@ app.get(
   permissionsHandler(),
   asyncHandler(async (req: Request, res: Response) => {
     const database = getDatabase();
-    const collections = await database('superfast_collections').queryContext({
-      toCamel: false,
-    });
+    const collections = await database('superfast_collections');
 
     res.json({ collections: collections });
   })
@@ -52,9 +47,7 @@ app.post(
           table.timestamps(true, true);
         });
 
-        const collections = await tx('superfast_collections')
-          .queryContext({ toCamel: false })
-          .insert(req.body, '*');
+        const collections = await tx('superfast_collections').insert(req.body, '*');
 
         await tx('superfast_fields').insert({
           collection: req.body.collection,
