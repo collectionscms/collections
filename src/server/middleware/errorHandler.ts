@@ -3,12 +3,12 @@ import { BaseException } from '../../shared/exceptions/base';
 import logger from '../../utilities/logger';
 
 // NextFunction must be passed for Express to use this middleware as error handler
-/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-unused-vars */
 const errorHandler: ErrorRequestHandler = (
   err: Error,
   req: Request,
   res: Response,
-  next: NextFunction
+  _next: NextFunction
 ) => {
   logger.error(err);
 

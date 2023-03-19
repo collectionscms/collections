@@ -21,7 +21,7 @@ app.get(
     const users = await repository.readWithRole();
 
     res.json({
-      users: users.flatMap(({ password, ...user }) => payload(user)),
+      users: users.flatMap(({ ...user }) => payload(user)),
     });
   })
 );
