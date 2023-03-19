@@ -21,9 +21,9 @@ const toType = (fieldInterface: string): (typeof Type)[keyof typeof Type] => {
     case 'inputRichTextHtml':
     case 'inputRichTextMd':
       return Type.Text;
+    default:
+      return Type.Object;
   }
-
-  return Type.Object;
 };
 
 export default buildColumnFields;

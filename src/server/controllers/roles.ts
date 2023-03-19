@@ -2,9 +2,9 @@ import express, { Request, Response } from 'express';
 import { UnprocessableEntityException } from '../../shared/exceptions/unprocessableEntity';
 import asyncHandler from '../middleware/asyncHandler';
 import permissionsHandler from '../middleware/permissionsHandler';
-import { PermissionsRepository } from '../repositories/permissions';
-import { RolesRepository } from '../repositories/roles';
-import { UsersRepository } from '../repositories/users';
+import PermissionsRepository from '../repositories/permissions';
+import RolesRepository from '../repositories/roles';
+import UsersRepository from '../repositories/users';
 
 const app = express();
 
@@ -16,7 +16,7 @@ app.get(
 
     const roles = await repository.read();
 
-    res.json({ roles: roles });
+    res.json({ roles });
   })
 );
 
@@ -29,7 +29,7 @@ app.get(
 
     const role = await repository.readOne(id);
 
-    res.json({ role: role });
+    res.json({ role });
   })
 );
 
@@ -42,7 +42,7 @@ app.post(
     const role = await repository.create(req.body);
 
     res.json({
-      role: role,
+      role,
     });
   })
 );
@@ -105,7 +105,7 @@ app.get(
 
     const permissions = await permissionsRepository.read({ roleId: id });
 
-    res.json({ permissions: permissions });
+    res.json({ permissions });
   })
 );
 
@@ -124,7 +124,7 @@ app.post(
     const permission = await permissionsRepository.create(data);
 
     res.json({
-      permission: permission,
+      permission,
     });
   })
 );

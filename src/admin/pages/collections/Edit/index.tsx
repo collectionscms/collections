@@ -9,8 +9,8 @@ import DeleteHeaderButton from '../../../components/elements/DeleteHeaderButton'
 import RenderFields from '../../../components/forms/RenderFields';
 import { useAuth } from '../../../components/utilities/Auth';
 import ComposeWrapper from '../../../components/utilities/ComposeWrapper';
-import { ContentContextProvider, useContent } from '../../../pages/collections/Context';
 import ApiPreview from '../ApiPreview';
+import { ContentContextProvider, useContent } from "../Context";
 import { Props } from './types';
 
 const EditPage: React.FC<Props> = ({ collection }) => {

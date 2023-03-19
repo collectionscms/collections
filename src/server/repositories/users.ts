@@ -1,13 +1,13 @@
 import { MeUser, User } from '../../shared/types';
 import { AbstractRepositoryOptions, BaseRepository, BaseTransaction } from './base';
 
-export class UsersRepository extends BaseRepository<User> {
-  constructor(options?: AbstractRepositoryOptions) {
-    super('superfast_users', options);
+export default class UsersRepository extends BaseRepository<User> {
+  constructor(collection: string = 'superfast_users', options?: AbstractRepositoryOptions) {
+    super(collection, options);
   }
 
   transacting(trx: BaseTransaction): UsersRepository {
-    const repositoryTransaction = new UsersRepository({
+    const repositoryTransaction = new UsersRepository(this.collection, {
       knex: trx.transaction,
     });
     return repositoryTransaction;

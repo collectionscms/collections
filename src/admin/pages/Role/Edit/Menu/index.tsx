@@ -19,8 +19,8 @@ const EditMenu: React.FC<Props> = (props) => {
 
   const handleCreate = () => {
     createPermissionTrigger({
-      collection: collection,
-      action: action,
+      collection,
+      action,
     });
     onSuccess();
   };
@@ -31,8 +31,7 @@ const EditMenu: React.FC<Props> = (props) => {
   };
 
   return (
-    <>
-      <Menu
+    <Menu
         anchorEl={menu}
         anchorOrigin={{
           vertical: 'bottom',
@@ -52,7 +51,6 @@ const EditMenu: React.FC<Props> = (props) => {
           {t('not_allow')}
         </MenuItem>
       </Menu>
-    </>
   );
 };
 

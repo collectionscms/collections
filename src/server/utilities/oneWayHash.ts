@@ -10,7 +10,7 @@ export function oneWayHash(stringToHash: string): Promise<string> {
   };
 
   if (process.env.HASH_ASSOCIATED_DATA) {
-    options['associatedData'] = Buffer.from(process.env.HASH_ASSOCIATED_DATA);
+    options.associatedData = Buffer.from(process.env.HASH_ASSOCIATED_DATA);
   }
 
   return argon2.hash(stringToHash, options);

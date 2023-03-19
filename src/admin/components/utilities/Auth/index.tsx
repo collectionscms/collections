@@ -82,20 +82,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     removeAuthorization();
   };
 
-  return (
-    <Context.Provider
-      value={{
-        user,
-        permissions,
-        setToken,
-        hasPermission,
-        login,
-        logout,
-      }}
-    >
-      {children}
-    </Context.Provider>
+  const value = useMemo(
+    () => ({
+      user,
+      permissions,
+      setToken,
+      hasPermission,
+      login,
+      logout,
+    }),
+    [user, permissions, setToken, hasPermission, login, logout]
   );
+
+  return <Context.Provider value={value}>{children}</Context.Provider>;
 };
 
 type UseAuth<T = AuthUser> = () => AuthContext<T>;

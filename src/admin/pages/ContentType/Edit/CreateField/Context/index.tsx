@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext, useMemo } from 'react';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
 import { Field } from '../../../../../../shared/types';
 import api from '../../../../../utilities/api';
@@ -12,15 +12,14 @@ export const FieldContextProvider: React.FC<{ children: React.ReactNode }> = ({ 
       return api.post<{ field: Field }>(url, arg).then((res) => res.data.field);
     });
 
-  return (
-    <Context.Provider
-      value={{
-        createField,
-      }}
-    >
-      {children}
-    </Context.Provider>
+  const value = useMemo(
+    () => ({
+      createField,
+    }),
+    [createField]
   );
+
+  return <Context.Provider value={value}>{children}</Context.Provider>;
 };
 
 export const useField = () => useContext(Context);

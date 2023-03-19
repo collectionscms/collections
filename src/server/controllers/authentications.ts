@@ -5,7 +5,7 @@ import { InvalidCredentialsException } from '../../shared/exceptions/invalidCred
 import { MeUser } from '../../shared/types';
 import asyncHandler from '../middleware/asyncHandler';
 import permissionsHandler from '../middleware/permissionsHandler';
-import { UsersRepository } from '../repositories/users';
+import UsersRepository from '../repositories/users';
 
 const app = express();
 
@@ -22,7 +22,7 @@ app.post(
     const token = toToken(user);
 
     res.json({
-      token: token,
+      token,
     });
   })
 );
@@ -37,7 +37,7 @@ app.get(
     const token = toToken(user);
 
     res.json({
-      token: token,
+      token,
     });
   })
 );

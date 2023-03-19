@@ -3,10 +3,20 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 12,
     sourceType: 'module',
+    project: './tsconfig.json',
   },
   extends: ['airbnb', 'airbnb-typescript', 'prettier'],
-  ignorePatterns: ['project/*', 'misc/*', 'dist/*', 'superfast/*'],
+  ignorePatterns: ['project/*', 'misc/*', 'dist/*', 'superfast/*', '**/*.js'],
   plugins: ['@typescript-eslint'],
+  overrides: [
+    {
+      files: ['test/**/*.test.ts'],
+      rules: {
+        'no-restricted-syntax': ['error', 'ForInStatement'],
+        'no-await-in-loop': 0,
+      },
+    },
+  ],
   rules: {
     eqeqeq: ['off'],
     'max-len': ['error', { code: 120 }],

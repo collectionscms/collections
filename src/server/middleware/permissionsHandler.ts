@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { ForbiddenException } from '../../shared/exceptions/forbidden';
 import { InvalidCredentialsException } from '../../shared/exceptions/invalidCredentials';
 import { PermissionsAction } from '../../shared/types';
-import { PermissionsRepository } from '../repositories/permissions';
+import PermissionsRepository from '../repositories/permissions';
 
 export const collectionPermissionsHandler =
   (action: PermissionsAction) => async (req: Request, res: Response, next: NextFunction) => {

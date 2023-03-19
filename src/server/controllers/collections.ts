@@ -2,9 +2,9 @@ import express, { Request, Response } from 'express';
 import logger from '../../utilities/logger';
 import asyncHandler from '../middleware/asyncHandler';
 import permissionsHandler from '../middleware/permissionsHandler';
-import { CollectionsRepository } from '../repositories/collections';
-import { FieldsRepository } from '../repositories/fields';
-import { PermissionsRepository } from '../repositories/permissions';
+import CollectionsRepository from '../repositories/collections';
+import FieldsRepository from '../repositories/fields';
+import PermissionsRepository from '../repositories/permissions';
 
 const app = express();
 
@@ -34,7 +34,7 @@ app.get(
 
     const collections = await repository.read();
 
-    res.json({ collections: collections });
+    res.json({ collections });
   })
 );
 
@@ -47,7 +47,7 @@ app.post(
 
     await repository.transaction(async (tx) => {
       try {
-        await tx.transaction.schema.createTable(req.body.collection, function (table) {
+        await tx.transaction.schema.createTable(req.body.collection, (table) => {
           table.increments();
           table.timestamps(true, true);
         });
@@ -65,7 +65,7 @@ app.post(
         });
 
         await tx.transaction.commit();
-        res.json({ collection: collection });
+        res.json({ collection });
       } catch (e) {
         logger.error(e);
         await tx.transaction.rollback();
