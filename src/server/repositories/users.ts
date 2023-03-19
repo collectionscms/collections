@@ -1,3 +1,4 @@
+import { RecordNotUniqueException } from '../../shared/exceptions/database/recordNotUnique';
 import { MeUser, User } from '../../shared/types';
 import { AbstractRepositoryOptions, BaseRepository, BaseTransaction } from './base';
 
@@ -11,6 +12,28 @@ export default class UsersRepository extends BaseRepository<User> {
       knex: trx.transaction,
     });
     return repositoryTransaction;
+  }
+
+  async create(item: Omit<User, 'id'>): Promise<User> {
+    await this.checkUniqueEmail(item.email);
+    const [output] = await this.queryBuilder.insert(item).returning('id');
+
+    return output as Promise<User>;
+  }
+
+  async update(id: number, item: Partial<User>): Promise<boolean> {
+    if (item.email) {
+      await this.checkUniqueEmail(item.email, id);
+    }
+
+    return this.queryBuilder.where('id', id).update(item);
+  }
+
+  private async checkUniqueEmail(email: string, myId?: number) {
+    const users = await this.read({ email });
+    if (users.length && users[0].id !== myId) {
+      throw new RecordNotUniqueException('already_registered_email');
+    }
   }
 
   readWithRole(): Promise<User[]> {
