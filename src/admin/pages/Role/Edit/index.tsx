@@ -88,7 +88,7 @@ const EditRolePage: React.FC = () => {
           </Grid>
           <Grid container columnSpacing={2} alignItems="center">
             <Grid>
-              <DeleteHeaderButton id={id} slug={`roles`} onSuccess={handleDeletionSuccess} />
+              <DeleteHeaderButton id={id} slug="roles" onSuccess={handleDeletionSuccess} />
             </Grid>
             <Grid>
               <Button variant="contained" type="submit" disabled={isUpdateRoleMutating}>

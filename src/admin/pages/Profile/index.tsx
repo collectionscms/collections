@@ -12,13 +12,11 @@ import {
 import Grid from '@mui/material/Unstable_Grid2';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
 import { useColorMode } from '../../components/utilities/ColorMode';
 import { Mode } from '../../components/utilities/ColorMode/types';
 import { useDocumentInfo } from '../../components/utilities/DocumentInfo';
 
 const MePage: React.FC = () => {
-  const { id } = useParams();
   const { localizedLabel } = useDocumentInfo();
   const { t, i18n } = useTranslation();
   const { mode, setMode, autoMode } = useColorMode();

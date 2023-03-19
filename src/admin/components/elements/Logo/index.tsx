@@ -1,6 +1,7 @@
+/* eslint-disable max-len */
 import { useColorMode } from '@admin/components/utilities/ColorMode';
 import React from 'react';
-import RenderCustomComponent from '../../../components/utilities/RenderCustomComponent';
+import RenderCustomComponent from '../../utilities/RenderCustomComponent';
 
 const Logo: React.FC = () => {
   return <RenderCustomComponent CustomComponent={undefined} DefaultComponent={DefaultLogo} />;
@@ -8,7 +9,7 @@ const Logo: React.FC = () => {
 
 const DefaultLogo: React.FC = () => {
   const { mode } = useColorMode();
-  return <>{mode === 'light' ? logoLight : logoDark}</>;
+  return mode === 'light' ? logoLight : logoDark;
 };
 
 const logoDark = (

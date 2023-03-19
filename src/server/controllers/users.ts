@@ -3,7 +3,7 @@ import { InvalidCredentialsException } from '../../shared/exceptions/invalidCred
 import { UnprocessableEntityException } from '../../shared/exceptions/unprocessableEntity';
 import asyncHandler from '../middleware/asyncHandler';
 import permissionsHandler from '../middleware/permissionsHandler';
-import { UsersRepository } from '../repositories/users';
+import UsersRepository from '../repositories/users';
 import { oneWayHash } from '../utilities/oneWayHash';
 
 const app = express();
@@ -35,11 +35,13 @@ app.get(
 
     const user = await repository.readOneWithRole({ id });
 
-    if (!user) return res.status(400).end();
-
-    res.json({
-      user: payload(user),
-    });
+    if (user) {
+      res.json({
+        user: payload(user),
+      });
+    } else {
+      res.status(400).end();
+    }
   })
 );
 
@@ -53,7 +55,7 @@ app.post(
     const user = await repository.create(req.body);
 
     res.json({
-      user: user,
+      user,
     });
   })
 );

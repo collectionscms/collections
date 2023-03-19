@@ -14,7 +14,6 @@ import {
   TableRow,
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
-import { Field } from '@shared/types';
 import { useSnackbar } from 'notistack';
 import React, { Suspense, useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
@@ -27,7 +26,7 @@ import { useDocumentInfo } from '../../../components/utilities/DocumentInfo';
 import updateCollectionSchema, {
   FormValues,
 } from '../../../fields/schemas/collections/updateCollection';
-import { CollectionContextProvider, useCollection } from '../../../pages/ContentType/Context';
+import { CollectionContextProvider, useCollection } from '../Context';
 import CreateField from './CreateField';
 import EditMenu from './Menu';
 
@@ -44,11 +43,7 @@ const EditPage: React.FC = () => {
   const { data: meta } = getCollection(id, { suspense: true });
   const { data: fields, mutate } = getFields(meta.collection, { suspense: true });
   const { data, trigger, isMutating } = updateCollection(id);
-  const {
-    control,
-    handleSubmit,
-    formState: {},
-  } = useForm<FormValues>({
+  const { control, handleSubmit } = useForm<FormValues>({
     defaultValues: { hidden: Boolean(meta.hidden), singleton: Boolean(meta.singleton) },
     resolver: yupResolver(updateCollectionSchema()),
   });
@@ -71,7 +66,7 @@ const EditPage: React.FC = () => {
     navigate(`../content-types`);
   };
 
-  const handleCreateFieldSuccess = (_: Field) => {
+  const handleCreateFieldSuccess = () => {
     setState(false);
   };
 
@@ -91,7 +86,7 @@ const EditPage: React.FC = () => {
       <CreateField
         slug={meta.collection}
         openState={state}
-        onSuccess={(field) => handleCreateFieldSuccess(field)}
+        onSuccess={() => handleCreateFieldSuccess()}
         onClose={() => onToggleCreateField(false)}
       />
       <EditMenu
@@ -108,7 +103,7 @@ const EditPage: React.FC = () => {
           </Grid>
           <Grid container columnSpacing={2} alignItems="center">
             <Grid>
-              <HeaderDeleteButton id={id} slug={`collections`} onSuccess={handleDeletionSuccess} />
+              <HeaderDeleteButton id={id} slug="collections" onSuccess={handleDeletionSuccess} />
             </Grid>
             <Grid>
               <Button variant="contained" type="submit" disabled={isMutating}>
@@ -165,7 +160,7 @@ const EditPage: React.FC = () => {
                 render={({ field }) => (
                   <FormControlLabel
                     {...field}
-                    label={'Hidden'}
+                    label="Hidden"
                     control={<Checkbox checked={field.value} />}
                   />
                 )}
@@ -180,7 +175,7 @@ const EditPage: React.FC = () => {
                 render={({ field }) => (
                   <FormControlLabel
                     {...field}
-                    label={'Singleton'}
+                    label="Singleton"
                     control={<Checkbox checked={field.value} />}
                   />
                 )}

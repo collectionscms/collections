@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext, useMemo } from 'react';
 import useSWR, { SWRConfiguration, SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
 import { Field } from '../../../../shared/types';
@@ -45,20 +45,19 @@ export const ContentContextProvider: React.FC<{ children: React.ReactNode }> = (
       return api.patch<{ content: unknown }>(url, arg).then((res) => res.data);
     });
 
-  return (
-    <Context.Provider
-      value={{
-        getContents,
-        getContent,
-        getFields,
-        getPreviewContents,
-        createContent,
-        updateContent,
-      }}
-    >
-      {children}
-    </Context.Provider>
+  const value = useMemo(
+    () => ({
+      getContents,
+      getContent,
+      getFields,
+      getPreviewContents,
+      createContent,
+      updateContent,
+    }),
+    [getContents, getContent, getFields, getPreviewContents, createContent, updateContent]
   );
+
+  return <Context.Provider value={value}>{children}</Context.Provider>;
 };
 
 export const useContent = () => useContext(Context);

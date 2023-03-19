@@ -9,7 +9,7 @@ import { Type } from '../../components/elements/Table/Cell/types';
 import ComposeWrapper from '../../components/utilities/ComposeWrapper';
 import { useDocumentInfo } from '../../components/utilities/DocumentInfo';
 import buildColumns from '../../utilities/buildColumns';
-import { RoleContextProvider, useRole } from '../Role/Context';
+import { RoleContextProvider, useRole } from "./Context";
 
 const RolePage: React.FC = () => {
   const { t } = useTranslation();

@@ -3,7 +3,6 @@ import { Navigate } from 'react-router-dom';
 import { settingsGroupNavItems } from '../../../utilities/groupNavItems';
 import Loader from '../../elements/Loader';
 import MainLayout from '../../layouts/Main';
-import MinimalLayout from '../../layouts/Minimal';
 import { useAuth } from '../../utilities/Auth';
 import { DocumentInfoProvider } from '../../utilities/DocumentInfo';
 

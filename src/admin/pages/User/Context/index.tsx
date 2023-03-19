@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext, useMemo } from 'react';
 import useSWR, { SWRConfiguration } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
 import { Role, User } from '../../../../shared/types';
@@ -35,19 +35,18 @@ export const UserContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       config
     );
 
-  return (
-    <Context.Provider
-      value={{
-        getUsers,
-        getUser,
-        getRoles,
-        createUser,
-        updateUser,
-      }}
-    >
-      {children}
-    </Context.Provider>
+  const value = useMemo(
+    () => ({
+      getUsers,
+      getUser,
+      getRoles,
+      createUser,
+      updateUser,
+    }),
+    [getUsers, getUser, getRoles, createUser, updateUser]
   );
+
+  return <Context.Provider value={value}>{children}</Context.Provider>;
 };
 
 export const useUser = () => useContext(Context);

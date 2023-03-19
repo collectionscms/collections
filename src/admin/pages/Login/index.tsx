@@ -7,7 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../../components/elements/Logo';
 import { useAuth } from '../../components/utilities/Auth';
 import ComposeWrapper from '../../components/utilities/ComposeWrapper';
-import loginSchema, { FormValues } from '../../fields/schemas/authentications/login';
+import { FormValues, loginSchema } from '../../fields/schemas/authentications/login';
 import { LoginContextProvider, useLogin } from './Context';
 
 const LoginPage: React.FC = () => {

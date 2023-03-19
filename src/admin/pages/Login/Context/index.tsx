@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext, useMemo } from 'react';
 import useSWR, { SWRConfiguration } from 'swr';
 import { ProjectSetting } from '../../../../shared/types';
 import api from '../../../utilities/api';
@@ -15,15 +15,14 @@ export const LoginContextProvider: React.FC<{ children: React.ReactNode }> = ({ 
       config
     );
 
-  return (
-    <Context.Provider
-      value={{
-        getProjectSetting,
-      }}
-    >
-      {children}
-    </Context.Provider>
+  const value = useMemo(
+    () => ({
+      getProjectSetting,
+    }),
+    [getProjectSetting]
   );
+
+  return <Context.Provider value={value}>{children}</Context.Provider>;
 };
 
 export const useLogin = () => useContext(Context);

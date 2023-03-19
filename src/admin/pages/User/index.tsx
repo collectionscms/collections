@@ -10,8 +10,8 @@ import Cell from '../../components/elements/Table/Cell';
 import { Type } from '../../components/elements/Table/Cell/types';
 import ComposeWrapper from '../../components/utilities/ComposeWrapper';
 import { useDocumentInfo } from '../../components/utilities/DocumentInfo';
-import { UserContextProvider, useUser } from '../../pages/User/Context';
 import buildColumns from '../../utilities/buildColumns';
+import { UserContextProvider, useUser } from './Context';
 
 const UserPage: React.FC = () => {
   const { localizedLabel } = useDocumentInfo();
@@ -28,22 +28,32 @@ const UserPage: React.FC = () => {
     { field: 'updatedAt', label: t('updated_at'), type: Type.Date },
   ];
 
-  const columns = buildColumns(fields, (i: number, row: User, data: any) =>
-    fields[i].field == 'name' ? (
-      <Cell
-        colIndex={i}
-        type={fields[i].type}
-        rowData={row}
-        cellData={`${row.lastName} ${row.firstName}`}
-      />
-    ) : fields[i].field == 'apiKey' ? (
-      <Cell colIndex={i} type={fields[i].type} rowData={row} cellData={row.apiKey && t('valid')} />
-    ) : fields[i].field == 'role' ? (
-      <Cell colIndex={i} type={fields[i].type} rowData={row} cellData={row.role.name} />
-    ) : (
-      <Cell colIndex={i} type={fields[i].type} rowData={row} cellData={data} />
-    )
-  );
+  const columns = buildColumns(fields, (i: number, row: User, data: any) => {
+    switch (fields[i].field) {
+      case 'name':
+        return (
+          <Cell
+            colIndex={i}
+            type={fields[i].type}
+            rowData={row}
+            cellData={`${row.lastName} ${row.firstName}`}
+          />
+        );
+      case 'apiKey':
+        return (
+          <Cell
+            colIndex={i}
+            type={fields[i].type}
+            rowData={row}
+            cellData={row.apiKey && t('valid')}
+          />
+        );
+      case 'role':
+        return <Cell colIndex={i} type={fields[i].type} rowData={row} cellData={row.role.name} />;
+      default:
+        return <Cell colIndex={i} type={fields[i].type} rowData={row} cellData={data} />;
+    }
+  });
 
   return (
     <Stack rowGap={3}>

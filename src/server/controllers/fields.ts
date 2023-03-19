@@ -5,8 +5,8 @@ import { Field } from '../../shared/types';
 import logger from '../../utilities/logger';
 import asyncHandler from '../middleware/asyncHandler';
 import permissionsHandler, { collectionPermissionsHandler } from '../middleware/permissionsHandler';
-import { CollectionsRepository } from '../repositories/collections';
-import { FieldsRepository } from '../repositories/fields';
+import CollectionsRepository from '../repositories/collections';
+import FieldsRepository from '../repositories/fields';
 
 const app = express();
 
@@ -24,7 +24,7 @@ app.get(
     });
 
     res.json({
-      fields: fields,
+      fields,
     });
   })
 );
@@ -42,12 +42,12 @@ app.post(
     await repository.transaction(async (tx) => {
       try {
         const field = await repository.transacting(tx).create(req.body);
-        await tx.transaction.schema.alterTable(collections[0].collection, function (table) {
+        await tx.transaction.schema.alterTable(collections[0].collection, (table) => {
           addColumnToTable(req.body, table);
         });
 
         await tx.transaction.commit();
-        res.json({ field: field });
+        res.json({ field });
       } catch (e) {
         logger.error(e);
         await tx.transaction.rollback();
@@ -72,7 +72,7 @@ app.delete(
     await repository.transaction(async (tx) => {
       try {
         await repository.transacting(tx).delete(id);
-        await tx.transaction.schema.alterTable(collection.collection, function (table) {
+        await tx.transaction.schema.alterTable(collection.collection, (table) => {
           table.dropColumn(field.field);
         });
 
@@ -88,7 +88,7 @@ app.delete(
 );
 
 const addColumnToTable = (field: Field, table: Knex.CreateTableBuilder) => {
-  var column = null;
+  let column = null;
 
   switch (field.interface) {
     case 'input':
@@ -98,6 +98,8 @@ const addColumnToTable = (field: Field, table: Knex.CreateTableBuilder) => {
     case 'inputRichTextHtml':
     case 'inputRichTextMd':
       column = table.text(field.field);
+      break;
+    default:
       break;
   }
 

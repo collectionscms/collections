@@ -1,7 +1,7 @@
 import chalk from 'chalk';
+import fs from 'fs-extra';
 import ConsoleOutput from '../utilities/consoleOutputUtil';
 import PathUtil from '../utilities/pathUtil';
-import fs from 'fs-extra';
 
 const scriptStart = async () => {
   const scriptPath = PathUtil.build('main.js');
