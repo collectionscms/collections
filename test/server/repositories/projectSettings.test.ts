@@ -13,8 +13,8 @@ describe('プロジェクト設定', () => {
   });
 
   afterAll(async () => {
-    for (const [_vendor, connection] of databases) {
-      await connection.destroy();
+    for (const connection of databases) {
+      await connection[1].destroy();
     }
   });
 
@@ -39,7 +39,7 @@ describe('プロジェクト設定', () => {
       const result = await service.update(id, { name: 'superfast2' });
       const projectSetting = await service.readOne(id);
 
-      expect(result).toBeTruthy;
+      expect(result).toBeTruthy();
       expect(projectSetting.name).toBe('superfast2');
     });
   });
