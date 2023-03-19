@@ -1,5 +1,5 @@
-import type { Knex } from 'knex';
 import { getDatabase } from '../database/connection';
+import type { Knex } from 'knex';
 
 export type AbstractRepositoryOptions = {
   knex?: Knex;
@@ -24,13 +24,12 @@ export abstract class BaseRepository<T> implements AbstractRepository<T> {
   constructor(collection: string, options?: AbstractRepositoryOptions) {
     this.collection = collection;
     this.knex = options?.knex || getDatabase();
-    return this;
   }
 
   async transaction<T>(callback: (trx: BaseTransaction) => Promise<T>) {
-    return await this.knex.transaction(async (knexTrx) => {
+    return this.knex.transaction(async (knexTrx) => {
       const baseTrx = new BaseTransaction(knexTrx);
-      return await callback(baseTrx);
+      return callback(baseTrx);
     });
   }
 

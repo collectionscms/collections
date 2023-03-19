@@ -10,27 +10,38 @@ import React from 'react';
 import { Props } from './types';
 
 const PermissionHeaderCell: React.FC<Props> = ({ action }) => {
-  return (
-    <>
-      {action === 'create' ? (
-        <Tooltip title={t('create_new')} arrow>
-          <AddOutlined />
-        </Tooltip>
-      ) : action === 'read' ? (
-        <Tooltip title={t('read')} arrow>
-          <VisibilityOutlined />
-        </Tooltip>
-      ) : action === 'update' ? (
-        <Tooltip title={t('update')} arrow>
-          <ModeEditOutlineOutlined />
-        </Tooltip>
-      ) : (
-        <Tooltip title={t('delete')} arrow>
-          <DeleteOutlineOutlined />
-        </Tooltip>
-      )}
-    </>
-  );
+  const showTooltip = () => {
+    switch (action) {
+      case 'create':
+        return (
+          <Tooltip title={t('create_new')} arrow>
+            <AddOutlined />
+          </Tooltip>
+        );
+      case 'read':
+        return (
+          <Tooltip title={t('read')} arrow>
+            <VisibilityOutlined />
+          </Tooltip>
+        );
+      case 'update':
+        return (
+          <Tooltip title={t('update')} arrow>
+            <ModeEditOutlineOutlined />
+          </Tooltip>
+        );
+      case 'delete':
+        return (
+          <Tooltip title={t('delete')} arrow>
+            <DeleteOutlineOutlined />
+          </Tooltip>
+        );
+      default:
+        return <span />;
+    }
+  };
+
+  return showTooltip();
 };
 
 export default PermissionHeaderCell;

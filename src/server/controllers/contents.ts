@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import asyncHandler from '../middleware/asyncHandler';
 import { collectionPermissionsHandler } from '../middleware/permissionsHandler';
-import { ContentsRepository } from '../repositories/contents';
+import ContentsRepository from '../repositories/contents';
 
 const app = express();
 
@@ -15,7 +15,7 @@ app.get(
     const contents = await repository.read();
 
     res.json({
-      contents: contents,
+      contents,
     });
   })
 );
@@ -31,7 +31,7 @@ app.get(
     const content = await repository.readOne(id);
 
     res.json({
-      content: content,
+      content,
     });
   })
 );
@@ -46,7 +46,7 @@ app.post(
     const content = await repository.create(req.body);
 
     res.json({
-      content: content,
+      content,
     });
   })
 );

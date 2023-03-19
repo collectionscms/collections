@@ -28,7 +28,7 @@ import createFieldSchema, {
 import {
   FieldContextProvider,
   useField,
-} from '../../../../pages/ContentType/Edit/CreateField/Context';
+} from "./Context";
 import { Props } from './types';
 
 const CreateField: React.FC<Props> = ({ slug, openState, onSuccess, onClose }) => {
@@ -94,7 +94,7 @@ const CreateField: React.FC<Props> = ({ slug, openState, onSuccess, onClose }) =
         sx={{ zIndex: theme.zIndex.appBar + 200 }}
       >
         <Box role="presentation">
-          <Accordion defaultExpanded={true}>
+          <Accordion defaultExpanded>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel1a-content"

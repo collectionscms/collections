@@ -1,5 +1,5 @@
 import { Collection, Config } from '@shared/types';
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext, useMemo } from 'react';
 import useSWR from 'swr';
 import api from '../../../utilities/api';
 import { useAuth } from '../Auth';
@@ -23,7 +23,15 @@ export const ConfigProvider: React.FC<{ config: Config; children: React.ReactNod
     { suspense: true }
   );
 
-  return <Context.Provider value={{ collections, config }}>{children}</Context.Provider>;
+  const value = useMemo(
+    () => ({
+      collections,
+      config,
+    }),
+    [collections, config]
+  );
+
+  return <Context.Provider value={value}>{children}</Context.Provider>;
 };
 
 export const useConfig = () => useContext(Context);

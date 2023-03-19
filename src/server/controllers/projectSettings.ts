@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import asyncHandler from '../middleware/asyncHandler';
 import permissionsHandler from '../middleware/permissionsHandler';
-import { ProjectSettingsRepository } from '../repositories/projectSettings';
+import ProjectSettingsRepository from '../repositories/projectSettings';
 
 const app = express();
 

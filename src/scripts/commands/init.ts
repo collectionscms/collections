@@ -1,8 +1,8 @@
+import path from 'path';
 import { createFirstUser } from '@scripts/utilities/createFirstUser';
 import Output from '@scripts/utilities/output';
 import execa from 'execa';
 import ora from 'ora';
-import path from 'path';
 import { copyCommonFiles } from '../utilities/copyCommonFiles';
 import { writeEnvFile } from '../utilities/writeEnvFile';
 

@@ -34,12 +34,12 @@ export const updateUser = (t: TFunction): ObjectSchema<FormValues> => {
       })
       .min(8)
       .max(250)
-      .transform((value) => (!!value ? value : null)),
+      .transform((value) => (value || null)),
     apiKey: yup
       .string()
       .notRequired()
       .max(250)
-      .transform((value) => (!!value ? value : null)),
+      .transform((value) => (value || null)),
     isActive: yup.boolean(),
     roleId: yup.string().required(),
   });

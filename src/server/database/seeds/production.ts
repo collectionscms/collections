@@ -1,5 +1,5 @@
 import Output from '../../../scripts/utilities/output';
-import { oneWayHash } from '../../../server/utilities/oneWayHash';
+import { oneWayHash } from "../../utilities/oneWayHash";
 import { getDatabase } from '../connection';
 
 const seedProduction = async (email: string, password: string): Promise<void> => {
@@ -27,7 +27,7 @@ const seedProduction = async (email: string, password: string): Promise<void> =>
         first_name: 'Admin',
         last_name: 'User',
         user_name: 'admin',
-        email: email,
+        email,
         password: hashed,
         is_active: true,
         role_id: adminRole!.id,

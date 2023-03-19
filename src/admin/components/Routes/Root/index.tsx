@@ -7,7 +7,6 @@ import { useAuth } from '../../utilities/Auth';
 import { DocumentInfoProvider } from '../../utilities/DocumentInfo';
 
 const Profile = Loader(lazy(() => import('../../../pages/Profile')));
-const NotFound = Loader(lazy(() => import('../../../pages/NotFound')));
 const group = profileNavItems();
 
 const RootRoutes = () => {

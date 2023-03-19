@@ -1,6 +1,7 @@
 import Hooks from '@shared/features/hooks';
 import cookieParser from 'cookie-parser';
 import express, { Express } from 'express';
+import { expressLogger } from '../../utilities/logger';
 import authentications from '../controllers/authentications';
 import collections from '../controllers/collections';
 import contents from '../controllers/contents';
@@ -11,7 +12,6 @@ import users from '../controllers/users';
 import authHandler from '../middleware/authHandler';
 import errorHandler from '../middleware/errorHandler';
 import extractTokenHandler from '../middleware/extractTokenHandler';
-import { expressLogger } from '../../utilities/logger';
 
 Hooks.addAction(
   'api/init',

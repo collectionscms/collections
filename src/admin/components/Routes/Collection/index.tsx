@@ -42,19 +42,21 @@ const CollectionRoutes = () => {
     };
   }
 
+  const showEmptyPage = () => {
+    if (user.adminAccess) {
+      <CreateFirstCollection />;
+    } else {
+      <CollectionNotFound />;
+    }
+  };
+
   return {
     path: '/admin/collections',
     element: <MainLayout group={group} />,
     children: [
       {
         path: '',
-        element: group.items[0] ? (
-          <Navigate to={group.items[0].href} replace />
-        ) : user.adminAccess ? (
-          <CreateFirstCollection />
-        ) : (
-          <CollectionNotFound />
-        ),
+        element: group.items[0] ? <Navigate to={group.items[0].href} replace /> : showEmptyPage(),
       },
       ...permittedCollections.flatMap((collection) => [
         {

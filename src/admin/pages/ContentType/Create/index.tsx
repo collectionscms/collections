@@ -19,7 +19,7 @@ import { useDocumentInfo } from '../../../components/utilities/DocumentInfo';
 import createCollectionSchema, {
   FormValues,
 } from '../../../fields/schemas/collections/createCollection';
-import { CollectionContextProvider, useCollection } from '../../../pages/ContentType/Context';
+import { CollectionContextProvider, useCollection } from "../Context";
 
 const CreatePage: React.FC = () => {
   const navigate = useNavigate();
@@ -79,7 +79,7 @@ const CreatePage: React.FC = () => {
             name="singleton"
             control={control}
             render={({ field }) => (
-              <FormControlLabel {...field} label={'Singleton'} control={<Checkbox />} />
+              <FormControlLabel {...field} label="Singleton" control={<Checkbox />} />
             )}
           />
         </Grid>

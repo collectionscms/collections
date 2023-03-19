@@ -8,9 +8,12 @@ export const DocumentInfoProvider: React.FC<Props> = (props) => {
   const { label, children } = props;
   const { t } = useTranslation();
 
-  const value = {
-    localizedLabel: t(label as unknown as TemplateStringsArray),
-  };
+  const value = useMemo(
+    () => ({
+      localizedLabel: t(label as unknown as TemplateStringsArray),
+    }),
+    [label]
+  );
 
   return <Context.Provider value={value}>{children}</Context.Provider>;
 };

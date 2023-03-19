@@ -1,7 +1,6 @@
 import { AddOutlined } from '@mui/icons-material';
-import { Button } from '@mui/material';
+import { Button, Stack } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
-import { Stack } from '@mui/system';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import RouterLink from '../../../components/elements/Link';
@@ -10,9 +9,9 @@ import Cell from '../../../components/elements/Table/Cell';
 import { Column } from '../../../components/elements/Table/types';
 import { useAuth } from '../../../components/utilities/Auth';
 import ComposeWrapper from '../../../components/utilities/ComposeWrapper';
-import { ContentContextProvider, useContent } from '../../../pages/collections/Context';
 import buildColumns from '../../../utilities/buildColumns';
 import ApiPreview from '../ApiPreview';
+import { ContentContextProvider, useContent } from '../Context';
 import buildColumnFields from './buildColumnFields';
 import { Props } from './types';
 

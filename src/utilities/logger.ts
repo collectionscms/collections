@@ -1,7 +1,7 @@
+import { env } from 'process';
 import { Request, RequestHandler } from 'express';
 import pino, { LoggerOptions } from 'pino';
 import pinoHTTP, { stdSerializers } from 'pino-http';
-import { env } from 'process';
 
 const pinoOptions: LoggerOptions = {
   level: env.LOG_LEVEL || 'info',

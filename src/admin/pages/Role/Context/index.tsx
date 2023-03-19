@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext, useMemo } from 'react';
 import useSWR, { SWRConfiguration, SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
 import { Collection, Permission, Role } from '../../../../shared/types';
@@ -52,22 +52,30 @@ export const RoleContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       return api.delete(url, arg).then((res) => res.data);
     });
 
-  return (
-    <Context.Provider
-      value={{
-        getRoles,
-        getRole,
-        createRole,
-        updateRole,
-        getCollections,
-        getPermissions,
-        createPermission,
-        deletePermission,
-      }}
-    >
-      {children}
-    </Context.Provider>
+  const value = useMemo(
+    () => ({
+      getRoles,
+      getRole,
+      createRole,
+      updateRole,
+      getCollections,
+      getPermissions,
+      createPermission,
+      deletePermission,
+    }),
+    [
+      getRoles,
+      getRole,
+      createRole,
+      updateRole,
+      getCollections,
+      getPermissions,
+      createPermission,
+      deletePermission,
+    ]
   );
+
+  return <Context.Provider value={value}>{children}</Context.Provider>;
 };
 
 export const useRole = () => useContext(Context);

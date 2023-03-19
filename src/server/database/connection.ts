@@ -1,14 +1,14 @@
+import path from 'path';
 import camelcaseKeys from 'camelcase-keys';
 import 'dotenv/config';
 import knex, { Knex } from 'knex';
 import { snakeCase } from 'lodash';
-import path from 'path';
 
 let database: Knex | null = null;
 
 export const getDatabase = (): Knex => {
   if (database) return database;
-  let migrationFiles = path.join(__dirname, 'migrations');
+  const migrationFiles = path.join(__dirname, 'migrations');
 
   const config: Knex.Config = {
     client: process.env.DB_CLIENT,

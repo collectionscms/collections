@@ -1,13 +1,13 @@
 import { Permission } from '../../shared/types';
 import { AbstractRepositoryOptions, BaseRepository, BaseTransaction } from './base';
 
-export class PermissionsRepository extends BaseRepository<Permission> {
-  constructor(options?: AbstractRepositoryOptions) {
-    super('superfast_permissions', options);
+export default class PermissionsRepository extends BaseRepository<Permission> {
+  constructor(collection: string = 'superfast_permissions', options?: AbstractRepositoryOptions) {
+    super(collection, options);
   }
 
   transacting(trx: BaseTransaction): PermissionsRepository {
-    const repositoryTransaction = new PermissionsRepository({
+    const repositoryTransaction = new PermissionsRepository(this.collection, {
       knex: trx.transaction,
     });
     return repositoryTransaction;

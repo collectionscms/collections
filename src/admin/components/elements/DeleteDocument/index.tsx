@@ -1,8 +1,8 @@
-import ComposeWrapper from '@admin/components/utilities/ComposeWrapper';
 import {
   DocumentContextProvider,
   useDocument,
 } from '@admin/components/elements/DeleteDocument/Context';
+import ComposeWrapper from '@admin/components/utilities/ComposeWrapper';
 import {
   Button,
   Dialog,
@@ -20,7 +20,7 @@ const DeleteDocument: React.FC<Props> = ({ id, slug, openState, onSuccess, onClo
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
   const { deleteDocument } = useDocument();
-  const { data, trigger, error, reset, isMutating } = deleteDocument(id, slug);
+  const { data, trigger, reset, isMutating } = deleteDocument(id, slug);
 
   const handleClose = () => {
     onClose();

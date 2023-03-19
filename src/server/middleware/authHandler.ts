@@ -1,6 +1,6 @@
 import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { InvalidCredentialsException } from '../../shared/exceptions/invalidCredentials';
-import { UsersRepository } from '../repositories/users';
+import UsersRepository from '../repositories/users';
 import { decodeJwt } from '../utilities/decodeJwt';
 import asyncHandler from './asyncHandler';
 
