@@ -45,12 +45,12 @@ app.post(
     const fieldsRepository = new FieldsRepository();
 
     await repository.transaction(async (tx) => {
+      const collection = await repository.transacting(tx).create(req.body);
+
       await tx.transaction.schema.createTable(req.body.collection, (table) => {
         table.increments();
         table.timestamps(true, true);
       });
-
-      const collection = await repository.transacting(tx).create(req.body);
 
       await fieldsRepository.transacting(tx).create({
         collection: req.body.collection,

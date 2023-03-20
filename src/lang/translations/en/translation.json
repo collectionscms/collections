@@ -92,7 +92,8 @@
     "can_not_delete_last_admin_role": "Cannot delete the last admin role.",
     "can_not_delete_itself": "Cannot delete itself.",
     "forbidden": "You don't have permission to access this.",
-    "already_registered_email": "Already registered email."
+    "already_registered_email": "Already registered email.",
+    "already_registered_name": "Already registered."
   },
   "yup": {
     "mixed": {
