@@ -21,14 +21,12 @@ import React, { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { FieldInterface } from '../../../../../shared/types';
+import logger from '../../../../../utilities/logger';
 import ComposeWrapper from '../../../../components/utilities/ComposeWrapper';
 import createFieldSchema, {
   FormValues,
 } from '../../../../fields/schemas/collectionFields/createField';
-import {
-  FieldContextProvider,
-  useField,
-} from "./Context";
+import { FieldContextProvider, useField } from './Context';
 import { Props } from './types';
 
 const CreateField: React.FC<Props> = ({ slug, openState, onSuccess, onClose }) => {
@@ -62,16 +60,20 @@ const CreateField: React.FC<Props> = ({ slug, openState, onSuccess, onClose }) =
     setFieldInterface(fieldInterface);
   };
 
-  const onSubmit: SubmitHandler<FormValues> = (form: FormValues) => {
-    trigger({
-      collection: slug,
-      field: form.field,
-      label: form.label,
-      interface: fieldInterface,
-      required: form.required,
-      readonly: false,
-      hidden: false,
-    });
+  const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
+    try {
+      await trigger({
+        collection: slug,
+        field: form.field,
+        label: form.label,
+        interface: fieldInterface,
+        required: form.required,
+        readonly: false,
+        hidden: false,
+      });
+    } catch (e) {
+      logger.error(e);
+    }
   };
 
   const resetForm = () => {
