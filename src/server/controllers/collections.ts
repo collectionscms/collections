@@ -1,5 +1,4 @@
 import express, { Request, Response } from 'express';
-import logger from '../../utilities/logger';
 import asyncHandler from '../middleware/asyncHandler';
 import permissionsHandler from '../middleware/permissionsHandler';
 import CollectionsRepository from '../repositories/collections';
@@ -46,31 +45,24 @@ app.post(
     const fieldsRepository = new FieldsRepository();
 
     await repository.transaction(async (tx) => {
-      try {
-        await tx.transaction.schema.createTable(req.body.collection, (table) => {
-          table.increments();
-          table.timestamps(true, true);
-        });
+      await tx.transaction.schema.createTable(req.body.collection, (table) => {
+        table.increments();
+        table.timestamps(true, true);
+      });
 
-        const collection = await repository.transacting(tx).create(req.body);
+      const collection = await repository.transacting(tx).create(req.body);
 
-        await fieldsRepository.transacting(tx).create({
-          collection: req.body.collection,
-          field: 'id',
-          label: 'id',
-          interface: 'input',
-          required: true,
-          readonly: true,
-          hidden: true,
-        });
+      await fieldsRepository.transacting(tx).create({
+        collection: req.body.collection,
+        field: 'id',
+        label: 'id',
+        interface: 'input',
+        required: true,
+        readonly: true,
+        hidden: true,
+      });
 
-        await tx.transaction.commit();
-        res.json({ collection });
-      } catch (e) {
-        logger.error(e);
-        await tx.transaction.rollback();
-        res.status(500).end();
-      }
+      res.json({ collection });
     });
   })
 );
@@ -100,26 +92,17 @@ app.delete(
     const collection = await repository.readOne(id);
 
     await repository.transaction(async (tx) => {
-      try {
-        await tx.transaction.schema.dropTable(collection.collection);
-        await repository.transacting(tx).delete(id);
-        await fieldsRepository.transacting(tx).deleteAll({ collection: collection.collection });
-        await permissionsRepository
-          .transacting(tx)
-          .deleteAll({ collection: collection.collection });
+      await tx.transaction.schema.dropTable(collection.collection);
+      await repository.transacting(tx).delete(id);
+      await fieldsRepository.transacting(tx).deleteAll({ collection: collection.collection });
+      await permissionsRepository.transacting(tx).deleteAll({ collection: collection.collection });
 
-        await tx
-          .transaction('superfast_relations')
-          .where('many_collection', collection.collection)
-          .delete();
+      await tx
+        .transaction('superfast_relations')
+        .where('many_collection', collection.collection)
+        .delete();
 
-        await tx.transaction.commit();
-        res.status(204).end();
-      } catch (e) {
-        logger.error(e);
-        await tx.transaction.rollback();
-        res.status(500).end();
-      }
+      res.status(204).end();
     });
   })
 );
