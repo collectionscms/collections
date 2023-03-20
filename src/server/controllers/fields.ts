@@ -2,7 +2,6 @@ import express, { Request, Response } from 'express';
 import { Knex } from 'knex';
 import { camelCase } from 'lodash';
 import { Field } from '../../shared/types';
-import logger from '../../utilities/logger';
 import asyncHandler from '../middleware/asyncHandler';
 import permissionsHandler, { collectionPermissionsHandler } from '../middleware/permissionsHandler';
 import CollectionsRepository from '../repositories/collections';
@@ -40,19 +39,12 @@ app.post(
     const collections = await collectionsRepository.read({ collection: slug });
 
     await repository.transaction(async (tx) => {
-      try {
-        const field = await repository.transacting(tx).create(req.body);
-        await tx.transaction.schema.alterTable(collections[0].collection, (table) => {
-          addColumnToTable(req.body, table);
-        });
+      const field = await repository.transacting(tx).create(req.body);
+      await tx.transaction.schema.alterTable(collections[0].collection, (table) => {
+        addColumnToTable(req.body, table);
+      });
 
-        await tx.transaction.commit();
-        res.json({ field });
-      } catch (e) {
-        logger.error(e);
-        await tx.transaction.rollback();
-        res.status(500).end();
-      }
+      res.json({ field });
     });
   })
 );
@@ -70,19 +62,12 @@ app.delete(
     const field = await repository.readOne(id);
 
     await repository.transaction(async (tx) => {
-      try {
-        await repository.transacting(tx).delete(id);
-        await tx.transaction.schema.alterTable(collection.collection, (table) => {
-          table.dropColumn(field.field);
-        });
+      await repository.transacting(tx).delete(id);
+      await tx.transaction.schema.alterTable(collection.collection, (table) => {
+        table.dropColumn(field.field);
+      });
 
-        await tx.transaction.commit();
-        res.status(204).end();
-      } catch (e) {
-        logger.error(e);
-        await tx.transaction.rollback();
-        res.status(500).end();
-      }
+      res.status(204).end();
     });
   })
 );

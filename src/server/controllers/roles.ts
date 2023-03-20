@@ -83,15 +83,9 @@ app.delete(
     }
 
     await repository.transaction(async (tx) => {
-      try {
-        await repository.transacting(tx).delete(id);
-        await permissionsRepository.transacting(tx).deleteAll({ roleId: id });
-        await tx.transaction.commit();
-        res.status(204).end();
-      } catch (e) {
-        await tx.transaction.rollback();
-        res.status(500).end();
-      }
+      await repository.transacting(tx).delete(id);
+      await permissionsRepository.transacting(tx).deleteAll({ roleId: id });
+      res.status(204).end();
     });
   })
 );
