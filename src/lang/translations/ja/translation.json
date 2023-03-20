@@ -92,7 +92,8 @@
     "can_not_delete_last_admin_role": "最後の管理者ロールを削除することはできません。",
     "can_not_delete_itself": "自分のアカウントは削除できません。",
     "forbidden": "アクセスする権限がありません。",
-    "already_registered_email": "すでに登録済みのメールアドレスです。"
+    "already_registered_email": "すでに登録済みのメールアドレスです。",
+    "already_registered_name": "すでに登録済みです。"
   },
   "yup": {
     "mixed": {
