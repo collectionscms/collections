@@ -27,6 +27,7 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
+import logger from '../../../../utilities/logger';
 import { UserContextProvider, useUser } from '../Context';
 
 const EditPage: React.FC = () => {
@@ -72,10 +73,15 @@ const EditPage: React.FC = () => {
     setValue('apiKey', uuidv4());
   };
 
-  const onSubmit: SubmitHandler<FormValues> = (form: FormValues) => {
+  const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     if (!form.password) delete form.password;
     if (!form.apiKey) delete form.apiKey;
-    trigger(form);
+
+    try {
+      await trigger(form);
+    } catch (e) {
+      logger.error(e);
+    }
   };
 
   return (
