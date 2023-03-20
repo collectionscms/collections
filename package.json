@@ -70,6 +70,7 @@
     "commander": "^10.0.0",
     "cookie-parser": "^1.4.6",
     "copyfiles": "^2.4.1",
+    "cors": "^2.8.5",
     "cross-env": "^7.0.3",
     "date-fns": "^2.29.3",
     "dotenv": "^16.0.3",
