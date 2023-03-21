@@ -1,6 +1,6 @@
-import path from 'path';
 import fse from 'fs-extra';
-import environment from '../../env';
+import path from 'path';
+import { environment } from '../../env';
 
 const PathUtil = {
   exists: (path: string) => fse.existsSync(path),
