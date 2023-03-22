@@ -3,7 +3,7 @@ import useSWR, { SWRConfiguration, SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
 import { Collection, Field } from '../../../../shared/types';
 import api from '../../../utilities/api';
-import { CollectionContext } from './type';
+import { CollectionContext } from './types';
 
 const Context = createContext({} as CollectionContext);
 

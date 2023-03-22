@@ -2,7 +2,7 @@ import React, { createContext, useContext, useMemo } from 'react';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
 import { Field } from '../../../../../../shared/types';
 import api from '../../../../../utilities/api';
-import { FieldContext } from './type';
+import { FieldContext } from './types';
 
 const Context = createContext({} as FieldContext);
 

@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
 import api from '../../../../utilities/api';
-import { DocumentContext } from './type';
+import { DocumentContext } from './types';
 
 const Context = createContext({} as DocumentContext);
 

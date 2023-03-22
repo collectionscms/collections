@@ -3,7 +3,7 @@ import useSWR, { SWRConfiguration } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
 import { ProjectSetting } from '../../../../shared/types';
 import api from '../../../utilities/api';
-import { ProjectSettingContext } from './type';
+import { ProjectSettingContext } from './types';
 
 const Context = createContext({} as ProjectSettingContext);
 
