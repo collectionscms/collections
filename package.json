@@ -92,6 +92,7 @@
     "knex": "^2.4.2",
     "lodash": "^4.17.21",
     "node-notifier": "^10.0.0",
+    "nodemailer": "^6.9.1",
     "nodemon": "^2.0.20",
     "notistack": "^3.0.1",
     "ora": "5.4.1",
@@ -185,5 +186,8 @@
     "sqlite",
     "react",
     "next"
-  ]
+  ],
+  "optionalDependencies": {
+    "nodemailer-sendgrid": "^1.0.3"
+  }
 }
