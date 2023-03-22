@@ -3,7 +3,7 @@ import useSWR, { SWRConfiguration, SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
 import { Collection, Permission, Role } from '../../../../shared/types';
 import api from '../../../utilities/api';
-import { RoleContext } from './type';
+import { RoleContext } from './types';
 
 const Context = createContext({} as RoleContext);
 

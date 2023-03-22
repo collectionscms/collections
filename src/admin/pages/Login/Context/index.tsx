@@ -2,7 +2,7 @@ import React, { createContext, useContext, useMemo } from 'react';
 import useSWR, { SWRConfiguration } from 'swr';
 import { ProjectSetting } from '../../../../shared/types';
 import api from '../../../utilities/api';
-import { LoginContext } from './type';
+import { LoginContext } from './types';
 
 const Context = createContext({} as LoginContext);
 
