@@ -2,7 +2,7 @@ import process from 'process';
 import { v4 as uuidv4 } from 'uuid';
 
 /* eslint-disable max-len */
-const defaults: Record<string, any> = {
+export const defaults: Record<string, any> = {
   // /////////////////////////////////////
   // Database
   // /////////////////////////////////////
@@ -57,7 +57,7 @@ const defaults: Record<string, any> = {
 
   CORS_ENABLED: false,
   CORS_ORIGIN: false,
-  CORS_METHODS: 'GET',
+  CORS_METHODS: 'GET,POST,PATCH,DELETE',
   CORS_ALLOWED_HEADERS: 'Content-Type,Authorization',
   CORS_EXPOSED_HEADERS: 'Content-Range',
   CORS_CREDENTIALS: true,
