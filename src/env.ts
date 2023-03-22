@@ -69,6 +69,14 @@ export const defaults: Record<string, any> = {
 
   // "fatal", "error", "warn", "info", "debug", "trace", "silent"
   LOG_LEVEL: 'info',
+
+  // /////////////////////////////////////
+  // Email
+  // /////////////////////////////////////
+
+  EMAIL_TRANSPORT: 'sendgrid',
+  EMAIL_FROM: 'no-reply@example.com',
+  EMAIL_SENDGRID_API_KEY: '***',
 };
 
 let env: Record<string, any> = {
