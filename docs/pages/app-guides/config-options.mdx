@@ -16,32 +16,58 @@ MIGRATE_EXTENSIONS=".js"
 
 ## Database
 
-| 変数名              | 説明                            |   初期値          |
-| :----------------- | :----------------------------- | :--------------- |
-| DB_CLIENT | Databaseクライアント(sqlite3) | sqlite3 |
-| DB_FILENAME | Databaseファイルへのパス | ./data.db |
-| MIGRATE_EXTENSIONS | migrationsとして扱うファイル拡張子 | .js (変更不可)  |
+| 変数名             | 説明                                | 初期値           |
+| :----------------- | :---------------------------------- | :--------------- |
+| DB_CLIENT          | Database クライアント(sqlite3)      | `sqlite3`        |
+| DB_FILENAME        | Database ファイルへのパス           | `./data.db`      |
+| MIGRATE_EXTENSIONS | migrations として扱うファイル拡張子 | `.js` (変更不可) |
 
 ## ハッシュ
 
-| 変数名              | 説明                            |   初期値          |
-| :----------------- | :----------------------------- | :--------------- |
-| HASH_MEMORY_COST | ハッシュを生成する際に使用するメモリ量をKiB単位で指定します。 | `4096` (4 MiB) |
-| HASH_HASH_LENGTH | ハッシュ関数出力の長さをバイト数で指定します。 | `32` |
-| HASH_TIME_COST | ハッシュ関数が使用するパス数(反復回数)。計算に必要な時間を犠牲にして、ハッシュ強度を高めることができます。 | `3` |
-| HASH_PARALLELISM | ハッシュを計算するスレッドの数。各スレッドは `HASH_MEMORY_COST` サイズのメモリプールを持つ。 | `1` (single thread) |
-| HASH_TYPE | ハッシュ関数の種類 (0: argon2d, 1: argon2i, または 2: argon2id). | `2` (argon2id) |
-| HASH_ASSOCIATED_DATA | 追加オプションの非機密値。この値は、ダイジェストのパラメータ部分に Base64 でエンコードされた形で含まれます。 | -- |
+| 変数名               | 説明                                                                                                         | 初期値              |
+| :------------------- | :----------------------------------------------------------------------------------------------------------- | :------------------ |
+| HASH_MEMORY_COST     | ハッシュを生成する際に使用するメモリ量を KiB 単位で指定します。                                              | `4096` (4 MiB)      |
+| HASH_HASH_LENGTH     | ハッシュ関数出力の長さをバイト数で指定します。                                                               | `32`                |
+| HASH_TIME_COST       | ハッシュ関数が使用するパス数(反復回数)。計算に必要な時間を犠牲にして、ハッシュ強度を高めることができます。   | `3`                 |
+| HASH_PARALLELISM     | ハッシュを計算するスレッドの数。各スレッドは `HASH_MEMORY_COST` サイズのメモリプールを持つ。                 | `1` (single thread) |
+| HASH_TYPE            | ハッシュ関数の種類 (0: argon2d, 1: argon2i, または 2: argon2id).                                             | `2` (argon2id)      |
+| HASH_ASSOCIATED_DATA | 追加オプションの非機密値。この値は、ダイジェストのパラメータ部分に Base64 でエンコードされた形で含まれます。 | --                  |
 
 ## セッション
 
-| 変数名              | 説明                            |   初期値          |
-| :----------------- | :----------------------------- | :--------------- |
-| ACCESS_TOKEN_TTL | アクセストークンの有効期間。 | `8h` |
-| REFRESH_TOKEN_TTL(WIP) | リフレッシュトークンの有効期間 | `7d` |
+| 変数名                 | 説明                           | 初期値 |
+| :--------------------- | :----------------------------- | :----- |
+| ACCESS_TOKEN_TTL       | アクセストークンの有効期間。   | `8h`   |
+| REFRESH_TOKEN_TTL(WIP) | リフレッシュトークンの有効期間 | `7d`   |
 
 ## シークレット
 
-| 変数名              | 説明                            |   初期値          |
-| :----------------- | :----------------------------- | :--------------- |
-| SECRET | JWTトークン生成時の秘密鍵 | ランダム |
+| 変数名 | 説明                       | 初期値   |
+| :----- | :------------------------- | :------- |
+| SECRET | JWT トークン生成時の秘密鍵 | ランダム |
+
+## CORS
+
+| 変数名               | 説明                                                                                                                              | 初期値                       |
+| :------------------- | :-------------------------------------------------------------------------------------------------------------------------------- | :--------------------------- |
+| CORS_ENABLED         | CORS 設定全体を有効化するには `true` を設定します。                                                                               | `false`                      |
+| CORS_ORIGIN          | Access-Control-Allow-Origin 文字列または正規表現で指定可能。`false` を指定して CORS を無効化できます。                            | `false`                      |
+| CORS_METHODS         | Access-Control-Allow-Methods 許可するメソッドをカンマ区切りの文字列で渡します。                                                   | `GET,POST,PATCH,DELETE`      |
+| CORS_ALLOWED_HEADERS | Access-Control-Allow-Headers 指定がない場合は、リクエストの Access-Control-Request-Headers ヘッダで指定されたヘッダを反映します。 | `Content-Type,Authorization` |
+| CORS_EXPOSED_HEADERS | Access-Control-Expose-Headers 指定しない場合は、カスタムヘッダーは公開されません。                                                | `Content-Range`              |
+| CORS_CREDENTIALS     | Access-Control-Allow-Credentials 有効化する場合は `true` を設定します。                                                           | `true`                       |
+| CORS_MAX_AGE         | Access-Control-Max-Age ヘッダを渡す場合は整数値を指定します。                                                                     | `1800`                       |
+
+## Log
+
+| 変数名    | 説明                                                                             | 初期値 |
+| :-------- | :------------------------------------------------------------------------------- | :----- |
+| LOG_LEVEL | ログの出力レベル（`fatal`, `error`, `warn`, `info`, `debug`, `trace`, `silent`） | `info` |
+
+## Email
+
+| 変数名                 | 説明                         | 初期値     |
+| :--------------------- | :--------------------------- | :--------- |
+| EMAIL_TRANSPORT        | email の送信プロバイダ       | `sendgrid` |
+| EMAIL_FROM             | email の送信元メールアドレス | --         |
+| EMAIL_SENDGRID_API_KEY | sendgrid の API キー         | --         |
