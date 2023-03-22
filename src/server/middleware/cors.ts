@@ -1,6 +1,6 @@
 import cors from 'cors';
 import { RequestHandler } from 'express';
-import { env } from 'process';
+import env from '../../env';
 
 let corsMiddleware: RequestHandler = (req, res, next) => next();
 

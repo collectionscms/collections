@@ -1,6 +1,7 @@
 import argon2 from 'argon2';
 import express, { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
+import env from '../../env';
 import { InvalidCredentialsException } from '../../shared/exceptions/invalidCredentials';
 import { MeUser } from '../../shared/types';
 import asyncHandler from '../middleware/asyncHandler';
@@ -44,8 +45,8 @@ app.get(
 
 const toToken = (user: MeUser) => {
   delete user.password;
-  const token = jwt.sign(user, process.env.SECRET, {
-    expiresIn: process.env.ACCESS_TOKEN_TTL,
+  const token = jwt.sign(user, env.SECRET, {
+    expiresIn: env.ACCESS_TOKEN_TTL,
   });
 
   return token;
