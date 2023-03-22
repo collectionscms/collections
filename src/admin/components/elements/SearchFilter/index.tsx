@@ -22,8 +22,9 @@ const SearchFilter: React.FC<Props> = ({ fieldName, fieldLabel }) => {
       case 'Enter':
         if (composing || search === previousSearch) break;
         setPreviousSearch(search);
-        const q = queryString.stringify({ page: 1, q: { [fieldName]: search } });
-        navigate({ search: q });
+        navigate({ search: queryString.stringify({ page: 1, q: { [fieldName]: search } }) });
+        break;
+      default:
         break;
     }
   };

@@ -91,7 +91,9 @@
     "can_not_delete_role_in_use": "Cannot delete roles in use.",
     "can_not_delete_last_admin_role": "Cannot delete the last admin role.",
     "can_not_delete_itself": "Cannot delete itself.",
-    "forbidden": "You don't have permission to access this."
+    "forbidden": "You don't have permission to access this.",
+    "already_registered_email": "Already registered email.",
+    "already_registered_name": "Already registered."
   },
   "yup": {
     "mixed": {
@@ -141,6 +143,7 @@
     "custom": {
       "alphanumeric": "Please enter single-byte alphanumeric characters.",
       "alphanumeric_and_underscore": "Please enter single-byte alphanumeric characters and underscore (_).",
+      "lower_case_alphanumerics_and_underscore": "Please enter single-byte lower-case alphanumeric characters and underscore (_).",
       "one_character": "Please enter at least 1 single-byte alphabetical character.",
       "one_number": "Please enter at least one one-byte number.",
       "one_special_character": "Please enter at least one symbol '@$! %*#?&'."

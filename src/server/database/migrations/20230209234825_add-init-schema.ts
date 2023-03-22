@@ -18,12 +18,7 @@ export async function up(knex: Knex): Promise<void> {
     table.string('password', 255).notNullable();
     table.boolean('is_active').notNullable().defaultTo(0);
     table.string('api_key', 255);
-    table
-      .integer('superfast_role_id')
-      .unsigned()
-      .index()
-      .references('id')
-      .inTable('superfast_roles');
+    table.integer('role_id').unsigned().index().references('id').inTable('superfast_roles');
     table.timestamps(true, true);
   });
 
@@ -31,14 +26,9 @@ export async function up(knex: Knex): Promise<void> {
     table.increments('id').primary().notNullable();
     table.string('collection', 255).notNullable();
     table.string('action', 255).notNullable();
-    table
-      .integer('superfast_role_id')
-      .unsigned()
-      .index()
-      .references('id')
-      .inTable('superfast_roles');
+    table.integer('role_id').unsigned().index().references('id').inTable('superfast_roles');
     table.timestamps(true, true);
-    table.unique(['collection', 'action', 'superfast_role_id']);
+    table.unique(['collection', 'action', 'role_id']);
   });
 
   await knex.schema.createTable('superfast_collections', (table) => {
@@ -67,12 +57,7 @@ export async function up(knex: Knex): Promise<void> {
     table.increments('id').primary().notNullable();
     table.string('key', 64).notNullable();
     table.string('value', 64).notNullable();
-    table
-      .integer('superfast_field_id')
-      .unsigned()
-      .index()
-      .references('id')
-      .inTable('superfast_fields');
+    table.integer('field_id').unsigned().index().references('id').inTable('superfast_fields');
     table.timestamps(true, true);
   });
 

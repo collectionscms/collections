@@ -8,8 +8,8 @@ import Table from '../../components/elements/Table';
 import { Type } from '../../components/elements/Table/Cell/types';
 import ComposeWrapper from '../../components/utilities/ComposeWrapper';
 import { useDocumentInfo } from '../../components/utilities/DocumentInfo';
-import { CollectionContextProvider, useCollection } from '../../pages/ContentType/Context';
 import buildColumns from '../../utilities/buildColumns';
+import { CollectionContextProvider, useCollection } from "./Context";
 
 const ContentTypePage: React.FC = () => {
   const { localizedLabel } = useDocumentInfo();

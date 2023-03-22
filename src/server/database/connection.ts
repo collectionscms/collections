@@ -3,35 +3,31 @@ import 'dotenv/config';
 import knex, { Knex } from 'knex';
 import { snakeCase } from 'lodash';
 import path from 'path';
+import env from '../../env';
 
 let database: Knex | null = null;
 
 export const getDatabase = (): Knex => {
   if (database) return database;
-  let migrationFiles = path.join(__dirname, 'migrations');
+  const migrationFiles = path.join(__dirname, 'migrations');
 
   const config: Knex.Config = {
-    client: process.env.DB_CLIENT,
+    client: env.DB_CLIENT,
     connection: {
-      filename: process.env.DB_FILENAME,
+      filename: env.DB_FILENAME,
     },
     useNullAsDefault: true,
     migrations: {
       directory: migrationFiles,
-      loadExtensions: [process.env.MIGRATE_EXTENSIONS],
+      loadExtensions: [env.MIGRATE_EXTENSIONS],
     },
-    wrapIdentifier(value, wrapIdentifier, queryContext) {
-      // Key Type Conversion for Post Data.
-      if (queryContext && queryContext.toSnake) {
-        return wrapIdentifier(snakeCase(value));
-      }
-      return value;
+    wrapIdentifier(value, wrapIdentifier) {
+      // Convert field to snake case.
+      const snakedValue = snakeCase(value) || value;
+      return wrapIdentifier(snakedValue);
     },
-    postProcessResponse: (result, queryContext) => {
-      // Key Type Conversion for Json Response.
-      if (queryContext && !queryContext.toCamel) {
-        return result;
-      }
+    postProcessResponse: (result) => {
+      // Convert field to camel case.
       return camelcaseKeys(result);
     },
   };

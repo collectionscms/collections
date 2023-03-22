@@ -4,10 +4,11 @@ import React, { useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
+import logger from '../../../utilities/logger';
 import Logo from '../../components/elements/Logo';
 import { useAuth } from '../../components/utilities/Auth';
 import ComposeWrapper from '../../components/utilities/ComposeWrapper';
-import loginSchema, { FormValues } from '../../fields/schemas/authentications/login';
+import { FormValues, loginSchema } from '../../fields/schemas/authentications/login';
 import { LoginContextProvider, useLogin } from './Context';
 
 const LoginPage: React.FC = () => {
@@ -36,8 +37,7 @@ const LoginPage: React.FC = () => {
     try {
       await trigger(form);
     } catch (e) {
-      // TODO install logger
-      console.log(e);
+      logger.error(e);
     }
   };
 

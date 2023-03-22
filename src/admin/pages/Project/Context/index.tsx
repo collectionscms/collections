@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext, useMemo } from 'react';
 import useSWR, { SWRConfiguration } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
 import { ProjectSetting } from '../../../../shared/types';
@@ -23,16 +23,15 @@ export const ProjectSettingContextProvider: React.FC<{ children: React.ReactNode
       return api.patch(url, arg).then((res) => res.data);
     });
 
-  return (
-    <Context.Provider
-      value={{
-        getProjectSetting,
-        updateProjectSetting,
-      }}
-    >
-      {children}
-    </Context.Provider>
+  const value = useMemo(
+    () => ({
+      getProjectSetting,
+      updateProjectSetting,
+    }),
+    [getProjectSetting, updateProjectSetting]
   );
+
+  return <Context.Provider value={value}>{children}</Context.Provider>;
 };
 
 export const useProjectSetting = () => useContext(Context);

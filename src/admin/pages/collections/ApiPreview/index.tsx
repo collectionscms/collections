@@ -33,7 +33,7 @@ const ApiPreview: React.FC<Props> = ({ slug, singleton }) => {
 
   const onFetch = () => {
     trigger();
-    return;
+    
   };
 
   return (

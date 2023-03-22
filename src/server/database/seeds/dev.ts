@@ -57,9 +57,9 @@ const seedingData = async (database: Knex): Promise<void> => {
       last_name: '山田',
       user_name: 'hanako',
       email: 'hanako-yamada@example.com',
-      password: password,
+      password,
       is_active: true,
-      superfast_role_id: adminRole!.id,
+      role_id: adminRole!.id,
     },
     {
       id: 2,
@@ -67,9 +67,9 @@ const seedingData = async (database: Knex): Promise<void> => {
       last_name: '田中',
       user_name: 'taro',
       email: 'taro-tanaka@example.com',
-      password: password,
+      password,
       is_active: false,
-      superfast_role_id: editorRole!.id,
+      role_id: editorRole!.id,
     },
   ]);
 
@@ -81,50 +81,50 @@ const seedingData = async (database: Knex): Promise<void> => {
       id: 1,
       collection: 'Restaurant',
       action: 'read',
-      superfast_role_id: adminRole!.id,
+      role_id: adminRole!.id,
     },
     {
       id: 2,
       collection: 'Restaurant',
       action: 'create',
-      superfast_role_id: adminRole!.id,
+      role_id: adminRole!.id,
     },
     {
       id: 3,
       collection: 'Restaurant',
       action: 'update',
-      superfast_role_id: adminRole!.id,
+      role_id: adminRole!.id,
     },
     {
       id: 4,
       collection: 'Company',
       action: 'read',
-      superfast_role_id: adminRole!.id,
+      role_id: adminRole!.id,
     },
     {
       id: 5,
       collection: 'Company',
       action: 'create',
-      superfast_role_id: adminRole!.id,
+      role_id: adminRole!.id,
     },
     {
       id: 6,
       collection: 'Company',
       action: 'update',
-      superfast_role_id: adminRole!.id,
+      role_id: adminRole!.id,
     },
     // Edditor
     {
       id: 7,
       collection: 'Restaurant',
       action: 'read',
-      superfast_role_id: editorRole!.id,
+      role_id: editorRole!.id,
     },
     {
       id: 8,
       collection: 'Company',
       action: 'read',
-      superfast_role_id: editorRole!.id,
+      role_id: editorRole!.id,
     },
   ]);
 
@@ -147,14 +147,6 @@ const seedingData = async (database: Knex): Promise<void> => {
 
   // Field
   Output.info('Creating fields...');
-  const restaurant = await database('superfast_collections')
-    .select('id')
-    .where('collection', 'Restaurant')
-    .first();
-  const company = await database('superfast_collections')
-    .select('id')
-    .where('collection', 'Company')
-    .first();
 
   await database('superfast_fields').insert([
     // Fields related to collection Restaurant
@@ -281,7 +273,7 @@ const seedingData = async (database: Knex): Promise<void> => {
 
 const createCollectionTables = async (database: Knex): Promise<void> => {
   Output.info('Creating collection tables...');
-  await database.schema.createTable('Restaurant', function (table) {
+  await database.schema.createTable('Restaurant', (table) => {
     table.increments();
     table.string('name', 255);
     table.string('nick_name', 255);
@@ -289,7 +281,7 @@ const createCollectionTables = async (database: Knex): Promise<void> => {
     table.timestamps(true, true);
   });
 
-  await database.schema.createTable('Company', function (table) {
+  await database.schema.createTable('Company', (table) => {
     table.increments();
     table.string('name', 255);
     table.string('phone_number', 255);

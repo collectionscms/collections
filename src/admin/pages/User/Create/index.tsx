@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import { yupResolver } from '@hookform/resolvers/yup';
 import { CachedOutlined } from '@mui/icons-material';
 import {
@@ -21,6 +22,7 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
+import logger from '../../../../utilities/logger';
 import Loading from '../../../components/elements/Loading';
 import ComposeWrapper from '../../../components/utilities/ComposeWrapper';
 import { useDocumentInfo } from '../../../components/utilities/DocumentInfo';
@@ -64,8 +66,12 @@ const CreateUserPage: React.FC = () => {
     setValue('apiKey', uuidv4());
   };
 
-  const onSubmit: SubmitHandler<FormValues> = (form: FormValues) => {
-    trigger(form);
+  const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
+    try {
+      await trigger(form);
+    } catch (e) {
+      logger.error(e);
+    }
   };
 
   return (

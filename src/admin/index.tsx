@@ -15,8 +15,7 @@ import { ThemeProvider } from './components/utilities/Theme';
 const Loading = Loader(lazy(() => import('./components/elements/Loading')));
 
 const Index = () => (
-  <>
-    <Suspense fallback={<Loading />}>
+  <Suspense fallback={<Loading />}>
       <ColorModeProvider>
         <ThemeProvider>
           <Router>
@@ -40,7 +39,6 @@ const Index = () => (
         </ThemeProvider>
       </ColorModeProvider>
     </Suspense>
-  </>
 );
 
 const container = document.getElementById('app');

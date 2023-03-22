@@ -1,6 +1,8 @@
 import Hooks from '@shared/features/hooks';
 import cookieParser from 'cookie-parser';
 import express, { Express } from 'express';
+import env from '../../env';
+import { expressLogger } from '../../utilities/logger';
 import authentications from '../controllers/authentications';
 import collections from '../controllers/collections';
 import contents from '../controllers/contents';
@@ -9,22 +11,16 @@ import projectSettings from '../controllers/projectSettings';
 import roles from '../controllers/roles';
 import users from '../controllers/users';
 import authHandler from '../middleware/authHandler';
+import cors from '../middleware/cors';
 import errorHandler from '../middleware/errorHandler';
 import extractTokenHandler from '../middleware/extractTokenHandler';
-import { expressLogger } from '../../utilities/logger';
 
 Hooks.addAction(
   'api/init',
   async (app: Express) => {
-    app.use((req, res, next) => {
-      const origin = req.get('origin');
-      res.header('Access-Control-Allow-Origin', origin || '*');
-      res.header('Access-Control-Allow-Headers', 'content-type, auth-token');
-      res.header('Access-Control-Expose-Headers', 'content-type, auth-token');
-      res.header('Access-Control-Allow-Credentials', 'true');
-      res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH');
-      next();
-    });
+    if (Boolean(env.CORS_ENABLED) === true) {
+      app.use(cors);
+    }
 
     app.use(cookieParser(process.env.SIGNED_COOKIE));
     app.use(express.json({ limit: process.env.REQ_LIMIT }));

@@ -136,7 +136,7 @@ const NavModuleBar = () => {
           </Link>
         ))
       ) : (
-        <></>
+        <span />
       )}
 
       <Box

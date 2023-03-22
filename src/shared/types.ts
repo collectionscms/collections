@@ -22,6 +22,15 @@ export type AuthUser = {
   apiKey: string | null;
 };
 
+export type MeUser = {
+  id: number;
+  roleId: number;
+  userName: string;
+  password: string;
+  adminAccess: boolean;
+  apiKey: string | null;
+};
+
 // /////////////////////////////////////
 // Schema
 // /////////////////////////////////////
@@ -49,7 +58,7 @@ export type Field = {
   required: boolean;
   readonly: boolean;
   hidden: boolean;
-  fieldOptions: FieldOption[];
+  fieldOptions?: FieldOption[];
 } & PrimaryKey;
 
 export type User = {
@@ -60,6 +69,7 @@ export type User = {
   userName: string;
   apiKey: string | null;
   isActive: boolean;
+  roleId: number;
   role?: Role;
   updatedAt: Date;
 } & PrimaryKey;
@@ -75,6 +85,7 @@ export type PermissionsAction = 'create' | 'read' | 'update' | 'delete';
 export type Permission = {
   collection: string;
   action: PermissionsAction;
+  roleId: number;
 } & PrimaryKey;
 
 export type ProjectSetting = {

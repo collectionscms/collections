@@ -1,5 +1,5 @@
-import type { Knex } from 'knex';
 import { getDatabase } from '../database/connection';
+import type { Knex } from 'knex';
 
 export type AbstractRepositoryOptions = {
   knex?: Knex;
@@ -13,21 +13,33 @@ type AbstractRepository<T> = {
   delete(id: number): Promise<boolean>;
 };
 
+export class BaseTransaction {
+  constructor(readonly transaction: Knex.Transaction<any, any[]>) {}
+}
+
 export abstract class BaseRepository<T> implements AbstractRepository<T> {
   collection: string;
   knex: Knex;
 
-  constructor(collection: string, options: AbstractRepositoryOptions) {
+  constructor(collection: string, options?: AbstractRepositoryOptions) {
     this.collection = collection;
-    this.knex = options.knex || getDatabase();
-    return this;
+    this.knex = options?.knex || getDatabase();
   }
+
+  async transaction<T>(callback: (trx: BaseTransaction) => Promise<T>) {
+    return this.knex.transaction(async (knexTrx) => {
+      const baseTrx = new BaseTransaction(knexTrx);
+      return callback(baseTrx);
+    });
+  }
+
+  abstract transacting(trx: BaseTransaction): BaseRepository<T>;
 
   public get queryBuilder(): Knex.QueryBuilder {
     return this.knex(this.collection);
   }
 
-  read(data: Partial<T>): Promise<T[]> {
+  read(data: Partial<T> = {}): Promise<T[]> {
     return this.queryBuilder.where(data).select();
   }
 
@@ -36,7 +48,8 @@ export abstract class BaseRepository<T> implements AbstractRepository<T> {
   }
 
   async create(item: Omit<T, 'id'>): Promise<T> {
-    const [output] = await this.queryBuilder.insert<T>(item).returning('*');
+    const [output] = await this.queryBuilder.insert(item).returning('id');
+
     return output as Promise<T>;
   }
 

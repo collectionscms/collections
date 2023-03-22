@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext, useMemo } from 'react';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
 import api from '../../../../utilities/api';
 import { DocumentContext } from './type';
@@ -11,15 +11,14 @@ export const DocumentContextProvider: React.FC<{ children: React.ReactNode }> = 
       return api.delete(url, arg).then((res) => res.data);
     });
 
-  return (
-    <Context.Provider
-      value={{
-        deleteDocument,
-      }}
-    >
-      {children}
-    </Context.Provider>
+  const value = useMemo(
+    () => ({
+      deleteDocument,
+    }),
+    [deleteDocument]
   );
+
+  return <Context.Provider value={value}>{children}</Context.Provider>;
 };
 
 export const useDocument = () => useContext(Context);

@@ -1,7 +1,9 @@
-import { BaseException } from '../../shared/exceptions/base';
 import { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
+import { BaseException } from '../../shared/exceptions/base';
 import logger from '../../utilities/logger';
 
+// NextFunction must be passed for Express to use this middleware as error handler
+/* eslint-disable no-unused-vars */
 const errorHandler: ErrorRequestHandler = (
   err: Error,
   req: Request,

@@ -19,47 +19,43 @@ const Table: React.FC<Props> = ({ columns, rows }) => {
     return data ? data.id.toString() : '';
   };
 
-  return (
-    <>
-      {rows.length > 0 ? (
-        <TableContainer component={Paper}>
-          <MuiTable aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                {columns.map((column) => (
-                  <TableCell key={`column-${column.field.field}`}>{column.label}</TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.map((row) => (
-                <TableRow
-                  key={`row-${key(row)}`}
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                >
-                  {columns.map((col, i) => (
-                    <TableCell key={`cell-${col.field.field}`} component="th" scope="row">
-                      {col.customRenderCell ? (
-                        col.customRenderCell(i, row, row[col.field.field])
-                      ) : (
-                        <Cell
-                          colIndex={i}
-                          type={col.field.type}
-                          rowData={row}
-                          cellData={row[col.field.field]}
-                        />
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
+  return rows.length > 0 ? (
+    <TableContainer component={Paper}>
+      <MuiTable aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            {columns.map((column) => (
+              <TableCell key={`column-${column.field.field}`}>{column.label}</TableCell>
+            ))}
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {rows.map((row) => (
+            <TableRow
+              key={`row-${key(row)}`}
+              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+            >
+              {columns.map((col, i) => (
+                <TableCell key={`cell-${col.field.field}`} component="th" scope="row">
+                  {col.customRenderCell ? (
+                    col.customRenderCell(i, row, row[col.field.field])
+                  ) : (
+                    <Cell
+                      colIndex={i}
+                      type={col.field.type}
+                      rowData={row}
+                      cellData={row[col.field.field]}
+                    />
+                  )}
+                </TableCell>
               ))}
-            </TableBody>
-          </MuiTable>
-        </TableContainer>
-      ) : (
-        <span>{t('no_contents')}</span>
-      )}
-    </>
+            </TableRow>
+          ))}
+        </TableBody>
+      </MuiTable>
+    </TableContainer>
+  ) : (
+    <span>{t('no_contents')}</span>
   );
 };
 

@@ -1,5 +1,5 @@
-import { Type } from './Cell/types';
 import React from 'react';
+import { Type } from './Cell/types';
 
 export type Column = {
   field: ColumnField;

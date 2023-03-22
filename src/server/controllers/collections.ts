@@ -1,8 +1,9 @@
 import express, { Request, Response } from 'express';
-import { Collection } from '../../shared/types';
-import { getDatabase } from '../database/connection';
 import asyncHandler from '../middleware/asyncHandler';
 import permissionsHandler from '../middleware/permissionsHandler';
+import CollectionsRepository from '../repositories/collections';
+import FieldsRepository from '../repositories/fields';
+import PermissionsRepository from '../repositories/permissions';
 
 const app = express();
 
@@ -10,12 +11,10 @@ app.get(
   '/collections/:id',
   permissionsHandler(),
   asyncHandler(async (req: Request, res: Response) => {
-    const database = getDatabase();
     const id = Number(req.params.id);
-    const collection = await database('superfast_collections')
-      .queryContext({ toCamel: false })
-      .where('id', id)
-      .first();
+    const repository = new CollectionsRepository();
+
+    const collection = await repository.readOne(id);
 
     res.json({
       collection: {
@@ -30,12 +29,11 @@ app.get(
   '/collections',
   permissionsHandler(),
   asyncHandler(async (req: Request, res: Response) => {
-    const database = getDatabase();
-    const collections = await database('superfast_collections').queryContext({
-      toCamel: false,
-    });
+    const repository = new CollectionsRepository();
 
-    res.json({ collections: collections });
+    const collections = await repository.read();
+
+    res.json({ collections });
   })
 );
 
@@ -43,35 +41,28 @@ app.post(
   '/collections',
   permissionsHandler([{ collection: 'superfast_collections', action: 'create' }]),
   asyncHandler(async (req: Request, res: Response) => {
-    const database = getDatabase();
+    const repository = new CollectionsRepository();
+    const fieldsRepository = new FieldsRepository();
 
-    await database.transaction(async (tx) => {
-      try {
-        await tx.schema.createTable(req.body.collection, function (table) {
-          table.increments();
-          table.timestamps(true, true);
-        });
+    await repository.transaction(async (tx) => {
+      const collection = await repository.transacting(tx).create(req.body);
 
-        const collections = await tx('superfast_collections')
-          .queryContext({ toCamel: false })
-          .insert(req.body, '*');
+      await tx.transaction.schema.createTable(req.body.collection, (table) => {
+        table.increments();
+        table.timestamps(true, true);
+      });
 
-        await tx('superfast_fields').insert({
-          collection: req.body.collection,
-          field: 'id',
-          label: 'id',
-          interface: 'input',
-          required: true,
-          readonly: true,
-          hidden: true,
-        });
+      await fieldsRepository.transacting(tx).create({
+        collection: req.body.collection,
+        field: 'id',
+        label: 'id',
+        interface: 'input',
+        required: true,
+        readonly: true,
+        hidden: true,
+      });
 
-        await tx.commit();
-        res.json({ collection: collections[0] });
-      } catch (e) {
-        await tx.rollback();
-        res.status(500).end();
-      }
+      res.json({ collection });
     });
   })
 );
@@ -80,9 +71,10 @@ app.patch(
   '/collections/:id',
   permissionsHandler([{ collection: 'superfast_collections', action: 'update' }]),
   asyncHandler(async (req: Request, res: Response) => {
-    const database = getDatabase();
     const id = Number(req.params.id);
-    await database('superfast_collections').where('id', id).update(req.body);
+    const repository = new CollectionsRepository();
+
+    await repository.update(id, req.body);
 
     res.status(204).end();
   })
@@ -92,23 +84,25 @@ app.delete(
   '/collections/:id',
   permissionsHandler([{ collection: 'superfast_collections', action: 'delete' }]),
   asyncHandler(async (req: Request, res: Response) => {
-    const database = getDatabase();
     const id = Number(req.params.id);
-    const meta = await database<Collection>('superfast_collections').where('id', id).first();
+    const repository = new CollectionsRepository();
+    const fieldsRepository = new FieldsRepository();
+    const permissionsRepository = new PermissionsRepository();
 
-    await database.transaction(async (tx) => {
-      try {
-        await tx.schema.dropTable(meta.collection);
-        await tx('superfast_collections').where('id', id).delete();
-        await tx('superfast_fields').where('collection', meta.collection).delete();
-        await tx('superfast_permissions').where('collection', meta.collection).delete();
-        await tx('superfast_relations').where('many_collection', meta.collection).delete();
-        await tx.commit();
-        res.status(204).end();
-      } catch (e) {
-        await tx.rollback();
-        res.status(500).end();
-      }
+    const collection = await repository.readOne(id);
+
+    await repository.transaction(async (tx) => {
+      await tx.transaction.schema.dropTable(collection.collection);
+      await repository.transacting(tx).delete(id);
+      await fieldsRepository.transacting(tx).deleteAll({ collection: collection.collection });
+      await permissionsRepository.transacting(tx).deleteAll({ collection: collection.collection });
+
+      await tx
+        .transaction('superfast_relations')
+        .where('many_collection', collection.collection)
+        .delete();
+
+      res.status(204).end();
     });
   })
 );

@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext, useMemo } from 'react';
 import useSWR, { SWRConfiguration, SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
 import { Collection, Field } from '../../../../shared/types';
@@ -44,19 +44,18 @@ export const CollectionContextProvider: React.FC<{ children: React.ReactNode }> 
       config
     );
 
-  return (
-    <Context.Provider
-      value={{
-        getCollection,
-        getCollections,
-        createCollection,
-        updateCollection,
-        getFields,
-      }}
-    >
-      {children}
-    </Context.Provider>
+  const value = useMemo(
+    () => ({
+      getCollection,
+      getCollections,
+      createCollection,
+      updateCollection,
+      getFields,
+    }),
+    [getCollection, getCollections, createCollection, updateCollection, getFields]
   );
+
+  return <Context.Provider value={value}>{children}</Context.Provider>;
 };
 
 export const useCollection = () => useContext(Context);
