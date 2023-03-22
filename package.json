@@ -93,7 +93,7 @@
     "lodash": "^4.17.21",
     "node-notifier": "^10.0.0",
     "nodemon": "^2.0.20",
-    "notistack": "^2.0.8",
+    "notistack": "^3.0.1",
     "ora": "5.4.1",
     "path-to-regexp": "^6.2.1",
     "pino": "^8.11.0",
