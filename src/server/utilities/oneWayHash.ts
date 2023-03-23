@@ -10,7 +10,7 @@ export function oneWayHash(stringToHash: string): Promise<string> {
     type: env.HASH_TYPE,
   };
 
-  if (process.env.HASH_ASSOCIATED_DATA) {
+  if (env.HASH_ASSOCIATED_DATA) {
     options.associatedData = Buffer.from(env.HASH_ASSOCIATED_DATA);
   }
 
