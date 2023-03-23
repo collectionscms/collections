@@ -69,6 +69,8 @@ export type User = {
   userName: string;
   apiKey: string | null;
   isActive: boolean;
+  resetPasswordToken: string | null;
+  resetPasswordExpiration: number | null;
   roleId: number;
   role?: Role;
   updatedAt: Date;

@@ -17,6 +17,8 @@ export async function up(knex: Knex): Promise<void> {
     table.string('email', 255).unique().notNullable();
     table.string('password', 255).notNullable();
     table.boolean('is_active').notNullable().defaultTo(0);
+    table.string('reset_password_token', 255);
+    table.integer('reset_password_expiration', 255);
     table.string('api_key', 255);
     table.integer('role_id').unsigned().index().references('id').inTable('superfast_roles');
     table.timestamps(true, true);
