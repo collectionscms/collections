@@ -13,12 +13,14 @@ const LogoutPage: React.FC = () => {
   }, []);
 
   return (
-    <Stack rowGap={3}>
-      <h2>{t('logged_out')}</h2>
+    <>
+      <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
+        <h1>{t('logged_out')}</h1>
+      </Stack>
       <Button variant="outlined" size="large" component={RouterLink} to="/admin/auth/login">
         {t('log_back_in')}
       </Button>
-    </Stack>
+    </>
   );
 };
 
