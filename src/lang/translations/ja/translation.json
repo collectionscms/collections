@@ -19,7 +19,7 @@
   "logout": "ログアウト",
   "update": "更新",
   "login": "ログイン",
-  "forgot": "パスワードをお忘れの場合",
+  "forgot": "パスワードをお忘れの方",
   "api_preview": "APIプレビュー",
   "fetch": "取得",
   "create_new": "新規登録",
@@ -64,6 +64,11 @@
   "collection_not_found": "登録されたコンテンツはありません",
   "register_content_type": "コンテンツタイプを登録しよう",
   "go_to_registration": "登録に進む",
+  "back_to_login": "ログインに戻る",
+  "submit": "送信",
+  "email_sent": "メールを送信しました",
+  "check_email_reset_password": "パスワードを再設定するためのリンクをメールでご確認ください。",
+  "already_logged_in": "すでにログイン済みです",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？"
@@ -93,7 +98,8 @@
     "can_not_delete_itself": "自分のアカウントは削除できません。",
     "forbidden": "アクセスする権限がありません。",
     "already_registered_email": "すでに登録済みのメールアドレスです。",
-    "already_registered_name": "すでに登録済みです。"
+    "already_registered_name": "すでに登録済みです。",
+    "unregistered_email_address": "登録されていないメールアドレスです。"
   },
   "yup": {
     "mixed": {
