@@ -4,6 +4,11 @@ import { v4 as uuidv4 } from 'uuid';
 /* eslint-disable max-len */
 export const defaults: Record<string, any> = {
   // /////////////////////////////////////
+  // General
+  // /////////////////////////////////////
+  SERVER_URL: 'http://localhost:4000',
+
+  // /////////////////////////////////////
   // Database
   // /////////////////////////////////////
   DB_CLIENT: 'sqlite3',
