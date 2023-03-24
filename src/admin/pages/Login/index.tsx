@@ -3,8 +3,9 @@ import { Box, Button, FormHelperText, InputLabel, Stack, TextField } from '@mui/
 import React, { useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import logger from '../../../utilities/logger';
+import RouterLink from '../../components/elements/Link';
 import Logo from '../../components/elements/Logo';
 import { useAuth } from '../../components/utilities/Auth';
 import ComposeWrapper from '../../components/utilities/ComposeWrapper';
@@ -13,6 +14,7 @@ import { LoginContextProvider, useLogin } from './Context';
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const { t } = useTranslation();
   const { login } = useAuth();
   const { data: token, trigger, isMutating } = login();
@@ -41,48 +43,63 @@ const LoginPage: React.FC = () => {
     }
   };
 
+  if (user) {
+    return (
+      <>
+        <Stack direction="row" justifyContent="center" alignItems="center">
+          <h1>{t('already_logged_in')}</h1>
+        </Stack>
+        <Button variant="outlined" size="large" component={RouterLink} to="/admin/collections">
+          {t('back_to_home')}
+        </Button>
+      </>
+    );
+  }
+
   return (
-    <Stack component="form" onSubmit={handleSubmit(onSubmit)} spacing={4} sx={{ width: '400px' }}>
+    <>
       <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
         <Box sx={{ width: '60px', height: '60px' }}>
           <Logo />
         </Box>
         <h1>{projectSetting?.name}</h1>
       </Stack>
-      <Stack>
-        <InputLabel>{t('email')}</InputLabel>
-        <Controller
-          name="email"
-          control={control}
-          render={({ field }) => (
-            <TextField name="email" {...field} type="text" error={errors.email !== undefined} />
-          )}
-        />
-        <FormHelperText error>{errors.email?.message}</FormHelperText>
+      <Stack component="form" spacing={4} onSubmit={handleSubmit(onSubmit)}>
+        <Stack>
+          <InputLabel>{t('email')}</InputLabel>
+          <Controller
+            name="email"
+            control={control}
+            render={({ field }) => (
+              <TextField name="email" {...field} type="text" error={errors.email !== undefined} />
+            )}
+          />
+          <FormHelperText error>{errors.email?.message}</FormHelperText>
+        </Stack>
+        <Stack>
+          <InputLabel>{t('password')}</InputLabel>
+          <Controller
+            name="password"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                name="password"
+                {...field}
+                type="password"
+                error={errors.email !== undefined}
+              />
+            )}
+          />
+          <FormHelperText error>{errors.password?.message}</FormHelperText>
+        </Stack>
+        <Box>
+          <RouterLink to="/admin/auth/forgot">{t('forgot')}</RouterLink>
+        </Box>
+        <Button variant="contained" type="submit" size="large" disabled={isMutating}>
+          {t('login')}
+        </Button>
       </Stack>
-      <Stack>
-        <InputLabel>{t('password')}</InputLabel>
-        <Controller
-          name="password"
-          control={control}
-          render={({ field }) => (
-            <TextField
-              name="password"
-              {...field}
-              type="password"
-              error={errors.email !== undefined}
-            />
-          )}
-        />
-        <FormHelperText error>{errors.password?.message}</FormHelperText>
-      </Stack>
-      <Box>
-        <Link to="/admin/auth/forgot">{t('forgot')}</Link>
-      </Box>
-      <Button variant="contained" type="submit" size="large" disabled={isMutating}>
-        {t('login')}
-      </Button>
-    </Stack>
+    </>
   );
 };
 
