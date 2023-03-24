@@ -1,10 +1,10 @@
-import { useAuth } from '@admin/components/utilities/Auth';
-import ComposeWrapper from '@admin/components/utilities/ComposeWrapper';
-import { useConfig } from '@admin/components/utilities/Config';
 import { Box, Button, Drawer, Paper, Stack, TextField, useTheme } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import env from '../../../../env';
+import { useAuth } from '../../../components/utilities/Auth';
+import ComposeWrapper from '../../../components/utilities/ComposeWrapper';
 import { ContentContextProvider, useContent } from '../Context';
 import { Props } from './types';
 
@@ -12,12 +12,11 @@ const ApiPreview: React.FC<Props> = ({ slug, singleton }) => {
   const { t } = useTranslation();
   const theme = useTheme();
   const { user } = useAuth();
-  const { config } = useConfig();
   const [open, setOpen] = useState(false);
   const { getPreviewContents } = useContent();
   const { data: contents, trigger, isMutating } = getPreviewContents(slug);
 
-  const url = `${config.serverUrl}/api/collections/${slug}/contents`;
+  const url = `${env.serverUrl}/api/collections/${slug}/contents`;
 
   const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
     if (
@@ -33,7 +32,6 @@ const ApiPreview: React.FC<Props> = ({ slug, singleton }) => {
 
   const onFetch = () => {
     trigger();
-    
   };
 
   return (
