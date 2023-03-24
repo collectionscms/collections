@@ -1,11 +1,11 @@
-import Loader from '@admin/components/elements/Loader';
-import MinimalLayout from '@admin/components/layouts/Minimal';
 import React, { lazy } from 'react';
+import Loader from '../../../components/elements/Loader';
+import MinimalLayout from '../../../components/layouts/Minimal';
 
-const Login = Loader(lazy(() => import('@admin/pages/Login')));
-const Logout = Loader(lazy(() => import('@admin/pages/Logout')));
-const Forgot = Loader(lazy(() => import('@admin/pages/Forgot')));
-const ResetPassword = Loader(lazy(() => import('@admin/pages/ResetPassword')));
+const Login = Loader(lazy(() => import('../../../pages/Login')));
+const Logout = Loader(lazy(() => import('../../../pages/Logout')));
+const ForgotPasswordPage = Loader(lazy(() => import('../../../pages/ForgotPassword')));
+const ResetPassword = Loader(lazy(() => import('../../../pages/ResetPassword')));
 
 const AuthRoutes = {
   path: '/admin/auth',
@@ -17,14 +17,14 @@ const AuthRoutes = {
     },
     {
       path: 'forgot',
-      element: <Forgot />,
+      element: <ForgotPasswordPage />,
     },
     {
       path: 'logout',
       element: <Logout />,
     },
     {
-      path: 'reset-password',
+      path: 'reset-password/:token',
       element: <ResetPassword />,
     },
   ],
