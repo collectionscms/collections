@@ -9,7 +9,7 @@ const Context = createContext({} as LoginContext);
 export const LoginContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const getProjectSetting = (config?: SWRConfiguration) =>
     useSWR(
-      '/project_settings',
+      '/project-settings',
       (url) =>
         api.get<{ projectSetting: ProjectSetting }>(url).then((res) => res.data.projectSetting),
       config

@@ -12,14 +12,14 @@ export const ProjectSettingContextProvider: React.FC<{ children: React.ReactNode
 }) => {
   const getProjectSetting = (config?: SWRConfiguration) =>
     useSWR(
-      '/project_settings',
+      '/project-settings',
       (url) =>
         api.get<{ projectSetting: ProjectSetting }>(url).then((res) => res.data.projectSetting),
       config
     );
 
   const updateProjectSetting = (): SWRMutationResponse =>
-    useSWRMutation('/project_settings', async (url: string, { arg }: { arg: string }) => {
+    useSWRMutation('/project-settings', async (url: string, { arg }: { arg: string }) => {
       return api.patch(url, arg).then((res) => res.data);
     });
 
