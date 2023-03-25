@@ -53,6 +53,10 @@ export abstract class BaseRepository<T> implements AbstractRepository<T> {
     return output as Promise<T>;
   }
 
+  createMany(items: T[]): Promise<T[]> {
+    return this.queryBuilder.insert<T>(items) as Promise<T[]>;
+  }
+
   update(id: number, item: Partial<T>): Promise<boolean> {
     return this.queryBuilder.where('id', id).update(item);
   }
