@@ -1,10 +1,10 @@
-import notify from '@scripts/utilities/notifierUtil';
-import PathUtil from '@scripts/utilities/pathUtil';
-import { compilerRun } from '@scripts/utilities/webpackUtil';
-import config from '@shared/features/config';
 import rimraf from 'rimraf';
 import webpack from 'webpack';
+import config from '../../shared/features/config';
 import { webpackAdminConfigure, webpackServerConfigure } from '../../webpack.config';
+import notify from '../utilities/notifierUtil';
+import PathUtil from '../utilities/pathUtil';
+import { compilerRun } from '../utilities/webpackUtil';
 
 const scriptBuild = async () => {
   const serverBuildDirectory = PathUtil.build();

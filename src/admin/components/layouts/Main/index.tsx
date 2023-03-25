@@ -1,8 +1,8 @@
-import Nav from '@admin/components/elements/Nav';
-import NavHeader from '@admin/components/elements/NavHeader';
 import { Box, Toolbar } from '@mui/material';
 import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
+import Nav from '../../elements/Nav';
+import NavHeader from '../../elements/NavHeader';
 import { Props } from './types';
 
 const MainLayout: React.FC<Props> = ({ group }) => {

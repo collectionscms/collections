@@ -1,11 +1,11 @@
-import { definePublicEnv } from '@scripts/utilities/envUtil';
-import notify from '@scripts/utilities/notifierUtil';
-import PathUtil from '@scripts/utilities/pathUtil';
 import FriendlyErrorsWebpackPlugin from '@soda/friendly-errors-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
 import webpack from 'webpack';
 import WebpackBar from 'webpackbar';
+import { definePublicEnv } from '../../scripts/utilities/envUtil';
+import notify from '../../scripts/utilities/notifierUtil';
+import PathUtil from '../../scripts/utilities/pathUtil';
 
 const isProduction = process.env.NODE_ENV === 'production' || false;
 const isDevelopment = !isProduction;
@@ -96,17 +96,6 @@ const adminDefaultWebpack = {
                 require.resolve('@babel/preset-typescript'),
               ],
               plugins: [
-                [
-                  require.resolve('babel-plugin-module-resolver'),
-                  {
-                    root: ['./src/'],
-                    alias: {
-                      '@admin': './src/admin',
-                      '@scripts': './src/scripts',
-                      '@shared': './src/shared',
-                    },
-                  },
-                ],
                 [
                   require.resolve('@babel/plugin-transform-runtime'),
                   {

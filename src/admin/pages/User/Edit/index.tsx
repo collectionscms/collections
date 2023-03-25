@@ -1,9 +1,4 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import DeleteHeaderButton from '@admin/components/elements/DeleteHeaderButton';
-import Loading from '@admin/components/elements/Loading';
-import ComposeWrapper from '@admin/components/utilities/ComposeWrapper';
-import { useDocumentInfo } from '@admin/components/utilities/DocumentInfo';
-import updateUserSchema, { FormValues } from '@admin/fields/schemas/users/updateUser';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { CachedOutlined } from '@mui/icons-material';
 import {
@@ -28,6 +23,11 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import logger from '../../../../utilities/logger';
+import DeleteHeaderButton from '../../../components/elements/DeleteHeaderButton';
+import Loading from '../../../components/elements/Loading';
+import ComposeWrapper from '../../../components/utilities/ComposeWrapper';
+import { useDocumentInfo } from '../../../components/utilities/DocumentInfo';
+import updateUserSchema, { FormValues } from '../../../fields/schemas/users/updateUser';
 import { UserContextProvider, useUser } from '../Context';
 
 const EditPage: React.FC = () => {

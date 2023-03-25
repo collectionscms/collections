@@ -1,4 +1,3 @@
-import { Group } from '@admin/components/elements/NavItem/types';
 import {
   AccountCircleOutlined,
   AdminPanelSettingsOutlined,
@@ -7,7 +6,8 @@ import {
   PublicOutlined,
   TableViewOutlined,
 } from '@mui/icons-material';
-import { Collection } from '@shared/types';
+import { Collection } from '../../shared/types';
+import { Group } from '../components/elements/NavItem/types';
 
 export const collectionsGroupNavItems = (collections: Collection[]): Group => {
   return {
