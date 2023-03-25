@@ -1,9 +1,12 @@
+import crypto from 'crypto';
 import express, { Request, Response } from 'express';
+import env from '../../env';
 import { InvalidCredentialsException } from '../../shared/exceptions/invalidCredentials';
 import { UnprocessableEntityException } from '../../shared/exceptions/unprocessableEntity';
 import asyncHandler from '../middleware/asyncHandler';
 import permissionsHandler from '../middleware/permissionsHandler';
 import UsersRepository from '../repositories/users';
+import MailService from '../services/mail';
 import { oneWayHash } from '../utilities/oneWayHash';
 
 const app = express();
@@ -95,6 +98,46 @@ app.delete(
     await usersRepository.delete(id);
 
     res.status(204).end();
+  })
+);
+
+app.get(
+  '/users/reset-password/:token',
+  asyncHandler(async (req: Request, res: Response) => {
+    //const token = req.params.token;
+    res.status(200).end();
+  })
+);
+
+app.post(
+  '/users/forgot-password',
+  asyncHandler(async (req: Request, res: Response) => {
+    const repository = new UsersRepository();
+    const users = await repository.read({ email: req.body.email });
+    const user = users[0];
+
+    if (!user) {
+      throw new InvalidCredentialsException('unregistered_email_address');
+    }
+
+    let token: string | Buffer = crypto.randomBytes(20);
+    token = token.toString('hex');
+
+    user.resetPasswordToken = token;
+    user.resetPasswordExpiration = Date.now() + 3600000; // 1 hour
+
+    await repository.update(user.id, user);
+
+    const mail = new MailService();
+    mail.sendEmail({
+      to: user.email,
+      subject: 'Reset Password',
+      html: `${env.SERVER_URL}/admin/auth/reset-password/${user.resetPasswordToken}`,
+    });
+
+    res.json({
+      message: 'success',
+    });
   })
 );
 

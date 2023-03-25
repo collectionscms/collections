@@ -1,4 +1,4 @@
-import { Collection, Config } from '@shared/types';
+import { Collection } from '@shared/types';
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWR from 'swr';
 import api from '../../../utilities/api';
@@ -6,15 +6,11 @@ import { useAuth } from '../Auth';
 
 type ContextType = {
   collections: Collection[];
-  config: Config;
 };
 
 const Context = createContext<ContextType>({} as any);
 
-export const ConfigProvider: React.FC<{ config: Config; children: React.ReactNode }> = ({
-  children,
-  config,
-}) => {
+export const ConfigProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user } = useAuth();
 
   const { data: collections } = useSWR(
@@ -26,9 +22,8 @@ export const ConfigProvider: React.FC<{ config: Config; children: React.ReactNod
   const value = useMemo(
     () => ({
       collections,
-      config,
     }),
-    [collections, config]
+    [collections]
   );
 
   return <Context.Provider value={value}>{children}</Context.Provider>;

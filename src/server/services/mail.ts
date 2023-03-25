@@ -1,7 +1,7 @@
 import { Transporter } from 'nodemailer';
-import { env } from 'process';
 import mailer from '../../email/mailer';
 import { Message } from '../../email/types';
+import env from '../../env';
 import logger from '../../utilities/logger';
 import ProjectSettingsRepository from '../repositories/projectSettings';
 
