@@ -13,6 +13,7 @@
   "dark": "ダーク",
   "email": "メールアドレス",
   "password": "パスワード",
+  "new_password": "新しいパスワード",
   "language": "言語",
   "japanese": "日本語",
   "project_name": "プロジェクト名",
@@ -69,6 +70,8 @@
   "email_sent": "メールを送信しました",
   "check_email_reset_password": "パスワードを再設定するためのリンクをメールでご確認ください。",
   "already_logged_in": "すでにログイン済みです",
+  "reset_password": "パスワードの再設定",
+  "reset_password_success": "パスワードを再設定しました",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？"
@@ -99,7 +102,8 @@
     "forbidden": "アクセスする権限がありません。",
     "already_registered_email": "すでに登録済みのメールアドレスです。",
     "already_registered_name": "すでに登録済みです。",
-    "unregistered_email_address": "登録されていないメールアドレスです。"
+    "unregistered_email_address": "登録されていないメールアドレスです。",
+    "token_invalid_or_expired": "トークンが無効であるか、有効期限が切れています。"
   },
   "yup": {
     "mixed": {
