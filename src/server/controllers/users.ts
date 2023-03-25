@@ -101,11 +101,27 @@ app.delete(
   })
 );
 
-app.get(
-  '/users/reset-password/:token',
+app.post(
+  '/users/reset-password',
   asyncHandler(async (req: Request, res: Response) => {
-    //const token = req.params.token;
-    res.status(200).end();
+    const token = req.body.token;
+    const password = req.body.password;
+
+    const repository = new UsersRepository();
+    const user = await repository.readResetPasswordToken(token);
+
+    if (!user) {
+      throw new InvalidCredentialsException('token_invalid_or_expired');
+    }
+
+    await repository.update(user.id, {
+      password: await oneWayHash(password),
+      resetPasswordExpiration: Date.now(),
+    });
+
+    res.json({
+      message: 'success',
+    });
   })
 );
 
