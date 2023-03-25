@@ -38,7 +38,7 @@ const ForgotPasswordPage: React.FC = () => {
   if (message) {
     return (
       <>
-        <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
+        <Stack justifyContent="center" alignItems="center">
           <h1>{t('email_sent')}</h1>
         </Stack>
         <p>{t('check_email_reset_password')}</p>
@@ -52,7 +52,7 @@ const ForgotPasswordPage: React.FC = () => {
   if (user) {
     return (
       <>
-        <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
+        <Stack justifyContent="center" alignItems="center">
           <h1>{t('already_logged_in')}</h1>
         </Stack>
         <Button variant="outlined" size="large" component={RouterLink} to="/admin/collections">
@@ -64,7 +64,7 @@ const ForgotPasswordPage: React.FC = () => {
 
   return (
     <>
-      <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
+      <Stack justifyContent="center" alignItems="center">
         <h1>{t('forgot')}</h1>
       </Stack>
       <Stack component="form" spacing={4} onSubmit={handleSubmit(onSubmit)}>
