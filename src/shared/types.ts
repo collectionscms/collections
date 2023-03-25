@@ -54,10 +54,12 @@ export type Field = {
   collection: string;
   field: string;
   label: string;
+  special: string | null;
   interface: FieldInterface;
   required: boolean;
   readonly: boolean;
   hidden: boolean;
+  sort: number;
   fieldOptions?: FieldOption[];
 } & PrimaryKey;
 
