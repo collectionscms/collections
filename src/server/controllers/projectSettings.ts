@@ -6,7 +6,7 @@ import ProjectSettingsRepository from '../repositories/projectSettings';
 const app = express();
 
 app.get(
-  '/project_settings',
+  '/project-settings',
   asyncHandler(async (req: Request, res: Response) => {
     const repository = new ProjectSettingsRepository();
     const data = await repository.read();
@@ -16,7 +16,7 @@ app.get(
 );
 
 app.patch(
-  '/project_settings',
+  '/project-settings',
   permissionsHandler([{ collection: 'superfast_project_settings', action: 'update' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const repository = new ProjectSettingsRepository();
