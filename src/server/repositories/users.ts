@@ -97,4 +97,13 @@ export default class UsersRepository extends BaseRepository<User> {
       .where(condition)
       .first();
   }
+
+  readResetPasswordToken(token: string): Promise<User> {
+    return this.queryBuilder
+      .select('u.*')
+      .from('superfast_users AS u')
+      .where('u.reset_password_token', token)
+      .where('u.reset_password_expiration', '>', Date.now())
+      .first();
+  }
 }

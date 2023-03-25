@@ -13,6 +13,7 @@
   "dark": "Dark",
   "email": "Email",
   "password": "Password",
+  "new_password": "New Password",
   "language": "Language",
   "japanese": "Japanese",
   "project_name": "Project Name",
@@ -69,6 +70,8 @@
   "email_sent": "Email Sent",
   "check_email_reset_password": "Check your email for a link that will allow you to reset your password.",
   "already_logged_in": "You&apos;re already logged in",
+  "reset_password": "Reset Password",
+  "reset_password_success": "Password successfully reset.",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion.",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?"
@@ -99,7 +102,8 @@
     "forbidden": "You don't have permission to access this.",
     "already_registered_email": "Already registered email.",
     "already_registered_name": "Already registered.",
-    "unregistered_email_address": "Unregistered email address."
+    "unregistered_email_address": "Unregistered email address.",
+    "token_invalid_or_expired": "Token is either invalid or has expired."
   },
   "yup": {
     "mixed": {
