@@ -1,6 +1,14 @@
 import { Knex } from 'knex';
+import ContentsRepository from 'server/repositories/contents';
+import { v4 as uuidv4 } from 'uuid';
 import Output from '../../../scripts/utilities/output';
 import { oneWayHash } from '../../../server/utilities/oneWayHash';
+import CollectionsRepository from '../../repositories/collections';
+import FieldsRepository from '../../repositories/fields';
+import PermissionsRepository from '../../repositories/permissions';
+import ProjectSettingsRepository from '../../repositories/projectSettings';
+import RolesRepository from '../../repositories/roles';
+import UsersRepository from '../../repositories/users';
 import { getDatabase } from '../connection';
 
 const seedDev = async (): Promise<void> => {
@@ -8,7 +16,7 @@ const seedDev = async (): Promise<void> => {
 
   try {
     await resetAll(database);
-    await seedingData(database);
+    await seedingData();
     await createCollectionTables(database);
 
     process.exit(0);
@@ -29,111 +37,103 @@ const resetAll = async (database: Knex): Promise<void> => {
   await database('superfast_field_options').delete();
   await database('superfast_relations').delete();
   await database('superfast_project_settings').delete();
-  await database.schema.dropTableIfExists('Restaurant');
-  await database.schema.dropTableIfExists('Company');
+  await database.schema.dropTableIfExists('post');
+  await database.schema.dropTableIfExists('company');
 };
 
-const seedingData = async (database: Knex): Promise<void> => {
+const seedingData = async (): Promise<void> => {
+  const rolesRepository = new RolesRepository();
+  const usersRepository = new UsersRepository();
+  const permissionsRepository = new PermissionsRepository();
+  const collectionsRepository = new CollectionsRepository();
+  const fieldsRepository = new FieldsRepository();
+  const projectSettingsRepository = new ProjectSettingsRepository();
+
   // Role
   Output.info('Creating roles...');
-  await database('superfast_roles').insert([
-    { id: 1, name: 'Administrator', description: '管理者', admin_access: true },
-    { id: 2, name: 'Editor', description: '編集者', admin_access: false },
-  ]);
+  await rolesRepository.createMany([
+    { id: 1, name: 'Administrator', description: '管理者', adminAccess: true },
+    { id: 2, name: 'Editor', description: '編集者', adminAccess: false },
+  ] as any[]);
 
   // User
   Output.info('Creating users...');
-  const adminRole = await database('superfast_roles')
-    .select('id')
-    .where('name', 'Administrator')
-    .first();
-  const editorRole = await database('superfast_roles').select('id').where('name', 'Editor').first();
+  const adminRole = await rolesRepository.readOne(1);
+  const editorRole = await rolesRepository.readOne(2);
   const password = await oneWayHash('password');
 
-  await database('superfast_users').insert([
+  await usersRepository.createMany([
     {
       id: 1,
-      first_name: '花子',
-      last_name: '山田',
-      user_name: 'hanako',
-      email: 'hanako-yamada@example.com',
+      firstName: 'User',
+      lastName: 'Admin',
+      userName: 'admin',
+      email: 'admin@example.com',
       password,
-      is_active: true,
-      role_id: adminRole!.id,
+      isActive: true,
+      roleId: adminRole.id,
     },
     {
       id: 2,
-      first_name: '太郎',
-      last_name: '田中',
-      user_name: 'taro',
-      email: 'taro-tanaka@example.com',
+      firstName: 'User',
+      lastName: 'Editor',
+      userName: 'editor',
+      email: 'editor@example.com',
       password,
-      is_active: false,
-      role_id: editorRole!.id,
+      isActive: false,
+      apiKey: uuidv4(),
+      roleId: editorRole.id,
     },
-  ]);
+  ] as any[]);
 
   // Permission
   Output.info('Creating permissions...');
-  await database('superfast_permissions').insert([
-    // Administrator
+  await permissionsRepository.createMany([
+    // Editor
     {
       id: 1,
-      collection: 'Restaurant',
+      collection: 'Post',
       action: 'read',
-      role_id: adminRole!.id,
+      roleId: editorRole.id,
     },
     {
       id: 2,
-      collection: 'Restaurant',
+      collection: 'Post',
       action: 'create',
-      role_id: adminRole!.id,
+      roleId: editorRole.id,
     },
     {
       id: 3,
-      collection: 'Restaurant',
+      collection: 'Post',
       action: 'update',
-      role_id: adminRole!.id,
+      roleId: editorRole.id,
     },
     {
       id: 4,
       collection: 'Company',
       action: 'read',
-      role_id: adminRole!.id,
+      roleId: editorRole.id,
     },
     {
       id: 5,
       collection: 'Company',
       action: 'create',
-      role_id: adminRole!.id,
+      roleId: editorRole.id,
     },
     {
       id: 6,
       collection: 'Company',
       action: 'update',
-      role_id: adminRole!.id,
-    },
-    // Edditor
-    {
-      id: 7,
-      collection: 'Restaurant',
-      action: 'read',
-      role_id: editorRole!.id,
-    },
-    {
-      id: 8,
-      collection: 'Company',
-      action: 'read',
-      role_id: editorRole!.id,
+      roleId: editorRole.id,
     },
   ]);
 
   // Collection
   Output.info('Creating collections...');
-  await database('superfast_collections').insert([
+  await collectionsRepository.createMany([
     {
       id: 1,
-      collection: 'Restaurant',
+      collection: 'Post',
       singleton: false,
       hidden: false,
     },
@@ -147,12 +147,11 @@ const seedingData = async (database: Knex): Promise<void> => {
 
   // Field
   Output.info('Creating fields...');
-
-  await database('superfast_fields').insert([
-    // Fields related to collection Restaurant
+  await fieldsRepository.createMany([
+    // Fields related to collection Post
     {
       id: 1,
-      collection: 'Restaurant',
+      collection: 'Post',
       field: 'id',
       label: 'id',
       special: null,
@@ -164,9 +163,9 @@ const seedingData = async (database: Knex): Promise<void> => {
     },
     {
       id: 2,
-      collection: 'Restaurant',
-      field: 'name',
-      label: '名前',
+      collection: 'Post',
+      field: 'title',
+      label: 'タイトル',
       special: null,
       interface: 'input',
       readonly: false,
@@ -176,11 +175,11 @@ const seedingData = async (database: Knex): Promise<void> => {
     },
     {
       id: 3,
-      collection: 'Restaurant',
-      field: 'nick_name',
-      label: 'ニックネーム',
+      collection: 'Post',
+      field: 'body',
+      label: '本文',
       special: null,
-      interface: 'input',
+      interface: 'inputMultiline',
       readonly: false,
       required: false,
       hidden: false,
@@ -188,9 +187,9 @@ const seedingData = async (database: Knex): Promise<void> => {
     },
     {
       id: 4,
-      collection: 'Restaurant',
-      field: 'adress',
-      label: '住所',
+      collection: 'Post',
+      field: 'author',
+      label: '著者',
       special: null,
       interface: 'input',
       readonly: false,
@@ -226,8 +225,8 @@ const seedingData = async (database: Knex): Promise<void> => {
     {
       id: 7,
       collection: 'Company',
-      field: 'phone_number',
-      label: '電話番号',
+      field: 'email',
+      label: 'メールアドレス',
       special: null,
       interface: 'input',
       readonly: false,
@@ -238,7 +237,7 @@ const seedingData = async (database: Knex): Promise<void> => {
     {
       id: 8,
       collection: 'Company',
-      field: 'adress',
+      field: 'address',
       label: '住所',
       special: null,
       interface: 'input',
@@ -249,21 +248,9 @@ const seedingData = async (database: Knex): Promise<void> => {
     },
   ]);
 
-  // Relation
-  Output.info('Creating relations...');
-  await database('superfast_relations').insert([
-    {
-      id: 1,
-      many_collection: 'Restaurant',
-      many_field: 'restaurant_id',
-      one_collection: 'Company',
-      one_field: 'relational_one_to_many',
-    },
-  ]);
-
   // Project Setting
   Output.info('Creating project settings...');
-  await database('superfast_project_settings').insert([
+  await projectSettingsRepository.createMany([
     {
       id: 1,
       name: 'Superfast',
@@ -273,21 +260,48 @@ const seedingData = async (database: Knex): Promise<void> => {
 
 const createCollectionTables = async (database: Knex): Promise<void> => {
   Output.info('Creating collection tables...');
-  await database.schema.createTable('Restaurant', (table) => {
+  await database.schema.createTable('Post', (table) => {
     table.increments();
-    table.string('name', 255);
-    table.string('nick_name', 255);
-    table.string('adress', 255);
+    table.string('title', 255);
+    table.string('body', 255);
+    table.string('author', 255);
     table.timestamps(true, true);
   });
 
-  await database.schema.createTable('Company', (table) => {
+  await database.schema.createTable('company', (table) => {
     table.increments();
     table.string('name', 255);
-    table.string('phone_number', 255);
-    table.string('adress', 255);
+    table.string('email', 255);
+    table.string('address', 255);
     table.timestamps(true, true);
   });
+
+  Output.info('Adding collection data...');
+  const PostsRepository = new ContentsRepository('post');
+  await PostsRepository.createMany([
+    {
+      id: 1,
+      title: 'Superfastは、デベロッパーファーストのHeadless CMSです。',
+      body: 'TypeScript、Node.js、Reactで構築された無料かつオープンソースのHeadless CMSであり、アプリケーションフレームワークです。',
+      author: 'admin',
+    },
+    {
+      id: 2,
+      title: '2023年6月〜 デモ版の提供を開始しました。',
+      body: 'アドレス: https://demo.xxxx.xx',
+      author: 'admin',
+    },
+  ]);
+
+  const companiesRepository = new ContentsRepository('company');
+  await companiesRepository.createMany([
+    {
+      id: 1,
+      name: 'Rocketa Inc.',
+      email: 'kazane.shimizu@rocketa.co.jp',
+      address: '東京都渋谷区渋谷3-1-9 YAZAWAビル3F',
+    },
+  ]);
 };
 
 export default seedDev;
