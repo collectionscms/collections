@@ -62,7 +62,6 @@
     "async": "^3.2.4",
     "axios": "^1.2.6",
     "babel-loader": "^9.1.0",
-    "babel-plugin-module-resolver": "^5.0.0",
     "babel-plugin-transform-typescript-metadata": "^0.3.2",
     "browserify-zlib": "^0.2.0",
     "camelcase-keys": "^7.0.2",

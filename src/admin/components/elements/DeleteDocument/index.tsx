@@ -1,9 +1,4 @@
 import {
-  DocumentContextProvider,
-  useDocument,
-} from '@admin/components/elements/DeleteDocument/Context';
-import ComposeWrapper from '@admin/components/utilities/ComposeWrapper';
-import {
   Button,
   Dialog,
   DialogActions,
@@ -14,6 +9,8 @@ import {
 import { useSnackbar } from 'notistack';
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import ComposeWrapper from '../../utilities/ComposeWrapper';
+import { DocumentContextProvider, useDocument } from '../DeleteDocument/Context';
 import { Props } from './types';
 
 const DeleteDocument: React.FC<Props> = ({ id, slug, openState, onSuccess, onClose }) => {

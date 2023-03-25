@@ -1,10 +1,10 @@
-import PathUtil from '@scripts/utilities/pathUtil';
-import { attachWebpackMiddleware } from '@scripts/utilities/webpackUtil';
-import config from '@shared/features/config';
 import express from 'express';
 import webpack from 'webpack';
 import WebpackShellPlugin from 'webpack-shell-plugin-next';
+import config from '../../shared/features/config';
 import { webpackServerConfigure } from '../../webpack.config';
+import PathUtil from '../utilities/pathUtil';
+import { attachWebpackMiddleware } from '../utilities/webpackUtil';
 
 const scriptDev = async () => {
   const webpackServerConfig = webpackServerConfigure((webpackConfig) => {

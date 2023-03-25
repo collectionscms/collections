@@ -1,4 +1,3 @@
-import { useAuth } from '@admin/components/utilities/Auth';
 import {
   AccountCircleOutlined,
   AppRegistrationOutlined,
@@ -6,9 +5,10 @@ import {
   SettingsOutlined,
 } from '@mui/icons-material';
 import { Box, Drawer, IconButton, Link, Tooltip, useMediaQuery, useTheme } from '@mui/material';
-import config from '@shared/features/config';
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import config from '../../../../shared/features/config';
+import { useAuth } from '../../utilities/Auth';
 import RouterLink from '../Link';
 import Logo from '../Logo';
 import NavGroup from '../NavGroup';

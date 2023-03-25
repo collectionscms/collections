@@ -1,8 +1,8 @@
-import RouterLink from '@admin/components/elements/Link';
 import { Button, Stack } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import RouterLink from '../../../elements/Link';
 
 const CreateFirstCollection: React.FC = () => {
   const { t } = useTranslation();

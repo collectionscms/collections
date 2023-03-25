@@ -1,7 +1,7 @@
-import Hooks from '@shared/features/hooks';
 import cookieParser from 'cookie-parser';
 import express, { Express } from 'express';
 import env from '../../env';
+import Hooks from '../../shared/features/hooks';
 import { expressLogger } from '../../utilities/logger';
 import authentications from '../controllers/authentications';
 import collections from '../controllers/collections';

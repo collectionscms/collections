@@ -1,9 +1,9 @@
-import notify from '@scripts/utilities/notifierUtil';
-import PathUtil from '@scripts/utilities/pathUtil';
 import FriendlyErrorsWebpackPlugin from '@soda/friendly-errors-webpack-plugin';
 import webpack from 'webpack';
 import nodeExternals from 'webpack-node-externals';
 import WebpackBar from 'webpackbar';
+import notify from '../../scripts/utilities/notifierUtil';
+import PathUtil from '../../scripts/utilities/pathUtil';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -77,17 +77,6 @@ const serverDefaultWebpack: any = {
                   require.resolve('@babel/plugin-proposal-decorators'),
                   {
                     legacy: true,
-                  },
-                ],
-                [
-                  require.resolve('babel-plugin-module-resolver'),
-                  {
-                    root: ['./src/'],
-                    alias: {
-                      '@admin': './src/admin',
-                      '@scripts': './src/scripts',
-                      '@shared': './src/shared',
-                    },
                   },
                 ],
                 [

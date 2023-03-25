@@ -1,6 +1,6 @@
-import { Type } from '@admin/components/elements/Table/Cell/types';
-import { ColumnField } from '@admin/components/elements/Table/types';
-import { Field } from '@shared/types';
+import { Type } from '../../../../admin/components/elements/Table/Cell/types';
+import { ColumnField } from '../../../../admin/components/elements/Table/types';
+import { Field } from '../../../../shared/types';
 
 const buildColumnFields = (fields: Field[]): ColumnField[] => {
   return fields

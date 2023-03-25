@@ -1,10 +1,3 @@
-import Loading from '@admin/components/elements/Loading';
-import ComposeWrapper from '@admin/components/utilities/ComposeWrapper';
-import { useDocumentInfo } from '@admin/components/utilities/DocumentInfo';
-import updateProjectSettingSchema, {
-  FormValues,
-} from '@admin/fields/schemas/projectSettings/updateProjectSetting';
-import { ProjectSettingContextProvider, useProjectSetting } from '@admin/pages/Project/Context';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, FormHelperText, InputLabel, Stack, TextField } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
@@ -12,6 +5,13 @@ import { useSnackbar } from 'notistack';
 import React, { Suspense, useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import Loading from '../../components/elements/Loading';
+import ComposeWrapper from '../../components/utilities/ComposeWrapper';
+import { useDocumentInfo } from '../../components/utilities/DocumentInfo';
+import updateProjectSettingSchema, {
+  FormValues,
+} from '../../fields/schemas/projectSettings/updateProjectSetting';
+import { ProjectSettingContextProvider, useProjectSetting } from './Context';
 
 const ProjectPage: React.FC = () => {
   const { localizedLabel } = useDocumentInfo();

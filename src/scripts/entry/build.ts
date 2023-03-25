@@ -1,8 +1,8 @@
-import PathUtil from '@scripts/utilities/pathUtil';
-import Hooks from '@shared/features/hooks';
-import { launch } from '@shared/features/server';
 import express, { Express } from 'express';
+import Hooks from '../../shared/features/hooks';
+import { launch } from '../../shared/features/server';
 import '../utilities/envUtil';
+import PathUtil from '../utilities/pathUtil';
 
 // Safe to compile as it won't import webpack
 (async () => {

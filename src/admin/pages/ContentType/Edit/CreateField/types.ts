@@ -1,4 +1,4 @@
-import { Field } from '@shared/types';
+import { Field } from '../../../../../shared/types';
 
 export type Props = {
   slug: string;

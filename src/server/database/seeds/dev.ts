@@ -1,6 +1,6 @@
-import Output from '@scripts/utilities/output';
-import { oneWayHash } from '@server/utilities/oneWayHash';
 import { Knex } from 'knex';
+import Output from '../../../scripts/utilities/output';
+import { oneWayHash } from '../../../server/utilities/oneWayHash';
 import { getDatabase } from '../connection';
 
 const seedDev = async (): Promise<void> => {

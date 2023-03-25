@@ -1,7 +1,7 @@
-import Hooks from '@shared/features/hooks';
-import { launch } from '@shared/features/server';
 import { Express } from 'express';
 import httpProxy from 'http-proxy';
+import Hooks from '../../shared/features/hooks';
+import { launch } from '../../shared/features/server';
 import '../utilities/envUtil';
 
 (async () => {

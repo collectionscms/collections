@@ -1,9 +1,9 @@
-import path from 'path';
 import ReactRefreshPlugin from '@pmmmwh/react-refresh-webpack-plugin';
-import PathUtil from '@scripts/utilities/pathUtil';
 import { Express } from 'express';
+import path from 'path';
 import webpack from 'webpack';
 import { webpackAdminConfigure } from '../../webpack.config';
+import PathUtil from '../utilities/pathUtil';
 
 const compilerRun = (compiler: webpack.Compiler) => {
   return new Promise((resolve, reject) => {

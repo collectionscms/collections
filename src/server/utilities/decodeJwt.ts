@@ -1,5 +1,5 @@
-import { AuthUser } from '@shared/types';
 import jwtDecode from 'jwt-decode';
+import { AuthUser } from '../../shared/types';
 
 export const decodeJwt = (token: string): AuthUser => {
   try {

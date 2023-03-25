@@ -1,7 +1,7 @@
-import DeleteDocument from '@admin/components/elements/DeleteDocument';
 import { Menu, MenuItem } from '@mui/material';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import DeleteDocument from '../../../../components/elements/DeleteDocument';
 import { Props } from './types';
 
 const EditMenu: React.FC<Props> = ({ id, collectionId, menu, onSuccess, onClose }) => {

@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
-import { useColorMode } from '@admin/components/utilities/ColorMode';
 import React from 'react';
+import { useColorMode } from '../../utilities/ColorMode';
 import RenderCustomComponent from '../../utilities/RenderCustomComponent';
 
 const Logo: React.FC = () => {

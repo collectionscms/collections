@@ -1,4 +1,4 @@
-import { Column, ColumnField } from '@admin/components/elements/Table/types';
+import { Column, ColumnField } from '../components/elements/Table/types';
 
 const buildColumns = (
   fields: ColumnField[],

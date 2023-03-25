@@ -1,13 +1,13 @@
 #!/usr/bin/env node
-import buildScript from '@scripts/commands/build';
-import devScript from '@scripts/commands/dev';
-import initScript from '@scripts/commands/init';
-import startScript from '@scripts/commands/start';
-import migrate from '@server/database/migrate';
-import seedDev from '@server/database/seeds/dev';
-import seedProduction from '@server/database/seeds/production';
 import { Command } from 'commander';
 import packageJSON from '../package.json';
+import buildScript from './scripts/commands/build';
+import devScript from './scripts/commands/dev';
+import initScript from './scripts/commands/init';
+import startScript from './scripts/commands/start';
+import migrate from './server/database/migrate';
+import seedDev from './server/database/seeds/dev';
+import seedProduction from './server/database/seeds/production';
 
 const program = new Command();
 

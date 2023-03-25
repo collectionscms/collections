@@ -1,6 +1,6 @@
-import { Collection } from '@shared/types';
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWR from 'swr';
+import { Collection } from '../../../../shared/types';
 import api from '../../../utilities/api';
 import { useAuth } from '../Auth';
 
