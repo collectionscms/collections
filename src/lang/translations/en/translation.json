@@ -41,7 +41,7 @@
   "field": "Field Name",
   "label": "Label",
   "input-placeholder": "ex:",
-  "field_type": "Field Type",
+  "select_field_type": "Select field type",
   "text_field": "Text Field",
   "textarea": "Textarea",
   "field_property": "Field Property",

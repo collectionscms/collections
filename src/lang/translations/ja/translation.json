@@ -41,7 +41,7 @@
   "field": "フィールド名",
   "label": "ラベル",
   "input-placeholder": "例:",
-  "field_type": "フィールドの種類",
+  "select_field_type": "フィールドの種類を選択",
   "text_field": "テキストフィールド",
   "textarea": "テキストエリア",
   "field_property": "フィールドプロパティ",
