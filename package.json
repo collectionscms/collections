@@ -103,7 +103,7 @@
     "react-cookie": "^4.1.1",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.41.3",
-    "react-i18next": "^12.1.1",
+    "react-i18next": "^12.2.0",
     "react-refresh": "^0.14.0",
     "react-router-dom": "^6.4.4",
     "rimraf": "^4.0.5",
