@@ -55,7 +55,7 @@
     "@fontsource/roboto": "^4.5.8",
     "@hookform/resolvers": "^2.9.10",
     "@mui/icons-material": "^5.11.0",
-    "@mui/material": "^5.10.16",
+    "@mui/material": "^5.11.11",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.9",
     "@soda/friendly-errors-webpack-plugin": "^1.8.1",
     "argon2": "^0.30.3",
