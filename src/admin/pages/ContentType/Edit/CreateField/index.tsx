@@ -1,4 +1,5 @@
-import { Box, Drawer, Typography, useTheme } from '@mui/material';
+import { CloseOutlined } from '@mui/icons-material';
+import { Box, Drawer, IconButton, Stack, Typography, useTheme } from '@mui/material';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FieldInterface } from '../../../../../shared/types';
@@ -36,10 +37,15 @@ const CreateField: React.FC<Props> = ({ slug, openState, onSuccess, onClose }) =
         onClose={onToggle()}
         sx={{ zIndex: theme.zIndex.appBar + 200 }}
       >
-        <Box role="presentation" sx={{ width: 800 }}>
-          <Box sx={{ p: 2 }}>
-            <Typography variant="h6">{t('select_field_type')}</Typography>
-          </Box>
+        <Box role="presentation">
+          <Stack direction="row" columnGap={2} sx={{ p: 1 }}>
+            <IconButton aria-label="close" onClick={onClose}>
+              <CloseOutlined />
+            </IconButton>
+            <Box display="flex" alignItems="center">
+              <Typography variant="h6">{t('select_field_type')}</Typography>
+            </Box>
+          </Stack>
           <InputInterface
             slug={slug}
             expanded={fieldInterface === 'input'}
