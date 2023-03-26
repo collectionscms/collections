@@ -72,6 +72,8 @@
   "already_logged_in": "You&apos;re already logged in",
   "reset_password": "Reset Password",
   "reset_password_success": "Password successfully reset.",
+  "manually_enter_one_line": "Manually enter one line of values",
+  "manually_enter_multi_line": "Manually enter multi-line of values",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion.",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?"

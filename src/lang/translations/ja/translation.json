@@ -72,6 +72,8 @@
   "already_logged_in": "すでにログイン済みです",
   "reset_password": "パスワードの再設定",
   "reset_password_success": "パスワードを再設定しました",
+  "manually_enter_one_line": "手動で1行の値を入力します",
+  "manually_enter_multi_line": "手動で複数行の値を入力します",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？"
