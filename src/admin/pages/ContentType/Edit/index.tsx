@@ -114,7 +114,7 @@ const EditPage: React.FC = () => {
         </Grid>
         <Grid container gap={2} columns={{ xs: 1, md: 2 }}>
           <Grid xs={1}>
-            <Stack gap={2}>
+            <Stack gap={3}>
               <TableContainer component={Paper}>
                 <Table aria-label="simple table">
                   <TableBody>
@@ -141,11 +141,7 @@ const EditPage: React.FC = () => {
                   </TableBody>
                 </Table>
               </TableContainer>
-              <Button
-                variant="contained"
-                onClick={() => onToggleCreateField(true)}
-                sx={{ width: '100%' }}
-              >
+              <Button variant="contained" onClick={() => onToggleCreateField(true)} size="large">
                 {t('add_field')}
               </Button>
             </Stack>

@@ -1,49 +1,18 @@
-import { yupResolver } from '@hookform/resolvers/yup';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Box,
-  Button,
-  Checkbox,
-  Drawer,
-  FormControlLabel,
-  FormHelperText,
-  InputLabel,
-  Stack,
-  TextField,
-  Typography,
-  useTheme,
-} from '@mui/material';
-import Grid from '@mui/material/Unstable_Grid2';
-import React, { useEffect, useState } from 'react';
-import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { CloseOutlined } from '@mui/icons-material';
+import { Box, Drawer, IconButton, Stack, Typography, useTheme } from '@mui/material';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FieldInterface } from '../../../../../shared/types';
-import logger from '../../../../../utilities/logger';
 import ComposeWrapper from '../../../../components/utilities/ComposeWrapper';
-import createFieldSchema, {
-  FormValues,
-} from '../../../../fields/schemas/collectionFields/createField';
-import { FieldContextProvider, useField } from './Context';
+import { FieldContextProvider } from './Context';
+import InputInterface from './FieldType/input';
+import InputMultilineInterface from './FieldType/inputMultiline';
 import { Props } from './types';
 
 const CreateField: React.FC<Props> = ({ slug, openState, onSuccess, onClose }) => {
   const [fieldInterface, setFieldInterface] = useState<FieldInterface>(null);
   const theme = useTheme();
   const { t } = useTranslation();
-  const { createField } = useField();
-  const { data, trigger, isMutating } = createField(slug);
-  const {
-    control,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<FormValues>({
-    defaultValues: { field: '', label: '', required: false },
-    resolver: yupResolver(createFieldSchema(t)),
-  });
 
   const onToggle = () => (event: React.KeyboardEvent | React.MouseEvent) => {
     if (
@@ -56,36 +25,9 @@ const CreateField: React.FC<Props> = ({ slug, openState, onSuccess, onClose }) =
     onClose();
   };
 
-  const onSelectedFieldInterface = (fieldInterface: FieldInterface) => {
-    setFieldInterface(fieldInterface);
+  const onSelectedFieldInterface = (field: FieldInterface) => {
+    fieldInterface === field ? setFieldInterface(null) : setFieldInterface(field);
   };
-
-  const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
-    try {
-      await trigger({
-        collection: slug,
-        field: form.field,
-        label: form.label,
-        interface: fieldInterface,
-        required: form.required,
-        readonly: false,
-        hidden: false,
-      });
-    } catch (e) {
-      logger.error(e);
-    }
-  };
-
-  const resetForm = () => {
-    reset();
-    setFieldInterface(null);
-  };
-
-  useEffect(() => {
-    if (data === undefined) return;
-    onSuccess(data);
-    resetForm();
-  }, [data]);
 
   return (
     <Box>
@@ -96,109 +38,26 @@ const CreateField: React.FC<Props> = ({ slug, openState, onSuccess, onClose }) =
         sx={{ zIndex: theme.zIndex.appBar + 200 }}
       >
         <Box role="presentation">
-          <Accordion defaultExpanded>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1a-content"
-              id="panel1a-header"
-            >
-              <Typography>{t('field_type')}</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Grid
-                container
-                spacing={3}
-                columns={{ xs: 1, sm: 4, md: 8 }}
-                sx={{ width: { xs: 400, sm: 600, md: 800 } }}
-              >
-                <Grid xs={1} sm={2} md={2}>
-                  <Button
-                    variant={fieldInterface === 'input' ? 'contained' : 'outlined'}
-                    onClick={() => onSelectedFieldInterface('input')}
-                    fullWidth
-                  >
-                    {t('text_field')}
-                  </Button>
-                </Grid>
-                <Grid xs={1} sm={2} md={2}>
-                  <Button
-                    variant={fieldInterface === 'inputMultiline' ? 'contained' : 'outlined'}
-                    onClick={() => onSelectedFieldInterface('inputMultiline')}
-                    fullWidth
-                  >
-                    {t('textarea')}
-                  </Button>
-                </Grid>
-              </Grid>
-            </AccordionDetails>
-          </Accordion>
-          <Accordion disabled={fieldInterface === null} expanded={fieldInterface !== null}>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel2a-content"
-              id="panel2a-header"
-            >
-              <Typography>{t('field_property')}</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Stack component="form" onSubmit={handleSubmit(onSubmit)} rowGap={3}>
-                <Grid container spacing={3} columns={{ xs: 1, sm: 4 }}>
-                  <Grid xs={1} sm={2}>
-                    <InputLabel required>{t('field')}</InputLabel>
-                    <Controller
-                      name="field"
-                      control={control}
-                      render={({ field }) => (
-                        <TextField
-                          {...field}
-                          type="text"
-                          fullWidth
-                          placeholder={`${t('input-placeholder')} name`}
-                          error={errors.field !== undefined}
-                        />
-                      )}
-                    />
-                    <FormHelperText error>{errors.field?.message}</FormHelperText>
-                  </Grid>
-                  <Grid xs={1} sm={2}>
-                    <InputLabel required>{t('label')}</InputLabel>
-                    <Controller
-                      name="label"
-                      control={control}
-                      render={({ field }) => (
-                        <TextField
-                          {...field}
-                          type="text"
-                          fullWidth
-                          placeholder={`${t('input-placeholder')} ${t('name')}`}
-                          error={errors.label !== undefined}
-                        />
-                      )}
-                    />
-                    <FormHelperText error>{errors.label?.message}</FormHelperText>
-                  </Grid>
-                  <Grid xs={1} sm={2}>
-                    <InputLabel htmlFor="field">{t('required_fields')}</InputLabel>
-                    <Controller
-                      name="required"
-                      control={control}
-                      render={({ field }) => (
-                        <FormControlLabel
-                          {...field}
-                          label={t('required_at_creation')}
-                          control={<Checkbox />}
-                        />
-                      )}
-                    />
-                    <FormHelperText error>{errors.required?.message}</FormHelperText>
-                  </Grid>
-                </Grid>
-                <Button variant="contained" type="submit" disabled={isMutating} fullWidth>
-                  {t('save')}
-                </Button>
-              </Stack>
-            </AccordionDetails>
-          </Accordion>
+          <Stack direction="row" columnGap={2} sx={{ p: 1 }}>
+            <IconButton aria-label="close" onClick={onClose}>
+              <CloseOutlined />
+            </IconButton>
+            <Box display="flex" alignItems="center">
+              <Typography variant="h6">{t('select_field_type')}</Typography>
+            </Box>
+          </Stack>
+          <InputInterface
+            slug={slug}
+            expanded={fieldInterface === 'input'}
+            handleChange={(field) => onSelectedFieldInterface(field)}
+            onSuccess={onSuccess}
+          />
+          <InputMultilineInterface
+            slug={slug}
+            expanded={fieldInterface === 'inputMultiline'}
+            handleChange={(field) => onSelectedFieldInterface(field)}
+            onSuccess={onSuccess}
+          />
         </Box>
       </Drawer>
     </Box>
