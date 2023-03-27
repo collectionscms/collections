@@ -25,7 +25,7 @@ import createFieldSchema, {
 import { useField } from '../Context';
 import { Props } from './types';
 
-const InputMultilineInterface: React.FC<Props> = (props) => {
+const InputMultilineType: React.FC<Props> = (props) => {
   const { slug, expanded, handleChange, onSuccess } = props;
   const { t } = useTranslation();
   const { createField } = useField();
@@ -72,8 +72,10 @@ const InputMultilineInterface: React.FC<Props> = (props) => {
               <NotesOutlined />
             </Box>
             <Stack direction="column">
-              <Typography variant="subtitle1">{t('textarea')}</Typography>
-              <Typography variant="caption">{t('manually_enter_multi_line')}</Typography>
+              <Typography variant="subtitle1">{t('field_interface.input_multi_line')}</Typography>
+              <Typography variant="caption">
+                {t('field_interface.input_multi_line_caption')}
+              </Typography>
             </Stack>
           </Stack>
         </AccordionSummary>
@@ -140,4 +142,4 @@ const InputMultilineInterface: React.FC<Props> = (props) => {
   );
 };
 
-export default InputMultilineInterface;
+export default InputMultilineType;
