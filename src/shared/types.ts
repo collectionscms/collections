@@ -45,7 +45,19 @@ export type Collection = {
   hidden: boolean;
 } & PrimaryKey;
 
-export type FieldInterface = 'input' | 'inputMultiline' | 'inputRichTextHtml' | 'inputRichTextMd';
+export type FieldInterface =
+  | 'input'
+  | 'inputMultiline'
+  | 'inputRichTextHtml'
+  | 'inputRichTextMd'
+  | 'selectDropdown'
+  | 'dateTime'
+  | 'file'
+  | 'fileImage'
+  | 'list'
+  | 'listO2o' // one-to-one
+  | 'listO2m' // one-to-many
+  | 'selectDropdownM2o'; // many-to-one
 export type FieldOption = {
   key: string;
   value: string;

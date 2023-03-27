@@ -25,7 +25,7 @@ import createFieldSchema, {
 import { useField } from '../Context';
 import { Props } from './types';
 
-const InputInterface: React.FC<Props> = (props) => {
+const InputType: React.FC<Props> = (props) => {
   const { slug, expanded, handleChange, onSuccess } = props;
   const { t } = useTranslation();
   const { createField } = useField();
@@ -67,8 +67,10 @@ const InputInterface: React.FC<Props> = (props) => {
               <TextFieldsOutlined />
             </Box>
             <Stack direction="column">
-              <Typography variant="subtitle1">{t('text_field')}</Typography>
-              <Typography variant="caption">{t('manually_enter_one_line')}</Typography>
+              <Typography variant="subtitle1">{t('field_interface.input_one_line')}</Typography>
+              <Typography variant="caption">
+                {t('field_interface.input_one_line_caption')}
+              </Typography>
             </Stack>
           </Stack>
         </AccordionSummary>
@@ -135,4 +137,4 @@ const InputInterface: React.FC<Props> = (props) => {
   );
 };
 
-export default InputInterface;
+export default InputType;

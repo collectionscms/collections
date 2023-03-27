@@ -5,8 +5,16 @@ import { useTranslation } from 'react-i18next';
 import { FieldInterface } from '../../../../../shared/types';
 import ComposeWrapper from '../../../../components/utilities/ComposeWrapper';
 import { FieldContextProvider } from './Context';
-import InputInterface from './FieldType/input';
-import InputMultilineInterface from './FieldType/inputMultiline';
+import DateTimeType from './FieldType/dateTime';
+import FileType from './FieldType/file';
+import FileImageType from './FieldType/fileImage';
+import InputType from './FieldType/input';
+import InputMultilineType from './FieldType/inputMultiline';
+import ListType from './FieldType/list';
+import ListO2mType from './FieldType/listO2m';
+import ListO2oType from './FieldType/listO2o';
+import SelectDropdownType from './FieldType/selectDropdown';
+import SelectDropdownM2oType from './FieldType/selectDropdownM2o';
 import { Props } from './types';
 
 const CreateField: React.FC<Props> = ({ slug, openState, onSuccess, onClose }) => {
@@ -46,15 +54,63 @@ const CreateField: React.FC<Props> = ({ slug, openState, onSuccess, onClose }) =
               <Typography variant="h6">{t('select_field_type')}</Typography>
             </Box>
           </Stack>
-          <InputInterface
+          <InputType
             slug={slug}
             expanded={fieldInterface === 'input'}
             handleChange={(field) => onSelectedFieldInterface(field)}
             onSuccess={onSuccess}
           />
-          <InputMultilineInterface
+          <InputMultilineType
             slug={slug}
             expanded={fieldInterface === 'inputMultiline'}
+            handleChange={(field) => onSelectedFieldInterface(field)}
+            onSuccess={onSuccess}
+          />
+          <SelectDropdownType
+            slug={slug}
+            expanded={fieldInterface === 'selectDropdown'}
+            handleChange={(field) => onSelectedFieldInterface(field)}
+            onSuccess={onSuccess}
+          />
+          <DateTimeType
+            slug={slug}
+            expanded={fieldInterface === 'dateTime'}
+            handleChange={(field) => onSelectedFieldInterface(field)}
+            onSuccess={onSuccess}
+          />
+          <FileType
+            slug={slug}
+            expanded={fieldInterface === 'file'}
+            handleChange={(field) => onSelectedFieldInterface(field)}
+            onSuccess={onSuccess}
+          />
+          <FileImageType
+            slug={slug}
+            expanded={fieldInterface === 'fileImage'}
+            handleChange={(field) => onSelectedFieldInterface(field)}
+            onSuccess={onSuccess}
+          />
+          <ListType
+            slug={slug}
+            expanded={fieldInterface === 'list'}
+            handleChange={(field) => onSelectedFieldInterface(field)}
+            onSuccess={onSuccess}
+          />
+          <ListO2oType
+            slug={slug}
+            expanded={fieldInterface === 'listO2o'}
+            handleChange={(field) => onSelectedFieldInterface(field)}
+            onSuccess={onSuccess}
+          />
+          <ListO2mType
+            slug={slug}
+            expanded={fieldInterface === 'listO2m'}
+            handleChange={(field) => onSelectedFieldInterface(field)}
+            onSuccess={onSuccess}
+          />
+          <SelectDropdownM2oType
+            slug={slug}
+            expanded={fieldInterface === 'selectDropdownM2o'}
             handleChange={(field) => onSelectedFieldInterface(field)}
             onSuccess={onSuccess}
           />
