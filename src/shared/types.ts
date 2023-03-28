@@ -59,6 +59,9 @@ export type FieldInterface =
   | 'listO2m' // one-to-many
   | 'selectDropdownM2o'; // many-to-one
 export type FieldOption = {
+  choices?: Choice[];
+};
+export type Choice = {
   key: string;
   value: string;
 };
@@ -68,11 +71,11 @@ export type Field = {
   label: string;
   special: string | null;
   interface: FieldInterface;
+  options: FieldOption | null;
   required: boolean;
   readonly: boolean;
   hidden: boolean;
   sort: number;
-  fieldOptions?: FieldOption[];
 } & PrimaryKey;
 
 export type User = {

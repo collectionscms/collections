@@ -57,9 +57,12 @@ app.post(
         field: 'id',
         label: 'id',
         interface: 'input',
+        options: null,
         required: true,
         readonly: true,
         hidden: true,
+        special: null,
+        sort: 1,
       });
 
       res.json({ collection });
