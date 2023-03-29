@@ -70,6 +70,12 @@
   "already_logged_in": "すでにログイン済みです",
   "reset_password": "パスワードの再設定",
   "reset_password_success": "パスワードを再設定しました",
+  "key": "キー",
+  "value": "値",
+  "add": "追加",
+  "choices": "選択肢",
+  "add_new_choice": "選択肢を追加",
+  "no_choice": "選択肢がありません",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？"
@@ -113,7 +119,7 @@
     "list_o2m": "複数コンテンツ参照",
     "list_o2m_caption": "参照型のフィールドです。他コンテンツと「1対N」で参照します。",
     "select_dropdown": "セレクトドロップダウン",
-    "select_dropdown_caption": "選択型のフィールドです。アイテムも自由に作成できます。",
+    "select_dropdown_caption": "選択型のフィールドです。選択肢も自由に作成できます。",
     "select_dropdown_m2o": "複数コンテンツ被参照",
     "select_dropdown_m2o_caption": "参照型のフィールドです。他コンテンツから「N対1」で参照されます。"
   },

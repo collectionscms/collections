@@ -70,6 +70,12 @@
   "already_logged_in": "You&apos;re already logged in",
   "reset_password": "Reset Password",
   "reset_password_success": "Password successfully reset.",
+  "key": "Key",
+  "value": "Value",
+  "add": "Add",
+  "choices": "Choices",
+  "add_new_choice": "Add new choice",
+  "no_choice": "No choice",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion.",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?"
@@ -113,7 +119,7 @@
     "list_o2m": "Multiple Content References",
     "list_o2m_caption": "Reference type field. Referenced 'one-to-many' with other content.",
     "select_dropdown": "Select Dropdown",
-    "select_dropdown_caption": "Selection type field. You can create any item to be selected.",
+    "select_dropdown_caption": "Selection type field. You can create your own choices.",
     "select_dropdown_m2o": "Multiple Content Referencing",
     "select_dropdown_m2o_caption": "Reference type field. Referenced 'many to one' from other contents."
   },
