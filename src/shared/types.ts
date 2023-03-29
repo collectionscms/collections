@@ -62,7 +62,7 @@ export type FieldOption = {
   choices?: Choice[];
 };
 export type Choice = {
-  key: string;
+  label: string;
   value: string;
 };
 export type Field = {

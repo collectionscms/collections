@@ -166,7 +166,7 @@ const SelectDropdownType: React.FC<Props> = (props) => {
                   fields.map((field, index) => (
                     <Stack direction="row" columnGap={1} key={field.id}>
                       <Box display="flex" alignItems="center">
-                        <Typography>{field.key}</Typography>
+                        <Typography>{field.label}</Typography>
                       </Box>
                       <IconButton onClick={() => remove(index)}>
                         <Cancel />

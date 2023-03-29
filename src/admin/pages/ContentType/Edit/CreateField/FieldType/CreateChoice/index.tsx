@@ -29,7 +29,7 @@ const CreateChoice: React.FC<Props> = ({ openState, onSuccess, onClose }) => {
     reset,
     formState: { errors },
   } = useForm<FormValues>({
-    defaultValues: { key: '', value: '' },
+    defaultValues: { label: '', value: '' },
     resolver: yupResolver(createChoiceSchema()),
   });
 
@@ -40,7 +40,7 @@ const CreateChoice: React.FC<Props> = ({ openState, onSuccess, onClose }) => {
   };
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
-    onSuccess({ key: form.key, value: form.value });
+    onSuccess({ label: form.label, value: form.value });
     reset();
   };
 
@@ -64,17 +64,6 @@ const CreateChoice: React.FC<Props> = ({ openState, onSuccess, onClose }) => {
           <Stack rowGap={3} sx={{ p: 2 }}>
             <Grid container spacing={3} columns={{ xs: 1, sm: 4 }}>
               <Grid xs={1} sm={2}>
-                <InputLabel required>{t('key')}</InputLabel>
-                <Controller
-                  name="key"
-                  control={control}
-                  render={({ field }) => (
-                    <TextField {...field} type="text" fullWidth error={errors.key !== undefined} />
-                  )}
-                />
-                <FormHelperText error>{errors.key?.message}</FormHelperText>
-              </Grid>
-              <Grid xs={1} sm={2}>
                 <InputLabel required>{t('value')}</InputLabel>
                 <Controller
                   name="value"
@@ -89,6 +78,22 @@ const CreateChoice: React.FC<Props> = ({ openState, onSuccess, onClose }) => {
                   )}
                 />
                 <FormHelperText error>{errors.value?.message}</FormHelperText>
+              </Grid>
+              <Grid xs={1} sm={2}>
+                <InputLabel required>{t('label')}</InputLabel>
+                <Controller
+                  name="label"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      type="text"
+                      fullWidth
+                      error={errors.label !== undefined}
+                    />
+                  )}
+                />
+                <FormHelperText error>{errors.label?.message}</FormHelperText>
               </Grid>
             </Grid>
             <Button variant="contained" type="submit" size="large" fullWidth>
