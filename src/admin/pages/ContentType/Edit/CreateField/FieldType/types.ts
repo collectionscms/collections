@@ -5,4 +5,5 @@ export type Props = {
   expanded: boolean;
   handleChange: (field: FieldInterface) => void;
   onSuccess: (field: Field) => void;
+  onChangeParentViewInvisible?: (state: boolean) => void;
 };
