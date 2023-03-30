@@ -72,11 +72,11 @@ export type Field = {
   special: string | null;
   interface: FieldInterface;
   options: string | null;
-  fieldOption: FieldOption | null;
   required: boolean;
   readonly: boolean;
   hidden: boolean;
   sort: number;
+  fieldOption?: FieldOption | null;
 } & PrimaryKey;
 
 export type User = {
