@@ -20,6 +20,7 @@ const toType = (fieldInterface: string): (typeof Type)[keyof typeof Type] => {
     case 'inputMultiline':
     case 'inputRichTextHtml':
     case 'inputRichTextMd':
+    case 'selectDropdown':
       return Type.Text;
     default:
       return Type.Object;

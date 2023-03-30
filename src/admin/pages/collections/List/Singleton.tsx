@@ -8,7 +8,7 @@ import RenderFields from '../../../components/forms/RenderFields';
 import { useAuth } from '../../../components/utilities/Auth';
 import ComposeWrapper from '../../../components/utilities/ComposeWrapper';
 import ApiPreview from '../ApiPreview';
-import { ContentContextProvider, useContent } from "../Context";
+import { ContentContextProvider, useContent } from '../Context';
 import { Props } from './types';
 
 const SingletonPage: React.FC<Props> = ({ collection }) => {
@@ -33,6 +33,7 @@ const SingletonPage: React.FC<Props> = ({ collection }) => {
     reset,
   } = updateContent(collection.collection, content?.id);
   const {
+    control,
     register,
     handleSubmit,
     setValue,
@@ -101,7 +102,12 @@ const SingletonPage: React.FC<Props> = ({ collection }) => {
       <Grid container columns={{ xs: 1, lg: 2 }}>
         <Grid xs={1}>
           <Stack rowGap={3}>
-            <RenderFields register={register} errors={errors} fields={metaFields || []} />
+            <RenderFields
+              control={control}
+              register={register}
+              errors={errors}
+              fields={metaFields || []}
+            />
           </Stack>
         </Grid>
       </Grid>

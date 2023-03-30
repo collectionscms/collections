@@ -71,7 +71,8 @@ export type Field = {
   label: string;
   special: string | null;
   interface: FieldInterface;
-  options: FieldOption | null;
+  options: string | null;
+  fieldOption: FieldOption | null;
   required: boolean;
   readonly: boolean;
   hidden: boolean;

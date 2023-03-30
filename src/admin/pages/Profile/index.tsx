@@ -36,13 +36,7 @@ const MePage: React.FC = () => {
         <Grid xs={12} md={6}>
           <FormControl fullWidth>
             <FormLabel>{t('language')}</FormLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              displayEmpty
-              value={i18n.language}
-              onChange={handleChange}
-            >
+            <Select displayEmpty value={i18n.language} onChange={handleChange}>
               <MenuItem value="ja">{t('japanese')}</MenuItem>
               <MenuItem value="en">English</MenuItem>
             </Select>

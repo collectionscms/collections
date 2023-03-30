@@ -3,7 +3,7 @@ import React from 'react';
 import fieldTypes from '../field-types';
 import { Props } from './types';
 
-const RenderFields: React.FC<Props> = ({ register, errors, fields }) => {
+const RenderFields: React.FC<Props> = ({ control, register, errors, fields }) => {
   const formFields = fields.filter((field) => !field.hidden);
 
   const invalidMessage = (field: string): string | null => {
@@ -23,7 +23,7 @@ const RenderFields: React.FC<Props> = ({ register, errors, fields }) => {
             <InputLabel htmlFor={meta.field} required={Boolean(meta.required)}>
               {meta.label}
             </InputLabel>
-            <FieldComponent register={register} errors={errors} field={meta} />
+            <FieldComponent control={control} register={register} errors={errors} field={meta} />
             <FormHelperText error>{invalidMessage(meta.field)}</FormHelperText>
           </Box>
         );

@@ -20,6 +20,7 @@ app.get(
 
     fields.forEach((field) => {
       field.field = camelCase(field.field);
+      field.fieldOption = field.options ? JSON.parse(field.options) : null;
     });
 
     res.json({
