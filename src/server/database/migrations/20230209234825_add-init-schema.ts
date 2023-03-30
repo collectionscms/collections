@@ -38,6 +38,10 @@ export async function up(knex: Knex): Promise<void> {
     table.string('collection', 64).notNullable();
     table.boolean('singleton').notNullable().defaultTo(0);
     table.boolean('hidden').notNullable().defaultTo(0);
+    table.string('status_field', 64);
+    table.string('publish_value', 64);
+    table.string('close_value', 64);
+    table.string('draft_value', 64);
     table.timestamps(true, true);
   });
 

@@ -135,12 +135,20 @@ const seedingData = async (): Promise<void> => {
       collection: 'Post',
       singleton: false,
       hidden: false,
+      statusField: null,
+      publishValue: null,
+      closeValue: null,
+      draftValue: null,
     },
     {
       id: 2,
       collection: 'Company',
       singleton: true,
       hidden: false,
+      statusField: null,
+      publishValue: null,
+      closeValue: null,
+      draftValue: null,
     },
   ]);
 
