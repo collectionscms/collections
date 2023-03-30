@@ -48,18 +48,11 @@ export async function up(knex: Knex): Promise<void> {
     table.string('label', 64).notNullable();
     table.string('special', 64);
     table.string('interface', 64);
+    table.text('options');
     table.boolean('readonly').notNullable().defaultTo(0);
     table.boolean('required').notNullable().defaultTo(0);
     table.boolean('hidden').notNullable().defaultTo(0);
     table.integer('sort', 8);
-    table.timestamps(true, true);
-  });
-
-  await knex.schema.createTable('superfast_field_options', (table) => {
-    table.increments('id').primary().notNullable();
-    table.string('key', 64).notNullable();
-    table.string('value', 64).notNullable();
-    table.integer('field_id').unsigned().index().references('id').inTable('superfast_fields');
     table.timestamps(true, true);
   });
 
@@ -91,7 +84,6 @@ export async function down(knex: Knex): Promise<void> {
     .dropTable('superfast_permissions')
     .dropTable('superfast_collections')
     .dropTable('superfast_fields')
-    .dropTable('superfast_field_options')
     .dropTable('superfast_relations')
     .dropTable('superfast_project_settings');
 }

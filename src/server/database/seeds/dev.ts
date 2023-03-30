@@ -34,7 +34,6 @@ const resetAll = async (database: Knex): Promise<void> => {
   await database('superfast_permissions').delete();
   await database('superfast_collections').delete();
   await database('superfast_fields').delete();
-  await database('superfast_field_options').delete();
   await database('superfast_relations').delete();
   await database('superfast_project_settings').delete();
   await database.schema.dropTableIfExists('post');
@@ -156,6 +155,7 @@ const seedingData = async (): Promise<void> => {
       label: 'id',
       special: null,
       interface: 'input',
+      options: null,
       readonly: true,
       required: true,
       hidden: true,
@@ -168,6 +168,7 @@ const seedingData = async (): Promise<void> => {
       label: 'タイトル',
       special: null,
       interface: 'input',
+      options: null,
       readonly: false,
       required: false,
       hidden: false,
@@ -180,6 +181,7 @@ const seedingData = async (): Promise<void> => {
       label: '本文',
       special: null,
       interface: 'inputMultiline',
+      options: null,
       readonly: false,
       required: false,
       hidden: false,
@@ -192,6 +194,7 @@ const seedingData = async (): Promise<void> => {
       label: '著者',
       special: null,
       interface: 'input',
+      options: null,
       readonly: false,
       required: false,
       hidden: false,
@@ -205,6 +208,7 @@ const seedingData = async (): Promise<void> => {
       label: 'id',
       special: null,
       interface: 'input',
+      options: null,
       readonly: true,
       required: true,
       hidden: true,
@@ -217,6 +221,7 @@ const seedingData = async (): Promise<void> => {
       label: '会社名',
       special: null,
       interface: 'input',
+      options: null,
       readonly: false,
       required: false,
       hidden: false,
@@ -229,6 +234,7 @@ const seedingData = async (): Promise<void> => {
       label: 'メールアドレス',
       special: null,
       interface: 'input',
+      options: null,
       readonly: false,
       required: false,
       hidden: false,
@@ -241,6 +247,7 @@ const seedingData = async (): Promise<void> => {
       label: '住所',
       special: null,
       interface: 'input',
+      options: null,
       readonly: false,
       required: false,
       hidden: false,

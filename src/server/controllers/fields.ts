@@ -79,6 +79,9 @@ const addColumnToTable = (field: Field, table: Knex.CreateTableBuilder) => {
     case 'input':
       column = table.string(field.field, 255);
       break;
+    case 'selectDropdown':
+      column = table.string(field.field, 255).defaultTo('');
+      break;
     case 'inputMultiline':
     case 'inputRichTextHtml':
     case 'inputRichTextMd':

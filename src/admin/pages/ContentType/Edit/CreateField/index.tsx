@@ -19,22 +19,22 @@ import { Props } from './types';
 
 const CreateField: React.FC<Props> = ({ slug, openState, onSuccess, onClose }) => {
   const [fieldInterface, setFieldInterface] = useState<FieldInterface>(null);
+  const [drawerVisibility, setDrawerVisibility] = useState(false);
   const theme = useTheme();
   const { t } = useTranslation();
 
-  const onToggle = () => (event: React.KeyboardEvent | React.MouseEvent) => {
-    if (
-      event.type === 'keydown' &&
-      ((event as React.KeyboardEvent).key === 'Tab' ||
-        (event as React.KeyboardEvent).key === 'Shift')
-    ) {
-      return;
+  const onToggle = () => (event: React.KeyboardEvent) => {
+    if (event.type === 'keydown' && (event as React.KeyboardEvent).key === 'Escape') {
+      onClose();
     }
-    onClose();
   };
 
   const onSelectedFieldInterface = (field: FieldInterface) => {
     fieldInterface === field ? setFieldInterface(null) : setFieldInterface(field);
+  };
+
+  const onChangeParentViewInvisible = (state: boolean) => {
+    setDrawerVisibility(state);
   };
 
   return (
@@ -45,7 +45,7 @@ const CreateField: React.FC<Props> = ({ slug, openState, onSuccess, onClose }) =
         onClose={onToggle()}
         sx={{ zIndex: theme.zIndex.appBar + 200 }}
       >
-        <Box role="presentation">
+        <Box sx={{ overflowY: 'scroll', maxWidth: 660 }} hidden={drawerVisibility}>
           <Stack direction="row" columnGap={2} sx={{ p: 1 }}>
             <IconButton aria-label="close" onClick={onClose}>
               <CloseOutlined />
@@ -71,6 +71,7 @@ const CreateField: React.FC<Props> = ({ slug, openState, onSuccess, onClose }) =
             expanded={fieldInterface === 'selectDropdown'}
             handleChange={(field) => onSelectedFieldInterface(field)}
             onSuccess={onSuccess}
+            onChangeParentViewInvisible={onChangeParentViewInvisible}
           />
           <DateTimeType
             slug={slug}
