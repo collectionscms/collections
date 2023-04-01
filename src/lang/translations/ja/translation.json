@@ -75,6 +75,11 @@
   "choices": "選択肢",
   "add_new_choice": "選択肢を追加",
   "no_choice": "選択肢がありません",
+  "optional_system_fields": "オプションのシステムフィールド",
+  "public_status": "公開ステータス",
+  "draft_status": "下書き",
+  "publish_status": "公開中",
+  "close_status": "公開終了",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？"
