@@ -83,7 +83,7 @@ app.post(
           id: null,
           collection: req.body.collection,
           field: 'status',
-          label: 'status',
+          label: 'Status',
           interface: 'selectDropdown',
           required: true,
           readonly: false,
@@ -119,6 +119,7 @@ app.patch(
       ? {
           singleton: req.body.singleton,
           hidden: req.body.hidden,
+          statusField: req.body.statusField,
           publishValue: req.body.publishValue,
           closeValue: req.body.closeValue,
           draftValue: req.body.draftValue,
@@ -126,6 +127,7 @@ app.patch(
       : {
           singleton: req.body.singleton,
           hidden: req.body.hidden,
+          statusField: null,
         };
 
     await repository.transaction(async (tx) => {
@@ -135,7 +137,7 @@ app.patch(
         const collection = await repository.transacting(tx).readOne(id);
         const fields = await fieldsRepository
           .transacting(tx)
-          .read({ collection: collection.collection, field: 'status' });
+          .read({ collection: collection.collection, field: req.body.statusField });
 
         await fieldsRepository.transacting(tx).update(fields[0].id, {
           options: JSON.stringify({

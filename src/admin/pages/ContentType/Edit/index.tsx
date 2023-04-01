@@ -5,8 +5,11 @@ import {
   Button,
   Checkbox,
   FormControlLabel,
+  FormHelperText,
   InputLabel,
+  MenuItem,
   Paper,
+  Select,
   Stack,
   Table,
   TableBody,
@@ -50,8 +53,8 @@ const EditPage: React.FC = () => {
   const { trigger, isMutating } = updateCollection(id);
 
   // Get the choice object for a given status value.
-  const getChoice = (statusValue: string): Choice | null => {
-    const field = fields.filter((field) => field.field === 'status')[0];
+  const getChoice = (statusField: string, statusValue: string): Choice | null => {
+    const field = fields.filter((field) => field.field === statusField)[0];
     return field
       ? field.fieldOption.choices.filter((choice) => choice.value === statusValue)[0]
       : null;
@@ -61,37 +64,40 @@ const EditPage: React.FC = () => {
     control,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
       hidden: Boolean(meta.hidden),
       singleton: Boolean(meta.singleton),
       status: meta.statusField !== null ? true : false,
-      draftLabel: '',
-      draftValue: '',
-      closeLabel: '',
-      closeValue: '',
-      publishLabel: '',
-      publishValue: '',
+      statusField: meta.statusField || '',
+      draftLabel: 'Draft',
+      draftValue: 'draft',
+      closeLabel: 'Close',
+      closeValue: 'closed',
+      publishLabel: 'Publish',
+      publishValue: 'published',
     },
     resolver: yupResolver(updateCollectionSchema()),
   });
+  const statusEnabled = watch('status');
 
   useEffect(() => {
     if (fields === undefined) return;
-    const draft = getChoice(meta.draftValue);
+    const draft = getChoice(meta.statusField, meta.draftValue);
     if (draft) {
       setValue('draftLabel', draft.label);
       setValue('draftValue', draft.value);
     }
 
-    const publish = getChoice(meta.publishValue);
+    const publish = getChoice(meta.statusField, meta.publishValue);
     if (publish) {
       setValue('publishLabel', publish.label);
       setValue('publishValue', publish.value);
     }
 
-    const close = getChoice(meta.closeValue);
+    const close = getChoice(meta.statusField, meta.closeValue);
     if (close) {
       setValue('closeLabel', close.label);
       setValue('closeValue', close.value);
@@ -229,9 +235,55 @@ const EditPage: React.FC = () => {
             </Box>
           </Grid>
         </Grid>
-        {meta.statusField && (
+        <Typography variant="h6">{t('public_status')}</Typography>
+        <Grid container spacing={3} columns={{ xs: 1, md: 4 }}>
+          <Grid xs={1}>
+            <Controller
+              name="status"
+              control={control}
+              render={({ field }) => (
+                <FormControlLabel
+                  {...field}
+                  label={t('valid')}
+                  control={<Checkbox checked={field.value} />}
+                />
+              )}
+            />
+          </Grid>
+          {statusEnabled && (
+            <Grid xs={1}>
+              <InputLabel required>{t('public_status_field')}</InputLabel>
+              <Controller
+                name="statusField"
+                control={control}
+                defaultValue={''}
+                render={({ field }) => (
+                  <Select
+                    name="statusField"
+                    {...field}
+                    fullWidth
+                    defaultValue={''}
+                    error={errors.statusField !== undefined}
+                  >
+                    <MenuItem value="">
+                      <em>None</em>
+                    </MenuItem>
+                    {fields
+                      .filter((field) => !field.readonly)
+                      .map((field) => (
+                        <MenuItem value={field.field} key={field.id}>
+                          {field.field}
+                        </MenuItem>
+                      ))}
+                  </Select>
+                )}
+              />
+              <FormHelperText error>{errors.statusField?.message}</FormHelperText>
+            </Grid>
+          )}
+        </Grid>
+        {statusEnabled && (
           <>
-            <Typography variant="h6">{t('public_status')}</Typography>
             <Stack rowGap={1}>
               <Typography variant="caption">{t('draft_status')}</Typography>
               <Grid container spacing={3} columns={{ xs: 1, md: 4 }}>
@@ -245,6 +297,7 @@ const EditPage: React.FC = () => {
                         {...field}
                         type="text"
                         fullWidth
+                        disabled={!statusEnabled}
                         error={errors.draftValue !== undefined}
                       />
                     )}
@@ -260,6 +313,7 @@ const EditPage: React.FC = () => {
                         {...field}
                         type="text"
                         fullWidth
+                        disabled={!statusEnabled}
                         error={errors.draftLabel !== undefined}
                       />
                     )}
@@ -280,6 +334,7 @@ const EditPage: React.FC = () => {
                         {...field}
                         type="text"
                         fullWidth
+                        disabled={!statusEnabled}
                         error={errors.publishValue !== undefined}
                       />
                     )}
@@ -295,6 +350,7 @@ const EditPage: React.FC = () => {
                         {...field}
                         type="text"
                         fullWidth
+                        disabled={!statusEnabled}
                         error={errors.publishLabel !== undefined}
                       />
                     )}
@@ -315,6 +371,7 @@ const EditPage: React.FC = () => {
                         {...field}
                         type="text"
                         fullWidth
+                        disabled={!statusEnabled}
                         error={errors.closeValue !== undefined}
                       />
                     )}
@@ -330,6 +387,7 @@ const EditPage: React.FC = () => {
                         {...field}
                         type="text"
                         fullWidth
+                        disabled={!statusEnabled}
                         error={errors.closeLabel !== undefined}
                       />
                     )}
