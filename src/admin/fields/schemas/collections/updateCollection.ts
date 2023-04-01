@@ -5,6 +5,7 @@ export type FormValues = {
   hidden: boolean;
   singleton: boolean;
   status: boolean;
+  statusField: string;
   draftLabel: string;
   draftValue: string;
   publishLabel: string;
@@ -18,12 +19,52 @@ export const updateCollection = (): ObjectSchema<FormValues> => {
     hidden: yup.boolean(),
     singleton: yup.boolean(),
     status: yup.boolean(),
-    draftLabel: yup.string().required().max(60),
-    draftValue: yup.string().required().max(60),
-    publishLabel: yup.string().required().max(60),
-    publishValue: yup.string().required().max(60),
-    closeLabel: yup.string().required().max(60),
-    closeValue: yup.string().required().max(60),
+    statusField: yup.string().when('status', {
+      is: true,
+      then: (schema) => schema.required(),
+    }),
+    draftLabel: yup
+      .string()
+      .max(60)
+      .when('status', {
+        is: true,
+        then: (schema) => schema.required(),
+      }),
+    draftValue: yup
+      .string()
+      .max(60)
+      .when('status', {
+        is: true,
+        then: (schema) => schema.required(),
+      }),
+    publishLabel: yup
+      .string()
+      .max(60)
+      .when('status', {
+        is: true,
+        then: (schema) => schema.required(),
+      }),
+    publishValue: yup
+      .string()
+      .max(60)
+      .when('status', {
+        is: true,
+        then: (schema) => schema.required(),
+      }),
+    closeLabel: yup
+      .string()
+      .max(60)
+      .when('status', {
+        is: true,
+        then: (schema) => schema.required(),
+      }),
+    closeValue: yup
+      .string()
+      .max(60)
+      .when('status', {
+        is: true,
+        then: (schema) => schema.required(),
+      }),
   });
 };
 
