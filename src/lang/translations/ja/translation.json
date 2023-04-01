@@ -77,6 +77,7 @@
   "no_choice": "選択肢がありません",
   "optional_system_fields": "オプションのシステムフィールド",
   "public_status": "公開ステータス",
+  "public_status_field": "公開ステータスフィールド",
   "draft_status": "下書き",
   "publish_status": "公開中",
   "close_status": "公開終了",

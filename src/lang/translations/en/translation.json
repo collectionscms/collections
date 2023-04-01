@@ -77,6 +77,7 @@
   "no_choice": "No choice",
   "optional_system_fields": "Optional System Fields",
   "public_status": "Public Status",
+  "public_status_field": "Public Status Field",
   "draft_status": "Draft",
   "publish_status": "Published",
   "close_status": "Closed",
