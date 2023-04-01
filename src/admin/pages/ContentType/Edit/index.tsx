@@ -5,6 +5,7 @@ import {
   Button,
   Checkbox,
   FormControlLabel,
+  InputLabel,
   Paper,
   Stack,
   Table,
@@ -12,6 +13,8 @@ import {
   TableCell,
   TableContainer,
   TableRow,
+  TextField,
+  Typography,
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useSnackbar } from 'notistack';
@@ -19,6 +22,8 @@ import React, { Suspense, useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
+import { Choice } from 'shared/types';
+import logger from '../../../../utilities/logger';
 import HeaderDeleteButton from '../../../components/elements/DeleteHeaderButton';
 import Loading from '../../../components/elements/Loading';
 import ComposeWrapper from '../../../components/utilities/ComposeWrapper';
@@ -42,21 +47,62 @@ const EditPage: React.FC = () => {
   const { getCollection, updateCollection, getFields } = useCollection();
   const { data: meta } = getCollection(id, { suspense: true });
   const { data: fields, mutate } = getFields(meta.collection, { suspense: true });
-  const { data, trigger, isMutating } = updateCollection(id);
-  const { control, handleSubmit } = useForm<FormValues>({
-    defaultValues: { hidden: Boolean(meta.hidden), singleton: Boolean(meta.singleton) },
+  const { trigger, isMutating } = updateCollection(id);
+
+  // Get the choice object for a given status value.
+  const getChoice = (statusValue: string): Choice | null => {
+    const field = fields.filter((field) => field.field === 'status')[0];
+    return field
+      ? field.fieldOption.choices.filter((choice) => choice.value === statusValue)[0]
+      : null;
+  };
+
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm<FormValues>({
+    defaultValues: {
+      hidden: Boolean(meta.hidden),
+      singleton: Boolean(meta.singleton),
+      status: meta.statusField !== null ? true : false,
+      draftLabel: '',
+      draftValue: '',
+      closeLabel: '',
+      closeValue: '',
+      publishLabel: '',
+      publishValue: '',
+    },
     resolver: yupResolver(updateCollectionSchema()),
   });
+
+  useEffect(() => {
+    if (fields === undefined) return;
+    const draft = getChoice(meta.draftValue);
+    if (draft) {
+      setValue('draftLabel', draft.label);
+      setValue('draftValue', draft.value);
+    }
+
+    const publish = getChoice(meta.publishValue);
+    if (publish) {
+      setValue('publishLabel', publish.label);
+      setValue('publishValue', publish.value);
+    }
+
+    const close = getChoice(meta.closeValue);
+    if (close) {
+      setValue('closeLabel', close.label);
+      setValue('closeValue', close.value);
+    }
+  }, [fields]);
 
   const openMenu = (currentTarget: EventTarget, id: number) => {
     setSelectedFieldId(id);
     setMenu(currentTarget);
   };
   const closeMenu = () => setMenu(null);
-
-  const onSubmit: SubmitHandler<FormValues> = (form: FormValues) => {
-    trigger({ singleton: form.singleton, hidden: form.hidden });
-  };
 
   const onToggleCreateField = (state: boolean) => {
     setState(state);
@@ -75,11 +121,15 @@ const EditPage: React.FC = () => {
     closeMenu();
   };
 
-  useEffect(() => {
-    if (data === undefined) return;
-    enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
-    navigate('../content-types');
-  }, [data]);
+  const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
+    try {
+      await trigger(form);
+      enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
+      navigate('../content-types');
+    } catch (e) {
+      logger.error(e);
+    }
+  };
 
   return (
     <Suspense fallback={<Loading />}>
@@ -127,7 +177,7 @@ const EditPage: React.FC = () => {
                           <TableCell component="th" scope="row" sx={{ py: 0 }}>
                             <Box display="flex" justifyContent="space-between" alignItems="center">
                               <p>{field.field}</p>
-                              {!field.hidden && (
+                              {!field.readonly && (
                                 <MoreVertOutlined
                                   onClick={(e) => openMenu(e.currentTarget, field.id)}
                                   sx={{ cursor: 'pointer', fontWeight: 'bold' }}
@@ -179,6 +229,116 @@ const EditPage: React.FC = () => {
             </Box>
           </Grid>
         </Grid>
+        {meta.statusField && (
+          <>
+            <Typography variant="h6">{t('public_status')}</Typography>
+            <Stack rowGap={1}>
+              <Typography variant="caption">{t('draft_status')}</Typography>
+              <Grid container spacing={3} columns={{ xs: 1, md: 4 }}>
+                <Grid xs={1}>
+                  <InputLabel required>{t('value')}</InputLabel>
+                  <Controller
+                    name="draftValue"
+                    control={control}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        type="text"
+                        fullWidth
+                        error={errors.draftValue !== undefined}
+                      />
+                    )}
+                  />
+                </Grid>
+                <Grid xs={1}>
+                  <InputLabel required>{t('label')}</InputLabel>
+                  <Controller
+                    name="draftLabel"
+                    control={control}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        type="text"
+                        fullWidth
+                        error={errors.draftLabel !== undefined}
+                      />
+                    )}
+                  />
+                </Grid>
+              </Grid>
+            </Stack>
+            <Stack rowGap={1}>
+              <Typography variant="caption">{t('publish_status')}</Typography>
+              <Grid container spacing={3} columns={{ xs: 1, md: 4 }}>
+                <Grid xs={1}>
+                  <InputLabel required>{t('value')}</InputLabel>
+                  <Controller
+                    name="publishValue"
+                    control={control}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        type="text"
+                        fullWidth
+                        error={errors.publishValue !== undefined}
+                      />
+                    )}
+                  />
+                </Grid>
+                <Grid xs={1}>
+                  <InputLabel required>{t('label')}</InputLabel>
+                  <Controller
+                    name="publishLabel"
+                    control={control}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        type="text"
+                        fullWidth
+                        error={errors.publishLabel !== undefined}
+                      />
+                    )}
+                  />
+                </Grid>
+              </Grid>
+            </Stack>
+            <Stack rowGap={1}>
+              <Typography variant="caption">{t('close_status')}</Typography>
+              <Grid container spacing={3} columns={{ xs: 1, md: 4 }}>
+                <Grid xs={1}>
+                  <InputLabel required>{t('value')}</InputLabel>
+                  <Controller
+                    name="closeValue"
+                    control={control}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        type="text"
+                        fullWidth
+                        error={errors.closeValue !== undefined}
+                      />
+                    )}
+                  />
+                </Grid>
+                <Grid xs={1}>
+                  <InputLabel required>{t('label')}</InputLabel>
+                  <Controller
+                    name="closeLabel"
+                    control={control}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        type="text"
+                        fullWidth
+                        error={errors.closeLabel !== undefined}
+                      />
+                    )}
+                  />
+                </Grid>
+              </Grid>
+            </Stack>
+          </>
+        )}
       </Stack>
     </Suspense>
   );

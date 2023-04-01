@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express';
+import { Field } from 'shared/types';
 import asyncHandler from '../middleware/asyncHandler';
 import permissionsHandler from '../middleware/permissionsHandler';
 import CollectionsRepository from '../repositories/collections';
@@ -112,8 +113,41 @@ app.patch(
   asyncHandler(async (req: Request, res: Response) => {
     const id = Number(req.params.id);
     const repository = new CollectionsRepository();
+    const fieldsRepository = new FieldsRepository();
 
-    await repository.update(id, req.body);
+    const data = req.body.status
+      ? {
+          singleton: req.body.singleton,
+          hidden: req.body.hidden,
+          publishValue: req.body.publishValue,
+          closeValue: req.body.closeValue,
+          draftValue: req.body.draftValue,
+        }
+      : {
+          singleton: req.body.singleton,
+          hidden: req.body.hidden,
+        };
+
+    await repository.transaction(async (tx) => {
+      await repository.transacting(tx).update(id, data);
+
+      if (req.body.status) {
+        const collection = await repository.transacting(tx).readOne(id);
+        const fields = await fieldsRepository
+          .transacting(tx)
+          .read({ collection: collection.collection, field: 'status' });
+
+        await fieldsRepository.transacting(tx).update(fields[0].id, {
+          options: JSON.stringify({
+            choices: [
+              { label: req.body.draftLabel, value: req.body.draftValue },
+              { label: req.body.publishLabel, value: req.body.publishValue },
+              { label: req.body.closeLabel, value: req.body.closeValue },
+            ],
+          }),
+        });
+      }
+    });
 
     res.status(204).end();
   })
