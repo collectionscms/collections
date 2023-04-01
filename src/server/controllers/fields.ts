@@ -68,6 +68,15 @@ app.delete(
         table.dropColumn(field.field);
       });
 
+      if (collection.statusField === field.field) {
+        await collectionsRepository.transacting(tx).update(collectionId, {
+          statusField: null,
+          publishValue: null,
+          closeValue: null,
+          draftValue: null,
+        });
+      }
+
       res.status(204).end();
     });
   })
