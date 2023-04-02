@@ -135,10 +135,10 @@ const seedingData = async (): Promise<void> => {
       collection: 'Post',
       singleton: false,
       hidden: false,
-      statusField: null,
-      draftValue: null,
-      publishValue: null,
-      unpublishValue: null,
+      statusField: 'status',
+      draftValue: '下書き',
+      publishValue: '公開中',
+      unpublishValue: '公開終了',
     },
     {
       id: 2,
@@ -208,9 +208,23 @@ const seedingData = async (): Promise<void> => {
       hidden: false,
       sort: 4,
     },
-    // Fields related to collection Company
     {
       id: 5,
+      collection: 'Post',
+      field: 'status',
+      label: '公開ステータス',
+      special: null,
+      interface: 'selectDropdownStatus',
+      options:
+        '{"choices":[{"label":"下書き","value":"下書き"},{"label":"公開中","value":"公開中"},{"label":"公開終了","value":"公開終了"}]}',
+      readonly: false,
+      required: true,
+      hidden: false,
+      sort: 5,
+    },
+    // Fields related to collection Company
+    {
+      id: 6,
       collection: 'Company',
       field: 'id',
       label: 'id',
@@ -223,7 +237,7 @@ const seedingData = async (): Promise<void> => {
       sort: 1,
     },
     {
-      id: 6,
+      id: 7,
       collection: 'Company',
       field: 'name',
       label: '会社名',
@@ -236,7 +250,7 @@ const seedingData = async (): Promise<void> => {
       sort: 2,
     },
     {
-      id: 7,
+      id: 8,
       collection: 'Company',
       field: 'email',
       label: 'メールアドレス',
@@ -249,7 +263,7 @@ const seedingData = async (): Promise<void> => {
       sort: 3,
     },
     {
-      id: 8,
+      id: 9,
       collection: 'Company',
       field: 'address',
       label: '住所',
@@ -280,6 +294,7 @@ const createCollectionTables = async (database: Knex): Promise<void> => {
     table.string('title', 255);
     table.string('body', 255);
     table.string('author', 255);
+    table.string('status', 255);
     table.timestamps(true, true);
   });
 
@@ -292,23 +307,39 @@ const createCollectionTables = async (database: Knex): Promise<void> => {
   });
 
   Output.info('Adding collection data...');
-  const PostsRepository = new ContentsRepository('post');
+  const PostsRepository = new ContentsRepository('post', true);
   await PostsRepository.createMany([
     {
       id: 1,
       title: 'Superfastは、デベロッパーファーストのHeadless CMSです。',
       body: 'TypeScript、Node.js、Reactで構築された無料かつオープンソースのHeadless CMSであり、アプリケーションフレームワークです。',
       author: 'admin',
+      status: '公開中',
     },
     {
       id: 2,
       title: '2023年6月〜 デモ版の提供を開始しました。',
       body: 'アドレス: https://demo.xxxx.xx',
       author: 'admin',
+      status: '公開中',
+    },
+    {
+      id: 3,
+      title: '[WIP] 1.0に到達するまでのロードマップ',
+      body: 'こちらの記事は書きかけです。',
+      author: 'admin',
+      status: '下書き',
+    },
+    {
+      id: 4,
+      title: 'α版を公開しました',
+      body: '2023年3月にα版を公開しました！',
+      author: 'admin',
+      status: '公開終了',
     },
   ]);
 
-  const companiesRepository = new ContentsRepository('company');
+  const companiesRepository = new ContentsRepository('company', true);
   await companiesRepository.createMany([
     {
       id: 1,
