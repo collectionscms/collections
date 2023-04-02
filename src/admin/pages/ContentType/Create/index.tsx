@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useSnackbar } from 'notistack';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -28,25 +28,21 @@ const CreatePage: React.FC = () => {
   const { localizedLabel } = useDocumentInfo();
   const { enqueueSnackbar } = useSnackbar();
   const { createCollection } = useCollection();
-  const { data, trigger, isMutating } = createCollection;
+  const { trigger, isMutating } = createCollection;
   const {
     control,
     handleSubmit,
     formState: { errors },
   } = useForm<FormValues>({
-    defaultValues: { name: '', singleton: false },
+    defaultValues: { collection: '', singleton: false },
     resolver: yupResolver(createCollectionSchema(t)),
   });
 
-  useEffect(() => {
-    if (data === undefined) return;
-    enqueueSnackbar(t('toast.created_successfully'), { variant: 'success' });
-    navigate(`../content-types/${data.id}`);
-  }, [data]);
-
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
-      await trigger({ collection: form.name, singleton: form.singleton, hidden: false });
+      const collection = await trigger(form);
+      enqueueSnackbar(t('toast.created_successfully'), { variant: 'success' });
+      navigate(`../content-types/${collection.id}`);
     } catch (e) {
       logger.error(e);
     }
@@ -70,13 +66,13 @@ const CreatePage: React.FC = () => {
         <Grid xs={12} md={6}>
           <InputLabel required>{t('name')}</InputLabel>
           <Controller
-            name="name"
+            name="collection"
             control={control}
             render={({ field }) => (
-              <TextField {...field} type="text" fullWidth error={errors.name !== undefined} />
+              <TextField {...field} type="text" fullWidth error={errors.collection !== undefined} />
             )}
           />
-          <FormHelperText error>{errors.name?.message}</FormHelperText>
+          <FormHelperText error>{errors.collection?.message}</FormHelperText>
         </Grid>
         <Grid xs={12} md={6}>
           <InputLabel>{t('content_data_type')}</InputLabel>
