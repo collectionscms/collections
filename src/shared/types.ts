@@ -43,6 +43,10 @@ export type Collection = {
   collection: string;
   singleton: boolean;
   hidden: boolean;
+  statusField: string | null;
+  draftValue: string | null;
+  publishValue: string | null;
+  unpublishValue: string | null;
 } & PrimaryKey;
 
 export type FieldInterface =
