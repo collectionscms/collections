@@ -75,6 +75,12 @@
   "choices": "Choices",
   "add_new_choice": "Add new choice",
   "no_choice": "No choice",
+  "public_status": "Public Status",
+  "public_status_field": "Public Status Field",
+  "draft": "Draft",
+  "published": "Published",
+  "unpublished": "Unpublished",
+  "optional_system_fields": "Optional System Fields",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion.",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?"

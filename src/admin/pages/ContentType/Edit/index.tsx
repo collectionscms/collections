@@ -5,20 +5,27 @@ import {
   Button,
   Checkbox,
   FormControlLabel,
+  FormHelperText,
+  InputLabel,
+  MenuItem,
   Paper,
+  Select,
   Stack,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableRow,
+  TextField,
+  Typography,
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useSnackbar } from 'notistack';
-import React, { Suspense, useEffect, useState } from 'react';
+import React, { Suspense, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
+import logger from '../../../../utilities/logger';
 import HeaderDeleteButton from '../../../components/elements/DeleteHeaderButton';
 import Loading from '../../../components/elements/Loading';
 import ComposeWrapper from '../../../components/utilities/ComposeWrapper';
@@ -42,9 +49,20 @@ const EditPage: React.FC = () => {
   const { getCollection, updateCollection, getFields } = useCollection();
   const { data: meta } = getCollection(id, { suspense: true });
   const { data: fields, mutate } = getFields(meta.collection, { suspense: true });
-  const { data, trigger, isMutating } = updateCollection(id);
-  const { control, handleSubmit } = useForm<FormValues>({
-    defaultValues: { hidden: Boolean(meta.hidden), singleton: Boolean(meta.singleton) },
+  const { trigger, isMutating } = updateCollection(id);
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormValues>({
+    defaultValues: {
+      hidden: Boolean(meta.hidden),
+      singleton: Boolean(meta.singleton),
+      statusField: meta.statusField || '',
+      draftValue: meta.draftValue || '',
+      publishValue: meta.publishValue || '',
+      unpublishValue: meta.unpublishValue || '',
+    },
     resolver: yupResolver(updateCollectionSchema()),
   });
 
@@ -53,10 +71,6 @@ const EditPage: React.FC = () => {
     setMenu(currentTarget);
   };
   const closeMenu = () => setMenu(null);
-
-  const onSubmit: SubmitHandler<FormValues> = (form: FormValues) => {
-    trigger({ singleton: form.singleton, hidden: form.hidden });
-  };
 
   const onToggleCreateField = (state: boolean) => {
     setState(state);
@@ -75,11 +89,15 @@ const EditPage: React.FC = () => {
     closeMenu();
   };
 
-  useEffect(() => {
-    if (data === undefined) return;
-    enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
-    navigate('../content-types');
-  }, [data]);
+  const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
+    try {
+      await trigger(form);
+      enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
+      navigate('../content-types');
+    } catch (e) {
+      logger.error(e);
+    }
+  };
 
   return (
     <Suspense fallback={<Loading />}>
@@ -177,6 +195,88 @@ const EditPage: React.FC = () => {
                 )}
               />
             </Box>
+          </Grid>
+        </Grid>
+        <Typography variant="h6">{t('public_status')}</Typography>
+        <Grid container spacing={3} columns={{ xs: 1, md: 4 }}>
+          <Grid xs={1}>
+            <InputLabel>{t('public_status_field')}</InputLabel>
+            <Controller
+              name="statusField"
+              control={control}
+              defaultValue={''}
+              render={({ field }) => (
+                <Select
+                  name="statusField"
+                  {...field}
+                  fullWidth
+                  defaultValue={''}
+                  error={errors.statusField !== undefined}
+                >
+                  <MenuItem value="">
+                    <em>None</em>
+                  </MenuItem>
+                  {fields
+                    .filter((field) => !field.readonly)
+                    .map((field) => (
+                      <MenuItem value={field.field} key={field.id}>
+                        {field.field}
+                      </MenuItem>
+                    ))}
+                </Select>
+              )}
+            />
+            <FormHelperText error>{errors.statusField?.message}</FormHelperText>
+          </Grid>
+          <Grid xs={1}>
+            <InputLabel>{t('draft')}</InputLabel>
+            <Controller
+              name="draftValue"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  type="text"
+                  fullWidth
+                  error={errors.draftValue !== undefined}
+                />
+              )}
+            />
+            <FormHelperText error>{errors.draftValue?.message}</FormHelperText>
+          </Grid>
+        </Grid>
+        <Grid container spacing={3} columns={{ xs: 1, md: 4 }}>
+          <Grid xs={1}>
+            <InputLabel>{t('published')}</InputLabel>
+            <Controller
+              name="publishValue"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  type="text"
+                  fullWidth
+                  error={errors.draftValue !== undefined}
+                />
+              )}
+            />
+            <FormHelperText error>{errors.publishValue?.message}</FormHelperText>
+          </Grid>
+          <Grid xs={1}>
+            <InputLabel>{t('unpublished')}</InputLabel>
+            <Controller
+              name="unpublishValue"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  type="text"
+                  fullWidth
+                  error={errors.draftValue !== undefined}
+                />
+              )}
+            />
+            <FormHelperText error>{errors.unpublishValue?.message}</FormHelperText>
           </Grid>
         </Grid>
       </Stack>
