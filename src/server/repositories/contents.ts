@@ -1,4 +1,4 @@
-import { RecordNotFoundException } from '../../shared/exceptions/database/recordNotfound';
+import { RecordNotFoundException } from '../../shared/exceptions/database/recordNotFound';
 import { AbstractRepositoryOptions, BaseRepository, BaseTransaction } from './base';
 import CollectionsRepository from './collections';
 
