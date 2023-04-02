@@ -200,7 +200,7 @@ const EditPage: React.FC = () => {
         <Typography variant="h6">{t('public_status')}</Typography>
         <Grid container spacing={3} columns={{ xs: 1, md: 4 }}>
           <Grid xs={1}>
-            <InputLabel required>{t('public_status_field')}</InputLabel>
+            <InputLabel>{t('public_status_field')}</InputLabel>
             <Controller
               name="statusField"
               control={control}
@@ -229,7 +229,7 @@ const EditPage: React.FC = () => {
             <FormHelperText error>{errors.statusField?.message}</FormHelperText>
           </Grid>
           <Grid xs={1}>
-            <InputLabel required>{t('draft')}</InputLabel>
+            <InputLabel>{t('draft')}</InputLabel>
             <Controller
               name="draftValue"
               control={control}
@@ -247,7 +247,7 @@ const EditPage: React.FC = () => {
         </Grid>
         <Grid container spacing={3} columns={{ xs: 1, md: 4 }}>
           <Grid xs={1}>
-            <InputLabel required>{t('published')}</InputLabel>
+            <InputLabel>{t('published')}</InputLabel>
             <Controller
               name="publishValue"
               control={control}
@@ -263,7 +263,7 @@ const EditPage: React.FC = () => {
             <FormHelperText error>{errors.publishValue?.message}</FormHelperText>
           </Grid>
           <Grid xs={1}>
-            <InputLabel required>{t('unpublished')}</InputLabel>
+            <InputLabel>{t('unpublished')}</InputLabel>
             <Controller
               name="unpublishValue"
               control={control}
