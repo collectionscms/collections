@@ -3,6 +3,7 @@ export const Type = {
   Number: 'number',
   Date: 'date',
   Object: 'object',
+  Status: 'status',
 } as const;
 
 export type Props = {

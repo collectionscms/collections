@@ -27,6 +27,9 @@ const Cell: React.FC<Props> = (props) => {
         return cellData;
       case Type.Date:
         return format(new Date(String(cellData)), 'yyyy-MM-dd HH:mm');
+      case Type.Status:
+        // TODO Display icons by status.
+        return cellData;
       case Type.Object:
         return JSON.stringify(cellData);
       default:

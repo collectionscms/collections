@@ -22,6 +22,8 @@ const toType = (fieldInterface: string): (typeof Type)[keyof typeof Type] => {
     case 'inputRichTextMd':
     case 'selectDropdown':
       return Type.Text;
+    case 'selectDropdownStatus':
+      return Type.Status;
     default:
       return Type.Object;
   }
