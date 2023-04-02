@@ -112,8 +112,30 @@ app.patch(
   asyncHandler(async (req: Request, res: Response) => {
     const id = Number(req.params.id);
     const repository = new CollectionsRepository();
+    const fieldsRepository = new FieldsRepository();
 
-    await repository.update(id, req.body);
+    await repository.transaction(async (tx) => {
+      await repository.transacting(tx).update(id, req.body);
+
+      if (req.body.statusField) {
+        const collection = await repository.transacting(tx).readOne(id);
+        const fields = await fieldsRepository
+          .transacting(tx)
+          .read({ collection: collection.collection, field: req.body.statusField });
+
+        await fieldsRepository.transacting(tx).update(fields[0].id, {
+          interface: 'selectDropdownStatus',
+          required: true,
+          options: JSON.stringify({
+            choices: [
+              { label: req.body.draftValue, value: req.body.draftValue },
+              { label: req.body.publishValue, value: req.body.publishValue },
+              { label: req.body.unpublishValue, value: req.body.unpublishValue },
+            ],
+          }),
+        });
+      }
+    });
 
     res.status(204).end();
   })
