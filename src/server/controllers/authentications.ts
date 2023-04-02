@@ -44,6 +44,7 @@ app.get(
 );
 
 const toToken = (user: MeUser) => {
+  user.appAccess = true;
   delete user.password;
   const token = jwt.sign(user, env.SECRET, {
     expiresIn: env.ACCESS_TOKEN_TTL,

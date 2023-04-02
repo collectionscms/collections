@@ -14,22 +14,17 @@ export type Token = {
   token: string;
 };
 
-export type AuthUser = {
-  id: number;
-  roleId: number;
-  userName: string;
-  adminAccess: boolean;
-  apiKey: string | null;
-};
-
 export type MeUser = {
   id: number;
   roleId: number;
   userName: string;
   password: string;
   adminAccess: boolean;
+  appAccess: boolean | null; // access from applications.
   apiKey: string | null;
 };
+
+export type AuthUser = Omit<MeUser, 'password'>;
 
 // /////////////////////////////////////
 // Schema

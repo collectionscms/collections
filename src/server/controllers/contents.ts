@@ -10,7 +10,7 @@ app.get(
   collectionPermissionsHandler('read'),
   asyncHandler(async (req: Request, res: Response) => {
     const slug = req.params.slug;
-    const repository = new ContentsRepository(slug);
+    const repository = new ContentsRepository(slug, req.appAccess);
 
     const contents = await repository.read();
 
@@ -26,7 +26,7 @@ app.get(
   asyncHandler(async (req: Request, res: Response) => {
     const slug = req.params.slug;
     const id = Number(req.params.id);
-    const repository = new ContentsRepository(slug);
+    const repository = new ContentsRepository(slug, req.appAccess);
 
     const content = await repository.readOne(id);
 
@@ -41,7 +41,7 @@ app.post(
   collectionPermissionsHandler('create'),
   asyncHandler(async (req: Request, res: Response) => {
     const slug = req.params.slug;
-    const repository = new ContentsRepository(slug);
+    const repository = new ContentsRepository(slug, req.appAccess);
 
     const content = await repository.create(req.body);
 
@@ -57,7 +57,7 @@ app.patch(
   asyncHandler(async (req: Request, res: Response) => {
     const slug = req.params.slug;
     const id = Number(req.params.id);
-    const repository = new ContentsRepository(slug);
+    const repository = new ContentsRepository(slug, req.appAccess);
 
     await repository.update(id, req.body);
 
@@ -71,7 +71,7 @@ app.delete(
   asyncHandler(async (req: Request, res: Response) => {
     const slug = req.params.slug;
     const id = Number(req.params.id);
-    const repository = new ContentsRepository(slug);
+    const repository = new ContentsRepository(slug, req.appAccess);
 
     await repository.delete(id);
 

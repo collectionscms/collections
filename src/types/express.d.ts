@@ -7,6 +7,7 @@ declare global {
       userId?: number | null;
       roleId?: number | null;
       adminAccess?: boolean | null;
+      appAccess?: boolean | null;
       permissions?: Permission[] | null;
     }
   }

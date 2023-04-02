@@ -138,7 +138,8 @@
     "already_registered_email": "すでに登録済みのメールアドレスです。",
     "already_registered_name": "すでに登録済みです。",
     "unregistered_email_address": "登録されていないメールアドレスです。",
-    "token_invalid_or_expired": "トークンが無効であるか、有効期限が切れています。"
+    "token_invalid_or_expired": "トークンが無効であるか、有効期限が切れています。",
+    "record_not_found": "レコードが見つかりません"
   },
   "yup": {
     "mixed": {

@@ -138,7 +138,8 @@
     "already_registered_email": "Already registered email.",
     "already_registered_name": "Already registered.",
     "unregistered_email_address": "Unregistered email address.",
-    "token_invalid_or_expired": "Token is either invalid or has expired."
+    "token_invalid_or_expired": "Token is either invalid or has expired.",
+    "record_not_found": "Record not found."
   },
   "yup": {
     "mixed": {
