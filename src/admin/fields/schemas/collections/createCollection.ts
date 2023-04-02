@@ -5,6 +5,7 @@ import yup from '../../yup';
 export type FormValues = {
   collection: string;
   singleton: boolean;
+  status: boolean;
 };
 
 export const createCollection = (t: TFunction): ObjectSchema<FormValues> => {
@@ -15,6 +16,7 @@ export const createCollection = (t: TFunction): ObjectSchema<FormValues> => {
       .required()
       .max(60),
     singleton: yup.boolean(),
+    status: yup.boolean(),
   });
 };
 

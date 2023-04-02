@@ -61,7 +61,8 @@ export type FieldInterface =
   | 'list'
   | 'listO2o' // one-to-one
   | 'listO2m' // one-to-many
-  | 'selectDropdownM2o'; // many-to-one
+  | 'selectDropdownM2o' // many-to-one
+  | 'selectDropdownStatus'; // public status
 export type FieldOption = {
   choices?: Choice[];
 };

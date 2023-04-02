@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express';
+import { Field } from 'shared/types';
 import asyncHandler from '../middleware/asyncHandler';
 import permissionsHandler from '../middleware/permissionsHandler';
 import CollectionsRepository from '../repositories/collections';
@@ -44,26 +45,61 @@ app.post(
     const repository = new CollectionsRepository();
     const fieldsRepository = new FieldsRepository();
 
+    const data = req.body.status
+      ? {
+          ...req.body,
+          statusField: 'status',
+          draftValue: 'draft',
+          publishValue: 'published',
+          unpublishValue: 'unpublished',
+        }
+      : req.body;
+    delete data.status;
+
     await repository.transaction(async (tx) => {
-      const collection = await repository.transacting(tx).create(req.body);
+      const collection = await repository.transacting(tx).create(data);
 
       await tx.transaction.schema.createTable(req.body.collection, (table) => {
         table.increments();
         table.timestamps(true, true);
+        req.body.status && table.string('status').notNullable();
       });
 
-      await fieldsRepository.transacting(tx).create({
-        collection: req.body.collection,
-        field: 'id',
-        label: 'id',
-        interface: 'input',
-        options: null,
-        required: true,
-        readonly: true,
-        hidden: true,
-        special: null,
-        sort: 1,
-      });
+      const fields: Field[] = [
+        {
+          id: null,
+          collection: req.body.collection,
+          field: 'id',
+          label: 'id',
+          interface: 'input',
+          required: true,
+          readonly: true,
+          hidden: true,
+          special: null,
+          sort: null,
+          options: null,
+        },
+        req.body.status && {
+          id: null,
+          collection: req.body.collection,
+          field: 'status',
+          label: 'Status',
+          interface: 'selectDropdownStatus',
+          required: true,
+          readonly: false,
+          hidden: false,
+          special: null,
+          sort: null,
+          options: JSON.stringify({
+            choices: [
+              { label: 'draft', value: 'draft' },
+              { label: 'published', value: 'published' },
+              { label: 'unpublished', value: 'unpublished' },
+            ],
+          }),
+        },
+      ];
+      await fieldsRepository.transacting(tx).createMany(fields);
 
       res.json({ collection });
     });

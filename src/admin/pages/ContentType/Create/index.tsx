@@ -7,6 +7,7 @@ import {
   InputLabel,
   Stack,
   TextField,
+  Typography,
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useSnackbar } from 'notistack';
@@ -81,6 +82,21 @@ const CreatePage: React.FC = () => {
             control={control}
             render={({ field }) => (
               <FormControlLabel {...field} label="Singleton" control={<Checkbox />} />
+            )}
+          />
+        </Grid>
+      </Grid>
+      <Grid container xs={12} xl={6}>
+        <Typography variant="h6">{t('optional_system_fields')}</Typography>
+      </Grid>
+      <Grid container spacing={3} xs={12} xl={6}>
+        <Grid xs={12} md={6}>
+          <InputLabel>{t('public_status')}</InputLabel>
+          <Controller
+            name="status"
+            control={control}
+            render={({ field }) => (
+              <FormControlLabel {...field} label={t('valid')} control={<Checkbox />} />
             )}
           />
         </Grid>
