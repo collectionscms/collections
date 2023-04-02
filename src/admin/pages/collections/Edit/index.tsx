@@ -5,6 +5,7 @@ import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
+import logger from '../../../../utilities/logger';
 import DeleteHeaderButton from '../../../components/elements/DeleteHeaderButton';
 import RenderFields from '../../../components/forms/RenderFields';
 import { useAuth } from '../../../components/utilities/Auth';
@@ -22,16 +23,13 @@ const EditPage: React.FC<Props> = ({ collection }) => {
   const { getContent, getFields, createContent, updateContent } = useContent();
   const { data: metaFields } = getFields(collection.collection);
   const { data: content } = getContent(collection.collection, id);
-  const {
-    data: createdContent,
-    trigger: createTrigger,
-    isMutating: isCreateMutating,
-  } = createContent(collection.collection);
-  const {
-    data: updatedContent,
-    trigger: updateTrigger,
-    isMutating: isUpdateMutating,
-  } = updateContent(collection.collection, content?.id);
+  const { trigger: createTrigger, isMutating: isCreateMutating } = createContent(
+    collection.collection
+  );
+  const { trigger: updateTrigger, isMutating: isUpdateMutating } = updateContent(
+    collection.collection,
+    content?.id
+  );
   const {
     control,
     register,
@@ -53,27 +51,22 @@ const EditPage: React.FC<Props> = ({ collection }) => {
     setDefaultValue(content);
   }, [content]);
 
-  useEffect(() => {
-    if (createdContent === undefined) return;
-    enqueueSnackbar(t('toast.created_successfully'), { variant: 'success' });
-    navigate(`/admin/collections/${collection.collection}`);
-  }, [createdContent]);
-
-  useEffect(() => {
-    if (updatedContent === undefined) return;
-    enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
-    navigate(`/admin/collections/${collection.collection}`);
-  }, [updatedContent]);
-
   const handleDeletionSuccess = () => {
     navigate(`/admin/collections/${collection.collection}`);
   };
 
-  const onSubmit = (data) => {
-    if (id) {
-      updateTrigger(data);
-    } else {
-      createTrigger(data);
+  const onSubmit = async (data) => {
+    try {
+      if (id) {
+        await updateTrigger(data);
+        enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
+      } else {
+        await createTrigger(data);
+        enqueueSnackbar(t('toast.created_successfully'), { variant: 'success' });
+      }
+      navigate(`/admin/collections/${collection.collection}`);
+    } catch (e) {
+      logger.error(e);
     }
   };
 

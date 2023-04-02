@@ -4,6 +4,7 @@ import { useSnackbar } from 'notistack';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import logger from '../../../../utilities/logger';
 import RenderFields from '../../../components/forms/RenderFields';
 import { useAuth } from '../../../components/utilities/Auth';
 import ComposeWrapper from '../../../components/utilities/ComposeWrapper';
@@ -21,13 +22,10 @@ const SingletonPage: React.FC<Props> = ({ collection }) => {
   const fieldFetched = metaFields !== undefined;
   const { data: contents } = getContents(fieldFetched, collection.collection);
 
+  const { trigger: createTrigger, isMutating: isCreateMutating } = createContent(
+    collection.collection
+  );
   const {
-    data: createdContent,
-    trigger: createTrigger,
-    isMutating: isCreateMutating,
-  } = createContent(collection.collection);
-  const {
-    data: updatedContent,
     trigger: updateTrigger,
     isMutating: isUpdateMutating,
     reset,
@@ -54,23 +52,19 @@ const SingletonPage: React.FC<Props> = ({ collection }) => {
     setDefaultValue(contents?.[0]);
   }, [contents]);
 
-  useEffect(() => {
-    if (createdContent === undefined) return;
-    enqueueSnackbar(t('toast.created_successfully'), { variant: 'success' });
-  }, [createdContent]);
-
-  useEffect(() => {
-    if (updatedContent === undefined) return;
-    enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
-  }, [updatedContent]);
-
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     reset();
 
-    if (content?.id) {
-      updateTrigger(data);
-    } else {
-      createTrigger(data);
+    try {
+      if (content?.id) {
+        await updateTrigger(data);
+        enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
+      } else {
+        await createTrigger(data);
+        enqueueSnackbar(t('toast.created_successfully'), { variant: 'success' });
+      }
+    } catch (e) {
+      logger.error(e);
     }
   };
 
