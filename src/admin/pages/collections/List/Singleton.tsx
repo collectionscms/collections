@@ -1,7 +1,7 @@
 import { Button, Stack } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useSnackbar } from 'notistack';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import logger from '../../../../utilities/logger';
@@ -13,14 +13,13 @@ import { ContentContextProvider, useContent } from '../Context';
 import { Props } from './types';
 
 const SingletonPage: React.FC<Props> = ({ collection }) => {
-  const [content, setContent] = useState(null);
   const { hasPermission } = useAuth();
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
-  const { getContents, getFields, createContent, updateContent } = useContent();
+  const { getSingletonContent, getFields, createContent, updateContent } = useContent();
   const { data: metaFields } = getFields(collection.collection);
   const fieldFetched = metaFields !== undefined;
-  const { data: contents } = getContents(fieldFetched, collection.collection);
+  const { data: content } = getSingletonContent(fieldFetched, collection.collection);
 
   const { trigger: createTrigger, isMutating: isCreateMutating } = createContent(
     collection.collection
@@ -47,10 +46,9 @@ const SingletonPage: React.FC<Props> = ({ collection }) => {
   };
 
   useEffect(() => {
-    if (contents?.[0] === undefined) return;
-    setContent(contents?.[0]);
-    setDefaultValue(contents?.[0]);
-  }, [contents]);
+    if (content === undefined) return;
+    setDefaultValue(content);
+  }, [content]);
 
   const onSubmit = async (data) => {
     reset();
