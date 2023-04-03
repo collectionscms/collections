@@ -22,9 +22,9 @@ Hooks.addAction(
       app.use(cors);
     }
 
-    app.use(cookieParser(process.env.SIGNED_COOKIE));
-    app.use(express.json({ limit: process.env.REQ_LIMIT }));
-    app.use(express.urlencoded({ limit: process.env.REQ_LIMIT, extended: true }));
+    app.use(cookieParser());
+    app.use(express.json({ limit: env.REQ_LIMIT }));
+    app.use(express.urlencoded({ limit: env.REQ_LIMIT, extended: true }));
     app.use(expressLogger);
 
     app.use(extractTokenHandler);
