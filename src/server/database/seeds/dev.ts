@@ -1,9 +1,9 @@
 import { Knex } from 'knex';
-import ContentsRepository from 'server/repositories/contents';
 import { v4 as uuidv4 } from 'uuid';
 import Output from '../../../scripts/utilities/output';
 import { oneWayHash } from '../../../server/utilities/oneWayHash';
 import CollectionsRepository from '../../repositories/collections';
+import ContentsRepository from '../../repositories/contents';
 import FieldsRepository from '../../repositories/fields';
 import PermissionsRepository from '../../repositories/permissions';
 import ProjectSettingsRepository from '../../repositories/projectSettings';

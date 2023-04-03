@@ -16,7 +16,7 @@ const ApiPreview: React.FC<Props> = ({ slug, singleton }) => {
   const { getPreviewContents } = useContent();
   const { data: contents, trigger, isMutating } = getPreviewContents(slug);
 
-  const url = `${env.serverUrl}/api/collections/${slug}/contents`;
+  const url = `${env.SERVER_URL}/api/collections/${slug}/contents`;
 
   const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
     if (
