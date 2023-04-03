@@ -9,10 +9,20 @@ const Context = createContext({} as ContentContext);
 
 export const ContentContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const getContents = (canFetch: boolean, slug: string, config?: SWRConfiguration): SWRResponse =>
-    // Fetching data that depends on fields.
     useSWR(
       canFetch ? `/collections/${slug}/contents` : null,
       (url) => api.get<{ contents: unknown[] }>(url).then((res) => res.data.contents),
+      config
+    );
+
+  const getSingletonContent = (
+    canFetch: boolean,
+    slug: string,
+    config?: SWRConfiguration
+  ): SWRResponse =>
+    useSWR(
+      canFetch ? `/collections/${slug}/contents` : null,
+      (url) => api.get<{ content: unknown }>(url).then((res) => res.data.content),
       config
     );
 
@@ -48,13 +58,22 @@ export const ContentContextProvider: React.FC<{ children: React.ReactNode }> = (
   const value = useMemo(
     () => ({
       getContents,
+      getSingletonContent,
       getContent,
       getFields,
       getPreviewContents,
       createContent,
       updateContent,
     }),
-    [getContents, getContent, getFields, getPreviewContents, createContent, updateContent]
+    [
+      getContents,
+      getSingletonContent,
+      getContent,
+      getFields,
+      getPreviewContents,
+      createContent,
+      updateContent,
+    ]
   );
 
   return <Context.Provider value={value}>{children}</Context.Provider>;
