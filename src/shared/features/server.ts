@@ -1,5 +1,6 @@
 import chalk from 'chalk';
 import express from 'express';
+import env from '../../env';
 import { launchApi } from './api';
 import Hooks from './hooks';
 
@@ -18,8 +19,8 @@ const launch = async () => {
       response.send();
     });
 
-    const port = process.env.SERVER_PORT || 4000;
-    const host = process.env.SERVER_HOST || 'http://localhost';
+    const port = env.SERVER_PORT || 4000;
+    const host = env.SERVER_HOST || 'http://localhost';
 
     app
       .listen(port, () => {

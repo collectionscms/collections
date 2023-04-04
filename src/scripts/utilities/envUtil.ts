@@ -4,17 +4,6 @@ import _ from 'lodash';
 config({ silent: true });
 const env = process.env;
 
-const envDefaults = {
-  SERVER_PORT: '4000',
-  ADMIN_PORT: '4001',
-};
-
-Object.keys(envDefaults).forEach((key) => {
-  if (env?.[key] === undefined) {
-    env[key] = envDefaults[key];
-  }
-});
-
 const defineAllEnv = () =>
   _.mapValues(
     _.mapKeys(env, (value, key) => `process.env.${key}`),
