@@ -1,5 +1,6 @@
 import { Express } from 'express';
 import httpProxy from 'http-proxy';
+import env from '../../env';
 import Hooks from '../../shared/features/hooks';
 import { launch } from '../../shared/features/server';
 import '../utilities/envUtil';
@@ -11,7 +12,7 @@ import '../utilities/envUtil';
       const proxy = httpProxy.createProxyServer();
 
       app.get(['/admin/*', '/admin'], (req, res) => {
-        proxy.web(req, res, { target: `http://localhost:${process.env.ADMIN_PORT}/` }, (err) => {
+        proxy.web(req, res, { target: `http://localhost:${env.ADMIN_PORT}/` }, (err) => {
           console.error(err);
         });
       });

@@ -1,6 +1,7 @@
 import express from 'express';
 import webpack from 'webpack';
 import WebpackShellPlugin from 'webpack-shell-plugin-next';
+import env from '../../env';
 import config from '../../shared/features/config';
 import { webpackServerConfigure } from '../../webpack.config';
 import PathUtil from '../utilities/pathUtil';
@@ -37,7 +38,7 @@ const scriptDev = async () => {
   const app = express();
   await attachWebpackMiddleware(app);
 
-  app.listen(process.env.ADMIN_PORT).on('error', (e) => {
+  app.listen(env.ADMIN_PORT).on('error', (e) => {
     console.log(e);
     console.log('error occurred');
   });
