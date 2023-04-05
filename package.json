@@ -53,7 +53,7 @@
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@fontsource/roboto": "^4.5.8",
-    "@hookform/resolvers": "^2.9.10",
+    "@hookform/resolvers": "^3.0.1",
     "@mui/icons-material": "^5.11.0",
     "@mui/material": "^5.10.16",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.9",
