@@ -13,16 +13,16 @@
     "lint:fix": "npm run lint -- --fix",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx}\" --ignore-path .gitignore",
     "copyfiles": "ts-node -T misc/copyStaticFiles.ts",
-    "compile:tsc": "ttsc -p ./tsconfig.production.json && ts-node -T misc/correctTypes.ts",
+    "compile:tsc": "tsc -p ./tsconfig.production.json && ts-node -T misc/correctTypes.ts",
     "compile": "yarn clean && yarn compile:tsc && yarn copyfiles",
     "clean": "rimraf dist",
     "test": "jest",
-    "start": "cross-env NODE_ENV=development ts-node -T -r tsconfig-paths/register ./src/bin.ts start",
-    "dev": "cross-env NODE_ENV=development ts-node -T -r tsconfig-paths/register ./src/bin.ts dev",
-    "build": "cross-env NODE_ENV=production ts-node -T -r tsconfig-paths/register ./src/bin.ts build",
-    "migrate:latest": "cross-env NODE_ENV=production ts-node -T -r tsconfig-paths/register ./src/bin.ts database migrate:latest",
-    "migrate:down": "cross-env NODE_ENV=production ts-node -T -r tsconfig-paths/register ./src/bin.ts database migrate:down",
-    "seed:dev": "cross-env NODE_ENV=production ts-node -T -r tsconfig-paths/register ./src/bin.ts database seed:dev"
+    "start": "cross-env NODE_ENV=development ts-node -T ./src/bin.ts start",
+    "dev": "cross-env NODE_ENV=development ts-node -T ./src/bin.ts dev",
+    "build": "cross-env NODE_ENV=production ts-node -T ./src/bin.ts build",
+    "migrate:latest": "cross-env NODE_ENV=production ts-node -T ./src/bin.ts database migrate:latest",
+    "migrate:down": "cross-env NODE_ENV=production ts-node -T ./src/bin.ts database migrate:down",
+    "seed:dev": "cross-env NODE_ENV=production ts-node -T ./src/bin.ts database seed:dev"
   },
   "bin": {
     "superfastcms": "./src/bin.js"
@@ -150,9 +150,7 @@
     "prettier": "^2.7.1",
     "ts-jest": "^29.0.3",
     "ts-node": "^10.9.1",
-    "ttypescript": "^1.5.15",
-    "typescript": "^4.9.4",
-    "typescript-transform-paths": "^3.4.6"
+    "typescript": "^5.0.3"
   },
   "peerDependencies": {
     "path-to-regexp": "^6.2.1"
