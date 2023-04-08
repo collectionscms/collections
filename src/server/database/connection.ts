@@ -1,7 +1,7 @@
 import camelcaseKeys from 'camelcase-keys';
+import { snakeCase } from 'change-case';
 import 'dotenv/config';
 import knex, { Knex } from 'knex';
-import { snakeCase } from 'lodash';
 import path from 'path';
 import env from '../../env';
 

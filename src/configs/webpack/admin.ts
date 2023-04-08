@@ -3,7 +3,7 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
 import webpack from 'webpack';
 import WebpackBar from 'webpackbar';
-import { definePublicEnv } from '../../scripts/utilities/envUtil';
+import { definePublicEnv } from '../../scripts/utilities/publicEnv';
 import notify from '../../scripts/utilities/notifierUtil';
 import PathUtil from '../../scripts/utilities/pathUtil';
 
@@ -192,7 +192,7 @@ adminDefaultWebpack.plugins.push(
     PROJECT_ADMIN_ENTRY: PathUtil.exists(PathUtil.projectRoot('admin'))
       ? JSON.stringify(PathUtil.projectRoot('admin'))
       : null,
-    ...definePublicEnv(),
+    ...definePublicEnv,
   })
 );
 
