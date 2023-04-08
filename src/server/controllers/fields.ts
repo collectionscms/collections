@@ -1,6 +1,6 @@
+import { camelCase } from 'change-case';
 import express, { Request, Response } from 'express';
 import { Knex } from 'knex';
-import { camelCase } from 'lodash';
 import { Field } from '../../shared/types';
 import asyncHandler from '../middleware/asyncHandler';
 import permissionsHandler, { collectionPermissionsHandler } from '../middleware/permissionsHandler';
