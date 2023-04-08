@@ -96,7 +96,7 @@
     "nodemailer": "^6.9.1",
     "nodemon": "^2.0.20",
     "notistack": "^3.0.1",
-    "ora": "5.4.1",
+    "ora": "6.3.0",
     "path-to-regexp": "^6.2.1",
     "pino": "^8.11.0",
     "pino-http": "^8.3.3",
