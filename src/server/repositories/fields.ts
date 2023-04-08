@@ -14,6 +14,10 @@ export default class FieldsRepository extends BaseRepository<Field> {
     return repositoryTransaction;
   }
 
+  read(data?: Partial<Field>): Promise<Field[]> {
+    return this.queryBuilder.where(data).orderByRaw('sort ASC NULLS LAST');
+  }
+
   deleteAll(data: Partial<Field>): Promise<boolean> {
     return this.queryBuilder.where(data).delete();
   }
