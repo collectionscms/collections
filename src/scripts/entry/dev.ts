@@ -3,7 +3,6 @@ import httpProxy from 'http-proxy';
 import env from '../../env';
 import Hooks from '../../shared/features/hooks';
 import { launch } from '../../shared/features/server';
-import '../utilities/envUtil';
 
 (async () => {
   Hooks.addAction(
