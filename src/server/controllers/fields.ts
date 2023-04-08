@@ -50,6 +50,22 @@ app.post(
   })
 );
 
+app.patch(
+  '/fields',
+  permissionsHandler([{ collection: 'superfast_fields', action: 'update' }]),
+  asyncHandler(async (req: Request, res: Response) => {
+    const repository = new FieldsRepository();
+
+    await repository.transaction(async (tx) => {
+      req.body.forEach(async (field: Field) => {
+        await repository.transacting(tx).update(field.id, field);
+      });
+    });
+
+    res.status(204).end();
+  })
+);
+
 app.delete(
   '/collections/:collectionId/fields/:id',
   permissionsHandler([{ collection: 'superfast_fields', action: 'delete' }]),

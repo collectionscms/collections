@@ -44,6 +44,11 @@ export const CollectionContextProvider: React.FC<{ children: React.ReactNode }> 
       config
     );
 
+  const updateFields = (): SWRMutationResponse =>
+    useSWRMutation(`/fields`, async (url: string, { arg }: { arg: Record<string, any> }) => {
+      return api.patch<{ fields: Field[] }>(url, arg).then((res) => res.data);
+    });
+
   const value = useMemo(
     () => ({
       getCollection,
@@ -51,8 +56,9 @@ export const CollectionContextProvider: React.FC<{ children: React.ReactNode }> 
       createCollection,
       updateCollection,
       getFields,
+      updateFields,
     }),
-    [getCollection, getCollections, createCollection, updateCollection, getFields]
+    [getCollection, getCollections, createCollection, updateCollection, getFields, updateFields]
   );
 
   return <Context.Provider value={value}>{children}</Context.Provider>;

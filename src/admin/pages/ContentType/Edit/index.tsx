@@ -43,10 +43,11 @@ const EditPage: React.FC = () => {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const { localizedLabel } = useDocumentInfo();
-  const { getCollection, updateCollection, getFields } = useCollection();
+  const { getCollection, updateCollection, getFields, updateFields } = useCollection();
   const { data: meta } = getCollection(id, { suspense: true });
   const { data: fields, mutate } = getFields(meta.collection, { suspense: true });
   const { trigger, isMutating } = updateCollection(id);
+  const { trigger: updateFieldsTrigger } = updateFields();
   const {
     control,
     handleSubmit,
@@ -92,6 +93,21 @@ const EditPage: React.FC = () => {
     closeMenu();
   };
 
+  const handleChangeSortableItems = async (items: Field[]) => {
+    setSortableFields(items);
+
+    const sortOrders = items.map((item, i) => ({
+      id: item.id,
+      sort: i,
+    }));
+
+    try {
+      await updateFieldsTrigger(sortOrders);
+    } catch (e) {
+      logger.error(e);
+    }
+  };
+
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
       await trigger(form);
@@ -100,10 +116,6 @@ const EditPage: React.FC = () => {
     } catch (e) {
       logger.error(e);
     }
-  };
-
-  const changeItems = (items: Field[]) => {
-    setSortableFields(items);
   };
 
   return (
@@ -142,7 +154,7 @@ const EditPage: React.FC = () => {
             <Stack gap={1}>
               <SortableFieldList
                 items={sortableFields}
-                onChange={changeItems}
+                onChange={handleChangeSortableItems}
                 renderItem={(item) => (
                   <SortableFieldList.Item id={item.id}>
                     <Box display="flex" justifyContent="space-between" alignItems="center">
