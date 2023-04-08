@@ -2,6 +2,7 @@ import ReactRefreshPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import { Express } from 'express';
 import path from 'path';
 import webpack from 'webpack';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import { webpackAdminConfigure } from '../../webpack.config';
 import PathUtil from '../utilities/pathUtil';
 
@@ -25,6 +26,9 @@ const attachWebpackMiddleware = async (app: Express) => {
 
     wpConfig.plugins.push(new webpack.HotModuleReplacementPlugin());
     wpConfig.plugins.push(new ReactRefreshPlugin());
+    if (process.env.WEBPACK_BUNDLE_ANALYZER) {
+      wpConfig.plugins.push(new BundleAnalyzerPlugin());
+    }
 
     return wpConfig;
   });
