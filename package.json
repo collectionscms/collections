@@ -66,7 +66,7 @@
     "babel-loader": "^9.1.0",
     "babel-plugin-transform-typescript-metadata": "^0.3.2",
     "browserify-zlib": "^0.2.0",
-    "camelcase-keys": "^7.0.2",
+    "camelcase-keys": "^8.0.2",
     "chalk": "^4.1.2",
     "change-case": "^4.1.2",
     "commander": "^10.0.0",
