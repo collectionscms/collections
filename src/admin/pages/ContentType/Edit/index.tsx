@@ -1,5 +1,4 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { MoreVertOutlined } from '@mui/icons-material';
 import {
   Box,
   Button,
@@ -8,23 +7,18 @@ import {
   FormHelperText,
   InputLabel,
   MenuItem,
-  Paper,
   Select,
   Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
   TextField,
   Typography,
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useSnackbar } from 'notistack';
-import React, { Suspense, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
+import { Field } from '../../../../shared/types';
 import logger from '../../../../utilities/logger';
 import HeaderDeleteButton from '../../../components/elements/DeleteHeaderButton';
 import Loading from '../../../components/elements/Loading';
@@ -36,11 +30,14 @@ import updateCollectionSchema, {
 import { CollectionContextProvider, useCollection } from '../Context';
 import CreateField from './CreateField';
 import EditMenu from './Menu';
+import { SortableFieldList } from './SortableFieldList';
 
 const EditPage: React.FC = () => {
   const [state, setState] = useState(false);
   const [menu, setMenu] = useState(null);
   const [selectedFieldId, setSelectedFieldId] = useState(null);
+  const [sortableFields, setSortableFields] = useState([]);
+
   const { id } = useParams();
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -65,6 +62,12 @@ const EditPage: React.FC = () => {
     },
     resolver: yupResolver(updateCollectionSchema()),
   });
+
+  useEffect(() => {
+    if (fields && fields.length) {
+      setSortableFields(fields);
+    }
+  }, [fields]);
 
   const openMenu = (currentTarget: EventTarget, id: number) => {
     setSelectedFieldId(id);
@@ -97,6 +100,10 @@ const EditPage: React.FC = () => {
     } catch (e) {
       logger.error(e);
     }
+  };
+
+  const changeItems = (items: Field[]) => {
+    setSortableFields(items);
   };
 
   return (
@@ -132,37 +139,34 @@ const EditPage: React.FC = () => {
         </Grid>
         <Grid container gap={2} columns={{ xs: 1, md: 2 }}>
           <Grid xs={1}>
-            <Stack gap={3}>
-              <TableContainer component={Paper}>
-                <Table aria-label="simple table">
-                  <TableBody>
-                    {fields.map((field) => {
-                      return (
-                        <TableRow
-                          sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                          key={field.field}
-                        >
-                          <TableCell component="th" scope="row" sx={{ py: 0 }}>
-                            <Box display="flex" justifyContent="space-between" alignItems="center">
-                              <p>{field.field}</p>
-                              {!field.hidden && (
-                                <MoreVertOutlined
-                                  onClick={(e) => openMenu(e.currentTarget, field.id)}
-                                  sx={{ cursor: 'pointer', fontWeight: 'bold' }}
-                                />
-                              )}
-                            </Box>
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-              <Button variant="contained" onClick={() => onToggleCreateField(true)} size="large">
-                {t('add_field')}
-              </Button>
+            <Stack gap={1}>
+              <SortableFieldList
+                items={sortableFields}
+                onChange={changeItems}
+                renderItem={(item) => (
+                  <SortableFieldList.Item id={item.id}>
+                    <Box display="flex" justifyContent="space-between" alignItems="center">
+                      <SortableFieldList.DragHandle />
+                      <Box sx={{ flexGrow: 1 }}>{item.field}</Box>
+                      {!item.hidden && (
+                        <SortableFieldList.ItemMenu
+                          onClickItem={(e) => openMenu(e.currentTarget, item.id)}
+                        />
+                      )}
+                    </Box>
+                  </SortableFieldList.Item>
+                )}
+              />
             </Stack>
+            <Button
+              variant="contained"
+              onClick={() => onToggleCreateField(true)}
+              size="large"
+              fullWidth
+              sx={{ mt: 2 }}
+            >
+              {t('add_field')}
+            </Button>
           </Grid>
         </Grid>
         <Grid container spacing={3} columns={{ xs: 1, md: 4 }}>
