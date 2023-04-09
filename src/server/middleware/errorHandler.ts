@@ -12,11 +12,10 @@ const errorHandler: ErrorRequestHandler = (
 ) => {
   logger.error(err);
 
-  if (!(err instanceof BaseException)) {
-    res.status(500).end();
-  }
-
   const base = err as BaseException;
+  if (base?.status === undefined) {
+    return res.status(500).json({ status: 500, code: 'internal_server_error' });
+  }
 
   if (process.env.NODE_ENV === 'development') {
     base.extensions = {
