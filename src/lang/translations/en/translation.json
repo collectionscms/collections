@@ -83,7 +83,11 @@
   "optional_system_fields": "Optional System Fields",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion.",
-    "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?"
+    "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",
+    "unsaved_changes_title": "Unsaved Changes",
+    "unsaved_changes": "Your changes have not been saved. Are you sure you want to discard them?",
+    "keep_editing": "Keep Editing",
+    "discard_changes": "Discard Changes"
   },
   "toast": {
     "created_successfully": "Created successfully.",

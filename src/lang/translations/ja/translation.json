@@ -83,7 +83,11 @@
   "optional_system_fields": "追加のシステムフィールド",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
-    "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？"
+    "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",
+    "unsaved_changes_title": "未保存の確認",
+    "unsaved_changes": "変更が保存されていません。本当に破棄してよろしいですか？",
+    "keep_editing": "編集を続ける",
+    "discard_changes": "変更を破棄"
   },
   "toast": {
     "created_successfully": "登録しました",
