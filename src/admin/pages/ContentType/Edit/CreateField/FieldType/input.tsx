@@ -15,10 +15,11 @@ import {
   Typography,
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import logger from '../../../../../../utilities/logger';
+import { shallowEqualObject } from '../../../../../../utilities/shallowEqualObject';
 import createFieldSchema, {
   FormValues,
 } from '../../../../../fields/schemas/collectionFields/createField';
@@ -26,19 +27,28 @@ import { useField } from '../Context';
 import { Props } from './types';
 
 const InputType: React.FC<Props> = (props) => {
-  const { slug, expanded, handleChange, onSuccess } = props;
+  const { slug, expanded, handleChange, onEditing, onSuccess } = props;
   const { t } = useTranslation();
   const { createField } = useField();
   const { trigger, isMutating } = createField(slug);
+  const defaultValues = { field: '', label: '', required: false };
   const {
     control,
     handleSubmit,
     reset,
+    watch,
     formState: { errors },
   } = useForm<FormValues>({
-    defaultValues: { field: '', label: '', required: false },
+    defaultValues,
     resolver: yupResolver(createFieldSchema(t)),
   });
+
+  useEffect(() => {
+    watch((value) => {
+      const isEqualed = shallowEqualObject(defaultValues, value);
+      onEditing(!isEqualed);
+    });
+  }, [watch]);
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {

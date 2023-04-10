@@ -33,10 +33,15 @@ const CreateChoice: React.FC<Props> = ({ openState, onSuccess, onClose }) => {
     resolver: yupResolver(createChoiceSchema()),
   });
 
-  const onToggle = () => (event: React.KeyboardEvent) => {
-    if (event.type === 'keydown' && (event as React.KeyboardEvent).key === 'Escape') {
-      onClose();
+  const onToggle = () => (event: React.KeyboardEvent | React.MouseEvent) => {
+    if (
+      event.type === 'keydown' &&
+      ((event as React.KeyboardEvent).key === 'Tab' ||
+        (event as React.KeyboardEvent).key === 'Shift')
+    ) {
+      return;
     }
+    onClose();
   };
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
