@@ -1,10 +1,10 @@
-import { Menu, MenuItem } from '@mui/material';
+import { Divider, Menu, MenuItem } from '@mui/material';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import DeleteDocument from '../../../../components/elements/DeleteDocument';
 import { Props } from './types';
 
-const EditMenu: React.FC<Props> = ({ id, collectionId, menu, onSuccess, onClose }) => {
+const EditMenu: React.FC<Props> = ({ id, collectionId, menu, onEdit, onSuccess, onClose }) => {
   const [open, setOpen] = useState(false);
   const { t } = useTranslation();
 
@@ -18,7 +18,12 @@ const EditMenu: React.FC<Props> = ({ id, collectionId, menu, onSuccess, onClose 
     onSuccess();
   };
 
-  const handleDelete = () => {
+  const onEditField = () => {
+    onEdit();
+    onClose();
+  };
+
+  const onDelete = () => {
     setOpen(true);
     onClose();
   };
@@ -45,7 +50,9 @@ const EditMenu: React.FC<Props> = ({ id, collectionId, menu, onSuccess, onClose 
         open={Boolean(menu)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleDelete}>{t('delete')}</MenuItem>
+        <MenuItem onClick={onEditField}>{t('edit_field')}</MenuItem>
+        <Divider />
+        <MenuItem onClick={onDelete}>{t('delete_field')}</MenuItem>
       </Menu>
     </>
   );
