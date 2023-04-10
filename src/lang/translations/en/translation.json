@@ -81,6 +81,8 @@
   "published": "Published",
   "unpublished": "Unpublished",
   "optional_system_fields": "Optional System Fields",
+  "edit_field": "Edit Field",
+  "delete_field": "Delete Field",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion.",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",
