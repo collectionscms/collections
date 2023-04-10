@@ -33,7 +33,7 @@ import EditMenu from './Menu';
 import { SortableFieldList } from './SortableFieldList';
 
 const EditPage: React.FC = () => {
-  const [state, setState] = useState(false);
+  const [createFieldOpen, setCreateFieldOpen] = useState(false);
   const [menu, setMenu] = useState(null);
   const [selectedFieldId, setSelectedFieldId] = useState(null);
   const [sortableFields, setSortableFields] = useState([]);
@@ -70,29 +70,25 @@ const EditPage: React.FC = () => {
     }
   }, [fields]);
 
-  const openMenu = (currentTarget: EventTarget, id: number) => {
-    setSelectedFieldId(id);
-    setMenu(currentTarget);
-  };
-  const closeMenu = () => setMenu(null);
-
   const onToggleCreateField = (state: boolean) => {
-    setState(state);
+    setCreateFieldOpen(state);
   };
 
   const handleDeletionSuccess = () => {
     navigate(`../content-types`);
   };
 
-  const handleCreateFieldSuccess = () => {
-    setState(false);
+  const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
+    try {
+      await trigger(form);
+      enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
+      navigate('../content-types');
+    } catch (e) {
+      logger.error(e);
+    }
   };
 
-  const handleDeleteFieldSuccess = () => {
-    mutate(fields.filter((field) => field.id !== selectedFieldId));
-    closeMenu();
-  };
-
+  // The user changes the order of the sortable items.
   const handleChangeSortableItems = async (items: Field[]) => {
     setSortableFields(items);
 
@@ -108,30 +104,44 @@ const EditPage: React.FC = () => {
     }
   };
 
-  const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
-    try {
-      await trigger(form);
-      enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
-      navigate('../content-types');
-    } catch (e) {
-      logger.error(e);
-    }
+  // /////////////////////////////////////
+  // Create Field
+  // /////////////////////////////////////
+
+  const handleCreateFieldSuccess = () => {
+    setCreateFieldOpen(false);
+  };
+
+  // /////////////////////////////////////
+  // Edit Field
+  // /////////////////////////////////////
+
+  const onOpenMenu = (currentTarget: EventTarget, id: number) => {
+    setSelectedFieldId(id);
+    setMenu(currentTarget);
+  };
+
+  const onCloseMenu = () => setMenu(null);
+
+  const handleDeleteFieldSuccess = () => {
+    mutate(fields.filter((field) => field.id !== selectedFieldId));
+    onCloseMenu();
   };
 
   return (
     <Suspense fallback={<Loading />}>
       <CreateField
         slug={meta.collection}
-        openState={state}
-        onSuccess={() => handleCreateFieldSuccess()}
+        openState={createFieldOpen}
+        onSuccess={handleCreateFieldSuccess}
         onClose={() => onToggleCreateField(false)}
       />
       <EditMenu
         id={selectedFieldId}
         collectionId={id}
         menu={menu}
-        onSuccess={() => handleDeleteFieldSuccess()}
-        onClose={() => closeMenu()}
+        onSuccess={handleDeleteFieldSuccess}
+        onClose={onCloseMenu}
       />
       <Stack component="form" onSubmit={handleSubmit(onSubmit)} rowGap={3}>
         <Grid container spacing={2}>
@@ -162,7 +172,7 @@ const EditPage: React.FC = () => {
                       <Box sx={{ flexGrow: 1 }}>{item.field}</Box>
                       {!item.hidden && (
                         <SortableFieldList.ItemMenu
-                          onClickItem={(e) => openMenu(e.currentTarget, item.id)}
+                          onClickItem={(e) => onOpenMenu(e.currentTarget, item.id)}
                         />
                       )}
                     </Box>
