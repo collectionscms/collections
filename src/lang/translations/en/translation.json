@@ -83,6 +83,10 @@
   "optional_system_fields": "Optional System Fields",
   "edit_field": "Edit Field",
   "delete_field": "Delete Field",
+  "readonly": "Readonly",
+  "disable_editing_value": "Disable Editing Value",
+  "hidden": "Hidden",
+  "hidden_on_detail": "Hidden on Detail",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion.",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",

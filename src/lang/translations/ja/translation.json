@@ -83,6 +83,10 @@
   "optional_system_fields": "追加のシステムフィールド",
   "edit_field": "フィールドの編集",
   "delete_field": "フィールドの削除",
+  "readonly": "読み取り専用",
+  "disable_editing_value": "編集を無効にする",
+  "hidden": "非表示",
+  "hidden_on_detail": "フィールドを非表示にする",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",
