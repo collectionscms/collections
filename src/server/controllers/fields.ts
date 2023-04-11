@@ -66,6 +66,19 @@ app.patch(
   })
 );
 
+app.patch(
+  '/fields/:id',
+  permissionsHandler([{ collection: 'superfast_fields', action: 'update' }]),
+  asyncHandler(async (req: Request, res: Response) => {
+    const id = Number(req.params.id);
+    const repository = new FieldsRepository();
+
+    await repository.update(id, req.body);
+
+    res.status(204).end();
+  })
+);
+
 app.delete(
   '/collections/:collectionId/fields/:id',
   permissionsHandler([{ collection: 'superfast_fields', action: 'delete' }]),
