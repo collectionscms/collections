@@ -192,7 +192,7 @@ const EditPage: React.FC = () => {
                     <Box display="flex" justifyContent="space-between" alignItems="center">
                       <SortableFieldList.DragHandle />
                       <Box sx={{ flexGrow: 1 }}>{item.field}</Box>
-                      {!item.hidden && (
+                      {item.field !== 'id' && (
                         <SortableFieldList.ItemMenu
                           onClickItem={(e) => onOpenMenu(e.currentTarget, item)}
                         />
