@@ -8,9 +8,12 @@ import ComposeWrapper from '../../../../components/utilities/ComposeWrapper';
 import { FieldContextProvider } from './Context';
 import InputType from './FieldType/input';
 import { Props } from './types';
+import InputMultilineType from './FieldType/inputMultiline';
+import SelectDropdownType from './FieldType/selectDropdown';
 
 const EditField: React.FC<Props> = ({ field, open, onSuccess, onClose }) => {
   const [openUnsavedDialog, setOpenUnsavedDialog] = useState(false);
+  const [drawerVisibility, setDrawerVisibility] = useState(false);
   const [editing, setEditing] = useState(false);
   const theme = useTheme();
   const { t } = useTranslation();
@@ -25,6 +28,10 @@ const EditField: React.FC<Props> = ({ field, open, onSuccess, onClose }) => {
     }
 
     onDrawerClose();
+  };
+
+  const handleChangeParentViewInvisible = (state: boolean) => {
+    setDrawerVisibility(state);
   };
 
   const onDrawerClose = () => {
@@ -69,7 +76,7 @@ const EditField: React.FC<Props> = ({ field, open, onSuccess, onClose }) => {
         onClose={onToggle()}
         sx={{ zIndex: theme.zIndex.appBar + 200 }}
       >
-        <Box sx={{ maxWidth: 660 }}>
+        <Box sx={{ maxWidth: 660 }} hidden={drawerVisibility}>
           <Stack direction="row" columnGap={2} sx={{ p: 1 }}>
             <IconButton aria-label="close" onClick={onDrawerClose}>
               <CloseOutlined />
@@ -80,6 +87,21 @@ const EditField: React.FC<Props> = ({ field, open, onSuccess, onClose }) => {
           </Stack>
           {field.interface === 'input' && (
             <InputType field={field} onEditing={handleEditing} onSuccess={handleEditedSuccess} />
+          )}
+          {field.interface === 'inputMultiline' && (
+            <InputMultilineType
+              field={field}
+              onEditing={handleEditing}
+              onSuccess={handleEditedSuccess}
+            />
+          )}
+          {field.interface === 'selectDropdown' && (
+            <SelectDropdownType
+              field={field}
+              onEditing={handleEditing}
+              onSuccess={handleEditedSuccess}
+              onChangeParentViewInvisible={handleChangeParentViewInvisible}
+            />
           )}
         </Box>
       </Drawer>
