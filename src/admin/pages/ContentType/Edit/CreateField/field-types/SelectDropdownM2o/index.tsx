@@ -2,9 +2,9 @@ import { SettingsEthernetOutlined } from '@mui/icons-material';
 import { Accordion, AccordionSummary, Box, Stack, Typography } from '@mui/material';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Props } from './types';
+import { Props } from '../types';
 
-const ListO2mType: React.FC<Props> = (props) => {
+export const SelectDropdownM2oType: React.FC<Props> = (props) => {
   const { expanded, handleChange } = props;
   const { t } = useTranslation();
 
@@ -28,15 +28,24 @@ const ListO2mType: React.FC<Props> = (props) => {
           <Typography variant="h6">coming soon..</Typography>
         </Box>
       </Box>
-      <Accordion expanded={expanded} square disableGutters onChange={() => handleChange('listO2m')}>
+      <Accordion
+        expanded={expanded}
+        square
+        disableGutters
+        onChange={() => handleChange('selectDropdownM2o')}
+      >
         <AccordionSummary aria-controls="panel-content" id="panel-header">
           <Stack direction="row" columnGap={2}>
             <Box display="flex" alignItems="center">
               <SettingsEthernetOutlined />
             </Box>
             <Stack direction="column">
-              <Typography variant="subtitle1">{t('field_interface.list_o2m')}</Typography>
-              <Typography variant="caption">{t('field_interface.list_o2m_caption')}</Typography>
+              <Typography variant="subtitle1">
+                {t('field_interface.select_dropdown_m2o')}
+              </Typography>
+              <Typography variant="caption">
+                {t('field_interface.select_dropdown_m2o_caption')}
+              </Typography>
             </Stack>
           </Stack>
         </AccordionSummary>
@@ -44,5 +53,3 @@ const ListO2mType: React.FC<Props> = (props) => {
     </Stack>
   );
 };
-
-export default ListO2mType;

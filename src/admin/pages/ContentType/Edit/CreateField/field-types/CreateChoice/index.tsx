@@ -21,7 +21,7 @@ import createChoiceSchema, {
 } from '../../../../../../fields/schemas/collectionFields/createChoice';
 import { Props } from './types';
 
-const CreateChoice: React.FC<Props> = ({ openState, onSuccess, onClose }) => {
+export const CreateChoice: React.FC<Props> = ({ openState, onSuccess, onClose }) => {
   const theme = useTheme();
   const {
     control,
@@ -110,5 +110,3 @@ const CreateChoice: React.FC<Props> = ({ openState, onSuccess, onClose }) => {
     </Box>
   );
 };
-
-export default CreateChoice;

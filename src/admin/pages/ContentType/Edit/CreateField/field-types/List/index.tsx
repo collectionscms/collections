@@ -1,10 +1,10 @@
-import { SettingsEthernetOutlined } from '@mui/icons-material';
+import { LowPriorityOutlined } from '@mui/icons-material';
 import { Accordion, AccordionSummary, Box, Stack, Typography } from '@mui/material';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Props } from './types';
+import { Props } from '../types';
 
-const ListO2oType: React.FC<Props> = (props) => {
+export const ListType: React.FC<Props> = (props) => {
   const { expanded, handleChange } = props;
   const { t } = useTranslation();
 
@@ -28,15 +28,15 @@ const ListO2oType: React.FC<Props> = (props) => {
           <Typography variant="h6">coming soon..</Typography>
         </Box>
       </Box>
-      <Accordion expanded={expanded} square disableGutters onChange={() => handleChange('listO2o')}>
+      <Accordion expanded={expanded} square disableGutters onChange={() => handleChange('list')}>
         <AccordionSummary aria-controls="panel-content" id="panel-header">
           <Stack direction="row" columnGap={2}>
             <Box display="flex" alignItems="center">
-              <SettingsEthernetOutlined />
+              <LowPriorityOutlined />
             </Box>
             <Stack direction="column">
-              <Typography variant="subtitle1">{t('field_interface.list_o2o')}</Typography>
-              <Typography variant="caption">{t('field_interface.list_o2o_caption')}</Typography>
+              <Typography variant="subtitle1">{t('field_interface.list')}</Typography>
+              <Typography variant="caption">{t('field_interface.list_caption')}</Typography>
             </Stack>
           </Stack>
         </AccordionSummary>
@@ -44,5 +44,3 @@ const ListO2oType: React.FC<Props> = (props) => {
     </Stack>
   );
 };
-
-export default ListO2oType;
