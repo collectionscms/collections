@@ -1,7 +1,7 @@
-import input from './Input';
-import inputMultiline from './InputMultiline';
-import selectDropdown from './SelectDropdown';
-import selectDropdownStatus from './SelectDropdown';
+import { InputType as input } from './Input';
+import { InputMultilineType as inputMultiline } from './InputMultiline';
+import { SelectDropdownType as selectDropdown } from './SelectDropdown';
+import { SelectDropdownType as selectDropdownStatus } from './SelectDropdown';
 import { Props } from './types';
 
 export type FieldTypes = {

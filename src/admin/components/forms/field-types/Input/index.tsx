@@ -3,7 +3,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Props } from '../types';
 
-const Input: React.FC<Props> = ({ register, errors, field }) => {
+export const InputType: React.FC<Props> = ({ register, errors, field }) => {
   const { t } = useTranslation();
   const required = field.required && { required: t('yup.mixed.required') };
 
@@ -17,5 +17,3 @@ const Input: React.FC<Props> = ({ register, errors, field }) => {
     />
   );
 };
-
-export default Input;
