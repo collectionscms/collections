@@ -1,10 +1,10 @@
-import { DateRangeOutlined } from '@mui/icons-material';
+import { InsertDriveFileOutlined } from '@mui/icons-material';
 import { Accordion, AccordionSummary, Box, Stack, Typography } from '@mui/material';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Props } from './types';
+import { Props } from '../types';
 
-const DateTimeType: React.FC<Props> = (props) => {
+export const FileType: React.FC<Props> = (props) => {
   const { expanded, handleChange } = props;
   const { t } = useTranslation();
 
@@ -28,20 +28,15 @@ const DateTimeType: React.FC<Props> = (props) => {
           <Typography variant="h6">coming soon..</Typography>
         </Box>
       </Box>
-      <Accordion
-        expanded={expanded}
-        square
-        disableGutters
-        onChange={() => handleChange('dateTime')}
-      >
+      <Accordion expanded={expanded} square disableGutters onChange={() => handleChange('file')}>
         <AccordionSummary aria-controls="panel-content" id="panel-header">
           <Stack direction="row" columnGap={2}>
             <Box display="flex" alignItems="center">
-              <DateRangeOutlined />
+              <InsertDriveFileOutlined />
             </Box>
             <Stack direction="column">
-              <Typography variant="subtitle1">{t('field_interface.date_time')}</Typography>
-              <Typography variant="caption">{t('field_interface.date_time_caption')}</Typography>
+              <Typography variant="subtitle1">{t('field_interface.file')}</Typography>
+              <Typography variant="caption">{t('field_interface.file_caption')}</Typography>
             </Stack>
           </Stack>
         </AccordionSummary>
@@ -49,5 +44,3 @@ const DateTimeType: React.FC<Props> = (props) => {
     </Stack>
   );
 };
-
-export default DateTimeType;

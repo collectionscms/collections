@@ -1,10 +1,10 @@
-import { LowPriorityOutlined } from '@mui/icons-material';
+import { PhotoOutlined } from '@mui/icons-material';
 import { Accordion, AccordionSummary, Box, Stack, Typography } from '@mui/material';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Props } from './types';
+import { Props } from '../types';
 
-const ListType: React.FC<Props> = (props) => {
+export const FileImageType: React.FC<Props> = (props) => {
   const { expanded, handleChange } = props;
   const { t } = useTranslation();
 
@@ -28,15 +28,20 @@ const ListType: React.FC<Props> = (props) => {
           <Typography variant="h6">coming soon..</Typography>
         </Box>
       </Box>
-      <Accordion expanded={expanded} square disableGutters onChange={() => handleChange('list')}>
+      <Accordion
+        expanded={expanded}
+        square
+        disableGutters
+        onChange={() => handleChange('fileImage')}
+      >
         <AccordionSummary aria-controls="panel-content" id="panel-header">
           <Stack direction="row" columnGap={2}>
             <Box display="flex" alignItems="center">
-              <LowPriorityOutlined />
+              <PhotoOutlined />
             </Box>
             <Stack direction="column">
-              <Typography variant="subtitle1">{t('field_interface.list')}</Typography>
-              <Typography variant="caption">{t('field_interface.list_caption')}</Typography>
+              <Typography variant="subtitle1">{t('field_interface.file_image')}</Typography>
+              <Typography variant="caption">{t('field_interface.file_image_caption')}</Typography>
             </Stack>
           </Stack>
         </AccordionSummary>
@@ -44,5 +49,3 @@ const ListType: React.FC<Props> = (props) => {
     </Stack>
   );
 };
-
-export default ListType;

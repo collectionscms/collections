@@ -18,15 +18,15 @@ import Grid from '@mui/material/Unstable_Grid2/Grid2';
 import React, { useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import logger from '../../../../../../utilities/logger';
-import { shallowEqualObject } from '../../../../../../utilities/shallowEqualObject';
+import logger from '../../../../../../../utilities/logger';
+import { shallowEqualObject } from '../../../../../../../utilities/shallowEqualObject';
 import createFieldSchema, {
   FormValues,
-} from '../../../../../fields/schemas/collectionFields/createField';
-import { useField } from '../Context';
-import { Props } from './types';
+} from '../../../../../../fields/schemas/collectionFields/createField';
+import { useField } from '../../Context';
+import { Props } from '../types';
 
-const InputMultilineType: React.FC<Props> = (props) => {
+export const InputMultilineType: React.FC<Props> = (props) => {
   const { slug, expanded, handleChange, onEditing, onSuccess } = props;
   const { t } = useTranslation();
   const { createField } = useField();
@@ -151,5 +151,3 @@ const InputMultilineType: React.FC<Props> = (props) => {
     </Stack>
   );
 };
-
-export default InputMultilineType;

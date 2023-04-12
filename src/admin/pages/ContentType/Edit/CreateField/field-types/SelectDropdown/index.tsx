@@ -21,16 +21,16 @@ import React, { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Choice } from 'shared/types';
-import logger from '../../../../../../utilities/logger';
-import { shallowEqualObject } from '../../../../../../utilities/shallowEqualObject';
+import logger from '../../../../../../../utilities/logger';
+import { shallowEqualObject } from '../../../../../../../utilities/shallowEqualObject';
 import createFieldSchema, {
   FormValues,
-} from '../../../../../fields/schemas/collectionFields/createField';
-import { useField } from '../Context';
-import CreateChoice from './CreateChoice';
-import { Props } from './types';
+} from '../../../../../../fields/schemas/collectionFields/createField';
+import { useField } from '../../Context';
+import { Props } from '../types';
+import { CreateChoice } from '../CreateChoice';
 
-const SelectDropdownType: React.FC<Props> = (props) => {
+export const SelectDropdownType: React.FC<Props> = (props) => {
   const { slug, expanded, handleChange, onEditing, onSuccess, onChangeParentViewInvisible } = props;
   const [state, setState] = useState(false);
   const { t } = useTranslation();
@@ -212,5 +212,3 @@ const SelectDropdownType: React.FC<Props> = (props) => {
     </>
   );
 };
-
-export default SelectDropdownType;

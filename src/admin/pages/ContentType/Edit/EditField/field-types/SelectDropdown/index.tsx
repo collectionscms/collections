@@ -17,17 +17,17 @@ import Grid from '@mui/material/Unstable_Grid2/Grid2';
 import React, { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import logger from '../../../../../../utilities/logger';
-import { shallowEqualObject } from '../../../../../../utilities/shallowEqualObject';
+import { Choice } from 'shared/types';
+import logger from '../../../../../../../utilities/logger';
+import { shallowEqualObject } from '../../../../../../../utilities/shallowEqualObject';
 import updateFieldSchema, {
   FormValues,
-} from '../../../../../fields/schemas/collectionFields/updateField';
-import { useField } from '../Context';
-import { Props } from './types';
-import { Choice } from 'shared/types';
-import CreateChoice from '../../CreateField/FieldType/CreateChoice';
+} from '../../../../../../fields/schemas/collectionFields/updateField';
+import { CreateChoice } from '../../../CreateField/field-types/CreateChoice';
+import { useField } from '../../Context';
+import { Props } from '../types';
 
-const SelectDropdownType: React.FC<Props> = (props) => {
+export const SelectDropdownType: React.FC<Props> = (props) => {
   const { field: meta, onEditing, onSuccess, onChangeParentViewInvisible } = props;
   const [state, setState] = useState(false);
   const { t } = useTranslation();
@@ -207,5 +207,3 @@ const SelectDropdownType: React.FC<Props> = (props) => {
     </>
   );
 };
-
-export default SelectDropdownType;
