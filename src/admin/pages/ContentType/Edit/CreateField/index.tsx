@@ -6,16 +6,16 @@ import { Field, FieldInterface } from '../../../../../shared/types';
 import { UnsavedDialog } from '../../../../components/elements/UnsavedDialog';
 import ComposeWrapper from '../../../../components/utilities/ComposeWrapper';
 import { FieldContextProvider } from './Context';
-import DateTimeType from './FieldType/dateTime';
-import FileType from './FieldType/file';
-import FileImageType from './FieldType/fileImage';
-import InputType from './FieldType/input';
-import InputMultilineType from './FieldType/inputMultiline';
-import ListType from './FieldType/list';
-import ListO2mType from './FieldType/listO2m';
-import ListO2oType from './FieldType/listO2o';
-import SelectDropdownType from './FieldType/selectDropdown';
-import SelectDropdownM2oType from './FieldType/selectDropdownM2o';
+import { DateTimeType } from './field-types/DateTime';
+import { FileType } from './field-types/File';
+import { FileImageType } from './field-types/FileImage';
+import { ListType } from './field-types/List';
+import { ListO2mType } from './field-types/ListO2m';
+import { ListO2oType } from './field-types/ListO2o';
+import { SelectDropdownM2oType } from './field-types/SelectDropdownM2o';
+import { InputType } from './field-types/Input';
+import { InputMultilineType } from './field-types/InputMultiline';
+import { SelectDropdownType } from './field-types/SelectDropdown';
 import { Props } from './types';
 
 const CreateField: React.FC<Props> = ({ slug, openState, onSuccess, onClose }) => {

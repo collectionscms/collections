@@ -6,10 +6,10 @@ import { Field } from '../../../../../shared/types';
 import { UnsavedDialog } from '../../../../components/elements/UnsavedDialog';
 import ComposeWrapper from '../../../../components/utilities/ComposeWrapper';
 import { FieldContextProvider } from './Context';
-import InputType from './FieldType/input';
+import { InputType } from './field-types/Input';
 import { Props } from './types';
-import InputMultilineType from './FieldType/inputMultiline';
-import SelectDropdownType from './FieldType/selectDropdown';
+import { InputMultilineType } from './field-types/InputMultiline';
+import { SelectDropdownType } from './field-types/SelectDropdown';
 
 const EditField: React.FC<Props> = ({ field, open, onSuccess, onClose }) => {
   const [openUnsavedDialog, setOpenUnsavedDialog] = useState(false);
