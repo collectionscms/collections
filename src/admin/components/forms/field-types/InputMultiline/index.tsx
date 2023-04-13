@@ -13,6 +13,7 @@ export const InputMultilineType: React.FC<Props> = ({ register, errors, field })
       multiline
       rows={5}
       name={field.field}
+      disabled={Boolean(field.readonly)}
       {...register(field.field, { ...required })}
       error={errors[field.field] !== undefined}
       fullWidth

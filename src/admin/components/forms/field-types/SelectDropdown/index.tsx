@@ -18,6 +18,7 @@ export const SelectDropdownType: React.FC<Props> = ({ control, register, field: 
           {...field}
           error={fieldState.error !== undefined}
           {...register(meta.field, { ...required })}
+          disabled={Boolean(meta.readonly)}
           defaultValue={''}
           fullWidth
         >
