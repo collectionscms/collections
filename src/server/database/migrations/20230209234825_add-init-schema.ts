@@ -41,7 +41,7 @@ export async function up(knex: Knex): Promise<void> {
     table.string('status_field', 64);
     table.string('draft_value', 64);
     table.string('publish_value', 64);
-    table.string('unpublish_value', 64);
+    table.string('archive_value', 64);
     table.timestamps(true, true);
   });
 

@@ -7,9 +7,9 @@ import { UnsavedDialog } from '../../../../components/elements/UnsavedDialog';
 import ComposeWrapper from '../../../../components/utilities/ComposeWrapper';
 import { FieldContextProvider } from './Context';
 import { InputType } from './field-types/Input';
-import { Props } from './types';
 import { InputMultilineType } from './field-types/InputMultiline';
 import { SelectDropdownType } from './field-types/SelectDropdown';
+import { Props } from './types';
 
 const EditField: React.FC<Props> = ({ field, open, onSuccess, onClose }) => {
   const [openUnsavedDialog, setOpenUnsavedDialog] = useState(false);
@@ -95,7 +95,7 @@ const EditField: React.FC<Props> = ({ field, open, onSuccess, onClose }) => {
               onSuccess={handleEditedSuccess}
             />
           )}
-          {field.interface === 'selectDropdown' && (
+          {(field.interface === 'selectDropdown' || field.interface === 'selectDropdownStatus') && (
             <SelectDropdownType
               field={field}
               onEditing={handleEditing}

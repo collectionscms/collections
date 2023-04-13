@@ -79,7 +79,7 @@
   "public_status_field": "Public Status Field",
   "draft": "Draft",
   "published": "Published",
-  "unpublished": "Unpublished",
+  "archived": "Archived",
   "optional_system_fields": "Optional System Fields",
   "edit_field": "Edit Field",
   "delete_field": "Delete Field",

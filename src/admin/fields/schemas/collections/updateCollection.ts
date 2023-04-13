@@ -7,7 +7,7 @@ export type FormValues = {
   statusField: string;
   draftValue: string;
   publishValue: string;
-  unpublishValue: string;
+  archiveValue: string;
 };
 
 export const updateCollection = (): ObjectSchema<FormValues> => {
@@ -29,7 +29,7 @@ export const updateCollection = (): ObjectSchema<FormValues> => {
         is: (value: string) => value,
         then: (schema) => schema.required(),
       }),
-    unpublishValue: yup
+    archiveValue: yup
       .string()
       .max(60)
       .when('statusField', {

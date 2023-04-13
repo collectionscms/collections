@@ -138,7 +138,7 @@ const seedingData = async (): Promise<void> => {
       statusField: 'status',
       draftValue: '下書き',
       publishValue: '公開中',
-      unpublishValue: '公開終了',
+      archiveValue: '公開終了',
     },
     {
       id: 2,
@@ -148,7 +148,7 @@ const seedingData = async (): Promise<void> => {
       statusField: null,
       draftValue: null,
       publishValue: null,
-      unpublishValue: null,
+      archiveValue: null,
     },
   ]);
 

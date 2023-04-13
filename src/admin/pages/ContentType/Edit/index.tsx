@@ -61,7 +61,7 @@ const EditPage: React.FC = () => {
       statusField: meta.statusField || '',
       draftValue: meta.draftValue || '',
       publishValue: meta.publishValue || '',
-      unpublishValue: meta.unpublishValue || '',
+      archiveValue: meta.archiveValue || '',
     },
     resolver: yupResolver(updateCollectionSchema()),
   });
@@ -311,9 +311,9 @@ const EditPage: React.FC = () => {
             <FormHelperText error>{errors.publishValue?.message}</FormHelperText>
           </Grid>
           <Grid xs={1}>
-            <InputLabel>{t('unpublished')}</InputLabel>
+            <InputLabel>{t('archived')}</InputLabel>
             <Controller
-              name="unpublishValue"
+              name="archiveValue"
               control={control}
               render={({ field }) => (
                 <TextField
@@ -324,7 +324,7 @@ const EditPage: React.FC = () => {
                 />
               )}
             />
-            <FormHelperText error>{errors.unpublishValue?.message}</FormHelperText>
+            <FormHelperText error>{errors.archiveValue?.message}</FormHelperText>
           </Grid>
         </Grid>
       </Stack>

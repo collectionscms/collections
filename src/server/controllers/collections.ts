@@ -51,7 +51,7 @@ app.post(
           statusField: 'status',
           draftValue: 'draft',
           publishValue: 'published',
-          unpublishValue: 'unpublished',
+          archiveValue: 'archived',
         }
       : req.body;
     delete data.status;
@@ -92,9 +92,9 @@ app.post(
           sort: null,
           options: JSON.stringify({
             choices: [
-              { label: 'draft', value: 'draft' },
-              { label: 'published', value: 'published' },
-              { label: 'unpublished', value: 'unpublished' },
+              { label: 'Draft', value: 'draft' },
+              { label: 'Published', value: 'published' },
+              { label: 'Archived', value: 'archived' },
             ],
           }),
         },
@@ -130,7 +130,7 @@ app.patch(
             choices: [
               { label: req.body.draftValue, value: req.body.draftValue },
               { label: req.body.publishValue, value: req.body.publishValue },
-              { label: req.body.unpublishValue, value: req.body.unpublishValue },
+              { label: req.body.archiveValue, value: req.body.archiveValue },
             ],
           }),
         });
