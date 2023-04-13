@@ -79,7 +79,7 @@
   "public_status_field": "公開ステータスフィールド",
   "draft": "下書き",
   "published": "公開中",
-  "unpublished": "公開終了",
+  "archived": "公開終了",
   "optional_system_fields": "追加のシステムフィールド",
   "edit_field": "フィールドの編集",
   "delete_field": "フィールドの削除",

@@ -41,7 +41,7 @@ export type Collection = {
   statusField: string | null;
   draftValue: string | null;
   publishValue: string | null;
-  unpublishValue: string | null;
+  archiveValue: string | null;
 } & PrimaryKey;
 
 export type FieldInterface =
