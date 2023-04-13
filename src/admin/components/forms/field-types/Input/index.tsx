@@ -11,6 +11,7 @@ export const InputType: React.FC<Props> = ({ register, errors, field }) => {
     <TextField
       type="text"
       name={field.field}
+      disabled={Boolean(field.readonly)}
       {...register(field.field, { ...required })}
       error={errors[field.field] !== undefined}
       fullWidth
