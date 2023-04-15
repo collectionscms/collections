@@ -40,9 +40,10 @@ app.post(
     const collections = await collectionsRepository.read({ collection: slug });
 
     await repository.transaction(async (tx) => {
-      const field = await repository.transacting(tx).create(req.body);
+      const result = await repository.transacting(tx).create(req.body);
+      const field = await repository.transacting(tx).readOne(result.id);
       await tx.transaction.schema.alterTable(collections[0].collection, (table) => {
-        addColumnToTable(req.body, table);
+        addColumnToTable(field, table);
       });
 
       res.json({ field });
@@ -123,6 +124,11 @@ const addColumnToTable = (field: Field, table: Knex.CreateTableBuilder) => {
     case 'inputRichTextMd':
       column = table.text(field.field);
       break;
+    case 'boolean': {
+      const value = field.options ? JSON.parse(field.options) : null;
+      column = table.boolean(field.field).defaultTo(value?.defaultValue || false);
+      break;
+    }
     default:
       break;
   }

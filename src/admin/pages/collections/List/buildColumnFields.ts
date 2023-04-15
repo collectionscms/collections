@@ -24,8 +24,9 @@ const toType = (fieldInterface: string): (typeof Type)[keyof typeof Type] => {
       return Type.Text;
     case 'selectDropdownStatus':
       return Type.Status;
+    case 'boolean':
+      return Type.Boolean;
     default:
-      return Type.Object;
   }
 };
 

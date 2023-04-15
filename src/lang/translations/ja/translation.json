@@ -87,6 +87,9 @@
   "disable_editing_value": "編集を無効にする",
   "hidden": "非表示",
   "hidden_on_detail": "フィールドを非表示にする",
+  "default_value": "初期値",
+  "enabled": "有効",
+  "disabled": "無効",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",
@@ -119,6 +122,8 @@
     "input_multi_line_caption": "テキスト型のフィールドです。複数行の値を入力します。",
     "date_time": "日時",
     "date_time_caption": "Date型のフィールドです。カレンダーから日時を選択します。",
+    "boolean": "真偽値",
+    "boolean_caption": "Boolean型のフィールドです。チェックボックスでオン/オフを切り替えます。",
     "input_rich_text_html": "リッチエディタ",
     "input_rich_text_html_caption": "テキスト型のフィールドです。リッチエディタを使って値を入力します。",
     "input_rich_text_md": "マークダウン",

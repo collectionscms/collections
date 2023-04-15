@@ -51,6 +51,7 @@ export type FieldInterface =
   | 'inputRichTextMd'
   | 'selectDropdown'
   | 'dateTime'
+  | 'boolean'
   | 'file'
   | 'fileImage'
   | 'list'
@@ -60,6 +61,7 @@ export type FieldInterface =
   | 'selectDropdownStatus'; // public status
 export type FieldOption = {
   choices?: Choice[];
+  defaultValue?: any;
 };
 export type Choice = {
   label: string;

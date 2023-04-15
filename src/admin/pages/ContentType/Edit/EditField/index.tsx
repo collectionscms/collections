@@ -10,6 +10,7 @@ import { InputType } from './field-types/Input';
 import { InputMultilineType } from './field-types/InputMultiline';
 import { SelectDropdownType } from './field-types/SelectDropdown';
 import { Props } from './types';
+import { BooleanType } from './field-types/Boolean';
 
 const EditField: React.FC<Props> = ({ field, open, onSuccess, onClose }) => {
   const [openUnsavedDialog, setOpenUnsavedDialog] = useState(false);
@@ -102,6 +103,9 @@ const EditField: React.FC<Props> = ({ field, open, onSuccess, onClose }) => {
               onSuccess={handleEditedSuccess}
               onChangeParentViewInvisible={handleChangeParentViewInvisible}
             />
+          )}
+          {field.interface === 'boolean' && (
+            <BooleanType field={field} onEditing={handleEditing} onSuccess={handleEditedSuccess} />
           )}
         </Box>
       </Drawer>
