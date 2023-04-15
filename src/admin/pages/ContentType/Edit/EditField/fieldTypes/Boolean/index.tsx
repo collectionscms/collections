@@ -16,7 +16,7 @@ import logger from '../../../../../../../utilities/logger';
 import { shallowEqualObject } from '../../../../../../../utilities/shallowEqualObject';
 import {
   FormValues,
-  updateBoolean as Schema,
+  updateBoolean as schema,
 } from '../../../../../../fields/schemas/collectionFields/boolean/updateBoolean';
 import { useField } from '../../Context';
 import { Props } from '../types';
@@ -39,7 +39,7 @@ export const BooleanType: React.FC<Props> = (props) => {
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues,
-    resolver: yupResolver(Schema),
+    resolver: yupResolver(schema),
   });
 
   useEffect(() => {
