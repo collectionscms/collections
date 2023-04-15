@@ -16,9 +16,10 @@ import Grid from '@mui/material/Unstable_Grid2/Grid2';
 import { t } from 'i18next';
 import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import createChoiceSchema, {
+import {
   FormValues,
-} from '../../../../../../fields/schemas/collectionFields/createChoice';
+  createChoice as schema,
+} from '../../../../../../fields/schemas/collectionFields/choice/createChoice';
 import { Props } from './types';
 
 export const CreateChoice: React.FC<Props> = ({ openState, onSuccess, onClose }) => {
@@ -30,7 +31,7 @@ export const CreateChoice: React.FC<Props> = ({ openState, onSuccess, onClose })
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: { label: '', value: '' },
-    resolver: yupResolver(createChoiceSchema()),
+    resolver: yupResolver(schema),
   });
 
   const onToggle = () => (event: React.KeyboardEvent | React.MouseEvent) => {
