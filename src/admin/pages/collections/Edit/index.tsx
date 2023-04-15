@@ -5,6 +5,7 @@ import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
+import { Field } from 'shared/types';
 import logger from '../../../../utilities/logger';
 import DeleteHeaderButton from '../../../components/elements/DeleteHeaderButton';
 import RenderFields from '../../../components/forms/RenderFields';
@@ -21,7 +22,7 @@ const EditPage: React.FC<Props> = ({ collection }) => {
   const { hasPermission } = useAuth();
   const navigate = useNavigate();
   const { getContent, getFields, createContent, updateContent } = useContent();
-  const { data: metaFields } = getFields(collection.collection);
+  const { data: metaFields } = getFields(collection.collection, { suspense: true });
   const { data: content } = getContent(collection.collection, id);
   const { trigger: createTrigger, isMutating: isCreateMutating } = createContent(
     collection.collection
@@ -38,8 +39,19 @@ const EditPage: React.FC<Props> = ({ collection }) => {
     formState: { errors },
   } = useForm();
 
-  const setDefaultValue = (content: Record<string, any>) => {
-    metaFields
+  const setDefaultValue = (fields: Field[]) => {
+    fields
+      .filter((field) => !field.hidden)
+      .forEach((field) => {
+        const defaultValue = field.fieldOption?.defaultValue;
+        if (defaultValue) {
+          setValue(field.field, defaultValue);
+        }
+      });
+  };
+
+  const setContentValue = (fields: Field[], content: Record<string, any>) => {
+    fields
       .filter((field) => !field.hidden)
       .forEach((field) => {
         setValue(field.field, content[field.field]);
@@ -47,9 +59,14 @@ const EditPage: React.FC<Props> = ({ collection }) => {
   };
 
   useEffect(() => {
-    if (content === undefined) return;
-    setDefaultValue(content);
-  }, [content]);
+    if (metaFields === undefined) return;
+    setDefaultValue(metaFields);
+  }, [metaFields]);
+
+  useEffect(() => {
+    if (metaFields === undefined || content === undefined) return;
+    setContentValue(metaFields, content);
+  }, [metaFields, content]);
 
   const handleDeletionSuccess = () => {
     navigate(`/admin/collections/${collection.collection}`);
