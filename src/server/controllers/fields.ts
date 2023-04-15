@@ -129,6 +129,9 @@ const addColumnToTable = (field: Field, table: Knex.CreateTableBuilder) => {
       column = table.boolean(field.field).defaultTo(value?.defaultValue || false);
       break;
     }
+    case 'dateTime':
+      column = table.dateTime(field.field);
+      break;
     default:
       break;
   }

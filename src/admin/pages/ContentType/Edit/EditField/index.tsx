@@ -11,6 +11,7 @@ import { InputMultilineType } from './fieldTypes/InputMultiline';
 import { SelectDropdownType } from './fieldTypes/SelectDropdown';
 import { Props } from './types';
 import { BooleanType } from './fieldTypes/Boolean';
+import { DateTimeType } from './fieldTypes/DateTime';
 
 const EditField: React.FC<Props> = ({ field, open, onSuccess, onClose }) => {
   const [openUnsavedDialog, setOpenUnsavedDialog] = useState(false);
@@ -106,6 +107,9 @@ const EditField: React.FC<Props> = ({ field, open, onSuccess, onClose }) => {
           )}
           {field.interface === 'boolean' && (
             <BooleanType field={field} onEditing={handleEditing} onSuccess={handleEditedSuccess} />
+          )}
+          {field.interface === 'dateTime' && (
+            <DateTimeType field={field} onEditing={handleEditing} onSuccess={handleEditedSuccess} />
           )}
         </Box>
       </Drawer>
