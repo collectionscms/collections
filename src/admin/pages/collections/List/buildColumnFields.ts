@@ -26,6 +26,8 @@ const toType = (fieldInterface: string): (typeof Type)[keyof typeof Type] => {
       return Type.Status;
     case 'boolean':
       return Type.Boolean;
+    case 'dateTime':
+      return Type.Date;
     default:
   }
 };

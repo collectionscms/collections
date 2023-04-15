@@ -1,4 +1,5 @@
 import { BooleanType as boolean } from './Boolean';
+import { DateTimeType as dateTime } from './DateTime';
 import { InputType as input } from './Input';
 import { InputMultilineType as inputMultiline } from './InputMultiline';
 import {
@@ -13,6 +14,7 @@ export type FieldTypes = {
   selectDropdown: React.ComponentType<Props>;
   selectDropdownStatus: React.ComponentType<Props>;
   boolean: React.ComponentType<Props>;
+  dateTime: React.ComponentType<Props>;
 };
 
 const fieldTypes: FieldTypes = {
@@ -21,6 +23,7 @@ const fieldTypes: FieldTypes = {
   selectDropdown,
   selectDropdownStatus,
   boolean,
+  dateTime,
 };
 
 export default fieldTypes;
