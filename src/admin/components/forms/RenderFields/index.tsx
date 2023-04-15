@@ -1,6 +1,6 @@
 import { Box, FormHelperText, InputLabel } from '@mui/material';
 import React from 'react';
-import fieldTypes from '../field-types';
+import fieldTypes from '../fieldTypes';
 import { Props } from './types';
 
 const RenderFields: React.FC<Props> = ({ control, register, errors, fields }) => {
