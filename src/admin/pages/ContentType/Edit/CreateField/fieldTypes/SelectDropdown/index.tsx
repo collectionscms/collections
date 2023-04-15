@@ -23,9 +23,10 @@ import { useTranslation } from 'react-i18next';
 import { Choice } from 'shared/types';
 import logger from '../../../../../../../utilities/logger';
 import { shallowEqualObject } from '../../../../../../../utilities/shallowEqualObject';
-import createFieldSchema, {
+import {
   FormValues,
-} from '../../../../../../fields/schemas/collectionFields/createField';
+  createSelectDropdown as schema,
+} from '../../../../../../fields/schemas/collectionFields/selectDropdown/createSelectDropdown';
 import { useField } from '../../Context';
 import { Props } from '../types';
 import { CreateChoice } from '../CreateChoice';
@@ -36,7 +37,7 @@ export const SelectDropdownType: React.FC<Props> = (props) => {
   const { t } = useTranslation();
   const { createField } = useField();
   const { trigger, isMutating } = createField(slug);
-  const defaultValues = { field: '', label: '', required: false, options: { choices: [] } };
+  const defaultValues = { field: '', label: '', required: false, choices: [] };
   const {
     control,
     handleSubmit,
@@ -45,21 +46,21 @@ export const SelectDropdownType: React.FC<Props> = (props) => {
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues,
-    resolver: yupResolver(createFieldSchema(t)),
+    resolver: yupResolver(schema(t)),
   });
 
   useEffect(() => {
     watch((value) => {
       const { ...values } = defaultValues;
-      delete values.options;
+      delete values.choices;
       const isEqualed = shallowEqualObject(values, value);
-      onEditing(!isEqualed || value.options.choices.length > 0);
+      onEditing(!isEqualed || value.choices.length > 0);
     });
   }, [watch]);
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: 'options.choices',
+    name: 'choices',
   });
 
   const onToggleCreateChoice = (state: boolean) => {
@@ -82,7 +83,7 @@ export const SelectDropdownType: React.FC<Props> = (props) => {
         required: form.required,
         readonly: false,
         hidden: false,
-        options: form.options,
+        options: { choices: form.choices },
       });
       reset();
       onSuccess(field);

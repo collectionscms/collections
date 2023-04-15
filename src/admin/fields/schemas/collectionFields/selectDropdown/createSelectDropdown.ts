@@ -1,16 +1,15 @@
 import { TFunction } from 'i18next';
-import { FieldOption } from 'shared/types';
 import { ObjectSchema } from 'yup';
-import yup from '../../yup';
+import yup from '../../../yup';
 
 export type FormValues = {
   field: string;
   label: string;
   required: boolean;
-  options: FieldOption;
+  choices: Record<string, any>[];
 };
 
-export const createField = (t: TFunction): ObjectSchema<FormValues> => {
+export const createSelectDropdown = (t: TFunction): ObjectSchema<FormValues> => {
   return yup.object().shape({
     field: yup
       .string()
@@ -19,10 +18,6 @@ export const createField = (t: TFunction): ObjectSchema<FormValues> => {
       .max(60),
     label: yup.string().required().max(60),
     required: yup.boolean(),
-    options: yup.object().shape({
-      choices: yup.array(),
-    }),
+    choices: yup.array(),
   });
 };
-
-export default createField;

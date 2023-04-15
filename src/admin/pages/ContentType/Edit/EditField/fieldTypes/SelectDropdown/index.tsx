@@ -20,9 +20,10 @@ import { useTranslation } from 'react-i18next';
 import { Choice } from 'shared/types';
 import logger from '../../../../../../../utilities/logger';
 import { shallowEqualObject } from '../../../../../../../utilities/shallowEqualObject';
-import updateFieldSchema, {
+import {
   FormValues,
-} from '../../../../../../fields/schemas/collectionFields/updateField';
+  updateSelectDropdown as schema,
+} from '../../../../../../fields/schemas/collectionFields/selectDropdown/updateSelectDropdown';
 import { CreateChoice } from '../../../CreateField/fieldTypes/CreateChoice';
 import { useField } from '../../Context';
 import { Props } from '../types';
@@ -38,7 +39,7 @@ export const SelectDropdownType: React.FC<Props> = (props) => {
     required: Boolean(meta.required),
     readonly: Boolean(meta.readonly),
     hidden: Boolean(meta.hidden),
-    options: meta.fieldOption,
+    choices: meta.fieldOption.choices,
   };
   const {
     control,
@@ -48,22 +49,20 @@ export const SelectDropdownType: React.FC<Props> = (props) => {
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues,
-    resolver: yupResolver(updateFieldSchema),
+    resolver: yupResolver(schema),
   });
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: 'options.choices',
+    name: 'choices',
   });
 
   useEffect(() => {
     watch((value) => {
       const { ...values } = defaultValues;
-      delete values.options;
+      delete values.choices;
       const isEqualed = shallowEqualObject(values, value);
-      onEditing(
-        !isEqualed || value.options.choices.length !== defaultValues.options.choices.length
-      );
+      onEditing(!isEqualed || value.choices.length !== defaultValues.choices.length);
     });
   }, [watch]);
 
@@ -84,7 +83,7 @@ export const SelectDropdownType: React.FC<Props> = (props) => {
         required: form.required,
         readonly: form.readonly,
         hidden: form.hidden,
-        options: JSON.stringify(form.options),
+        options: JSON.stringify({ choices: form.choices }),
       };
       await trigger(formData);
       reset();
