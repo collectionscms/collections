@@ -1,13 +1,15 @@
-import { format } from 'date-fns';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { castToBoolean } from '../../../../utilities/castToBoolean';
 import RouterLink from '../../Link';
 import { Props, Type } from './types';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
 
 const Cell: React.FC<Props> = (props) => {
   const { colIndex, type, rowData, cellData } = props;
   const { t } = useTranslation();
+  dayjs.extend(utc);
 
   let WrapElement: React.ComponentType<any> | string = 'span';
 
@@ -29,7 +31,7 @@ const Cell: React.FC<Props> = (props) => {
       case Type.Text || Type.Number:
         return cellData;
       case Type.Date:
-        return format(new Date(String(cellData)), 'yyyy-MM-dd HH:mm');
+        return dayjs.utc(String(cellData)).local().format('YYYY-MM-DD HH:mm');
       case Type.Status:
         // TODO Display icons by status.
         return cellData;
