@@ -14,9 +14,10 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import logger from '../../../../../../../utilities/logger';
 import { shallowEqualObject } from '../../../../../../../utilities/shallowEqualObject';
-import updateFieldSchema, {
+import {
   FormValues,
-} from '../../../../../../fields/schemas/collectionFields/updateField';
+  updateInput as schema,
+} from '../../../../../../fields/schemas/collectionFields/input/updateInput';
 import { useField } from '../../Context';
 import { Props } from '../types';
 
@@ -39,7 +40,7 @@ export const InputType: React.FC<Props> = (props) => {
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues,
-    resolver: yupResolver(updateFieldSchema),
+    resolver: yupResolver(schema),
   });
 
   useEffect(() => {
