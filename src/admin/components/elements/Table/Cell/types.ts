@@ -4,6 +4,7 @@ export const Type = {
   Date: 'date',
   Object: 'object',
   Status: 'status',
+  Boolean: 'boolean',
 } as const;
 
 export type Props = {

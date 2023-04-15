@@ -6,16 +6,17 @@ import { Field, FieldInterface } from '../../../../../shared/types';
 import { UnsavedDialog } from '../../../../components/elements/UnsavedDialog';
 import ComposeWrapper from '../../../../components/utilities/ComposeWrapper';
 import { FieldContextProvider } from './Context';
+import { BooleanType } from './field-types/Boolean';
 import { DateTimeType } from './field-types/DateTime';
 import { FileType } from './field-types/File';
 import { FileImageType } from './field-types/FileImage';
+import { InputType } from './field-types/Input';
+import { InputMultilineType } from './field-types/InputMultiline';
 import { ListType } from './field-types/List';
 import { ListO2mType } from './field-types/ListO2m';
 import { ListO2oType } from './field-types/ListO2o';
-import { SelectDropdownM2oType } from './field-types/SelectDropdownM2o';
-import { InputType } from './field-types/Input';
-import { InputMultilineType } from './field-types/InputMultiline';
 import { SelectDropdownType } from './field-types/SelectDropdown';
+import { SelectDropdownM2oType } from './field-types/SelectDropdownM2o';
 import { Props } from './types';
 
 const CreateField: React.FC<Props> = ({ slug, openState, onSuccess, onClose }) => {
@@ -122,6 +123,13 @@ const CreateField: React.FC<Props> = ({ slug, openState, onSuccess, onClose }) =
           <DateTimeType
             slug={slug}
             expanded={fieldInterface === 'dateTime'}
+            handleChange={(field) => onSelectedFieldInterface(field)}
+            onEditing={handleEditing}
+            onSuccess={handleAdditionSuccess}
+          />
+          <BooleanType
+            slug={slug}
+            expanded={fieldInterface === 'boolean'}
             handleChange={(field) => onSelectedFieldInterface(field)}
             onEditing={handleEditing}
             onSuccess={handleAdditionSuccess}
