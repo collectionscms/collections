@@ -23,7 +23,7 @@ import { shallowEqualObject } from '../../../../../../../utilities/shallowEqualO
 import updateFieldSchema, {
   FormValues,
 } from '../../../../../../fields/schemas/collectionFields/updateField';
-import { CreateChoice } from '../../../CreateField/field-types/CreateChoice';
+import { CreateChoice } from '../../../CreateField/fieldTypes/CreateChoice';
 import { useField } from '../../Context';
 import { Props } from '../types';
 

@@ -6,17 +6,17 @@ import { Field, FieldInterface } from '../../../../../shared/types';
 import { UnsavedDialog } from '../../../../components/elements/UnsavedDialog';
 import ComposeWrapper from '../../../../components/utilities/ComposeWrapper';
 import { FieldContextProvider } from './Context';
-import { BooleanType } from './field-types/Boolean';
-import { DateTimeType } from './field-types/DateTime';
-import { FileType } from './field-types/File';
-import { FileImageType } from './field-types/FileImage';
-import { InputType } from './field-types/Input';
-import { InputMultilineType } from './field-types/InputMultiline';
-import { ListType } from './field-types/List';
-import { ListO2mType } from './field-types/ListO2m';
-import { ListO2oType } from './field-types/ListO2o';
-import { SelectDropdownType } from './field-types/SelectDropdown';
-import { SelectDropdownM2oType } from './field-types/SelectDropdownM2o';
+import { BooleanType } from './fieldTypes/Boolean';
+import { DateTimeType } from './fieldTypes/DateTime';
+import { FileType } from './fieldTypes/File';
+import { FileImageType } from './fieldTypes/FileImage';
+import { InputType } from './fieldTypes/Input';
+import { InputMultilineType } from './fieldTypes/InputMultiline';
+import { ListType } from './fieldTypes/List';
+import { ListO2mType } from './fieldTypes/ListO2m';
+import { ListO2oType } from './fieldTypes/ListO2o';
+import { SelectDropdownType } from './fieldTypes/SelectDropdown';
+import { SelectDropdownM2oType } from './fieldTypes/SelectDropdownM2o';
 import { Props } from './types';
 
 const CreateField: React.FC<Props> = ({ slug, openState, onSuccess, onClose }) => {
