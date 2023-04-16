@@ -14,7 +14,9 @@ const errorHandler: ErrorRequestHandler = (
 
   const base = err as BaseException;
   if (base?.status === undefined) {
-    return res.status(500).json({ status: 500, code: 'internal_server_error' });
+    return res
+      .status(500)
+      .json({ status: 500, code: 'internal_server_error', stack: [err.message] });
   }
 
   if (process.env.NODE_ENV === 'development') {
@@ -23,7 +25,6 @@ const errorHandler: ErrorRequestHandler = (
       stack: err.stack,
     };
   }
-
   return res.status(base.status).json(base.toJson());
 };
 
