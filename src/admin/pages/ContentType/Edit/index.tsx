@@ -20,7 +20,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Field } from '../../../../shared/types';
 import logger from '../../../../utilities/logger';
-import HeaderDeleteButton from '../../../components/elements/DeleteHeaderButton';
+import DeleteHeaderButton from '../../../components/elements/DeleteHeaderButton';
 import Loading from '../../../components/elements/Loading';
 import ComposeWrapper from '../../../components/utilities/ComposeWrapper';
 import { useDocumentInfo } from '../../../components/utilities/DocumentInfo';
@@ -172,7 +172,7 @@ const EditPage: React.FC = () => {
           </Grid>
           <Grid container columnSpacing={2} alignItems="center">
             <Grid>
-              <HeaderDeleteButton id={id} slug="collections" onSuccess={handleDeletionSuccess} />
+              <DeleteHeaderButton id={id} slug="collections" onSuccess={handleDeletionSuccess} />
             </Grid>
             <Grid>
               <Button variant="contained" type="submit" disabled={isMutating}>
