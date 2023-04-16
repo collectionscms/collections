@@ -10,8 +10,8 @@ const Context = createContext({} as CollectionContext);
 export const CollectionContextProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const getCollection = (id: string, config?: SWRConfiguration): SWRResponse =>
-    useSWR(
+  const getCollection = (id: string, config?: SWRConfiguration): SWRMutationResponse =>
+    useSWRMutation(
       `/collections/${id}`,
       (url) => api.get<{ collection: Collection }>(url).then((res) => res.data.collection),
       config
@@ -39,7 +39,7 @@ export const CollectionContextProvider: React.FC<{ children: React.ReactNode }> 
 
   const getFields = (slug: string, config?: SWRConfiguration): SWRResponse =>
     useSWR(
-      `/collections/${slug}/fields`,
+      () => `/collections/${slug}/fields`,
       (url) => api.get<{ fields: Field[] }>(url).then((res) => res.data.fields),
       config
     );

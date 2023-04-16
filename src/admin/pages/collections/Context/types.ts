@@ -9,7 +9,7 @@ export type ContentContext = {
     slug: string,
     config?: SWRConfiguration
   ) => SWRResponse<any>;
-  getContent: (slug: string, id: string, config?: SWRConfiguration) => SWRResponse<any>;
+  getContent: (slug: string, id: string, config?: SWRConfiguration) => SWRMutationResponse<any>;
   getFields: (slug: string, config?: SWRConfiguration) => SWRResponse<Field[]>;
   getPreviewContents: (slug: string) => SWRMutationResponse<any[]>;
   createContent: (slug: string) => SWRMutationResponse<unknown>;

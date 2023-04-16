@@ -11,11 +11,9 @@ export const UserContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
   const getUsers = () =>
     useSWR('/users', (url) => api.get<{ users: User[] }>(url).then((res) => res.data.users));
 
-  const getUser = (id: string, config?: SWRConfiguration) =>
-    useSWR(
-      `/users/${id}`,
-      (url) => api.get<{ user: User }>(url).then((res) => res.data.user),
-      config
+  const getUser = (id: string): SWRMutationResponse =>
+    useSWRMutation(`/users/${id}`, (url) =>
+      api.get<{ user: User }>(url).then((res) => res.data.user)
     );
 
   const createUser = (): SWRMutationResponse =>

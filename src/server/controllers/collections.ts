@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import { Field } from 'shared/types';
+import { RecordNotFoundException } from '../../shared/exceptions/database/recordNotFound';
 import asyncHandler from '../middleware/asyncHandler';
 import permissionsHandler from '../middleware/permissionsHandler';
 import CollectionsRepository from '../repositories/collections';
@@ -16,6 +17,7 @@ app.get(
     const repository = new CollectionsRepository();
 
     const collection = await repository.readOne(id);
+    if (!collection) throw new RecordNotFoundException('record_not_found');
 
     res.json({
       collection: {

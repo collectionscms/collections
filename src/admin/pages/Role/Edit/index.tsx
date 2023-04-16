@@ -22,7 +22,7 @@ import React, { Suspense, useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
-import { PermissionsAction } from '../../../../shared/types';
+import { PermissionsAction, Role } from '../../../../shared/types';
 import DeleteHeaderButton from '../../../components/elements/DeleteHeaderButton';
 import Loading from '../../../components/elements/Loading';
 import ComposeWrapper from '../../../components/utilities/ComposeWrapper';
@@ -39,7 +39,7 @@ const EditRolePage: React.FC = () => {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const { getRole, getCollections, getPermissions, updateRole } = useRole();
-  const { data: role } = getRole(id, { suspense: true });
+  const { data: role, trigger: getRoleTrigger } = getRole(id);
   const { data: collections } = getCollections({ suspense: true });
   const { data: permissions, mutate } = getPermissions(id, { suspense: true });
   const {
@@ -50,22 +50,33 @@ const EditRolePage: React.FC = () => {
   const {
     control,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<FormValues>({
-    defaultValues: {
-      name: role.name,
-      description: role.description,
-      adminAccess: Boolean(role.adminAccess),
-    },
     resolver: yupResolver(updateRoleSchema()),
   });
   const actions: PermissionsAction[] = ['create', 'read', 'update', 'delete'];
+
+  useEffect(() => {
+    const getRole = async () => {
+      const role = await getRoleTrigger();
+      setDefaultValue(role);
+    };
+
+    getRole();
+  }, []);
 
   useEffect(() => {
     if (updatedRole === undefined) return;
     enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
     navigate('../roles');
   }, [updatedRole]);
+
+  const setDefaultValue = (role: Role) => {
+    setValue('name', role.name);
+    setValue('description', role.description);
+    setValue('adminAccess', Boolean(role.adminAccess));
+  };
 
   const handleDeletionSuccess = () => {
     navigate(`../roles`);
@@ -78,6 +89,10 @@ const EditRolePage: React.FC = () => {
   const onSubmit: SubmitHandler<FormValues> = (form: FormValues) => {
     updateRoleTrigger(form);
   };
+
+  if (!role) {
+    return <Loading />;
+  }
 
   return (
     <Suspense fallback={<Loading />}>

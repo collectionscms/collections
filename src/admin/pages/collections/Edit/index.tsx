@@ -23,7 +23,7 @@ const EditPage: React.FC<Props> = ({ collection }) => {
   const navigate = useNavigate();
   const { getContent, getFields, createContent, updateContent } = useContent();
   const { data: metaFields } = getFields(collection.collection, { suspense: true });
-  const { data: content } = getContent(collection.collection, id);
+  const { data: content, trigger: getContentTrigger } = getContent(collection.collection, id);
   const { trigger: createTrigger, isMutating: isCreateMutating } = createContent(
     collection.collection
   );
@@ -38,6 +38,10 @@ const EditPage: React.FC<Props> = ({ collection }) => {
     setValue,
     formState: { errors },
   } = useForm();
+
+  useEffect(() => {
+    if (id) getContentTrigger();
+  }, []);
 
   const setDefaultValue = (fields: Field[]) => {
     fields

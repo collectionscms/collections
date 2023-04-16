@@ -11,11 +11,9 @@ export const RoleContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
   const getRoles = () =>
     useSWR('/roles', (url) => api.get<{ roles: Role[] }>(url).then((res) => res.data.roles));
 
-  const getRole = (id: string, config?: SWRConfiguration) =>
-    useSWR(
-      `/roles/${id}`,
-      (url) => api.get<{ role: Role }>(url).then((res) => res.data.role),
-      config
+  const getRole = (id: string): SWRMutationResponse =>
+    useSWRMutation(`/roles/${id}`, (url) =>
+      api.get<{ role: Role }>(url).then((res) => res.data.role)
     );
 
   const createRole = (): SWRMutationResponse =>

@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import { yupResolver } from '@hookform/resolvers/yup';
 import { CachedOutlined } from '@mui/icons-material';
 import {
@@ -22,6 +21,7 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
+import { User } from '../../../../shared/types';
 import logger from '../../../../utilities/logger';
 import DeleteHeaderButton from '../../../components/elements/DeleteHeaderButton';
 import Loading from '../../../components/elements/Loading';
@@ -37,7 +37,7 @@ const EditPage: React.FC = () => {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const { getRoles, getUser, updateUser } = useUser();
-  const { data: user } = getUser(id, { suspense: true });
+  const { data: user, trigger: getUserTrigger } = getUser(id);
   const { data: roles } = getRoles({ suspense: true });
   const { data: updatedUser, trigger, isMutating } = updateUser(id);
   const {
@@ -46,24 +46,34 @@ const EditPage: React.FC = () => {
     setValue,
     formState: { errors },
   } = useForm<FormValues>({
-    defaultValues: {
-      firstName: user.firstName,
-      lastName: user.lastName,
-      userName: user.userName,
-      email: user.email,
-      password: '',
-      apiKey: '',
-      isActive: Boolean(user.isActive),
-      roleId: user.role?.id.toString(),
-    },
     resolver: yupResolver(updateUserSchema(t)),
   });
+
+  useEffect(() => {
+    const getUser = async () => {
+      const user = await getUserTrigger();
+      setDefaultValue(user);
+    };
+
+    getUser();
+  }, []);
 
   useEffect(() => {
     if (updatedUser === undefined) return;
     enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
     navigate('../users');
   }, [updatedUser]);
+
+  const setDefaultValue = (user: User) => {
+    setValue('firstName', user.firstName);
+    setValue('lastName', user.lastName);
+    setValue('userName', user.userName);
+    setValue('email', user.email);
+    setValue('password', '');
+    setValue('apiKey', '');
+    setValue('isActive', Boolean(user.isActive));
+    setValue('roleId', user.role?.id.toString());
+  };
 
   const handleDeletionSuccess = () => {
     navigate(`../users`);
@@ -83,6 +93,10 @@ const EditPage: React.FC = () => {
       logger.error(e);
     }
   };
+
+  if (!user) {
+    return <Loading />;
+  }
 
   return (
     <Suspense fallback={<Loading />}>

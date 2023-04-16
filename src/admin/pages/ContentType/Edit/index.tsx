@@ -14,13 +14,13 @@ import {
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useSnackbar } from 'notistack';
-import React, { Suspense, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Field } from '../../../../shared/types';
+import { Collection, Field } from '../../../../shared/types';
 import logger from '../../../../utilities/logger';
-import HeaderDeleteButton from '../../../components/elements/DeleteHeaderButton';
+import DeleteHeaderButton from '../../../components/elements/DeleteHeaderButton';
 import Loading from '../../../components/elements/Loading';
 import ComposeWrapper from '../../../components/utilities/ComposeWrapper';
 import { useDocumentInfo } from '../../../components/utilities/DocumentInfo';
@@ -46,25 +46,36 @@ const EditPage: React.FC = () => {
   const { enqueueSnackbar } = useSnackbar();
   const { localizedLabel } = useDocumentInfo();
   const { getCollection, updateCollection, getFields, updateFields } = useCollection();
-  const { data: meta } = getCollection(id, { suspense: true });
-  const { data: fields, mutate } = getFields(meta.collection, { suspense: true });
+  const { data: meta, trigger: getCollectionTrigger } = getCollection(id);
+  const { data: fields, mutate } = getFields(meta?.collection);
   const { trigger, isMutating } = updateCollection(id);
   const { trigger: updateFieldsTrigger } = updateFields();
   const {
     control,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<FormValues>({
-    defaultValues: {
-      hidden: Boolean(meta.hidden),
-      singleton: Boolean(meta.singleton),
-      statusField: meta.statusField || '',
-      draftValue: meta.draftValue || '',
-      publishValue: meta.publishValue || '',
-      archiveValue: meta.archiveValue || '',
-    },
     resolver: yupResolver(updateCollectionSchema()),
   });
+
+  useEffect(() => {
+    const getCollection = async () => {
+      const collection = await getCollectionTrigger();
+      setDefaultValue(collection);
+    };
+
+    getCollection();
+  }, []);
+
+  const setDefaultValue = (collection: Collection) => {
+    setValue('hidden', Boolean(collection.hidden));
+    setValue('singleton', Boolean(collection.singleton));
+    setValue('statusField', collection.statusField || '');
+    setValue('draftValue', collection.draftValue || '');
+    setValue('publishValue', collection.publishValue || '');
+    setValue('archiveValue', collection.archiveValue || '');
+  };
 
   useEffect(() => {
     if (fields && fields.length) {
@@ -139,8 +150,12 @@ const EditPage: React.FC = () => {
     onCloseMenu();
   };
 
+  if (!meta || !fields) {
+    return <Loading />;
+  }
+
   return (
-    <Suspense fallback={<Loading />}>
+    <>
       <CreateField
         slug={meta.collection}
         openState={createFieldOpen}
@@ -172,7 +187,7 @@ const EditPage: React.FC = () => {
           </Grid>
           <Grid container columnSpacing={2} alignItems="center">
             <Grid>
-              <HeaderDeleteButton id={id} slug="collections" onSuccess={handleDeletionSuccess} />
+              <DeleteHeaderButton id={id} slug="collections" onSuccess={handleDeletionSuccess} />
             </Grid>
             <Grid>
               <Button variant="contained" type="submit" disabled={isMutating}>
@@ -304,7 +319,7 @@ const EditPage: React.FC = () => {
                   {...field}
                   type="text"
                   fullWidth
-                  error={errors.draftValue !== undefined}
+                  error={errors.publishValue !== undefined}
                 />
               )}
             />
@@ -320,7 +335,7 @@ const EditPage: React.FC = () => {
                   {...field}
                   type="text"
                   fullWidth
-                  error={errors.draftValue !== undefined}
+                  error={errors.archiveValue !== undefined}
                 />
               )}
             />
@@ -328,7 +343,7 @@ const EditPage: React.FC = () => {
           </Grid>
         </Grid>
       </Stack>
-    </Suspense>
+    </>
   );
 };
 
