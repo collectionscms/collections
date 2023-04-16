@@ -26,8 +26,8 @@ export const ContentContextProvider: React.FC<{ children: React.ReactNode }> = (
       config
     );
 
-  const getContent = (slug: string, id: string, config?: SWRConfiguration): SWRResponse =>
-    useSWR(
+  const getContent = (slug: string, id: string, config?: SWRConfiguration): SWRMutationResponse =>
+    useSWRMutation(
       id ? `/collections/${slug}/contents/${id}` : null,
       (url) => api.get<{ content: unknown }>(url).then((res) => res.data.content),
       config
