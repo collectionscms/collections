@@ -27,6 +27,18 @@ export type MeUser = {
 export type AuthUser = Omit<MeUser, 'password'>;
 
 // /////////////////////////////////////
+// Error
+// /////////////////////////////////////
+
+export type ApiError = {
+  status: number;
+  code: string;
+  extensions?: {
+    message?: string;
+  };
+};
+
+// /////////////////////////////////////
 // Schema
 // /////////////////////////////////////
 
