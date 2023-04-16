@@ -12,9 +12,12 @@ const errorHandler: ErrorRequestHandler = (
 ) => {
   logger.error(err);
 
-  const base = err as BaseException;
+  let base = err as BaseException;
   if (base?.status === undefined) {
-    return res.status(500).json({ status: 500, code: 'internal_server_error' });
+    base = new BaseException(500, 'internal_server_error');
+    base.extensions = {
+      message: err.message,
+    };
   }
 
   if (process.env.NODE_ENV === 'development') {
@@ -23,7 +26,6 @@ const errorHandler: ErrorRequestHandler = (
       stack: err.stack,
     };
   }
-
   return res.status(base.status).json(base.toJson());
 };
 
