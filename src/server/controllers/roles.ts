@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express';
+import { RecordNotFoundException } from '../../shared/exceptions/database/recordNotFound';
 import { UnprocessableEntityException } from '../../shared/exceptions/unprocessableEntity';
 import asyncHandler from '../middleware/asyncHandler';
 import permissionsHandler from '../middleware/permissionsHandler';
@@ -28,6 +29,7 @@ app.get(
     const repository = new RolesRepository();
 
     const role = await repository.readOne(id);
+    if (!role) throw new RecordNotFoundException('record_not_found');
 
     res.json({ role });
   })

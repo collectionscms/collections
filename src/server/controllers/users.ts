@@ -1,6 +1,7 @@
 import crypto from 'crypto';
 import express, { Request, Response } from 'express';
 import env from '../../env';
+import { RecordNotFoundException } from '../../shared/exceptions/database/recordNotFound';
 import { InvalidCredentialsException } from '../../shared/exceptions/invalidCredentials';
 import { UnprocessableEntityException } from '../../shared/exceptions/unprocessableEntity';
 import asyncHandler from '../middleware/asyncHandler';
@@ -37,14 +38,11 @@ app.get(
     const repository = new UsersRepository();
 
     const user = await repository.readOneWithRole({ id });
+    if (!user) throw new RecordNotFoundException('record_not_found');
 
-    if (user) {
-      res.json({
-        user: payload(user),
-      });
-    } else {
-      res.status(400).end();
-    }
+    res.json({
+      user: payload(user),
+    });
   })
 );
 
