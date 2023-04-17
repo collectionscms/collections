@@ -3,6 +3,7 @@ import { useSnackbar } from 'notistack';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { SWRConfig } from 'swr';
+import { ApiError } from '../../../../shared/types';
 import { Props } from './types';
 
 const SWRConfigure: React.FC<Props> = ({ children }) => {
@@ -14,11 +15,15 @@ const SWRConfigure: React.FC<Props> = ({ children }) => {
       value={{
         onError: (err) => {
           if (err instanceof AxiosError) {
-            const data = err.response.data;
-            if (data?.code) {
-              enqueueSnackbar(t(`error.${data.code}` as unknown as TemplateStringsArray), {
-                variant: 'error',
-              });
+            const apiError = err.response.data as ApiError;
+            if (apiError) {
+              let message = `${t(`error.${apiError.code}` as unknown as TemplateStringsArray)}`;
+              if (apiError.extensions?.message) {
+                message += `(${apiError.extensions.message})`;
+              }
+              enqueueSnackbar(message, { variant: 'error' });
+            } else {
+              enqueueSnackbar(t('error.internal_server_error'), { variant: 'error' });
             }
           }
         },
