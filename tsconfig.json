@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es2020",
     "module": "esnext",
-    "moduleResolution": "bundler",
+    "moduleResolution": "node16",
     "jsx": "react",
     "strict": true,
     "esModuleInterop": true,

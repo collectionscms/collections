@@ -1,9 +1,9 @@
 import { Request, RequestHandler } from 'express';
-import pino, { LoggerOptions } from 'pino';
-import pinoHTTP, { stdSerializers } from 'pino-http';
-import { env } from '../env';
+import * as Pino from 'pino';
+import PinoHTTP from 'pino-http';
+import { env } from '../env.js';
 
-const pinoOptions: LoggerOptions = {
+const pinoOptions: Pino.LoggerOptions = {
   level: env.LOG_LEVEL || 'info',
   redact: {
     paths: ['req.headers.authorization', 'req.headers.cookie'],
@@ -11,7 +11,7 @@ const pinoOptions: LoggerOptions = {
   },
 };
 
-const httpLoggerOptions: LoggerOptions = {
+const httpLoggerOptions: Pino.LoggerOptions = {
   level: env.LOG_LEVEL || 'info',
   redact: {
     paths: ['req.headers.authorization', 'req.headers.cookie'],
@@ -30,16 +30,16 @@ const redactQuery = (originalPath: string) => {
   return url.pathname + url.search;
 };
 
-export const expressLogger = pinoHTTP({
-  logger: pino(httpLoggerOptions),
+export const expressLogger = PinoHTTP.pinoHttp({
+  logger: Pino.pino(httpLoggerOptions),
   serializers: {
     req(request: Request) {
-      const output = stdSerializers.req(request);
+      const output = Pino.stdSerializers.req(request);
       output.url = redactQuery(output.url);
       return output;
     },
   },
 }) as RequestHandler;
 
-const logger = pino(pinoOptions);
+const logger = Pino.pino(pinoOptions);
 export default logger;
