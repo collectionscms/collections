@@ -4,7 +4,7 @@ import { pathList } from '../utilities/pathList.js';
 
 export const adminConfigure: webpack.Configuration = {
   mode: 'development',
-  entry: pathList.admin('index'),
+  entry: pathList.admin('index.tsx'),
   output: {
     path: pathList.build('admin'),
     publicPath: '/admin/',
@@ -24,7 +24,9 @@ export const adminConfigure: webpack.Configuration = {
     ],
   },
   resolve: {
-    extensions: ['.js', '.ts', '.tsx', '.json', '.mjs', '.wasm'],
+    extensionAlias: {
+      '.js': ['.ts', '.tsx', '.js'],
+    },
   },
   plugins: [
     new HtmlWebpackPlugin({
