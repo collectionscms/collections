@@ -22,8 +22,9 @@ node_modules/
 
 # distribution
 dist
-superfast/
-superfast.tar.gz
 
 # db
 data.db
+
+# Coverage
+coverage
