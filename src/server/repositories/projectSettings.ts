@@ -1,7 +1,7 @@
-import { ProjectSetting } from '../../shared/types';
-import { AbstractRepositoryOptions, BaseRepository, BaseTransaction } from './base';
+import { ProjectSetting } from '../../config/types.js';
+import { AbstractRepositoryOptions, BaseRepository, BaseTransaction } from './base.js';
 
-export default class ProjectSettingsRepository extends BaseRepository<ProjectSetting> {
+export class ProjectSettingsRepository extends BaseRepository<ProjectSetting> {
   constructor(
     collection: string = 'superfast_project_settings',
     options?: AbstractRepositoryOptions

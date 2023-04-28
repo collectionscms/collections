@@ -1,8 +1,8 @@
-import { RecordNotUniqueException } from '../../shared/exceptions/database/recordNotUnique';
-import { MeUser, User } from '../../shared/types';
-import { AbstractRepositoryOptions, BaseRepository, BaseTransaction } from './base';
+import { MeUser, User } from '../../config/types.js';
+import { RecordNotUniqueException } from '../../exceptions/database/recordNotUnique.js';
+import { AbstractRepositoryOptions, BaseRepository, BaseTransaction } from './base.js';
 
-export default class UsersRepository extends BaseRepository<User> {
+export class UsersRepository extends BaseRepository<User> {
   constructor(collection: string = 'superfast_users', options?: AbstractRepositoryOptions) {
     super(collection, options);
   }
@@ -49,7 +49,7 @@ export default class UsersRepository extends BaseRepository<User> {
   }
 
   readOneWithRole(data: { id?: number; token?: string }): Promise<User> {
-    const condition = {};
+    const condition: { [index: string]: any } = {};
 
     if (data.id) {
       condition['u.id'] = data.id;
@@ -73,7 +73,7 @@ export default class UsersRepository extends BaseRepository<User> {
   }
 
   readMe(data: { id?: number; email?: string; token?: string }): Promise<MeUser> {
-    const condition = {};
+    const condition: { [index: string]: any } = {};
 
     if (data.id) {
       condition['u.id'] = data.id;

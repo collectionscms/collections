@@ -1,17 +1,17 @@
 import { Knex } from 'knex';
 import { v4 as uuidv4 } from 'uuid';
-import Output from '../../../scripts/utilities/output';
-import { oneWayHash } from '../../../server/utilities/oneWayHash';
-import CollectionsRepository from '../../repositories/collections';
-import ContentsRepository from '../../repositories/contents';
-import FieldsRepository from '../../repositories/fields';
-import PermissionsRepository from '../../repositories/permissions';
-import ProjectSettingsRepository from '../../repositories/projectSettings';
-import RolesRepository from '../../repositories/roles';
-import UsersRepository from '../../repositories/users';
-import { getDatabase } from '../connection';
+import { oneWayHash } from '../../../server/utilities/oneWayHash.js';
+import { Output } from '../../../utilities/output.js';
+import { CollectionsRepository } from '../../repositories/collections.js';
+import { ContentsRepository } from '../../repositories/contents.js';
+import { FieldsRepository } from '../../repositories/fields.js';
+import { PermissionsRepository } from '../../repositories/permissions.js';
+import { ProjectSettingsRepository } from '../../repositories/projectSettings.js';
+import { RolesRepository } from '../../repositories/roles.js';
+import { UsersRepository } from '../../repositories/users.js';
+import { getDatabase } from '../connection.js';
 
-const seedDev = async (): Promise<void> => {
+export const seedDev = async (): Promise<void> => {
   const database = getDatabase();
 
   try {
@@ -349,5 +349,3 @@ const createCollectionTables = async (database: Knex): Promise<void> => {
     },
   ]);
 };
-
-export default seedDev;

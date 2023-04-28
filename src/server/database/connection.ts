@@ -1,9 +1,14 @@
 import camelcaseKeys from 'camelcase-keys';
 import { snakeCase } from 'change-case';
-import 'dotenv/config';
-import knex, { Knex } from 'knex';
+import * as _knex from 'knex';
+import { Knex } from 'knex';
 import path from 'path';
-import env from '../../env';
+import { fileURLToPath } from 'url';
+import { env } from '../../env.js';
+
+const { knex } = _knex.default;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 let database: Knex | null = null;
 
@@ -33,5 +38,6 @@ export const getDatabase = (): Knex => {
   };
 
   database = knex(config);
+
   return database;
 };

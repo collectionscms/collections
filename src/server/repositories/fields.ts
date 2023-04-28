@@ -1,8 +1,8 @@
-import { RecordNotUniqueException } from '../../shared/exceptions/database/recordNotUnique';
-import { Field } from '../../shared/types';
-import { AbstractRepositoryOptions, BaseRepository, BaseTransaction } from './base';
+import { Field } from '../../config/types.js';
+import { RecordNotUniqueException } from '../../exceptions/database/recordNotUnique.js';
+import { AbstractRepositoryOptions, BaseRepository, BaseTransaction } from './base.js';
 
-export default class FieldsRepository extends BaseRepository<Field> {
+export class FieldsRepository extends BaseRepository<Field> {
   constructor(collection: string = 'superfast_fields', options?: AbstractRepositoryOptions) {
     super(collection, options);
   }
@@ -14,7 +14,7 @@ export default class FieldsRepository extends BaseRepository<Field> {
     return repositoryTransaction;
   }
 
-  read(data?: Partial<Field>): Promise<Field[]> {
+  read(data: Partial<Field> = {}): Promise<Field[]> {
     return this.queryBuilder.where(data).orderByRaw('sort ASC NULLS LAST');
   }
 

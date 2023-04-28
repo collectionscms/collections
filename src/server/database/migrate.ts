@@ -1,7 +1,7 @@
-import Output from '../../scripts/utilities/output';
-import { getDatabase } from './connection';
+import { Output } from '../../utilities/output.js';
+import { getDatabase } from './connection.js';
 
-const migrate = async (direction: 'up' | 'down' | 'latest'): Promise<void> => {
+export const migrate = async (direction: 'up' | 'down' | 'latest'): Promise<void> => {
   const database = getDatabase();
 
   try {
@@ -16,5 +16,3 @@ const migrate = async (direction: 'up' | 'down' | 'latest'): Promise<void> => {
     database.destroy();
   }
 };
-
-export default migrate;

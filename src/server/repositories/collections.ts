@@ -1,8 +1,8 @@
-import { RecordNotUniqueException } from '../../shared/exceptions/database/recordNotUnique';
-import { Collection } from '../../shared/types';
-import { AbstractRepositoryOptions, BaseRepository, BaseTransaction } from './base';
+import { Collection } from '../../config/types.js';
+import { RecordNotUniqueException } from '../../exceptions/database/recordNotUnique.js';
+import { AbstractRepositoryOptions, BaseRepository, BaseTransaction } from './base.js';
 
-export default class CollectionsRepository extends BaseRepository<Collection> {
+export class CollectionsRepository extends BaseRepository<Collection> {
   constructor(collection: string = 'superfast_collections', options?: AbstractRepositoryOptions) {
     super(collection, options);
   }

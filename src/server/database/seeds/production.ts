@@ -1,28 +1,27 @@
-import Output from '../../../scripts/utilities/output';
-import { oneWayHash } from "../../utilities/oneWayHash";
-import { getDatabase } from '../connection';
+import { Output } from '../../../utilities/output.js';
+import { RolesRepository } from '../../repositories/roles.js';
+import { UsersRepository } from '../../repositories/users.js';
+import { oneWayHash } from '../../utilities/oneWayHash.js';
+import { getDatabase } from '../connection.js';
 
-const seedProduction = async (email: string, password: string): Promise<void> => {
+export const seedProduction = async (email: string, password: string): Promise<void> => {
   const database = getDatabase();
+  const rolesRepository = new RolesRepository();
+  const usersRepository = new UsersRepository();
 
   try {
     // Role
     Output.info('Creating roles...');
-    await database('superfast_roles').insert([
-      { name: 'Administrator', description: 'Administrator', admin_access: true },
-    ]);
+    await rolesRepository.createMany([
+      { id: 1, name: 'Administrator', description: 'Administrator', adminAccess: true },
+    ] as any[]);
 
     // User
     Output.info('Creating users...');
-    const adminRole = await database('superfast_roles')
-      .select('id')
-      .where('name', 'Administrator')
-      .first();
-
-    // Password
+    const adminRole = await rolesRepository.readOne(1);
     const hashed = await oneWayHash(password);
 
-    await database('superfast_users').insert([
+    await usersRepository.createMany([
       {
         first_name: 'Admin',
         last_name: 'User',
@@ -32,7 +31,7 @@ const seedProduction = async (email: string, password: string): Promise<void> =>
         is_active: true,
         role_id: adminRole!.id,
       },
-    ]);
+    ] as any[]);
 
     // Project
     Output.info('Creating project settings...');
@@ -46,5 +45,3 @@ const seedProduction = async (email: string, password: string): Promise<void> =>
     database.destroy();
   }
 };
-
-export default seedProduction;
