@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import path from 'path';
 import process from 'process';
 import { fileURLToPath } from 'url';
