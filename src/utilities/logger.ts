@@ -41,5 +41,4 @@ export const expressLogger = PinoHTTP.pinoHttp({
   },
 }) as RequestHandler;
 
-const logger = Pino.pino(pinoOptions);
-export default logger;
+export const logger = Pino.pino(pinoOptions);
