@@ -2,11 +2,12 @@
   "name": "my-superfast-project",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "dev": "superfastcms dev",
     "build": "superfastcms build",
-    "start": "node superfast/build/main.js",
+    "start": "node dist/build/main.js",
     "migrate:latest": "superfastcms database migrate:latest",
     "seed": "superfastcms database seed:production"
   },
