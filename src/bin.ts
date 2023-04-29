@@ -1,38 +1,35 @@
 #!/usr/bin/env node
 import { Command } from 'commander';
-import packageJSON from '../package.json';
-import buildScript from './scripts/commands/build';
-import devScript from './scripts/commands/dev';
-import initScript from './scripts/commands/init';
-import startScript from './scripts/commands/start';
-import migrate from './server/database/migrate';
-import seedDev from './server/database/seeds/dev';
-import seedProduction from './server/database/seeds/production';
+import packageJSON from '../package.json' assert { type: 'json' };
+import { scriptBuild } from './scripts/commands/build.js';
+import { scriptDev } from './scripts/commands/dev.js';
+import { scriptStart } from './scripts/commands/start.js';
+import { scriptInit } from './scripts/commands/init.js';
+import { migrate } from './server/database/migrate.js';
+import { seedDev } from './server/database/seeds/dev.js';
+import { seedProduction } from './server/database/seeds/production.js';
 
 const program = new Command();
 
-const init = async (str) => {
-  await initScript(str.projectName.trim());
-};
-
-const start = async () => {
-  process.env.NODE_ENV = process.env.NODE_ENV ?? 'production';
-  await startScript();
-};
-
-const build = async () => {
-  process.env.NODE_ENV = process.env.NODE_ENV ?? 'production';
-  await buildScript();
+const init = async (options: { projectName: string }) => {
+  await scriptInit(options.projectName.trim());
 };
 
 const dev = async () => {
-  process.env.NODE_ENV = process.env.NODE_ENV ?? 'development';
-  await devScript();
+  await scriptDev();
 };
 
-const runSeed = async (str) => {
-  const email = str.email.trim();
-  const password = str.password.trim();
+const build = async () => {
+  await scriptBuild();
+};
+
+const start = async () => {
+  await scriptStart();
+};
+
+const runSeed = async (options: { email: string; password: string }) => {
+  const email = options.email.trim();
+  const password = options.password.trim();
   await seedProduction(email, password);
 };
 
@@ -44,7 +41,6 @@ program.addHelpCommand('help [command]', 'Display help for command');
 
 // `$ superfast version` (--version synonym)
 program.version(packageJSON.version, '-v, --version', 'Output the version number');
-
 program
   .command('version')
   .description('Output your version of Superfast')
@@ -55,12 +51,12 @@ program
 
 program
   .command('init')
-  .description('Initialize your Superfast application')
+  .description('Initialize your application')
   .requiredOption('-p, --project-name <name>', 'project name option')
   .action(init);
-program.command('start').description('Start your Superfast application').action(start);
-program.command('build').description('Build your Superfast application').action(build);
-program.command('dev').description('Develop your Superfast server').action(dev);
+program.command('start').description('Start your application').action(start);
+program.command('build').description('Build your application').action(build);
+program.command('dev').description('Start your development server').action(dev);
 
 const dbCommand = program.command('database');
 dbCommand
