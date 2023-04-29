@@ -1,6 +1,6 @@
 import fse from 'fs-extra';
-import { defaults } from '../../env';
-import Output from './output';
+import { defaults } from '../../env.js';
+import { Output } from '../../utilities/output.js';
 
 export const writeEnvFile = async (projectDir: string, databaseName: string): Promise<void> => {
   Output.info('Create .env file.');

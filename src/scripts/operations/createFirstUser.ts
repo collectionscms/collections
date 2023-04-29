@@ -1,7 +1,7 @@
-import execa from 'execa';
+import { execa } from 'execa';
 import inquirer from 'inquirer';
 import Joi from 'joi';
-import Output from '../../scripts/utilities/output';
+import { Output } from '../../utilities/output.js';
 
 export const createFirstUser = async (projectDir: string): Promise<void> => {
   Output.info('Create your first admin user');
