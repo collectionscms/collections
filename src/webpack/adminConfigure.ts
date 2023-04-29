@@ -1,10 +1,11 @@
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import webpack from 'webpack';
+import { publicEnv } from '../env.js';
 import { pathList } from '../utilities/pathList.js';
 
 export const adminConfigure: webpack.Configuration = {
   mode: 'development',
-  entry: pathList.admin('index.tsx'),
+  entry: pathList.admin('index.js'),
   output: {
     path: pathList.build('admin'),
     publicPath: '/admin/',
@@ -29,6 +30,9 @@ export const adminConfigure: webpack.Configuration = {
     },
   },
   plugins: [
+    new webpack.DefinePlugin({
+      'process.env': JSON.stringify(publicEnv),
+    }),
     new HtmlWebpackPlugin({
       inject: true,
       template: pathList.admin('index.html'),

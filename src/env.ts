@@ -86,7 +86,7 @@ export const defaults: Record<string, any> = {
   // /////////////////////////////////////
 
   // "fatal", "error", "warn", "info", "debug", "trace", "silent"
-  LOG_LEVEL: 'info',
+  PUBLIC_LOG_LEVEL: 'info',
 
   // /////////////////////////////////////
   // Email
@@ -102,3 +102,14 @@ export let env: Record<string, any> = {
   ...process.env,
   ROOT_DIR: __dirname,
 };
+
+export const publicEnv = Object.entries(env).reduce((values, [key, val]) => {
+  if (key.indexOf('PUBLIC_') === 0) {
+    return {
+      ...values,
+      [key]: `${val}`,
+    };
+  }
+
+  return values;
+}, {});
