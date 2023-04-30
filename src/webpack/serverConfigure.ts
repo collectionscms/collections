@@ -7,6 +7,10 @@ export const serverConfigure: webpack.Configuration = {
   experiments: {
     outputModule: true,
   },
+  externals: {
+    argon2: 'argon2',
+    knex: 'knex',
+  },
   output: {
     path: pathList.build(),
     clean: true,
