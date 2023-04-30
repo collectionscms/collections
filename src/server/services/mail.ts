@@ -1,16 +1,16 @@
 import { Transporter } from 'nodemailer';
-import mailer from '../../email/mailer';
-import { Message } from '../../email/types';
-import env from '../../env';
-import logger from '../../utilities/logger';
-import ProjectSettingsRepository from '../repositories/projectSettings';
+import { mailer } from '../../email/mailer.js';
+import { Message } from '../../email/types.js';
+import { env } from '../../env.js';
+import { logger } from '../../utilities/logger.js';
+import { ProjectSettingsRepository } from '../repositories/projectSettings.js';
 
-export default class MailService {
+export class MailService {
   mailer: Transporter;
 
   constructor() {
     this.mailer = mailer();
-    this.mailer.verify((e: Error) => {
+    this.mailer.verify((e) => {
       if (e) {
         logger.error('There is an error with the email configuration you have provided.', e);
       }
@@ -25,8 +25,8 @@ export default class MailService {
       const from = `${projectSettings[0].name} <${env.EMAIL_FROM as string}>`;
 
       this.mailer.sendMail({ from, ...message });
-    } catch (err) {
-      logger.error(`Failed to send mail to ${message.to}, subject: ${message.subject}`, err);
+    } catch (e) {
+      logger.error(`Failed to send mail to ${message.to}, subject: ${message.subject}`, e);
     }
   }
 }

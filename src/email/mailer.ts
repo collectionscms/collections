@@ -1,10 +1,10 @@
 import nodemailer, { Transporter } from 'nodemailer';
-import env from '../env';
-import logger from '../utilities/logger';
+import { env } from '../env.js';
+import { logger } from '../utilities/logger.js';
 
 let transporter: Transporter;
 
-export default function mailer(): Transporter {
+export function mailer(): Transporter {
   if (transporter) return transporter;
 
   const transportName = env.EMAIL_TRANSPORT;
