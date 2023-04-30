@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
-import { ForbiddenException } from '../../shared/exceptions/forbidden';
-import { InvalidCredentialsException } from '../../shared/exceptions/invalidCredentials';
-import { PermissionsAction } from '../../shared/types';
-import PermissionsRepository from '../repositories/permissions';
+import { PermissionsAction } from '../../config/types.js';
+import { ForbiddenException } from '../../exceptions/forbidden.js';
+import { InvalidCredentialsException } from '../../exceptions/invalidCredentials.js';
+import { PermissionsRepository } from '../repositories/permissions.js';
 
 export const collectionPermissionsHandler =
   (action: PermissionsAction) => async (req: Request, res: Response, next: NextFunction) => {
@@ -12,7 +12,7 @@ export const collectionPermissionsHandler =
 
     if (!req.adminAccess) {
       const repository = new PermissionsRepository();
-      const userPermissions = await repository.read({ roleId: req.roleId });
+      const userPermissions = await repository.read({ roleId: Number(req.roleId) });
 
       const hasPermission = userPermissions.some(
         (userPermission) =>
@@ -27,7 +27,7 @@ export const collectionPermissionsHandler =
     return next();
   };
 
-const permissionsHandler =
+export const permissionsHandler =
   (permissions: { collection: string; action: PermissionsAction }[] = []) =>
   async (req: Request, res: Response, next: NextFunction) => {
     if (!req.userId) {
@@ -36,7 +36,7 @@ const permissionsHandler =
 
     if (!req.adminAccess && permissions.length > 0) {
       const repository = new PermissionsRepository();
-      const userPermissions = await repository.read({ roleId: req.roleId });
+      const userPermissions = await repository.read({ roleId: Number(req.roleId) });
 
       const hasPermission = permissions.every((permission) =>
         userPermissions.some(
@@ -53,5 +53,3 @@ const permissionsHandler =
 
     return next();
   };
-
-export default permissionsHandler;

@@ -1,11 +1,11 @@
 import express, { Request, Response } from 'express';
-import { RecordNotFoundException } from '../../shared/exceptions/database/recordNotFound';
-import { UnprocessableEntityException } from '../../shared/exceptions/unprocessableEntity';
-import asyncHandler from '../middleware/asyncHandler';
-import permissionsHandler from '../middleware/permissionsHandler';
-import PermissionsRepository from '../repositories/permissions';
-import RolesRepository from '../repositories/roles';
-import UsersRepository from '../repositories/users';
+import { RecordNotFoundException } from '../../exceptions/database/recordNotFound.js';
+import { UnprocessableEntityException } from '../../exceptions/unprocessableEntity.js';
+import { asyncHandler } from '../middleware/asyncHandler.js';
+import { permissionsHandler } from '../middleware/permissionsHandler.js';
+import { PermissionsRepository } from '../repositories/permissions.js';
+import { RolesRepository } from '../repositories/roles.js';
+import { UsersRepository } from '../repositories/users.js';
 
 const app = express();
 
@@ -138,4 +138,4 @@ app.delete(
   })
 );
 
-export default app;
+export const roles = app;

@@ -1,10 +1,10 @@
 import { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
-import { BaseException } from '../../shared/exceptions/base';
-import logger from '../../utilities/logger';
+import { BaseException } from '../../exceptions/base.js';
+import { logger } from '../../utilities/logger.js';
 
 // NextFunction must be passed for Express to use this middleware as error handler
 /* eslint-disable no-unused-vars */
-const errorHandler: ErrorRequestHandler = (
+export const errorHandler: ErrorRequestHandler = (
   err: Error,
   req: Request,
   res: Response,
@@ -28,5 +28,3 @@ const errorHandler: ErrorRequestHandler = (
   }
   return res.status(base.status).json(base.toJson());
 };
-
-export default errorHandler;

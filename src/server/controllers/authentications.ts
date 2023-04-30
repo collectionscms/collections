@@ -1,12 +1,12 @@
 import argon2 from 'argon2';
 import express, { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import env from '../../env';
-import { InvalidCredentialsException } from '../../shared/exceptions/invalidCredentials';
-import { MeUser } from '../../shared/types';
-import asyncHandler from '../middleware/asyncHandler';
-import permissionsHandler from '../middleware/permissionsHandler';
-import UsersRepository from '../repositories/users';
+import { MeUser } from '../../config/types.js';
+import { env } from '../../env.js';
+import { InvalidCredentialsException } from '../../exceptions/invalidCredentials.js';
+import { asyncHandler } from '../middleware/asyncHandler.js';
+import { permissionsHandler } from '../middleware/permissionsHandler.js';
+import { UsersRepository } from '../repositories/users.js';
 
 const app = express();
 
@@ -34,7 +34,7 @@ app.get(
   asyncHandler(async (req: Request, res: Response) => {
     const repository = new UsersRepository();
 
-    const user = await repository.readMe({ id: req.userId });
+    const user = await repository.readMe({ id: Number(req.userId) });
     const token = toToken(user);
 
     res.json({
@@ -44,13 +44,13 @@ app.get(
 );
 
 const toToken = (user: MeUser) => {
-  user.appAccess = true;
-  delete user.password;
-  const token = jwt.sign(user, env.SECRET, {
+  const tokenizedUser: Omit<MeUser, 'password'> = { ...user };
+  tokenizedUser.appAccess = true;
+  const token = jwt.sign(tokenizedUser, env.SECRET, {
     expiresIn: env.ACCESS_TOKEN_TTL,
   });
 
   return token;
 };
 
-export default app;
+export const authentications = app;

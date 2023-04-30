@@ -1,10 +1,10 @@
 import { NextFunction, Request, RequestHandler, Response } from 'express';
-import { InvalidCredentialsException } from '../../shared/exceptions/invalidCredentials';
-import UsersRepository from '../repositories/users';
-import { decodeJwt } from '../utilities/decodeJwt';
-import asyncHandler from './asyncHandler';
+import { InvalidCredentialsException } from '../../exceptions/invalidCredentials.js';
+import { UsersRepository } from '../repositories/users.js';
+import { decodeJwt } from '../utilities/decodeJwt.js';
+import { asyncHandler } from './asyncHandler.js';
 
-const authHandler: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
+const _authHandler: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
   const repository = new UsersRepository();
 
   try {
@@ -23,9 +23,9 @@ const authHandler: RequestHandler = async (req: Request, res: Response, next: Ne
     return next();
   } catch (e) {
     return next(
-      new InvalidCredentialsException('invalid_user_credentials', { message: e.message })
+      new InvalidCredentialsException('invalid_user_credentials', { message: (e as Error).message })
     );
   }
 };
 
-export default asyncHandler(authHandler);
+export const authHandler = asyncHandler(_authHandler);
