@@ -1,18 +1,17 @@
 import { Request, RequestHandler } from 'express';
-import * as Pino from 'pino';
-import PinoHTTP from 'pino-http';
-import { env } from '../env.js';
+import pino, { LoggerOptions } from 'pino';
+import pinoHTTP, { stdSerializers } from 'pino-http';
 
-const pinoOptions: Pino.LoggerOptions = {
-  level: env.LOG_LEVEL || 'info',
+const pinoOptions: LoggerOptions = {
+  level: process.env.LOG_LEVEL || 'info',
   redact: {
     paths: ['req.headers.authorization', 'req.headers.cookie'],
     censor: '--redacted--',
   },
 };
 
-const httpLoggerOptions: Pino.LoggerOptions = {
-  level: env.LOG_LEVEL || 'info',
+const httpLoggerOptions: LoggerOptions = {
+  level: process.env.LOG_LEVEL || 'info',
   redact: {
     paths: ['req.headers.authorization', 'req.headers.cookie'],
     censor: '--redacted--',
@@ -30,15 +29,15 @@ const redactQuery = (originalPath: string) => {
   return url.pathname + url.search;
 };
 
-export const expressLogger = PinoHTTP.pinoHttp({
-  logger: Pino.pino(httpLoggerOptions),
+export const expressLogger = pinoHTTP({
+  logger: pino(httpLoggerOptions),
   serializers: {
     req(request: Request) {
-      const output = Pino.stdSerializers.req(request);
+      const output = stdSerializers.req(request);
       output.url = redactQuery(output.url);
       return output;
     },
   },
 }) as RequestHandler;
 
-export const logger = Pino.pino(pinoOptions);
+export const logger = pino(pinoOptions);

@@ -1,12 +1,10 @@
 import camelcaseKeys from 'camelcase-keys';
 import { snakeCase } from 'change-case';
-import * as _knex from 'knex';
-import { Knex } from 'knex';
+import knex, { Knex } from 'knex';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { env } from '../../env.js';
 
-const { knex } = _knex.default;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
