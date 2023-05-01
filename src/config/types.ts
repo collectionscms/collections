@@ -59,17 +59,17 @@ export type Collection = {
 export type FieldInterface =
   | 'input'
   | 'inputMultiline'
-  | 'inputRichTextHtml'
-  | 'inputRichTextMd'
+  // | 'inputRichTextHtml'
+  // | 'inputRichTextMd'
   | 'selectDropdown'
   | 'dateTime'
   | 'boolean'
-  | 'file'
-  | 'fileImage'
-  | 'list'
-  | 'listO2o' // one-to-one
-  | 'listO2m' // one-to-many
-  | 'selectDropdownM2o' // many-to-one
+  // | 'file'
+  // | 'fileImage'
+  // | 'list'
+  // | 'listO2o' // one-to-one
+  // | 'listO2m' // one-to-many
+  // | 'selectDropdownM2o' // many-to-one
   | 'selectDropdownStatus'; // public status
 export type FieldOption = {
   choices?: Choice[];

@@ -1,17 +1,17 @@
 import { AddOutlined } from '@mui/icons-material';
 import { Button, Stack } from '@mui/material';
-import Grid from '@mui/material/Unstable_Grid2';
+import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import RouterLink from '../../components/elements/Link';
-import Table from '../../components/elements/Table';
-import { Type } from '../../components/elements/Table/Cell/types';
-import ComposeWrapper from '../../components/utilities/ComposeWrapper';
-import { useDocumentInfo } from '../../components/utilities/DocumentInfo';
-import buildColumns from '../../utilities/buildColumns';
-import { CollectionContextProvider, useCollection } from './Context';
+import { RouterLink } from '../../components/elements/Link/index.js';
+import { Type } from '../../components/elements/Table/Cell/types.js';
+import { Table } from '../../components/elements/Table/index.js';
+import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.js';
+import { useDocumentInfo } from '../../components/utilities/DocumentInfo/index.js';
+import { buildColumns } from '../../utilities/buildColumns.js';
+import { CollectionContextProvider, useCollection } from './Context/index.js';
 
-const ContentTypePage: React.FC = () => {
+const ContentTypePageImpl: React.FC = () => {
   const { localizedLabel } = useDocumentInfo();
   const { t } = useTranslation();
   const { getCollections } = useCollection();
@@ -45,4 +45,6 @@ const ContentTypePage: React.FC = () => {
   );
 };
 
-export default ComposeWrapper({ context: CollectionContextProvider })(ContentTypePage);
+export const ContentTypePage = ComposeWrapper({ context: CollectionContextProvider })(
+  ContentTypePageImpl
+);

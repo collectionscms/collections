@@ -1,12 +1,12 @@
-import { BooleanType as boolean } from './Boolean';
-import { DateTimeType as dateTime } from './DateTime';
-import { InputType as input } from './Input';
-import { InputMultilineType as inputMultiline } from './InputMultiline';
+import { BooleanType as boolean } from './Boolean/index.js';
+import { DateTimeType as dateTime } from './DateTime/index.js';
+import { InputType as input } from './Input/index.js';
+import { InputMultilineType as inputMultiline } from './InputMultiline/index.js';
 import {
   SelectDropdownType as selectDropdown,
   SelectDropdownType as selectDropdownStatus,
-} from './SelectDropdown';
-import { Props } from './types';
+} from './SelectDropdown/index.js';
+import { Props } from './types.js';
 
 export type FieldTypes = {
   input: React.ComponentType<Props>;
@@ -17,7 +17,7 @@ export type FieldTypes = {
   dateTime: React.ComponentType<Props>;
 };
 
-const fieldTypes: FieldTypes = {
+export const fieldTypes: FieldTypes = {
   input,
   inputMultiline,
   selectDropdown,
@@ -25,5 +25,3 @@ const fieldTypes: FieldTypes = {
   boolean,
   dateTime,
 };
-
-export default fieldTypes;

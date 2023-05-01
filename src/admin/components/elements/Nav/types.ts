@@ -1,4 +1,4 @@
-import { Group } from '../NavItem/types';
+import { Group } from '../NavItem/types.js';
 
 export type Props = {
   open: boolean;

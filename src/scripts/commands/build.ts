@@ -1,38 +1,38 @@
-import rimraf from 'rimraf';
+import chalk from 'chalk';
+import { rimraf } from 'rimraf';
 import webpack from 'webpack';
-import config from '../../shared/features/config';
-import { webpackAdminConfigure, webpackServerConfigure } from '../../webpack.config';
-import notify from '../utilities/notifierUtil';
-import PathUtil from '../utilities/pathUtil';
-import { compilerRun } from '../utilities/webpackUtil';
+import { logger } from '../../utilities/logger.js';
+import { pathList } from '../../utilities/pathList.js';
+import { adminConfigure } from '../../webpack/adminConfigure.js';
+import { serverConfigure } from '../../webpack/serverConfigure.js';
 
-const scriptBuild = async () => {
-  const serverBuildDirectory = PathUtil.build();
+export const scriptBuild = async () => {
+  rimraf(pathList.build());
 
-  rimraf(serverBuildDirectory);
+  serverConfigure.mode = 'production';
+  serverConfigure.entry = pathList.root('scripts', 'entries', 'build.js');
+  serverConfigure.output!.path = pathList.build();
 
-  const webpackServerConfig = webpackServerConfigure((webpackConfig) => {
-    webpackConfig.entry = PathUtil.root('scripts', 'entry', 'build');
-    return webpackConfig;
-  }, config?.webpack?.server);
+  const compiler = webpack(adminConfigure);
+  const serverCompiler = webpack(serverConfigure);
 
-  const serverCompiler = webpack(webpackServerConfig);
+  try {
+    await compilerRun(serverCompiler);
+    await compilerRun(compiler);
 
-  const webpackAdminConfig = webpackAdminConfigure((webpackConfig) => {
-    webpackConfig.entry = PathUtil.admin('index');
-    webpackConfig.output!.path = PathUtil.build('admin');
-
-    return webpackConfig;
-  });
-
-  const adminCompiler = webpack(webpackAdminConfig);
-
-  await Promise.all([compilerRun(serverCompiler), compilerRun(adminCompiler)]);
-
-  notify({
-    subtitle: 'Built Successfully',
-    message: 'Your build has been compiled.',
-  });
+    console.log(chalk.green('✅ Built Successfully'));
+  } catch (e) {
+    logger.error(e);
+  }
 };
 
-export default scriptBuild;
+const compilerRun = (compiler: webpack.Compiler) => {
+  return new Promise((resolve, reject) => {
+    compiler.run((err, stats) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve(stats);
+    });
+  });
+};

@@ -8,18 +8,21 @@ import {
   Stack,
   TextField,
 } from '@mui/material';
-import Grid from '@mui/material/Unstable_Grid2';
+import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { useSnackbar } from 'notistack';
 import React, { useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import ComposeWrapper from '../../../components/utilities/ComposeWrapper';
-import { useDocumentInfo } from '../../../components/utilities/DocumentInfo';
-import createRoleSchema, { FormValues } from '../../../fields/schemas/roles/createRole';
-import { RoleContextProvider, useRole } from '../Context';
+import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
+import { useDocumentInfo } from '../../../components/utilities/DocumentInfo/index.js';
+import {
+  FormValues,
+  createRole as createRoleSchema,
+} from '../../../fields/schemas/roles/createRole.js';
+import { RoleContextProvider, useRole } from '../Context/index.js';
 
-const CreateRolePage: React.FC = () => {
+const CreateRolePageImpl: React.FC = () => {
   const { localizedLabel } = useDocumentInfo();
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -70,13 +73,7 @@ const CreateRolePage: React.FC = () => {
             name="name"
             control={control}
             render={({ field }) => (
-              <TextField
-                name="name"
-                {...field}
-                type="text"
-                fullWidth
-                error={errors.name !== undefined}
-              />
+              <TextField {...field} type="text" fullWidth error={errors.name !== undefined} />
             )}
           />
           <FormHelperText error>{errors.name?.message}</FormHelperText>
@@ -88,7 +85,6 @@ const CreateRolePage: React.FC = () => {
             control={control}
             render={({ field }) => (
               <FormControlLabel
-                name="isActive"
                 {...field}
                 label={t('is_active')}
                 control={<Checkbox checked={field.value} />}
@@ -106,7 +102,6 @@ const CreateRolePage: React.FC = () => {
             control={control}
             render={({ field }) => (
               <TextField
-                name="description"
                 {...field}
                 type="text"
                 fullWidth
@@ -121,4 +116,4 @@ const CreateRolePage: React.FC = () => {
   );
 };
 
-export default ComposeWrapper({ context: RoleContextProvider })(CreateRolePage);
+export const CreateRolePage = ComposeWrapper({ context: RoleContextProvider })(CreateRolePageImpl);

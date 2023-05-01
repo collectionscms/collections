@@ -1,9 +1,9 @@
 import { List, ListSubheader } from '@mui/material';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Props } from './types';
+import { Props } from './types.js';
 
-const NavGroup: React.FC<Props> = ({ group, children }) => {
+export const NavGroup: React.FC<Props> = ({ group, children }) => {
   const { label } = group;
   const { t } = useTranslation();
 
@@ -22,5 +22,3 @@ const NavGroup: React.FC<Props> = ({ group, children }) => {
     </List>
   );
 };
-
-export default NavGroup;

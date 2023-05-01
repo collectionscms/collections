@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import { yupResolver } from '@hookform/resolvers/yup';
 import { CachedOutlined } from '@mui/icons-material';
 import {
@@ -15,21 +14,24 @@ import {
   TextField,
   Tooltip,
 } from '@mui/material';
-import Grid from '@mui/material/Unstable_Grid2';
+import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { useSnackbar } from 'notistack';
 import React, { Suspense, useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
-import logger from '../../../../utilities/logger';
-import Loading from '../../../components/elements/Loading';
-import ComposeWrapper from '../../../components/utilities/ComposeWrapper';
-import { useDocumentInfo } from '../../../components/utilities/DocumentInfo';
-import createUserSchema, { FormValues } from '../../../fields/schemas/users/createUser';
-import { UserContextProvider, useUser } from '../Context';
+import { logger } from '../../../../utilities/logger.js';
+import { Loading } from '../../../components/elements/Loading/index.js';
+import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
+import { useDocumentInfo } from '../../../components/utilities/DocumentInfo/index.js';
+import {
+  FormValues,
+  createUser as createUserSchema,
+} from '../../../fields/schemas/users/createUser.js';
+import { UserContextProvider, useUser } from '../Context/index.js';
 
-const CreateUserPage: React.FC = () => {
+const CreateUserPageImpl: React.FC = () => {
   const { localizedLabel } = useDocumentInfo();
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -96,13 +98,7 @@ const CreateUserPage: React.FC = () => {
               name="lastName"
               control={control}
               render={({ field }) => (
-                <TextField
-                  name="lastName"
-                  {...field}
-                  type="text"
-                  fullWidth
-                  error={errors.lastName !== undefined}
-                />
+                <TextField {...field} type="text" fullWidth error={errors.lastName !== undefined} />
               )}
             />
             <FormHelperText error>{errors.lastName?.message}</FormHelperText>
@@ -114,7 +110,6 @@ const CreateUserPage: React.FC = () => {
               control={control}
               render={({ field }) => (
                 <TextField
-                  name="firstName"
                   {...field}
                   type="text"
                   fullWidth
@@ -132,13 +127,7 @@ const CreateUserPage: React.FC = () => {
               name="userName"
               control={control}
               render={({ field }) => (
-                <TextField
-                  name="userName"
-                  {...field}
-                  type="text"
-                  fullWidth
-                  error={errors.userName !== undefined}
-                />
+                <TextField {...field} type="text" fullWidth error={errors.userName !== undefined} />
               )}
             />
             <FormHelperText error>{errors.userName?.message}</FormHelperText>
@@ -149,13 +138,7 @@ const CreateUserPage: React.FC = () => {
               name="email"
               control={control}
               render={({ field }) => (
-                <TextField
-                  name="email"
-                  {...field}
-                  type="text"
-                  fullWidth
-                  error={errors.email !== undefined}
-                />
+                <TextField {...field} type="text" fullWidth error={errors.email !== undefined} />
               )}
             />
             <FormHelperText error>{errors.email?.message}</FormHelperText>
@@ -169,7 +152,6 @@ const CreateUserPage: React.FC = () => {
               control={control}
               render={({ field }) => (
                 <TextField
-                  name="password"
                   {...field}
                   type="password"
                   fullWidth
@@ -188,7 +170,6 @@ const CreateUserPage: React.FC = () => {
               control={control}
               render={({ field }) => (
                 <TextField
-                  name="apiKey"
                   {...field}
                   type="text"
                   placeholder={t('generate_api_key_placeholder')}
@@ -219,7 +200,7 @@ const CreateUserPage: React.FC = () => {
               name="roleId"
               control={control}
               render={({ field }) => (
-                <Select name="roleId" {...field} fullWidth>
+                <Select {...field} fullWidth>
                   {roles &&
                     roles.map((role) => (
                       <MenuItem value={role.id} key={role.id}>
@@ -237,7 +218,6 @@ const CreateUserPage: React.FC = () => {
               control={control}
               render={({ field }) => (
                 <FormControlLabel
-                  name="isActive"
                   {...field}
                   label={t('is_active')}
                   control={<Checkbox checked={field.value} />}
@@ -252,4 +232,4 @@ const CreateUserPage: React.FC = () => {
   );
 };
 
-export default ComposeWrapper({ context: UserContextProvider })(CreateUserPage);
+export const CreateUserPage = ComposeWrapper({ context: UserContextProvider })(CreateUserPageImpl);

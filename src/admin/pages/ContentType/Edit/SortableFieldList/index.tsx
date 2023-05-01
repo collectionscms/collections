@@ -2,9 +2,9 @@ import type { Active } from '@dnd-kit/core';
 import { DndContext, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { SortableContext, arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
 import React, { useMemo, useState } from 'react';
-import { DragHandle, SortableItem, SortableItemMenu } from './components/SortableItem';
-import { SortableOverlay } from './components/SortableOverlay';
-import { BaseItem, Props } from './types';
+import { DragHandle, SortableItem, SortableItemMenu } from './components/SortableItem/index.js';
+import { SortableOverlay } from './components/SortableOverlay/index.js';
+import { BaseItem, Props } from './types.js';
 
 export const SortableFieldList = <T extends BaseItem>({
   items,

@@ -1,11 +1,11 @@
 import { Theme } from '@mui/material';
-import AppBar from './AppBar';
-import ListItemButton from './ListItemButton';
-import ListItemIcon from './ListItemIcon';
-import ListItemText from './ListItemText';
-import ListSubheader from './ListSubheader';
+import { AppBar } from './AppBar.js';
+import { ListItemButton } from './ListItemButton.js';
+import { ListItemIcon } from './ListItemIcon.js';
+import { ListItemText } from './ListItemText.js';
+import { ListSubheader } from './ListSubheader.js';
 
-const componentsOverrides = (theme: Theme) => {
+export const componentsOverrides = (theme: Theme) => {
   return Object.assign(
     AppBar(theme),
     ListSubheader(),
@@ -14,5 +14,3 @@ const componentsOverrides = (theme: Theme) => {
     ListItemText()
   );
 };
-
-export default componentsOverrides;

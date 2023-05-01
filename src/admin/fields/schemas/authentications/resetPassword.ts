@@ -1,13 +1,13 @@
 import { TFunction } from 'i18next';
 import { ObjectSchema } from 'yup';
-import yup from '../../yup';
+import { yup } from '../../yup.js';
 
 export type FormValues = {
   password: string;
   token: string;
 };
 
-export const resetPasswordSchema = (t: TFunction): ObjectSchema<FormValues> => {
+export const resetPassword = (t: TFunction): ObjectSchema<FormValues> => {
   return yup.object().shape({
     password: yup
       .string()
@@ -16,7 +16,8 @@ export const resetPasswordSchema = (t: TFunction): ObjectSchema<FormValues> => {
       .matches(/[@$!%*#?&]+/, t('yup.custom.one_special_character'))
       .required()
       .min(8)
-      .max(250),
-    token: yup.string(),
+      .max(250)
+      .required(),
+    token: yup.string().required(),
   });
 };

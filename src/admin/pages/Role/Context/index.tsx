@@ -1,9 +1,9 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWR, { SWRConfiguration, SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
-import { Collection, Permission, Role } from '../../../../shared/types';
-import api from '../../../utilities/api';
-import { RoleContext } from './types';
+import { Collection, Permission, Role } from '../../../../config/types.js';
+import { api } from '../../../utilities/api.js';
+import { RoleContext } from './types.js';
 
 const Context = createContext({} as RoleContext);
 
@@ -16,13 +16,13 @@ export const RoleContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       api.get<{ role: Role }>(url).then((res) => res.data.role)
     );
 
-  const createRole = (): SWRMutationResponse =>
-    useSWRMutation(`/roles`, async (url: string, { arg }: { arg: string }) => {
+  const createRole = () =>
+    useSWRMutation(`/roles`, async (url: string, { arg }: { arg: Record<string, any> }) => {
       return api.post<{ role: Role }>(url, arg).then((res) => res.data.role);
     });
 
-  const updateRole = (id: string): SWRMutationResponse =>
-    useSWRMutation(`/roles/${id}`, async (url: string, { arg }: { arg: string }) => {
+  const updateRole = (id: string) =>
+    useSWRMutation(`/roles/${id}`, async (url: string, { arg }: { arg: Record<string, any> }) => {
       return api.patch(url, arg).then((res) => res.data);
     });
 
@@ -40,10 +40,13 @@ export const RoleContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       config
     );
 
-  const createPermission = (id: string): SWRMutationResponse =>
-    useSWRMutation(`/roles/${id}/permissions`, async (url: string, { arg }: { arg: string }) => {
-      return api.post<{ permission: Permission }>(url, arg).then((res) => res.data.permission);
-    });
+  const createPermission = (id: string) =>
+    useSWRMutation(
+      `/roles/${id}/permissions`,
+      async (url: string, { arg }: { arg: Record<string, any> }) => {
+        return api.post<{ permission: Permission }>(url, arg).then((res) => res.data.permission);
+      }
+    );
 
   const deletePermission = (id: string, permissionId: string): SWRMutationResponse =>
     useSWRMutation(`/roles/${id}/permissions/${permissionId}`, async (url: string, { arg }) => {

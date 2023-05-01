@@ -1,7 +1,7 @@
 import { TextField } from '@mui/material';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Props } from '../types';
+import { Props } from '../types.js';
 
 export const InputMultilineType: React.FC<Props> = ({ register, errors, field }) => {
   const { t } = useTranslation();
@@ -12,7 +12,6 @@ export const InputMultilineType: React.FC<Props> = ({ register, errors, field })
       type="text"
       multiline
       rows={5}
-      name={field.field}
       disabled={Boolean(field.readonly)}
       {...register(field.field, { ...required })}
       error={errors[field.field] !== undefined}

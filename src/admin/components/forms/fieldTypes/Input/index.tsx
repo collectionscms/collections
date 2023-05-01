@@ -1,7 +1,7 @@
 import { TextField } from '@mui/material';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Props } from '../types';
+import { Props } from '../types.js';
 
 export const InputType: React.FC<Props> = ({ register, errors, field }) => {
   const { t } = useTranslation();
@@ -10,7 +10,6 @@ export const InputType: React.FC<Props> = ({ register, errors, field }) => {
   return (
     <TextField
       type="text"
-      name={field.field}
       disabled={Boolean(field.readonly)}
       {...register(field.field, { ...required })}
       error={errors[field.field] !== undefined}

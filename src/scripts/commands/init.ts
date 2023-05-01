@@ -1,15 +1,15 @@
-import execa from 'execa';
+import { execa } from 'execa';
 import ora from 'ora';
 import path from 'path';
-import { copyCommonFiles } from '../utilities/copyCommonFiles';
-import { createFirstUser } from '../utilities/createFirstUser';
-import Output from '../utilities/output';
-import { writeEnvFile } from '../utilities/writeEnvFile';
+import { Output } from '../../utilities/output.js';
+import { copyCommonFiles } from '../operations/copyCommonFiles.js';
+import { createFirstUser } from '../operations/createFirstUser.js';
+import { writeEnvFile } from '../operations/writeEnvFile.js';
 
-const scriptInit = async (projectName: string) => {
+export const scriptInit = async (projectName: string) => {
   const projectDir = path.join(process.cwd(), projectName);
 
-  const onError = ({ err }) => {
+  const onError = (err: any) => {
     if (err) {
       Output.error(err.message || 'Unknown error');
     }
@@ -19,13 +19,13 @@ const scriptInit = async (projectName: string) => {
   try {
     await copyCommonFiles(projectDir, projectName);
   } catch (err) {
-    onError({ err });
+    onError(err);
   }
 
   try {
     await writeEnvFile(projectDir, 'data');
   } catch (err) {
-    onError({ err });
+    onError(err);
   }
 
   const spinner = ora('Installing dependencies...').start();
@@ -33,7 +33,7 @@ const scriptInit = async (projectName: string) => {
   try {
     await execa('npm', ['install'], { cwd: projectDir });
   } catch (err) {
-    onError({ err });
+    onError(err);
   }
 
   spinner.stop();
@@ -43,7 +43,7 @@ const scriptInit = async (projectName: string) => {
       cwd: projectDir,
     });
   } catch (err) {
-    onError({ err });
+    onError(err);
   }
 
   Output.success(`Your database is now in sync with your schema.`);
@@ -51,10 +51,8 @@ const scriptInit = async (projectName: string) => {
   try {
     await createFirstUser(projectDir);
   } catch (err) {
-    onError({ err });
+    onError(err);
   }
 
   process.exit(0);
 };
-
-export default scriptInit;

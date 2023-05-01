@@ -1,6 +1,6 @@
-import Drawer from '@mui/material/Drawer';
-import { styled, Theme } from '@mui/material/styles';
-import config from '../../../../shared/features/config';
+import Drawer from '@mui/material/Drawer/Drawer.js';
+import { styled, Theme } from '@mui/material/styles/index.js';
+import { config } from '../../../../config/ui.js';
 
 const openedMixin = (theme: Theme) => ({
   width: config?.ui.navWidth,

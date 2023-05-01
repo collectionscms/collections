@@ -1,8 +1,8 @@
 import { createTheme } from '@mui/material';
-import palette from './palette';
-import typography from './typography';
+import { palette } from './palette.js';
+import { typography } from './typography.js';
 
-export default createTheme({
+export const themeDark = createTheme({
   palette,
   typography,
 });

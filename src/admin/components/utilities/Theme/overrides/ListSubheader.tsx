@@ -1,4 +1,4 @@
-const ListSubheader = () => {
+export const ListSubheader = () => {
   return {
     MuiListSubheader: {
       defaultProps: {
@@ -9,5 +9,3 @@ const ListSubheader = () => {
     },
   };
 };
-
-export default ListSubheader;

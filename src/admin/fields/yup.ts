@@ -1,6 +1,6 @@
-import * as yup from 'yup';
-import locale from './locale';
+import * as _yup from 'yup';
+import { locale } from './locale.js';
 
-yup.setLocale(locale);
+_yup.setLocale(locale);
 
-export default yup;
+export const yup = _yup;

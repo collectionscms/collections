@@ -3,15 +3,14 @@ import pino, { LoggerOptions } from 'pino';
 import pinoHTTP, { stdSerializers } from 'pino-http';
 
 const pinoOptions: LoggerOptions = {
-  level: process.env.LOG_LEVEL || 'info',
+  level: process.env.PUBLIC_LOG_LEVEL || 'info',
   redact: {
     paths: ['req.headers.authorization', 'req.headers.cookie'],
     censor: '--redacted--',
   },
 };
-
 const httpLoggerOptions: LoggerOptions = {
-  level: process.env.LOG_LEVEL || 'info',
+  level: process.env.PUBLIC_LOG_LEVEL || 'info',
   redact: {
     paths: ['req.headers.authorization', 'req.headers.cookie'],
     censor: '--redacted--',

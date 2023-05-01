@@ -1,10 +1,10 @@
 import { Button, Stack } from '@mui/material';
-import Grid from '@mui/material/Unstable_Grid2/Grid2';
+import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import RouterLink from '../../../elements/Link';
+import { RouterLink } from '../../../elements/Link/index.js';
 
-const CreateFirstCollection: React.FC = () => {
+export const CreateFirstCollection: React.FC = () => {
   const { t } = useTranslation();
 
   return (
@@ -36,5 +36,3 @@ const CreateFirstCollection: React.FC = () => {
     </Stack>
   );
 };
-
-export default CreateFirstCollection;

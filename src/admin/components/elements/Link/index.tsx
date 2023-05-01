@@ -2,7 +2,8 @@ import { useTheme } from '@mui/material';
 import React from 'react';
 import { NavLink, LinkProps as RouterLinkProps } from 'react-router-dom';
 
-const RouterLink = React.forwardRef<HTMLAnchorElement, RouterLinkProps>((props, ref) => {
+// eslint-disable-next-line react/display-name
+export const RouterLink = React.forwardRef<HTMLAnchorElement, RouterLinkProps>((props, ref) => {
   const theme = useTheme();
 
   return (
@@ -16,5 +17,3 @@ const RouterLink = React.forwardRef<HTMLAnchorElement, RouterLinkProps>((props, 
     />
   );
 });
-
-export default RouterLink;

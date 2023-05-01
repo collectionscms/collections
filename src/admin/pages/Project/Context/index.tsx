@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWR, { SWRConfiguration } from 'swr';
-import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
-import { ProjectSetting } from '../../../../shared/types';
-import api from '../../../utilities/api';
+import useSWRMutation from 'swr/mutation';
+import { ProjectSetting } from '../../../../config/types.js';
+import { api } from '../../../utilities/api.js';
 import { ProjectSettingContext } from './types';
 
 const Context = createContext({} as ProjectSettingContext);
@@ -18,10 +18,13 @@ export const ProjectSettingContextProvider: React.FC<{ children: React.ReactNode
       config
     );
 
-  const updateProjectSetting = (): SWRMutationResponse =>
-    useSWRMutation('/project-settings', async (url: string, { arg }: { arg: string }) => {
-      return api.patch(url, arg).then((res) => res.data);
-    });
+  const updateProjectSetting = () =>
+    useSWRMutation(
+      '/project-settings',
+      async (url: string, { arg }: { arg: Record<string, any> }) => {
+        return api.patch(url, arg).then((res) => res.data);
+      }
+    );
 
   const value = useMemo(
     () => ({

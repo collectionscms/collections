@@ -1,9 +1,9 @@
 import { MenuOutlined } from '@mui/icons-material';
 import { AppBar, IconButton, Toolbar, useMediaQuery, useTheme } from '@mui/material';
 import React from 'react';
-import { Props } from './types';
+import { Props } from './types.js';
 
-const NavHeader: React.FC<Props> = ({ toggleDrawer }) => {
+export const NavHeader: React.FC<Props> = ({ toggleDrawer }) => {
   const theme = useTheme();
   const lgDown = useMediaQuery(theme.breakpoints.down('lg'));
 
@@ -23,7 +23,5 @@ const NavHeader: React.FC<Props> = ({ toggleDrawer }) => {
     </Toolbar>
   );
 
-  return lgDown && <AppBar color="inherit">{mainHeader}</AppBar>;
+  return lgDown ? <AppBar color="inherit">{mainHeader}</AppBar> : <></>;
 };
-
-export default NavHeader;

@@ -12,15 +12,15 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import Grid from '@mui/material/Unstable_Grid2/Grid2';
+import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { t } from 'i18next';
 import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import {
   FormValues,
   createChoice as schema,
-} from '../../../../../../fields/schemas/collectionFields/choice/createChoice';
-import { Props } from './types';
+} from '../../../../../../fields/schemas/collectionFields/choice/createChoice.js';
+import { Props } from './types.js';
 
 export const CreateChoice: React.FC<Props> = ({ openState, onSuccess, onClose }) => {
   const theme = useTheme();

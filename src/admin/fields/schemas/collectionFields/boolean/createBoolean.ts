@@ -1,6 +1,6 @@
 import { TFunction } from 'i18next';
 import { ObjectSchema } from 'yup';
-import yup from '../../../yup';
+import { yup } from '../../../yup.js';
 
 export type FormValues = {
   field: string;
@@ -16,6 +16,6 @@ export const createBoolean = (t: TFunction): ObjectSchema<FormValues> => {
       .required()
       .max(60),
     label: yup.string().required().max(60),
-    defaultValue: yup.boolean(),
+    defaultValue: yup.boolean().required(),
   });
 };

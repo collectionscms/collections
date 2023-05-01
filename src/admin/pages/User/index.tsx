@@ -1,19 +1,19 @@
 import { AddOutlined } from '@mui/icons-material';
 import { Button, Stack } from '@mui/material';
-import Grid from '@mui/material/Unstable_Grid2';
+import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { User } from '../../../shared/types';
-import RouterLink from '../../components/elements/Link';
-import Table from '../../components/elements/Table';
-import Cell from '../../components/elements/Table/Cell';
-import { Type } from '../../components/elements/Table/Cell/types';
-import ComposeWrapper from '../../components/utilities/ComposeWrapper';
-import { useDocumentInfo } from '../../components/utilities/DocumentInfo';
-import buildColumns from '../../utilities/buildColumns';
-import { UserContextProvider, useUser } from './Context';
+import { User } from '../../../config/types.js';
+import { RouterLink } from '../../components/elements/Link/index.js';
+import { Cell } from '../../components/elements/Table/Cell/index.js';
+import { Type } from '../../components/elements/Table/Cell/types.js';
+import { Table } from '../../components/elements/Table/index.js';
+import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.js';
+import { useDocumentInfo } from '../../components/utilities/DocumentInfo/index.js';
+import { buildColumns } from '../../utilities/buildColumns.js';
+import { UserContextProvider, useUser } from './Context/index.js';
 
-const UserPage: React.FC = () => {
+const UserPageImpl: React.FC = () => {
   const { localizedLabel } = useDocumentInfo();
   const { t } = useTranslation();
   const { getUsers } = useUser();
@@ -49,7 +49,7 @@ const UserPage: React.FC = () => {
           />
         );
       case 'role':
-        return <Cell colIndex={i} type={fields[i].type} rowData={row} cellData={row.role.name} />;
+        return <Cell colIndex={i} type={fields[i].type} rowData={row} cellData={row.role?.name} />;
       default:
         return <Cell colIndex={i} type={fields[i].type} rowData={row} cellData={data} />;
     }
@@ -80,4 +80,4 @@ const UserPage: React.FC = () => {
   );
 };
 
-export default ComposeWrapper({ context: UserContextProvider })(UserPage);
+export const UserPage = ComposeWrapper({ context: UserContextProvider })(UserPageImpl);

@@ -1,13 +1,18 @@
-import React, { lazy } from 'react';
-import Loader from '../../../components/elements/Loader';
-import MinimalLayout from '../../../components/layouts/Minimal';
+import React from 'react';
+import { Loader } from '../../../components/elements/Loader/index.js';
+import lazy from '../../../utilities/lazy.js';
 
-const Login = Loader(lazy(() => import('../../../pages/Login')));
-const Logout = Loader(lazy(() => import('../../../pages/Logout')));
-const ForgotPasswordPage = Loader(lazy(() => import('../../../pages/ForgotPassword')));
-const ResetPassword = Loader(lazy(() => import('../../../pages/ResetPassword')));
+const MinimalLayout = Loader(lazy(() => import('../../layouts/Minimal/index.js'), 'MinimalLayout'));
+const Login = Loader(lazy(() => import('../../../pages/Login/index.js'), 'Login'));
+const Logout = Loader(lazy(() => import('../../../pages/Logout/index.js'), 'Logout'));
+const ForgotPassword = Loader(
+  lazy(() => import('../../../pages/ForgotPassword/index.js'), 'ForgotPassword')
+);
+const ResetPassword = Loader(
+  lazy(() => import('../../../pages/ResetPassword/index.js'), 'ResetPassword')
+);
 
-const AuthRoutes = {
+export const AuthRoutes = {
   path: '/admin/auth',
   element: <MinimalLayout />,
   children: [
@@ -17,7 +22,7 @@ const AuthRoutes = {
     },
     {
       path: 'forgot',
-      element: <ForgotPasswordPage />,
+      element: <ForgotPassword />,
     },
     {
       path: 'logout',
@@ -29,5 +34,3 @@ const AuthRoutes = {
     },
   ],
 };
-
-export default AuthRoutes;

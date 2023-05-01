@@ -25,7 +25,7 @@ export const SelectDropdownType: React.FC<Props> = ({ control, register, field: 
           <MenuItem value="">
             <em>None</em>
           </MenuItem>
-          {meta.fieldOption.choices.map((choice) => (
+          {meta.fieldOption?.choices?.map((choice) => (
             <MenuItem value={choice.value} key={choice.value}>
               {choice.label}
             </MenuItem>

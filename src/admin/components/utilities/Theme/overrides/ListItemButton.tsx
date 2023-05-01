@@ -1,6 +1,6 @@
 import { Theme } from '@mui/material';
 
-const ListItemButton = (theme: Theme) => {
+export const ListItemButton = (theme: Theme) => {
   return {
     MuiListItemButton: {
       defaultProps: {
@@ -18,5 +18,3 @@ const ListItemButton = (theme: Theme) => {
     },
   };
 };
-
-export default ListItemButton;

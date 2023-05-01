@@ -1,9 +1,9 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWR, { SWRConfiguration } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
-import { Role, User } from '../../../../shared/types';
-import api from '../../../utilities/api';
-import { UserContext } from './types';
+import { Role, User } from '../../../../config/types.js';
+import { api } from '../../../utilities/api.js';
+import { UserContext } from './types.js';
 
 const Context = createContext({} as UserContext);
 
@@ -16,13 +16,13 @@ export const UserContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       api.get<{ user: User }>(url).then((res) => res.data.user)
     );
 
-  const createUser = (): SWRMutationResponse =>
-    useSWRMutation(`/users`, async (url: string, { arg }: { arg: string }) => {
+  const createUser = () =>
+    useSWRMutation(`/users`, async (url: string, { arg }: { arg: Record<string, any> }) => {
       return api.post<{ user: User }>(url, arg).then((res) => res.data.user);
     });
 
-  const updateUser = (id: string): SWRMutationResponse =>
-    useSWRMutation(`/users/${id}`, async (url: string, { arg }: { arg: string }) => {
+  const updateUser = (id: string) =>
+    useSWRMutation(`/users/${id}`, async (url: string, { arg }: { arg: Record<string, any> }) => {
       return api.patch(url, arg).then((res) => res.data);
     });
 

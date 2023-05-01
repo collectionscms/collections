@@ -123,8 +123,8 @@ const addColumnToTable = (field: Field, table: Knex.CreateTableBuilder) => {
       column = table.string(field.field, 255).defaultTo('');
       break;
     case 'inputMultiline':
-    case 'inputRichTextHtml':
-    case 'inputRichTextMd':
+      // case 'inputRichTextHtml':
+      // case 'inputRichTextMd':
       column = table.text(field.field);
       break;
     case 'boolean': {

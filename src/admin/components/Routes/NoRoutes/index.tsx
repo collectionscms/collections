@@ -1,15 +1,14 @@
-import React, { lazy } from 'react';
-import Loader from '../../elements/Loader';
+import React from 'react';
+import { Loader } from '../../elements/Loader/index.js';
+import lazy from '../../../utilities/lazy.js';
 
-const MinimalLayout = Loader(lazy(() => import('../../layouts/Minimal')));
-const NotFound = Loader(lazy(() => import('../../../pages/NotFound')));
+const MinimalLayout = Loader(lazy(() => import('../../layouts/Minimal/index.js'), 'MinimalLayout'));
+const NotFound = Loader(lazy(() => import('../../../pages/NotFound/index.js'), 'NotFound'));
 
-const NoRoutes = () => {
+export const NoRoutes = () => {
   return {
     path: '/admin',
     element: <MinimalLayout />,
     children: [{ path: '*', element: <NotFound /> }],
   };
 };
-
-export default NoRoutes;

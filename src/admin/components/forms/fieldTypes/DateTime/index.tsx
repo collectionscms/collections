@@ -1,9 +1,9 @@
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs/AdapterDayjs.js';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker/DateTimePicker.js';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider/LocalizationProvider.js';
 import dayjs from 'dayjs';
-import timezone from 'dayjs/plugin/timezone';
-import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone.js';
+import utc from 'dayjs/plugin/utc.js';
 import React from 'react';
 import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -24,7 +24,7 @@ export const DateTimeType: React.FC<Props> = ({ register, control, errors, field
           <DateTimePicker
             {...register(meta.field, { ...required })}
             format="YYYY-MM-DD HH:mm"
-            onChange={(date: Date) => {
+            onChange={(date: Date | null) => {
               // Converts a date string from the local timezone to UTC.
               field.onChange(dayjs(date).utc().format('YYYY-MM-DD HH:mm'));
             }}

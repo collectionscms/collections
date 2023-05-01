@@ -1,6 +1,6 @@
 import { Theme } from '@mui/material';
 
-const AppBar = (theme: Theme) => {
+export const AppBar = (theme: Theme) => {
   return {
     MuiAppBar: {
       defaultProps: {
@@ -12,5 +12,3 @@ const AppBar = (theme: Theme) => {
     },
   };
 };
-
-export default AppBar;

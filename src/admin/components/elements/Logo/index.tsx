@@ -1,10 +1,9 @@
 /* eslint-disable max-len */
 import React from 'react';
-import { useColorMode } from '../../utilities/ColorMode';
-import RenderCustomComponent from '../../utilities/RenderCustomComponent';
+import { useColorMode } from '../../utilities/ColorMode/index.js';
 
-const Logo: React.FC = () => {
-  return <RenderCustomComponent CustomComponent={undefined} DefaultComponent={DefaultLogo} />;
+export const Logo: React.FC = () => {
+  return <DefaultLogo />;
 };
 
 const DefaultLogo: React.FC = () => {
@@ -30,5 +29,3 @@ const logoLight = (
     </g>
   </svg>
 );
-
-export default Logo;

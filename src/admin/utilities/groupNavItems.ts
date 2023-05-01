@@ -6,8 +6,8 @@ import {
   PublicOutlined,
   TableViewOutlined,
 } from '@mui/icons-material';
-import { Collection } from '../../shared/types';
-import { Group } from '../components/elements/NavItem/types';
+import { Collection } from '../../config/types.js';
+import { Group } from '../components/elements/NavItem/types.js';
 
 export const collectionsGroupNavItems = (collections: Collection[]): Group => {
   return {

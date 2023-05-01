@@ -1,5 +1,5 @@
 import React, { createContext, useCallback, useContext, useMemo, useState } from 'react';
-import { Mode, ModeContext } from './types';
+import { Mode, ModeContext } from './types.js';
 
 const localStorageKey = 'superfast-color-mode';
 

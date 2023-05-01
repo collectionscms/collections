@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWR from 'swr';
-import { Collection } from '../../../../shared/types';
-import api from '../../../utilities/api';
-import { useAuth } from '../Auth';
+import { Collection } from '../../../../config/types.js';
+import { api } from '../../../utilities/api.js';
+import { useAuth } from '../Auth/index.js';
 
 type ContextType = {
   collections: Collection[];

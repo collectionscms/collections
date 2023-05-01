@@ -1,19 +1,24 @@
-import React, { lazy, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { Navigate } from 'react-router-dom';
-import { Collection } from '../../../../shared/types';
-import Edit from '../../../pages/collections/Edit';
-import List from '../../../pages/collections/List';
-import { collectionsGroupNavItems } from '../../../utilities/groupNavItems';
-import Loader from '../../elements/Loader';
-import MainLayout from '../../layouts/Main';
-import { useAuth } from '../../utilities/Auth';
-import { useConfig } from '../../utilities/Config';
+import { Collection } from '../../../../config/types.js';
+import { EditCollectionPage as Edit } from '../../../pages/collections/Edit/index.js';
+import List from '../../../pages/collections/List/index.js';
+import { collectionsGroupNavItems } from '../../../utilities/groupNavItems.js';
+import lazy from '../../../utilities/lazy.js';
+import { Loader } from '../../elements/Loader/index.js';
+import { MainLayout } from '../../layouts/Main/index.js';
+import { useAuth } from '../../utilities/Auth/index.js';
+import { useConfig } from '../../utilities/Config/index.js';
 
-const NotFound = Loader(lazy(() => import('../../../pages/NotFound')));
-const CollectionNotFound = Loader(lazy(() => import('./NotFound')));
-const CreateFirstCollection = Loader(lazy(() => import('./CreateFirstCollection')));
+const NotFound = Loader(lazy(() => import('../../../pages/NotFound/index.js'), 'NotFound'));
+const CollectionNotFound = Loader(
+  lazy(() => import('../../../pages/CollectionNotFound/index.js'), 'CollectionNotFound')
+);
+const CreateFirstCollection = Loader(
+  lazy(() => import('./CreateFirstCollection/index.js'), 'CreateFirstCollection')
+);
 
-const CollectionRoutes = () => {
+export const CollectionRoutes = () => {
   const { user, permissions } = useAuth();
   const { collections } = useConfig();
 
@@ -22,7 +27,7 @@ const CollectionRoutes = () => {
     if (user.adminAccess) return collections;
 
     return collections.filter((collection) =>
-      permissions.some((permission) => permission.collection === collection.collection)
+      permissions?.some((permission) => permission.collection === collection.collection)
     );
   };
 
@@ -73,5 +78,3 @@ const CollectionRoutes = () => {
     ],
   };
 };
-
-export default CollectionRoutes;

@@ -3,19 +3,19 @@ import { useSnackbar } from 'notistack';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { SWRConfig } from 'swr';
-import { ApiError } from '../../../../shared/types';
-import { Props } from './types';
+import { ApiError } from '../../../../config/types.js';
+import { Props } from './types.js';
 
-const SWRConfigure: React.FC<Props> = ({ children }) => {
+export const SWRConfigure: React.FC<Props> = ({ children }) => {
   const { enqueueSnackbar } = useSnackbar();
   const { t } = useTranslation();
 
   return (
     <SWRConfig
       value={{
-        onError: (err) => {
-          if (err instanceof AxiosError) {
-            const apiError = err.response.data as ApiError;
+        onError: (e) => {
+          if (e instanceof AxiosError) {
+            const apiError = e.response?.data as ApiError;
             if (apiError) {
               let message = `${t(`error.${apiError.code}` as unknown as TemplateStringsArray)}`;
               if (apiError.extensions?.message) {
@@ -33,5 +33,3 @@ const SWRConfigure: React.FC<Props> = ({ children }) => {
     </SWRConfig>
   );
 };
-
-export default SWRConfigure;

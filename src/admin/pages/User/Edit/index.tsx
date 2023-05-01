@@ -14,24 +14,29 @@ import {
   TextField,
   Tooltip,
 } from '@mui/material';
-import Grid from '@mui/material/Unstable_Grid2';
+import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { useSnackbar } from 'notistack';
 import React, { Suspense, useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
-import { User } from '../../../../shared/types';
-import logger from '../../../../utilities/logger';
-import DeleteHeaderButton from '../../../components/elements/DeleteHeaderButton';
-import Loading from '../../../components/elements/Loading';
-import ComposeWrapper from '../../../components/utilities/ComposeWrapper';
-import { useDocumentInfo } from '../../../components/utilities/DocumentInfo';
-import updateUserSchema, { FormValues } from '../../../fields/schemas/users/updateUser';
-import { UserContextProvider, useUser } from '../Context';
+import { User } from '../../../../config/types.js';
+import { logger } from '../../../../utilities/logger.js';
+import { DeleteHeaderButton } from '../../../components/elements/DeleteHeaderButton/index.js';
+import { Loading } from '../../../components/elements/Loading/index.js';
+import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
+import { useDocumentInfo } from '../../../components/utilities/DocumentInfo/index.js';
+import {
+  FormValues,
+  updateUser as updateUserSchema,
+} from '../../../fields/schemas/users/updateUser.js';
+import { UserContextProvider, useUser } from '../Context/index.js';
 
-const EditPage: React.FC = () => {
+const EditUserPageImpl: React.FC = () => {
   const { id } = useParams();
+  if (!id) throw new Error('id is not defined');
+
   const { localizedLabel } = useDocumentInfo();
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -52,7 +57,7 @@ const EditPage: React.FC = () => {
   useEffect(() => {
     const getUser = async () => {
       const user = await getUserTrigger();
-      setDefaultValue(user);
+      if (user) setDefaultValue(user);
     };
 
     getUser();
@@ -72,7 +77,7 @@ const EditPage: React.FC = () => {
     setValue('password', '');
     setValue('apiKey', '');
     setValue('isActive', Boolean(user.isActive));
-    setValue('roleId', user.role?.id.toString());
+    setValue('roleId', user.role!.id.toString());
   };
 
   const handleDeletionSuccess = () => {
@@ -123,13 +128,7 @@ const EditPage: React.FC = () => {
               name="lastName"
               control={control}
               render={({ field }) => (
-                <TextField
-                  name="lastName"
-                  {...field}
-                  type="text"
-                  fullWidth
-                  error={errors.lastName !== undefined}
-                />
+                <TextField {...field} type="text" fullWidth error={errors.lastName !== undefined} />
               )}
             />
             <FormHelperText error>{errors.lastName?.message}</FormHelperText>
@@ -141,7 +140,6 @@ const EditPage: React.FC = () => {
               control={control}
               render={({ field }) => (
                 <TextField
-                  name="firstName"
                   {...field}
                   type="text"
                   fullWidth
@@ -159,13 +157,7 @@ const EditPage: React.FC = () => {
               name="userName"
               control={control}
               render={({ field }) => (
-                <TextField
-                  name="userName"
-                  {...field}
-                  type="text"
-                  fullWidth
-                  error={errors.userName !== undefined}
-                />
+                <TextField {...field} type="text" fullWidth error={errors.userName !== undefined} />
               )}
             />
             <FormHelperText error>{errors.userName?.message}</FormHelperText>
@@ -176,13 +168,7 @@ const EditPage: React.FC = () => {
               name="email"
               control={control}
               render={({ field }) => (
-                <TextField
-                  name="email"
-                  {...field}
-                  type="text"
-                  fullWidth
-                  error={errors.email !== undefined}
-                />
+                <TextField {...field} type="text" fullWidth error={errors.email !== undefined} />
               )}
             />
             <FormHelperText error>{errors.email?.message}</FormHelperText>
@@ -196,7 +182,6 @@ const EditPage: React.FC = () => {
               control={control}
               render={({ field }) => (
                 <TextField
-                  name="password"
                   {...field}
                   type="password"
                   placeholder={t('hidden_for_security')}
@@ -216,7 +201,6 @@ const EditPage: React.FC = () => {
               control={control}
               render={({ field }) => (
                 <TextField
-                  name="apiKey"
                   {...field}
                   type="text"
                   placeholder={
@@ -249,7 +233,7 @@ const EditPage: React.FC = () => {
               name="roleId"
               control={control}
               render={({ field }) => (
-                <Select name="roleId" {...field} fullWidth>
+                <Select {...field} fullWidth>
                   {roles &&
                     roles.map((role) => (
                       <MenuItem value={role.id} key={role.id}>
@@ -267,7 +251,6 @@ const EditPage: React.FC = () => {
               control={control}
               render={({ field }) => (
                 <FormControlLabel
-                  name="isActive"
                   {...field}
                   label={t('is_active')}
                   control={<Checkbox checked={field.value} />}
@@ -282,4 +265,4 @@ const EditPage: React.FC = () => {
   );
 };
 
-export default ComposeWrapper({ context: UserContextProvider })(EditPage);
+export const EditUserPage = ComposeWrapper({ context: UserContextProvider })(EditUserPageImpl);

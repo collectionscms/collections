@@ -1,10 +1,10 @@
 import { Button, Stack } from '@mui/material';
-import Grid from '@mui/material/Unstable_Grid2/Grid2';
+import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import RouterLink from '../../components/elements/Link';
+import { RouterLink } from '../../components/elements/Link/index.js';
 
-const NotFound: React.FC = () => {
+export const NotFound: React.FC = () => {
   const { t } = useTranslation();
 
   return (
@@ -24,5 +24,3 @@ const NotFound: React.FC = () => {
     </Grid>
   );
 };
-
-export default NotFound;

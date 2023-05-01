@@ -1,17 +1,20 @@
 import React, { createContext, useContext, useMemo } from 'react';
-import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
-import api from '../../../utilities/api';
-import { ResetPasswordContext } from './types';
+import useSWRMutation from 'swr/mutation';
+import { api } from '../../../utilities/api.js';
+import { ResetPasswordContext } from './types.js';
 
 const Context = createContext({} as ResetPasswordContext);
 
 export const ResetPasswordContextProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const resetPassword = (): SWRMutationResponse =>
-    useSWRMutation('/users/reset-password', async (url: string, { arg }: { arg: string }) => {
-      return api.post<{ message: string }>(url, arg).then((res) => res.data.message);
-    });
+  const resetPassword = () =>
+    useSWRMutation(
+      '/users/reset-password',
+      async (url: string, { arg }: { arg: Record<string, any> }) => {
+        return api.post<{ message: string }>(url, arg).then((res) => res.data.message);
+      }
+    );
 
   const value = useMemo(
     () => ({

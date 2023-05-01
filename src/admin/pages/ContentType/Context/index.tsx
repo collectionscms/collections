@@ -1,20 +1,18 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWR, { SWRConfiguration, SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
-import { Collection, Field } from '../../../../shared/types';
-import api from '../../../utilities/api';
-import { CollectionContext } from './types';
+import { Collection, Field } from '../../../../config/types.js';
+import { api } from '../../../utilities/api.js';
+import { CollectionContext } from './types.js';
 
 const Context = createContext({} as CollectionContext);
 
 export const CollectionContextProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const getCollection = (id: string, config?: SWRConfiguration): SWRMutationResponse =>
-    useSWRMutation(
-      `/collections/${id}`,
-      (url) => api.get<{ collection: Collection }>(url).then((res) => res.data.collection),
-      config
+  const getCollection = (id: string): SWRMutationResponse =>
+    useSWRMutation(`/collections/${id}`, (url) =>
+      api.get<{ collection: Collection }>(url).then((res) => res.data.collection)
     );
 
   const getCollections = (): SWRResponse =>
@@ -22,31 +20,31 @@ export const CollectionContextProvider: React.FC<{ children: React.ReactNode }> 
       api.get<{ collections: Collection[] }>(url).then((res) => res.data.collections)
     );
 
-  const createCollection: SWRMutationResponse = useSWRMutation(
+  const createCollection = useSWRMutation(
     '/collections',
     async (url: string, { arg }: { arg: Record<string, any> }) => {
       return api.post<{ collection: Collection }>(url, arg).then((res) => res.data.collection);
     }
   );
 
-  const updateCollection = (id: string): SWRMutationResponse =>
+  const updateCollection = (id: string) =>
     useSWRMutation(
       `/collections/${id}`,
       async (url: string, { arg }: { arg: Record<string, any> }) => {
-        return api.patch<{ collection: Collection }>(url, arg).then((res) => res.data);
+        return api.patch(url, arg).then((res) => res.data);
       }
     );
 
-  const getFields = (slug: string, config?: SWRConfiguration): SWRResponse =>
+  const getFields = (slug: string | null, config?: SWRConfiguration): SWRResponse =>
     useSWR(
-      () => `/collections/${slug}/fields`,
+      () => (slug ? `/collections/${slug}/fields` : null),
       (url) => api.get<{ fields: Field[] }>(url).then((res) => res.data.fields),
       config
     );
 
-  const updateFields = (): SWRMutationResponse =>
+  const updateFields = () =>
     useSWRMutation(`/fields`, async (url: string, { arg }: { arg: Record<string, any> }) => {
-      return api.patch<{ fields: Field[] }>(url, arg).then((res) => res.data);
+      return api.patch(url, arg).then((res) => res.data);
     });
 
   const value = useMemo(

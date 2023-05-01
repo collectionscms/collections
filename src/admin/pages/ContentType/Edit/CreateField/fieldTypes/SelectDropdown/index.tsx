@@ -16,20 +16,20 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import Grid from '@mui/material/Unstable_Grid2/Grid2';
+import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import React, { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Choice } from 'shared/types';
-import logger from '../../../../../../../utilities/logger';
-import { shallowEqualObject } from '../../../../../../../utilities/shallowEqualObject';
+import { Choice } from '../../../../../../../config/types.js';
+import { logger } from '../../../../../../../utilities/logger.js';
+import { shallowEqualObject } from '../../../../../../../utilities/shallowEqualObject.js';
 import {
   FormValues,
   createSelectDropdown as schema,
-} from '../../../../../../fields/schemas/collectionFields/selectDropdown/createSelectDropdown';
-import { useField } from '../../Context';
-import { Props } from '../types';
-import { CreateChoice } from '../CreateChoice';
+} from '../../../../../../fields/schemas/collectionFields/selectDropdown/createSelectDropdown.js';
+import { useField } from '../../Context/index.js';
+import { CreateChoice } from '../CreateChoice/index.js';
+import { Props } from '../types.js';
 
 export const SelectDropdownType: React.FC<Props> = (props) => {
   const { slug, expanded, handleChange, onEditing, onSuccess, onChangeParentViewInvisible } = props;
@@ -51,10 +51,10 @@ export const SelectDropdownType: React.FC<Props> = (props) => {
 
   useEffect(() => {
     watch((value) => {
-      const { ...values } = defaultValues;
+      const values: Partial<{ choices: unknown[] }> = { ...defaultValues };
       delete values.choices;
       const isEqualed = shallowEqualObject(values, value);
-      onEditing(!isEqualed || value.choices.length > 0);
+      onEditing(!isEqualed || (value.choices || []).length > 0);
     });
   }, [watch]);
 
@@ -65,7 +65,7 @@ export const SelectDropdownType: React.FC<Props> = (props) => {
 
   const onToggleCreateChoice = (state: boolean) => {
     setState(state);
-    onChangeParentViewInvisible(state);
+    onChangeParentViewInvisible?.(state);
   };
 
   const onCreateChoiceSuccessfully = (choice: Choice) => {
@@ -86,7 +86,7 @@ export const SelectDropdownType: React.FC<Props> = (props) => {
         options: { choices: form.choices },
       });
       reset();
-      onSuccess(field);
+      onSuccess(field!);
     } catch (e) {
       logger.error(e);
     }

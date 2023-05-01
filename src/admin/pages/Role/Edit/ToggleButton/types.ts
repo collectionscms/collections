@@ -1,4 +1,4 @@
-import { Permission, PermissionsAction } from '../../../../../shared/types';
+import { Permission, PermissionsAction } from '../../../../../config/types.js';
 
 export type Props = {
   roleId: string;

@@ -1,4 +1,4 @@
-const ListItemIcon = () => {
+export const ListItemIcon = () => {
   return {
     MuiListItemIcon: {
       defaultProps: {
@@ -9,5 +9,3 @@ const ListItemIcon = () => {
     },
   };
 };
-
-export default ListItemIcon;

@@ -1,25 +1,36 @@
-import React, { lazy } from 'react';
+import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { settingsGroupNavItems } from '../../../utilities/groupNavItems';
-import Loader from '../../elements/Loader';
-import MainLayout from '../../layouts/Main';
-import { useAuth } from '../../utilities/Auth';
-import { DocumentInfoProvider } from '../../utilities/DocumentInfo';
+import { settingsGroupNavItems } from '../../../utilities/groupNavItems.js';
+import lazy from '../../../utilities/lazy.js';
+import { Loader } from '../../elements/Loader/index.js';
+import { MainLayout } from '../../layouts/Main/index.js';
+import { useAuth } from '../../utilities/Auth/index.js';
+import { DocumentInfoProvider } from '../../utilities/DocumentInfo/index.js';
 
-const Project = Loader(lazy(() => import('../../../pages/Project')));
-const Role = Loader(lazy(() => import('../../../pages/Role')));
-const CreateRole = Loader(lazy(() => import('../../../pages/Role/Create')));
-const EditRole = Loader(lazy(() => import('../../../pages/Role/Edit')));
-const ContentType = Loader(lazy(() => import('../../../pages/ContentType')));
-const CreateContentType = Loader(lazy(() => import('../../../pages/ContentType/Create')));
-const EditContentType = Loader(lazy(() => import('../../../pages/ContentType/Edit')));
-const User = Loader(lazy(() => import('../../../pages/User')));
-const CreateUser = Loader(lazy(() => import('../../../pages/User/Create')));
-const EditUser = Loader(lazy(() => import('../../../pages/User/Edit')));
-const NotFound = Loader(lazy(() => import('../../../pages/NotFound')));
+const Project = Loader(lazy(() => import('../../../pages/Project/index.js'), 'Project'));
+const Role = Loader(lazy(() => import('../../../pages/Role/index.js'), 'RolePage'));
+const CreateRole = Loader(
+  lazy(() => import('../../../pages/Role/Create/index.js'), 'CreateRolePage')
+);
+const EditRole = Loader(lazy(() => import('../../../pages/Role/Edit/index.js'), 'EditRolePage'));
+const ContentType = Loader(
+  lazy(() => import('../../../pages/ContentType/index.js'), 'ContentTypePage')
+);
+const CreateContentType = Loader(
+  lazy(() => import('../../../pages/ContentType/Create/index.js'), 'CreateContentTypePage')
+);
+const EditContentType = Loader(
+  lazy(() => import('../../../pages/ContentType/Edit/index.js'), 'EditContentTypePage')
+);
+const User = Loader(lazy(() => import('../../../pages/User/index.js'), 'UserPage'));
+const CreateUser = Loader(
+  lazy(() => import('../../../pages/User/Create/index.js'), 'CreateUserPage')
+);
+const EditUser = Loader(lazy(() => import('../../../pages/User/Edit/index.js'), 'EditUserPage'));
+const NotFound = Loader(lazy(() => import('../../../pages/NotFound/index.js'), 'NotFound'));
 const group = settingsGroupNavItems();
 
-const SettingRoutes = () => {
+export const SettingRoutes = () => {
   const { user } = useAuth();
 
   if (!user) {
@@ -142,5 +153,3 @@ const SettingRoutes = () => {
     ],
   };
 };
-
-export default SettingRoutes;

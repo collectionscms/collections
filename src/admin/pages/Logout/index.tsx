@@ -1,10 +1,10 @@
 import { Button, Stack } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import RouterLink from '../../components/elements/Link';
-import { useAuth } from '../../components/utilities/Auth';
+import { RouterLink } from '../../components/elements/Link/index.js';
+import { useAuth } from '../../components/utilities/Auth/index.js';
 
-const LogoutPage: React.FC = () => {
+export const Logout: React.FC = () => {
   const { t } = useTranslation();
   const { logout } = useAuth();
 
@@ -23,5 +23,3 @@ const LogoutPage: React.FC = () => {
     </>
   );
 };
-
-export default LogoutPage;

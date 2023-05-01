@@ -3,17 +3,17 @@ import { Box, Button, FormHelperText, InputLabel, Stack, TextField } from '@mui/
 import { t } from 'i18next';
 import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import logger from '../../../utilities/logger';
-import RouterLink from '../../components/elements/Link';
-import { useAuth } from '../../components/utilities/Auth';
-import ComposeWrapper from '../../components/utilities/ComposeWrapper';
+import { logger } from '../../../utilities/logger.js';
+import { RouterLink } from '../../components/elements/Link/index.js';
+import { useAuth } from '../../components/utilities/Auth/index.js';
+import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.js';
 import {
-  forgotPasswordSchema,
   FormValues,
-} from '../../fields/schemas/authentications/forgotPassword';
-import { ForgotPasswordContextProvider, useForgotPassword } from './Context';
+  forgotPasswordSchema,
+} from '../../fields/schemas/authentications/forgotPassword.js';
+import { ForgotPasswordContextProvider, useForgotPassword } from './Context/index.js';
 
-const ForgotPasswordPage: React.FC = () => {
+const ForgotPasswordImpl: React.FC = () => {
   const { user } = useAuth();
   const { forgotPassword } = useForgotPassword();
   const { data: message, trigger, isMutating } = forgotPassword();
@@ -74,7 +74,7 @@ const ForgotPasswordPage: React.FC = () => {
             name="email"
             control={control}
             render={({ field }) => (
-              <TextField name="email" {...field} type="text" error={errors.email !== undefined} />
+              <TextField {...field} type="text" error={errors.email !== undefined} />
             )}
           />
           <FormHelperText error>{errors.email?.message}</FormHelperText>
@@ -90,4 +90,6 @@ const ForgotPasswordPage: React.FC = () => {
   );
 };
 
-export default ComposeWrapper({ context: ForgotPasswordContextProvider })(ForgotPasswordPage);
+export const ForgotPassword = ComposeWrapper({ context: ForgotPasswordContextProvider })(
+  ForgotPasswordImpl
+);
