@@ -25,6 +25,7 @@ dist
 
 # db
 data.db
+test.db
 
 # Coverage
 coverage
