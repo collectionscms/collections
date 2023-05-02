@@ -1,21 +1,21 @@
 import { Button, Stack } from '@mui/material';
-import Grid from '@mui/material/Unstable_Grid2';
+import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { useSnackbar } from 'notistack';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Field } from 'shared/types';
-import logger from '../../../../utilities/logger';
-import DeleteHeaderButton from '../../../components/elements/DeleteHeaderButton';
-import RenderFields from '../../../components/forms/RenderFields';
-import { useAuth } from '../../../components/utilities/Auth';
-import ComposeWrapper from '../../../components/utilities/ComposeWrapper';
-import ApiPreview from '../ApiPreview';
-import { ContentContextProvider, useContent } from '../Context';
-import { Props } from './types';
+import { Field } from '../../../../config/types.js';
+import { logger } from '../../../../utilities/logger.js';
+import { DeleteHeaderButton } from '../../../components/elements/DeleteHeaderButton/index.js';
+import { RenderFields } from '../../../components/forms/RenderFields/index.js';
+import { useAuth } from '../../../components/utilities/Auth/index.js';
+import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
+import { ApiPreview } from '../ApiPreview/index.js';
+import { ContentContextProvider, useContent } from '../Context/index.js';
+import { Props } from './types.js';
 
-const EditPage: React.FC<Props> = ({ collection }) => {
+const EditCollectionPageImpl: React.FC<Props> = ({ collection }) => {
   const { id } = useParams();
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
@@ -23,7 +23,10 @@ const EditPage: React.FC<Props> = ({ collection }) => {
   const navigate = useNavigate();
   const { getContent, getFields, createContent, updateContent } = useContent();
   const { data: metaFields } = getFields(collection.collection, { suspense: true });
-  const { data: content, trigger: getContentTrigger } = getContent(collection.collection, id);
+  const { data: content, trigger: getContentTrigger } = getContent(
+    collection.collection,
+    id || null
+  );
   const { trigger: createTrigger, isMutating: isCreateMutating } = createContent(
     collection.collection
   );
@@ -76,7 +79,7 @@ const EditPage: React.FC<Props> = ({ collection }) => {
     navigate(`/admin/collections/${collection.collection}`);
   };
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: Record<string, any>) => {
     try {
       if (id) {
         await updateTrigger(data);
@@ -154,4 +157,6 @@ const EditPage: React.FC<Props> = ({ collection }) => {
   );
 };
 
-export default ComposeWrapper({ context: ContentContextProvider })(EditPage);
+export const EditCollectionPage = ComposeWrapper({ context: ContentContextProvider })(
+  EditCollectionPageImpl
+);

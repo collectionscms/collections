@@ -1,16 +1,16 @@
 import { CheckOutlined, ClearOutlined } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
 import React, { useState } from 'react';
-import { PermissionsAction } from '../../../../../shared/types';
-import EditMenu from '../Menu';
-import { Props } from './types';
+import { PermissionsAction } from '../../../../../config/types.js';
+import { EditRoleMenu } from '../Menu/index.js';
+import { Props } from './types.js';
 
-const PermissionToggleButton: React.FC<Props> = (props) => {
+export const PermissionToggleButton: React.FC<Props> = (props) => {
   const { roleId, permissions, collection, action, onSuccess } = props;
-  const [menu, setMenu] = useState(null);
-  const [selectedPermissionId, setSelectedPermissionId] = useState(null);
-  const [selectedCollection, setSelectedCollection] = useState(null);
-  const [selectedAction, setSelectedAction] = useState(null);
+  const [menu, setMenu] = useState<EventTarget | null>(null);
+  const [selectedPermissionId, setSelectedPermissionId] = useState<number | null>(null);
+  const [selectedCollection, setSelectedCollection] = useState<string | null>(null);
+  const [selectedAction, setSelectedAction] = useState<PermissionsAction | null>(null);
 
   const openMenu = (
     currentTarget: EventTarget,
@@ -27,7 +27,7 @@ const PermissionToggleButton: React.FC<Props> = (props) => {
 
   const handleSuccess = () => {
     closeMenu();
-    onSuccess(selectedPermissionId);
+    onSuccess(selectedPermissionId!);
   };
 
   const permission = permissions.filter(
@@ -36,11 +36,11 @@ const PermissionToggleButton: React.FC<Props> = (props) => {
 
   return (
     <>
-      <EditMenu
+      <EditRoleMenu
         roleId={roleId}
-        permissionId={selectedPermissionId}
-        collection={selectedCollection}
-        action={selectedAction}
+        permissionId={selectedPermissionId?.toString() || null}
+        collection={selectedCollection!}
+        action={selectedAction!}
         menu={menu}
         onSuccess={() => handleSuccess()}
         onClose={() => closeMenu()}
@@ -65,5 +65,3 @@ const PermissionToggleButton: React.FC<Props> = (props) => {
     </>
   );
 };
-
-export default PermissionToggleButton;

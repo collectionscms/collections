@@ -1,11 +1,14 @@
 import { camelCase } from 'change-case';
 import express, { Request, Response } from 'express';
 import { Knex } from 'knex';
-import { Field } from '../../shared/types';
-import asyncHandler from '../middleware/asyncHandler';
-import permissionsHandler, { collectionPermissionsHandler } from '../middleware/permissionsHandler';
-import CollectionsRepository from '../repositories/collections';
-import FieldsRepository from '../repositories/fields';
+import { Field } from '../../config/types.js';
+import { asyncHandler } from '../middleware/asyncHandler.js';
+import {
+  collectionPermissionsHandler,
+  permissionsHandler,
+} from '../middleware/permissionsHandler.js';
+import { CollectionsRepository } from '../repositories/collections.js';
+import { FieldsRepository } from '../repositories/fields.js';
 
 const app = express();
 
@@ -120,8 +123,8 @@ const addColumnToTable = (field: Field, table: Knex.CreateTableBuilder) => {
       column = table.string(field.field, 255).defaultTo('');
       break;
     case 'inputMultiline':
-    case 'inputRichTextHtml':
-    case 'inputRichTextMd':
+      // case 'inputRichTextHtml':
+      // case 'inputRichTextMd':
       column = table.text(field.field);
       break;
     case 'boolean': {
@@ -139,4 +142,4 @@ const addColumnToTable = (field: Field, table: Knex.CreateTableBuilder) => {
   return column;
 };
 
-export default app;
+export const fields = app;

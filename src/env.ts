@@ -1,5 +1,11 @@
+import 'dotenv/config';
+import path from 'path';
 import process from 'process';
+import { fileURLToPath } from 'url';
 import { v4 as uuidv4 } from 'uuid';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 /* eslint-disable max-len */
 export const defaults: Record<string, any> = {
@@ -81,7 +87,7 @@ export const defaults: Record<string, any> = {
   // /////////////////////////////////////
 
   // "fatal", "error", "warn", "info", "debug", "trace", "silent"
-  LOG_LEVEL: 'info',
+  PUBLIC_LOG_LEVEL: 'info',
 
   // /////////////////////////////////////
   // Email
@@ -92,13 +98,19 @@ export const defaults: Record<string, any> = {
   EMAIL_SENDGRID_API_KEY: '***',
 };
 
-let env: Record<string, any> = {
+export let env: Record<string, any> = {
   ...defaults,
   ...process.env,
+  ROOT_DIR: __dirname,
 };
 
-export default env;
+export const publicEnv = Object.entries(env).reduce((values, [key, val]) => {
+  if (key.indexOf('PUBLIC_') === 0) {
+    return {
+      ...values,
+      [key]: `${val}`,
+    };
+  }
 
-export const environment = {
-  rootDir: __dirname,
-};
+  return values;
+}, {});

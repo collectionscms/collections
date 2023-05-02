@@ -1,14 +1,13 @@
 import { Box, Button, Drawer, Paper, Stack, TextField, useTheme } from '@mui/material';
-import Grid from '@mui/material/Unstable_Grid2/Grid2';
+import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import env from '../../../../env';
-import { useAuth } from '../../../components/utilities/Auth';
-import ComposeWrapper from '../../../components/utilities/ComposeWrapper';
-import { ContentContextProvider, useContent } from '../Context';
-import { Props } from './types';
+import { useAuth } from '../../../components/utilities/Auth/index.js';
+import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
+import { ContentContextProvider, useContent } from '../Context/index.js';
+import { Props } from './types.js';
 
-const ApiPreview: React.FC<Props> = ({ slug, singleton }) => {
+const ApiPreviewImpl: React.FC<Props> = ({ slug, singleton }) => {
   const { t } = useTranslation();
   const theme = useTheme();
   const { user } = useAuth();
@@ -16,7 +15,8 @@ const ApiPreview: React.FC<Props> = ({ slug, singleton }) => {
   const { getPreviewContents } = useContent();
   const { data: contents, trigger, isMutating } = getPreviewContents(slug);
 
-  const url = `${env.SERVER_URL}/api/collections/${slug}/contents`;
+  // TODO Make host an environment variable.
+  const url = `http://localhost:4000/api/collections/${slug}/contents`;
 
   const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
     if (
@@ -33,6 +33,8 @@ const ApiPreview: React.FC<Props> = ({ slug, singleton }) => {
   const onFetch = () => {
     trigger();
   };
+
+  if (!user) return <></>;
 
   return (
     <>
@@ -79,4 +81,4 @@ const ApiPreview: React.FC<Props> = ({ slug, singleton }) => {
   );
 };
 
-export default ComposeWrapper({ context: ContentContextProvider })(ApiPreview);
+export const ApiPreview = ComposeWrapper({ context: ContentContextProvider })(ApiPreviewImpl);

@@ -1,21 +1,21 @@
 import { AddOutlined } from '@mui/icons-material';
 import { Button, Stack } from '@mui/material';
-import Grid from '@mui/material/Unstable_Grid2';
+import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import RouterLink from '../../../components/elements/Link';
-import Table from '../../../components/elements/Table';
-import Cell from '../../../components/elements/Table/Cell';
-import { Column } from '../../../components/elements/Table/types';
-import { useAuth } from '../../../components/utilities/Auth';
-import ComposeWrapper from '../../../components/utilities/ComposeWrapper';
-import buildColumns from '../../../utilities/buildColumns';
-import ApiPreview from '../ApiPreview';
-import { ContentContextProvider, useContent } from '../Context';
-import buildColumnFields from './buildColumnFields';
-import { Props } from './types';
+import { RouterLink } from '../../../components/elements/Link/index.js';
+import { Cell } from '../../../components/elements/Table/Cell/index.js';
+import { Table } from '../../../components/elements/Table/index.js';
+import { Column } from '../../../components/elements/Table/types.js';
+import { useAuth } from '../../../components/utilities/Auth/index.js';
+import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
+import { buildColumns } from '../../../utilities/buildColumns.js';
+import { ApiPreview } from '../ApiPreview/index.js';
+import { ContentContextProvider, useContent } from '../Context/index.js';
+import { buildColumnFields } from './buildColumnFields.js';
+import { Props } from './types.js';
 
-const DefaultListPage: React.FC<Props> = ({ collection }) => {
+const DefaultListPageImpl: React.FC<Props> = ({ collection }) => {
   const [columns, setColumns] = useState<Column[]>([]);
   const { hasPermission } = useAuth();
   const { t } = useTranslation();
@@ -66,4 +66,6 @@ const DefaultListPage: React.FC<Props> = ({ collection }) => {
   );
 };
 
-export default ComposeWrapper({ context: ContentContextProvider })(DefaultListPage);
+export const DefaultListPage = ComposeWrapper({ context: ContentContextProvider })(
+  DefaultListPageImpl
+);

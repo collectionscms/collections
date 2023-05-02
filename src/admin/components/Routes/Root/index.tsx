@@ -1,15 +1,16 @@
-import React, { lazy } from 'react';
+import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { profileNavItems } from '../../../utilities/groupNavItems';
-import Loader from '../../elements/Loader';
-import MainLayout from '../../layouts/Main';
-import { useAuth } from '../../utilities/Auth';
-import { DocumentInfoProvider } from '../../utilities/DocumentInfo';
+import { profileNavItems } from '../../../utilities/groupNavItems.js';
+import lazy from '../../../utilities/lazy.js';
+import { Loader } from '../../elements/Loader/index.js';
+import { MainLayout } from '../../layouts/Main/index.js';
+import { useAuth } from '../../utilities/Auth/index.js';
+import { DocumentInfoProvider } from '../../utilities/DocumentInfo/index.js';
 
-const Profile = Loader(lazy(() => import('../../../pages/Profile')));
+const Profile = Loader(lazy(() => import('../../../pages/Profile/index.js'), 'Profile'));
 const group = profileNavItems();
 
-const RootRoutes = () => {
+export const RootRoutes = () => {
   const { user } = useAuth();
 
   if (!user) {
@@ -38,5 +39,3 @@ const RootRoutes = () => {
     ],
   };
 };
-
-export default RootRoutes;

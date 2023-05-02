@@ -1,5 +1,5 @@
 import { ObjectSchema } from 'yup';
-import yup from '../../../yup';
+import { yup } from '../../../yup.js';
 
 export type FormValues = {
   label: string;

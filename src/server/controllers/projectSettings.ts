@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
-import asyncHandler from '../middleware/asyncHandler';
-import permissionsHandler from '../middleware/permissionsHandler';
-import ProjectSettingsRepository from '../repositories/projectSettings';
+import { asyncHandler } from '../middleware/asyncHandler.js';
+import { permissionsHandler } from '../middleware/permissionsHandler.js';
+import { ProjectSettingsRepository } from '../repositories/projectSettings.js';
 
 const app = express();
 
@@ -27,4 +27,4 @@ app.patch(
   })
 );
 
-export default app;
+export const projectSettings = app;

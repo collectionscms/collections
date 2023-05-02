@@ -9,14 +9,14 @@ import {
   SelectChangeEvent,
   Stack,
 } from '@mui/material';
-import Grid from '@mui/material/Unstable_Grid2';
+import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { useColorMode } from '../../components/utilities/ColorMode';
-import { Mode } from '../../components/utilities/ColorMode/types';
-import { useDocumentInfo } from '../../components/utilities/DocumentInfo';
+import { useColorMode } from '../../components/utilities/ColorMode/index.js';
+import { Mode } from '../../components/utilities/ColorMode/types.js';
+import { useDocumentInfo } from '../../components/utilities/DocumentInfo/index.js';
 
-const MePage: React.FC = () => {
+export const Profile: React.FC = () => {
   const { localizedLabel } = useDocumentInfo();
   const { t, i18n } = useTranslation();
   const { mode, setMode, autoMode } = useColorMode();
@@ -60,5 +60,3 @@ const MePage: React.FC = () => {
     </Stack>
   );
 };
-
-export default MePage;

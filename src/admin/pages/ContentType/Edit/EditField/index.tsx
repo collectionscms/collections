@@ -2,18 +2,18 @@ import { CloseOutlined } from '@mui/icons-material';
 import { Box, Drawer, IconButton, Stack, Typography, useTheme } from '@mui/material';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Field } from '../../../../../shared/types';
-import { UnsavedDialog } from '../../../../components/elements/UnsavedDialog';
-import ComposeWrapper from '../../../../components/utilities/ComposeWrapper';
-import { FieldContextProvider } from './Context';
-import { InputType } from './fieldTypes/Input';
-import { InputMultilineType } from './fieldTypes/InputMultiline';
-import { SelectDropdownType } from './fieldTypes/SelectDropdown';
-import { Props } from './types';
-import { BooleanType } from './fieldTypes/Boolean';
-import { DateTimeType } from './fieldTypes/DateTime';
+import { Field } from '../../../../../config/types.js';
+import { UnsavedDialog } from '../../../../components/elements/UnsavedDialog/index.js';
+import { ComposeWrapper } from '../../../../components/utilities/ComposeWrapper/index.js';
+import { FieldContextProvider } from './Context/index.js';
+import { BooleanType } from './fieldTypes/Boolean/index.js';
+import { DateTimeType } from './fieldTypes/DateTime/index.js';
+import { InputType } from './fieldTypes/Input/index.js';
+import { InputMultilineType } from './fieldTypes/InputMultiline/index.js';
+import { SelectDropdownType } from './fieldTypes/SelectDropdown/index.js';
+import { Props } from './types.js';
 
-const EditField: React.FC<Props> = ({ field, open, onSuccess, onClose }) => {
+const EditFieldImpl: React.FC<Props> = ({ field, open, onSuccess, onClose }) => {
   const [openUnsavedDialog, setOpenUnsavedDialog] = useState(false);
   const [drawerVisibility, setDrawerVisibility] = useState(false);
   const [editing, setEditing] = useState(false);
@@ -117,4 +117,4 @@ const EditField: React.FC<Props> = ({ field, open, onSuccess, onClose }) => {
   );
 };
 
-export default ComposeWrapper({ context: FieldContextProvider })(EditField);
+export const EditField = ComposeWrapper({ context: FieldContextProvider })(EditFieldImpl);

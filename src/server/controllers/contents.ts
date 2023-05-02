@@ -1,9 +1,9 @@
 import express, { Request, Response } from 'express';
-import { RecordNotFoundException } from '../../shared/exceptions/database/recordNotFound';
-import asyncHandler from '../middleware/asyncHandler';
-import { collectionPermissionsHandler } from '../middleware/permissionsHandler';
-import CollectionsRepository from '../repositories/collections';
-import ContentsRepository from '../repositories/contents';
+import { RecordNotFoundException } from '../../exceptions/database/recordNotFound.js';
+import { asyncHandler } from '../middleware/asyncHandler.js';
+import { collectionPermissionsHandler } from '../middleware/permissionsHandler.js';
+import { CollectionsRepository } from '../repositories/collections.js';
+import { ContentsRepository } from '../repositories/contents.js';
 
 const app = express();
 
@@ -108,7 +108,7 @@ async function readCollection(slug: string) {
 async function makeConditions(req: Request, slug: string) {
   if (req.appAccess) return {};
 
-  const conditions = {};
+  const conditions: Record<string, any> = {};
   const collection = await readCollection(slug);
   if (collection.statusField) {
     // For Non-application, only public data can be accessed.
@@ -118,4 +118,4 @@ async function makeConditions(req: Request, slug: string) {
   return conditions;
 }
 
-export default app;
+export const contents = app;

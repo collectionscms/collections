@@ -1,22 +1,23 @@
 import { ObjectSchema } from 'yup';
-import yup from '../../yup';
+import { yup } from '../../yup.js';
 
 export type FormValues = {
   hidden: boolean;
   singleton: boolean;
-  statusField: string;
-  draftValue: string;
-  publishValue: string;
-  archiveValue: string;
+  statusField?: string | null;
+  draftValue?: string | null;
+  publishValue?: string | null;
+  archiveValue?: string | null;
 };
 
 export const updateCollection = (): ObjectSchema<FormValues> => {
   return yup.object().shape({
-    hidden: yup.boolean(),
-    singleton: yup.boolean(),
+    hidden: yup.boolean().required(),
+    singleton: yup.boolean().required(),
     statusField: yup.string(),
     draftValue: yup
       .string()
+      .notRequired()
       .max(60)
       .when('statusField', {
         is: (value: string) => value,
@@ -24,6 +25,7 @@ export const updateCollection = (): ObjectSchema<FormValues> => {
       }),
     publishValue: yup
       .string()
+      .notRequired()
       .max(60)
       .when('statusField', {
         is: (value: string) => value,
@@ -31,6 +33,7 @@ export const updateCollection = (): ObjectSchema<FormValues> => {
       }),
     archiveValue: yup
       .string()
+      .notRequired()
       .max(60)
       .when('statusField', {
         is: (value: string) => value,
@@ -38,5 +41,3 @@ export const updateCollection = (): ObjectSchema<FormValues> => {
       }),
   });
 };
-
-export default updateCollection;

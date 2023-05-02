@@ -7,9 +7,9 @@ import {
 import { Tooltip } from '@mui/material';
 import { t } from 'i18next';
 import React from 'react';
-import { Props } from './types';
+import { Props } from './types.js';
 
-const PermissionHeaderCell: React.FC<Props> = ({ action }) => {
+export const PermissionHeaderCell: React.FC<Props> = ({ action }) => {
   const showTooltip = () => {
     switch (action) {
       case 'create':
@@ -43,5 +43,3 @@ const PermissionHeaderCell: React.FC<Props> = ({ action }) => {
 
   return showTooltip();
 };
-
-export default PermissionHeaderCell;

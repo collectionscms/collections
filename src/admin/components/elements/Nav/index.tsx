@@ -7,14 +7,14 @@ import {
 import { Box, Drawer, IconButton, Link, Tooltip, useMediaQuery, useTheme } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import config from '../../../../shared/features/config';
-import { useAuth } from '../../utilities/Auth';
-import RouterLink from '../Link';
-import Logo from '../Logo';
-import NavGroup from '../NavGroup';
-import NavItem from '../NavItem';
-import Minimal from './minimal';
-import { Props } from './types';
+import { config } from '../../../../config/ui.js';
+import { useAuth } from '../../utilities/Auth/index.js';
+import { RouterLink } from '../Link/index.js';
+import { Logo } from '../Logo/index.js';
+import { NavGroup } from '../NavGroup/index.js';
+import { NavItem } from '../NavItem/index.js';
+import Minimal from './minimal.js';
+import { Props } from './types.js';
 
 const NavHeader = () => {
   return (
@@ -179,7 +179,7 @@ const NavContent: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   );
 };
 
-const Nav: React.FC<Props> = ({ open, group, toggleDrawer }) => {
+export const Nav: React.FC<Props> = ({ open, group, toggleDrawer }) => {
   const theme = useTheme();
   const lgUp = useMediaQuery(theme.breakpoints.up('lg'));
 
@@ -226,5 +226,3 @@ const Nav: React.FC<Props> = ({ open, group, toggleDrawer }) => {
     </Box>
   );
 };
-
-export default Nav;

@@ -1,12 +1,12 @@
 import { TFunction } from 'i18next';
 import { ObjectSchema } from 'yup';
-import yup from '../../../yup';
+import { yup } from '../../../yup.js';
 
 export type FormValues = {
   field: string;
   label: string;
   required: boolean;
-  choices: Record<string, any>[];
+  choices?: Record<string, any>[] | null;
 };
 
 export const createSelectDropdown = (t: TFunction): ObjectSchema<FormValues> => {
@@ -17,7 +17,7 @@ export const createSelectDropdown = (t: TFunction): ObjectSchema<FormValues> => 
       .required()
       .max(60),
     label: yup.string().required().max(60),
-    required: yup.boolean(),
+    required: yup.boolean().required(),
     choices: yup.array(),
   });
 };

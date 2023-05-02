@@ -1,22 +1,13 @@
-import chalk from 'chalk';
 import fs from 'fs-extra';
-import ConsoleOutput from '../utilities/consoleOutputUtil';
-import PathUtil from '../utilities/pathUtil';
+import { pathList } from '../../utilities/pathList.js';
 
-const scriptStart = async () => {
-  const scriptPath = PathUtil.build('main.js');
+export const scriptStart = async () => {
+  const scriptPath = pathList.build('main.js');
   const scriptExists = await fs.pathExists(scriptPath);
 
   if (!scriptExists) {
-    ConsoleOutput.error(
-      `Build has not been found. Try running ${chalk.magentaBright(
-        'npx superfastcms build'
-      )} before.`
-    );
     process.exit(1);
   }
 
-  require(scriptPath);
+  import(scriptPath);
 };
-
-export default scriptStart;

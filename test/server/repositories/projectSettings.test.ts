@@ -1,6 +1,6 @@
 import knex, { Knex } from 'knex';
-import ProjectSettingsRepository from '../../../src/server/repositories/projectSettings';
-import config, { vendors } from '../../config';
+import { ProjectSettingsRepository } from '../../../src/server/repositories/projectSettings.js';
+import { config, vendors } from '../../config.js';
 
 describe('プロジェクト設定', () => {
   const databases = new Map<string, Knex>();

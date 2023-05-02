@@ -1,18 +1,18 @@
-/* eslint-disable import/no-import-module-exports */
 import { SnackbarProvider } from 'notistack';
-import React, { lazy, Suspense } from 'react';
+import React, { Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter as Router } from 'react-router-dom';
-import '../lang/translations/config';
-import Loader from './components/elements/Loader';
-import Routes from './components/routes';
-import { AuthProvider } from './components/utilities/Auth';
-import { ColorModeProvider } from './components/utilities/ColorMode';
-import { ConfigProvider } from './components/utilities/Config';
-import SWRConfigure from './components/utilities/SWRConfigure';
-import { ThemeProvider } from './components/utilities/Theme';
+import '../lang/translations/config.js';
+import { Routes } from './components/Routes/index.js';
+import { Loader } from './components/elements/Loader/index.js';
+import { AuthProvider } from './components/utilities/Auth/index.js';
+import { ColorModeProvider } from './components/utilities/ColorMode/index.js';
+import { ConfigProvider } from './components/utilities/Config/index.js';
+import { SWRConfigure } from './components/utilities/SWRConfigure/index.js';
+import { ThemeProvider } from './components/utilities/Theme/index.js';
+import lazy from './utilities/lazy.js';
 
-const Loading = Loader(lazy(() => import('./components/elements/Loading')));
+const Loading = Loader(lazy(() => import('./components/elements/Loading/index.js'), 'Loading'));
 
 const Index = () => (
   <Suspense fallback={<Loading />}>
@@ -35,10 +35,5 @@ const Index = () => (
 );
 
 const container = document.getElementById('app');
-const root = createRoot(container);
+const root = createRoot(container!);
 root.render(<Index />);
-
-// Needed for Hot Module Replacement
-if (typeof module.hot !== 'undefined') {
-  module.hot.accept();
-}

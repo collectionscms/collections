@@ -1,7 +1,7 @@
-import { Role } from '../../shared/types';
-import { AbstractRepositoryOptions, BaseRepository, BaseTransaction } from './base';
+import { Role } from '../../config/types.js';
+import { AbstractRepositoryOptions, BaseRepository, BaseTransaction } from './base.js';
 
-export default class RolesRepository extends BaseRepository<Role> {
+export class RolesRepository extends BaseRepository<Role> {
   constructor(collection: string = 'superfast_roles', options?: AbstractRepositoryOptions) {
     super(collection, options);
   }

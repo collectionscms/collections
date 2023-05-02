@@ -1,14 +1,14 @@
 import crypto from 'crypto';
 import express, { Request, Response } from 'express';
-import env from '../../env';
-import { RecordNotFoundException } from '../../shared/exceptions/database/recordNotFound';
-import { InvalidCredentialsException } from '../../shared/exceptions/invalidCredentials';
-import { UnprocessableEntityException } from '../../shared/exceptions/unprocessableEntity';
-import asyncHandler from '../middleware/asyncHandler';
-import permissionsHandler from '../middleware/permissionsHandler';
-import UsersRepository from '../repositories/users';
-import MailService from '../services/mail';
-import { oneWayHash } from '../utilities/oneWayHash';
+import { env } from '../../env.js';
+import { RecordNotFoundException } from '../../exceptions/database/recordNotFound.js';
+import { InvalidCredentialsException } from '../../exceptions/invalidCredentials.js';
+import { UnprocessableEntityException } from '../../exceptions/unprocessableEntity.js';
+import { asyncHandler } from '../middleware/asyncHandler.js';
+import { permissionsHandler } from '../middleware/permissionsHandler.js';
+import { UsersRepository } from '../repositories/users.js';
+import { MailService } from '../services/mail.js';
+import { oneWayHash } from '../utilities/oneWayHash.js';
 
 const app = express();
 
@@ -174,4 +174,4 @@ const payload = (user: any) => {
   };
 };
 
-export default app;
+export const users = app;

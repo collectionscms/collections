@@ -1,8 +1,8 @@
-import { Type } from '../../../../admin/components/elements/Table/Cell/types';
-import { ColumnField } from '../../../../admin/components/elements/Table/types';
-import { Field } from '../../../../shared/types';
+import { Type } from '../../../../admin/components/elements/Table/Cell/types.js';
+import { ColumnField } from '../../../../admin/components/elements/Table/types.js';
+import { Field } from '../../../../config/types.js';
 
-const buildColumnFields = (fields: Field[]): ColumnField[] => {
+export const buildColumnFields = (fields: Field[]): ColumnField[] => {
   return fields
     .filter((field) => !field.hidden)
     .map((field) => {
@@ -18,8 +18,8 @@ const toType = (fieldInterface: string): (typeof Type)[keyof typeof Type] => {
   switch (fieldInterface) {
     case 'input':
     case 'inputMultiline':
-    case 'inputRichTextHtml':
-    case 'inputRichTextMd':
+    // case 'inputRichTextHtml':
+    // case 'inputRichTextMd':
     case 'selectDropdown':
       return Type.Text;
     case 'selectDropdownStatus':
@@ -29,7 +29,6 @@ const toType = (fieldInterface: string): (typeof Type)[keyof typeof Type] => {
     case 'dateTime':
       return Type.Date;
     default:
+      return Type.Text;
   }
 };
-
-export default buildColumnFields;

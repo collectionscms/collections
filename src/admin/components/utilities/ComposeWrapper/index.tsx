@@ -8,23 +8,24 @@ type ComposedWrapperProps<T extends {}, CW> = T & {
   [key in keyof CW]?: CW[key] & Partial<{ disable?: boolean }>;
 } & Partial<{ unwrap?: boolean }>;
 
-function omit(obj, ...keys) {
+function omit(obj: any, ...keys: string[][]) {
   const keysToRemove = new Set(keys.flat());
   return Object.fromEntries(Object.entries(obj).filter(([k]) => !keysToRemove.has(k)));
 }
 
-function pick(obj, ...keys) {
-  const ret = {};
+function pick(obj: any, ...keys: string[][]) {
+  const ret: Record<string, any> = {};
   keys.flat().forEach((key) => {
     if (obj[key]) ret[key] = obj[key];
   });
   return ret;
 }
 
-const ComposeWrapper = <CW,>(wrappers: ComposedWrappers<CW>) => {
+export const ComposeWrapper = <CW,>(wrappers: ComposedWrappers<CW>) => {
   return function <T extends object, R>(Component: React.FC<T>) {
+    // eslint-disable-next-line react/display-name
     return forwardRef<R, ComposedWrapperProps<T, CW>>(({ unwrap = false, ...allProps }, ref) => {
-      const keys = Object.keys(wrappers).filter((k) => !allProps[k]?.disable);
+      const keys = Object.keys(wrappers).filter((k) => !allProps[k as keyof CW]?.disable);
       const props = omit(allProps, keys) as T;
       const restProps = pick(allProps, keys);
 
@@ -35,7 +36,7 @@ const ComposeWrapper = <CW,>(wrappers: ComposedWrappers<CW>) => {
       return (
         <>
           {keys.reduceRight((children, currentKey) => {
-            const CurrentWrapper = wrappers[currentKey];
+            const CurrentWrapper = wrappers[currentKey as keyof CW];
             const currentWrapperProps = restProps?.[currentKey] ?? {};
 
             return <CurrentWrapper {...currentWrapperProps}>{children}</CurrentWrapper>;
@@ -45,5 +46,3 @@ const ComposeWrapper = <CW,>(wrappers: ComposedWrappers<CW>) => {
     });
   };
 };
-
-export default ComposeWrapper;

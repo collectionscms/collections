@@ -1,19 +1,20 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, FormHelperText, InputLabel, Stack, TextField } from '@mui/material';
-import Grid from '@mui/material/Unstable_Grid2';
+import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { useSnackbar } from 'notistack';
 import React, { Suspense, useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import Loading from '../../components/elements/Loading';
-import ComposeWrapper from '../../components/utilities/ComposeWrapper';
-import { useDocumentInfo } from '../../components/utilities/DocumentInfo';
-import updateProjectSettingSchema, {
+import { Loading } from '../../components/elements/Loading/index.js';
+import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.js';
+import { useDocumentInfo } from '../../components/utilities/DocumentInfo/index.js';
+import {
   FormValues,
-} from '../../fields/schemas/projectSettings/updateProjectSetting';
-import { ProjectSettingContextProvider, useProjectSetting } from './Context';
+  updateProjectSetting as updateProjectSettingSchema,
+} from '../../fields/schemas/projectSettings/updateProjectSetting.js';
+import { ProjectSettingContextProvider, useProjectSetting } from './Context/index.js';
 
-const ProjectPage: React.FC = () => {
+const ProjectImpl: React.FC = () => {
   const { localizedLabel } = useDocumentInfo();
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
@@ -27,7 +28,7 @@ const ProjectPage: React.FC = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<FormValues>({
-    defaultValues: { name: projectSetting.name },
+    defaultValues: { name: projectSetting?.name },
     resolver: yupResolver(updateProjectSettingSchema()),
   });
 
@@ -63,7 +64,6 @@ const ProjectPage: React.FC = () => {
               control={control}
               render={({ field }) => (
                 <TextField
-                  name="name"
                   {...field}
                   type="text"
                   fullWidth
@@ -80,4 +80,4 @@ const ProjectPage: React.FC = () => {
   );
 };
 
-export default ComposeWrapper({ context: ProjectSettingContextProvider })(ProjectPage);
+export const Project = ComposeWrapper({ context: ProjectSettingContextProvider })(ProjectImpl);

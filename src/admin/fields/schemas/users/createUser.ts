@@ -1,6 +1,6 @@
 import { TFunction } from 'i18next';
 import { ObjectSchema } from 'yup';
-import yup from '../../yup';
+import { yup } from '../../yup.js';
 
 export type FormValues = {
   firstName: string;
@@ -9,7 +9,7 @@ export type FormValues = {
   email: string;
   password: string;
   isActive: boolean;
-  apiKey: string;
+  apiKey?: string | null;
   roleId: string;
 };
 
@@ -31,10 +31,8 @@ export const createUser = (t: TFunction): ObjectSchema<FormValues> => {
       .required()
       .min(8)
       .max(250),
-    apiKey: yup.string().max(250),
-    isActive: yup.boolean(),
+    apiKey: yup.string().notRequired().max(250),
+    isActive: yup.boolean().required(),
     roleId: yup.string().required(),
   });
 };
-
-export default createUser;

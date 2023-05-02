@@ -1,11 +1,11 @@
 import { Box, Toolbar } from '@mui/material';
 import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import Nav from '../../elements/Nav';
-import NavHeader from '../../elements/NavHeader';
-import { Props } from './types';
+import { Nav } from '../../elements/Nav/index.js';
+import { NavHeader } from '../../elements/NavHeader/index.js';
+import { Props } from './types.js';
 
-const MainLayout: React.FC<Props> = ({ group }) => {
+export const MainLayout: React.FC<Props> = ({ group }) => {
   const [open, setOpen] = useState(true);
 
   const toggleDrawer = () => {
@@ -23,5 +23,3 @@ const MainLayout: React.FC<Props> = ({ group }) => {
     </Box>
   );
 };
-
-export default MainLayout;

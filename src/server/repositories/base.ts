@@ -1,5 +1,5 @@
-import { getDatabase } from '../database/connection';
 import type { Knex } from 'knex';
+import { getDatabase } from '../database/connection.js';
 
 export type AbstractRepositoryOptions = {
   knex?: Knex;

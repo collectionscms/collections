@@ -1,8 +1,8 @@
 import cors from 'cors';
 import { RequestHandler } from 'express';
-import env from '../../env';
+import { env } from '../../env.js';
 
-let corsMiddleware: RequestHandler = (req, res, next) => next();
+export let corsMiddleware: RequestHandler = (req, res, next) => next();
 
 corsMiddleware = cors({
   origin: env.CORS_ORIGIN || true,
@@ -12,5 +12,3 @@ corsMiddleware = cors({
   credentials: env.CORS_CREDENTIALS || undefined,
   maxAge: env.CORS_MAX_AGE || undefined,
 });
-
-export default corsMiddleware;

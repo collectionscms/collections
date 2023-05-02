@@ -9,14 +9,14 @@ import {
 } from '@mui/material';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import Cell from './Cell';
-import { Props } from './types';
+import { Cell } from './Cell/index.js';
+import { Props } from './types.js';
 
-const Table: React.FC<Props> = ({ columns, rows }) => {
+export const Table: React.FC<Props> = ({ columns, rows }) => {
   const { t } = useTranslation();
   const key = (row: unknown): String => {
-    const data = row as Record<keyof { id: number }, unknown>;
-    return data ? data.id.toString() : '';
+    const data = row as Record<keyof { id: number }, string>;
+    return data?.id || '';
   };
 
   return rows.length > 0 ? (
@@ -58,5 +58,3 @@ const Table: React.FC<Props> = ({ columns, rows }) => {
     <span>{t('no_contents')}</span>
   );
 };
-
-export default Table;

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const api = axios.create({
+export const api = axios.create({
   baseURL: '/api',
   withCredentials: true,
   headers: {
@@ -15,5 +15,3 @@ export const setAuthorization = (token: string) => {
 export const removeAuthorization = () => {
   delete api.defaults.headers.common.Authorization;
 };
-
-export default api;

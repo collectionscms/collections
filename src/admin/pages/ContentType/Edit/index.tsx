@@ -12,42 +12,45 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import Grid from '@mui/material/Unstable_Grid2';
+import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { useSnackbar } from 'notistack';
 import React, { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Collection, Field } from '../../../../shared/types';
-import logger from '../../../../utilities/logger';
-import DeleteHeaderButton from '../../../components/elements/DeleteHeaderButton';
-import Loading from '../../../components/elements/Loading';
-import ComposeWrapper from '../../../components/utilities/ComposeWrapper';
-import { useDocumentInfo } from '../../../components/utilities/DocumentInfo';
-import updateCollectionSchema, {
+import { Collection, Field } from '../../../../config/types.js';
+import { logger } from '../../../../utilities/logger.js';
+import { DeleteHeaderButton } from '../../../components/elements/DeleteHeaderButton/index.js';
+import { Loading } from '../../../components/elements/Loading/index.js';
+import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
+import { useDocumentInfo } from '../../../components/utilities/DocumentInfo/index.js';
+import {
   FormValues,
-} from '../../../fields/schemas/collections/updateCollection';
-import { CollectionContextProvider, useCollection } from '../Context';
-import CreateField from './CreateField';
-import EditField from './EditField';
-import EditMenu from './Menu';
-import { SortableFieldList } from './SortableFieldList';
+  updateCollection as updateCollectionSchema,
+} from '../../../fields/schemas/collections/updateCollection.js';
+import { CollectionContextProvider, useCollection } from '../Context/index.js';
+import { CreateField } from './CreateField/index.js';
+import { EditField } from './EditField/index.js';
+import { EditMenu } from './Menu/index.js';
+import { SortableFieldList } from './SortableFieldList/index.js';
 
-const EditPage: React.FC = () => {
+const EditContentTypePageImpl: React.FC = () => {
   const [createFieldOpen, setCreateFieldOpen] = useState(false);
   const [editFieldOpen, setEditFieldOpen] = useState(false);
-  const [menu, setMenu] = useState(null);
-  const [selectedField, setSelectedField] = useState<Field>(null);
+  const [menu, setMenu] = useState<EventTarget | null>(null);
+  const [selectedField, setSelectedField] = useState<Field | null>(null);
   const [sortableFields, setSortableFields] = useState<Field[]>([]);
 
   const { id } = useParams();
+  if (!id) throw new Error('id is not defined');
+
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const { localizedLabel } = useDocumentInfo();
   const { getCollection, updateCollection, getFields, updateFields } = useCollection();
   const { data: meta, trigger: getCollectionTrigger } = getCollection(id);
-  const { data: fields, mutate } = getFields(meta?.collection);
+  const { data: fields = [], mutate } = getFields(meta?.collection || null);
   const { trigger, isMutating } = updateCollection(id);
   const { trigger: updateFieldsTrigger } = updateFields();
   const {
@@ -62,7 +65,9 @@ const EditPage: React.FC = () => {
   useEffect(() => {
     const getCollection = async () => {
       const collection = await getCollectionTrigger();
-      setDefaultValue(collection);
+      if (collection) {
+        setDefaultValue(collection);
+      }
     };
 
     getCollection();
@@ -146,7 +151,7 @@ const EditPage: React.FC = () => {
   };
 
   const handleDeleteFieldSuccess = () => {
-    mutate(fields.filter((field) => field.id !== selectedField.id));
+    mutate(fields.filter((field) => field.id !== selectedField?.id));
     onCloseMenu();
   };
 
@@ -270,7 +275,6 @@ const EditPage: React.FC = () => {
               defaultValue={''}
               render={({ field }) => (
                 <Select
-                  name="statusField"
                   {...field}
                   fullWidth
                   defaultValue={''}
@@ -347,4 +351,6 @@ const EditPage: React.FC = () => {
   );
 };
 
-export default ComposeWrapper({ context: CollectionContextProvider })(EditPage);
+export const EditContentTypePage = ComposeWrapper({ context: CollectionContextProvider })(
+  EditContentTypePageImpl
+);

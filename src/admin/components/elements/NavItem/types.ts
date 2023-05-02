@@ -1,10 +1,4 @@
-import { SvgIconProps } from '@mui/material';
-
-export type GroupItem = {
-  label: string;
-  href: string;
-  Icon: (props: SvgIconProps) => JSX.Element;
-};
+import { SvgIconComponent } from '@mui/icons-material';
 
 export type Group = {
   label: string;
@@ -13,4 +7,10 @@ export type Group = {
 
 export type Props = {
   item: GroupItem;
+};
+
+export type GroupItem = {
+  label: string;
+  href: string;
+  Icon: SvgIconComponent;
 };

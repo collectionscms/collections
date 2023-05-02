@@ -2,25 +2,19 @@ import { CloseOutlined } from '@mui/icons-material';
 import { Box, Drawer, IconButton, Stack, Typography, useTheme } from '@mui/material';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Field, FieldInterface } from '../../../../../shared/types';
-import { UnsavedDialog } from '../../../../components/elements/UnsavedDialog';
-import ComposeWrapper from '../../../../components/utilities/ComposeWrapper';
-import { FieldContextProvider } from './Context';
-import { BooleanType } from './fieldTypes/Boolean';
-import { DateTimeType } from './fieldTypes/DateTime';
-import { FileType } from './fieldTypes/File';
-import { FileImageType } from './fieldTypes/FileImage';
-import { InputType } from './fieldTypes/Input';
-import { InputMultilineType } from './fieldTypes/InputMultiline';
-import { ListType } from './fieldTypes/List';
-import { ListO2mType } from './fieldTypes/ListO2m';
-import { ListO2oType } from './fieldTypes/ListO2o';
-import { SelectDropdownType } from './fieldTypes/SelectDropdown';
-import { SelectDropdownM2oType } from './fieldTypes/SelectDropdownM2o';
-import { Props } from './types';
+import { Field, FieldInterface } from '../../../../../config/types.js';
+import { UnsavedDialog } from '../../../../components/elements/UnsavedDialog/index.js';
+import { ComposeWrapper } from '../../../../components/utilities/ComposeWrapper/index.js';
+import { FieldContextProvider } from './Context/index.js';
+import { BooleanType } from './fieldTypes/Boolean/index.js';
+import { DateTimeType } from './fieldTypes/DateTime/index.js';
+import { InputType } from './fieldTypes/Input/index.js';
+import { InputMultilineType } from './fieldTypes/InputMultiline/index.js';
+import { SelectDropdownType } from './fieldTypes/SelectDropdown/index.js';
+import { Props } from './types.js';
 
-const CreateField: React.FC<Props> = ({ slug, openState, onSuccess, onClose }) => {
-  const [fieldInterface, setFieldInterface] = useState<FieldInterface>(null);
+const CreateFieldImpl: React.FC<Props> = ({ slug, openState, onSuccess, onClose }) => {
+  const [fieldInterface, setFieldInterface] = useState<FieldInterface | null>(null);
   const [drawerVisibility, setDrawerVisibility] = useState(false);
   const [editing, setEditing] = useState(false);
   const [openUnsavedDialog, setOpenUnsavedDialog] = useState(false);
@@ -134,7 +128,7 @@ const CreateField: React.FC<Props> = ({ slug, openState, onSuccess, onClose }) =
             onEditing={handleEditing}
             onSuccess={handleAdditionSuccess}
           />
-          <FileType
+          {/* <FileType
             slug={slug}
             expanded={fieldInterface === 'file'}
             handleChange={(field) => onSelectedFieldInterface(field)}
@@ -175,11 +169,11 @@ const CreateField: React.FC<Props> = ({ slug, openState, onSuccess, onClose }) =
             handleChange={(field) => onSelectedFieldInterface(field)}
             onEditing={handleEditing}
             onSuccess={handleAdditionSuccess}
-          />
+          /> */}
         </Box>
       </Drawer>
     </Box>
   );
 };
 
-export default ComposeWrapper({ context: FieldContextProvider })(CreateField);
+export const CreateField = ComposeWrapper({ context: FieldContextProvider })(CreateFieldImpl);

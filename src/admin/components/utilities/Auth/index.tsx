@@ -2,11 +2,11 @@ import jwtDecode from 'jwt-decode';
 import React, { createContext, useCallback, useContext, useMemo } from 'react';
 import { useCookies } from 'react-cookie';
 import useSWR from 'swr';
-import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
-import { AuthUser, Permission, PermissionsAction } from '../../../../shared/types';
-import logger from '../../../../utilities/logger';
-import api, { removeAuthorization, setAuthorization } from '../../../utilities/api';
-import { AuthContext } from './types';
+import useSWRMutation from 'swr/mutation';
+import { AuthUser, Permission, PermissionsAction } from '../../../../config/types.js';
+import { logger } from '../../../../utilities/logger.js';
+import { api, removeAuthorization, setAuthorization } from '../../../utilities/api.js';
+import { AuthContext } from './types.js';
 
 const Context = createContext({} as AuthContext);
 
@@ -56,6 +56,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const hasPermission = useCallback(
     (collection: string, action: PermissionsAction) => {
+      if (!user || !permissions) return false;
+
       return (
         user.adminAccess ||
         permissions.some(
@@ -66,7 +68,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     [user]
   );
 
-  const login = (): SWRMutationResponse =>
+  const login = () =>
     useSWRMutation(
       `/authentications/login`,
       async (url: string, { arg }: { arg: Record<string, any> }) => {

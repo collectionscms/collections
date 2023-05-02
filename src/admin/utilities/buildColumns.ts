@@ -1,6 +1,6 @@
-import { Column, ColumnField } from '../components/elements/Table/types';
+import { Column, ColumnField } from '../components/elements/Table/types.js';
 
-const buildColumns = (
+export const buildColumns = (
   fields: ColumnField[],
   customRenderCell?: (index: number, row: any, data: any) => React.ReactNode
 ): Column[] => {
@@ -10,5 +10,3 @@ const buildColumns = (
     customRenderCell,
   }));
 };
-
-export default buildColumns;

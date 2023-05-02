@@ -1,4 +1,4 @@
-const ListItemText = () => {
+export const ListItemText = () => {
   return {
     MuiListItemText: {
       defaultProps: {
@@ -9,5 +9,3 @@ const ListItemText = () => {
     },
   };
 };
-
-export default ListItemText;

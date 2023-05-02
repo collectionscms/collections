@@ -1,10 +1,6 @@
 import { unlinkSync } from 'fs';
-import { JestConfigWithTsJest } from 'ts-jest/dist/types';
-import { vendors } from '../config';
-
-if (require.main === module) {
-  teardown(undefined, true);
-}
+import { JestConfigWithTsJest } from 'ts-jest/dist/types.js';
+import { vendors } from '../config.js';
 
 export default async function teardown(
   jestConfig?: JestConfigWithTsJest,

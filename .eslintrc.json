@@ -1,0 +1,27 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+  "extends": ["plugin:react/recommended", "prettier"],
+  "overrides": [
+    {
+      "files": ["test/**/*.test.ts"],
+      "rules": {
+        "no-restricted-syntax": ["error", "ForInStatement"],
+        "no-await-in-loop": 0
+      }
+    }
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "project": "./tsconfig.json"
+  },
+  "plugins": ["react", "@typescript-eslint"],
+  "ignorePatterns": ["misc/*", "dist/*", "**/*.js", "**/*.mjs"],
+  "rules": {
+    "max-len": ["error", { "code": 120 }]
+  }
+}

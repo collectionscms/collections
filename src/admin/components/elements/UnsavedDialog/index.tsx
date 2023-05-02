@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import { t } from 'i18next';
 import React from 'react';
-import { Props } from './types';
+import { Props } from './types.js';
 
 export const UnsavedDialog: React.FC<Props> = ({ open, onConfirm, onClose }) => {
   return (

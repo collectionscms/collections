@@ -1,5 +1,5 @@
 import argon2 from 'argon2';
-import env from '../../env';
+import { env } from '../../env.js';
 
 export function oneWayHash(stringToHash: string): Promise<string> {
   const options: Record<string, any> = {

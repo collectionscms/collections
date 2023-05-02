@@ -1,12 +1,12 @@
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc.js';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { castToBoolean } from '../../../../utilities/castToBoolean';
-import RouterLink from '../../Link';
-import { Props, Type } from './types';
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
+import { castToBoolean } from '../../../../utilities/castToBoolean.js';
+import { RouterLink } from '../../Link/index.js';
+import { Props, Type } from './types.js';
 
-const Cell: React.FC<Props> = (props) => {
+export const Cell: React.FC<Props> = (props) => {
   const { colIndex, type, rowData, cellData } = props;
   const { t } = useTranslation();
   dayjs.extend(utc);
@@ -46,5 +46,3 @@ const Cell: React.FC<Props> = (props) => {
 
   return <WrapElement {...wrapElementProps}>{sanitizedCellData()}</WrapElement>;
 };
-
-export default Cell;

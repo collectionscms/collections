@@ -9,11 +9,11 @@ import {
 import { useSnackbar } from 'notistack';
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import ComposeWrapper from '../../utilities/ComposeWrapper';
-import { DocumentContextProvider, useDocument } from '../DeleteDocument/Context';
-import { Props } from './types';
+import { ComposeWrapper } from '../../utilities/ComposeWrapper/index.js';
+import { DocumentContextProvider, useDocument } from '../DeleteDocument/Context/index.js';
+import { Props } from './types.js';
 
-const DeleteDocument: React.FC<Props> = ({ id, slug, openState, onSuccess, onClose }) => {
+const DeleteDocumentImpl: React.FC<Props> = ({ id, slug, openState, onSuccess, onClose }) => {
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
   const { deleteDocument } = useDocument();
@@ -55,4 +55,6 @@ const DeleteDocument: React.FC<Props> = ({ id, slug, openState, onSuccess, onClo
   );
 };
 
-export default ComposeWrapper({ context: DocumentContextProvider })(DeleteDocument);
+export const DeleteDocument = ComposeWrapper({ context: DocumentContextProvider })(
+  DeleteDocumentImpl
+);

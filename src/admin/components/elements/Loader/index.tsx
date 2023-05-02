@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
-import Loading from '../Loading';
+import { Loading } from '../Loading/index.js';
 
-const Loader = (Component: React.ComponentType, props?: any) =>
+export const Loader = (Component: React.ComponentType, props?: any) =>
   function Loader() {
     return (
       <Suspense fallback={<Loading />}>
@@ -9,5 +9,3 @@ const Loader = (Component: React.ComponentType, props?: any) =>
       </Suspense>
     );
   };
-
-export default Loader;

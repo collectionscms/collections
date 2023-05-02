@@ -1,5 +1,5 @@
 import React from 'react';
-import { Type } from './Cell/types';
+import { Type } from './Cell/types.js';
 
 export type Column = {
   field: ColumnField;

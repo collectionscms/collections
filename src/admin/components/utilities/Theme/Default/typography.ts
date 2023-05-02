@@ -1,8 +1,6 @@
-import { TypographyOptions } from '@mui/material/styles/createTypography';
+import { TypographyOptions } from '@mui/material/styles/createTypography.js';
 
-const typography: TypographyOptions = {
+export const typography: TypographyOptions = {
   htmlFontSize: 16,
   fontFamily: ['Roboto', 'Noto Sans JP', 'Helvetica', 'Arial', 'Meiryo', 'sans-serif'].join(','),
 };
-
-export default typography;

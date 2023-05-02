@@ -1,7 +1,7 @@
-import { Permission } from '../../shared/types';
-import { AbstractRepositoryOptions, BaseRepository, BaseTransaction } from './base';
+import { Permission } from '../../config/types.js';
+import { AbstractRepositoryOptions, BaseRepository, BaseTransaction } from './base.js';
 
-export default class PermissionsRepository extends BaseRepository<Permission> {
+export class PermissionsRepository extends BaseRepository<Permission> {
   constructor(collection: string = 'superfast_permissions', options?: AbstractRepositoryOptions) {
     super(collection, options);
   }

@@ -1,13 +1,13 @@
 import React from 'react';
-import Default from './Default';
-import Singleton from './Singleton';
-import { Props } from './types';
+import { DefaultListPage } from './Default.js';
+import { SingletonPage } from './Singleton.js';
+import { Props } from './types.js';
 
 const ListPage: React.FC<Props> = ({ collection }) => {
   return collection.singleton ? (
-    <Singleton collection={collection} />
+    <SingletonPage collection={collection} />
   ) : (
-    <Default collection={collection} />
+    <DefaultListPage collection={collection} />
   );
 };
 

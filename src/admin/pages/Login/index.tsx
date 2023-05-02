@@ -4,15 +4,15 @@ import React, { useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import logger from '../../../utilities/logger';
-import RouterLink from '../../components/elements/Link';
-import Logo from '../../components/elements/Logo';
-import { useAuth } from '../../components/utilities/Auth';
-import ComposeWrapper from '../../components/utilities/ComposeWrapper';
-import { FormValues, loginSchema } from '../../fields/schemas/authentications/login';
-import { LoginContextProvider, useLogin } from './Context';
+import { logger } from '../../../utilities/logger.js';
+import { RouterLink } from '../../components/elements/Link/index.js';
+import { Logo } from '../../components/elements/Logo/index.js';
+import { useAuth } from '../../components/utilities/Auth/index.js';
+import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.js';
+import { FormValues, loginSchema } from '../../fields/schemas/authentications/login.js';
+import { LoginContextProvider, useLogin } from './Context/index.js';
 
-const LoginPage: React.FC = () => {
+const LoginImpl: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { t } = useTranslation();
@@ -71,7 +71,7 @@ const LoginPage: React.FC = () => {
             name="email"
             control={control}
             render={({ field }) => (
-              <TextField name="email" {...field} type="text" error={errors.email !== undefined} />
+              <TextField {...field} type="text" error={errors.email !== undefined} />
             )}
           />
           <FormHelperText error>{errors.email?.message}</FormHelperText>
@@ -82,12 +82,7 @@ const LoginPage: React.FC = () => {
             name="password"
             control={control}
             render={({ field }) => (
-              <TextField
-                name="password"
-                {...field}
-                type="password"
-                error={errors.email !== undefined}
-              />
+              <TextField {...field} type="password" error={errors.email !== undefined} />
             )}
           />
           <FormHelperText error>{errors.password?.message}</FormHelperText>
@@ -103,4 +98,4 @@ const LoginPage: React.FC = () => {
   );
 };
 
-export default ComposeWrapper({ context: LoginContextProvider })(LoginPage);
+export const Login = ComposeWrapper({ context: LoginContextProvider })(LoginImpl);

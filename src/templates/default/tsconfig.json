@@ -1,31 +1,13 @@
 {
-  "include": [
-    "*.ts",
-    "*.tsx",
-    "project/**/*.ts",
-    "project/**/*.tsx"
-  ],
-  "exclude": [
-    "node_modules"
-  ],
   "compilerOptions": {
-    "resolveJsonModule": true,
-    "incremental": false,
-    "target": "es6",
-    "module": "commonjs",
-    "allowJs": true,
+    "target": "es2020",
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "jsx": "react",
-    "sourceMap": false,
-    "strict": false,
-    "noImplicitAny": false,
-    "strictNullChecks": false,
-    "strictFunctionTypes": false,
-    "moduleResolution": "node",
-    "baseUrl": ".",
+    "strict": true,
     "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "skipLibCheck": true, // Ignore node_modules during type check.
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true
   }
 }

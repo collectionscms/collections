@@ -13,20 +13,20 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import Grid from '@mui/material/Unstable_Grid2/Grid2';
+import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import React, { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Choice } from 'shared/types';
-import logger from '../../../../../../../utilities/logger';
-import { shallowEqualObject } from '../../../../../../../utilities/shallowEqualObject';
+import { Choice } from '../../../../../../../config/types.js';
+import { logger } from '../../../../../../../utilities/logger.js';
+import { shallowEqualObject } from '../../../../../../../utilities/shallowEqualObject.js';
 import {
   FormValues,
   updateSelectDropdown as schema,
-} from '../../../../../../fields/schemas/collectionFields/selectDropdown/updateSelectDropdown';
-import { CreateChoice } from '../../../CreateField/fieldTypes/CreateChoice';
-import { useField } from '../../Context';
-import { Props } from '../types';
+} from '../../../../../../fields/schemas/collectionFields/selectDropdown/updateSelectDropdown.js';
+import { CreateChoice } from '../../../CreateField/fieldTypes/CreateChoice/index.js';
+import { useField } from '../../Context/index.js';
+import { Props } from '../types.js';
 
 export const SelectDropdownType: React.FC<Props> = (props) => {
   const { field: meta, onEditing, onSuccess, onChangeParentViewInvisible } = props;
@@ -39,7 +39,7 @@ export const SelectDropdownType: React.FC<Props> = (props) => {
     required: Boolean(meta.required),
     readonly: Boolean(meta.readonly),
     hidden: Boolean(meta.hidden),
-    choices: meta.fieldOption.choices,
+    choices: meta.fieldOption?.choices,
   };
   const {
     control,
@@ -59,16 +59,18 @@ export const SelectDropdownType: React.FC<Props> = (props) => {
 
   useEffect(() => {
     watch((value) => {
-      const { ...values } = defaultValues;
+      const values: Partial<{ choices: unknown[] }> = { ...defaultValues };
       delete values.choices;
       const isEqualed = shallowEqualObject(values, value);
-      onEditing(!isEqualed || value.choices.length !== defaultValues.choices.length);
+      const selectedChoices = value.choices || [];
+      const defaultChoices = defaultValues.choices || [];
+      onEditing(!isEqualed || selectedChoices.length !== defaultChoices.length);
     });
   }, [watch]);
 
   const onToggleCreateChoice = (state: boolean) => {
     setState(state);
-    onChangeParentViewInvisible(state);
+    onChangeParentViewInvisible?.(state);
   };
 
   const handleCreateChoiceSuccess = (choice: Choice) => {

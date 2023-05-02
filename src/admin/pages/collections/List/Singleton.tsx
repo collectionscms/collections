@@ -1,18 +1,18 @@
 import { Button, Stack } from '@mui/material';
-import Grid from '@mui/material/Unstable_Grid2';
+import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { useSnackbar } from 'notistack';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import logger from '../../../../utilities/logger';
-import RenderFields from '../../../components/forms/RenderFields';
-import { useAuth } from '../../../components/utilities/Auth';
-import ComposeWrapper from '../../../components/utilities/ComposeWrapper';
-import ApiPreview from '../ApiPreview';
-import { ContentContextProvider, useContent } from '../Context';
-import { Props } from './types';
+import { logger } from '../../../../utilities/logger.js';
+import { RenderFields } from '../../../components/forms/RenderFields/index.js';
+import { useAuth } from '../../../components/utilities/Auth/index.js';
+import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
+import { ApiPreview } from '../ApiPreview/index.js';
+import { ContentContextProvider, useContent } from '../Context/index.js';
+import { Props } from './types.js';
 
-const SingletonPage: React.FC<Props> = ({ collection }) => {
+const SingletonPageImpl: React.FC<Props> = ({ collection }) => {
   const { hasPermission } = useAuth();
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
@@ -39,7 +39,7 @@ const SingletonPage: React.FC<Props> = ({ collection }) => {
 
   const setDefaultValue = (content: Record<string, any>) => {
     metaFields
-      .filter((field) => !field.hidden)
+      ?.filter((field) => !field.hidden)
       .forEach((field) => {
         setValue(field.field, content[field.field]);
       });
@@ -50,7 +50,7 @@ const SingletonPage: React.FC<Props> = ({ collection }) => {
     setDefaultValue(content);
   }, [content]);
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: Record<string, any>) => {
     reset();
 
     try {
@@ -107,4 +107,4 @@ const SingletonPage: React.FC<Props> = ({ collection }) => {
   );
 };
 
-export default ComposeWrapper({ context: ContentContextProvider })(SingletonPage);
+export const SingletonPage = ComposeWrapper({ context: ContentContextProvider })(SingletonPageImpl);

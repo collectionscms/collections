@@ -9,21 +9,22 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import Grid from '@mui/material/Unstable_Grid2';
+import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { useSnackbar } from 'notistack';
 import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import logger from '../../../../utilities/logger';
-import ComposeWrapper from '../../../components/utilities/ComposeWrapper';
-import { useDocumentInfo } from '../../../components/utilities/DocumentInfo';
-import createCollectionSchema, {
+import { logger } from '../../../../utilities/logger.js';
+import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
+import { useDocumentInfo } from '../../../components/utilities/DocumentInfo/index.js';
+import {
   FormValues,
-} from '../../../fields/schemas/collections/createCollection';
-import { CollectionContextProvider, useCollection } from '../Context';
+  createCollection as createCollectionSchema,
+} from '../../../fields/schemas/collections/createCollection.js';
+import { CollectionContextProvider, useCollection } from '../Context/index.js';
 
-const CreatePage: React.FC = () => {
+const CreateContentTypePageImpl: React.FC = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { localizedLabel } = useDocumentInfo();
@@ -43,7 +44,7 @@ const CreatePage: React.FC = () => {
     try {
       const collection = await trigger(form);
       enqueueSnackbar(t('toast.created_successfully'), { variant: 'success' });
-      navigate(`../content-types/${collection.id}`);
+      navigate(`../content-types/${collection!.id}`);
     } catch (e) {
       logger.error(e);
     }
@@ -105,4 +106,6 @@ const CreatePage: React.FC = () => {
   );
 };
 
-export default ComposeWrapper({ context: CollectionContextProvider })(CreatePage);
+export const CreateContentTypePage = ComposeWrapper({ context: CollectionContextProvider })(
+  CreateContentTypePageImpl
+);

@@ -1,7 +1,7 @@
 import { t } from 'i18next';
 import { LocaleObject } from 'yup';
 
-const locale: LocaleObject = {
+export const locale: LocaleObject = {
   mixed: {
     default: t('yup.mixed.default'),
     required: t('yup.mixed.required'),
@@ -47,5 +47,3 @@ const locale: LocaleObject = {
     isValue: ({ value }) => t('yup.boolean.is_value', { value }),
   },
 };
-
-export default locale;

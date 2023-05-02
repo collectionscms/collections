@@ -8,18 +8,18 @@ import {
   Stack,
   TextField,
 } from '@mui/material';
-import Grid from '@mui/material/Unstable_Grid2/Grid2';
+import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import React, { useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import logger from '../../../../../../../utilities/logger';
-import { shallowEqualObject } from '../../../../../../../utilities/shallowEqualObject';
+import { logger } from '../../../../../../../utilities/logger.js';
+import { shallowEqualObject } from '../../../../../../../utilities/shallowEqualObject.js';
 import {
   FormValues,
   updateBoolean as schema,
-} from '../../../../../../fields/schemas/collectionFields/boolean/updateBoolean';
-import { useField } from '../../Context';
-import { Props } from '../types';
+} from '../../../../../../fields/schemas/collectionFields/boolean/updateBoolean.js';
+import { useField } from '../../Context/index.js';
+import { Props } from '../types.js';
 
 export const BooleanType: React.FC<Props> = (props) => {
   const { field: meta, onEditing, onSuccess } = props;
@@ -28,7 +28,7 @@ export const BooleanType: React.FC<Props> = (props) => {
   const { trigger, isMutating } = updateField(meta.id);
   const defaultValues = {
     label: meta.label,
-    defaultValue: meta.fieldOption.defaultValue,
+    defaultValue: meta?.fieldOption?.defaultValue,
   };
 
   const {

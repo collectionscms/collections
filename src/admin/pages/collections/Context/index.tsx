@@ -1,9 +1,9 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWR, { SWRConfiguration, SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
-import { Field } from '../../../../shared/types';
-import api from '../../../utilities/api';
-import { ContentContext } from './types';
+import { Field } from '../../../../config/types.js';
+import { api } from '../../../utilities/api.js';
+import { ContentContext } from './types.js';
 
 const Context = createContext({} as ContentContext);
 
@@ -26,11 +26,9 @@ export const ContentContextProvider: React.FC<{ children: React.ReactNode }> = (
       config
     );
 
-  const getContent = (slug: string, id: string, config?: SWRConfiguration): SWRMutationResponse =>
-    useSWRMutation(
-      id ? `/collections/${slug}/contents/${id}` : null,
-      (url) => api.get<{ content: unknown }>(url).then((res) => res.data.content),
-      config
+  const getContent = (slug: string, id: string | null): SWRMutationResponse =>
+    useSWRMutation(id ? `/collections/${slug}/contents/${id}` : null, (url) =>
+      api.get<{ content: unknown }>(url).then((res) => res.data.content)
     );
 
   const getFields = (slug: string, config?: SWRConfiguration): SWRResponse =>
@@ -45,15 +43,21 @@ export const ContentContextProvider: React.FC<{ children: React.ReactNode }> = (
       return api.get<{ contents: unknown[] }>(url, arg).then((res) => res.data.contents);
     });
 
-  const createContent = (slug: string): SWRMutationResponse =>
-    useSWRMutation(`/collections/${slug}/contents`, async (url: string, { arg }) => {
-      return api.post<{ content: unknown }>(url, arg).then((res) => res.data.content);
-    });
+  const createContent = (slug: string) =>
+    useSWRMutation(
+      `/collections/${slug}/contents`,
+      async (url: string, { arg }: { arg: Record<string, any> }) => {
+        return api.post<{ content: unknown }>(url, arg).then((res) => res.data.content);
+      }
+    );
 
-  const updateContent = (slug: string, id: string): SWRMutationResponse =>
-    useSWRMutation(`/collections/${slug}/contents/${id}`, async (url: string, { arg }) => {
-      return api.patch<{ content: unknown }>(url, arg).then((res) => res.data);
-    });
+  const updateContent = (slug: string, id: string) =>
+    useSWRMutation(
+      `/collections/${slug}/contents/${id}`,
+      async (url: string, { arg }: { arg: Record<string, any> }) => {
+        return api.patch(url, arg).then((res) => res.data);
+      }
+    );
 
   const value = useMemo(
     () => ({

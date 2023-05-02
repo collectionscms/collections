@@ -1,7 +1,7 @@
 import { PaletteOptions } from '@mui/material';
-import { colorBase } from '../colors';
+import { colorBase } from '../colors.js';
 
-const palette: PaletteOptions = {
+export const palette: PaletteOptions = {
   mode: 'dark',
   primary: { main: colorBase.color_base_0 },
   secondary: { main: '#eaff96' },
@@ -12,5 +12,3 @@ const palette: PaletteOptions = {
   sidebar: { main: colorBase.color_base_800 },
   sidebarIcon: { main: colorBase.color_base_400 },
 };
-
-export default palette;

@@ -1,6 +1,6 @@
 import { TFunction } from 'i18next';
 import { ObjectSchema } from 'yup';
-import yup from '../../../yup';
+import { yup } from '../../../yup.js';
 
 export type FormValues = {
   field: string;
@@ -16,6 +16,6 @@ export const createInput = (t: TFunction): ObjectSchema<FormValues> => {
       .required()
       .max(60),
     label: yup.string().required().max(60),
-    required: yup.boolean(),
+    required: yup.boolean().required(),
   });
 };

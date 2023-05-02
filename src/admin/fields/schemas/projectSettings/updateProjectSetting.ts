@@ -1,5 +1,5 @@
 import { ObjectSchema } from 'yup';
-import yup from '../../yup';
+import { yup } from '../../yup.js';
 
 export type FormValues = {
   name: string;
@@ -10,5 +10,3 @@ export const updateProjectSetting = (): ObjectSchema<FormValues> => {
     name: yup.string().required().max(100),
   });
 };
-
-export default updateProjectSetting;

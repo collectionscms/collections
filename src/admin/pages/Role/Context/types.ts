@@ -1,6 +1,6 @@
 import { SWRConfiguration, SWRResponse } from 'swr';
 import { SWRMutationResponse } from 'swr/mutation';
-import { Collection, Permission, Role } from '../../../../shared/types';
+import { Collection, Permission, Role } from '../../../../config/types.js';
 
 export type RoleContext = {
   getRoles: () => SWRResponse<Role[]>;

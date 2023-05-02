@@ -1,12 +1,10 @@
 import { useRoutes } from 'react-router-dom';
-import AuthRoutes from './Auth';
-import CollectionRoutes from './Collection';
-import NoRoutes from './NoRoutes';
-import RootRoutes from './Root';
-import SettingRoutes from './Setting';
+import { AuthRoutes } from './Auth/index.js';
+import { CollectionRoutes } from './Collection/index.js';
+import { NoRoutes } from './NoRoutes/index.js';
+import { RootRoutes } from './Root/index.js';
+import { SettingRoutes } from './Setting/index.js';
 
-const Routes = () => {
+export const Routes = () => {
   return useRoutes([RootRoutes(), CollectionRoutes(), SettingRoutes(), AuthRoutes, NoRoutes()]);
 };
-
-export default Routes;

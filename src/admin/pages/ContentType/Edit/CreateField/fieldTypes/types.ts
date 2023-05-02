@@ -1,4 +1,4 @@
-import { Field, FieldInterface } from 'shared/types';
+import { Field, FieldInterface } from '../../../../../../config/types.js';
 
 export type Props = {
   slug: string;

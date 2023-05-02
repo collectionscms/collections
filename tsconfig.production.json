@@ -2,10 +2,9 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "sourceMap": false,
-    "declaration": true
+    "declaration": true,
+    "outDir": "./dist"
   },
-  "include": ["src", "index.ts"],
-  "exclude": [
-    "**/*.spec.js",
-  ]
+  "include": ["src", "index.ts", "./package.json"],
+  "exclude": ["test/*", "misc/*"]
 }

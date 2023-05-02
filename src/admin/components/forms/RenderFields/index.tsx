@@ -1,9 +1,10 @@
 import { Box, FormHelperText, InputLabel } from '@mui/material';
 import React from 'react';
-import fieldTypes from '../fieldTypes';
-import { Props } from './types';
+import { Field } from '../../../../config/types.js';
+import { fieldTypes } from '../fieldTypes/index.js';
+import { Props } from './types.js';
 
-const RenderFields: React.FC<Props> = ({ control, register, errors, fields }) => {
+export const RenderFields: React.FC<Props> = ({ control, register, errors, fields }) => {
   const formFields = fields.filter((field) => !field.hidden);
 
   const invalidMessage = (field: string): string | null => {
@@ -15,7 +16,7 @@ const RenderFields: React.FC<Props> = ({ control, register, errors, fields }) =>
 
   return (
     <>
-      {formFields.map((meta) => {
+      {formFields.map((meta: Field) => {
         const FieldComponent = fieldTypes[meta.interface];
 
         return (
@@ -31,5 +32,3 @@ const RenderFields: React.FC<Props> = ({ control, register, errors, fields }) =>
     </>
   );
 };
-
-export default RenderFields;

@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ContextType, Props } from './types';
+import { ContextType, Props } from './types.js';
 
 const Context = createContext({} as ContextType);
 

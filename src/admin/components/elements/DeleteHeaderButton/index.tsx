@@ -2,10 +2,10 @@ import { DeleteOutlineOutlined } from '@mui/icons-material';
 import { Button } from '@mui/material';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import DeleteDocument from '../DeleteDocument';
-import { Props } from './types';
+import { DeleteDocument } from '../DeleteDocument/index.js';
+import { Props } from './types.js';
 
-const DeleteHeaderButton: React.FC<Props> = ({ id, slug, disabled, onSuccess }) => {
+export const DeleteHeaderButton: React.FC<Props> = ({ id, slug, disabled, onSuccess }) => {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
 
@@ -41,5 +41,3 @@ const DeleteHeaderButton: React.FC<Props> = ({ id, slug, disabled, onSuccess }) 
     </>
   );
 };
-
-export default DeleteHeaderButton;

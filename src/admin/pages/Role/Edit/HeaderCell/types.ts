@@ -1,4 +1,4 @@
-import { PermissionsAction } from '../../../../../shared/types';
+import { PermissionsAction } from '../../../../../config/types.js';
 
 export type Props = {
   action: PermissionsAction;

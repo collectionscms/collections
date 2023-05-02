@@ -1,11 +1,11 @@
 import express, { Request, Response } from 'express';
-import { Field } from 'shared/types';
-import { RecordNotFoundException } from '../../shared/exceptions/database/recordNotFound';
-import asyncHandler from '../middleware/asyncHandler';
-import permissionsHandler from '../middleware/permissionsHandler';
-import CollectionsRepository from '../repositories/collections';
-import FieldsRepository from '../repositories/fields';
-import PermissionsRepository from '../repositories/permissions';
+import { Field } from '../../config/types.js';
+import { RecordNotFoundException } from '../../exceptions/database/recordNotFound.js';
+import { asyncHandler } from '../middleware/asyncHandler.js';
+import { permissionsHandler } from '../middleware/permissionsHandler.js';
+import { CollectionsRepository } from '../repositories/collections.js';
+import { FieldsRepository } from '../repositories/fields.js';
+import { PermissionsRepository } from '../repositories/permissions.js';
 
 const app = express();
 
@@ -170,4 +170,4 @@ app.delete(
   })
 );
 
-export default app;
+export const collections = app;

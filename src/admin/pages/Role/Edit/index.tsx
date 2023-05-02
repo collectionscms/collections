@@ -16,32 +16,37 @@ import {
   TableRow,
   TextField,
 } from '@mui/material';
-import Grid from '@mui/material/Unstable_Grid2';
+import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { useSnackbar } from 'notistack';
 import React, { Suspense, useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
-import { PermissionsAction, Role } from '../../../../shared/types';
-import DeleteHeaderButton from '../../../components/elements/DeleteHeaderButton';
-import Loading from '../../../components/elements/Loading';
-import ComposeWrapper from '../../../components/utilities/ComposeWrapper';
-import { useDocumentInfo } from '../../../components/utilities/DocumentInfo';
-import updateRoleSchema, { FormValues } from '../../../fields/schemas/roles/updateRole';
-import { RoleContextProvider, useRole } from '../Context';
-import PermissionHeaderCell from './HeaderCell';
-import PermissionToggleButton from './ToggleButton';
+import { PermissionsAction, Role } from '../../../../config/types.js';
+import { DeleteHeaderButton } from '../../../components/elements/DeleteHeaderButton/index.js';
+import { Loading } from '../../../components/elements/Loading/index.js';
+import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
+import { useDocumentInfo } from '../../../components/utilities/DocumentInfo/index.js';
+import {
+  FormValues,
+  updateRole as updateRoleSchema,
+} from '../../../fields/schemas/roles/updateRole.js';
+import { RoleContextProvider, useRole } from '../Context/index.js';
+import { PermissionHeaderCell } from './HeaderCell/index.js';
+import { PermissionToggleButton } from './ToggleButton/index.js';
 
-const EditRolePage: React.FC = () => {
+const EditRolePageImpl: React.FC = () => {
   const { id } = useParams();
+  if (!id) throw new Error('id is not defined');
+
   const { localizedLabel } = useDocumentInfo();
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const { getRole, getCollections, getPermissions, updateRole } = useRole();
   const { data: role, trigger: getRoleTrigger } = getRole(id);
-  const { data: collections } = getCollections({ suspense: true });
-  const { data: permissions, mutate } = getPermissions(id, { suspense: true });
+  const { data: collections = [] } = getCollections({ suspense: true });
+  const { data: permissions = [], mutate } = getPermissions(id, { suspense: true });
   const {
     data: updatedRole,
     trigger: updateRoleTrigger,
@@ -60,7 +65,7 @@ const EditRolePage: React.FC = () => {
   useEffect(() => {
     const getRole = async () => {
       const role = await getRoleTrigger();
-      setDefaultValue(role);
+      if (role) setDefaultValue(role);
     };
 
     getRole();
@@ -176,13 +181,7 @@ const EditRolePage: React.FC = () => {
               name="name"
               control={control}
               render={({ field }) => (
-                <TextField
-                  name="name"
-                  {...field}
-                  type="text"
-                  fullWidth
-                  error={errors.name !== undefined}
-                />
+                <TextField {...field} type="text" fullWidth error={errors.name !== undefined} />
               )}
             />
             <FormHelperText error>{errors.name?.message}</FormHelperText>
@@ -194,7 +193,6 @@ const EditRolePage: React.FC = () => {
               control={control}
               render={({ field }) => (
                 <FormControlLabel
-                  name="isActive"
                   {...field}
                   label={t('is_active')}
                   control={<Checkbox checked={field.value} />}
@@ -212,7 +210,6 @@ const EditRolePage: React.FC = () => {
               control={control}
               render={({ field }) => (
                 <TextField
-                  name="description"
                   {...field}
                   type="text"
                   fullWidth
@@ -228,4 +225,4 @@ const EditRolePage: React.FC = () => {
   );
 };
 
-export default ComposeWrapper({ context: RoleContextProvider })(EditRolePage);
+export const EditRolePage = ComposeWrapper({ context: RoleContextProvider })(EditRolePageImpl);

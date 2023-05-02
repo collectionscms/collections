@@ -5,17 +5,17 @@ import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
-import logger from '../../../utilities/logger';
-import RouterLink from '../../components/elements/Link';
-import { useAuth } from '../../components/utilities/Auth';
-import ComposeWrapper from '../../components/utilities/ComposeWrapper';
+import { logger } from '../../../utilities/logger.js';
+import { RouterLink } from '../../components/elements/Link/index.js';
+import { useAuth } from '../../components/utilities/Auth/index.js';
+import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.js';
 import {
   FormValues,
-  resetPasswordSchema,
-} from '../../fields/schemas/authentications/resetPassword';
-import { ResetPasswordContextProvider, useResetPassword } from './Context';
+  resetPassword as resetPasswordSchema,
+} from '../../fields/schemas/authentications/resetPassword.js';
+import { ResetPasswordContextProvider, useResetPassword } from './Context/index.js';
 
-const ResetPassword: React.FC = () => {
+const ResetPasswordImpl: React.FC = () => {
   const { user } = useAuth();
   const { token } = useParams();
   const navigate = useNavigate();
@@ -66,9 +66,7 @@ const ResetPassword: React.FC = () => {
           <Controller
             name="token"
             control={control}
-            render={({ field }) => (
-              <TextField name="token" {...field} type="hidden" sx={{ display: 'none' }} />
-            )}
+            render={({ field }) => <TextField {...field} type="hidden" sx={{ display: 'none' }} />}
           />
           <input type="hidden" {...register('token')} value={token} />
           <InputLabel>{t('new_password')}</InputLabel>
@@ -76,12 +74,7 @@ const ResetPassword: React.FC = () => {
             name="password"
             control={control}
             render={({ field }) => (
-              <TextField
-                name="password"
-                {...field}
-                type="password"
-                error={errors.password !== undefined}
-              />
+              <TextField {...field} type="password" error={errors.password !== undefined} />
             )}
           />
           <FormHelperText error>{errors.password?.message}</FormHelperText>
@@ -94,4 +87,6 @@ const ResetPassword: React.FC = () => {
   );
 };
 
-export default ComposeWrapper({ context: ResetPasswordContextProvider })(ResetPassword);
+export const ResetPassword = ComposeWrapper({ context: ResetPasswordContextProvider })(
+  ResetPasswordImpl
+);

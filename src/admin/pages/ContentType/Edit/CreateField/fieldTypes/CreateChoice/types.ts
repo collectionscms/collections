@@ -1,4 +1,4 @@
-import { Choice } from '../../../../../../../shared/types';
+import { Choice } from '../../../../../../../config/types.js';
 
 export type Props = {
   openState: boolean;

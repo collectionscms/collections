@@ -1,26 +1,13 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "es6",
-    "strict": false,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
+    "target": "es2020",
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "jsx": "react",
-    "outDir": "./dist",
-    "checkJs": true,
-    "incremental": false,
-    "allowJs": true,
-    "sourceMap": false,
-    "noImplicitAny": false,
-    "strictNullChecks": false,
-    "strictFunctionTypes": false,
-    "baseUrl": "src",
-    "experimentalDecorators": true /* Enables experimental support for ES7 decorators. */,
-    "emitDecoratorMetadata": true /* Enables experimental support for emitting type metadata for decorators. */
-  },
-  "include": ["*.ts", "src/**/*.ts", "*.tsx", "src/**/*.tsx", "src/admin/index.html", "test/**/*"],
-  "exclude": ["node_modules"]
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true, // Ignore node_modules during type check.
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true
+  }
 }

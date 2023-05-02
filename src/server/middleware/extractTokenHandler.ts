@@ -1,6 +1,10 @@
-import { NextFunction, Request, Response, RequestHandler } from 'express';
+import { NextFunction, Request, RequestHandler, Response } from 'express';
 
-const extractTokenHandler: RequestHandler = (req: Request, res: Response, next: NextFunction) => {
+export const extractTokenHandler: RequestHandler = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   let token: string | null = null;
 
   if (req.query && req.query.access_token) {
@@ -18,5 +22,3 @@ const extractTokenHandler: RequestHandler = (req: Request, res: Response, next: 
   req.token = token;
   next();
 };
-
-export default extractTokenHandler;

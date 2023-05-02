@@ -1,18 +1,16 @@
 import { Request, RequestHandler } from 'express';
 import pino, { LoggerOptions } from 'pino';
 import pinoHTTP, { stdSerializers } from 'pino-http';
-import env from '../env';
 
 const pinoOptions: LoggerOptions = {
-  level: env.LOG_LEVEL || 'info',
+  level: process.env.PUBLIC_LOG_LEVEL || 'info',
   redact: {
     paths: ['req.headers.authorization', 'req.headers.cookie'],
     censor: '--redacted--',
   },
 };
-
 const httpLoggerOptions: LoggerOptions = {
-  level: env.LOG_LEVEL || 'info',
+  level: process.env.PUBLIC_LOG_LEVEL || 'info',
   redact: {
     paths: ['req.headers.authorization', 'req.headers.cookie'],
     censor: '--redacted--',
@@ -41,5 +39,4 @@ export const expressLogger = pinoHTTP({
   },
 }) as RequestHandler;
 
-const logger = pino(pinoOptions);
-export default logger;
+export const logger = pino(pinoOptions);
