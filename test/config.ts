@@ -17,7 +17,7 @@ const knexConfig = {
   },
 };
 
-const config: Config = {
+export const config: Config = {
   knexConfig: {
     sqlite3: {
       client: 'sqlite3',
@@ -36,5 +36,3 @@ const config: Config = {
     },
   },
 };
-
-export default config;

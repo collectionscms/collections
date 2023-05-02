@@ -1,15 +1,12 @@
 import { writeFileSync } from 'fs';
 import knex from 'knex';
-import config, { vendors } from '../config';
+import { config, vendors } from '../config.js';
 
 let started = false;
 
 export default async (): Promise<void> => {
   if (started) return;
   started = true;
-
-  console.log('\n\n');
-  console.log('🟢 Starting tests! \n');
 
   vendors.map(async (vendor) => {
     const database = knex(config.knexConfig[vendor]!);
@@ -21,4 +18,7 @@ export default async (): Promise<void> => {
     await database.seed.run();
     await database.destroy();
   });
+
+  console.log('\n\n');
+  console.log('🟢 Starting tests! \n');
 };
