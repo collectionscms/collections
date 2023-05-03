@@ -10,6 +10,7 @@ import { BooleanType } from './fieldTypes/Boolean/index.js';
 import { DateTimeType } from './fieldTypes/DateTime/index.js';
 import { InputType } from './fieldTypes/Input/index.js';
 import { InputMultilineType } from './fieldTypes/InputMultiline/index.js';
+import { InputRichTextMdType } from './fieldTypes/InputRichTextMd/input.js';
 import { SelectDropdownType } from './fieldTypes/SelectDropdown/index.js';
 import { Props } from './types.js';
 
@@ -92,6 +93,13 @@ const EditFieldImpl: React.FC<Props> = ({ field, open, onSuccess, onClose }) => 
           )}
           {field.interface === 'inputMultiline' && (
             <InputMultilineType
+              field={field}
+              onEditing={handleEditing}
+              onSuccess={handleEditedSuccess}
+            />
+          )}
+          {field.interface === 'inputRichTextMd' && (
+            <InputRichTextMdType
               field={field}
               onEditing={handleEditing}
               onSuccess={handleEditedSuccess}

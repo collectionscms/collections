@@ -10,6 +10,7 @@ import { BooleanType } from './fieldTypes/Boolean/index.js';
 import { DateTimeType } from './fieldTypes/DateTime/index.js';
 import { InputType } from './fieldTypes/Input/index.js';
 import { InputMultilineType } from './fieldTypes/InputMultiline/index.js';
+import { InputRichTextMdType } from './fieldTypes/InputRichTextMd/index.js';
 import { SelectDropdownType } from './fieldTypes/SelectDropdown/index.js';
 import { Props } from './types.js';
 
@@ -102,6 +103,13 @@ const CreateFieldImpl: React.FC<Props> = ({ slug, openState, onSuccess, onClose 
           <InputMultilineType
             slug={slug}
             expanded={fieldInterface === 'inputMultiline'}
+            handleChange={(field) => onSelectedFieldInterface(field)}
+            onEditing={handleEditing}
+            onSuccess={handleAdditionSuccess}
+          />
+          <InputRichTextMdType
+            slug={slug}
+            expanded={fieldInterface === 'inputRichTextMd'}
             handleChange={(field) => onSelectedFieldInterface(field)}
             onEditing={handleEditing}
             onSuccess={handleAdditionSuccess}
