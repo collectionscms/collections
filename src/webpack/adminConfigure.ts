@@ -6,6 +6,7 @@ import { pathList } from '../utilities/pathList.js';
 export const adminConfigure: webpack.Configuration = {
   mode: 'development',
   entry: pathList.admin('index.js'),
+  devtool: 'inline-source-map',
   output: {
     path: pathList.build('admin'),
     publicPath: '/admin/',
