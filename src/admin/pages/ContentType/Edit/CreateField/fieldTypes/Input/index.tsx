@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { TextFieldsOutlined } from '@mui/icons-material';
+import { TitleOutlined, TitleOutlined } from '@mui/icons-material';
 import {
   Accordion,
   AccordionDetails,
@@ -75,7 +75,7 @@ export const InputType: React.FC<Props> = (props) => {
         <AccordionSummary aria-controls="panel-content" id="panel-header">
           <Stack direction="row" columnGap={2}>
             <Box display="flex" alignItems="center">
-              <TextFieldsOutlined />
+              <TitleOutlined />
             </Box>
             <Stack direction="column">
               <Typography variant="subtitle1">{t('field_interface.input_one_line')}</Typography>
