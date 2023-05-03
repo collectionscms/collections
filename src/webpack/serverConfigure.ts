@@ -4,6 +4,7 @@ import { pathList } from '../utilities/pathList.js';
 export const serverConfigure: webpack.Configuration = {
   mode: 'development',
   target: 'node',
+  devtool: 'inline-source-map',
   experiments: {
     outputModule: true,
   },
