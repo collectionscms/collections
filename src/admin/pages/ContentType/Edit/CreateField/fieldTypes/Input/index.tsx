@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { TitleOutlined, TitleOutlined } from '@mui/icons-material';
+import { TitleOutlined } from '@mui/icons-material';
 import {
   Accordion,
   AccordionDetails,
