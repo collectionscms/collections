@@ -155,7 +155,8 @@
     "unregistered_email_address": "登録されていないメールアドレスです。",
     "token_invalid_or_expired": "トークンが無効であるか、有効期限が切れています。",
     "record_not_found": "レコードが見つかりません。",
-    "internal_server_error": "予期しないエラーが発生しました。"
+    "internal_server_error": "予期しないエラーが発生しました。",
+    "unexpected_field_type_specified": "予期しないフィールドタイプが指定されました。"
   },
   "yup": {
     "mixed": {
