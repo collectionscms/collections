@@ -2,7 +2,7 @@ import { BooleanType as boolean } from './Boolean/index.js';
 import { DateTimeType as dateTime } from './DateTime/index.js';
 import { InputType as input } from './Input/index.js';
 import { InputMultilineType as inputMultiline } from './InputMultiline/index.js';
-import { InputRichTextMd as inputRichTextMd } from './InputRichTextMd/index.js';
+import { InputRichTextMdType as inputRichTextMd } from './InputRichTextMd/index.js';
 import {
   SelectDropdownType as selectDropdown,
   SelectDropdownType as selectDropdownStatus,
