@@ -69,7 +69,7 @@ export const BooleanType: React.FC<Props> = (props) => {
       });
 
       reset();
-      onSuccess(field!);
+      onSuccess(field);
     } catch (e) {
       logger.error(e);
     }
