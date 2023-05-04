@@ -60,7 +60,7 @@ export type FieldInterface =
   | 'input'
   | 'inputMultiline'
   // | 'inputRichTextHtml'
-  // | 'inputRichTextMd'
+  | 'inputRichTextMd'
   | 'selectDropdown'
   | 'dateTime'
   | 'boolean'
