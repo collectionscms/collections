@@ -23,6 +23,10 @@ export const adminConfigure: webpack.Configuration = {
           },
         },
       },
+      {
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader'],
+      },
     ],
   },
   resolve: {
