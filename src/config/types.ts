@@ -65,7 +65,7 @@ export type FieldInterface =
   | 'dateTime'
   | 'boolean'
   // | 'file'
-  // | 'fileImage'
+  | 'fileImage'
   // | 'list'
   // | 'listO2o' // one-to-one
   // | 'listO2m' // one-to-many

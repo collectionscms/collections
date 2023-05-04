@@ -136,6 +136,9 @@ const addColumnToTable = (field: Field, table: Knex.CreateTableBuilder) => {
     case 'dateTime':
       column = table.dateTime(field.field);
       break;
+    case 'fileImage':
+      column = table.text(field.field);
+      break;
     default:
       throw new InvalidPayloadException('unexpected_field_type_specified');
   }
