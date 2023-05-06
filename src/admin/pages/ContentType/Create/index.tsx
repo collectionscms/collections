@@ -36,7 +36,7 @@ const CreateContentTypePageImpl: React.FC = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<FormValues>({
-    defaultValues: { collection: '', singleton: false },
+    defaultValues: { collection: '', singleton: false, status: false },
     resolver: yupResolver(createCollectionSchema(t)),
   });
 
@@ -86,6 +86,7 @@ const CreateContentTypePageImpl: React.FC = () => {
             )}
           />
         </Grid>
+        <FormHelperText error>{errors.singleton?.message}</FormHelperText>
       </Grid>
       <Grid container xs={12} xl={6}>
         <Typography variant="h6">{t('optional_system_fields')}</Typography>
@@ -100,6 +101,7 @@ const CreateContentTypePageImpl: React.FC = () => {
               <FormControlLabel {...field} label={t('valid')} control={<Checkbox />} />
             )}
           />
+          <FormHelperText error>{errors.status?.message}</FormHelperText>
         </Grid>
       </Grid>
     </Stack>
