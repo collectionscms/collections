@@ -3,7 +3,7 @@ import React from 'react';
 import { Controller } from 'react-hook-form';
 import { Props } from '../types';
 
-export const BooleanType: React.FC<Props> = ({ control, field: meta }) => {
+export const BooleanType: React.FC<Props> = ({ context: { control }, field: meta }) => {
   return (
     <Controller
       name={meta.field}

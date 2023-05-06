@@ -5,7 +5,10 @@ import { useTranslation } from 'react-i18next';
 import { SimpleMdeReact } from 'react-simplemde-editor';
 import { Props } from '../types.js';
 
-export const InputRichTextMdType: React.FC<Props> = ({ control, register, field: meta }) => {
+export const InputRichTextMdType: React.FC<Props> = ({
+  context: { control, register },
+  field: meta,
+}) => {
   const { t } = useTranslation();
   const required = meta.required && { required: t('yup.mixed.required') };
 

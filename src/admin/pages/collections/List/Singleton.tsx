@@ -29,13 +29,8 @@ const SingletonPageImpl: React.FC<Props> = ({ collection }) => {
     isMutating: isUpdateMutating,
     reset,
   } = updateContent(collection.collection, content?.id);
-  const {
-    control,
-    register,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm();
+  const formContext = useForm();
+  const { handleSubmit, setValue } = formContext;
 
   const setDefaultValue = (content: Record<string, any>) => {
     metaFields
@@ -94,12 +89,7 @@ const SingletonPageImpl: React.FC<Props> = ({ collection }) => {
       <Grid container columns={{ xs: 1, lg: 2 }}>
         <Grid xs={1}>
           <Stack rowGap={3}>
-            <RenderFields
-              control={control}
-              register={register}
-              errors={errors}
-              fields={metaFields || []}
-            />
+            <RenderFields context={formContext} fields={metaFields || []} />
           </Stack>
         </Grid>
       </Grid>

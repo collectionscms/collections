@@ -4,7 +4,10 @@ import { Field } from '../../../../config/types.js';
 import { fieldTypes } from '../fieldTypes/index.js';
 import { Props } from './types.js';
 
-export const RenderFields: React.FC<Props> = ({ control, register, errors, fields }) => {
+export const RenderFields: React.FC<Props> = ({ context, fields }) => {
+  const {
+    formState: { errors },
+  } = context;
   const formFields = fields.filter((field) => !field.hidden);
 
   const invalidMessage = (field: string): string | null => {
@@ -24,7 +27,7 @@ export const RenderFields: React.FC<Props> = ({ control, register, errors, field
             <InputLabel htmlFor={meta.field} required={Boolean(meta.required)}>
               {meta.label}
             </InputLabel>
-            <FieldComponent control={control} register={register} errors={errors} field={meta} />
+            <FieldComponent context={context} field={meta} />
             <FormHelperText error>{invalidMessage(meta.field)}</FormHelperText>
           </Box>
         );
