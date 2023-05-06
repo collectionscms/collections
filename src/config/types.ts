@@ -125,3 +125,13 @@ export type Permission = {
 export type ProjectSetting = {
   name: string;
 } & PrimaryKey;
+
+export type File = {
+  storage: string;
+  fileName: string;
+  fileNameDisk: string;
+  type: string;
+  fileSize: number | null;
+  width: number | null;
+  height: number | null;
+} & PrimaryKey;

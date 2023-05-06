@@ -79,6 +79,18 @@ export async function up(knex: Knex): Promise<void> {
     table.string('name', 100).notNullable();
     table.timestamps(true, true);
   });
+
+  await knex.schema.createTable('superfast_files', (table) => {
+    table.increments('id').primary().notNullable();
+    table.string('storage', 64).notNullable();
+    table.string('file_name', 255).notNullable();
+    table.string('file_name_disk', 255).notNullable();
+    table.string('type', 64).notNullable();
+    table.bigInteger('file_size');
+    table.integer('width');
+    table.integer('height');
+    table.timestamps(true, true);
+  });
 }
 
 export async function down(knex: Knex): Promise<void> {
@@ -89,5 +101,6 @@ export async function down(knex: Knex): Promise<void> {
     .dropTable('superfast_collections')
     .dropTable('superfast_fields')
     .dropTable('superfast_relations')
-    .dropTable('superfast_project_settings');
+    .dropTable('superfast_project_settings')
+    .dropTable('superfast_files');
 }
