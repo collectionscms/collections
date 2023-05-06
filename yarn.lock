@@ -1796,9 +1796,9 @@ ansi-escapes@^4.2.1:
   dependencies:
     type-fest "^0.21.3"
 
-ansi-escapes@^6.0.0:
+ansi-escapes@^6.2.0:
   version "6.2.0"
-  resolved "https://registry.npmjs.org/ansi-escapes/-/ansi-escapes-6.2.0.tgz"
+  resolved "https://registry.yarnpkg.com/ansi-escapes/-/ansi-escapes-6.2.0.tgz#8a13ce75286f417f1963487d86ba9f90dccf9947"
   integrity sha512-kzRaCqXnpzWs+3z5ABPQiVke+iq0KXkHo8xiWV4RPTi5Yli0l97BEQuhXV1s7+aSU/fu1kUuxgS4MsQ0fRuygw==
   dependencies:
     type-fest "^3.0.0"
@@ -4108,11 +4108,11 @@ inherits@2, inherits@2.0.4, inherits@^2.0.1, inherits@^2.0.3, inherits@^2.0.4, i
   integrity sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==
 
 inquirer@^9.2.0:
-  version "9.2.0"
-  resolved "https://registry.npmjs.org/inquirer/-/inquirer-9.2.0.tgz"
-  integrity sha512-WWERbVqjsTXjXub1ZW0ZHDit1dyHqy0T9XIkky9TnmKAPrjU9Jkd59nZPK0dUuM3s73GZAZu2Jo4iFU3XSPVLA==
+  version "9.2.1"
+  resolved "https://registry.yarnpkg.com/inquirer/-/inquirer-9.2.1.tgz#26019a270e7c451d54883e60959059aedcc60fa1"
+  integrity sha512-M7LcHl1GcKt8na7NKNvqkiB3btN73+Z5NjhbckpTi9Yr8Ul7sTHXe7cFEudH0WMPcvHfQ4pHjpVOnhaQ4IC4fw==
   dependencies:
-    ansi-escapes "^6.0.0"
+    ansi-escapes "^6.2.0"
     chalk "^5.2.0"
     cli-cursor "^4.0.0"
     cli-width "^4.0.0"
@@ -4120,9 +4120,9 @@ inquirer@^9.2.0:
     figures "^5.0.0"
     lodash "^4.17.21"
     mute-stream "1.0.0"
-    ora "^6.1.2"
+    ora "^6.3.0"
     run-async "^2.4.0"
-    rxjs "^7.8.0"
+    rxjs "^7.8.1"
     string-width "^5.1.2"
     strip-ansi "^7.0.1"
     through "^2.3.6"
@@ -5590,7 +5590,7 @@ optionator@^0.9.1:
     type-check "^0.4.0"
     word-wrap "^1.2.3"
 
-ora@^6.1.2, ora@^6.3.0:
+ora@^6.3.0:
   version "6.3.0"
   resolved "https://registry.npmjs.org/ora/-/ora-6.3.0.tgz"
   integrity sha512-1/D8uRFY0ay2kgBpmAwmSA404w4OoPVhHMqRqtjvrcK/dnzcEZxMJ+V4DUbyICu8IIVRclHcOf5wlD1tMY4GUQ==
@@ -6320,7 +6320,7 @@ run-parallel@^1.1.9:
   dependencies:
     queue-microtask "^1.2.2"
 
-rxjs@^7.2.0, rxjs@^7.8.0:
+rxjs@^7.2.0, rxjs@^7.8.1:
   version "7.8.1"
   resolved "https://registry.npmjs.org/rxjs/-/rxjs-7.8.1.tgz"
   integrity sha512-AA3TVj+0A2iuIoQkWEK/tqFjBq2j+6PO6Y0zJcvzLAFhEFIO3HL0vls9hWLncZbAAbK0mar7oZ4V079I/qPMxg==
