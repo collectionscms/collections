@@ -6,6 +6,7 @@ import { authentications } from '../controllers/authentications.js';
 import { collections } from '../controllers/collections.js';
 import { contents } from '../controllers/contents.js';
 import { fields } from '../controllers/fields.js';
+import { files } from '../controllers/files.js';
 import { projectSettings } from '../controllers/projectSettings.js';
 import { roles } from '../controllers/roles.js';
 import { users } from '../controllers/users.js';
@@ -36,6 +37,7 @@ export const attachApiListener = async (app: Express) => {
   app.use(contents);
   app.use(projectSettings);
   app.use(authentications);
+  app.use(files);
 
   app.use(errorHandler);
 };
