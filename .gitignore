@@ -27,5 +27,8 @@ dist
 data.db
 test.db
 
+# storage
+uploads/
+
 # Coverage
 coverage
