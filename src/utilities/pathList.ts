@@ -4,6 +4,7 @@ import { env } from '../env.js';
 export const pathList = {
   root: (...args: string[]) => path.join(env.ROOT_DIR, ...args),
   buildRoot: (...args: string[]) => path.join(process.cwd(), 'dist', ...args),
+  storageRoot: (...args: string[]) => path.join(process.cwd(), env.STORAGE_LOCAL_ROOT, ...args),
   admin: (...args: string[]) =>
     process.env.ADMIN_PATH
       ? path.join(process.env.ADMIN_PATH, ...args)
