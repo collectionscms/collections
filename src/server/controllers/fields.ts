@@ -2,6 +2,7 @@ import { camelCase } from 'change-case';
 import express, { Request, Response } from 'express';
 import { Knex } from 'knex';
 import { Field } from '../../config/types.js';
+import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
 import {
   collectionPermissionsHandler,
@@ -135,8 +136,16 @@ const addColumnToTable = (field: Field, table: Knex.CreateTableBuilder) => {
     case 'dateTime':
       column = table.dateTime(field.field);
       break;
-    default:
+    case 'fileImage':
+      column = table
+        .integer(field.field)
+        .unsigned()
+        .index()
+        .references('id')
+        .inTable('superfast_files');
       break;
+    default:
+      throw new InvalidPayloadException('unexpected_field_type_specified');
   }
 
   return column;

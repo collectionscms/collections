@@ -8,6 +8,7 @@ import { ComposeWrapper } from '../../../../components/utilities/ComposeWrapper/
 import { FieldContextProvider } from './Context/index.js';
 import { BooleanType } from './fieldTypes/Boolean/index.js';
 import { DateTimeType } from './fieldTypes/DateTime/index.js';
+import { FileImageType } from './fieldTypes/FileImage/index.js';
 import { InputType } from './fieldTypes/Input/index.js';
 import { InputMultilineType } from './fieldTypes/InputMultiline/index.js';
 import { InputRichTextMdType } from './fieldTypes/InputRichTextMd/index.js';
@@ -136,16 +137,17 @@ const CreateFieldImpl: React.FC<Props> = ({ slug, openState, onSuccess, onClose 
             onEditing={handleEditing}
             onSuccess={handleAdditionSuccess}
           />
-          {/* <FileType
+          <FileImageType
             slug={slug}
-            expanded={fieldInterface === 'file'}
+            expanded={fieldInterface === 'fileImage'}
             handleChange={(field) => onSelectedFieldInterface(field)}
             onEditing={handleEditing}
             onSuccess={handleAdditionSuccess}
           />
-          <FileImageType
+          {/*
+          <FileType
             slug={slug}
-            expanded={fieldInterface === 'fileImage'}
+            expanded={fieldInterface === 'file'}
             handleChange={(field) => onSelectedFieldInterface(field)}
             onEditing={handleEditing}
             onSuccess={handleAdditionSuccess}

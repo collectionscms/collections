@@ -16,18 +16,28 @@ MIGRATE_EXTENSIONS=".js"
 
 ## General
 
-| 変数名     | 説明               | 初期値                  |
-| :--------- | :----------------- | :---------------------- |
-| SERVER_URL | Expressサーバー URL | `http://localhost:4000` |
-| SERVER_HOST | Expressサーバー ホスト | `http://localhost` |
-| SERVER_PORT | App Server ポート  | `4000` |
-| ADMIN_PORT | App Admin ポート | `4001` |
+| 変数名      | 説明                    | 初期値                  |
+| :---------- | :---------------------- | :---------------------- |
+| SERVER_URL  | Express サーバー URL    | `http://localhost:4000` |
+| SERVER_HOST | Express サーバー ホスト | `http://localhost`      |
+| SERVER_PORT | App Server ポート       | `4000`                  |
+| ADMIN_PORT  | App Admin ポート        | `4001`                  |
+
+## Storage
+
+| 変数名             | 説明                                              | 初期値    |
+| :----------------- | :------------------------------------------------ | :-------- |
+| STORAGE_DRIVER     | 保存先ストレージのドライバ名（`local`, `aws-s3`） | `local`   |
+| STORAGE_LOCAL_ROOT | ローカルストレージの保存先ディレクトリ            | `uploads` |
+| STORAGE_KEY        | クラウドストレージのアクセスキー                  | --        |
+| STORAGE_SECRET     | クラウドストレージのシークレット                  | --        |
+| STORAGE_BUCKET     | クラウドストレージのバケット                      | --        |
 
 ## Express
 
-| 変数名     | 説明               | 初期値                  |
-| :--------- | :----------------- | :---------------------- |
-| REQ_LIMIT | リクエストボディの最大サイズ | `4mb` |
+| 変数名    | 説明                         | 初期値 |
+| :-------- | :--------------------------- | :----- |
+| REQ_LIMIT | リクエストボディの最大サイズ | `4mb`  |
 
 ## Database
 

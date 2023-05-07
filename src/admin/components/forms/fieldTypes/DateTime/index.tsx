@@ -9,7 +9,14 @@ import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Props } from '../types';
 
-export const DateTimeType: React.FC<Props> = ({ register, control, errors, field: meta }) => {
+export const DateTimeType: React.FC<Props> = ({
+  context: {
+    register,
+    control,
+    formState: { errors },
+  },
+  field: meta,
+}) => {
   const { t } = useTranslation();
   const required = meta.required && { required: t('yup.mixed.required') };
   dayjs.extend(utc);

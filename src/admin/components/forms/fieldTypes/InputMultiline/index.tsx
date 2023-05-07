@@ -3,7 +3,13 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Props } from '../types.js';
 
-export const InputMultilineType: React.FC<Props> = ({ register, errors, field }) => {
+export const InputMultilineType: React.FC<Props> = ({
+  context: {
+    register,
+    formState: { errors },
+  },
+  field,
+}) => {
   const { t } = useTranslation();
   const required = field.required && { required: t('yup.mixed.required') };
 

@@ -4,7 +4,10 @@ import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Props } from '../types';
 
-export const SelectDropdownType: React.FC<Props> = ({ control, register, field: meta }) => {
+export const SelectDropdownType: React.FC<Props> = ({
+  context: { control, register },
+  field: meta,
+}) => {
   const { t } = useTranslation();
   const required = meta.required && { required: t('yup.mixed.required') };
 

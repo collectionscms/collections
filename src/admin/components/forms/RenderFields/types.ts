@@ -1,9 +1,7 @@
-import { Control, FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form';
+import { FieldValues, UseFormReturn } from 'react-hook-form';
 import { Field } from '../../../../config/types.js';
 
 export type Props = {
-  control: Control<FieldValues, any>;
-  register: UseFormRegister<FieldValues>;
-  errors: FieldErrors<FieldValues>;
+  context: UseFormReturn<FieldValues, any>;
   fields: Field[];
 };
