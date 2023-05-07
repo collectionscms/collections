@@ -12,30 +12,24 @@ export const multipartHandler: RequestHandler = (req, res, next) => {
   const busboy = Busboy({ headers: req.headers });
   const service = new FileService();
 
+  let fileName = '';
+  let type = '';
+  let fileData: Buffer | null = null;
   let fileCount = 0;
   let savedFileKeys: number[] = [];
 
   busboy.on('file', async (_name, stream, info) => {
     const { filename, mimeType } = info;
+    fileName = filename;
+    type = mimeType;
+    fileCount++;
 
     stream.on('data', async (data: Buffer) => {
-      fileCount++;
-
-      const dimensions = sizeOf(data);
-
-      const meta: Omit<File, 'id'> = {
-        storage: env.STORAGE_DRIVER,
-        fileName: filename,
-        fileNameDisk: `${uuidv4()}.${extension(mimeType)}`,
-        fileSize: data.byteLength,
-        type: mimeType,
-        width: dimensions.width ?? null,
-        height: dimensions.height ?? null,
-      };
-
-      const key = await service.upload(data, meta);
-      savedFileKeys.push(key);
-      tryDone();
+      if (fileData === null) {
+        fileData = data;
+      } else {
+        fileData = Buffer.concat([fileData, data]);
+      }
     });
   });
 
@@ -44,8 +38,23 @@ export const multipartHandler: RequestHandler = (req, res, next) => {
     next(error);
   });
 
-  busboy.on('close', () => {
-    tryDone();
+  busboy.on('finish', async () => {
+    if (fileData) {
+      const dimensions = sizeOf(fileData);
+      const meta: Omit<File, 'id'> = {
+        storage: env.STORAGE_DRIVER,
+        fileName: fileName,
+        fileNameDisk: `${uuidv4()}.${extension(type)}`,
+        fileSize: fileData.byteLength,
+        type: type,
+        width: dimensions.width ?? null,
+        height: dimensions.height ?? null,
+      };
+
+      const key = await service.upload(fileData, meta);
+      savedFileKeys.push(key);
+      tryDone();
+    }
   });
 
   req.pipe(busboy);
