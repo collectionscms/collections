@@ -1,10 +1,15 @@
 import fse from 'fs-extra';
 import { env } from '../../../env.js';
+import { pathList } from '../../../utilities/pathList.js';
 import { Storage } from './base.js';
 
 export class LocalFileSystemStorage implements Storage {
-  get(location: string, encoding: BufferEncoding = 'base64'): Promise<string> {
-    const result = fse.readFile(location, encoding);
+  key(fileNameDisk: string): string {
+    return pathList.storageRoot(fileNameDisk);
+  }
+
+  get(key: string, encoding: BufferEncoding = 'base64'): Promise<string> {
+    const result = fse.readFile(key, encoding);
     return result;
   }
 
