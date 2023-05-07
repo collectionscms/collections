@@ -137,7 +137,12 @@ const addColumnToTable = (field: Field, table: Knex.CreateTableBuilder) => {
       column = table.dateTime(field.field);
       break;
     case 'fileImage':
-      column = table.text(field.field);
+      column = table
+        .integer(field.field)
+        .unsigned()
+        .index()
+        .references('id')
+        .inTable('superfast_files');
       break;
     default:
       throw new InvalidPayloadException('unexpected_field_type_specified');
