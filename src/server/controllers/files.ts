@@ -1,5 +1,4 @@
 import express, { Request, Response } from 'express';
-import { pathList } from '../../utilities/pathList.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
 import { multipartHandler } from '../middleware/multipartHandler.js';
 import { permissionsHandler } from '../middleware/permissionsHandler.js';
@@ -18,8 +17,7 @@ app.post(
     const repository = new FilesRepository();
     const file = await repository.readOne(keys[0]);
 
-    const path = pathList.storageRoot(file.fileNameDisk);
-    const raw = await getStorage().get(path);
+    const raw = await getRawData(file.id);
 
     res.json({ file, raw });
   })
@@ -34,11 +32,21 @@ app.get(
     const repository = new FilesRepository();
     const file = await repository.readOne(id);
 
-    const path = pathList.storageRoot(file.fileNameDisk);
-    const raw = await getStorage().get(path);
+    const raw = await getRawData(id);
 
     res.json({ file, raw });
   })
 );
+
+// Retrieves the raw data from a file.
+// The raw data is retrieved from uploaded storage.
+const getRawData = async (id: number): Promise<string> => {
+  const repository = new FilesRepository();
+  const file = await repository.readOne(id);
+
+  const storage = getStorage(file.storage);
+  const key = storage.key(file.fileNameDisk);
+  return await storage.get(key);
+};
 
 export const files = app;
