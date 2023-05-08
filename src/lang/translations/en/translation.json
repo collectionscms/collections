@@ -157,7 +157,9 @@
     "record_not_found": "Record not found.",
     "internal_server_error": "An unexpected error occurred.",
     "unexpected_field_type_specified": "Unexpected field type specified.",
-    "no_file_req_body": "No file in request body."
+    "no_file_req_body": "No file in request body.",
+    "invalid_access_key": "Invalid access key.",
+    "invalid_secret_key": "Invalid secret key."
   },
   "yup": {
     "mixed": {

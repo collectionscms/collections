@@ -28,6 +28,7 @@ export const defaults: Record<string, any> = {
   //STORAGE_KEY: '',
   //STORAGE_SECRET: '',
   //STORAGE_BUCKET: '',
+  //STORAGE_REGION: '',
 
   // /////////////////////////////////////
   // Database
