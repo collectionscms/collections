@@ -77,8 +77,25 @@ app.patch(
   asyncHandler(async (req: Request, res: Response) => {
     const id = Number(req.params.id);
     const repository = new FieldsRepository();
+    const collectionsRepository = new CollectionsRepository();
 
-    await repository.update(id, req.body);
+    await repository.transaction(async (tx) => {
+      await repository.transacting(tx).update(id, req.body);
+
+      if (req.body.options) {
+        const field = await repository.transacting(tx).readOne(id);
+        const collection = (
+          await collectionsRepository.transacting(tx).read({ collection: field.collection })
+        )[0];
+
+        await tx.transaction.schema.alterTable(
+          collection.collection,
+          (table: Knex.CreateTableBuilder) => {
+            addColumnToTable(field, table, true);
+          }
+        );
+      }
+    });
 
     res.status(204).end();
   })
@@ -113,7 +130,7 @@ app.delete(
   })
 );
 
-const addColumnToTable = (field: Field, table: Knex.CreateTableBuilder) => {
+const addColumnToTable = (field: Field, table: Knex.CreateTableBuilder, alter: boolean = false) => {
   let column = null;
 
   switch (field.interface) {
@@ -146,6 +163,10 @@ const addColumnToTable = (field: Field, table: Knex.CreateTableBuilder) => {
       break;
     default:
       throw new InvalidPayloadException('unexpected_field_type_specified');
+  }
+
+  if (alter) {
+    column.alter();
   }
 
   return column;
