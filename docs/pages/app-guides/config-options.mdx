@@ -34,12 +34,6 @@ MIGRATE_EXTENSIONS=".js"
 | STORAGE_BUCKET     | クラウドストレージのバケット                      | --        |
 | STORAGE_REGION     | クラウドストレージのリージョン                    | --        |
 
-## Express
-
-| 変数名    | 説明                         | 初期値 |
-| :-------- | :--------------------------- | :----- |
-| REQ_LIMIT | リクエストボディの最大サイズ | `4mb`  |
-
 ## Database
 
 | 変数名             | 説明                                | 初期値           |
@@ -47,6 +41,12 @@ MIGRATE_EXTENSIONS=".js"
 | DB_CLIENT          | Database クライアント(sqlite3)      | `sqlite3`        |
 | DB_FILENAME        | Database ファイルへのパス           | `./data.db`      |
 | MIGRATE_EXTENSIONS | migrations として扱うファイル拡張子 | `.js` (変更不可) |
+
+## Express
+
+| 変数名    | 説明                         | 初期値 |
+| :-------- | :--------------------------- | :----- |
+| REQ_LIMIT | リクエストボディの最大サイズ | `4mb`  |
 
 ## ハッシュ
 
@@ -66,7 +66,7 @@ MIGRATE_EXTENSIONS=".js"
 | ACCESS_TOKEN_TTL       | アクセストークンの有効期間。   | `8h`   |
 | REFRESH_TOKEN_TTL(WIP) | リフレッシュトークンの有効期間 | `7d`   |
 
-## シークレット
+## セキュリティ
 
 | 変数名 | 説明                       | 初期値   |
 | :----- | :------------------------- | :------- |
@@ -86,9 +86,9 @@ MIGRATE_EXTENSIONS=".js"
 
 ## Log
 
-| 変数名    | 説明                                                                             | 初期値 |
-| :-------- | :------------------------------------------------------------------------------- | :----- |
-| LOG_LEVEL | ログの出力レベル（`fatal`, `error`, `warn`, `info`, `debug`, `trace`, `silent`） | `info` |
+| 変数名           | 説明                                                                             | 初期値 |
+| :--------------- | :------------------------------------------------------------------------------- | :----- |
+| PUBLIC_LOG_LEVEL | ログの出力レベル（`fatal`, `error`, `warn`, `info`, `debug`, `trace`, `silent`） | `info` |
 
 ## Email
 
