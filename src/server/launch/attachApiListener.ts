@@ -12,7 +12,6 @@ import { roles } from '../controllers/roles.js';
 import { users } from '../controllers/users.js';
 import { authHandler } from '../middleware/authHandler.js';
 import { corsMiddleware } from '../middleware/cors.js';
-import { errorHandler } from '../middleware/errorHandler.js';
 import { extractTokenHandler } from '../middleware/extractTokenHandler.js';
 
 export const attachApiListener = async (app: Express) => {
@@ -38,6 +37,4 @@ export const attachApiListener = async (app: Express) => {
   app.use(projectSettings);
   app.use(authentications);
   app.use(files);
-
-  app.use(errorHandler);
 };
