@@ -159,7 +159,8 @@
     "unexpected_field_type_specified": "Unexpected field type specified.",
     "no_file_req_body": "No file in request body.",
     "invalid_access_key": "Invalid access key.",
-    "invalid_secret_key": "Invalid secret key."
+    "invalid_secret_key": "Invalid secret key.",
+    "file_does_not_exist": "File does not exist."
   },
   "yup": {
     "mixed": {

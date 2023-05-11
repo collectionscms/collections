@@ -159,7 +159,8 @@
     "unexpected_field_type_specified": "予期しないフィールドタイプが指定されました。",
     "no_file_req_body": "リクエストボディにファイルがありません。",
     "invalid_access_key": "アクセスキーが有効ではありません。",
-    "invalid_secret_key": "シークレットキーが有効ではありません。"
+    "invalid_secret_key": "シークレットキーが有効ではありません。",
+    "file_does_not_exist": "ファイルが存在しません。"
   },
   "yup": {
     "mixed": {
