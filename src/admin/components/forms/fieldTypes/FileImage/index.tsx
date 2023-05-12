@@ -2,14 +2,13 @@ import { PhotoCamera } from '@mui/icons-material';
 import { Box, IconButton } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
-import { File } from '../../../../../config/types.js';
 import { logger } from '../../../../../utilities/logger.js';
-import { api } from '../../../../utilities/api.js';
+import { ContentContextProvider, useContent } from '../../../../pages/collections/Context/index.js';
+import { ComposeWrapper } from '../../../utilities/ComposeWrapper/index.js';
 import { Props } from '../types.js';
 
-export const FileImageType: React.FC<Props> = ({
-  context: { register, setValue, watch },
+const FileImageTypeImpl: React.FC<Props> = ({
+  form: { register, setValue, watch },
   field: meta,
 }) => {
   const { t } = useTranslation();
@@ -17,16 +16,7 @@ export const FileImageType: React.FC<Props> = ({
   const [content, setContent] = useState<string | null>(null);
   const [fileId, setFileId] = useState<string | null>(null);
 
-  const getFileImage = (id: string | null): SWRMutationResponse<{ file: File; raw: string }> =>
-    useSWRMutation(id ? `/files/${id}` : null, (url) =>
-      api.get<{ file: File; raw: string }>(url).then((res) => res.data)
-    );
-
-  const createFileImage = () =>
-    useSWRMutation(`/files`, async (url: string, { arg }: { arg: Record<string, any> }) => {
-      return api.post<{ file: File; raw: string }>(url, arg).then((res) => res.data);
-    });
-
+  const { getFileImage, createFileImage } = useContent();
   const { trigger: getFileImageTrigger } = getFileImage(fileId);
   const { trigger: createFileImageTrigger } = createFileImage();
 
@@ -101,3 +91,5 @@ export const FileImageType: React.FC<Props> = ({
     </Box>
   );
 };
+
+export const FileImageType = ComposeWrapper({ context: ContentContextProvider })(FileImageTypeImpl);
