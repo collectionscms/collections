@@ -1,5 +1,5 @@
 import cookieParser from 'cookie-parser';
-import express, { Express } from 'express';
+import express from 'express';
 import { env } from '../../env.js';
 import { expressLogger } from '../../utilities/logger.js';
 import { authentications } from '../controllers/authentications.js';
@@ -14,27 +14,29 @@ import { authHandler } from '../middleware/authHandler.js';
 import { corsMiddleware } from '../middleware/cors.js';
 import { extractTokenHandler } from '../middleware/extractTokenHandler.js';
 
-export const attachApiListener = async (app: Express) => {
-  if (Boolean(env.CORS_ENABLED) === true) {
-    app.use(corsMiddleware);
-  }
+const router = express.Router();
 
-  app.use(cookieParser());
-  app.use(express.json({ limit: env.REQ_LIMIT }));
-  app.use(express.urlencoded({ limit: env.REQ_LIMIT, extended: true }));
-  app.use(expressLogger);
+if (Boolean(env.CORS_ENABLED) === true) {
+  router.use(corsMiddleware);
+}
 
-  app.use(extractTokenHandler);
-  app.use(authHandler);
+router.use(cookieParser());
+router.use(express.json({ limit: env.REQ_LIMIT }));
+router.use(express.urlencoded({ limit: env.REQ_LIMIT, extended: true }));
+router.use(expressLogger);
 
-  app.get('/health', (req, res) => res.send('ok'));
+router.use(extractTokenHandler);
+router.use(authHandler);
 
-  app.use(users);
-  app.use(roles);
-  app.use(collections);
-  app.use(fields);
-  app.use(contents);
-  app.use(projectSettings);
-  app.use(authentications);
-  app.use(files);
-};
+router.get('/health', (_req, res) => res.send('ok'));
+
+router.use(users);
+router.use(roles);
+router.use(collections);
+router.use(fields);
+router.use(contents);
+router.use(projectSettings);
+router.use(authentications);
+router.use(files);
+
+export const apiRouter = router;
