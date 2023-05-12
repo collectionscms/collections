@@ -7,9 +7,9 @@ import { PermissionsRepository } from '../repositories/permissions.js';
 import { RolesRepository } from '../repositories/roles.js';
 import { UsersRepository } from '../repositories/users.js';
 
-const app = express();
+const router = express.Router();
 
-app.get(
+router.get(
   '/roles',
   permissionsHandler([{ collection: 'superfast_roles', action: 'read' }]),
   asyncHandler(async (req: Request, res: Response) => {
@@ -21,7 +21,7 @@ app.get(
   })
 );
 
-app.get(
+router.get(
   '/roles/:id',
   permissionsHandler([{ collection: 'superfast_roles', action: 'read' }]),
   asyncHandler(async (req: Request, res: Response) => {
@@ -35,7 +35,7 @@ app.get(
   })
 );
 
-app.post(
+router.post(
   '/roles',
   permissionsHandler([{ collection: 'superfast_roles', action: 'create' }]),
   asyncHandler(async (req: Request, res: Response) => {
@@ -49,7 +49,7 @@ app.post(
   })
 );
 
-app.patch(
+router.patch(
   '/roles/:id',
   permissionsHandler([{ collection: 'superfast_roles', action: 'update' }]),
   asyncHandler(async (req: Request, res: Response) => {
@@ -62,7 +62,7 @@ app.patch(
   })
 );
 
-app.delete(
+router.delete(
   '/roles/:id',
   permissionsHandler([{ collection: 'superfast_roles', action: 'delete' }]),
   asyncHandler(async (req: Request, res: Response) => {
@@ -92,7 +92,7 @@ app.delete(
   })
 );
 
-app.get(
+router.get(
   '/roles/:id/permissions',
   permissionsHandler(),
   asyncHandler(async (req: Request, res: Response) => {
@@ -105,7 +105,7 @@ app.get(
   })
 );
 
-app.post(
+router.post(
   '/roles/:id/permissions',
   permissionsHandler([{ collection: 'superfast_permissions', action: 'create' }]),
   asyncHandler(async (req: Request, res: Response) => {
@@ -125,7 +125,7 @@ app.post(
   })
 );
 
-app.delete(
+router.delete(
   '/roles/:id/permissions/:permissionId',
   permissionsHandler([{ collection: 'superfast_permissions', action: 'delete' }]),
   asyncHandler(async (req: Request, res: Response) => {
@@ -138,4 +138,4 @@ app.delete(
   })
 );
 
-export const roles = app;
+export const roles = router;

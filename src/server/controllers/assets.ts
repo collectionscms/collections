@@ -4,9 +4,9 @@ import { FilesRepository } from '../repositories/files.js';
 import { getStorage } from '../storages/storage.js';
 import { FileNotFoundException } from '../../exceptions/storage/fileNotFound.js';
 
-const app = express();
+const router = express.Router();
 
-app.get(
+router.get(
   '/assets/:fileName',
   asyncHandler(async (req: Request, res: Response) => {
     const repository = new FilesRepository();
@@ -26,4 +26,4 @@ app.get(
   })
 );
 
-export const assets = app;
+export const assets = router;

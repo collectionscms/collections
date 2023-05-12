@@ -7,9 +7,9 @@ import { CollectionsRepository } from '../repositories/collections.js';
 import { FieldsRepository } from '../repositories/fields.js';
 import { PermissionsRepository } from '../repositories/permissions.js';
 
-const app = express();
+const router = express.Router();
 
-app.get(
+router.get(
   '/collections/:id',
   permissionsHandler(),
   asyncHandler(async (req: Request, res: Response) => {
@@ -28,7 +28,7 @@ app.get(
   })
 );
 
-app.get(
+router.get(
   '/collections',
   permissionsHandler(),
   asyncHandler(async (req: Request, res: Response) => {
@@ -40,7 +40,7 @@ app.get(
   })
 );
 
-app.post(
+router.post(
   '/collections',
   permissionsHandler([{ collection: 'superfast_collections', action: 'create' }]),
   asyncHandler(async (req: Request, res: Response) => {
@@ -108,7 +108,7 @@ app.post(
   })
 );
 
-app.patch(
+router.patch(
   '/collections/:id',
   permissionsHandler([{ collection: 'superfast_collections', action: 'update' }]),
   asyncHandler(async (req: Request, res: Response) => {
@@ -143,7 +143,7 @@ app.patch(
   })
 );
 
-app.delete(
+router.delete(
   '/collections/:id',
   permissionsHandler([{ collection: 'superfast_collections', action: 'delete' }]),
   asyncHandler(async (req: Request, res: Response) => {
@@ -170,4 +170,4 @@ app.delete(
   })
 );
 
-export const collections = app;
+export const collections = router;

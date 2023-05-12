@@ -5,9 +5,9 @@ import { permissionsHandler } from '../middleware/permissionsHandler.js';
 import { FilesRepository } from '../repositories/files.js';
 import { getStorage } from '../storages/storage.js';
 
-const app = express();
+const router = express.Router();
 
-app.post(
+router.post(
   '/files',
   asyncHandler(multipartHandler),
   permissionsHandler([{ collection: 'superfast_files', action: 'create' }]),
@@ -23,7 +23,7 @@ app.post(
   })
 );
 
-app.get(
+router.get(
   '/files/:id',
   permissionsHandler([{ collection: 'superfast_files', action: 'read' }]),
   asyncHandler(async (req: Request, res: Response) => {
@@ -49,4 +49,4 @@ const getRawData = async (id: number): Promise<string> => {
   return await storage.get(key);
 };
 
-export const files = app;
+export const files = router;

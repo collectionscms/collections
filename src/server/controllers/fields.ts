@@ -11,9 +11,9 @@ import {
 import { CollectionsRepository } from '../repositories/collections.js';
 import { FieldsRepository } from '../repositories/fields.js';
 
-const app = express();
+const router = express.Router();
 
-app.get(
+router.get(
   '/collections/:slug/fields',
   collectionPermissionsHandler('read'),
   asyncHandler(async (req: Request, res: Response) => {
@@ -33,7 +33,7 @@ app.get(
   })
 );
 
-app.post(
+router.post(
   '/collections/:slug/fields',
   permissionsHandler([{ collection: 'superfast_fields', action: 'create' }]),
   asyncHandler(async (req: Request, res: Response) => {
@@ -55,7 +55,7 @@ app.post(
   })
 );
 
-app.patch(
+router.patch(
   '/fields',
   permissionsHandler([{ collection: 'superfast_fields', action: 'update' }]),
   asyncHandler(async (req: Request, res: Response) => {
@@ -71,7 +71,7 @@ app.patch(
   })
 );
 
-app.patch(
+router.patch(
   '/fields/:id',
   permissionsHandler([{ collection: 'superfast_fields', action: 'update' }]),
   asyncHandler(async (req: Request, res: Response) => {
@@ -101,7 +101,7 @@ app.patch(
   })
 );
 
-app.delete(
+router.delete(
   '/collections/:collectionId/fields/:id',
   permissionsHandler([{ collection: 'superfast_fields', action: 'delete' }]),
   asyncHandler(async (req: Request, res: Response) => {
@@ -172,4 +172,4 @@ const addColumnToTable = (field: Field, table: Knex.CreateTableBuilder, alter: b
   return column;
 };
 
-export const fields = app;
+export const fields = router;
