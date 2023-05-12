@@ -3,6 +3,8 @@ import express from 'express';
 import { env } from '../../env.js';
 import { logger } from '../../utilities/logger.js';
 import { Output } from '../../utilities/output.js';
+import { assets } from '../controllers/assets.js';
+import { errorHandler } from '../middleware/errorHandler.js';
 import { attachApiListener } from './attachApiListener.js';
 
 export const createExpressServer = async () => {
@@ -13,8 +15,10 @@ export const createExpressServer = async () => {
 
   const apiApp = express();
   attachApiListener(apiApp);
-
   app.use('/api', apiApp);
+
+  app.use('/', assets);
+  app.use(errorHandler);
 
   app
     .listen(port, () => {

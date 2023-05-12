@@ -30,6 +30,24 @@ export class AwsS3Storage implements Storage {
     }
   }
 
+  async getBuffer(key: string): Promise<Buffer> {
+    try {
+      const result = await this.client().send(
+        new GetObjectCommand({
+          Bucket: env.STORAGE_BUCKET,
+          Key: key,
+        })
+      );
+
+      const object = await result.Body!.transformToByteArray();
+      const buffer = Buffer.from(object);
+
+      return buffer;
+    } catch (e: any) {
+      throw this.handleError(e, key, env.STORAGE_BUCKET);
+    }
+  }
+
   async put(fileNameDisk: string, content: Buffer): Promise<PutObjectCommandOutput> {
     try {
       const output = await this.client().send(

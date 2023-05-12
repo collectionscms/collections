@@ -13,6 +13,10 @@ export class LocalFileSystemStorage implements Storage {
     return result;
   }
 
+  getBuffer(key: string): Promise<Buffer> {
+    return fse.readFile(key);
+  }
+
   put(fileNameDisk: string, content: Buffer): Promise<unknown> {
     const filePath = `./${env.STORAGE_LOCAL_ROOT}/${fileNameDisk}`;
     const result = fse.outputFile(filePath, content);
