@@ -5,9 +5,9 @@ import { collectionPermissionsHandler } from '../middleware/permissionsHandler.j
 import { CollectionsRepository } from '../repositories/collections.js';
 import { ContentsRepository } from '../repositories/contents.js';
 
-const app = express();
+const router = express.Router();
 
-app.get(
+router.get(
   '/collections/:slug/contents',
   collectionPermissionsHandler('read'),
   asyncHandler(async (req: Request, res: Response) => {
@@ -22,7 +22,7 @@ app.get(
   })
 );
 
-app.get(
+router.get(
   '/collections/:slug/contents/:id',
   collectionPermissionsHandler('read'),
   asyncHandler(async (req: Request, res: Response) => {
@@ -39,7 +39,7 @@ app.get(
   })
 );
 
-app.post(
+router.post(
   '/collections/:slug/contents',
   collectionPermissionsHandler('create'),
   asyncHandler(async (req: Request, res: Response) => {
@@ -54,7 +54,7 @@ app.post(
   })
 );
 
-app.patch(
+router.patch(
   '/collections/:slug/contents/:id',
   collectionPermissionsHandler('update'),
   asyncHandler(async (req: Request, res: Response) => {
@@ -72,7 +72,7 @@ app.patch(
   })
 );
 
-app.delete(
+router.delete(
   '/collections/:slug/contents/:id',
   collectionPermissionsHandler('delete'),
   asyncHandler(async (req: Request, res: Response) => {
@@ -118,4 +118,4 @@ async function makeConditions(req: Request, slug: string) {
   return conditions;
 }
 
-export const contents = app;
+export const contents = router;

@@ -10,9 +10,9 @@ import { UsersRepository } from '../repositories/users.js';
 import { MailService } from '../services/mail.js';
 import { oneWayHash } from '../utilities/oneWayHash.js';
 
-const app = express();
+const router = express.Router();
 
-app.get(
+router.get(
   '/users',
   permissionsHandler([{ collection: 'superfast_users', action: 'read' }]),
   asyncHandler(async (req: Request, res: Response) => {
@@ -30,7 +30,7 @@ app.get(
   })
 );
 
-app.get(
+router.get(
   '/users/:id',
   permissionsHandler([{ collection: 'superfast_users', action: 'read' }]),
   asyncHandler(async (req: Request, res: Response) => {
@@ -46,7 +46,7 @@ app.get(
   })
 );
 
-app.post(
+router.post(
   '/users',
   permissionsHandler([{ collection: 'superfast_users', action: 'create' }]),
   asyncHandler(async (req: Request, res: Response) => {
@@ -61,7 +61,7 @@ app.post(
   })
 );
 
-app.patch(
+router.patch(
   '/users/:id',
   permissionsHandler([{ collection: 'superfast_users', action: 'update' }]),
   asyncHandler(async (req: Request, res: Response) => {
@@ -78,7 +78,7 @@ app.patch(
   })
 );
 
-app.delete(
+router.delete(
   '/users/:id',
   permissionsHandler([{ collection: 'superfast_users', action: 'delete' }]),
   asyncHandler(async (req: Request, res: Response) => {
@@ -99,7 +99,7 @@ app.delete(
   })
 );
 
-app.post(
+router.post(
   '/users/reset-password',
   asyncHandler(async (req: Request, res: Response) => {
     const token = req.body.token;
@@ -123,7 +123,7 @@ app.post(
   })
 );
 
-app.post(
+router.post(
   '/users/forgot-password',
   asyncHandler(async (req: Request, res: Response) => {
     const repository = new UsersRepository();
@@ -174,4 +174,4 @@ const payload = (user: any) => {
   };
 };
 
-export const users = app;
+export const users = router;

@@ -3,9 +3,9 @@ import { asyncHandler } from '../middleware/asyncHandler.js';
 import { permissionsHandler } from '../middleware/permissionsHandler.js';
 import { ProjectSettingsRepository } from '../repositories/projectSettings.js';
 
-const app = express();
+const router = express.Router();
 
-app.get(
+router.get(
   '/project-settings',
   asyncHandler(async (req: Request, res: Response) => {
     const repository = new ProjectSettingsRepository();
@@ -15,7 +15,7 @@ app.get(
   })
 );
 
-app.patch(
+router.patch(
   '/project-settings',
   permissionsHandler([{ collection: 'superfast_project_settings', action: 'update' }]),
   asyncHandler(async (req: Request, res: Response) => {
@@ -27,4 +27,4 @@ app.patch(
   })
 );
 
-export const projectSettings = app;
+export const projectSettings = router;

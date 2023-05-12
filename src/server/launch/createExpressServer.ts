@@ -5,19 +5,15 @@ import { logger } from '../../utilities/logger.js';
 import { Output } from '../../utilities/output.js';
 import { assets } from '../controllers/assets.js';
 import { errorHandler } from '../middleware/errorHandler.js';
-import { attachApiListener } from './attachApiListener.js';
+import { apiRouter } from './apiRouter.js';
 
 export const createExpressServer = async () => {
   const port = env.SERVER_PORT;
   const host = env.SERVER_HOST;
 
   const app = express();
-
-  const apiApp = express();
-  attachApiListener(apiApp);
-  app.use('/api', apiApp);
-
   app.use('/', assets);
+  app.use('/api', apiRouter);
   app.use(errorHandler);
 
   app

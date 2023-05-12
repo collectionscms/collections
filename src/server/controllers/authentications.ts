@@ -8,9 +8,9 @@ import { asyncHandler } from '../middleware/asyncHandler.js';
 import { permissionsHandler } from '../middleware/permissionsHandler.js';
 import { UsersRepository } from '../repositories/users.js';
 
-const app = express();
+const router = express.Router();
 
-app.post(
+router.post(
   '/authentications/login',
   asyncHandler(async (req: Request, res: Response) => {
     const repository = new UsersRepository();
@@ -28,7 +28,7 @@ app.post(
   })
 );
 
-app.get(
+router.get(
   '/me',
   permissionsHandler(),
   asyncHandler(async (req: Request, res: Response) => {
@@ -53,4 +53,4 @@ const toToken = (user: MeUser) => {
   return token;
 };
 
-export const authentications = app;
+export const authentications = router;
