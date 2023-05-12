@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWR, { SWRConfiguration, SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
-import { Field } from '../../../../config/types.js';
+import { Field, File } from '../../../../config/types.js';
 import { api } from '../../../utilities/api.js';
 import { ContentContext } from './types.js';
 
@@ -59,6 +59,16 @@ export const ContentContextProvider: React.FC<{ children: React.ReactNode }> = (
       }
     );
 
+  const getFileImage = (id: string | null): SWRMutationResponse<{ file: File; raw: string }> =>
+    useSWRMutation(id ? `/files/${id}` : null, (url) =>
+      api.get<{ file: File; raw: string }>(url).then((res) => res.data)
+    );
+
+  const createFileImage = () =>
+    useSWRMutation(`/files`, async (url: string, { arg }: { arg: Record<string, any> }) => {
+      return api.post<{ file: File; raw: string }>(url, arg).then((res) => res.data);
+    });
+
   const value = useMemo(
     () => ({
       getContents,
@@ -68,6 +78,8 @@ export const ContentContextProvider: React.FC<{ children: React.ReactNode }> = (
       getPreviewContents,
       createContent,
       updateContent,
+      getFileImage,
+      createFileImage,
     }),
     [
       getContents,
@@ -77,6 +89,8 @@ export const ContentContextProvider: React.FC<{ children: React.ReactNode }> = (
       getPreviewContents,
       createContent,
       updateContent,
+      getFileImage,
+      createFileImage,
     ]
   );
 

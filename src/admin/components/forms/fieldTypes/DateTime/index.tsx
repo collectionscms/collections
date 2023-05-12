@@ -7,10 +7,10 @@ import utc from 'dayjs/plugin/utc.js';
 import React from 'react';
 import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Props } from '../types';
+import { Props } from '../types.js';
 
 export const DateTimeType: React.FC<Props> = ({
-  context: {
+  form: {
     register,
     control,
     formState: { errors },

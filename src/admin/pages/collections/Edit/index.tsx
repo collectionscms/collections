@@ -139,7 +139,7 @@ const EditCollectionPageImpl: React.FC<Props> = ({ collection }) => {
       <Grid container columns={{ xs: 1, lg: 2 }}>
         <Grid xs={1}>
           <Stack rowGap={3}>
-            <RenderFields context={formContext} fields={metaFields || []} />
+            <RenderFields form={formContext} fields={metaFields || []} />
           </Stack>
         </Grid>
       </Grid>
