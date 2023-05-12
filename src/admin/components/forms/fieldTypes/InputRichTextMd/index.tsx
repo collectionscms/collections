@@ -6,7 +6,7 @@ import { SimpleMdeReact } from 'react-simplemde-editor';
 import { Props } from '../types.js';
 
 export const InputRichTextMdType: React.FC<Props> = ({
-  context: { control, register },
+  form: { control, register },
   field: meta,
 }) => {
   const { t } = useTranslation();

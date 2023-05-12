@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Props } from '../types.js';
 
 export const InputType: React.FC<Props> = ({
-  context: {
+  form: {
     register,
     formState: { errors },
   },

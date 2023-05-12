@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Props } from '../types';
 
 export const SelectDropdownType: React.FC<Props> = ({
-  context: { control, register },
+  form: { control, register },
   field: meta,
 }) => {
   const { t } = useTranslation();

@@ -1,9 +1,9 @@
 import { Checkbox } from '@mui/material';
 import React from 'react';
 import { Controller } from 'react-hook-form';
-import { Props } from '../types';
+import { Props } from '../types.js';
 
-export const BooleanType: React.FC<Props> = ({ context: { control }, field: meta }) => {
+export const BooleanType: React.FC<Props> = ({ form: { control }, field: meta }) => {
   return (
     <Controller
       name={meta.field}
