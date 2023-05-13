@@ -5,7 +5,7 @@ import { logger } from '../utilities/logger.js';
 import { Output } from '../utilities/output.js';
 import { assets } from '../server/controllers/assets.js';
 import { errorHandler } from '../server/middleware/errorHandler.js';
-import { apiRouter } from '../server/launch/apiRouter.js';
+import { apiRouter } from '../server/router/apiRouter.js';
 
 export const initApiServer = async () => {
   const port = env.SERVER_PORT;
