@@ -10,7 +10,7 @@ export const scriptBuild = async () => {
   rimraf(pathList.build());
 
   serverConfigure.mode = 'production';
-  serverConfigure.entry = pathList.root('scripts', 'entries', 'build.js');
+  serverConfigure.entry = pathList.root('scripts', 'entries', 'start.js');
   serverConfigure.output!.path = pathList.build();
 
   const compiler = webpack(adminConfigure);
