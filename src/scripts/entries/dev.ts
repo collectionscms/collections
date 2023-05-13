@@ -1,10 +1,10 @@
 import httpProxy from 'http-proxy';
 import { env } from '../../env.js';
-import { createExpressServer } from '../../server/launch/createExpressServer.js';
+import { initApiServer } from '../../express/api.js';
 import { logger } from '../../utilities/logger.js';
 
 (async () => {
-  const app = await createExpressServer();
+  const app = await initApiServer();
   const proxy = httpProxy.createProxyServer();
 
   app.get(['/admin/*', '/admin'], (req, res) => {

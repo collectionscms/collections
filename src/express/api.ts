@@ -1,13 +1,13 @@
 import chalk from 'chalk';
 import express from 'express';
-import { env } from '../../env.js';
-import { logger } from '../../utilities/logger.js';
-import { Output } from '../../utilities/output.js';
-import { assets } from '../controllers/assets.js';
-import { errorHandler } from '../middleware/errorHandler.js';
-import { apiRouter } from './apiRouter.js';
+import { env } from '../env.js';
+import { logger } from '../utilities/logger.js';
+import { Output } from '../utilities/output.js';
+import { assets } from '../server/controllers/assets.js';
+import { errorHandler } from '../server/middleware/errorHandler.js';
+import { apiRouter } from '../server/launch/apiRouter.js';
 
-export const createExpressServer = async () => {
+export const initApiServer = async () => {
   const port = env.SERVER_PORT;
   const host = env.SERVER_HOST;
 

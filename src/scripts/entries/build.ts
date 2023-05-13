@@ -1,12 +1,12 @@
 import express from 'express';
-import { createExpressServer } from '../../server/launch/createExpressServer.js';
+import { initApiServer } from '../../express/api.js';
 import { pathList } from '../../utilities/pathList.js';
 
 (async () => {
-  const app = await createExpressServer();
+  const app = await initApiServer();
 
   app.use('/admin', express.static(pathList.build('admin')));
-  app.get('/admin/*', (req, res) => {
+  app.get('/admin/*', (_req, res) => {
     res.sendFile(pathList.build('admin', 'index.html'));
   });
 })();
