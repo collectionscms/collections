@@ -1,12 +1,10 @@
 import ReactRefreshPlugin from '@pmmmwh/react-refresh-webpack-plugin';
-import express from 'express';
 import path from 'path';
 import webpack from 'webpack';
 import WebpackDevMiddleware from 'webpack-dev-middleware';
 import WebpackHotMiddleware from 'webpack-hot-middleware';
 import WebpackShellPluginNext from 'webpack-shell-plugin-next';
-import { env } from '../../env.js';
-import { Output } from '../../utilities/output.js';
+import { initAdminServer } from '../../express/admin.js';
 import { pathList } from '../../utilities/pathList.js';
 import { adminConfigure } from '../../webpack/adminConfigure.js';
 import { serverConfigure } from '../../webpack/serverConfigure.js';
@@ -42,7 +40,7 @@ export const scriptDev = async () => {
   // /////////////////////////////////////
   // Admin UI
   // /////////////////////////////////////
-  const app = express();
+  const app = await initAdminServer();
 
   const publicPath = '/admin';
   const hmrPath = `${publicPath}/__webpack_hmr`;
@@ -74,9 +72,5 @@ export const scriptDev = async () => {
       path.join(adminConfigure!.output!.path!, 'index.html')
     );
     res.end(index);
-  });
-
-  app.listen(env.ADMIN_PORT).on('error', (e) => {
-    Output.error(e);
   });
 };
