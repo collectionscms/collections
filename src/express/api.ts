@@ -1,17 +1,16 @@
 import chalk from 'chalk';
-import express from 'express';
+import { Express } from 'express';
 import { env } from '../env.js';
-import { logger } from '../utilities/logger.js';
-import { Output } from '../utilities/output.js';
 import { assets } from '../server/controllers/assets.js';
 import { errorHandler } from '../server/middleware/errorHandler.js';
 import { apiRouter } from '../server/router/apiRouter.js';
+import { logger } from '../utilities/logger.js';
+import { Output } from '../utilities/output.js';
 
-export const initApiServer = async () => {
+export const initApiServer = async (app: Express) => {
   const port = env.SERVER_PORT;
   const host = env.SERVER_HOST;
 
-  const app = express();
   app.use('/', assets);
   app.use('/api', apiRouter);
   app.use(errorHandler);
@@ -25,6 +24,4 @@ export const initApiServer = async () => {
       logger.error(e);
       Output.error('Error starting Express');
     });
-
-  return app;
 };

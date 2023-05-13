@@ -8,6 +8,7 @@ import { initAdminServer } from '../../express/admin.js';
 import { pathList } from '../../utilities/pathList.js';
 import { adminConfigure } from '../../webpack/adminConfigure.js';
 import { serverConfigure } from '../../webpack/serverConfigure.js';
+import express from 'express';
 
 export const scriptDev = async () => {
   // /////////////////////////////////////
@@ -40,7 +41,8 @@ export const scriptDev = async () => {
   // /////////////////////////////////////
   // Admin UI
   // /////////////////////////////////////
-  const app = await initAdminServer();
+  const app = express();
+  await initAdminServer(app);
 
   const publicPath = '/admin';
   const hmrPath = `${publicPath}/__webpack_hmr`;
