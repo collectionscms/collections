@@ -49,7 +49,7 @@ export abstract class BaseRepository<T> implements AbstractRepository<T> {
   }
 
   async create(item: Omit<T, 'id'>): Promise<T> {
-    const [output] = await this.queryBuilder.insert(item).returning('id');
+    const [output] = await this.queryBuilder.insert(item).returning('*');
 
     return output as Promise<T>;
   }

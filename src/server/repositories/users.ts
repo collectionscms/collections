@@ -16,7 +16,7 @@ export class UsersRepository extends BaseRepository<User> {
 
   async create(item: Omit<User, 'id'>): Promise<User> {
     await this.checkUniqueEmail(item.email);
-    const [output] = await this.queryBuilder.insert(item).returning('id');
+    const [output] = await this.queryBuilder.insert(item).returning('*');
 
     return output as Promise<User>;
   }
