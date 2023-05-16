@@ -36,7 +36,7 @@ export const SelectDropdownType: React.FC<Props> = (props) => {
   const [state, setState] = useState(false);
   const { t } = useTranslation();
   const { createField } = useField();
-  const { trigger, isMutating } = createField(slug);
+  const { trigger, isMutating } = createField();
   const defaultValues = { field: '', label: '', required: false, choices: [] };
   const {
     control,

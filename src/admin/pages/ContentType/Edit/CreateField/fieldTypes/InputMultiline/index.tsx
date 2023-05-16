@@ -31,7 +31,7 @@ export const InputMultilineType: React.FC<Props> = (props) => {
   const { slug, expanded, handleChange, onEditing, onSuccess } = props;
   const { t } = useTranslation();
   const { createField } = useField();
-  const { trigger, isMutating } = createField(slug);
+  const { trigger, isMutating } = createField();
   const defaultValues = { field: '', label: '', required: false };
   const {
     control,
