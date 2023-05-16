@@ -12,6 +12,7 @@ import { FileImageType } from './fieldTypes/FileImage/index.js';
 import { InputType } from './fieldTypes/Input/index.js';
 import { InputMultilineType } from './fieldTypes/InputMultiline/index.js';
 import { InputRichTextMdType } from './fieldTypes/InputRichTextMd/index.js';
+import { ListOneToManyType } from './fieldTypes/ListOneToMany/index.js';
 import { SelectDropdownType } from './fieldTypes/SelectDropdown/index.js';
 import { Props } from './types.js';
 
@@ -144,42 +145,13 @@ const CreateFieldImpl: React.FC<Props> = ({ slug, openState, onSuccess, onClose 
             onEditing={handleEditing}
             onSuccess={handleAdditionSuccess}
           />
-          {/*
-          <FileType
+          <ListOneToManyType
             slug={slug}
-            expanded={fieldInterface === 'file'}
+            expanded={fieldInterface === 'listOneToMany'}
             handleChange={(field) => onSelectedFieldInterface(field)}
             onEditing={handleEditing}
             onSuccess={handleAdditionSuccess}
           />
-          <ListType
-            slug={slug}
-            expanded={fieldInterface === 'list'}
-            handleChange={(field) => onSelectedFieldInterface(field)}
-            onEditing={handleEditing}
-            onSuccess={handleAdditionSuccess}
-          />
-          <ListO2oType
-            slug={slug}
-            expanded={fieldInterface === 'listO2o'}
-            handleChange={(field) => onSelectedFieldInterface(field)}
-            onEditing={handleEditing}
-            onSuccess={handleAdditionSuccess}
-          />
-          <ListO2mType
-            slug={slug}
-            expanded={fieldInterface === 'listO2m'}
-            handleChange={(field) => onSelectedFieldInterface(field)}
-            onEditing={handleEditing}
-            onSuccess={handleAdditionSuccess}
-          />
-          <SelectDropdownM2oType
-            slug={slug}
-            expanded={fieldInterface === 'selectDropdownM2o'}
-            handleChange={(field) => onSelectedFieldInterface(field)}
-            onEditing={handleEditing}
-            onSuccess={handleAdditionSuccess}
-          /> */}
         </Box>
       </Drawer>
     </Box>

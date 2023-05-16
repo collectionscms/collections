@@ -137,7 +137,6 @@ const addColumnToTable = (field: Field, table: Knex.CreateTableBuilder, alter: b
       column = table.string(field.field, 255).defaultTo('');
       break;
     case 'inputMultiline':
-    // case 'inputRichTextHtml':
     case 'inputRichTextMd':
       column = table.text(field.field);
       break;
@@ -157,11 +156,17 @@ const addColumnToTable = (field: Field, table: Knex.CreateTableBuilder, alter: b
         .references('id')
         .inTable('superfast_files');
       break;
+    case 'listOneToMany':
+      // noop
+      break;
+    case 'selectDropdownManyToOne':
+      column = table.integer(field.field).unsigned().index();
+      break;
     default:
       throw new InvalidPayloadException('unexpected_field_type_specified');
   }
 
-  if (alter) {
+  if (column && alter) {
     column.alter();
   }
 

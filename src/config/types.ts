@@ -59,17 +59,13 @@ export type Collection = {
 export type FieldInterface =
   | 'input'
   | 'inputMultiline'
-  // | 'inputRichTextHtml'
   | 'inputRichTextMd'
   | 'selectDropdown'
   | 'dateTime'
   | 'boolean'
-  // | 'file'
   | 'fileImage'
-  // | 'list'
-  // | 'listO2o' // one-to-one
-  // | 'listO2m' // one-to-many
-  // | 'selectDropdownM2o' // many-to-one
+  | 'listOneToMany'
+  | 'selectDropdownManyToOne'
   | 'selectDropdownStatus'; // public status
 export type FieldOption = {
   choices?: Choice[];
