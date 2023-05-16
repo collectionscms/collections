@@ -66,11 +66,6 @@ export async function up(knex: Knex): Promise<void> {
     table.string('many_field', 64).notNullable();
     table.string('one_collection', 64).notNullable();
     table.string('one_field', 64);
-    table.string('one_collection_field', 64);
-    table.text('one_allowed_collections');
-    table.string('junction_field', 64);
-    table.string('sort_field', 64);
-    table.string('one_deselect_action', 255);
     table.timestamps(true, true);
   });
 

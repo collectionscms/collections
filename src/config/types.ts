@@ -135,3 +135,10 @@ export type File = {
   width: number | null;
   height: number | null;
 } & PrimaryKey;
+
+export type Relation = {
+  manyCollection: string;
+  manyField: string;
+  oneCollection: string;
+  oneField: string | null;
+} & PrimaryKey;
