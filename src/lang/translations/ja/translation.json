@@ -90,6 +90,8 @@
   "default_value": "初期値",
   "enabled": "有効",
   "disabled": "無効",
+  "related_content": "関連コンテンツ",
+  "foreign_key": "外部キー",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",

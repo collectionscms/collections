@@ -90,6 +90,8 @@
   "default_value": "Default Value",
   "enabled": "Enabled",
   "disabled": "Disabled",
+  "related_content": "Related Content Type",
+  "foreign_key": "Foreign Key",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion.",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",
