@@ -17,9 +17,10 @@ import {
   Typography,
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { Field } from '../../../../../../../config/types.js';
 import { logger } from '../../../../../../../utilities/logger.js';
 import { shallowEqualObject } from '../../../../../../../utilities/shallowEqualObject.js';
 import {
@@ -28,15 +29,14 @@ import {
 } from '../../../../../../fields/schemas/collectionFields/listOneToMany/createListOneToMany.js';
 import { useField } from '../../Context/index.js';
 import { Props } from '../types.js';
-import { Field } from '../../../../../../../config/types.js';
 
 export const ListOneToManyType: React.FC<Props> = (props) => {
   const { slug, expanded, handleChange, onEditing, onSuccess } = props;
   const { t } = useTranslation();
-  const { createField, getCollections, createRelations } = useField();
+  const { createField, getCollections, createRelation } = useField();
   const { data: collections } = getCollections();
   const { trigger: createFieldTrigger, isMutating } = createField();
-  const { trigger: createRelationsTrigger } = createRelations();
+  const { trigger: createRelationTrigger } = createRelation();
   const defaultValues = {
     field: '',
     label: '',
@@ -85,7 +85,7 @@ export const ListOneToManyType: React.FC<Props> = (props) => {
         }),
       ]);
 
-      await createRelationsTrigger({
+      await createRelationTrigger({
         manyCollection: form.relatedCollection,
         manyField: form.foreignKey,
         oneCollection: slug,

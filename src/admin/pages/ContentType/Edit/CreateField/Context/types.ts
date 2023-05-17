@@ -5,5 +5,5 @@ import { Collection, Field, Relation } from '../../../../../../config/types.js';
 export type FieldContext = {
   createField: () => SWRMutationResponse<Field, any, Record<string, any>, any>;
   getCollections: () => SWRResponse<Collection[]>;
-  createRelations: () => SWRMutationResponse<Relation, any, Record<string, any>, any>;
+  createRelation: () => SWRMutationResponse<Relation, any, Record<string, any>, any>;
 };

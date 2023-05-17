@@ -18,7 +18,7 @@ export const FieldContextProvider: React.FC<{ children: React.ReactNode }> = ({ 
       api.get<{ collections: Collection[] }>(url).then((res) => res.data.collections)
     );
 
-  const createRelations = () =>
+  const createRelation = () =>
     useSWRMutation(`/relations`, async (url: string, { arg }: { arg: Record<string, any> }) => {
       return api.post<{ relation: Relation }>(url, arg).then((res) => res.data.relation);
     });
@@ -27,9 +27,9 @@ export const FieldContextProvider: React.FC<{ children: React.ReactNode }> = ({ 
     () => ({
       createField,
       getCollections,
-      createRelations,
+      createRelation,
     }),
-    [createField, getCollections, createRelations]
+    [createField, getCollections, createRelation]
   );
 
   return <Context.Provider value={value}>{children}</Context.Provider>;
