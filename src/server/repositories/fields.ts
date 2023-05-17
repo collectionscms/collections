@@ -18,10 +18,6 @@ export class FieldsRepository extends BaseRepository<Field> {
     return this.queryBuilder.where(data).orderByRaw('sort ASC NULLS LAST');
   }
 
-  deleteAll(data: Partial<Field>): Promise<boolean> {
-    return this.queryBuilder.where(data).delete();
-  }
-
   async create(item: Omit<Field, 'id'>): Promise<Field> {
     await this.checkUniqueField(item.collection, item.field);
     const [output] = await this.queryBuilder.insert(item).returning('*');
