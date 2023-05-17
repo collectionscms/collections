@@ -10,6 +10,7 @@ import {
 } from '../middleware/permissionsHandler.js';
 import { CollectionsRepository } from '../repositories/collections.js';
 import { FieldsRepository } from '../repositories/fields.js';
+import { RelationsRepository } from '../repositories/relations.js';
 
 const router = express.Router();
 
@@ -105,12 +106,14 @@ router.delete(
     const id = Number(req.params.id);
     const repository = new FieldsRepository();
     const collectionsRepository = new CollectionsRepository();
+    const relationsRepository = new RelationsRepository();
 
     const collection = await collectionsRepository.readOne(collectionId);
     const field = await repository.readOne(id);
 
     await repository.transaction(async (tx) => {
       await repository.transacting(tx).delete(id);
+
       await tx.transaction.schema.alterTable(collection.collection, (table) => {
         table.dropColumn(field.field);
       });
@@ -120,6 +123,13 @@ router.delete(
           statusField: null,
         });
       }
+
+      await relationsRepository
+        .transacting(tx)
+        .deleteMany({ manyCollection: field.collection, manyField: field.field });
+
+      // When a reference is deleted, null the one field of the relation.
+      await relationsRepository.transacting(tx).nullifyOneRelation(field.collection, field.field);
 
       res.status(204).end();
     });

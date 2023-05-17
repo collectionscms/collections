@@ -12,4 +12,10 @@ export class RelationsRepository extends BaseRepository<Relation> {
     });
     return repositoryTransaction;
   }
+
+  nullifyOneRelation(collection: string, field: string): Promise<boolean> {
+    return this.queryBuilder
+      .where({ one_collection: collection, one_field: field })
+      .update({ one_field: null });
+  }
 }
