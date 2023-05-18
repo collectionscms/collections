@@ -6,6 +6,7 @@ import { permissionsHandler } from '../middleware/permissionsHandler.js';
 import { CollectionsRepository } from '../repositories/collections.js';
 import { FieldsRepository } from '../repositories/fields.js';
 import { PermissionsRepository } from '../repositories/permissions.js';
+import { RelationsRepository } from '../repositories/relations.js';
 
 const router = express.Router();
 
@@ -151,6 +152,7 @@ router.delete(
     const repository = new CollectionsRepository();
     const fieldsRepository = new FieldsRepository();
     const permissionsRepository = new PermissionsRepository();
+    const relationsRepository = new RelationsRepository();
 
     const collection = await repository.readOne(id);
 
@@ -160,10 +162,48 @@ router.delete(
       await fieldsRepository.transacting(tx).deleteMany({ collection: collection.collection });
       await permissionsRepository.transacting(tx).deleteMany({ collection: collection.collection });
 
-      await tx
-        .transaction('superfast_relations')
-        .where('many_collection', collection.collection)
-        .delete();
+      // Delete many relation fields
+      const oneRelations = await relationsRepository
+        .transacting(tx)
+        .read({ oneCollection: collection.collection });
+
+      for (let relation of oneRelations) {
+        await fieldsRepository.transacting(tx).deleteMany({
+          collection: relation.manyCollection,
+          field: relation.manyField,
+        });
+
+        await tx.transaction.schema.table(relation.manyCollection, (table) => {
+          table.dropColumn(relation.manyField);
+        });
+      }
+
+      // Delete one relation fields
+      const manyRelations = await relationsRepository.transacting(tx).read({
+        manyCollection: collection.collection,
+      });
+
+      for (let relation of manyRelations) {
+        if (relation.oneField === null) return;
+
+        await fieldsRepository.transacting(tx).deleteMany({
+          collection: relation.oneCollection,
+          field: relation.oneField,
+        });
+
+        await tx.transaction.schema.table(relation.oneCollection, (table) => {
+          table.dropColumn(relation.oneField!);
+        });
+      }
+
+      // Delete relations
+      await relationsRepository
+        .transacting(tx)
+        .deleteMany({ manyCollection: collection.collection });
+
+      await relationsRepository
+        .transacting(tx)
+        .deleteMany({ oneCollection: collection.collection });
 
       res.status(204).end();
     });
