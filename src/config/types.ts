@@ -136,5 +136,5 @@ export type Relation = {
   manyCollection: string;
   manyField: string;
   oneCollection: string;
-  oneField: string | null;
+  oneField: string;
 } & PrimaryKey;

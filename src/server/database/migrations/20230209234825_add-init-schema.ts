@@ -65,7 +65,7 @@ export async function up(knex: Knex): Promise<void> {
     table.string('many_collection', 64).notNullable();
     table.string('many_field', 64).notNullable();
     table.string('one_collection', 64).notNullable();
-    table.string('one_field', 64);
+    table.string('one_field', 64).notNullable();
     table.timestamps(true, true);
   });
 

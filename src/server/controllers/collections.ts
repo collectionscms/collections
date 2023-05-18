@@ -184,8 +184,6 @@ router.delete(
       });
 
       for (let relation of manyRelations) {
-        if (relation.oneField === null) return;
-
         await fieldsRepository.transacting(tx).deleteMany({
           collection: relation.oneCollection,
           field: relation.oneField,
