@@ -124,12 +124,47 @@ router.delete(
         });
       }
 
+      // Delete many relation fields
+      const oneRelations = await relationsRepository
+        .transacting(tx)
+        .read({ oneCollection: collection.collection, oneField: field.field });
+
+      for (let relation of oneRelations) {
+        await repository.transacting(tx).deleteMany({
+          collection: relation.manyCollection,
+          field: relation.manyField,
+        });
+
+        await tx.transaction.schema.table(relation.manyCollection, (table) => {
+          table.dropColumn(relation.manyField);
+        });
+      }
+
+      // Delete one relation fields
+      const manyRelations = await relationsRepository.transacting(tx).read({
+        manyCollection: collection.collection,
+        manyField: field.field,
+      });
+
+      for (let relation of manyRelations) {
+        await repository.transacting(tx).deleteMany({
+          collection: relation.oneCollection,
+          field: relation.oneField,
+        });
+
+        await tx.transaction.schema.table(relation.oneCollection, (table) => {
+          table.dropColumn(relation.oneField!);
+        });
+      }
+
+      // Delete relations
       await relationsRepository
         .transacting(tx)
         .deleteMany({ manyCollection: field.collection, manyField: field.field });
 
-      // When a reference is deleted, null the one field of the relation.
-      await relationsRepository.transacting(tx).nullifyOneRelation(field.collection, field.field);
+      await relationsRepository
+        .transacting(tx)
+        .deleteMany({ oneCollection: field.collection, oneField: field.field });
 
       res.status(204).end();
     });
