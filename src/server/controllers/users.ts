@@ -53,10 +53,10 @@ router.post(
     const repository = new UsersRepository();
 
     req.body.password = await oneWayHash(req.body.password);
-    const user = await repository.create(req.body);
+    const userId = await repository.create(req.body);
 
     res.json({
-      user,
+      id: userId,
     });
   })
 );
