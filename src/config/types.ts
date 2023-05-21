@@ -1,6 +1,7 @@
 import {
   Collection as CollectionSchema,
   ProjectSetting as ProjectSettingSchema,
+  Role as RoleSchema,
   Permission as PermissionSchema,
 } from '../server/database/schemas.js';
 
@@ -107,11 +108,8 @@ export type User = {
 } & PrimaryKey;
 
 export type Role = {
-  name: string;
-  description: string;
-  adminAccess: boolean;
   permissions: Permission[];
-} & PrimaryKey;
+} & RoleSchema;
 
 export type PermissionsAction = 'create' | 'read' | 'update' | 'delete';
 export type Permission = {

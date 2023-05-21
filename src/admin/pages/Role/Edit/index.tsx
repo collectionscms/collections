@@ -80,7 +80,7 @@ const EditRolePageImpl: React.FC = () => {
   const setDefaultValue = (role: Role) => {
     setValue('name', role.name);
     setValue('description', role.description);
-    setValue('adminAccess', Boolean(role.adminAccess));
+    setValue('admin_access', Boolean(role.admin_access));
   };
 
   const handleDeletionSuccess = () => {
@@ -119,7 +119,7 @@ const EditRolePageImpl: React.FC = () => {
         </Grid>
         <Grid container spacing={3} columns={{ xs: 1, md: 4 }}>
           <Grid xs={1} md={2}>
-            {role.adminAccess ? (
+            {role.admin_access ? (
               <span>{t('admin_has_all_permissions')}</span>
             ) : (
               <TableContainer component={Paper}>
@@ -189,7 +189,7 @@ const EditRolePageImpl: React.FC = () => {
           <Grid xs={1}>
             <InputLabel>{t('admin_access')}</InputLabel>
             <Controller
-              name="adminAccess"
+              name="admin_access"
               control={control}
               render={({ field }) => (
                 <FormControlLabel
@@ -199,7 +199,7 @@ const EditRolePageImpl: React.FC = () => {
                 />
               )}
             />
-            <FormHelperText error>{errors.adminAccess?.message}</FormHelperText>
+            <FormHelperText error>{errors.admin_access?.message}</FormHelperText>
           </Grid>
         </Grid>
         <Grid container spacing={3} columns={{ xs: 1, md: 4 }}>

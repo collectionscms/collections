@@ -71,14 +71,14 @@ router.delete(
     const permissionsRepository = new PermissionsRepository();
     const usersRepository = new UsersRepository();
 
-    const users = await usersRepository.read({ roleId: id });
+    const users = await usersRepository.read({ role_id: id });
     if (users.length > 0) {
       throw new UnprocessableEntityException('can_not_delete_role_in_use');
     }
 
     const role = await repository.readOne(id);
-    if (role.adminAccess) {
-      const roles = await repository.read({ adminAccess: true });
+    if (role.admin_access) {
+      const roles = await repository.read({ admin_access: true });
       if (roles.length === 1) {
         throw new UnprocessableEntityException('can_not_delete_last_admin_role');
       }

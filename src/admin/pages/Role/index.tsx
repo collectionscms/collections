@@ -20,7 +20,7 @@ const RolePageImpl: React.FC = () => {
   const fields = [
     { field: 'name', label: t('name'), type: Type.Text },
     { field: 'description', label: t('description'), type: Type.Text },
-    { field: 'updatedAt', label: t('updated_at'), type: Type.Date },
+    { field: 'updated_at', label: t('updated_at'), type: Type.Date },
   ];
 
   const columns = buildColumns(fields);
