@@ -42,9 +42,9 @@ const CreateContentTypePageImpl: React.FC = () => {
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
-      const collection = await trigger(form);
+      const collectionId = await trigger(form);
       enqueueSnackbar(t('toast.created_successfully'), { variant: 'success' });
-      navigate(`../content-types/${collection!.id}`);
+      navigate(`../content-types/${collectionId!}`);
     } catch (e) {
       logger.error(e);
     }

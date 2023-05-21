@@ -59,7 +59,7 @@ router.post(
     delete data.status;
 
     await repository.transaction(async (tx) => {
-      const collection = await repository.transacting(tx).create(data);
+      const collectionId = await repository.transacting(tx).create(data);
 
       await tx.transaction.schema.createTable(req.body.collection, (table) => {
         table.increments();
@@ -103,7 +103,7 @@ router.post(
       ];
       await fieldsRepository.transacting(tx).createMany(fields);
 
-      res.json({ collection });
+      res.json({ id: collectionId });
     });
   })
 );
