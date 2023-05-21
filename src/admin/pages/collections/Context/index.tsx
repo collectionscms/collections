@@ -47,7 +47,7 @@ export const ContentContextProvider: React.FC<{ children: React.ReactNode }> = (
     useSWRMutation(
       `/collections/${slug}/contents`,
       async (url: string, { arg }: { arg: Record<string, any> }) => {
-        return api.post<{ content: unknown }>(url, arg).then((res) => res.data.content);
+        return api.post<{ id: number }>(url, arg).then((res) => res.data.id);
       }
     );
 
