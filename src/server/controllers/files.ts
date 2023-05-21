@@ -45,7 +45,7 @@ const getRawData = async (id: number): Promise<string> => {
   const file = await repository.readOne(id);
 
   const storage = getStorage(file.storage);
-  const key = storage.key(file.fileNameDisk);
+  const key = storage.key(file.file_name_disk);
   return await storage.get(key);
 };
 

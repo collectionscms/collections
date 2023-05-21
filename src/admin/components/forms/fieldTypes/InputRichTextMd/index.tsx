@@ -24,7 +24,7 @@ export const InputRichTextMdType: React.FC<Props> = ({
     try {
       const res = await createFileImageTrigger(params);
       if (res) {
-        onSuccess(`${window.location.origin}/assets/${res.file.fileNameDisk}`);
+        onSuccess(`${window.location.origin}/assets/${res.file.file_name_disk}`);
       }
     } catch (e) {
       logger.error(e);

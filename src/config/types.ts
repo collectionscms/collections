@@ -2,6 +2,7 @@ import {
   Collection as CollectionSchema,
   ProjectSetting as ProjectSettingSchema,
   Role as RoleSchema,
+  File as FileSchema,
   Permission as PermissionSchema,
 } from '../server/database/schemas.js';
 
@@ -118,12 +119,4 @@ export type Permission = {
 
 export type ProjectSetting = {} & ProjectSettingSchema;
 
-export type File = {
-  storage: string;
-  fileName: string;
-  fileNameDisk: string;
-  type: string;
-  fileSize: number | null;
-  width: number | null;
-  height: number | null;
-} & PrimaryKey;
+export type File = {} & FileSchema;
