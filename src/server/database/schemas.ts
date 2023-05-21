@@ -36,6 +36,7 @@ export type User = {
   reset_password_expiration: number | null;
   api_key: string | null;
   role_id: number | null;
+  updated_at: Date;
 } & PrimaryKey;
 
 export type Role = {
