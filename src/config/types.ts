@@ -1,4 +1,7 @@
-import { ProjectSetting as ProjectSettingSchema } from '../server/database/schemas.js';
+import {
+  Collection as CollectionSchema,
+  ProjectSetting as ProjectSettingSchema,
+} from '../server/database/schemas.js';
 
 // /////////////////////////////////////
 // Configure
@@ -48,15 +51,7 @@ type PrimaryKey = {
   id: number;
 };
 
-export type Collection = {
-  collection: string;
-  singleton: boolean;
-  hidden: boolean;
-  statusField: string | null;
-  draftValue: string | null;
-  publishValue: string | null;
-  archiveValue: string | null;
-} & PrimaryKey;
+export type Collection = {} & CollectionSchema;
 
 export type FieldInterface =
   | 'input'

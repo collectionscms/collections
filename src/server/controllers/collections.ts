@@ -50,10 +50,10 @@ router.post(
     const data = req.body.status
       ? {
           ...req.body,
-          statusField: 'status',
-          draftValue: 'draft',
-          publishValue: 'published',
-          archiveValue: 'archived',
+          status_field: 'status',
+          draft_value: 'draft',
+          publish_value: 'published',
+          archive_value: 'archived',
         }
       : req.body;
     delete data.status;
@@ -119,20 +119,20 @@ router.patch(
     await repository.transaction(async (tx) => {
       await repository.transacting(tx).update(id, req.body);
 
-      if (req.body.statusField) {
+      if (req.body.status_field) {
         const collection = await repository.transacting(tx).readOne(id);
         const fields = await fieldsRepository
           .transacting(tx)
-          .read({ collection: collection.collection, field: req.body.statusField });
+          .read({ collection: collection.collection, field: req.body.status_field });
 
         await fieldsRepository.transacting(tx).update(fields[0].id, {
           interface: 'selectDropdownStatus',
           required: true,
           options: JSON.stringify({
             choices: [
-              { label: req.body.draftValue, value: req.body.draftValue },
-              { label: req.body.publishValue, value: req.body.publishValue },
-              { label: req.body.archiveValue, value: req.body.archiveValue },
+              { label: req.body.draft_value, value: req.body.draft_value },
+              { label: req.body.publish_value, value: req.body.publish_value },
+              { label: req.body.archive_value, value: req.body.archive_value },
             ],
           }),
         });

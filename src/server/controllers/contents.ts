@@ -110,9 +110,9 @@ async function makeConditions(req: Request, collectionName: string) {
 
   const conditions: Record<string, any> = {};
   const collection = await readCollection(collectionName);
-  if (collection.statusField) {
+  if (collection.status_field) {
     // For Non-application, only public data can be accessed.
-    conditions[collection.statusField] = collection.publishValue;
+    conditions[collection.status_field] = collection.publish_value;
   }
 
   return conditions;

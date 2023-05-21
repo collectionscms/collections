@@ -4,38 +4,38 @@ import { yup } from '../../yup.js';
 export type FormValues = {
   hidden: boolean;
   singleton: boolean;
-  statusField?: string | null;
-  draftValue?: string | null;
-  publishValue?: string | null;
-  archiveValue?: string | null;
+  status_field?: string | null;
+  draft_value?: string | null;
+  publish_value?: string | null;
+  archive_value?: string | null;
 };
 
 export const updateCollection = (): ObjectSchema<FormValues> => {
   return yup.object().shape({
     hidden: yup.boolean().required(),
     singleton: yup.boolean().required(),
-    statusField: yup.string(),
-    draftValue: yup
+    status_field: yup.string(),
+    draft_value: yup
       .string()
       .notRequired()
       .max(60)
-      .when('statusField', {
+      .when('status_field', {
         is: (value: string) => value,
         then: (schema) => schema.required(),
       }),
-    publishValue: yup
+    publish_value: yup
       .string()
       .notRequired()
       .max(60)
-      .when('statusField', {
+      .when('status_field', {
         is: (value: string) => value,
         then: (schema) => schema.required(),
       }),
-    archiveValue: yup
+    archive_value: yup
       .string()
       .notRequired()
       .max(60)
-      .when('statusField', {
+      .when('status_field', {
         is: (value: string) => value,
         then: (schema) => schema.required(),
       }),
