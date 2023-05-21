@@ -93,37 +93,37 @@ const seedingData = async (): Promise<void> => {
       id: 1,
       collection: 'Post',
       action: 'read',
-      roleId: editorRole.id,
+      role_id: editorRole.id,
     },
     {
       id: 2,
       collection: 'Post',
       action: 'create',
-      roleId: editorRole.id,
+      role_id: editorRole.id,
     },
     {
       id: 3,
       collection: 'Post',
       action: 'update',
-      roleId: editorRole.id,
+      role_id: editorRole.id,
     },
     {
       id: 4,
       collection: 'Company',
       action: 'read',
-      roleId: editorRole.id,
+      role_id: editorRole.id,
     },
     {
       id: 5,
       collection: 'Company',
       action: 'create',
-      roleId: editorRole.id,
+      role_id: editorRole.id,
     },
     {
       id: 6,
       collection: 'Company',
       action: 'update',
-      roleId: editorRole.id,
+      role_id: editorRole.id,
     },
   ]);
 

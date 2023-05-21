@@ -86,7 +86,7 @@ router.delete(
 
     await repository.transaction(async (tx) => {
       await repository.transacting(tx).delete(id);
-      await permissionsRepository.transacting(tx).deleteAll({ roleId: id });
+      await permissionsRepository.transacting(tx).deleteAll({ role_id: id });
       res.status(204).end();
     });
   })
@@ -99,7 +99,7 @@ router.get(
     const id = Number(req.params.id);
     const permissionsRepository = new PermissionsRepository();
 
-    const permissions = await permissionsRepository.read({ roleId: id });
+    const permissions = await permissionsRepository.read({ role_id: id });
 
     res.json({ permissions });
   })
