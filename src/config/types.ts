@@ -1,3 +1,5 @@
+import { ProjectSetting as ProjectSettingSchema } from '../server/database/schemas.js';
+
 // /////////////////////////////////////
 // Configure
 // /////////////////////////////////////
@@ -122,9 +124,7 @@ export type Permission = {
   roleId: number;
 } & PrimaryKey;
 
-export type ProjectSetting = {
-  name: string;
-} & PrimaryKey;
+export type ProjectSetting = {} & ProjectSettingSchema;
 
 export type File = {
   storage: string;
