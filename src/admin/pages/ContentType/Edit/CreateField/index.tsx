@@ -15,7 +15,7 @@ import { InputRichTextMdType } from './fieldTypes/InputRichTextMd/index.js';
 import { SelectDropdownType } from './fieldTypes/SelectDropdown/index.js';
 import { Props } from './types.js';
 
-const CreateFieldImpl: React.FC<Props> = ({ slug, openState, onSuccess, onClose }) => {
+const CreateFieldImpl: React.FC<Props> = ({ collection, openState, onSuccess, onClose }) => {
   const [fieldInterface, setFieldInterface] = useState<FieldInterface | null>(null);
   const [drawerVisibility, setDrawerVisibility] = useState(false);
   const [editing, setEditing] = useState(false);
@@ -95,28 +95,28 @@ const CreateFieldImpl: React.FC<Props> = ({ slug, openState, onSuccess, onClose 
             </Box>
           </Stack>
           <InputType
-            slug={slug}
+            collection={collection}
             expanded={fieldInterface === 'input'}
             handleChange={(field) => onSelectedFieldInterface(field)}
             onEditing={handleEditing}
             onSuccess={handleAdditionSuccess}
           />
           <InputMultilineType
-            slug={slug}
+            collection={collection}
             expanded={fieldInterface === 'inputMultiline'}
             handleChange={(field) => onSelectedFieldInterface(field)}
             onEditing={handleEditing}
             onSuccess={handleAdditionSuccess}
           />
           <InputRichTextMdType
-            slug={slug}
+            collection={collection}
             expanded={fieldInterface === 'inputRichTextMd'}
             handleChange={(field) => onSelectedFieldInterface(field)}
             onEditing={handleEditing}
             onSuccess={handleAdditionSuccess}
           />
           <SelectDropdownType
-            slug={slug}
+            collection={collection}
             expanded={fieldInterface === 'selectDropdown'}
             handleChange={(field) => onSelectedFieldInterface(field)}
             onEditing={handleEditing}
@@ -124,21 +124,21 @@ const CreateFieldImpl: React.FC<Props> = ({ slug, openState, onSuccess, onClose 
             onChangeParentViewInvisible={onChangeParentViewInvisible}
           />
           <DateTimeType
-            slug={slug}
+            collection={collection}
             expanded={fieldInterface === 'dateTime'}
             handleChange={(field) => onSelectedFieldInterface(field)}
             onEditing={handleEditing}
             onSuccess={handleAdditionSuccess}
           />
           <BooleanType
-            slug={slug}
+            collection={collection}
             expanded={fieldInterface === 'boolean'}
             handleChange={(field) => onSelectedFieldInterface(field)}
             onEditing={handleEditing}
             onSuccess={handleAdditionSuccess}
           />
           <FileImageType
-            slug={slug}
+            collection={collection}
             expanded={fieldInterface === 'fileImage'}
             handleChange={(field) => onSelectedFieldInterface(field)}
             onEditing={handleEditing}
@@ -146,35 +146,35 @@ const CreateFieldImpl: React.FC<Props> = ({ slug, openState, onSuccess, onClose 
           />
           {/*
           <FileType
-            slug={slug}
+            collection={collection}
             expanded={fieldInterface === 'file'}
             handleChange={(field) => onSelectedFieldInterface(field)}
             onEditing={handleEditing}
             onSuccess={handleAdditionSuccess}
           />
           <ListType
-            slug={slug}
+            collection={collection}
             expanded={fieldInterface === 'list'}
             handleChange={(field) => onSelectedFieldInterface(field)}
             onEditing={handleEditing}
             onSuccess={handleAdditionSuccess}
           />
           <ListO2oType
-            slug={slug}
+            collection={collection}
             expanded={fieldInterface === 'listO2o'}
             handleChange={(field) => onSelectedFieldInterface(field)}
             onEditing={handleEditing}
             onSuccess={handleAdditionSuccess}
           />
           <ListO2mType
-            slug={slug}
+            collection={collection}
             expanded={fieldInterface === 'listO2m'}
             handleChange={(field) => onSelectedFieldInterface(field)}
             onEditing={handleEditing}
             onSuccess={handleAdditionSuccess}
           />
           <SelectDropdownM2oType
-            slug={slug}
+            collection={collection}
             expanded={fieldInterface === 'selectDropdownM2o'}
             handleChange={(field) => onSelectedFieldInterface(field)}
             onEditing={handleEditing}

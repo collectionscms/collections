@@ -16,7 +16,7 @@ export const collectionPermissionsHandler =
 
       const hasPermission = userPermissions.some(
         (userPermission) =>
-          userPermission.collection === req.params.slug && userPermission.action === action
+          userPermission.collection === req.params.collection && userPermission.action === action
       );
 
       if (!hasPermission) {

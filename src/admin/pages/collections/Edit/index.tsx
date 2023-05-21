@@ -111,7 +111,7 @@ const EditCollectionPageImpl: React.FC<Props> = ({ collection }) => {
                 />
               </Grid>
               <Grid>
-                <ApiPreview slug={collection.collection} singleton={collection.singleton} />
+                <ApiPreview collection={collection.collection} singleton={collection.singleton} />
               </Grid>
               <Grid>
                 <Button

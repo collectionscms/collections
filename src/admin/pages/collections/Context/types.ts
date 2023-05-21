@@ -3,18 +3,22 @@ import { SWRMutationResponse } from 'swr/mutation';
 import { Field, File } from '../../../../config/types.js';
 
 export type ContentContext = {
-  getContents: (canFetch: boolean, slug: string, config?: SWRConfiguration) => SWRResponse<any[]>;
+  getContents: (
+    canFetch: boolean,
+    collection: string,
+    config?: SWRConfiguration
+  ) => SWRResponse<any[]>;
   getSingletonContent: (
     canFetch: boolean,
-    slug: string,
+    collection: string,
     config?: SWRConfiguration
   ) => SWRResponse<any>;
-  getContent: (slug: string, id: string | null) => SWRMutationResponse<any>;
-  getFields: (slug: string, config?: SWRConfiguration) => SWRResponse<Field[]>;
-  getPreviewContents: (slug: string) => SWRMutationResponse<any[]>;
-  createContent: (slug: string) => SWRMutationResponse<number, any, Record<string, any>, any>;
+  getContent: (collection: string, id: string | null) => SWRMutationResponse<any>;
+  getFields: (collection: string, config?: SWRConfiguration) => SWRResponse<Field[]>;
+  getPreviewContents: (collection: string) => SWRMutationResponse<any[]>;
+  createContent: (collection: string) => SWRMutationResponse<number, any, Record<string, any>, any>;
   updateContent: (
-    slug: string,
+    collection: string,
     id: string
   ) => SWRMutationResponse<void, any, Record<string, any>, any>;
   getFileImage: (id: string | null) => SWRMutationResponse<{ file: File; raw: string }>;

@@ -7,16 +7,16 @@ import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/ind
 import { ContentContextProvider, useContent } from '../Context/index.js';
 import { Props } from './types.js';
 
-const ApiPreviewImpl: React.FC<Props> = ({ slug, singleton }) => {
+const ApiPreviewImpl: React.FC<Props> = ({ collection, singleton }) => {
   const { t } = useTranslation();
   const theme = useTheme();
   const { user } = useAuth();
   const [open, setOpen] = useState(false);
   const { getPreviewContents } = useContent();
-  const { data: contents, trigger, isMutating } = getPreviewContents(slug);
+  const { data: contents, trigger, isMutating } = getPreviewContents(collection);
 
   // TODO Make host an environment variable.
-  const url = `http://localhost:4000/api/collections/${slug}/contents`;
+  const url = `http://localhost:4000/api/collections/${collection}/contents`;
 
   const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
     if (

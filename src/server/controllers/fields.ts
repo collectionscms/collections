@@ -14,13 +14,12 @@ import { FieldsRepository } from '../repositories/fields.js';
 const router = express.Router();
 
 router.get(
-  '/collections/:slug/fields',
+  '/collections/:collection/fields',
   collectionPermissionsHandler('read'),
   asyncHandler(async (req: Request, res: Response) => {
-    const slug = req.params.slug;
     const repository = new FieldsRepository();
 
-    const fields = await repository.read({ collection: slug });
+    const fields = await repository.read({ collection: req.params.collection });
 
     fields.forEach((field) => {
       field.field = camelCase(field.field);
@@ -34,14 +33,14 @@ router.get(
 );
 
 router.post(
-  '/collections/:slug/fields',
+  '/collections/:collection/fields',
   permissionsHandler([{ collection: 'superfast_fields', action: 'create' }]),
   asyncHandler(async (req: Request, res: Response) => {
-    const slug = req.params.slug;
+    const collection = req.params.collection;
     const repository = new FieldsRepository();
     const collectionsRepository = new CollectionsRepository();
 
-    const collections = await collectionsRepository.read({ collection: slug });
+    const collections = await collectionsRepository.read({ collection: collection });
 
     await repository.transaction(async (tx) => {
       const fieldId = await repository.transacting(tx).create(req.body);

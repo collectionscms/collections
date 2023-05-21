@@ -162,7 +162,7 @@ const EditContentTypePageImpl: React.FC = () => {
   return (
     <>
       <CreateField
-        slug={meta.collection}
+        collection={meta.collection}
         openState={createFieldOpen}
         onSuccess={handleCreateFieldSuccess}
         onClose={() => onToggleCreateField(false)}
