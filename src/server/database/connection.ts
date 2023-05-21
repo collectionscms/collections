@@ -1,5 +1,3 @@
-import camelcaseKeys from 'camelcase-keys';
-import { snakeCase } from 'change-case';
 import knex, { Knex } from 'knex';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -23,15 +21,6 @@ export const getDatabase = (): Knex => {
     migrations: {
       directory: migrationFiles,
       loadExtensions: [env.MIGRATE_EXTENSIONS],
-    },
-    wrapIdentifier(value, wrapIdentifier) {
-      // Convert field to snake case.
-      const snakedValue = snakeCase(value) || value;
-      return wrapIdentifier(snakedValue);
-    },
-    postProcessResponse: (result) => {
-      // Convert field to camel case.
-      return camelcaseKeys(result);
     },
   };
 
