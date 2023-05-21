@@ -5096,9 +5096,9 @@ inherits@2, inherits@2.0.4, inherits@^2.0.1, inherits@^2.0.3, inherits@^2.0.4, i
   integrity sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==
 
 inquirer@^9.2.0:
-  version "9.2.4"
-  resolved "https://registry.yarnpkg.com/inquirer/-/inquirer-9.2.4.tgz#6a2c1ce029579eba2bb5c2953f0460c07e03dbf4"
-  integrity sha512-Q2KnguYUxC/GqkAWJBTWpXH1E3Qqh5VZaCqxK5HYYnQmaePKGLgscVfb3L3/32oF6NRW5VpGqUr75uDjtHHqRw==
+  version "9.2.5"
+  resolved "https://registry.yarnpkg.com/inquirer/-/inquirer-9.2.5.tgz#2a9df864c8b579083736e9c25161e2bb0a21841d"
+  integrity sha512-Vy3qZFUPKILCgfeg6eEfKSlv4QbwwfGmdoAYqXYGlPEhY4HH0jQv+ynHkEYYE4eBDCDMWKHs77ByfHcy1GyDfA==
   dependencies:
     ansi-escapes "^4.3.2"
     chalk "^5.2.0"
