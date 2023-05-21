@@ -28,10 +28,10 @@ import { useField } from '../../Context/index.js';
 import { Props } from '../types.js';
 
 export const BooleanType: React.FC<Props> = (props) => {
-  const { slug, expanded, handleChange, onEditing, onSuccess } = props;
+  const { collection, expanded, handleChange, onEditing, onSuccess } = props;
   const { t } = useTranslation();
   const { createField } = useField();
-  const { trigger, isMutating } = createField(slug);
+  const { trigger, isMutating } = createField(collection);
   const defaultValues = {
     field: '',
     label: '',
@@ -58,7 +58,7 @@ export const BooleanType: React.FC<Props> = (props) => {
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
       const field = await trigger({
-        collection: slug,
+        collection: collection,
         field: form.field,
         label: form.label,
         interface: 'boolean',

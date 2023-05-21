@@ -32,11 +32,12 @@ import { CreateChoice } from '../CreateChoice/index.js';
 import { Props } from '../types.js';
 
 export const SelectDropdownType: React.FC<Props> = (props) => {
-  const { slug, expanded, handleChange, onEditing, onSuccess, onChangeParentViewInvisible } = props;
+  const { collection, expanded, handleChange, onEditing, onSuccess, onChangeParentViewInvisible } =
+    props;
   const [state, setState] = useState(false);
   const { t } = useTranslation();
   const { createField } = useField();
-  const { trigger, isMutating } = createField(slug);
+  const { trigger, isMutating } = createField(collection);
   const defaultValues = { field: '', label: '', required: false, choices: [] };
   const {
     control,
@@ -76,7 +77,7 @@ export const SelectDropdownType: React.FC<Props> = (props) => {
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
       const field = await trigger({
-        collection: slug,
+        collection: collection,
         field: form.field,
         label: form.label,
         interface: 'selectDropdown',

@@ -57,7 +57,7 @@ const DefaultListPageImpl: React.FC<Props> = ({ collection }) => {
         </Grid>
         <Grid container columnSpacing={2} alignItems="center">
           <Grid>
-            <ApiPreview slug={collection.collection} singleton={collection.singleton} />
+            <ApiPreview collection={collection.collection} singleton={collection.singleton} />
           </Grid>
         </Grid>
       </Grid>

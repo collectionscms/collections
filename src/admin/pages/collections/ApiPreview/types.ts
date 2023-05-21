@@ -1,4 +1,4 @@
 export type Props = {
-  slug: string;
+  collection: string;
   singleton: boolean;
 };

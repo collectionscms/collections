@@ -8,52 +8,56 @@ import { ContentContext } from './types.js';
 const Context = createContext({} as ContentContext);
 
 export const ContentContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const getContents = (canFetch: boolean, slug: string, config?: SWRConfiguration): SWRResponse =>
+  const getContents = (
+    canFetch: boolean,
+    collection: string,
+    config?: SWRConfiguration
+  ): SWRResponse =>
     useSWR(
-      canFetch ? `/collections/${slug}/contents` : null,
+      canFetch ? `/collections/${collection}/contents` : null,
       (url) => api.get<{ contents: unknown[] }>(url).then((res) => res.data.contents),
       config
     );
 
   const getSingletonContent = (
     canFetch: boolean,
-    slug: string,
+    collection: string,
     config?: SWRConfiguration
   ): SWRResponse =>
     useSWR(
-      canFetch ? `/collections/${slug}/contents` : null,
+      canFetch ? `/collections/${collection}/contents` : null,
       (url) => api.get<{ content: unknown }>(url).then((res) => res.data.content),
       config
     );
 
-  const getContent = (slug: string, id: string | null): SWRMutationResponse =>
-    useSWRMutation(id ? `/collections/${slug}/contents/${id}` : null, (url) =>
+  const getContent = (collection: string, id: string | null): SWRMutationResponse =>
+    useSWRMutation(id ? `/collections/${collection}/contents/${id}` : null, (url) =>
       api.get<{ content: unknown }>(url).then((res) => res.data.content)
     );
 
-  const getFields = (slug: string, config?: SWRConfiguration): SWRResponse =>
+  const getFields = (collection: string, config?: SWRConfiguration): SWRResponse =>
     useSWR(
-      `/collections/${slug}/fields`,
+      `/collections/${collection}/fields`,
       (url) => api.get<{ fields: Field[] }>(url).then((res) => res.data.fields),
       config
     );
 
-  const getPreviewContents = (slug: string): SWRMutationResponse =>
-    useSWRMutation(`/collections/${slug}/contents`, async (url: string, { arg }) => {
+  const getPreviewContents = (collection: string): SWRMutationResponse =>
+    useSWRMutation(`/collections/${collection}/contents`, async (url: string, { arg }) => {
       return api.get<{ contents: unknown[] }>(url, arg).then((res) => res.data.contents);
     });
 
-  const createContent = (slug: string) =>
+  const createContent = (collection: string) =>
     useSWRMutation(
-      `/collections/${slug}/contents`,
+      `/collections/${collection}/contents`,
       async (url: string, { arg }: { arg: Record<string, any> }) => {
         return api.post<{ id: number }>(url, arg).then((res) => res.data.id);
       }
     );
 
-  const updateContent = (slug: string, id: string) =>
+  const updateContent = (collection: string, id: string) =>
     useSWRMutation(
-      `/collections/${slug}/contents/${id}`,
+      `/collections/${collection}/contents/${id}`,
       async (url: string, { arg }: { arg: Record<string, any> }) => {
         return api.patch(url, arg).then((res) => res.data);
       }

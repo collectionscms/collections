@@ -35,9 +35,9 @@ export const CollectionContextProvider: React.FC<{ children: React.ReactNode }> 
       }
     );
 
-  const getFields = (slug: string | null, config?: SWRConfiguration): SWRResponse =>
+  const getFields = (collection: string | null, config?: SWRConfiguration): SWRResponse =>
     useSWR(
-      () => (slug ? `/collections/${slug}/fields` : null),
+      () => (collection ? `/collections/${collection}/fields` : null),
       (url) => api.get<{ fields: Field[] }>(url).then((res) => res.data.fields),
       config
     );

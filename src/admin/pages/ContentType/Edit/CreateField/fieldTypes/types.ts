@@ -1,7 +1,7 @@
 import { Field, FieldInterface } from '../../../../../../config/types.js';
 
 export type Props = {
-  slug: string;
+  collection: string;
   expanded: boolean;
   handleChange: (field: FieldInterface) => void;
   onEditing: (unsaved: boolean) => void;
