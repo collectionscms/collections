@@ -46,14 +46,14 @@ const CreateUserPageImpl: React.FC = () => {
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
-      firstName: '',
-      lastName: '',
-      userName: '',
+      first_name: '',
+      last_name: '',
+      user_name: '',
       email: '',
       password: '',
-      apiKey: '',
-      isActive: true,
-      roleId: roles ? roles[0]?.id.toString() : '',
+      api_key: '',
+      is_active: true,
+      role_id: roles ? roles[0]?.id.toString() : '',
     },
     resolver: yupResolver(createUserSchema(t)),
   });
@@ -65,7 +65,7 @@ const CreateUserPageImpl: React.FC = () => {
   }, [createdUser]);
 
   const onGenerateApiKey = () => {
-    setValue('apiKey', uuidv4());
+    setValue('api_key', uuidv4());
   };
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
@@ -95,42 +95,52 @@ const CreateUserPageImpl: React.FC = () => {
           <Grid xs={1}>
             <InputLabel required>{t('last_name')}</InputLabel>
             <Controller
-              name="lastName"
-              control={control}
-              render={({ field }) => (
-                <TextField {...field} type="text" fullWidth error={errors.lastName !== undefined} />
-              )}
-            />
-            <FormHelperText error>{errors.lastName?.message}</FormHelperText>
-          </Grid>
-          <Grid xs={1}>
-            <InputLabel required>{t('first_name')}</InputLabel>
-            <Controller
-              name="firstName"
+              name="last_name"
               control={control}
               render={({ field }) => (
                 <TextField
                   {...field}
                   type="text"
                   fullWidth
-                  error={errors.firstName !== undefined}
+                  error={errors.last_name !== undefined}
                 />
               )}
             />
-            <FormHelperText error>{errors.firstName?.message}</FormHelperText>
+            <FormHelperText error>{errors.last_name?.message}</FormHelperText>
+          </Grid>
+          <Grid xs={1}>
+            <InputLabel required>{t('first_name')}</InputLabel>
+            <Controller
+              name="first_name"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  type="text"
+                  fullWidth
+                  error={errors.first_name !== undefined}
+                />
+              )}
+            />
+            <FormHelperText error>{errors.first_name?.message}</FormHelperText>
           </Grid>
         </Grid>
         <Grid container spacing={3} columns={{ xs: 1, md: 4 }}>
           <Grid xs={1}>
             <InputLabel required>{t('user_name')}</InputLabel>
             <Controller
-              name="userName"
+              name="user_name"
               control={control}
               render={({ field }) => (
-                <TextField {...field} type="text" fullWidth error={errors.userName !== undefined} />
+                <TextField
+                  {...field}
+                  type="text"
+                  fullWidth
+                  error={errors.user_name !== undefined}
+                />
               )}
             />
-            <FormHelperText error>{errors.userName?.message}</FormHelperText>
+            <FormHelperText error>{errors.user_name?.message}</FormHelperText>
           </Grid>
           <Grid xs={1}>
             <InputLabel required>{t('email')}</InputLabel>
@@ -166,7 +176,7 @@ const CreateUserPageImpl: React.FC = () => {
           <Grid xs={1} md={2}>
             <InputLabel>{t('api_key')}</InputLabel>
             <Controller
-              name="apiKey"
+              name="api_key"
               control={control}
               render={({ field }) => (
                 <TextField
@@ -186,18 +196,18 @@ const CreateUserPageImpl: React.FC = () => {
                       </InputAdornment>
                     ),
                   }}
-                  error={errors.apiKey !== undefined}
+                  error={errors.api_key !== undefined}
                 />
               )}
             />
-            <FormHelperText error>{errors.apiKey?.message}</FormHelperText>
+            <FormHelperText error>{errors.api_key?.message}</FormHelperText>
           </Grid>
         </Grid>
         <Grid container spacing={3} columns={{ xs: 1, md: 4 }}>
           <Grid xs={1}>
             <InputLabel>{t('role')}</InputLabel>
             <Controller
-              name="roleId"
+              name="role_id"
               control={control}
               render={({ field }) => (
                 <Select {...field} fullWidth>
@@ -214,7 +224,7 @@ const CreateUserPageImpl: React.FC = () => {
           <Grid xs={1}>
             <InputLabel>{t('status')}</InputLabel>
             <Controller
-              name="isActive"
+              name="is_active"
               control={control}
               render={({ field }) => (
                 <FormControlLabel
@@ -224,7 +234,7 @@ const CreateUserPageImpl: React.FC = () => {
                 />
               )}
             />
-            <FormHelperText error>{errors.isActive?.message}</FormHelperText>
+            <FormHelperText error>{errors.is_active?.message}</FormHelperText>
           </Grid>
         </Grid>
       </Stack>

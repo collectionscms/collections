@@ -114,7 +114,7 @@ router.post(
 
     await repository.update(user.id, {
       password: await oneWayHash(password),
-      resetPasswordExpiration: Date.now(),
+      reset_password_expiration: Date.now(),
     });
 
     res.json({
@@ -137,8 +137,8 @@ router.post(
     let token: string | Buffer = crypto.randomBytes(20);
     token = token.toString('hex');
 
-    user.resetPasswordToken = token;
-    user.resetPasswordExpiration = Date.now() + 3600000; // 1 hour
+    user.reset_password_token = token;
+    user.reset_password_expiration = Date.now() + 3600000; // 1 hour
 
     await repository.update(user.id, user);
 
@@ -146,7 +146,7 @@ router.post(
     mail.sendEmail({
       to: user.email,
       subject: 'Reset Password',
-      html: `${env.SERVER_URL}/admin/auth/reset-password/${user.resetPasswordToken}`,
+      html: `${env.SERVER_URL}/admin/auth/reset-password/${user.reset_password_token}`,
     });
 
     res.json({
@@ -158,18 +158,18 @@ router.post(
 const payload = (user: any) => {
   return {
     id: user.id,
-    lastName: user.lastName,
-    firstName: user.firstName,
-    userName: user.userName,
+    last_name: user.last_name,
+    first_name: user.first_name,
+    user_name: user.user_name,
     email: user.email,
-    isActive: user.isActive,
-    apiKey: user.apiKey,
-    updatedAt: user.updatedAt,
+    is_active: user.is_active,
+    api_key: user.api_key,
+    updated_at: user.updated_at,
     role: {
-      id: user.roleId,
-      name: user.roleName,
-      description: user.roleDescription,
-      adminAccess: user.roleAdminAccess,
+      id: user.role_id,
+      name: user.role_name,
+      description: user.role_description,
+      admin_access: user.role_admin_access,
     },
   };
 };

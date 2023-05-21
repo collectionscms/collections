@@ -51,8 +51,8 @@ const seedingData = async (): Promise<void> => {
   // Role
   Output.info('Creating roles...');
   await rolesRepository.createMany([
-    { id: 1, name: 'Administrator', description: '管理者', adminAccess: true },
-    { id: 2, name: 'Editor', description: '編集者', adminAccess: false },
+    { id: 1, name: 'Administrator', description: '管理者', admin_access: true },
+    { id: 2, name: 'Editor', description: '編集者', admin_access: false },
   ] as any[]);
 
   // User
@@ -64,24 +64,24 @@ const seedingData = async (): Promise<void> => {
   await usersRepository.createMany([
     {
       id: 1,
-      firstName: 'User',
-      lastName: 'Admin',
-      userName: 'admin',
+      first_name: 'User',
+      last_name: 'Admin',
+      user_name: 'admin',
       email: 'admin@example.com',
       password,
-      isActive: true,
-      roleId: adminRole.id,
+      is_active: true,
+      role_id: adminRole.id,
     },
     {
       id: 2,
-      firstName: 'User',
-      lastName: 'Editor',
-      userName: 'editor',
+      first_name: 'User',
+      last_name: 'Editor',
+      user_name: 'editor',
       email: 'editor@example.com',
       password,
-      isActive: false,
-      apiKey: uuidv4(),
-      roleId: editorRole.id,
+      is_active: false,
+      api_key: uuidv4(),
+      role_id: editorRole.id,
     },
   ] as any[]);
 

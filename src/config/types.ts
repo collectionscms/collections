@@ -4,6 +4,7 @@ import {
   Role as RoleSchema,
   File as FileSchema,
   Field as FieldSchema,
+  User as UserSchema,
   Permission as PermissionSchema,
 } from '../server/database/schemas.js';
 
@@ -51,10 +52,6 @@ export type ApiError = {
 // Schema
 // /////////////////////////////////////
 
-type PrimaryKey = {
-  id: number;
-};
-
 export type Collection = {} & CollectionSchema;
 
 export type FieldInterface =
@@ -86,19 +83,8 @@ export type Field = {
 } & FieldSchema;
 
 export type User = {
-  email: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-  userName: string;
-  apiKey: string | null;
-  isActive: boolean;
-  resetPasswordToken: string | null;
-  resetPasswordExpiration: number | null;
-  roleId: number;
   role?: Role;
-  updatedAt: Date;
-} & PrimaryKey;
+} & UserSchema;
 
 export type Role = {
   permissions: Permission[];
