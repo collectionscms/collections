@@ -14,11 +14,10 @@ export class UsersRepository extends BaseRepository<User> {
     return repositoryTransaction;
   }
 
-  async create(item: Omit<User, 'id'>): Promise<User> {
+  async create(item: Omit<User, 'id'>): Promise<number> {
     await this.checkUniqueEmail(item.email);
-    const [output] = await this.queryBuilder.insert(item).returning('id');
-
-    return output as Promise<User>;
+    const [output] = await this.queryBuilder.insert(item);
+    return output;
   }
 
   async update(id: number, item: Partial<User>): Promise<boolean> {

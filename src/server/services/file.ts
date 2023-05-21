@@ -9,8 +9,7 @@ export class FileService {
     await storage.put(file.fileNameDisk, buffer);
 
     const repository = new FilesRepository();
-    const result = await repository.create(file);
-
-    return result.id;
+    const fileId = await repository.create(file);
+    return fileId;
   }
 }

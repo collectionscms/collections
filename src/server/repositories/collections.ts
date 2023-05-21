@@ -14,11 +14,10 @@ export class CollectionsRepository extends BaseRepository<Collection> {
     return repositoryTransaction;
   }
 
-  async create(item: Omit<Collection, 'id'>): Promise<Collection> {
+  async create(item: Omit<Collection, 'id'>): Promise<number> {
     await this.checkUniqueCollection(item.collection);
-    const [output] = await this.queryBuilder.insert(item).returning('id');
-
-    return output as Promise<Collection>;
+    const [output] = await this.queryBuilder.insert(item);
+    return output;
   }
 
   private async checkUniqueCollection(collection: string) {
