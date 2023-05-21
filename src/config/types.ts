@@ -3,6 +3,7 @@ import {
   ProjectSetting as ProjectSettingSchema,
   Role as RoleSchema,
   File as FileSchema,
+  Field as FieldSchema,
   Permission as PermissionSchema,
 } from '../server/database/schemas.js';
 
@@ -80,18 +81,9 @@ export type Choice = {
   value: string;
 };
 export type Field = {
-  collection: string;
-  field: string;
-  label: string;
-  special: string | null;
   interface: FieldInterface;
-  options: string | null;
-  required: boolean;
-  readonly: boolean;
-  hidden: boolean;
-  sort: number;
   fieldOption?: FieldOption | null;
-} & PrimaryKey;
+} & FieldSchema;
 
 export type User = {
   email: string;

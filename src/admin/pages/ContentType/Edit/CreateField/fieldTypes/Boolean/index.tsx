@@ -35,7 +35,7 @@ export const BooleanType: React.FC<Props> = (props) => {
   const defaultValues = {
     field: '',
     label: '',
-    defaultValue: false,
+    default_value: false,
   };
   const {
     control,
@@ -65,7 +65,7 @@ export const BooleanType: React.FC<Props> = (props) => {
         required: true,
         readonly: false,
         hidden: false,
-        options: { defaultValue: form.defaultValue },
+        options: { defaultValue: form.default_value },
       });
 
       reset();
@@ -129,13 +129,13 @@ export const BooleanType: React.FC<Props> = (props) => {
               <Grid xs={1} sm={2}>
                 <InputLabel htmlFor="field">{t('default_value')}</InputLabel>
                 <Controller
-                  name="defaultValue"
+                  name="default_value"
                   control={control}
                   render={({ field }) => (
                     <FormControlLabel {...field} label={t('enabled')} control={<Checkbox />} />
                   )}
                 />
-                <FormHelperText error>{errors.defaultValue?.message}</FormHelperText>
+                <FormHelperText error>{errors.default_value?.message}</FormHelperText>
               </Grid>
             </Grid>
             <Button variant="contained" type="submit" size="large" disabled={isMutating} fullWidth>
