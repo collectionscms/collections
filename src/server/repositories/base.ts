@@ -8,7 +8,7 @@ export type AbstractRepositoryOptions = {
 type AbstractRepository<T> = {
   read(data: Partial<T>): Promise<T[]>;
   readOne(id: number | Partial<T>): Promise<T>;
-  create(item: Omit<T, 'id'>): Promise<T>;
+  create(item: Omit<T, 'id'>): Promise<number>;
   createMany(items: T[]): Promise<T[]>;
   update(id: number, item: Partial<T>): Promise<boolean>;
   delete(id: number): Promise<boolean>;
@@ -48,10 +48,9 @@ export abstract class BaseRepository<T> implements AbstractRepository<T> {
     return this.queryBuilder.where('id', id).first();
   }
 
-  async create(item: Omit<T, 'id'>): Promise<T> {
-    const [output] = await this.queryBuilder.insert(item).returning('id');
-
-    return output as Promise<T>;
+  async create(item: Omit<T, 'id'>): Promise<number> {
+    const [output] = await this.queryBuilder.insert(item);
+    return output;
   }
 
   createMany(items: T[]): Promise<T[]> {

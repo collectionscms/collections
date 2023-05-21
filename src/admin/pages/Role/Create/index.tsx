@@ -28,7 +28,7 @@ const CreateRolePageImpl: React.FC = () => {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const { createRole } = useRole();
-  const { data, trigger, isMutating } = createRole();
+  const { data: roleId, trigger, isMutating } = createRole();
   const {
     control,
     handleSubmit,
@@ -43,10 +43,10 @@ const CreateRolePageImpl: React.FC = () => {
   });
 
   useEffect(() => {
-    if (data === undefined) return;
+    if (roleId === undefined) return;
     enqueueSnackbar(t('toast.created_successfully'), { variant: 'success' });
-    navigate(`../roles/${data.id}`);
-  }, [data]);
+    navigate(`../roles/${roleId}`);
+  }, [roleId]);
 
   const onSubmit: SubmitHandler<FormValues> = (form: FormValues) => {
     trigger(form);

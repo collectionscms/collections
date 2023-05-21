@@ -41,10 +41,10 @@ router.post(
   asyncHandler(async (req: Request, res: Response) => {
     const repository = new RolesRepository();
 
-    const role = await repository.create(req.body);
+    const roleId = await repository.create(req.body);
 
     res.json({
-      role,
+      id: roleId,
     });
   })
 );
@@ -117,10 +117,10 @@ router.post(
       role_id: id,
     };
 
-    const permission = await permissionsRepository.create(data);
+    const permissionId = await permissionsRepository.create(data);
 
     res.json({
-      permission,
+      id: permissionId,
     });
   })
 );

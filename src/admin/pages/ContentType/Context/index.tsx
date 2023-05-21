@@ -23,7 +23,7 @@ export const CollectionContextProvider: React.FC<{ children: React.ReactNode }> 
   const createCollection = useSWRMutation(
     '/collections',
     async (url: string, { arg }: { arg: Record<string, any> }) => {
-      return api.post<{ collection: Collection }>(url, arg).then((res) => res.data.collection);
+      return api.post<{ id: number }>(url, arg).then((res) => res.data.id);
     }
   );
 

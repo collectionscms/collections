@@ -44,8 +44,8 @@ router.post(
     const collections = await collectionsRepository.read({ collection: slug });
 
     await repository.transaction(async (tx) => {
-      const result = await repository.transacting(tx).create(req.body);
-      const field = await repository.transacting(tx).readOne(result.id);
+      const fieldId = await repository.transacting(tx).create(req.body);
+      const field = await repository.transacting(tx).readOne(fieldId);
       await tx.transaction.schema.alterTable(collections[0].collection, (table) => {
         addColumnToTable(field, table);
       });

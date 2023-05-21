@@ -18,7 +18,7 @@ export const UserContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
 
   const createUser = () =>
     useSWRMutation(`/users`, async (url: string, { arg }: { arg: Record<string, any> }) => {
-      return api.post<{ user: User }>(url, arg).then((res) => res.data.user);
+      return api.post<{ id: number }>(url, arg).then((res) => res.data.id);
     });
 
   const updateUser = (id: string) =>

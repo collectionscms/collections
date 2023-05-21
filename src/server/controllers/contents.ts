@@ -46,10 +46,10 @@ router.post(
     const slug = req.params.slug;
     const repository = new ContentsRepository(slug);
 
-    const content = await repository.create(req.body);
+    const contentId = await repository.create(req.body);
 
     res.json({
-      content,
+      id: contentId,
     });
   })
 );
