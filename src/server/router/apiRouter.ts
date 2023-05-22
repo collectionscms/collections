@@ -8,6 +8,7 @@ import { contents } from '../controllers/contents.js';
 import { fields } from '../controllers/fields.js';
 import { files } from '../controllers/files.js';
 import { projectSettings } from '../controllers/projectSettings.js';
+import { relations } from '../controllers/relations.js';
 import { roles } from '../controllers/roles.js';
 import { users } from '../controllers/users.js';
 import { authHandler } from '../middleware/authHandler.js';
@@ -38,5 +39,6 @@ router.use(contents);
 router.use(projectSettings);
 router.use(authentications);
 router.use(files);
+router.use(relations);
 
 export const apiRouter = router;
