@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWRMutation from 'swr/mutation';
-import { Collection, Field } from '../../../../../../config/types.js';
+import { Collection, Field, Relation } from '../../../../../../config/types.js';
 import { api } from '../../../../../utilities/api.js';
 import { FieldContext } from './types.js';
 import useSWR, { SWRResponse } from 'swr';
@@ -18,12 +18,18 @@ export const FieldContextProvider: React.FC<{ children: React.ReactNode }> = ({ 
       api.get<{ collections: Collection[] }>(url).then((res) => res.data.collections)
     );
 
+  const createRelations = () =>
+    useSWRMutation(`/relations`, async (url: string, { arg }: { arg: Record<string, any> }) => {
+      return api.post<{ relation: Relation }>(url, arg).then((res) => res.data.relation);
+    });
+
   const value = useMemo(
     () => ({
       createField,
       getCollections,
+      createRelations,
     }),
-    [createField, getCollections]
+    [createField, getCollections, createRelations]
   );
 
   return <Context.Provider value={value}>{children}</Context.Provider>;
