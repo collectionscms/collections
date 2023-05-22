@@ -4,10 +4,12 @@ import { FileImageType as fileImage } from './FileImage/index.js';
 import { InputType as input } from './Input/index.js';
 import { InputMultilineType as inputMultiline } from './InputMultiline/index.js';
 import { InputRichTextMdType as inputRichTextMd } from './InputRichTextMd/index.js';
+import { ListOneToManyType as listOneToMany } from './ListOneToMany/index.js';
 import {
   SelectDropdownType as selectDropdown,
   SelectDropdownType as selectDropdownStatus,
 } from './SelectDropdown/index.js';
+import { SelectDropdownManyToOneType as selectDropdownManyToOne } from './SelectDropdownManyToOne/index.js';
 import { Props } from './types.js';
 
 export type FieldTypes = {
@@ -19,6 +21,8 @@ export type FieldTypes = {
   boolean: React.ComponentType<Props>;
   dateTime: React.ComponentType<Props>;
   fileImage: React.ComponentType<Props>;
+  listOneToMany: React.ComponentType<Props>;
+  selectDropdownManyToOne: React.ComponentType<Props>;
 };
 
 export const fieldTypes: FieldTypes = {
@@ -30,4 +34,6 @@ export const fieldTypes: FieldTypes = {
   boolean,
   dateTime,
   fileImage,
+  listOneToMany,
+  selectDropdownManyToOne,
 };
