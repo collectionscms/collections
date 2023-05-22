@@ -6,6 +6,7 @@ import {
   Field as FieldSchema,
   User as UserSchema,
   Permission as PermissionSchema,
+  Relation as RelationSchema,
 } from '../server/database/schemas.js';
 
 // /////////////////////////////////////
@@ -98,3 +99,5 @@ export type Permission = {
 export type ProjectSetting = {} & ProjectSettingSchema;
 
 export type File = {} & FileSchema;
+
+export type Relation = {} & RelationSchema;
