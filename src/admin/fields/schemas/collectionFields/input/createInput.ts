@@ -12,7 +12,7 @@ export const createInput = (t: TFunction): ObjectSchema<FormValues> => {
   return yup.object().shape({
     field: yup
       .string()
-      .matches(/^[_0-9a-z]+$/, t('yup.custom.lower_case_alphanumerics_and_underscore'))
+      .matches(/^[_0-9a-zA-Z]+$/, t('yup.custom.alphanumeric_and_underscore'))
       .required()
       .max(60),
     label: yup.string().required().max(60),
