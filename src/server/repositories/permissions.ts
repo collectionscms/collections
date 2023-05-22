@@ -12,8 +12,4 @@ export class PermissionsRepository extends BaseRepository<Permission> {
     });
     return repositoryTransaction;
   }
-
-  deleteAll(data: Partial<Permission>): Promise<boolean> {
-    return this.queryBuilder.where(data).delete();
-  }
 }

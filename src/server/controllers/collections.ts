@@ -157,8 +157,8 @@ router.delete(
     await repository.transaction(async (tx) => {
       await tx.transaction.schema.dropTable(collection.collection);
       await repository.transacting(tx).delete(id);
-      await fieldsRepository.transacting(tx).deleteAll({ collection: collection.collection });
-      await permissionsRepository.transacting(tx).deleteAll({ collection: collection.collection });
+      await fieldsRepository.transacting(tx).deleteMany({ collection: collection.collection });
+      await permissionsRepository.transacting(tx).deleteMany({ collection: collection.collection });
 
       await tx
         .transaction('superfast_relations')

@@ -86,7 +86,7 @@ router.delete(
 
     await repository.transaction(async (tx) => {
       await repository.transacting(tx).delete(id);
-      await permissionsRepository.transacting(tx).deleteAll({ role_id: id });
+      await permissionsRepository.transacting(tx).deleteMany({ role_id: id });
       res.status(204).end();
     });
   })
