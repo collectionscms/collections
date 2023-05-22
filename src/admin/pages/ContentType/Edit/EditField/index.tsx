@@ -11,7 +11,9 @@ import { DateTimeType } from './fieldTypes/DateTime/index.js';
 import { InputType } from './fieldTypes/Input/index.js';
 import { InputMultilineType } from './fieldTypes/InputMultiline/index.js';
 import { InputRichTextMdType } from './fieldTypes/InputRichTextMd/input.js';
+import { ListOneToManyType } from './fieldTypes/ListOneToMany/index.js';
 import { SelectDropdownType } from './fieldTypes/SelectDropdown/index.js';
+import { SelectDropdownManyToOneType } from './fieldTypes/SelectDropdownManyToOne/index.js';
 import { Props } from './types.js';
 
 const EditFieldImpl: React.FC<Props> = ({ field, open, onSuccess, onClose }) => {
@@ -118,6 +120,20 @@ const EditFieldImpl: React.FC<Props> = ({ field, open, onSuccess, onClose }) => 
           )}
           {field.interface === 'dateTime' && (
             <DateTimeType field={field} onEditing={handleEditing} onSuccess={handleEditedSuccess} />
+          )}
+          {field.interface === 'listOneToMany' && (
+            <ListOneToManyType
+              field={field}
+              onEditing={handleEditing}
+              onSuccess={handleEditedSuccess}
+            />
+          )}
+          {field.interface === 'selectDropdownManyToOne' && (
+            <SelectDropdownManyToOneType
+              field={field}
+              onEditing={handleEditing}
+              onSuccess={handleEditedSuccess}
+            />
           )}
         </Box>
       </Drawer>

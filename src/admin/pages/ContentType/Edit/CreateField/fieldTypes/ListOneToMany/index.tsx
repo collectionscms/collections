@@ -33,16 +33,16 @@ import { Props } from '../types.js';
 export const ListOneToManyType: React.FC<Props> = (props) => {
   const { collection, expanded, handleChange, onEditing, onSuccess } = props;
   const { t } = useTranslation();
-  const { createField, getCollections, createRelations } = useField();
+  const { createField, getCollections, createRelation } = useField();
   const { data: collections } = getCollections();
   const { trigger: createFieldTrigger, isMutating } = createField();
-  const { trigger: createRelationsTrigger } = createRelations();
+  const { trigger: createRelationTrigger } = createRelation();
   const defaultValues = {
     field: '',
     label: '',
     required: false,
-    relatedCollection: '',
-    foreignKey: '',
+    related_collection: '',
+    foreign_key: '',
   };
   const {
     control,
@@ -79,17 +79,17 @@ export const ListOneToManyType: React.FC<Props> = (props) => {
           field: form.foreign_key,
           label: collection,
           interface: 'selectDropdownManyToOne',
-          required: form.required,
+          required: false,
           readonly: false,
-          hidden: false,
+          hidden: true,
         }),
       ]);
 
-      await createRelationsTrigger({
-        manyCollection: form.related_collection,
-        manyField: form.foreign_key,
-        oneCollection: collection,
-        oneField: form.field,
+      await createRelationTrigger({
+        many_collection: form.related_collection,
+        many_field: form.foreign_key,
+        one_collection: collection,
+        one_field: form.field,
       });
       reset();
       onSuccess(results[0] as Field);
