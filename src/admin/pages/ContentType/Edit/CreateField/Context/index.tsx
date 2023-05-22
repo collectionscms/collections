@@ -7,13 +7,10 @@ import { FieldContext } from './types.js';
 const Context = createContext({} as FieldContext);
 
 export const FieldContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const createField = (collection: string) =>
-    useSWRMutation(
-      `/collections/${collection}/fields`,
-      async (url: string, { arg }: { arg: Record<string, any> }) => {
-        return api.post<{ field: Field }>(url, arg).then((res) => res.data.field);
-      }
-    );
+  const createField = () =>
+    useSWRMutation(`/fields`, async (url: string, { arg }: { arg: Record<string, any> }) => {
+      return api.post<{ field: Field }>(url, arg).then((res) => res.data.field);
+    });
 
   const value = useMemo(
     () => ({

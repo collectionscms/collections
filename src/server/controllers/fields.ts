@@ -32,19 +32,16 @@ router.get(
 );
 
 router.post(
-  '/collections/:collection/fields',
+  '/fields',
   permissionsHandler([{ collection: 'superfast_fields', action: 'create' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const collection = req.params.collection;
     const repository = new FieldsRepository();
-    const collectionsRepository = new CollectionsRepository();
-
-    const collections = await collectionsRepository.read({ collection: collection });
 
     await repository.transaction(async (tx) => {
       const fieldId = await repository.transacting(tx).create(req.body);
       const field = await repository.transacting(tx).readOne(fieldId);
-      await tx.transaction.schema.alterTable(collections[0].collection, (table) => {
+      await tx.transaction.schema.alterTable(field.collection, (table) => {
         addColumnToTable(field, table);
       });
 

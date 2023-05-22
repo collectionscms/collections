@@ -31,7 +31,7 @@ export const DateTimeType: React.FC<Props> = (props) => {
   const { collection, expanded, handleChange, onEditing, onSuccess } = props;
   const { t } = useTranslation();
   const { createField } = useField();
-  const { trigger, isMutating } = createField(collection);
+  const { trigger, isMutating } = createField();
   const defaultValues = { field: '', label: '', required: false };
   const {
     control,
