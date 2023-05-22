@@ -3,21 +3,21 @@ import { ObjectSchema } from 'yup';
 import { yup } from '../../yup.js';
 
 export type FormValues = {
-  firstName: string;
-  lastName: string;
-  userName: string;
+  first_name: string;
+  last_name: string;
+  user_name: string;
   email: string;
   password?: string | null;
-  isActive: boolean;
-  apiKey?: string | null;
-  roleId: string;
+  is_active: boolean;
+  api_key?: string | null;
+  role_id: string;
 };
 
 export const updateUser = (t: TFunction): ObjectSchema<FormValues> => {
   return yup.object().shape({
-    firstName: yup.string().required().max(60),
-    lastName: yup.string().required().max(60),
-    userName: yup
+    first_name: yup.string().required().max(60),
+    last_name: yup.string().required().max(60),
+    user_name: yup
       .string()
       .matches(/^[_0-9a-zA-Z]+$/, t('yup.custom.alphanumeric_and_underscore'))
       .required()
@@ -35,12 +35,12 @@ export const updateUser = (t: TFunction): ObjectSchema<FormValues> => {
       .min(8)
       .max(250)
       .transform((value) => value || null),
-    apiKey: yup
+    api_key: yup
       .string()
       .notRequired()
       .max(250)
       .transform((value) => value || null),
-    isActive: yup.boolean().required(),
-    roleId: yup.string().required(),
+    is_active: yup.boolean().required(),
+    role_id: yup.string().required(),
   });
 };

@@ -1,3 +1,13 @@
+import {
+  Collection as CollectionSchema,
+  ProjectSetting as ProjectSettingSchema,
+  Role as RoleSchema,
+  File as FileSchema,
+  Field as FieldSchema,
+  User as UserSchema,
+  Permission as PermissionSchema,
+} from '../server/database/schemas.js';
+
 // /////////////////////////////////////
 // Configure
 // /////////////////////////////////////
@@ -42,19 +52,7 @@ export type ApiError = {
 // Schema
 // /////////////////////////////////////
 
-type PrimaryKey = {
-  id: number;
-};
-
-export type Collection = {
-  collection: string;
-  singleton: boolean;
-  hidden: boolean;
-  statusField: string | null;
-  draftValue: string | null;
-  publishValue: string | null;
-  archiveValue: string | null;
-} & PrimaryKey;
+export type Collection = {} & CollectionSchema;
 
 export type FieldInterface =
   | 'input'
@@ -80,58 +78,23 @@ export type Choice = {
   value: string;
 };
 export type Field = {
-  collection: string;
-  field: string;
-  label: string;
-  special: string | null;
   interface: FieldInterface;
-  options: string | null;
-  required: boolean;
-  readonly: boolean;
-  hidden: boolean;
-  sort: number;
   fieldOption?: FieldOption | null;
-} & PrimaryKey;
+} & FieldSchema;
 
 export type User = {
-  email: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-  userName: string;
-  apiKey: string | null;
-  isActive: boolean;
-  resetPasswordToken: string | null;
-  resetPasswordExpiration: number | null;
-  roleId: number;
   role?: Role;
-  updatedAt: Date;
-} & PrimaryKey;
+} & UserSchema;
 
 export type Role = {
-  name: string;
-  description: string;
-  adminAccess: boolean;
   permissions: Permission[];
-} & PrimaryKey;
+} & RoleSchema;
 
 export type PermissionsAction = 'create' | 'read' | 'update' | 'delete';
 export type Permission = {
-  collection: string;
   action: PermissionsAction;
-  roleId: number;
-} & PrimaryKey;
+} & PermissionSchema;
 
-export type ProjectSetting = {
-  name: string;
-} & PrimaryKey;
+export type ProjectSetting = {} & ProjectSettingSchema;
 
-export type File = {
-  storage: string;
-  fileName: string;
-  fileNameDisk: string;
-  type: string;
-  fileSize: number | null;
-  width: number | null;
-  height: number | null;
-} & PrimaryKey;
+export type File = {} & FileSchema;

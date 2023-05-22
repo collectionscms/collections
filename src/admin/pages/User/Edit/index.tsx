@@ -70,14 +70,14 @@ const EditUserPageImpl: React.FC = () => {
   }, [updatedUser]);
 
   const setDefaultValue = (user: User) => {
-    setValue('firstName', user.firstName);
-    setValue('lastName', user.lastName);
-    setValue('userName', user.userName);
+    setValue('first_name', user.first_name);
+    setValue('last_name', user.last_name);
+    setValue('user_name', user.user_name);
     setValue('email', user.email);
     setValue('password', '');
-    setValue('apiKey', '');
-    setValue('isActive', Boolean(user.isActive));
-    setValue('roleId', user.role!.id.toString());
+    setValue('api_key', '');
+    setValue('is_active', Boolean(user.is_active));
+    setValue('role_id', user.role!.id.toString());
   };
 
   const handleDeletionSuccess = () => {
@@ -85,12 +85,12 @@ const EditUserPageImpl: React.FC = () => {
   };
 
   const onGenerateApiKey = () => {
-    setValue('apiKey', uuidv4());
+    setValue('api_key', uuidv4());
   };
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     if (!form.password) delete form.password;
-    if (!form.apiKey) delete form.apiKey;
+    if (!form.api_key) delete form.api_key;
 
     try {
       await trigger(form);
@@ -125,42 +125,52 @@ const EditUserPageImpl: React.FC = () => {
           <Grid xs={1}>
             <InputLabel required>{t('last_name')}</InputLabel>
             <Controller
-              name="lastName"
-              control={control}
-              render={({ field }) => (
-                <TextField {...field} type="text" fullWidth error={errors.lastName !== undefined} />
-              )}
-            />
-            <FormHelperText error>{errors.lastName?.message}</FormHelperText>
-          </Grid>
-          <Grid xs={1}>
-            <InputLabel required>{t('first_name')}</InputLabel>
-            <Controller
-              name="firstName"
+              name="last_name"
               control={control}
               render={({ field }) => (
                 <TextField
                   {...field}
                   type="text"
                   fullWidth
-                  error={errors.firstName !== undefined}
+                  error={errors.last_name !== undefined}
                 />
               )}
             />
-            <FormHelperText error>{errors.firstName?.message}</FormHelperText>
+            <FormHelperText error>{errors.last_name?.message}</FormHelperText>
+          </Grid>
+          <Grid xs={1}>
+            <InputLabel required>{t('first_name')}</InputLabel>
+            <Controller
+              name="first_name"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  type="text"
+                  fullWidth
+                  error={errors.first_name !== undefined}
+                />
+              )}
+            />
+            <FormHelperText error>{errors.first_name?.message}</FormHelperText>
           </Grid>
         </Grid>
         <Grid container spacing={3} columns={{ xs: 1, md: 4 }}>
           <Grid xs={1}>
             <InputLabel required>{t('user_name')}</InputLabel>
             <Controller
-              name="userName"
+              name="user_name"
               control={control}
               render={({ field }) => (
-                <TextField {...field} type="text" fullWidth error={errors.userName !== undefined} />
+                <TextField
+                  {...field}
+                  type="text"
+                  fullWidth
+                  error={errors.user_name !== undefined}
+                />
               )}
             />
-            <FormHelperText error>{errors.userName?.message}</FormHelperText>
+            <FormHelperText error>{errors.user_name?.message}</FormHelperText>
           </Grid>
           <Grid xs={1}>
             <InputLabel required>{t('email')}</InputLabel>
@@ -197,14 +207,14 @@ const EditUserPageImpl: React.FC = () => {
           <Grid xs={1} md={2}>
             <InputLabel>{t('api_key')}</InputLabel>
             <Controller
-              name="apiKey"
+              name="api_key"
               control={control}
               render={({ field }) => (
                 <TextField
                   {...field}
                   type="text"
                   placeholder={
-                    user.apiKey ? t('hidden_for_security') : t('generate_api_key_placeholder')
+                    user.api_key ? t('hidden_for_security') : t('generate_api_key_placeholder')
                   }
                   fullWidth
                   InputProps={{
@@ -219,18 +229,18 @@ const EditUserPageImpl: React.FC = () => {
                       </InputAdornment>
                     ),
                   }}
-                  error={errors.apiKey !== undefined}
+                  error={errors.api_key !== undefined}
                 />
               )}
             />
-            <FormHelperText error>{errors.apiKey?.message}</FormHelperText>
+            <FormHelperText error>{errors.api_key?.message}</FormHelperText>
           </Grid>
         </Grid>
         <Grid container spacing={3} columns={{ xs: 1, md: 4 }}>
           <Grid xs={1}>
             <InputLabel>{t('role')}</InputLabel>
             <Controller
-              name="roleId"
+              name="role_id"
               control={control}
               render={({ field }) => (
                 <Select {...field} fullWidth>
@@ -247,7 +257,7 @@ const EditUserPageImpl: React.FC = () => {
           <Grid xs={1}>
             <InputLabel>{t('status')}</InputLabel>
             <Controller
-              name="isActive"
+              name="is_active"
               control={control}
               render={({ field }) => (
                 <FormControlLabel
@@ -257,7 +267,7 @@ const EditUserPageImpl: React.FC = () => {
                 />
               )}
             />
-            <FormHelperText error>{errors.isActive?.message}</FormHelperText>
+            <FormHelperText error>{errors.is_active?.message}</FormHelperText>
           </Grid>
         </Grid>
       </Stack>

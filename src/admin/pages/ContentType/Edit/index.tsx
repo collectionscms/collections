@@ -76,10 +76,10 @@ const EditContentTypePageImpl: React.FC = () => {
   const setDefaultValue = (collection: Collection) => {
     setValue('hidden', Boolean(collection.hidden));
     setValue('singleton', Boolean(collection.singleton));
-    setValue('statusField', collection.statusField || '');
-    setValue('draftValue', collection.draftValue || '');
-    setValue('publishValue', collection.publishValue || '');
-    setValue('archiveValue', collection.archiveValue || '');
+    setValue('status_field', collection.status_field || '');
+    setValue('draft_value', collection.draft_value || '');
+    setValue('publish_value', collection.publish_value || '');
+    setValue('archive_value', collection.archive_value || '');
   };
 
   useEffect(() => {
@@ -270,7 +270,7 @@ const EditContentTypePageImpl: React.FC = () => {
           <Grid xs={1}>
             <InputLabel>{t('public_status_field')}</InputLabel>
             <Controller
-              name="statusField"
+              name="status_field"
               control={control}
               defaultValue={''}
               render={({ field }) => (
@@ -278,7 +278,7 @@ const EditContentTypePageImpl: React.FC = () => {
                   {...field}
                   fullWidth
                   defaultValue={''}
-                  error={errors.statusField !== undefined}
+                  error={errors.status_field !== undefined}
                 >
                   <MenuItem value="">
                     <em>None</em>
@@ -293,57 +293,57 @@ const EditContentTypePageImpl: React.FC = () => {
                 </Select>
               )}
             />
-            <FormHelperText error>{errors.statusField?.message}</FormHelperText>
+            <FormHelperText error>{errors.status_field?.message}</FormHelperText>
           </Grid>
           <Grid xs={1}>
             <InputLabel>{t('draft')}</InputLabel>
             <Controller
-              name="draftValue"
+              name="draft_value"
               control={control}
               render={({ field }) => (
                 <TextField
                   {...field}
                   type="text"
                   fullWidth
-                  error={errors.draftValue !== undefined}
+                  error={errors.draft_value !== undefined}
                 />
               )}
             />
-            <FormHelperText error>{errors.draftValue?.message}</FormHelperText>
+            <FormHelperText error>{errors.draft_value?.message}</FormHelperText>
           </Grid>
         </Grid>
         <Grid container spacing={3} columns={{ xs: 1, md: 4 }}>
           <Grid xs={1}>
             <InputLabel>{t('published')}</InputLabel>
             <Controller
-              name="publishValue"
+              name="publish_value"
               control={control}
               render={({ field }) => (
                 <TextField
                   {...field}
                   type="text"
                   fullWidth
-                  error={errors.publishValue !== undefined}
+                  error={errors.publish_value !== undefined}
                 />
               )}
             />
-            <FormHelperText error>{errors.publishValue?.message}</FormHelperText>
+            <FormHelperText error>{errors.publish_value?.message}</FormHelperText>
           </Grid>
           <Grid xs={1}>
             <InputLabel>{t('archived')}</InputLabel>
             <Controller
-              name="archiveValue"
+              name="archive_value"
               control={control}
               render={({ field }) => (
                 <TextField
                   {...field}
                   type="text"
                   fullWidth
-                  error={errors.archiveValue !== undefined}
+                  error={errors.archive_value !== undefined}
                 />
               )}
             />
-            <FormHelperText error>{errors.archiveValue?.message}</FormHelperText>
+            <FormHelperText error>{errors.archive_value?.message}</FormHelperText>
           </Grid>
         </Grid>
       </Stack>

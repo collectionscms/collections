@@ -12,7 +12,7 @@ export const collectionPermissionsHandler =
 
     if (!req.adminAccess) {
       const repository = new PermissionsRepository();
-      const userPermissions = await repository.read({ roleId: Number(req.roleId) });
+      const userPermissions = await repository.read({ role_id: Number(req.roleId) });
 
       const hasPermission = userPermissions.some(
         (userPermission) =>
@@ -36,7 +36,7 @@ export const permissionsHandler =
 
     if (!req.adminAccess && permissions.length > 0) {
       const repository = new PermissionsRepository();
-      const userPermissions = await repository.read({ roleId: Number(req.roleId) });
+      const userPermissions = await repository.read({ role_id: Number(req.roleId) });
 
       const hasPermission = permissions.every((permission) =>
         userPermissions.some(

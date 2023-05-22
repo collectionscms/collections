@@ -3,10 +3,10 @@ import { yup } from '../../../yup.js';
 
 export type FormValues = {
   label: string;
-  defaultValue: boolean;
+  default_value: boolean;
 };
 
 export const updateBoolean: ObjectSchema<FormValues> = yup.object().shape({
   label: yup.string().required().max(60),
-  defaultValue: yup.boolean().required(),
+  default_value: yup.boolean().required(),
 });

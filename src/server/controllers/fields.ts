@@ -1,4 +1,3 @@
-import { camelCase } from 'change-case';
 import express, { Request, Response } from 'express';
 import { Knex } from 'knex';
 import { Field } from '../../config/types.js';
@@ -22,7 +21,7 @@ router.get(
     const fields = await repository.read({ collection: req.params.collection });
 
     fields.forEach((field) => {
-      field.field = camelCase(field.field);
+      field.field = field.field;
       field.fieldOption = field.options ? JSON.parse(field.options) : null;
     });
 
@@ -118,9 +117,9 @@ router.delete(
         table.dropColumn(field.field);
       });
 
-      if (collection.statusField === field.field) {
+      if (collection.status_field === field.field) {
         await collectionsRepository.transacting(tx).update(collectionId, {
-          statusField: null,
+          status_field: null,
         });
       }
 

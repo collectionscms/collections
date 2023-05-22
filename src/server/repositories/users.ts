@@ -38,10 +38,10 @@ export class UsersRepository extends BaseRepository<User> {
   readWithRole(): Promise<User[]> {
     return this.queryBuilder
       .select('u.*', {
-        roleId: 'r.id',
-        roleName: 'r.name',
-        roleDescription: 'r.description',
-        roleAdminAccess: 'r.admin_access',
+        role_id: 'r.id',
+        role_name: 'r.name',
+        role_description: 'r.description',
+        role_admin_access: 'r.admin_access',
       })
       .from('superfast_users AS u')
       .join('superfast_roles AS r', 'r.id', 'u.role_id');

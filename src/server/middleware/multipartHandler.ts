@@ -43,9 +43,9 @@ export const multipartHandler: RequestHandler = (req, res, next) => {
       const dimensions = sizeOf(fileData);
       const meta: Omit<File, 'id'> = {
         storage: env.STORAGE_DRIVER,
-        fileName: fileName,
-        fileNameDisk: `${uuidv4()}.${extension(type)}`,
-        fileSize: fileData.byteLength,
+        file_name: fileName,
+        file_name_disk: `${uuidv4()}.${extension(type)}`,
+        file_size: fileData.byteLength,
         type: type,
         width: dimensions.width ?? null,
         height: dimensions.height ?? null,

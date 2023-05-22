@@ -28,7 +28,7 @@ export const BooleanType: React.FC<Props> = (props) => {
   const { trigger, isMutating } = updateField(meta.id);
   const defaultValues = {
     label: meta.label,
-    defaultValue: meta?.fieldOption?.defaultValue,
+    default_value: meta?.fieldOption?.defaultValue,
   };
 
   const {
@@ -53,7 +53,7 @@ export const BooleanType: React.FC<Props> = (props) => {
     try {
       const formData = {
         label: form.label,
-        options: JSON.stringify({ defaultValue: form.defaultValue }),
+        options: JSON.stringify({ defaultValue: form.default_value }),
       };
       await trigger(formData);
       reset();
@@ -95,7 +95,7 @@ export const BooleanType: React.FC<Props> = (props) => {
             <Grid xs={1} sm={2}>
               <InputLabel htmlFor="field">{t('default_value')}</InputLabel>
               <Controller
-                name="defaultValue"
+                name="default_value"
                 control={control}
                 render={({ field }) => (
                   <FormControlLabel
@@ -105,7 +105,7 @@ export const BooleanType: React.FC<Props> = (props) => {
                   />
                 )}
               />
-              <FormHelperText error>{errors.defaultValue?.message}</FormHelperText>
+              <FormHelperText error>{errors.default_value?.message}</FormHelperText>
             </Grid>
           </Grid>
           <Button variant="contained" type="submit" size="large" disabled={isMutating} fullWidth>
