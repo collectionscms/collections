@@ -19,8 +19,6 @@ const UserPageImpl: React.FC = () => {
   const { getUsers } = useUser();
   const { data } = getUsers();
 
-  console.log(data);
-
   const fields = [
     { field: 'user_name', label: t('user_name'), type: Type.Text },
     { field: 'name', label: t('name'), type: Type.Text },
