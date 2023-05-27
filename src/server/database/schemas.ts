@@ -71,3 +71,5 @@ export type Relation = {
   one_collection: string;
   one_field: string;
 } & PrimaryKey;
+
+export const referencedTypes = ['listOneToMany'];
