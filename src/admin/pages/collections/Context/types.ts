@@ -1,6 +1,6 @@
 import { SWRConfiguration, SWRResponse } from 'swr';
 import { SWRMutationResponse } from 'swr/mutation';
-import { Field, File } from '../../../../config/types.js';
+import { Field, File, Relation } from '../../../../config/types.js';
 
 export type ContentContext = {
   getContents: (
@@ -28,4 +28,5 @@ export type ContentContext = {
     Record<string, any>,
     any
   >;
+  getRelations: (collection: string, field: string) => SWRResponse<Relation[]>;
 };
