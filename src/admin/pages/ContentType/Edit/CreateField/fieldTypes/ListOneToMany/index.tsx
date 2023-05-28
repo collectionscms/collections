@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { DateRangeOutlined } from '@mui/icons-material';
+import { SettingsEthernetOutlined } from '@mui/icons-material';
 import {
   Accordion,
   AccordionDetails,
@@ -10,29 +10,40 @@ import {
   FormControlLabel,
   FormHelperText,
   InputLabel,
+  MenuItem,
+  Select,
   Stack,
   TextField,
   Typography,
 } from '@mui/material';
-import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
+import Grid from '@mui/material/Unstable_Grid2/Grid2';
 import React, { useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { Field } from '../../../../../../../config/types.js';
 import { logger } from '../../../../../../../utilities/logger.js';
 import { shallowEqualObject } from '../../../../../../../utilities/shallowEqualObject.js';
 import {
   FormValues,
-  createDateTime as schema,
-} from '../../../../../../fields/schemas/collectionFields/dateTime/createDateTime.js';
+  createListOneToMany as schema,
+} from '../../../../../../fields/schemas/collectionFields/listOneToMany/createListOneToMany.js';
 import { useField } from '../../Context/index.js';
 import { Props } from '../types.js';
 
-export const DateTimeType: React.FC<Props> = (props) => {
+export const ListOneToManyType: React.FC<Props> = (props) => {
   const { collection, expanded, handleChange, onEditing, onSuccess } = props;
   const { t } = useTranslation();
-  const { createField } = useField();
-  const { trigger, isMutating } = createField();
-  const defaultValues = { field: '', label: '', required: false };
+  const { createField, getCollections, createRelation } = useField();
+  const { data: collections } = getCollections();
+  const { trigger: createFieldTrigger, isMutating } = createField();
+  const { trigger: createRelationTrigger } = createRelation();
+  const defaultValues = {
+    field: '',
+    label: '',
+    required: false,
+    related_collection: '',
+    foreign_key: '',
+  };
   const {
     control,
     handleSubmit,
@@ -53,17 +64,35 @@ export const DateTimeType: React.FC<Props> = (props) => {
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
-      const field = await trigger({
-        collection: collection,
-        field: form.field,
-        label: form.label,
-        interface: 'dateTime',
-        required: form.required,
-        readonly: false,
-        hidden: false,
+      const results = await Promise.all([
+        createFieldTrigger({
+          collection: collection,
+          field: form.field,
+          label: form.label,
+          interface: 'listOneToMany',
+          required: form.required,
+          readonly: false,
+          hidden: false,
+        }),
+        createFieldTrigger({
+          collection: form.related_collection,
+          field: form.foreign_key,
+          label: collection,
+          interface: 'selectDropdownManyToOne',
+          required: false,
+          readonly: false,
+          hidden: true,
+        }),
+      ]);
+
+      await createRelationTrigger({
+        many_collection: form.related_collection,
+        many_field: form.foreign_key,
+        one_collection: collection,
+        one_field: form.field,
       });
       reset();
-      onSuccess(field!);
+      onSuccess(results[0] as Field);
     } catch (e) {
       logger.error(e);
     }
@@ -75,16 +104,16 @@ export const DateTimeType: React.FC<Props> = (props) => {
         expanded={expanded}
         square
         disableGutters
-        onChange={() => handleChange('dateTime')}
+        onChange={() => handleChange('listOneToMany')}
       >
         <AccordionSummary aria-controls="panel-content" id="panel-header">
           <Stack direction="row" columnGap={2}>
             <Box display="flex" alignItems="center">
-              <DateRangeOutlined />
+              <SettingsEthernetOutlined />
             </Box>
             <Stack direction="column">
-              <Typography variant="subtitle1">{t('field_interface.date_time')}</Typography>
-              <Typography variant="caption">{t('field_interface.date_time_caption')}</Typography>
+              <Typography variant="subtitle1">{t('field_interface.list_o2m')}</Typography>
+              <Typography variant="caption">{t('field_interface.list_o2m_caption')}</Typography>
             </Stack>
           </Stack>
         </AccordionSummary>
@@ -108,7 +137,6 @@ export const DateTimeType: React.FC<Props> = (props) => {
                 />
                 <FormHelperText error>{errors.field?.message}</FormHelperText>
               </Grid>
-
               <Grid xs={1} sm={2}>
                 <InputLabel required>{t('label')}</InputLabel>
                 <Controller
@@ -126,7 +154,51 @@ export const DateTimeType: React.FC<Props> = (props) => {
                 />
                 <FormHelperText error>{errors.label?.message}</FormHelperText>
               </Grid>
-
+              <Grid xs={1} sm={2}>
+                <InputLabel required>{t('related_content')}</InputLabel>
+                <Controller
+                  name="related_collection"
+                  control={control}
+                  defaultValue={''}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      fullWidth
+                      defaultValue={''}
+                      error={errors.related_collection !== undefined}
+                    >
+                      <MenuItem value="">
+                        <em>None</em>
+                      </MenuItem>
+                      {collections &&
+                        collections
+                          .filter((meta) => meta.collection !== collection)
+                          .map((collection) => (
+                            <MenuItem value={collection.collection} key={collection.collection}>
+                              {collection.collection}
+                            </MenuItem>
+                          ))}
+                    </Select>
+                  )}
+                />
+                <FormHelperText error>{errors.related_collection?.message}</FormHelperText>
+              </Grid>
+              <Grid xs={1} sm={2}>
+                <InputLabel required>{t('foreign_key')}</InputLabel>
+                <Controller
+                  name="foreign_key"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      type="text"
+                      fullWidth
+                      error={errors.foreign_key !== undefined}
+                    />
+                  )}
+                />
+                <FormHelperText error>{errors.foreign_key?.message}</FormHelperText>
+              </Grid>
               <Grid xs={1} sm={2}>
                 <InputLabel htmlFor="field">{t('required_fields')}</InputLabel>
                 <Controller

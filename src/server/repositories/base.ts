@@ -64,4 +64,8 @@ export abstract class BaseRepository<T> implements AbstractRepository<T> {
   delete(id: number): Promise<boolean> {
     return this.queryBuilder.where('id', id).del();
   }
+
+  deleteMany(data: Partial<T>): Promise<boolean> {
+    return this.queryBuilder.where(data).del();
+  }
 }

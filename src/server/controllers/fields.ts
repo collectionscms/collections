@@ -9,6 +9,7 @@ import {
 } from '../middleware/permissionsHandler.js';
 import { CollectionsRepository } from '../repositories/collections.js';
 import { FieldsRepository } from '../repositories/fields.js';
+import { RelationsRepository } from '../repositories/relations.js';
 
 const router = express.Router();
 
@@ -32,19 +33,16 @@ router.get(
 );
 
 router.post(
-  '/collections/:collection/fields',
+  '/fields',
   permissionsHandler([{ collection: 'superfast_fields', action: 'create' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const collection = req.params.collection;
     const repository = new FieldsRepository();
-    const collectionsRepository = new CollectionsRepository();
-
-    const collections = await collectionsRepository.read({ collection: collection });
 
     await repository.transaction(async (tx) => {
       const fieldId = await repository.transacting(tx).create(req.body);
       const field = await repository.transacting(tx).readOne(fieldId);
-      await tx.transaction.schema.alterTable(collections[0].collection, (table) => {
+      await tx.transaction.schema.alterTable(field.collection, (table) => {
         addColumnToTable(field, table);
       });
 
@@ -107,6 +105,7 @@ router.delete(
     const id = Number(req.params.id);
     const repository = new FieldsRepository();
     const collectionsRepository = new CollectionsRepository();
+    const relationsRepository = new RelationsRepository();
 
     const collection = await collectionsRepository.readOne(collectionId);
     const field = await repository.readOne(id);
@@ -122,6 +121,48 @@ router.delete(
           status_field: null,
         });
       }
+
+      // Delete many relation fields
+      const oneRelations = await relationsRepository
+        .transacting(tx)
+        .read({ one_collection: collection.collection, one_field: field.field });
+
+      for (let relation of oneRelations) {
+        await repository.transacting(tx).deleteMany({
+          collection: relation.many_collection,
+          field: relation.many_field,
+        });
+
+        await tx.transaction.schema.table(relation.many_collection, (table) => {
+          table.dropColumn(relation.many_field);
+        });
+      }
+
+      // Delete one relation fields
+      const manyRelations = await relationsRepository.transacting(tx).read({
+        many_collection: collection.collection,
+        many_field: field.field,
+      });
+
+      for (let relation of manyRelations) {
+        await repository.transacting(tx).deleteMany({
+          collection: relation.one_collection,
+          field: relation.one_field,
+        });
+
+        await tx.transaction.schema.table(relation.one_collection, (table) => {
+          table.dropColumn(relation.one_field!);
+        });
+      }
+
+      // Delete relations
+      await relationsRepository
+        .transacting(tx)
+        .deleteMany({ many_collection: field.collection, many_field: field.field });
+
+      await relationsRepository
+        .transacting(tx)
+        .deleteMany({ one_collection: field.collection, one_field: field.field });
 
       res.status(204).end();
     });
@@ -139,7 +180,6 @@ const addColumnToTable = (field: Field, table: Knex.CreateTableBuilder, alter: b
       column = table.string(field.field, 255).defaultTo('');
       break;
     case 'inputMultiline':
-    // case 'inputRichTextHtml':
     case 'inputRichTextMd':
       column = table.text(field.field);
       break;
@@ -159,11 +199,17 @@ const addColumnToTable = (field: Field, table: Knex.CreateTableBuilder, alter: b
         .references('id')
         .inTable('superfast_files');
       break;
+    case 'listOneToMany':
+      // noop
+      break;
+    case 'selectDropdownManyToOne':
+      column = table.integer(field.field).unsigned().index();
+      break;
     default:
       throw new InvalidPayloadException('unexpected_field_type_specified');
   }
 
-  if (alter) {
+  if (column && alter) {
     column.alter();
   }
 

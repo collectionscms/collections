@@ -64,3 +64,10 @@ export type File = {
   width: number | null;
   height: number | null;
 } & PrimaryKey;
+
+export type Relation = {
+  many_collection: string;
+  many_field: string;
+  one_collection: string;
+  one_field: string;
+} & PrimaryKey;

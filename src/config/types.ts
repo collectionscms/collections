@@ -1,11 +1,12 @@
 import {
   Collection as CollectionSchema,
-  ProjectSetting as ProjectSettingSchema,
-  Role as RoleSchema,
-  File as FileSchema,
   Field as FieldSchema,
-  User as UserSchema,
+  File as FileSchema,
   Permission as PermissionSchema,
+  ProjectSetting as ProjectSettingSchema,
+  Relation as RelationSchema,
+  Role as RoleSchema,
+  User as UserSchema,
 } from '../server/database/schemas.js';
 
 // /////////////////////////////////////
@@ -57,17 +58,13 @@ export type Collection = {} & CollectionSchema;
 export type FieldInterface =
   | 'input'
   | 'inputMultiline'
-  // | 'inputRichTextHtml'
   | 'inputRichTextMd'
   | 'selectDropdown'
   | 'dateTime'
   | 'boolean'
-  // | 'file'
   | 'fileImage'
-  // | 'list'
-  // | 'listO2o' // one-to-one
-  // | 'listO2m' // one-to-many
-  // | 'selectDropdownM2o' // many-to-one
+  | 'listOneToMany'
+  | 'selectDropdownManyToOne'
   | 'selectDropdownStatus'; // public status
 export type FieldOption = {
   choices?: Choice[];
@@ -98,3 +95,5 @@ export type Permission = {
 export type ProjectSetting = {} & ProjectSettingSchema;
 
 export type File = {} & FileSchema;
+
+export type Relation = {} & RelationSchema;

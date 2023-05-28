@@ -126,8 +126,10 @@ const EditContentTypePageImpl: React.FC = () => {
   // Create Field
   // /////////////////////////////////////
 
-  const handleCreateFieldSuccess = () => {
+  const handleCreateFieldSuccess = (field: Field) => {
     setCreateFieldOpen(false);
+    fields.push(field);
+    mutate(fields);
   };
 
   // /////////////////////////////////////
@@ -164,7 +166,7 @@ const EditContentTypePageImpl: React.FC = () => {
       <CreateField
         collection={meta.collection}
         openState={createFieldOpen}
-        onSuccess={handleCreateFieldSuccess}
+        onSuccess={(field) => handleCreateFieldSuccess(field)}
         onClose={() => onToggleCreateField(false)}
       />
       {selectedField && (
