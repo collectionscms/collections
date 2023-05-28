@@ -1,4 +1,5 @@
 import React, { forwardRef } from 'react';
+import { pick } from '../../../../utilities/pick.js';
 
 type ComposedWrappers<CW> = {
   [key in keyof CW]: React.FC<CW[key]>;
@@ -11,14 +12,6 @@ type ComposedWrapperProps<T extends {}, CW> = T & {
 function omit(obj: any, ...keys: string[][]) {
   const keysToRemove = new Set(keys.flat());
   return Object.fromEntries(Object.entries(obj).filter(([k]) => !keysToRemove.has(k)));
-}
-
-function pick(obj: any, ...keys: string[][]) {
-  const ret: Record<string, any> = {};
-  keys.flat().forEach((key) => {
-    if (obj[key]) ret[key] = obj[key];
-  });
-  return ret;
 }
 
 export const ComposeWrapper = <CW,>(wrappers: ComposedWrappers<CW>) => {

@@ -22,7 +22,7 @@ const EditCollectionPageImpl: React.FC<Props> = ({ collection }) => {
   const { hasPermission } = useAuth();
   const navigate = useNavigate();
   const { getContent, getFields, createContent, updateContent } = useContent();
-  const { data: metaFields } = getFields(collection.collection, { suspense: true });
+  const { data: metaFields } = getFields(collection.collection, true, { suspense: true });
   const { data: content, trigger: getContentTrigger } = getContent(
     collection.collection,
     id || null

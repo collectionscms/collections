@@ -1,6 +1,6 @@
 import { SWRConfiguration, SWRResponse } from 'swr';
 import { SWRMutationResponse } from 'swr/mutation';
-import { Field, File } from '../../../../config/types.js';
+import { Field, File, Relation } from '../../../../config/types.js';
 
 export type ContentContext = {
   getContents: (
@@ -14,7 +14,11 @@ export type ContentContext = {
     config?: SWRConfiguration
   ) => SWRResponse<any>;
   getContent: (collection: string, id: string | null) => SWRMutationResponse<any>;
-  getFields: (collection: string, config?: SWRConfiguration) => SWRResponse<Field[]>;
+  getFields: (
+    collection: string,
+    canFetch?: boolean,
+    config?: SWRConfiguration
+  ) => SWRResponse<Field[]>;
   getPreviewContents: (collection: string) => SWRMutationResponse<any[]>;
   createContent: (collection: string) => SWRMutationResponse<number, any, Record<string, any>, any>;
   updateContent: (
@@ -28,4 +32,5 @@ export type ContentContext = {
     Record<string, any>,
     any
   >;
+  getRelations: (collection: string, field: string) => SWRResponse<Relation[]>;
 };

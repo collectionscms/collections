@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWR, { SWRConfiguration, SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
-import { Field, File } from '../../../../config/types.js';
+import { Field, File, Relation } from '../../../../config/types.js';
 import { api } from '../../../utilities/api.js';
 import { ContentContext } from './types.js';
 
@@ -35,9 +35,13 @@ export const ContentContextProvider: React.FC<{ children: React.ReactNode }> = (
       api.get<{ content: unknown }>(url).then((res) => res.data.content)
     );
 
-  const getFields = (collection: string, config?: SWRConfiguration): SWRResponse =>
+  const getFields = (
+    collection: string,
+    canFetch: boolean = true,
+    config?: SWRConfiguration
+  ): SWRResponse =>
     useSWR(
-      `/collections/${collection}/fields`,
+      canFetch ? `/collections/${collection}/fields` : null,
       (url) => api.get<{ fields: Field[] }>(url).then((res) => res.data.fields),
       config
     );
@@ -73,6 +77,11 @@ export const ContentContextProvider: React.FC<{ children: React.ReactNode }> = (
       return api.post<{ file: File; raw: string }>(url, arg).then((res) => res.data);
     });
 
+  const getRelations = (collection: string, field: string): SWRResponse =>
+    useSWR(`/relations/${collection}/${field}`, (url) =>
+      api.get<{ relations: Relation[] }>(url).then((res) => res.data.relations)
+    );
+
   const value = useMemo(
     () => ({
       getContents,
@@ -84,6 +93,7 @@ export const ContentContextProvider: React.FC<{ children: React.ReactNode }> = (
       updateContent,
       getFileImage,
       createFileImage,
+      getRelations,
     }),
     [
       getContents,
@@ -95,6 +105,7 @@ export const ContentContextProvider: React.FC<{ children: React.ReactNode }> = (
       updateContent,
       getFileImage,
       createFileImage,
+      getRelations,
     ]
   );
 
