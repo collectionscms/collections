@@ -57,42 +57,29 @@ router.post(
     const collectionName = req.params.collection;
     const contentsRepository = new ContentsRepository(collectionName);
     const fieldsRepository = new FieldsRepository();
-    const relationsRepository = new RelationsRepository();
 
     const fields = await fieldsRepository.read({ collection: collectionName });
 
-    const fieldNames = fields
-      .filter((field) => !referencedTypes.includes(field.interface))
-      .map((field) => field.field);
-
-    const relationFields = fields.filter((field) => referencedTypes.includes(field.interface));
-
     await contentsRepository.transaction(async (tx) => {
+      const fieldNames = fields
+        .filter((field) => !referencedTypes.includes(field.interface))
+        .map((field) => field.field);
       const relationDeletedBody = pick(req.body, fieldNames);
 
       // Save content
       const contentId = await contentsRepository.transacting(tx).create(relationDeletedBody);
 
       // Update relational foreign key
+      const relationFields = fields.filter((field) => referencedTypes.includes(field.interface));
       for (let field of relationFields) {
         if (field.interface === 'listOneToMany') {
-          const relation = (
-            await relationsRepository.transacting(tx).read({
-              one_collection: field.collection,
-              one_field: field.field,
-            })
-          )[0];
-
-          const manyCollections = req.body[field.field];
-          const manyCollectionIds = manyCollections.map((manyCollection: any) => manyCollection.id);
-
-          await updateOneToMany(
-            contentId,
-            manyCollectionIds,
-            tx,
-            relation.many_collection,
-            relation.many_field
-          );
+          const manyCollectionData = req.body[field.field];
+          if (manyCollectionData) {
+            const manyCollectionIds = manyCollectionData.map(
+              (manyCollection: any) => manyCollection.id
+            );
+            await saveOneToMany(contentId, field.collection, field.field, manyCollectionIds, tx);
+          }
         }
       }
 
@@ -109,15 +96,35 @@ router.patch(
   asyncHandler(async (req: Request, res: Response) => {
     const collectionName = req.params.collection;
     const id = Number(req.params.id);
-    const repository = new ContentsRepository(collectionName);
+    const contentsRepository = new ContentsRepository(collectionName);
+    const fieldsRepository = new FieldsRepository();
 
-    const conditions = await makeConditions(req, collectionName);
-    const content = await readContent(collectionName, { ...conditions, id });
-    if (!content) throw new RecordNotFoundException('record_not_found');
+    const fields = await fieldsRepository.read({ collection: collectionName });
 
-    await repository.update(id, req.body);
+    await contentsRepository.transaction(async (tx) => {
+      // Update content
+      const fieldNames = fields
+        .filter((field) => !referencedTypes.includes(field.interface))
+        .map((field) => field.field);
+      const relationDeletedBody = pick(req.body, fieldNames);
+      await contentsRepository.transacting(tx).update(id, relationDeletedBody);
 
-    res.status(204).end();
+      // Update relational foreign key
+      const relationFields = fields.filter((field) => referencedTypes.includes(field.interface));
+      for (let field of relationFields) {
+        if (field.interface === 'listOneToMany') {
+          const manyCollectionData = req.body[field.field];
+          if (manyCollectionData) {
+            const manyCollectionIds = manyCollectionData.map(
+              (manyCollection: any) => manyCollection.id
+            );
+            await saveOneToMany(id, field.collection, field.field, manyCollectionIds, tx);
+          }
+        }
+      }
+
+      res.status(204).end();
+    });
   })
 );
 
@@ -138,22 +145,6 @@ router.delete(
     res.status(204).end();
   })
 );
-
-async function updateOneToMany(
-  oneCollectionId: number,
-  manyCollectionIds: number[],
-  tx: BaseTransaction,
-  collection: string,
-  field: string
-) {
-  const postData: Record<string, any> = {};
-  postData[field] = oneCollectionId;
-
-  const repository = new ContentsRepository(collection);
-  for (let id of manyCollectionIds) {
-    await repository.transacting(tx).update(id, postData);
-  }
-}
 
 async function readContent(collectionName: string, conditions: Partial<any>): Promise<unknown> {
   const repository = new ContentsRepository(collectionName);
@@ -208,6 +199,31 @@ async function makeConditions(req: Request, collectionName: string) {
   }
 
   return conditions;
+}
+
+async function saveOneToMany(
+  contentId: number,
+  oneCollection: string,
+  oneField: string,
+  manyCollectionIds: number[],
+  tx: BaseTransaction
+) {
+  const relationsRepository = new RelationsRepository();
+
+  const relation = (
+    await relationsRepository.transacting(tx).read({
+      one_collection: oneCollection,
+      one_field: oneField,
+    })
+  )[0];
+
+  const postData: Record<string, any> = {};
+  postData[relation.many_field] = contentId;
+
+  const repository = new ContentsRepository(relation.many_collection);
+  for (let id of manyCollectionIds) {
+    await repository.transacting(tx).update(id, postData);
+  }
 }
 
 export const contents = router;
