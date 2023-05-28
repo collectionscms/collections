@@ -35,9 +35,13 @@ export const ContentContextProvider: React.FC<{ children: React.ReactNode }> = (
       api.get<{ content: unknown }>(url).then((res) => res.data.content)
     );
 
-  const getFields = (collection: string, config?: SWRConfiguration): SWRResponse =>
+  const getFields = (
+    collection: string,
+    canFetch: boolean = true,
+    config?: SWRConfiguration
+  ): SWRResponse =>
     useSWR(
-      `/collections/${collection}/fields`,
+      canFetch ? `/collections/${collection}/fields` : null,
       (url) => api.get<{ fields: Field[] }>(url).then((res) => res.data.fields),
       config
     );
