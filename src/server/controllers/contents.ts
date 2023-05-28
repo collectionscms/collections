@@ -134,15 +134,36 @@ router.delete(
   asyncHandler(async (req: Request, res: Response) => {
     const collectionName = req.params.collection;
     const id = Number(req.params.id);
-    const repository = new ContentsRepository(collectionName);
+    const contentsRepository = new ContentsRepository(collectionName);
+    const fieldsRepository = new FieldsRepository();
+    const relationsRepository = new RelationsRepository();
 
-    const conditions = await makeConditions(req, collectionName);
-    const content = await readContent(collectionName, { ...conditions, id });
-    if (!content) throw new RecordNotFoundException('record_not_found');
+    const fields = await fieldsRepository.read({ collection: collectionName });
+    const relationFields = fields.filter((field) => referencedTypes.includes(field.interface));
 
-    await repository.delete(id);
+    await contentsRepository.transaction(async (tx) => {
+      await contentsRepository.transacting(tx).delete(id);
 
-    res.status(204).end();
+      // Relational foreign key to null
+      for (let field of relationFields) {
+        if (field.interface === 'listOneToMany') {
+          const relation = (
+            await relationsRepository.transacting(tx).read({
+              one_collection: field.collection,
+              one_field: field.field,
+            })
+          )[0];
+
+          const repository = new ContentsRepository(relation.many_collection);
+          const contents = await repository.transacting(tx).read({ [relation.many_field]: id });
+          for (let content of contents) {
+            await repository.transacting(tx).update(content.id, { [relation.many_field]: null });
+          }
+        }
+      }
+
+      res.status(204).end();
+    });
   })
 );
 
