@@ -157,9 +157,7 @@ router.delete(
           const repository = new ContentsRepository(relation.many_collection);
           const contents = await repository.transacting(tx).read({ [relation.many_field]: id });
           for (let content of contents) {
-            await repository
-              .transacting(tx)
-              .update((content as any).id, { [relation.many_field]: null });
+            await repository.transacting(tx).update(content.id, { [relation.many_field]: null });
           }
         }
       }
