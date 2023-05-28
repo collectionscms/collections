@@ -44,12 +44,50 @@ router.post(
   collectionPermissionsHandler('create'),
   asyncHandler(async (req: Request, res: Response) => {
     const collectionName = req.params.collection;
-    const repository = new ContentsRepository(collectionName);
+    const contentsRepository = new ContentsRepository(collectionName);
+    const fieldsRepository = new FieldsRepository();
+    const relationsRepository = new RelationsRepository();
 
-    const contentId = await repository.create(req.body);
+    const fields = await fieldsRepository.read({ collection: collectionName });
 
-    res.json({
-      id: contentId,
+    const fieldNames = fields
+      .filter((field) => !referencedTypes.includes(field.interface))
+      .map((field) => field.field);
+
+    const relationFields = fields.filter((field) => referencedTypes.includes(field.interface));
+
+    await contentsRepository.transaction(async (tx) => {
+      const relationDeletedBody = pick(req.body, fieldNames);
+
+      // Save content
+      const contentId = await contentsRepository.transacting(tx).create(relationDeletedBody);
+
+      // Update relational foreign key
+      for (let field of relationFields) {
+        if (field.interface === 'listOneToMany') {
+          const relation = (
+            await relationsRepository.transacting(tx).read({
+              one_collection: field.collection,
+              one_field: field.field,
+            })
+          )[0];
+
+          const manyCollections = req.body[field.field];
+          const manyCollectionIds = manyCollections.map((manyCollection: any) => manyCollection.id);
+
+          await updateOneToMany(
+            contentId,
+            manyCollectionIds,
+            tx,
+            relation.many_collection,
+            relation.many_field
+          );
+        }
+      }
+
+      res.json({
+        id: contentId,
+      });
     });
   })
 );
@@ -89,6 +127,22 @@ router.delete(
     res.status(204).end();
   })
 );
+
+async function updateOneToMany(
+  oneCollectionId: number,
+  manyCollectionIds: number[],
+  tx: BaseTransaction,
+  collection: string,
+  field: string
+) {
+  const postData: Record<string, any> = {};
+  postData[field] = oneCollectionId;
+
+  const repository = new ContentsRepository(collection);
+  for (let id of manyCollectionIds) {
+    await repository.transacting(tx).update(id, postData);
+  }
+}
 
 async function readContent(collectionName: string, conditions: Partial<any>): Promise<unknown> {
   const repository = new ContentsRepository(collectionName);
