@@ -40,7 +40,7 @@
   "add_field": "フィールドを追加",
   "field": "フィールド名",
   "label": "ラベル",
-  "input-placeholder": "例:",
+  "input_placeholder": "例:",
   "select_field_type": "フィールドの種類を選択",
   "field_property": "フィールドプロパティ",
   "required_fields": "必須項目",

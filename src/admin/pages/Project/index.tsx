@@ -67,7 +67,7 @@ const ProjectImpl: React.FC = () => {
                   {...field}
                   type="text"
                   fullWidth
-                  placeholder={`${t('input-placeholder')} Superfast`}
+                  placeholder={`${t('input_placeholder')} Superfast`}
                   error={errors.name !== undefined}
                 />
               )}

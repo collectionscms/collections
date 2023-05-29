@@ -98,7 +98,7 @@ export const InputType: React.FC<Props> = (props) => {
                       {...field}
                       type="text"
                       fullWidth
-                      placeholder={`${t('input-placeholder')} name`}
+                      placeholder={`${t('input_placeholder')} name`}
                       error={errors.field !== undefined}
                     />
                   )}
@@ -115,7 +115,7 @@ export const InputType: React.FC<Props> = (props) => {
                       {...field}
                       type="text"
                       fullWidth
-                      placeholder={`${t('input-placeholder')} ${t('name')}`}
+                      placeholder={`${t('input_placeholder')} ${t('name')}`}
                       error={errors.label !== undefined}
                     />
                   )}
