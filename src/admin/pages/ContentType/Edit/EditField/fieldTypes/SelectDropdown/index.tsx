@@ -122,7 +122,7 @@ export const SelectDropdownType: React.FC<Props> = (props) => {
                     {...field}
                     type="text"
                     fullWidth
-                    placeholder={`${t('input-placeholder')} ${t('name')}`}
+                    placeholder={`${t('input_placeholder')} ${t('name')}`}
                     error={errors.label !== undefined}
                   />
                 )}

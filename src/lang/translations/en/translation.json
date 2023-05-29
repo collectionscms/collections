@@ -40,7 +40,7 @@
   "add_field": "Add Field",
   "field": "Field Name",
   "label": "Label",
-  "input-placeholder": "ex:",
+  "input_placeholder": "ex:",
   "select_field_type": "Select field type",
   "field_property": "Field Property",
   "required_fields": "Required Fields",
