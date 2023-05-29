@@ -29,29 +29,25 @@ const UserPageImpl: React.FC = () => {
   ];
 
   const columns = buildColumns(fields, (i: number, row: User, data: any) => {
+    const defaultCell = <Cell colIndex={i} type={fields[i].type} cellData={data} />;
+
     switch (fields[i].field) {
       case 'name':
         return (
           <Cell
             colIndex={i}
             type={fields[i].type}
-            rowData={row}
             cellData={`${row.last_name} ${row.first_name}`}
           />
         );
       case 'api_key':
-        return (
-          <Cell
-            colIndex={i}
-            type={fields[i].type}
-            rowData={row}
-            cellData={row.api_key && t('valid')}
-          />
-        );
+        return <Cell colIndex={i} type={fields[i].type} cellData={row.api_key && t('valid')} />;
       case 'role':
-        return <Cell colIndex={i} type={fields[i].type} rowData={row} cellData={row.role?.name} />;
+        return <Cell colIndex={i} type={fields[i].type} cellData={row.role?.name} />;
+      case 'user_name':
+        return <RouterLink to={`${row.id}`}>{defaultCell}</RouterLink>;
       default:
-        return <Cell colIndex={i} type={fields[i].type} rowData={row} cellData={data} />;
+        return defaultCell;
     }
   });
 

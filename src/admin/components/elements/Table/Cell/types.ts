@@ -10,8 +10,5 @@ export const Type = {
 export type Props = {
   colIndex: number;
   type: (typeof Type)[keyof typeof Type];
-  rowData: {
-    [path: string]: unknown;
-  };
   cellData: unknown;
 };

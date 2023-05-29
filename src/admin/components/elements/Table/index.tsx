@@ -40,12 +40,7 @@ export const Table: React.FC<Props> = ({ columns, rows }) => {
                   {col.customRenderCell ? (
                     col.customRenderCell(i, row, row[col.field.field])
                   ) : (
-                    <Cell
-                      colIndex={i}
-                      type={col.field.type}
-                      rowData={row}
-                      cellData={row[col.field.field]}
-                    />
+                    <Cell colIndex={i} type={col.field.type} cellData={row[col.field.field]} />
                   )}
                 </TableCell>
               ))}

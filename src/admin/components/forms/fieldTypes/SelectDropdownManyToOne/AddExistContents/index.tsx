@@ -40,9 +40,7 @@ const AddExistContentsImpl: React.FC<Props> = ({
     // excludes referenced fields.
     const filtered = fields.filter((field) => !referencedTypes.includes(field.interface));
     const columnFields = buildColumnFields(filtered);
-    const columns = buildColumns(columnFields, (i: number, row: any, data: any) => (
-      <Cell colIndex={i} type={columnFields[i].type} rowData={row} cellData={data} />
-    ));
+    const columns = buildColumns(columnFields);
     setColumns(columns);
   }, [fields]);
 

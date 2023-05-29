@@ -3,26 +3,14 @@ import utc from 'dayjs/plugin/utc.js';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { castToBoolean } from '../../../../utilities/castToBoolean.js';
-import { RouterLink } from '../../Link/index.js';
 import { Props, Type } from './types.js';
 
 export const Cell: React.FC<Props> = (props) => {
-  const { colIndex, type, rowData, cellData } = props;
+  const { colIndex, type, cellData } = props;
   const { t } = useTranslation();
   dayjs.extend(utc);
 
-  let WrapElement: React.ComponentType<any> | string = 'span';
-
-  const wrapElementProps: {
-    to?: string;
-  } = {};
-
-  if (colIndex === 0) {
-    WrapElement = RouterLink;
-    wrapElementProps.to = `${rowData.id}`;
-  }
-
-  const sanitizedCellData = () => {
+  const sanitizedCellData: any = () => {
     if (colIndex === 0 && (cellData === null || String(cellData).trim() === '')) {
       return 'No data';
     }
@@ -44,5 +32,5 @@ export const Cell: React.FC<Props> = (props) => {
     }
   };
 
-  return <WrapElement {...wrapElementProps}>{sanitizedCellData()}</WrapElement>;
+  return <span>{sanitizedCellData()}</span>;
 };
