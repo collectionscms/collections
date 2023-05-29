@@ -27,9 +27,12 @@ const DefaultListPageImpl: React.FC<Props> = ({ collection }) => {
   useEffect(() => {
     if (metaFields === undefined) return;
     const columnFields = buildColumnFields(metaFields);
-    const columns = buildColumns(columnFields, (i: number, row: any, data: any) => (
-      <Cell colIndex={i} type={columnFields[i].type} rowData={row} cellData={data} />
-    ));
+
+    const columns = buildColumns(columnFields, (i: number, row: any, data: any) => {
+      const cell = <Cell colIndex={i} type={columnFields[i].type} cellData={data} />;
+      return i === 0 ? <RouterLink to={`${row.id}`}>{cell}</RouterLink> : cell;
+    });
+
     setColumns(columns);
   }, [metaFields]);
 
