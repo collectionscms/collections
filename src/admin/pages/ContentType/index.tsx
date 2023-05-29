@@ -3,7 +3,9 @@ import { Button, Stack } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { Collection } from '../../../config/types.js';
 import { RouterLink } from '../../components/elements/Link/index.js';
+import { Cell } from '../../components/elements/Table/Cell/index.js';
 import { Type } from '../../components/elements/Table/Cell/types.js';
 import { Table } from '../../components/elements/Table/index.js';
 import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.js';
@@ -19,7 +21,10 @@ const ContentTypePageImpl: React.FC = () => {
 
   const fields = [{ field: 'collection', label: t('name'), type: Type.Text }];
 
-  const columns = buildColumns(fields);
+  const columns = buildColumns(fields, (i: number, row: Collection, data: any) => {
+    const cell = <Cell colIndex={i} type={fields[i].type} cellData={data} />;
+    return i === 0 ? <RouterLink to={`${row.id}`}>{cell}</RouterLink> : cell;
+  });
 
   return (
     <Stack rowGap={3}>
