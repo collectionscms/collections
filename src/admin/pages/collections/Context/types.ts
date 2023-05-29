@@ -4,13 +4,13 @@ import { Field, File, Relation } from '../../../../config/types.js';
 
 export type ContentContext = {
   getContents: (
-    canFetch: boolean,
     collection: string,
+    canFetch?: boolean,
     config?: SWRConfiguration
   ) => SWRResponse<any[]>;
   getSingletonContent: (
-    canFetch: boolean,
     collection: string,
+    canFetch?: boolean,
     config?: SWRConfiguration
   ) => SWRResponse<any>;
   getContent: (collection: string, id: string | null) => SWRMutationResponse<any>;

@@ -30,8 +30,8 @@ const AddExistContentsImpl: React.FC<Props> = ({
   const { data: relations } = getRelations(collection, field);
   const relationFetched = (relations && relations[0] !== null) || false;
   const { data: contents } = getContents(
-    relationFetched,
-    relations ? relations[0].one_collection : ''
+    relations ? relations[0].one_collection : '',
+    relationFetched
   );
   const { data: fields } = getFields(relations ? relations[0].one_collection : '', relationFetched);
 

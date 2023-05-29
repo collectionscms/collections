@@ -19,7 +19,7 @@ const SingletonPageImpl: React.FC<Props> = ({ collection }) => {
   const { getSingletonContent, getFields, createContent, updateContent } = useContent();
   const { data: metaFields } = getFields(collection.collection);
   const fieldFetched = metaFields !== undefined;
-  const { data: content } = getSingletonContent(fieldFetched, collection.collection);
+  const { data: content } = getSingletonContent(collection.collection, fieldFetched);
 
   const { trigger: createTrigger, isMutating: isCreateMutating } = createContent(
     collection.collection
