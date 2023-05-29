@@ -22,7 +22,7 @@ const DefaultListPageImpl: React.FC<Props> = ({ collection }) => {
   const { getContents, getFields } = useContent();
   const { data: metaFields } = getFields(collection.collection);
   const fieldFetched = metaFields !== undefined;
-  const { data: contents } = getContents(fieldFetched, collection.collection);
+  const { data: contents } = getContents(collection.collection, fieldFetched);
 
   useEffect(() => {
     if (metaFields === undefined) return;

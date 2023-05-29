@@ -9,8 +9,8 @@ const Context = createContext({} as ContentContext);
 
 export const ContentContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const getContents = (
-    canFetch: boolean,
     collection: string,
+    canFetch: boolean = true,
     config?: SWRConfiguration
   ): SWRResponse =>
     useSWR(
@@ -20,8 +20,8 @@ export const ContentContextProvider: React.FC<{ children: React.ReactNode }> = (
     );
 
   const getSingletonContent = (
-    canFetch: boolean,
     collection: string,
+    canFetch: boolean = true,
     config?: SWRConfiguration
   ): SWRResponse =>
     useSWR(
