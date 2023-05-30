@@ -9,7 +9,6 @@ import {
 } from '../../../../../pages/collections/Context/index.js';
 import { buildColumnFields } from '../../../../../pages/collections/List/buildColumnFields.js';
 import { buildColumns } from '../../../../../utilities/buildColumns.js';
-import { Cell } from '../../../../elements/Table/Cell/index.js';
 import { RadioGroupTable } from '../../../../elements/Table/RadioGroupTable/index.js';
 import { Column } from '../../../../elements/Table/types.js';
 import { ComposeWrapper } from '../../../../utilities/ComposeWrapper/index.js';
@@ -83,9 +82,7 @@ const AddExistContentsImpl: React.FC<Props> = ({
             </Box>
           </Stack>
           <Stack rowGap={3} sx={{ p: 2 }}>
-            {contents !== undefined && (
-              <RadioGroupTable columns={columns} rows={contents} onChange={handleSelect} />
-            )}
+            <RadioGroupTable columns={columns} rows={contents || []} onChange={handleSelect} />
           </Stack>
           <Stack sx={{ p: 2 }}>
             <Button
