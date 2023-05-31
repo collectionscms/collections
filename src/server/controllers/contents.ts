@@ -24,10 +24,10 @@ router.get(
 
     if (collection.singleton) {
       const content = await contentsRepository.readSingleton(collectionName, conditions);
-      res.json({ content });
+      res.json({ data: content });
     } else {
       const contents = await contentsRepository.read(conditions);
-      res.json({ contents: contents });
+      res.json({ data: contents });
     }
   })
 );
