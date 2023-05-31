@@ -15,7 +15,7 @@ export const ContentContextProvider: React.FC<{ children: React.ReactNode }> = (
   ): SWRResponse =>
     useSWR(
       canFetch ? `/collections/${collection}/contents` : null,
-      (url) => api.get<{ contents: unknown[] }>(url).then((res) => res.data.contents),
+      (url) => api.get(url).then((res) => res.data.data),
       config
     );
 
@@ -85,7 +85,6 @@ export const ContentContextProvider: React.FC<{ children: React.ReactNode }> = (
   const value = useMemo(
     () => ({
       getContents,
-      getSingletonContent,
       getContent,
       getFields,
       getPreviewContents,
@@ -97,7 +96,6 @@ export const ContentContextProvider: React.FC<{ children: React.ReactNode }> = (
     }),
     [
       getContents,
-      getSingletonContent,
       getContent,
       getFields,
       getPreviewContents,
