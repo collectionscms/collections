@@ -16,10 +16,10 @@ const SingletonPageImpl: React.FC<Props> = ({ collection }) => {
   const { hasPermission } = useAuth();
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
-  const { getSingletonContent, getFields, createContent, updateContent } = useContent();
+  const { getContents, getFields, createContent, updateContent } = useContent();
   const { data: metaFields } = getFields(collection.collection);
   const fieldFetched = metaFields !== undefined;
-  const { data: content } = getSingletonContent(collection.collection, fieldFetched);
+  const { data: content } = getContents(collection.collection, fieldFetched);
 
   const { trigger: createTrigger, isMutating: isCreateMutating } = createContent(
     collection.collection

@@ -19,17 +19,6 @@ export const ContentContextProvider: React.FC<{ children: React.ReactNode }> = (
       config
     );
 
-  const getSingletonContent = (
-    collection: string,
-    canFetch: boolean = true,
-    config?: SWRConfiguration
-  ): SWRResponse =>
-    useSWR(
-      canFetch ? `/collections/${collection}/contents` : null,
-      (url) => api.get<{ content: unknown }>(url).then((res) => res.data.content),
-      config
-    );
-
   const getContent = (collection: string, id: string | null): SWRMutationResponse =>
     useSWRMutation(id ? `/collections/${collection}/contents/${id}` : null, (url) =>
       api.get<{ content: unknown }>(url).then((res) => res.data.content)

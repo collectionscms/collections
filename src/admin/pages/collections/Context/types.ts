@@ -9,11 +9,6 @@ export type ContentContext = {
     canFetch?: boolean,
     config?: SWRConfiguration
   ) => SWRResponse<any | any[]>;
-  getSingletonContent: (
-    collection: string,
-    canFetch?: boolean,
-    config?: SWRConfiguration
-  ) => SWRResponse<any>;
   getContent: (collection: string, id: string | null) => SWRMutationResponse<any>;
   getFields: (
     collection: string,
