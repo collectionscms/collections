@@ -28,7 +28,7 @@ const AddExistContentsImpl: React.FC<Props> = ({
   const { getRelations, getContents, getFields } = useContent();
   const { data: relations } = getRelations(collection, field);
   const relationFetched = (relations && relations[0] !== null) || false;
-  const { data: contents } = getContents(
+  const { data: contents }: { data: any[] } = getContents(
     relations ? relations[0].many_collection : '',
     relationFetched
   );
