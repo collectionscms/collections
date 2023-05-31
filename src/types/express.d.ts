@@ -1,3 +1,5 @@
+import { SchemaOverview, CollectionOverview } from '../server/database/overview.js';
+
 export {};
 
 declare global {
@@ -9,6 +11,8 @@ declare global {
       adminAccess?: boolean | null;
       appAccess?: boolean | null;
       permissions?: Permission[] | null;
+      schema: SchemaOverview;
+      collection: CollectionOverview;
     }
   }
 }
