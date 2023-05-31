@@ -9,7 +9,6 @@ import {
 } from '../../../../../pages/collections/Context/index.js';
 import { buildColumnFields } from '../../../../../pages/collections/List/buildColumnFields.js';
 import { buildColumns } from '../../../../../utilities/buildColumns.js';
-import { Cell } from '../../../../elements/Table/Cell/index.js';
 import { CheckBoxTable } from '../../../../elements/Table/CheckBoxTable/index.js';
 import { Column } from '../../../../elements/Table/types.js';
 import { ComposeWrapper } from '../../../../utilities/ComposeWrapper/index.js';
@@ -29,7 +28,7 @@ const AddExistContentsImpl: React.FC<Props> = ({
   const { getRelations, getContents, getFields } = useContent();
   const { data: relations } = getRelations(collection, field);
   const relationFetched = (relations && relations[0] !== null) || false;
-  const { data: contents } = getContents(
+  const { data: contents }: { data: any[] } = getContents(
     relations ? relations[0].many_collection : '',
     relationFetched
   );
@@ -92,9 +91,7 @@ const AddExistContentsImpl: React.FC<Props> = ({
             </Box>
           </Stack>
           <Stack rowGap={3} sx={{ p: 2 }}>
-            {contents !== undefined && (
-              <CheckBoxTable columns={columns} rows={contents} onChange={handleCheck} />
-            )}
+            <CheckBoxTable columns={columns} rows={contents || []} onChange={handleCheck} />
           </Stack>
           <Stack sx={{ p: 2 }}>
             <Button

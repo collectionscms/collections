@@ -17,13 +17,18 @@ router.get(
   collectionPermissionsHandler('read'),
   asyncHandler(async (req: Request, res: Response) => {
     const collectionName = req.params.collection;
-    const repository = new ContentsRepository(collectionName);
+    const contentsRepository = new ContentsRepository(collectionName);
 
     const conditions = await makeConditions(req, collectionName);
-    const contents = await repository.read(conditions);
     const collection = await readCollection(collectionName);
 
-    res.json(collection.singleton ? { content: contents[0] } : { contents: contents });
+    if (collection.singleton) {
+      const content = await contentsRepository.readSingleton(collectionName, conditions);
+      res.json({ data: content });
+    } else {
+      const contents = await contentsRepository.read(conditions);
+      res.json({ data: contents });
+    }
   })
 );
 
@@ -33,13 +38,14 @@ router.get(
   asyncHandler(async (req: Request, res: Response) => {
     const collectionName = req.params.collection;
     const id = Number(req.params.id);
+    const contentsRepository = new ContentsRepository(collectionName);
 
     const conditions = await makeConditions(req, collectionName);
     const content = await readContent(collectionName, { ...conditions, id });
     if (!content) throw new RecordNotFoundException('record_not_found');
 
     // relational contents (one-to-many)
-    const relationalContents = await readRelationalContents(id, collectionName);
+    const relationalContents = await contentsRepository.readRelationalContents(id, collectionName);
 
     res.json({
       content: {
@@ -179,33 +185,6 @@ async function readCollection(collectionName: string) {
   if (!collection) throw new RecordNotFoundException('record_not_found');
 
   return collection;
-}
-
-// Get the relational contents of the collection.
-async function readRelationalContents(contentId: number, collectionName: string) {
-  const fieldsRepository = new FieldsRepository();
-  const relationsRepository = new RelationsRepository();
-  const fields = await fieldsRepository.read({ collection: collectionName });
-
-  const relationalContents: Record<string, any> = {};
-  const referencedFields = fields.filter((field) => referencedTypes.includes(field.interface));
-  for (let field of referencedFields) {
-    const relations = await relationsRepository.read({
-      one_collection: field.collection,
-      one_field: field.field,
-    });
-    if (!relations[0]) return;
-
-    const contentsRepository = new ContentsRepository(relations[0].many_collection);
-
-    const params: Record<string, any> = {};
-    params[relations[0].many_field] = contentId;
-
-    const contents = await contentsRepository.read(params);
-    relationalContents[field.field] = contents;
-  }
-
-  return relationalContents;
 }
 
 // Get the status field and value from the collection.
