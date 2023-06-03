@@ -8,6 +8,7 @@ import { ComposeWrapper } from '../../../../components/utilities/ComposeWrapper/
 import { FieldContextProvider } from './Context/index.js';
 import { BooleanType } from './fieldTypes/Boolean/index.js';
 import { DateTimeType } from './fieldTypes/DateTime/index.js';
+import { FileImageType } from './fieldTypes/FileImage/index.js';
 import { InputType } from './fieldTypes/Input/index.js';
 import { InputMultilineType } from './fieldTypes/InputMultiline/index.js';
 import { InputRichTextMdType } from './fieldTypes/InputRichTextMd/input.js';
@@ -120,6 +121,13 @@ const EditFieldImpl: React.FC<Props> = ({ field, open, onSuccess, onClose }) => 
           )}
           {field.interface === 'dateTime' && (
             <DateTimeType field={field} onEditing={handleEditing} onSuccess={handleEditedSuccess} />
+          )}
+          {field.interface === 'fileImage' && (
+            <FileImageType
+              field={field}
+              onEditing={handleEditing}
+              onSuccess={handleEditedSuccess}
+            />
           )}
           {field.interface === 'listOneToMany' && (
             <ListOneToManyType
