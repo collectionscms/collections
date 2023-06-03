@@ -8,7 +8,6 @@ import { collectionPermissionsHandler } from '../middleware/permissionsHandler.j
 import { BaseTransaction } from '../repositories/base.js';
 import { CollectionsRepository } from '../repositories/collections.js';
 import { ContentsRepository } from '../repositories/contents.js';
-import { RelationsRepository } from '../repositories/relations.js';
 
 const router = express.Router();
 
@@ -78,16 +77,15 @@ router.post(
       );
 
       for (let relation of relations) {
-        const manyCollectionData = req.body[relation.field];
-        if (manyCollectionData) {
-          const manyCollectionIds = manyCollectionData.map(
-            (manyCollection: any) => manyCollection.id
-          );
+        const postContentData = req.body[relation.field];
+        if (postContentData) {
+          const postContentIds = postContentData.map((manyCollection: any) => manyCollection.id);
+
           await saveOneToMany(
             contentId,
-            relation.collection,
-            relation.field,
-            manyCollectionIds,
+            relation.relatedCollection,
+            relation.relatedField,
+            postContentIds,
             tx
           );
         }
@@ -122,12 +120,17 @@ router.patch(
       );
 
       for (let relation of relations) {
-        const manyCollectionData = req.body[relation.field];
-        if (manyCollectionData) {
-          const manyCollectionIds = manyCollectionData.map(
-            (manyCollection: any) => manyCollection.id
+        const postContentData = req.body[relation.field];
+        if (postContentData) {
+          const postContentIds = postContentData.map((manyCollection: any) => manyCollection.id);
+
+          await saveOneToMany(
+            id,
+            relation.relatedCollection,
+            relation.relatedField,
+            postContentIds,
+            tx
           );
-          await saveOneToMany(id, relation.collection, relation.field, manyCollectionIds, tx);
         }
       }
 
@@ -204,26 +207,24 @@ const makeConditions = async (req: Request, collectionName: string) => {
 
 const saveOneToMany = async (
   contentId: number,
-  oneCollection: string,
-  oneField: string,
-  manyCollectionIds: number[],
+  relatedCollection: string,
+  relatedField: string,
+  postRelatedContentIds: number[],
   tx: BaseTransaction
 ) => {
-  const relationsRepository = new RelationsRepository();
+  const repository = new ContentsRepository(relatedCollection);
 
-  const relation = (
-    await relationsRepository.transacting(tx).read({
-      one_collection: oneCollection,
-      one_field: oneField,
-    })
-  )[0];
+  // to null
+  const contents = await repository.transacting(tx).read({ [relatedField]: contentId });
+  for (let content of contents) {
+    if (!postRelatedContentIds.includes(content.id)) {
+      await repository.transacting(tx).update(content.id, { [relatedField]: null });
+    }
+  }
 
-  const postData: Record<string, any> = {};
-  postData[relation.many_field] = contentId;
-
-  const repository = new ContentsRepository(relation.many_collection);
-  for (let id of manyCollectionIds) {
-    await repository.transacting(tx).update(id, postData);
+  // save
+  for (let id of postRelatedContentIds) {
+    await repository.transacting(tx).update(id, { [relatedField]: contentId });
   }
 };
 
