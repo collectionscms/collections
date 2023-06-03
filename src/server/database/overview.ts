@@ -6,6 +6,10 @@ import { getSchemaInfo } from './inspector.js';
 export type CollectionOverview = {
   collection: string;
   singleton: boolean;
+  statusField: string | null;
+  draftValue: string | null;
+  publishValue: string | null;
+  archiveValue: string | null;
   fields: {
     [name: string]: FieldOverview;
   };
@@ -54,6 +58,10 @@ export const getSchemaOverview = async (): Promise<SchemaOverview> => {
     result.collections[collection.collection] = {
       collection: collection.collection,
       singleton: collection.singleton,
+      statusField: collection.status_field,
+      draftValue: collection.draft_value,
+      publishValue: collection.publish_value,
+      archiveValue: collection.archive_value,
       fields: collectionFields,
     };
   }
