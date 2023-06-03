@@ -6,10 +6,9 @@ export type FormValues = {
   field: string;
   label: string;
   required: boolean;
-  default_value: boolean;
 };
 
-export const createBoolean = (t: TFunction): ObjectSchema<FormValues> => {
+export const createFileImage = (t: TFunction): ObjectSchema<FormValues> => {
   return yup.object().shape({
     field: yup
       .string()
@@ -18,6 +17,5 @@ export const createBoolean = (t: TFunction): ObjectSchema<FormValues> => {
       .max(60),
     label: yup.string().required().max(60),
     required: yup.boolean().required(),
-    default_value: yup.boolean().required(),
   });
 };

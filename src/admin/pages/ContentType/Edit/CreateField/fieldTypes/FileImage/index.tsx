@@ -22,8 +22,8 @@ import { logger } from '../../../../../../../utilities/logger.js';
 import { shallowEqualObject } from '../../../../../../../utilities/shallowEqualObject.js';
 import {
   FormValues,
-  createInput as schema,
-} from '../../../../../../fields/schemas/collectionFields/input/createInput.js';
+  createFileImage as schema,
+} from '../../../../../../fields/schemas/collectionFields/fileImage/createFileImage.js';
 import { useField } from '../../Context/index.js';
 import { Props } from '../types.js';
 
