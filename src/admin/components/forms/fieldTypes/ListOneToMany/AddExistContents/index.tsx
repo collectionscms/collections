@@ -18,6 +18,7 @@ import { Props } from './types.js';
 const AddExistContentsImpl: React.FC<Props> = ({
   collection,
   field,
+  excludes,
   openState,
   onSuccess,
   onClose,
@@ -45,6 +46,10 @@ const AddExistContentsImpl: React.FC<Props> = ({
     const columns = buildColumns(columnFields);
     setColumns(columns);
   }, [fields]);
+
+  const excludedContents = contents
+    ? contents.filter((content) => !excludes.some((data) => data.id === content.id))
+    : [];
 
   const handleCheck = (row: any, checked: boolean) => {
     if (checked) {
@@ -91,7 +96,7 @@ const AddExistContentsImpl: React.FC<Props> = ({
             </Box>
           </Stack>
           <Stack rowGap={3} sx={{ p: 2 }}>
-            <CheckBoxTable columns={columns} rows={contents || []} onChange={handleCheck} />
+            <CheckBoxTable columns={columns} rows={excludedContents} onChange={handleCheck} />
           </Stack>
           <Stack sx={{ p: 2 }}>
             <Button
