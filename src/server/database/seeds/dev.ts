@@ -36,8 +36,8 @@ const resetAll = async (database: Knex): Promise<void> => {
   await database('superfast_fields').delete();
   await database('superfast_relations').delete();
   await database('superfast_project_settings').delete();
-  await database.schema.dropTableIfExists('post');
-  await database.schema.dropTableIfExists('company');
+  await database.schema.dropTableIfExists('Post');
+  await database.schema.dropTableIfExists('Company');
 };
 
 const seedingData = async (): Promise<void> => {
@@ -298,7 +298,7 @@ const createCollectionTables = async (database: Knex): Promise<void> => {
     table.timestamps(true, true);
   });
 
-  await database.schema.createTable('company', (table) => {
+  await database.schema.createTable('Company', (table) => {
     table.increments();
     table.string('name', 255);
     table.string('email', 255);
