@@ -173,22 +173,22 @@ router.delete(
   })
 );
 
-async function readContent(collectionName: string, conditions: Partial<any>): Promise<unknown> {
+const readContent = async (collectionName: string, conditions: Partial<any>): Promise<unknown> => {
   const repository = new ContentsRepository(collectionName);
   return (await repository.read(conditions))[0];
-}
+};
 
-async function readCollection(collectionName: string) {
+const readCollection = async (collectionName: string) => {
   const collectionsRepository = new CollectionsRepository();
 
   const collection = (await collectionsRepository.read({ collection: collectionName }))[0];
   if (!collection) throw new RecordNotFoundException('record_not_found');
 
   return collection;
-}
+};
 
 // Get the status field and value from the collection.
-async function makeConditions(req: Request, collectionName: string) {
+const makeConditions = async (req: Request, collectionName: string) => {
   if (req.appAccess) return {};
 
   const conditions: Record<string, any> = {};
@@ -199,15 +199,15 @@ async function makeConditions(req: Request, collectionName: string) {
   }
 
   return conditions;
-}
+};
 
-async function saveOneToMany(
+const saveOneToMany = async (
   contentId: number,
   oneCollection: string,
   oneField: string,
   manyCollectionIds: number[],
   tx: BaseTransaction
-) {
+) => {
   const relationsRepository = new RelationsRepository();
 
   const relation = (
@@ -224,6 +224,6 @@ async function saveOneToMany(
   for (let id of manyCollectionIds) {
     await repository.transacting(tx).update(id, postData);
   }
-}
+};
 
 export const contents = router;
