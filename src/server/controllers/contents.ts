@@ -1,12 +1,11 @@
 import express, { Request, Response } from 'express';
 import { RecordNotFoundException } from '../../exceptions/database/recordNotFound.js';
 import { pick } from '../../utilities/pick.js';
-import { FieldOverview } from '../database/overview.js';
+import { CollectionOverview, FieldOverview } from '../database/overview.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
 import { collectionExists } from '../middleware/collectionExists.js';
 import { collectionPermissionsHandler } from '../middleware/permissionsHandler.js';
 import { BaseTransaction } from '../repositories/base.js';
-import { CollectionsRepository } from '../repositories/collections.js';
 import { ContentsRepository } from '../repositories/contents.js';
 
 const router = express.Router();
@@ -19,7 +18,7 @@ router.get(
     const { collection, singleton } = req.collection;
     const contentsRepository = new ContentsRepository(collection);
 
-    const conditions = await makeConditions(req, collection);
+    const conditions = await makeConditions(req, req.collection);
 
     if (singleton) {
       const content = await contentsRepository.readSingleton(collection, conditions);
@@ -40,7 +39,7 @@ router.get(
     const id = Number(req.params.id);
     const contentsRepository = new ContentsRepository(collection);
 
-    const conditions = await makeConditions(req, collection);
+    const conditions = await makeConditions(req, req.collection);
     const content = await readContent(collection, { ...conditions, id });
     if (!content) throw new RecordNotFoundException('record_not_found');
 
@@ -182,24 +181,14 @@ const readContent = async (collectionName: string, conditions: Partial<any>): Pr
   return (await repository.read(conditions))[0];
 };
 
-const readCollection = async (collectionName: string) => {
-  const collectionsRepository = new CollectionsRepository();
-
-  const collection = (await collectionsRepository.read({ collection: collectionName }))[0];
-  if (!collection) throw new RecordNotFoundException('record_not_found');
-
-  return collection;
-};
-
 // Get the status field and value from the collection.
-const makeConditions = async (req: Request, collectionName: string) => {
+const makeConditions = async (req: Request, collection: CollectionOverview) => {
   if (req.appAccess) return {};
 
   const conditions: Record<string, any> = {};
-  const collection = await readCollection(collectionName);
-  if (collection.status_field) {
+  if (collection.statusField) {
     // For Non-application, only public data can be accessed.
-    conditions[collection.status_field] = collection.publish_value;
+    conditions[collection.statusField] = collection.publishValue;
   }
 
   return conditions;
