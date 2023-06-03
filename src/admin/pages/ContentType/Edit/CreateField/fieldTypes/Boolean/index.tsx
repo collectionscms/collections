@@ -35,6 +35,7 @@ export const BooleanType: React.FC<Props> = (props) => {
   const defaultValues = {
     field: '',
     label: '',
+    required: false,
     default_value: false,
   };
   const {
@@ -62,7 +63,7 @@ export const BooleanType: React.FC<Props> = (props) => {
         field: form.field,
         label: form.label,
         interface: 'boolean',
-        required: true,
+        required: form.required,
         readonly: false,
         hidden: false,
         options: { defaultValue: form.default_value },
@@ -136,6 +137,21 @@ export const BooleanType: React.FC<Props> = (props) => {
                   )}
                 />
                 <FormHelperText error>{errors.default_value?.message}</FormHelperText>
+              </Grid>
+              <Grid xs={1} sm={2}>
+                <InputLabel htmlFor="field">{t('required_fields')}</InputLabel>
+                <Controller
+                  name="required"
+                  control={control}
+                  render={({ field }) => (
+                    <FormControlLabel
+                      {...field}
+                      label={t('required_at_creation')}
+                      control={<Checkbox />}
+                    />
+                  )}
+                />
+                <FormHelperText error>{errors.required?.message}</FormHelperText>
               </Grid>
             </Grid>
             <Button variant="contained" type="submit" size="large" disabled={isMutating} fullWidth>
