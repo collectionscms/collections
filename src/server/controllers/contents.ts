@@ -1,14 +1,12 @@
 import express, { Request, Response } from 'express';
 import { RecordNotFoundException } from '../../exceptions/database/recordNotFound.js';
 import { pick } from '../../utilities/pick.js';
-import { FieldOverview } from '../database/overview.js';
+import { CollectionOverview, FieldOverview } from '../database/overview.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
 import { collectionExists } from '../middleware/collectionExists.js';
 import { collectionPermissionsHandler } from '../middleware/permissionsHandler.js';
 import { BaseTransaction } from '../repositories/base.js';
-import { CollectionsRepository } from '../repositories/collections.js';
 import { ContentsRepository } from '../repositories/contents.js';
-import { RelationsRepository } from '../repositories/relations.js';
 
 const router = express.Router();
 
@@ -20,7 +18,7 @@ router.get(
     const { collection, singleton } = req.collection;
     const contentsRepository = new ContentsRepository(collection);
 
-    const conditions = await makeConditions(req, collection);
+    const conditions = await makeConditions(req, req.collection);
 
     if (singleton) {
       const content = await contentsRepository.readSingleton(collection, conditions);
@@ -41,7 +39,7 @@ router.get(
     const id = Number(req.params.id);
     const contentsRepository = new ContentsRepository(collection);
 
-    const conditions = await makeConditions(req, collection);
+    const conditions = await makeConditions(req, req.collection);
     const content = await readContent(collection, { ...conditions, id });
     if (!content) throw new RecordNotFoundException('record_not_found');
 
@@ -78,16 +76,15 @@ router.post(
       );
 
       for (let relation of relations) {
-        const manyCollectionData = req.body[relation.field];
-        if (manyCollectionData) {
-          const manyCollectionIds = manyCollectionData.map(
-            (manyCollection: any) => manyCollection.id
-          );
+        const postContentData = req.body[relation.field];
+        if (postContentData) {
+          const postContentIds = postContentData.map((manyCollection: any) => manyCollection.id);
+
           await saveOneToMany(
             contentId,
-            relation.collection,
-            relation.field,
-            manyCollectionIds,
+            relation.relatedCollection,
+            relation.relatedField,
+            postContentIds,
             tx
           );
         }
@@ -122,12 +119,17 @@ router.patch(
       );
 
       for (let relation of relations) {
-        const manyCollectionData = req.body[relation.field];
-        if (manyCollectionData) {
-          const manyCollectionIds = manyCollectionData.map(
-            (manyCollection: any) => manyCollection.id
+        const postContentData = req.body[relation.field];
+        if (postContentData) {
+          const postContentIds = postContentData.map((manyCollection: any) => manyCollection.id);
+
+          await saveOneToMany(
+            id,
+            relation.relatedCollection,
+            relation.relatedField,
+            postContentIds,
+            tx
           );
-          await saveOneToMany(id, relation.collection, relation.field, manyCollectionIds, tx);
         }
       }
 
@@ -179,24 +181,14 @@ const readContent = async (collectionName: string, conditions: Partial<any>): Pr
   return (await repository.read(conditions))[0];
 };
 
-const readCollection = async (collectionName: string) => {
-  const collectionsRepository = new CollectionsRepository();
-
-  const collection = (await collectionsRepository.read({ collection: collectionName }))[0];
-  if (!collection) throw new RecordNotFoundException('record_not_found');
-
-  return collection;
-};
-
 // Get the status field and value from the collection.
-const makeConditions = async (req: Request, collectionName: string) => {
+const makeConditions = async (req: Request, collection: CollectionOverview) => {
   if (req.appAccess) return {};
 
   const conditions: Record<string, any> = {};
-  const collection = await readCollection(collectionName);
-  if (collection.status_field) {
+  if (collection.statusField) {
     // For Non-application, only public data can be accessed.
-    conditions[collection.status_field] = collection.publish_value;
+    conditions[collection.statusField] = collection.publishValue;
   }
 
   return conditions;
@@ -204,26 +196,24 @@ const makeConditions = async (req: Request, collectionName: string) => {
 
 const saveOneToMany = async (
   contentId: number,
-  oneCollection: string,
-  oneField: string,
-  manyCollectionIds: number[],
+  relatedCollection: string,
+  relatedField: string,
+  postRelatedContentIds: number[],
   tx: BaseTransaction
 ) => {
-  const relationsRepository = new RelationsRepository();
+  const repository = new ContentsRepository(relatedCollection);
 
-  const relation = (
-    await relationsRepository.transacting(tx).read({
-      one_collection: oneCollection,
-      one_field: oneField,
-    })
-  )[0];
+  // to null
+  const contents = await repository.transacting(tx).read({ [relatedField]: contentId });
+  for (let content of contents) {
+    if (!postRelatedContentIds.includes(content.id)) {
+      await repository.transacting(tx).update(content.id, { [relatedField]: null });
+    }
+  }
 
-  const postData: Record<string, any> = {};
-  postData[relation.many_field] = contentId;
-
-  const repository = new ContentsRepository(relation.many_collection);
-  for (let id of manyCollectionIds) {
-    await repository.transacting(tx).update(id, postData);
+  // save
+  for (let id of postRelatedContentIds) {
+    await repository.transacting(tx).update(id, { [relatedField]: contentId });
   }
 };
 
