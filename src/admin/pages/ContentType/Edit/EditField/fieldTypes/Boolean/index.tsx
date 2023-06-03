@@ -29,6 +29,9 @@ export const BooleanType: React.FC<Props> = (props) => {
   const defaultValues = {
     label: meta.label,
     default_value: meta?.fieldOption?.defaultValue,
+    required: Boolean(meta.required),
+    readonly: Boolean(meta.readonly),
+    hidden: Boolean(meta.hidden),
   };
 
   const {
@@ -54,6 +57,9 @@ export const BooleanType: React.FC<Props> = (props) => {
       const formData = {
         label: form.label,
         options: JSON.stringify({ defaultValue: form.default_value }),
+        required: form.required,
+        readonly: form.readonly,
+        hidden: form.hidden,
       };
       await trigger(formData);
       reset();
@@ -106,6 +112,51 @@ export const BooleanType: React.FC<Props> = (props) => {
                 )}
               />
               <FormHelperText error>{errors.default_value?.message}</FormHelperText>
+            </Grid>
+            <Grid xs={1} sm={2}>
+              <InputLabel htmlFor="field">{t('required_fields')}</InputLabel>
+              <Controller
+                name="required"
+                control={control}
+                render={({ field }) => (
+                  <FormControlLabel
+                    {...field}
+                    label={t('required_at_creation')}
+                    control={<Checkbox checked={field.value} />}
+                  />
+                )}
+              />
+              <FormHelperText error>{errors.required?.message}</FormHelperText>
+            </Grid>
+            <Grid xs={1} sm={2}>
+              <InputLabel htmlFor="field">{t('readonly')}</InputLabel>
+              <Controller
+                name="readonly"
+                control={control}
+                render={({ field }) => (
+                  <FormControlLabel
+                    {...field}
+                    label={t('disable_editing_value')}
+                    control={<Checkbox checked={field.value} />}
+                  />
+                )}
+              />
+              <FormHelperText error>{errors.readonly?.message}</FormHelperText>
+            </Grid>
+            <Grid xs={1} sm={2}>
+              <InputLabel htmlFor="field">{t('hidden')}</InputLabel>
+              <Controller
+                name="hidden"
+                control={control}
+                render={({ field }) => (
+                  <FormControlLabel
+                    {...field}
+                    label={t('hidden_on_detail')}
+                    control={<Checkbox checked={field.value} />}
+                  />
+                )}
+              />
+              <FormHelperText error>{errors.hidden?.message}</FormHelperText>
             </Grid>
           </Grid>
           <Button variant="contained" type="submit" size="large" disabled={isMutating} fullWidth>
