@@ -1,4 +1,5 @@
-import { Box, Button } from '@mui/material';
+import { Cancel } from '@mui/icons-material';
+import { Box, Button, IconButton } from '@mui/material';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ContentContextProvider } from '../../../../pages/collections/Context/index.js';
@@ -19,9 +20,17 @@ export const ListOneToManyTypeImpl: React.FC<Props> = ({
     setAddRelationsOpen(state);
   };
 
-  const handleSelectedContents = (contents: Partial<{ id: number }>[]) => {
+  const handleSelectContents = (contents: Partial<{ id: number }>[]) => {
     setAddRelationsOpen(false);
-    setValue(meta.field, contents);
+    const selectedContents = (watch(meta.field) as Partial<{ id: number }>[]) || [];
+    selectedContents.push(...contents);
+    setValue(meta.field, selectedContents);
+  };
+
+  const removeSelectedContent = (contentId: number) => {
+    const selectedContents = watch(meta.field) as Partial<{ id: number }>[];
+    const filtered = selectedContents.filter((content) => content.id !== contentId);
+    setValue(meta.field, filtered);
   };
 
   return (
@@ -29,12 +38,20 @@ export const ListOneToManyTypeImpl: React.FC<Props> = ({
       <AddExistContents
         collection={meta.collection}
         field={meta.field}
+        excludes={watch(meta.field) || []}
         openState={addRelationsOpen}
-        onSuccess={(contents) => handleSelectedContents(contents)}
+        onSuccess={(contents) => handleSelectContents(contents)}
         onClose={() => onToggleAddRelations(false)}
       />
       {watch(meta.field) &&
-        watch(meta.field).map((data: any) => <Box key={data.id}>{data.id}</Box>)}
+        watch(meta.field).map((data: any) => (
+          <Box key={data.id} display="flex" alignItems="center">
+            {data.id}
+            <IconButton onClick={() => removeSelectedContent(data.id)}>
+              <Cancel />
+            </IconButton>
+          </Box>
+        ))}
       <Button
         variant="contained"
         onClick={() => onToggleAddRelations(true)}
