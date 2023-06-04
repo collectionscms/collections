@@ -1,4 +1,5 @@
-import { Box, Button } from '@mui/material';
+import { Cancel } from '@mui/icons-material';
+import { Box, Button, IconButton } from '@mui/material';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ContentContextProvider } from '../../../../pages/collections/Context/index.js';
@@ -19,9 +20,13 @@ export const SelectDropdownManyToOneTypeImpl: React.FC<Props> = ({
     setAddRelationsOpen(state);
   };
 
-  const handleSelectedContent = (content: Partial<{ id: number }>) => {
+  const handleSelectContent = (content: Partial<{ id: number }>) => {
     setAddRelationsOpen(false);
     setValue(meta.field, content.id);
+  };
+
+  const removeSelectedContent = () => {
+    setValue(meta.field, null);
   };
 
   return (
@@ -30,10 +35,17 @@ export const SelectDropdownManyToOneTypeImpl: React.FC<Props> = ({
         collection={meta.collection}
         field={meta.field}
         openState={addRelationsOpen}
-        onSuccess={(content) => handleSelectedContent(content)}
+        onSuccess={(content) => handleSelectContent(content)}
         onClose={() => onToggleAddRelations(false)}
       />
-      {watch(meta.field) && <Box key={watch(meta.field)}>{watch(meta.field)}</Box>}
+      {watch(meta.field) && (
+        <Box key={watch(meta.field)} display="flex" alignItems="center">
+          {watch(meta.field)}
+          <IconButton onClick={() => removeSelectedContent()}>
+            <Cancel />
+          </IconButton>
+        </Box>
+      )}
       <Button
         variant="contained"
         onClick={() => onToggleAddRelations(true)}
