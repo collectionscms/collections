@@ -5,7 +5,6 @@ import { CollectionOverview, FieldOverview } from '../database/overview.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
 import { collectionExists } from '../middleware/collectionExists.js';
 import { collectionPermissionsHandler } from '../middleware/permissionsHandler.js';
-import { BaseTransaction } from '../repositories/base.js';
 import { ContentsRepository } from '../repositories/contents.js';
 
 const router = express.Router();
@@ -40,7 +39,7 @@ router.get(
     const contentsRepository = new ContentsRepository(collection);
 
     const conditions = await makeConditions(req, req.collection);
-    const content = await readContent(collection, { ...conditions, id });
+    const content = (await contentsRepository.read({ ...conditions, id }))[0];
     if (!content) throw new RecordNotFoundException('record_not_found');
 
     // relational contents (one-to-many)
@@ -80,13 +79,10 @@ router.post(
         if (postContentData) {
           const postContentIds = postContentData.map((manyCollection: any) => manyCollection.id);
 
-          await saveOneToMany(
-            contentId,
-            relation.relatedCollection,
-            relation.relatedField,
-            postContentIds,
-            tx
-          );
+          const repository = new ContentsRepository(relation.relatedCollection);
+          await repository
+            .transacting(tx)
+            .saveOneToMany(contentId, relation.relatedField, postContentIds);
         }
       }
 
@@ -123,13 +119,8 @@ router.patch(
         if (postContentData) {
           const postContentIds = postContentData.map((manyCollection: any) => manyCollection.id);
 
-          await saveOneToMany(
-            id,
-            relation.relatedCollection,
-            relation.relatedField,
-            postContentIds,
-            tx
-          );
+          const repository = new ContentsRepository(relation.relatedCollection);
+          await repository.transacting(tx).saveOneToMany(id, relation.relatedField, postContentIds);
         }
       }
 
@@ -176,11 +167,6 @@ const fieldsFilteredAlias = (fields: FieldOverview[]) =>
       return [...acc, field.field];
     }, []);
 
-const readContent = async (collectionName: string, conditions: Partial<any>): Promise<unknown> => {
-  const repository = new ContentsRepository(collectionName);
-  return (await repository.read(conditions))[0];
-};
-
 // Get the status field and value from the collection.
 const makeConditions = async (req: Request, collection: CollectionOverview) => {
   if (req.appAccess) return {};
@@ -192,29 +178,6 @@ const makeConditions = async (req: Request, collection: CollectionOverview) => {
   }
 
   return conditions;
-};
-
-const saveOneToMany = async (
-  contentId: number,
-  relatedCollection: string,
-  relatedField: string,
-  postRelatedContentIds: number[],
-  tx: BaseTransaction
-) => {
-  const repository = new ContentsRepository(relatedCollection);
-
-  // to null
-  const contents = await repository.transacting(tx).read({ [relatedField]: contentId });
-  for (let content of contents) {
-    if (!postRelatedContentIds.includes(content.id)) {
-      await repository.transacting(tx).update(content.id, { [relatedField]: null });
-    }
-  }
-
-  // save
-  for (let id of postRelatedContentIds) {
-    await repository.transacting(tx).update(id, { [relatedField]: contentId });
-  }
 };
 
 export const contents = router;

@@ -52,4 +52,19 @@ export class ContentsRepository extends BaseRepository<any> {
 
     return relationalContents;
   }
+
+  // Saves one-to-many relations. If unselected, set null to foreign key.
+  async saveOneToMany(contentId: number, relatedField: string, postRelatedContentIds: number[]) {
+    const contents = await this.read({ [relatedField]: contentId });
+    for (let content of contents) {
+      if (!postRelatedContentIds.includes(content.id)) {
+        // Unselected, set null to foreign key.
+        await this.update(content.id, { [relatedField]: null });
+      }
+    }
+
+    for (let id of postRelatedContentIds) {
+      await this.update(id, { [relatedField]: contentId });
+    }
+  }
 }
