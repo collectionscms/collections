@@ -1,15 +1,8 @@
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-} from '@mui/material';
 import { useSnackbar } from 'notistack';
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ComposeWrapper } from '../../utilities/ComposeWrapper/index.js';
+import { BaseDialog } from '../BaseDialog/index.js';
 import { DocumentContextProvider, useDocument } from '../DeleteDocument/Context/index.js';
 import { Props } from './types.js';
 
@@ -35,23 +28,13 @@ const DeleteDocumentImpl: React.FC<Props> = ({ id, slug, openState, onSuccess, o
   }, [data]);
 
   return (
-    <Dialog
+    <BaseDialog
       open={openState}
-      onClose={handleClose}
-      aria-labelledby="alert-dialog-title"
-      aria-describedby="alert-dialog-description"
-    >
-      <DialogTitle id="alert-dialog-title">{t('dialog.confirm_deletion_title')}</DialogTitle>
-      <DialogContent id="alert-dialog-description">
-        <DialogContentText>{t('dialog.confirm_deletion')}</DialogContentText>
-      </DialogContent>
-      <DialogActions sx={{ px: 3, pb: 2 }}>
-        <Button onClick={handleClose}>{t('cancel')}</Button>
-        <Button variant="contained" onClick={handleDelete} disabled={isMutating} autoFocus>
-          {t('ok')}
-        </Button>
-      </DialogActions>
-    </Dialog>
+      title={t('dialog.confirm_deletion_title')}
+      body={t('dialog.confirm_deletion')}
+      confirm={{ label: t('ok'), action: handleDelete }}
+      cancel={{ label: t('cancel'), action: handleClose }}
+    />
   );
 };
 

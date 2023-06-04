@@ -3,7 +3,7 @@ import { Box, Drawer, IconButton, Stack, Typography, useTheme } from '@mui/mater
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Field, FieldInterface } from '../../../../../config/types.js';
-import { UnsavedDialog } from '../../../../components/elements/UnsavedDialog/index.js';
+import { BaseDialog } from '../../../../components/elements/BaseDialog/index.js';
 import { ComposeWrapper } from '../../../../components/utilities/ComposeWrapper/index.js';
 import { FieldContextProvider } from './Context/index.js';
 import { BooleanType } from './fieldTypes/Boolean/index.js';
@@ -75,10 +75,12 @@ const CreateFieldImpl: React.FC<Props> = ({ collection, openState, onSuccess, on
 
   return (
     <Box>
-      <UnsavedDialog
+      <BaseDialog
         open={openUnsavedDialog}
-        onConfirm={handleDiscardChanges}
-        onClose={handleKeepEditing}
+        title={t('dialog.unsaved_changes_title')}
+        body={t('dialog.unsaved_changes')}
+        confirm={{ label: t('dialog.discard_changes'), action: handleDiscardChanges }}
+        cancel={{ label: t('dialog.keep_editing'), action: handleKeepEditing }}
       />
       <Drawer
         anchor="right"
