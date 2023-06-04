@@ -5,10 +5,12 @@ import {
   SettingsOutlined,
 } from '@mui/icons-material';
 import { Box, Drawer, IconButton, Link, Tooltip, useMediaQuery, useTheme } from '@mui/material';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { config } from '../../../../config/ui.js';
 import { useAuth } from '../../utilities/Auth/index.js';
+import { BaseDialog } from '../BaseDialog/index.js';
 import { RouterLink } from '../Link/index.js';
 import { Logo } from '../Logo/index.js';
 import { NavGroup } from '../NavGroup/index.js';
@@ -66,6 +68,8 @@ const NavIcon: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 };
 
 const NavModuleBar = () => {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const navigate = useNavigate();
   const theme = useTheme();
   const { user } = useAuth();
   const { t } = useTranslation();
@@ -92,25 +96,13 @@ const NavModuleBar = () => {
     },
   ];
 
-  const actions = () => {
-    return [
-      {
-        href: '/admin/auth/logout',
-        icon: (
-          <Tooltip title={t('logout')} placement="right">
-            <LogoutOutlined />
-          </Tooltip>
-        ),
-      },
-      {
-        href: `/admin/me`,
-        icon: (
-          <Tooltip title="Me" placement="right">
-            <AccountCircleOutlined />
-          </Tooltip>
-        ),
-      },
-    ];
+  const handleLogout = () => {
+    setIsDialogOpen(false);
+    navigate('/admin/auth/logout');
+  };
+
+  const handleCancel = () => {
+    setIsDialogOpen(false);
   };
 
   return (
@@ -122,6 +114,13 @@ const NavModuleBar = () => {
       }}
     >
       <NavHeader />
+      <BaseDialog
+        open={isDialogOpen}
+        title={t('logout')}
+        body={t('confirm_logout')}
+        confirm={{ label: t('logout'), action: handleLogout }}
+        cancel={{ label: t('cancel'), action: handleCancel }}
+      />
 
       {modules.map((module) => (
         <Link component={RouterLink} to={`${module.href}`} key={module.href}>
@@ -147,11 +146,20 @@ const NavModuleBar = () => {
           zIndex: theme.zIndex.appBar + 100,
         }}
       >
-        {actions().map((action) => (
-          <Link component={RouterLink} to={`${action.href}`} key={action.href}>
-            <NavIcon>{action.icon}</NavIcon>
-          </Link>
-        ))}
+        <NavIcon>
+          <Tooltip title={t('logout')} placement="right">
+            <IconButton onClick={() => setIsDialogOpen(true)}>
+              <LogoutOutlined />
+            </IconButton>
+          </Tooltip>
+        </NavIcon>
+        <Link component={RouterLink} to="/admin/me">
+          <NavIcon>
+            <Tooltip title="Me" placement="right">
+              <AccountCircleOutlined />
+            </Tooltip>
+          </NavIcon>
+        </Link>
       </Box>
     </Box>
   );

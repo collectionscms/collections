@@ -6,26 +6,27 @@ import {
   DialogContentText,
   DialogTitle,
 } from '@mui/material';
-import { t } from 'i18next';
 import React from 'react';
 import { Props } from './types.js';
 
-export const UnsavedDialog: React.FC<Props> = ({ open, onConfirm, onClose }) => {
+export const BaseDialog: React.FC<Props> = ({ open, title, body, confirm, cancel }) => {
   return (
     <Dialog
       open={open}
-      onClose={onClose}
+      onClose={cancel.action}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
-      <DialogTitle id="alert-dialog-title">{t('dialog.unsaved_changes_title')}</DialogTitle>
+      <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
       <DialogContent id="alert-dialog-description">
-        <DialogContentText>{t('dialog.unsaved_changes')}</DialogContentText>
+        <DialogContentText>{body}</DialogContentText>
       </DialogContent>
       <DialogActions sx={{ px: 3, pb: 2 }}>
-        <Button onClick={onConfirm}>{t('dialog.discard_changes')}</Button>
-        <Button variant="contained" onClick={onClose} autoFocus>
-          {t('dialog.keep_editing')}
+        <Button onClick={cancel.action} autoFocus>
+          {cancel.label}
+        </Button>
+        <Button variant="contained" onClick={confirm.action}>
+          {confirm.label}
         </Button>
       </DialogActions>
     </Dialog>
