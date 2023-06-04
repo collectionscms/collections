@@ -39,7 +39,7 @@ router.get(
     const contentsRepository = new ContentsRepository(collection);
 
     const conditions = await makeConditions(req, req.collection);
-    const content = await readContent(collection, { ...conditions, id });
+    const content = (await contentsRepository.read({ ...conditions, id }))[0];
     if (!content) throw new RecordNotFoundException('record_not_found');
 
     // relational contents (one-to-many)
@@ -166,11 +166,6 @@ const fieldsFilteredAlias = (fields: FieldOverview[]) =>
     .reduce((acc: string[], field): string[] => {
       return [...acc, field.field];
     }, []);
-
-const readContent = async (collectionName: string, conditions: Partial<any>): Promise<unknown> => {
-  const repository = new ContentsRepository(collectionName);
-  return (await repository.read(conditions))[0];
-};
 
 // Get the status field and value from the collection.
 const makeConditions = async (req: Request, collection: CollectionOverview) => {
