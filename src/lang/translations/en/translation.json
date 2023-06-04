@@ -58,6 +58,7 @@
   "admin_has_all_permissions": "Admin has all permissions",
   "log_back_in": "Log back in",
   "logged_out": "Logged out",
+  "confirm_logout": "Are you sure you want to logged out?",
   "no_contents": "There are no contents yet.",
   "back_to_home": "Back to Home",
   "collection_not_found": "Collection Not Found",
