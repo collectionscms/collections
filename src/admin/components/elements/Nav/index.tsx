@@ -146,13 +146,13 @@ const NavModuleBar = () => {
           zIndex: theme.zIndex.appBar + 100,
         }}
       >
-        <NavIcon>
-          <Tooltip title={t('logout')} placement="right">
-            <IconButton onClick={() => setIsDialogOpen(true)}>
+        <Link onClick={() => setIsDialogOpen(true)}>
+          <NavIcon>
+            <Tooltip title={t('logout')} placement="right">
               <LogoutOutlined />
-            </IconButton>
-          </Tooltip>
-        </NavIcon>
+            </Tooltip>
+          </NavIcon>
+        </Link>
         <Link component={RouterLink} to="/admin/me">
           <NavIcon>
             <Tooltip title="Me" placement="right">
