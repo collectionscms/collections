@@ -27,6 +27,10 @@ export const Cell: React.FC<Props> = (props) => {
         return castToBoolean(cellData) ? t('enabled') : t('disabled');
       case Type.Object:
         return JSON.stringify(cellData);
+      case Type.Array:
+        const data = cellData as Partial<{ id: number }>[];
+        const ids = data.map((item) => item.id).join(', ');
+        return ids ? '[' + ids + ']' : '';
       default:
         return '';
     }
