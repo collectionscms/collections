@@ -163,7 +163,7 @@ const payload = (user: any) => {
     user_name: user.user_name,
     email: user.email,
     is_active: user.is_active,
-    api_key: user.api_key,
+    api_key: user.api_key ? '********' : null,
     updated_at: user.updated_at,
     role: {
       id: user.role_id,
