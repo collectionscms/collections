@@ -5,6 +5,7 @@ export const Type = {
   Object: 'object',
   Status: 'status',
   Boolean: 'boolean',
+  Array: 'array',
 } as const;
 
 export type Props = {

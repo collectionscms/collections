@@ -18,9 +18,10 @@ const toType = (fieldInterface: string): (typeof Type)[keyof typeof Type] => {
   switch (fieldInterface) {
     case 'input':
     case 'inputMultiline':
-    // case 'inputRichTextHtml':
-    // case 'inputRichTextMd':
+    case 'inputRichTextMd':
+    case 'fileImage':
     case 'selectDropdown':
+    case 'selectDropdownManyToOne':
       return Type.Text;
     case 'selectDropdownStatus':
       return Type.Status;
@@ -28,7 +29,9 @@ const toType = (fieldInterface: string): (typeof Type)[keyof typeof Type] => {
       return Type.Boolean;
     case 'dateTime':
       return Type.Date;
+    case 'listOneToMany':
+      return Type.Array;
     default:
-      return Type.Text;
+      return Type.Object;
   }
 };
