@@ -29,14 +29,18 @@ const AddExistContentsImpl: React.FC<Props> = ({
   const { getRelations, getContents, getFields } = useContent();
   const { data: relations } = getRelations(collection, field);
   const relationFetched = (relations && relations[0] !== null) || false;
-  const { data: contents }: { data: any[] } = getContents(
-    relations ? relations[0].many_collection : '',
-    relationFetched
-  );
+
   const { data: fields } = getFields(
     relations ? relations[0].many_collection : '',
     relationFetched
   );
+
+  const { data: content } = getContents(
+    relations ? relations[0].many_collection : '',
+    relationFetched
+  );
+  // Convert to array in case of singleton.
+  const contents: any[] = content && !Array.isArray(content) ? [content] : content;
 
   useEffect(() => {
     if (fields === undefined) return;

@@ -17,13 +17,12 @@ router.get(
     const { collection, singleton } = req.collection;
     const contentsRepository = new ContentsRepository(collection);
 
-    const conditions = await makeConditions(req, req.collection);
+    const conditions = makeConditions(req, req.collection);
+    const contents = await contentsRepository.readMany(conditions, req.schema);
 
     if (singleton) {
-      const content = await contentsRepository.readSingleton(collection, conditions);
-      res.json({ data: content });
+      res.json({ data: contents[0] });
     } else {
-      const contents = await contentsRepository.read(conditions);
       res.json({ data: contents });
     }
   })
@@ -38,18 +37,13 @@ router.get(
     const id = Number(req.params.id);
     const contentsRepository = new ContentsRepository(collection);
 
-    const conditions = await makeConditions(req, req.collection);
-    const content = (await contentsRepository.read({ ...conditions, id }))[0];
+    const conditions = { ...makeConditions(req, req.collection), id };
+    const content = (await contentsRepository.readMany(conditions, req.schema))[0];
+
     if (!content) throw new RecordNotFoundException('record_not_found');
 
-    // relational contents (one-to-many)
-    const relationalContents = await contentsRepository.readRelationalContents(id, collection);
-
     res.json({
-      content: {
-        ...content,
-        ...relationalContents,
-      },
+      data: content,
     });
   })
 );
@@ -64,7 +58,7 @@ router.post(
 
     await contentsRepository.transaction(async (tx) => {
       const fields = Object.values(req.collection.fields);
-      const relationDeletedBody = pick(req.body, fieldsFilteredAlias(fields));
+      const relationDeletedBody = pick(req.body, nonAliasFields(fields));
 
       // Save content
       const contentId = await contentsRepository.transacting(tx).create(relationDeletedBody);
@@ -106,7 +100,7 @@ router.patch(
       const fields = Object.values(req.collection.fields);
 
       // Update content
-      const relationDeletedBody = pick(req.body, fieldsFilteredAlias(fields));
+      const relationDeletedBody = pick(req.body, nonAliasFields(fields));
       await contentsRepository.transacting(tx).update(id, relationDeletedBody);
 
       // Update relational foreign key
@@ -160,7 +154,7 @@ router.delete(
 );
 
 // Returns an array of non-alias field names.
-const fieldsFilteredAlias = (fields: FieldOverview[]) =>
+const nonAliasFields = (fields: FieldOverview[]) =>
   fields
     .filter((field) => !field.alias)
     .reduce((acc: string[], field): string[] => {
@@ -168,7 +162,7 @@ const fieldsFilteredAlias = (fields: FieldOverview[]) =>
     }, []);
 
 // Get the status field and value from the collection.
-const makeConditions = async (req: Request, collection: CollectionOverview) => {
+const makeConditions = (req: Request, collection: CollectionOverview) => {
   if (req.appAccess) return {};
 
   const conditions: Record<string, any> = {};
