@@ -15,11 +15,7 @@ const router = express.Router();
 router.get(
   '/users',
   permissionsHandler([{ collection: 'superfast_users', action: 'read' }]),
-  asyncHandler(async (req: Request, res: Response) => {
-    if (!req.userId) {
-      throw new InvalidCredentialsException('invalid_user_credentials');
-    }
-
+  asyncHandler(async (_req: Request, res: Response) => {
     const repository = new UsersRepository();
 
     const users = await repository.readWithRole();
@@ -84,10 +80,6 @@ router.delete(
   asyncHandler(async (req: Request, res: Response) => {
     const id = Number(req.params.id);
     const usersRepository = new UsersRepository();
-
-    if (!req.userId) {
-      throw new InvalidCredentialsException('invalid_user_credentials');
-    }
 
     if (req.userId === id) {
       throw new UnprocessableEntityException('can_not_delete_itself');
