@@ -21,7 +21,7 @@ export const ContentContextProvider: React.FC<{ children: React.ReactNode }> = (
 
   const getContent = (collection: string, id: string | null): SWRMutationResponse =>
     useSWRMutation(id ? `/collections/${collection}/contents/${id}` : null, (url) =>
-      api.get<{ content: unknown }>(url).then((res) => res.data.content)
+      api.get<{ data: any }>(url).then((res) => res.data.data)
     );
 
   const getFields = (
@@ -37,7 +37,7 @@ export const ContentContextProvider: React.FC<{ children: React.ReactNode }> = (
 
   const getPreviewContents = (collection: string): SWRMutationResponse =>
     useSWRMutation(`/collections/${collection}/contents`, async (url: string, { arg }) => {
-      return api.get<{ contents: unknown[] }>(url, arg).then((res) => res.data.contents);
+      return api.get<{ contents: any[] }>(url, arg).then((res) => res.data.contents);
     });
 
   const createContent = (collection: string) =>
