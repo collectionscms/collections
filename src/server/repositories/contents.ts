@@ -1,7 +1,5 @@
-import { referencedTypes } from '../database/schemas.js';
+import { SchemaOverview } from '../database/overview.js';
 import { BaseRepository, BaseTransaction } from './base.js';
-import { FieldsRepository } from './fields.js';
-import { RelationsRepository } from './relations.js';
 
 export class ContentsRepository extends BaseRepository<any> {
   transacting(trx: BaseTransaction): ContentsRepository {
@@ -11,46 +9,40 @@ export class ContentsRepository extends BaseRepository<any> {
     return repositoryTransaction;
   }
 
-  // Read content as singleton.
-  async readSingleton(collectionName: string, data: Record<string, any>) {
+  // Read contents, including related contents
+  async readMany(data: Record<string, any>, schema: SchemaOverview) {
     const contents = await this.read(data);
-    const content = contents[0];
-    if (!content) return content;
 
-    // relational contents (one-to-many)
-    const relationalContents = await this.readRelationalContents(content.id, collectionName);
+    const children: Record<string, { relatedField: string; data: any }> = {};
 
-    return {
-      ...content,
-      ...relationalContents,
-    };
-  }
+    const aliasFields = Object.values(schema.collections[this.collection].fields).filter(
+      (field) => field.alias
+    );
 
-  // Get the relational contents of the collection.
-  async readRelationalContents(contentId: number, collectionName: string) {
-    const fieldsRepository = new FieldsRepository();
-    const relationsRepository = new RelationsRepository();
-    const fields = await fieldsRepository.read({ collection: collectionName });
+    for (let field of aliasFields) {
+      const relation = schema.relations.filter(
+        (relation) => relation.collection === this.collection && relation.field === field.field
+      )[0];
 
-    const relationalContents: Record<string, any> = {};
-    const referencedFields = fields.filter((field) => referencedTypes.includes(field.interface));
-    for (let field of referencedFields) {
-      const relations = await relationsRepository.read({
-        one_collection: field.collection,
-        one_field: field.field,
-      });
-      if (!relations[0]) return;
+      const repository = new ContentsRepository(relation.relatedCollection);
+      const data = await repository.readIn(
+        relation.relatedField,
+        contents.map((content) => content.id)
+      );
 
-      const contentsRepository = new ContentsRepository(relations[0].many_collection);
-
-      const params: Record<string, any> = {};
-      params[relations[0].many_field] = contentId;
-
-      const contents = await contentsRepository.read(params);
-      relationalContents[field.field] = contents;
+      children[field.field] = { relatedField: relation.relatedField, data };
     }
 
-    return relationalContents;
+    for (let content of contents) {
+      for (let field of aliasFields) {
+        const child = children[field.field];
+        content[field.field] = child.data.filter(
+          (data: any) => data[child.relatedField] === content.id
+        );
+      }
+    }
+
+    return contents;
   }
 
   // Saves one-to-many relations. If unselected, set null to foreign key.
@@ -66,5 +58,9 @@ export class ContentsRepository extends BaseRepository<any> {
     for (let id of postRelatedContentIds) {
       await this.update(id, { [relatedField]: contentId });
     }
+  }
+
+  private readIn(field: string, data: any[]): Promise<any[]> {
+    return this.queryBuilder.whereIn(field, data).select();
   }
 }
