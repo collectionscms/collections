@@ -37,7 +37,7 @@ router.get(
     const id = Number(req.params.id);
     const repository = new UsersRepository();
 
-    const user = await repository.readOneWithRole({ id });
+    const user = await repository.readOneWithRole(id);
     if (!user) throw new RecordNotFoundException('record_not_found');
 
     res.json({
