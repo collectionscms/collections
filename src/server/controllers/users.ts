@@ -15,11 +15,7 @@ const router = express.Router();
 router.get(
   '/users',
   permissionsHandler([{ collection: 'superfast_users', action: 'read' }]),
-  asyncHandler(async (req: Request, res: Response) => {
-    if (!req.userId) {
-      throw new InvalidCredentialsException('invalid_user_credentials');
-    }
-
+  asyncHandler(async (_req: Request, res: Response) => {
     const repository = new UsersRepository();
 
     const users = await repository.readWithRole();
@@ -37,7 +33,7 @@ router.get(
     const id = Number(req.params.id);
     const repository = new UsersRepository();
 
-    const user = await repository.readOneWithRole({ id });
+    const user = await repository.readOneWithRole(id);
     if (!user) throw new RecordNotFoundException('record_not_found');
 
     res.json({
@@ -84,10 +80,6 @@ router.delete(
   asyncHandler(async (req: Request, res: Response) => {
     const id = Number(req.params.id);
     const usersRepository = new UsersRepository();
-
-    if (!req.userId) {
-      throw new InvalidCredentialsException('invalid_user_credentials');
-    }
 
     if (req.userId === id) {
       throw new UnprocessableEntityException('can_not_delete_itself');
@@ -163,7 +155,7 @@ const payload = (user: any) => {
     user_name: user.user_name,
     email: user.email,
     is_active: user.is_active,
-    api_key: user.api_key,
+    api_key: user.api_key ? '********' : null,
     updated_at: user.updated_at,
     role: {
       id: user.role_id,

@@ -47,27 +47,17 @@ export class UsersRepository extends BaseRepository<User> {
       .join('superfast_roles AS r', 'r.id', 'u.role_id');
   }
 
-  readOneWithRole(data: { id?: number; token?: string }): Promise<User> {
-    const condition: { [index: string]: any } = {};
-
-    if (data.id) {
-      condition['u.id'] = data.id;
-    }
-
-    if (data.token) {
-      condition['u.token'] = data.token;
-    }
-
+  readOneWithRole(id: number): Promise<User> {
     return this.queryBuilder
       .select('u.*', {
-        roleId: 'r.id',
-        roleName: 'r.name',
-        roleDescription: 'r.description',
-        roleAdminAccess: 'r.admin_access',
+        role_id: 'r.id',
+        role_name: 'r.name',
+        role_description: 'r.description',
+        role_admin_access: 'r.admin_access',
       })
       .from('superfast_users AS u')
       .join('superfast_roles AS r', 'r.id', 'u.role_id')
-      .where(condition)
+      .where('u.id', id)
       .first();
   }
 
@@ -88,8 +78,8 @@ export class UsersRepository extends BaseRepository<User> {
 
     return this.queryBuilder
       .select('u.id', 'u.user_name', 'u.password', 'u.api_key', {
-        roleId: 'r.id',
-        adminAccess: 'r.admin_access',
+        role_id: 'r.id',
+        admin_access: 'r.admin_access',
       })
       .from('superfast_users AS u')
       .join('superfast_roles AS r', 'r.id', 'u.role_id')
