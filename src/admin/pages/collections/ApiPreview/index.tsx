@@ -60,12 +60,9 @@ const ApiPreviewImpl: React.FC<Props> = ({ collection, singleton }) => {
           </Grid>
           <Stack>
             <Box>Headers</Box>
-            <Box>{user.apiKey ? `Bearer ${user.apiKey}` : '-'}</Box>
+            <Box>-</Box>
           </Stack>
-          <Paper elevation={0}>
-            {`curl "${url}" -H "Authorization: Bearer
-            ${user.apiKey}"`}
-          </Paper>
+          <Paper elevation={0}>{`curl "${url}" -H "Authorization: Bearer -`}</Paper>
           {contents && (
             <TextField
               multiline
