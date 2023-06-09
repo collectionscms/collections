@@ -1,5 +1,7 @@
-import { MeUser, User } from '../../config/types.js';
+import argon2 from 'argon2';
+import { AuthUser, User } from '../../config/types.js';
 import { RecordNotUniqueException } from '../../exceptions/database/recordNotUnique.js';
+import { InvalidCredentialsException } from '../../exceptions/invalidCredentials.js';
 import { AbstractRepositoryOptions, BaseRepository, BaseTransaction } from './base.js';
 
 export class UsersRepository extends BaseRepository<User> {
@@ -61,23 +63,39 @@ export class UsersRepository extends BaseRepository<User> {
       .first();
   }
 
-  readMe(data: { id?: number; email?: string; token?: string }): Promise<MeUser> {
+  async login(email: string, password: string): Promise<AuthUser> {
+    const user = await this.queryBuilder
+      .select('u.id', 'u.user_name', 'u.password', 'u.email', 'u.api_key', {
+        role_id: 'r.id',
+        admin_access: 'r.admin_access',
+      })
+      .from('superfast_users AS u')
+      .join('superfast_roles AS r', 'r.id', 'u.role_id')
+      .whereRaw('LOWER(??) = ?', ['u.email', email.toLowerCase()])
+      .first();
+
+    if (!user || !(await argon2.verify(user.password, password))) {
+      throw new InvalidCredentialsException('incorrect_email_or_password');
+    }
+
+    return this.toAuthUser(user);
+  }
+
+  async readMe(data: { id?: number; apiKey?: string }): Promise<AuthUser | null> {
+    if (!data.id && !data.apiKey) return null;
+
     const condition: { [index: string]: any } = {};
 
     if (data.id) {
       condition['u.id'] = data.id;
     }
 
-    if (data.email) {
-      condition['u.email'] = data.email;
+    if (data.apiKey) {
+      condition['u.api_key'] = data.apiKey;
     }
 
-    if (data.token) {
-      condition['u.api_key'] = data.token;
-    }
-
-    return this.queryBuilder
-      .select('u.id', 'u.user_name', 'u.password', 'u.api_key', {
+    const user = await this.queryBuilder
+      .select('u.id', 'u.user_name', 'u.api_key', {
         role_id: 'r.id',
         admin_access: 'r.admin_access',
       })
@@ -85,6 +103,8 @@ export class UsersRepository extends BaseRepository<User> {
       .join('superfast_roles AS r', 'r.id', 'u.role_id')
       .where(condition)
       .first();
+
+    return this.toAuthUser(user);
   }
 
   readResetPasswordToken(token: string): Promise<User> {
@@ -94,5 +114,20 @@ export class UsersRepository extends BaseRepository<User> {
       .where('u.reset_password_token', token)
       .where('u.reset_password_expiration', '>', Date.now())
       .first();
+  }
+
+  private toAuthUser(user: {
+    id: number;
+    role_id: number;
+    user_name: string;
+    admin_access: boolean;
+  }): AuthUser {
+    return {
+      id: user.id,
+      roleId: user.role_id,
+      userName: user.user_name,
+      adminAccess: user.admin_access,
+      appAccess: null,
+    };
   }
 }

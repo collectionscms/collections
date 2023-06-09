@@ -25,17 +25,13 @@ export type Token = {
   token: string;
 };
 
-export type MeUser = {
+export type AuthUser = {
   id: number;
   roleId: number;
   userName: string;
-  password: string;
   adminAccess: boolean;
   appAccess: boolean | null; // access from applications.
-  apiKey: string | null;
 };
-
-export type AuthUser = Omit<MeUser, 'password'>;
 
 // /////////////////////////////////////
 // Error
