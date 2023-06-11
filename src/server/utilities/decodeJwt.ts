@@ -1,9 +1,11 @@
 import jwtDecode from 'jwt-decode';
 import { AuthUser } from '../../config/types.js';
 
-export const decodeJwt = (token: string): AuthUser | null => {
+type DecodedType = AuthUser & { exp: number };
+
+export const decodeJwt = (token: string): DecodedType | null => {
   try {
-    return jwtDecode<AuthUser>(token);
+    return jwtDecode<DecodedType>(token);
   } catch {
     return null;
   }
