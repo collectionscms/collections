@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { logger } from '../../../utilities/logger.js';
 import { RouterLink } from '../../components/elements/Link/index.js';
+import { Loading } from '../../components/elements/Loading/index.js';
 import { Logo } from '../../components/elements/Logo/index.js';
 import { useAuth } from '../../components/utilities/Auth/index.js';
 import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.js';
@@ -14,10 +15,9 @@ import { LoginContextProvider, useLogin } from './Context/index.js';
 
 const LoginImpl: React.FC = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
   const { t } = useTranslation();
-  const { login } = useAuth();
-  const { data: token, trigger, isMutating } = login();
+  const { user, login } = useAuth();
+  const { trigger, isMutating } = login();
   const { getProjectSetting } = useLogin();
   const { data: projectSetting } = getProjectSetting();
 
@@ -31,9 +31,10 @@ const LoginImpl: React.FC = () => {
   });
 
   useEffect(() => {
-    if (token === undefined) return;
-    navigate('/admin/collections');
-  }, [token]);
+    if (user) {
+      navigate('/admin/collections');
+    }
+  }, [user]);
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
@@ -44,16 +45,7 @@ const LoginImpl: React.FC = () => {
   };
 
   if (user) {
-    return (
-      <>
-        <Stack direction="row" justifyContent="center" alignItems="center">
-          <h1>{t('already_logged_in')}</h1>
-        </Stack>
-        <Button variant="outlined" size="large" component={RouterLink} to="/admin/collections">
-          {t('back_to_home')}
-        </Button>
-      </>
-    );
+    return <Loading />;
   }
 
   return (
