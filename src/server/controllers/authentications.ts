@@ -23,13 +23,12 @@ router.post(
   })
 );
 
-const toToken = (user: AuthUser) => {
-  user.appAccess = true;
-  const token = jwt.sign(user, env.SECRET, {
-    expiresIn: env.ACCESS_TOKEN_TTL,
-  });
-
-  return token;
-};
+router.post(
+  '/authentications/logout',
+  asyncHandler(async (_req: Request, res: Response) => {
+    res.clearCookie(`${env.COOKIE_PREFIX}-token`);
+    res.status(204).send();
+  })
+);
 
 export const authentications = router;
