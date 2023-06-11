@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useMemo } from 'react';
 import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
 import { AuthUser, Permission, PermissionsAction } from '../../../../config/types.js';
@@ -9,15 +9,23 @@ import { AuthContext } from './types.js';
 const Context = createContext({} as AuthContext);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<AuthUser | null | undefined>();
-
-  const { data: me, error } = useSWR('/me', (url) =>
-    api.get<{ token: string; user: AuthUser; exp: number }>(url).then(({ data }) => {
-      if (data.token) {
-        setAuthorization(data.token);
-      }
-      return data;
-    })
+  const {
+    data: me,
+    mutate,
+    error,
+  } = useSWR('/me', (url) =>
+    api
+      .get<{
+        token: string | null;
+        user: AuthUser | null;
+        exp: number | null;
+      }>(url)
+      .then(({ data }) => {
+        if (data.token) {
+          setAuthorization(data.token);
+        }
+        return data;
+      })
   );
 
   const { data: permissions } = useSWR(
@@ -34,14 +42,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   );
 
   useEffect(() => {
-    if (me === undefined) return;
-    setUser(me?.user);
-  }, [me]);
-
-  useEffect(() => {
     if (error === undefined) return;
     removeAuthorization();
-    setUser(null);
   }, [error]);
 
   const hasPermission = useCallback(
@@ -62,9 +64,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     useSWRMutation(
       `/authentications/login`,
       async (url: string, { arg }: { arg: Record<string, any> }) => {
-        return api.post<{ token: string; user: AuthUser }>(url, arg).then((res) => {
+        return api.post<{ token: string; user: AuthUser; exp: number }>(url, arg).then((res) => {
           setAuthorization(res.data.token);
-          setUser(res.data.user);
+          mutate(res.data);
           return res.data;
         });
       }
@@ -74,20 +76,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     useSWRMutation(`/authentications/logout`, async (url: string) => {
       return api.post(url).then((res) => {
         removeAuthorization();
-        setUser(null);
+        mutate({ token: null, user: null, exp: null });
         return res;
       });
     });
 
   const value = useMemo(
     () => ({
-      user,
+      user: me?.user,
       permissions,
       hasPermission,
       login,
       logout,
     }),
-    [user, permissions, hasPermission, login, logout]
+    [me, permissions, hasPermission, login, logout]
   );
 
   return <Context.Provider value={value}>{children}</Context.Provider>;
