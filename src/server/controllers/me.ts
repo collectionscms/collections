@@ -26,7 +26,7 @@ router.get(
       return res.json({
         user,
         token,
-        exp: decoded?.exp || 0,
+        exp: decoded?.exp,
       });
     }
 
@@ -36,7 +36,7 @@ router.get(
       return res.json({ user: decoded, token: token, exp: decoded?.exp || 0 });
     }
 
-    res.json({ user: null, token: null, exp: 0 });
+    res.json({ user: null, token: null, exp: null });
   })
 );
 

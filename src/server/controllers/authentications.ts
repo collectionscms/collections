@@ -3,6 +3,7 @@ import ms from 'ms';
 import { env } from '../../env.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
 import { UsersRepository } from '../repositories/users.js';
+import { decodeJwt } from '../utilities/decodeJwt.js';
 import { sign } from '../utilities/sign.js';
 
 const router = express.Router();
@@ -16,6 +17,7 @@ router.post(
     user.appAccess = true;
 
     const token = sign(user);
+    const decoded = decodeJwt(token);
 
     const cookieOptions: CookieOptions = {
       path: '/',
@@ -30,6 +32,7 @@ router.post(
     res.json({
       token,
       user,
+      exp: decoded?.exp,
     });
   })
 );
