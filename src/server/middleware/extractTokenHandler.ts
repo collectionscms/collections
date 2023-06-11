@@ -1,6 +1,4 @@
 import { NextFunction, Request, RequestHandler, Response } from 'express';
-import { env } from '../../env.js';
-import { parseCookies } from '../utilities/parseCookies.js';
 
 export const extractTokenHandler: RequestHandler = (
   req: Request,
@@ -21,14 +19,6 @@ export const extractTokenHandler: RequestHandler = (
       req.token = parts[1];
       return next();
     }
-  }
-
-  // Extract token from cookies
-  const cookies = parseCookies(req);
-  const tokenCookieName = `${env.COOKIE_PREFIX}-token`;
-
-  if (cookies && cookies[tokenCookieName]) {
-    req.token = cookies[tokenCookieName];
   }
 
   next();
