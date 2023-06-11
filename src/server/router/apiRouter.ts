@@ -7,6 +7,7 @@ import { collections } from '../controllers/collections.js';
 import { contents } from '../controllers/contents.js';
 import { fields } from '../controllers/fields.js';
 import { files } from '../controllers/files.js';
+import { me } from '../controllers/me.js';
 import { projectSettings } from '../controllers/projectSettings.js';
 import { relations } from '../controllers/relations.js';
 import { roles } from '../controllers/roles.js';
@@ -41,6 +42,7 @@ router.use(fields);
 router.use(contents);
 router.use(projectSettings);
 router.use(authentications);
+router.use(me);
 router.use(files);
 router.use(relations);
 

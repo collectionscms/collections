@@ -23,25 +23,6 @@ router.post(
   })
 );
 
-router.get(
-  '/me',
-  permissionsHandler(),
-  asyncHandler(async (req: Request, res: Response) => {
-    const repository = new UsersRepository();
-
-    const user = await repository.readMe({ id: Number(req.userId) });
-    if (!user) {
-      throw new InvalidCredentialsException('token_invalid_or_expired');
-    }
-
-    const token = toToken(user);
-
-    res.json({
-      token,
-    });
-  })
-);
-
 const toToken = (user: AuthUser) => {
   user.appAccess = true;
   const token = jwt.sign(user, env.SECRET, {
