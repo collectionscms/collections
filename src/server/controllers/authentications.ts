@@ -1,11 +1,9 @@
-import express, { Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
-import { AuthUser } from '../../config/types.js';
+import express, { CookieOptions, Request, Response } from 'express';
+import ms from 'ms';
 import { env } from '../../env.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
-import { permissionsHandler } from '../middleware/permissionsHandler.js';
 import { UsersRepository } from '../repositories/users.js';
-import { InvalidCredentialsException } from '../../exceptions/invalidCredentials.js';
+import { sign } from '../utilities/sign.js';
 
 const router = express.Router();
 
@@ -15,10 +13,23 @@ router.post(
     const repository = new UsersRepository();
 
     const user = await repository.login(req.body.email, req.body.password);
-    const token = toToken(user);
+    user.appAccess = true;
+
+    const token = sign(user);
+
+    const cookieOptions: CookieOptions = {
+      path: '/',
+      httpOnly: true,
+      maxAge: ms(env.REFRESH_TOKEN_TTL as string),
+      secure: env.COOKIE_SECURE ?? false,
+      sameSite: (env.COOKIE_SAME_SITE as 'lax' | 'strict' | 'none') || 'strict',
+      domain: env.COOKIE_DOMAIN,
+    };
+    res.cookie(`${env.COOKIE_PREFIX}-token`, token, cookieOptions);
 
     res.json({
       token,
+      user,
     });
   })
 );
