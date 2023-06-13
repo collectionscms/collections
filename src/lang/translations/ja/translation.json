@@ -164,7 +164,8 @@
     "no_file_req_body": "リクエストボディにファイルがありません。",
     "invalid_access_key": "アクセスキーが有効ではありません。",
     "invalid_secret_key": "シークレットキーが有効ではありません。",
-    "file_does_not_exist": "ファイルが存在しません。"
+    "file_does_not_exist": "ファイルが存在しません。",
+    "token_expired": "トークンの有効期限が切れました。"
   },
   "yup": {
     "mixed": {
