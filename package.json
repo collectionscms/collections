@@ -79,7 +79,6 @@
     "inquirer": "^9.2.0",
     "joi": "^17.9.2",
     "jsonwebtoken": "^9.0.0",
-    "jwt-decode": "^3.1.2",
     "knex": "^2.4.2",
     "knex-schema-inspector": "^3.0.1",
     "mime-types": "^2.1.35",
