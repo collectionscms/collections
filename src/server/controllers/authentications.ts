@@ -32,7 +32,6 @@ router.post(
     res.json({
       token,
       user,
-      exp: decoded?.exp,
     });
   })
 );

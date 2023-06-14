@@ -18,7 +18,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       .get<{
         token: string | null;
         user: AuthUser | null;
-        exp: number | null;
       }>(url)
       .then(({ data }) => {
         if (data.token) {
@@ -64,7 +63,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     useSWRMutation(
       `/authentications/login`,
       async (url: string, { arg }: { arg: Record<string, any> }) => {
-        return api.post<{ token: string; user: AuthUser; exp: number }>(url, arg).then((res) => {
+        return api.post<{ token: string; user: AuthUser }>(url, arg).then((res) => {
           setAuthorization(res.data.token);
           mutate(res.data);
           return res.data;
@@ -76,7 +75,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     useSWRMutation(`/authentications/logout`, async (url: string) => {
       return api.post(url).then((res) => {
         removeAuthorization();
-        mutate({ token: null, user: null, exp: null });
+        mutate({ token: null, user: null });
         return res;
       });
     });

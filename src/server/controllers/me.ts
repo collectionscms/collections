@@ -37,6 +37,7 @@ router.get(
     }
 
     res.json({ user: null, token: null, exp: null });
+    res.json({ user: null, token: null });
   })
 );
 
