@@ -59,6 +59,7 @@
     "@types/ms": "^0.7.31",
     "argon2": "^0.30.3",
     "axios": "^1.4.0",
+    "axios-retry": "^3.5.0",
     "busboy": "^1.6.0",
     "chalk": "^5.2.0",
     "cookie-parser": "^1.4.6",
