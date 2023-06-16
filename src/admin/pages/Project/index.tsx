@@ -5,6 +5,7 @@ import { useSnackbar } from 'notistack';
 import React, { Suspense, useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { logger } from '../../../utilities/logger.js';
 import { Loading } from '../../components/elements/Loading/index.js';
 import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.js';
 import { useDocumentInfo } from '../../components/utilities/DocumentInfo/index.js';
@@ -37,8 +38,12 @@ const ProjectImpl: React.FC = () => {
     enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
   }, [updatedProjectSetting]);
 
-  const onSubmit: SubmitHandler<FormValues> = (form: FormValues) => {
-    trigger(form);
+  const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
+    try {
+      await trigger(form);
+    } catch (e) {
+      logger.error(e);
+    }
   };
 
   return (
