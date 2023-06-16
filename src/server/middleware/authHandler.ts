@@ -1,34 +1,22 @@
 import { NextFunction, Request, RequestHandler, Response } from 'express';
-import { InvalidCredentialsException } from '../../exceptions/invalidCredentials.js';
 import { UsersRepository } from '../repositories/users.js';
-import { decodeJwt } from '../utilities/decodeJwt.js';
+import { verifyJwt } from '../utilities/verifyJwt.js';
 import { asyncHandler } from './asyncHandler.js';
 
 export const authHandler: RequestHandler = asyncHandler(
   async (req: Request, _res: Response, next: NextFunction) => {
-    const repository = new UsersRepository();
+    if (req.token) {
+      const repository = new UsersRepository();
+      const user = (await repository.readMe({ apiKey: req.token })) || verifyJwt(req.token);
 
-    try {
-      if (req.token) {
-        // Check user from cookie or Bearer token.
-        const user = decodeJwt(req.token) || (await repository.readMe({ apiKey: req.token }));
-        if (user) {
-          req.userId = user.id;
-          req.adminAccess = user.adminAccess;
-          req.roleId = user.roleId;
-          req.appAccess = user.appAccess ?? false;
-        } else {
-          return next(new InvalidCredentialsException('invalid_user_credentials'));
-        }
+      if (user) {
+        req.userId = user.id;
+        req.adminAccess = user.adminAccess;
+        req.roleId = user.roleId;
+        req.appAccess = user.appAccess ?? false;
       }
-
-      return next();
-    } catch (e) {
-      return next(
-        new InvalidCredentialsException('invalid_user_credentials', {
-          message: (e as Error).message,
-        })
-      );
     }
+
+    return next();
   }
 );
