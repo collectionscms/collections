@@ -104,7 +104,7 @@ export class UsersRepository extends BaseRepository<User> {
       .where(condition)
       .first();
 
-    return this.toAuthUser(user);
+    return user ? this.toAuthUser(user) : null;
   }
 
   readResetPasswordToken(token: string): Promise<User> {
