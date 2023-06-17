@@ -14,6 +14,7 @@ import React, { useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { logger } from '../../../../utilities/logger.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
 import { useDocumentInfo } from '../../../components/utilities/DocumentInfo/index.js';
 import {
@@ -49,7 +50,11 @@ const CreateRolePageImpl: React.FC = () => {
   }, [roleId]);
 
   const onSubmit: SubmitHandler<FormValues> = (form: FormValues) => {
-    trigger(form);
+    try {
+      trigger(form);
+    } catch (error) {
+      logger.error(error);
+    }
   };
 
   return (

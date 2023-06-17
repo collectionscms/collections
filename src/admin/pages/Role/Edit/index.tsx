@@ -23,6 +23,7 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { PermissionsAction, Role } from '../../../../config/types.js';
+import { logger } from '../../../../utilities/logger.js';
 import { DeleteHeaderButton } from '../../../components/elements/DeleteHeaderButton/index.js';
 import { Loading } from '../../../components/elements/Loading/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
@@ -64,8 +65,12 @@ const EditRolePageImpl: React.FC = () => {
 
   useEffect(() => {
     const getRole = async () => {
-      const role = await getRoleTrigger();
-      if (role) setDefaultValue(role);
+      try {
+        const role = await getRoleTrigger();
+        if (role) setDefaultValue(role);
+      } catch (error) {
+        logger.error(error);
+      }
     };
 
     getRole();
@@ -92,7 +97,11 @@ const EditRolePageImpl: React.FC = () => {
   };
 
   const onSubmit: SubmitHandler<FormValues> = (form: FormValues) => {
-    updateRoleTrigger(form);
+    try {
+      updateRoleTrigger(form);
+    } catch (error) {
+      logger.error(error);
+    }
   };
 
   if (!role) {
