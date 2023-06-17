@@ -94,6 +94,7 @@
   "related_content": "Related Content Type",
   "foreign_key": "Foreign Key",
   "select_contents": "Select Contents",
+  "logout_inactivity": "Logged out from the admin page after being inactive for a while.",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion.",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",
