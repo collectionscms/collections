@@ -1,10 +1,12 @@
-import express, { CookieOptions, Request, Response } from 'express';
-import ms from 'ms';
+import express, { Request, Response } from 'express';
+import { cookieOptions } from '../../constants.js';
 import { env } from '../../env.js';
+import { InvalidTokenException } from '../../exceptions/invalidToken.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
 import { UsersRepository } from '../repositories/users.js';
-import { decodeJwt } from '../utilities/decodeJwt.js';
+import { getExtractJwt } from '../utilities/getExtractJwt.js';
 import { sign } from '../utilities/sign.js';
+import { verifyJwt } from '../utilities/verifyJwt.js';
 
 const router = express.Router();
 
@@ -16,23 +18,14 @@ router.post(
     const user = await repository.login(req.body.email, req.body.password);
     user.appAccess = true;
 
-    const token = sign(user);
-    const decoded = decodeJwt(token);
+    const accessToken = sign(user, env.ACCESS_TOKEN_TTL);
+    const refreshToken = sign(user, env.REFRESH_TOKEN_TTL);
 
-    const cookieOptions: CookieOptions = {
-      path: '/',
-      httpOnly: true,
-      maxAge: ms(env.REFRESH_TOKEN_TTL as string),
-      secure: env.COOKIE_SECURE ?? false,
-      sameSite: (env.COOKIE_SAME_SITE as 'lax' | 'strict' | 'none') || 'strict',
-      domain: env.COOKIE_DOMAIN,
-    };
-    res.cookie(`${env.COOKIE_PREFIX}-token`, token, cookieOptions);
+    res.cookie(`${env.COOKIE_PREFIX}-refresh-token`, refreshToken, cookieOptions);
 
     res.json({
-      token,
+      token: accessToken,
       user,
-      exp: decoded?.exp,
     });
   })
 );
@@ -40,8 +33,33 @@ router.post(
 router.post(
   '/authentications/logout',
   asyncHandler(async (_req: Request, res: Response) => {
-    res.clearCookie(`${env.COOKIE_PREFIX}-token`);
+    res.clearCookie(`${env.COOKIE_PREFIX}-refresh-token`);
     res.status(204).send();
+  })
+);
+
+router.post(
+  '/authentications/refresh',
+  asyncHandler(async (req: Request, res: Response) => {
+    const token = getExtractJwt(req);
+    if (!token) throw new InvalidTokenException();
+
+    try {
+      const user = verifyJwt(token);
+      delete user.exp;
+      delete user.iat;
+
+      const accessToken = sign(user, env.ACCESS_TOKEN_TTL);
+      const refreshToken = sign(user, env.REFRESH_TOKEN_TTL);
+
+      res.cookie(`${env.COOKIE_PREFIX}-refresh-token`, refreshToken, cookieOptions);
+
+      return res.json({
+        token: accessToken,
+      });
+    } catch (e) {
+      throw new InvalidTokenException();
+    }
   })
 );
 

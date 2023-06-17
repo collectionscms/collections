@@ -94,6 +94,7 @@
   "related_content": "関連コンテンツ",
   "foreign_key": "外部キー",
   "select_contents": "コンテンツを選択",
+  "logout_inactivity": "しばらく操作が行われなかったため、管理画面からログアウトしました。",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",
@@ -164,7 +165,9 @@
     "no_file_req_body": "リクエストボディにファイルがありません。",
     "invalid_access_key": "アクセスキーが有効ではありません。",
     "invalid_secret_key": "シークレットキーが有効ではありません。",
-    "file_does_not_exist": "ファイルが存在しません。"
+    "file_does_not_exist": "ファイルが存在しません。",
+    "token_expired": "トークンの有効期限が切れました。",
+    "invalid_token": "無効なトークンです。"
   },
   "yup": {
     "mixed": {

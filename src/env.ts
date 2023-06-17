@@ -130,8 +130,8 @@ export const defaults: Partial<Record<AllowedEnvironmentVariable, any>> = {
   HASH_TYPE: 2,
 
   // Session
-  ACCESS_TOKEN_TTL: '8h',
-  REFRESH_TOKEN_TTL: '7d',
+  ACCESS_TOKEN_TTL: '15min',
+  REFRESH_TOKEN_TTL: '24h',
 
   // Cookie
   COOKIE_SECURE: false,

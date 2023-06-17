@@ -1,30 +1,81 @@
-import React, { createContext, useCallback, useContext, useEffect, useMemo } from 'react';
+import React, { createContext, useCallback, useContext, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
 import { AuthUser, Permission, PermissionsAction } from '../../../../config/types.js';
 import { logger } from '../../../../utilities/logger.js';
-import { api, removeAuthorization, setAuthorization } from '../../../utilities/api.js';
+import { api, attachRetry, removeAuthorization, setAuthorization } from '../../../utilities/api.js';
 import { AuthContext } from './types.js';
 
 const Context = createContext({} as AuthContext);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const {
-    data: me,
-    mutate,
-    error,
-  } = useSWR('/me', (url) =>
+  const navigate = useNavigate();
+
+  const login = () =>
+    useSWRMutation(
+      `/authentications/login`,
+      async (url: string, { arg }: { arg: Record<string, any> }) => {
+        return api.post<{ token: string; user: AuthUser }>(url, arg).then((res) => {
+          setAuthorization(res.data.token);
+          mutate(res.data);
+          return res.data;
+        });
+      }
+    );
+
+  const logout = () =>
+    useSWRMutation(`/authentications/logout`, async (url: string) => {
+      return api.post(url).then((res) => {
+        removeAuthorization();
+        mutate({ token: null, user: null }, false);
+        return res;
+      });
+    });
+
+  const refresh = () =>
+    useSWRMutation(`/authentications/refresh`, async (url: string) => {
+      return api.post<{ token: string }>(url).then((res) => {
+        return res.data.token;
+      });
+    });
+
+  const { trigger: refreshTrigger } = refresh();
+
+  // Refresh tokens when 401 is responded by api.
+  attachRetry(
+    async (): Promise<string | null> => {
+      try {
+        const token = await refreshTrigger();
+        return token || null;
+      } catch (e) {
+        logger.error(e);
+        return null;
+      }
+    },
+    () => {
+      navigate('/admin/auth/logout-inactivity');
+    }
+  );
+
+  // On mount, get user
+  const { data: me, mutate } = useSWR('/me', (url) =>
     api
       .get<{
         token: string | null;
         user: AuthUser | null;
-        exp: number | null;
       }>(url)
       .then(({ data }) => {
         if (data.token) {
           setAuthorization(data.token);
         }
         return data;
+      })
+      .catch((e) => {
+        logger.error(e);
+        removeAuthorization();
+        mutate({ token: null, user: null }, false);
+        return null;
       })
   );
 
@@ -41,11 +92,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     { suspense: true }
   );
 
-  useEffect(() => {
-    if (error === undefined) return;
-    removeAuthorization();
-  }, [error]);
-
   const hasPermission = useCallback(
     (collection: string, action: PermissionsAction) => {
       if (!me?.user || !permissions) return false;
@@ -59,27 +105,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     },
     [me]
   );
-
-  const login = () =>
-    useSWRMutation(
-      `/authentications/login`,
-      async (url: string, { arg }: { arg: Record<string, any> }) => {
-        return api.post<{ token: string; user: AuthUser; exp: number }>(url, arg).then((res) => {
-          setAuthorization(res.data.token);
-          mutate(res.data);
-          return res.data;
-        });
-      }
-    );
-
-  const logout = () =>
-    useSWRMutation(`/authentications/logout`, async (url: string) => {
-      return api.post(url).then((res) => {
-        removeAuthorization();
-        mutate({ token: null, user: null, exp: null });
-        return res;
-      });
-    });
 
   const value = useMemo(
     () => ({
