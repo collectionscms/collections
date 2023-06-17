@@ -44,4 +44,29 @@ router.post(
   })
 );
 
+router.post(
+  '/authentications/refresh',
+  asyncHandler(async (req: Request, res: Response) => {
+    const token = getExtractJwt(req);
+    if (!token) throw new InvalidTokenException();
+
+    try {
+      const user = verifyJwt(token);
+      delete user.exp;
+      delete user.iat;
+
+      const accessToken = sign(user, env.ACCESS_TOKEN_TTL);
+      const refreshToken = sign(user, env.REFRESH_TOKEN_TTL);
+
+      res.cookie(`${env.COOKIE_PREFIX}-refresh-token`, refreshToken, cookieOptions);
+
+      return res.json({
+        token: accessToken,
+      });
+    } catch (e) {
+      throw new InvalidTokenException();
+    }
+  })
+);
+
 export const authentications = router;
