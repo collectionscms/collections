@@ -1,6 +1,7 @@
 import { useSnackbar } from 'notistack';
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { logger } from '../../../../utilities/logger.js';
 import { ComposeWrapper } from '../../utilities/ComposeWrapper/index.js';
 import { BaseDialog } from '../BaseDialog/index.js';
 import { DocumentContextProvider, useDocument } from '../DeleteDocument/Context/index.js';
@@ -16,8 +17,12 @@ const DeleteDocumentImpl: React.FC<Props> = ({ id, slug, openState, onSuccess, o
     onClose();
   };
 
-  const handleDelete = () => {
-    trigger();
+  const handleDelete = async () => {
+    try {
+      await trigger();
+    } catch (error) {
+      logger.error(error);
+    }
   };
 
   useEffect(() => {

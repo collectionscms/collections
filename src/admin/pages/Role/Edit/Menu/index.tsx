@@ -1,6 +1,7 @@
 import { Menu, MenuItem } from '@mui/material';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { logger } from '../../../../../utilities/logger.js';
 import { ComposeWrapper } from '../../../../components/utilities/ComposeWrapper/index.js';
 import { RoleContextProvider, useRole } from '../../Context/index.js';
 import { Props } from './types';
@@ -18,16 +19,24 @@ const EditRoleMenuImpl: React.FC<Props> = (props) => {
   };
 
   const handleCreate = () => {
-    createPermissionTrigger({
-      collection,
-      action,
-    });
-    onSuccess();
+    try {
+      createPermissionTrigger({
+        collection,
+        action,
+      });
+      onSuccess();
+    } catch (error) {
+      logger.error(error);
+    }
   };
 
-  const handleDelete = () => {
-    deletePermissionTrigger();
-    onSuccess();
+  const handleDelete = async () => {
+    try {
+      await deletePermissionTrigger();
+      onSuccess();
+    } catch (error) {
+      logger.error(error);
+    }
   };
 
   return (

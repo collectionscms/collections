@@ -64,9 +64,13 @@ const EditContentTypePageImpl: React.FC = () => {
 
   useEffect(() => {
     const getCollection = async () => {
-      const collection = await getCollectionTrigger();
-      if (collection) {
-        setDefaultValue(collection);
+      try {
+        const collection = await getCollectionTrigger();
+        if (collection) {
+          setDefaultValue(collection);
+        }
+      } catch (error) {
+        console.error(error);
       }
     };
 

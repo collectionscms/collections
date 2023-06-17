@@ -30,8 +30,12 @@ const ApiPreviewImpl: React.FC<Props> = ({ collection, singleton }) => {
     setOpen(open);
   };
 
-  const onFetch = () => {
-    trigger();
+  const onFetch = async () => {
+    try {
+      await trigger();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   if (!user) return <></>;

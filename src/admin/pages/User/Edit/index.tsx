@@ -56,8 +56,12 @@ const EditUserPageImpl: React.FC = () => {
 
   useEffect(() => {
     const getUser = async () => {
-      const user = await getUserTrigger();
-      if (user) setDefaultValue(user);
+      try {
+        const user = await getUserTrigger();
+        if (user) setDefaultValue(user);
+      } catch (error) {
+        logger.error(error);
+      }
     };
 
     getUser();

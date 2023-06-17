@@ -38,7 +38,15 @@ const EditCollectionPageImpl: React.FC<Props> = ({ collection }) => {
   const { handleSubmit, setValue } = formContext;
 
   useEffect(() => {
-    if (id) getContentTrigger();
+    const getContent = async () => {
+      try {
+        await getContentTrigger();
+      } catch (e) {
+        logger.error(e);
+      }
+    };
+
+    if (id) getContent();
   }, []);
 
   const setDefaultValue = (fields: Field[]) => {
