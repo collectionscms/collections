@@ -21,10 +21,6 @@ export type Config = {
 // Authentication
 // /////////////////////////////////////
 
-export type Token = {
-  token: string;
-};
-
 export type AuthUser = {
   id: number;
   roleId: number;

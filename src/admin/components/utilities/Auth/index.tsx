@@ -1,6 +1,4 @@
-import jwtDecode from 'jwt-decode';
-import React, { createContext, useCallback, useContext, useMemo } from 'react';
-import { useCookies } from 'react-cookie';
+import React, { createContext, useCallback, useContext, useEffect, useMemo } from 'react';
 import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
 import { AuthUser, Permission, PermissionsAction } from '../../../../config/types.js';
@@ -11,33 +9,27 @@ import { AuthContext } from './types.js';
 const Context = createContext({} as AuthContext);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [cookies, setCookie, removeCookie] = useCookies(['superfast-token']);
-  const token = cookies['superfast-token'];
-  if (token) {
-    setAuthorization(token);
-  }
-
-  const { data: newToken } = useSWR(
-    token ? '/me' : null,
-    (url) =>
-      api
-        .get<{ token: string }>(url)
-        .then(({ data }) => data.token)
-        .catch((e) => {
-          logger.error(e);
-          return null;
-        }),
-    {
-      suspense: true,
-    }
+  const {
+    data: me,
+    mutate,
+    error,
+  } = useSWR('/me', (url) =>
+    api
+      .get<{
+        token: string | null;
+        user: AuthUser | null;
+        exp: number | null;
+      }>(url)
+      .then(({ data }) => {
+        if (data.token) {
+          setAuthorization(data.token);
+        }
+        return data;
+      })
   );
 
-  const user = useMemo(() => {
-    return newToken ? jwtDecode<AuthUser>(newToken) : null;
-  }, [newToken]);
-
   const { data: permissions } = useSWR(
-    user ? `/roles/${user.roleId}/permissions` : null,
+    me?.user ? `/roles/${me.user.roleId}/permissions` : null,
     (url) =>
       api
         .get<{ permissions: Permission[] }>(url)
@@ -49,51 +41,55 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     { suspense: true }
   );
 
-  const setToken = useCallback((token: string) => {
-    setCookie('superfast-token', token, { path: '/' });
-    setAuthorization(token);
-  }, []);
+  useEffect(() => {
+    if (error === undefined) return;
+    removeAuthorization();
+  }, [error]);
 
   const hasPermission = useCallback(
     (collection: string, action: PermissionsAction) => {
-      if (!user || !permissions) return false;
+      if (!me?.user || !permissions) return false;
 
       return (
-        user.adminAccess ||
+        me.user.adminAccess ||
         permissions.some(
           (permission) => permission.collection === collection && permission.action === action
         )
       );
     },
-    [user]
+    [me]
   );
 
   const login = () =>
     useSWRMutation(
       `/authentications/login`,
       async (url: string, { arg }: { arg: Record<string, any> }) => {
-        return api.post<{ token: string }>(url, arg).then((res) => {
-          setToken(res.data.token);
+        return api.post<{ token: string; user: AuthUser; exp: number }>(url, arg).then((res) => {
+          setAuthorization(res.data.token);
+          mutate(res.data);
           return res.data;
         });
       }
     );
 
-  const logout = () => {
-    removeCookie('superfast-token', { path: '/' });
-    removeAuthorization();
-  };
+  const logout = () =>
+    useSWRMutation(`/authentications/logout`, async (url: string) => {
+      return api.post(url).then((res) => {
+        removeAuthorization();
+        mutate({ token: null, user: null, exp: null });
+        return res;
+      });
+    });
 
   const value = useMemo(
     () => ({
-      user,
+      user: me?.user,
       permissions,
-      setToken,
       hasPermission,
       login,
       logout,
     }),
-    [user, permissions, setToken, hasPermission, login, logout]
+    [me, permissions, hasPermission, login, logout]
   );
 
   return <Context.Provider value={value}>{children}</Context.Provider>;

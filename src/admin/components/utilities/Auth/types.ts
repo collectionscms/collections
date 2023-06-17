@@ -1,11 +1,15 @@
 import { SWRMutationResponse } from 'swr/mutation';
-import { AuthUser, Permission, PermissionsAction, Token } from '../../../../config/types.js';
+import { AuthUser, Permission, PermissionsAction } from '../../../../config/types.js';
 
 export type AuthContext<T = AuthUser> = {
-  user?: T | null;
+  user: T | null | undefined;
   permissions: Permission[] | null;
-  setToken: (token: string) => void;
   hasPermission: (collection: string, action: PermissionsAction) => boolean;
-  login: () => SWRMutationResponse<Token, any, Record<string, any>, any>;
-  logout: () => void;
+  login: () => SWRMutationResponse<
+    { token: string; user: AuthUser; exp: number },
+    any,
+    Record<string, any>,
+    any
+  >;
+  logout: () => SWRMutationResponse;
 };

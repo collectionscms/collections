@@ -65,6 +65,14 @@ type AllowedEnvironmentVariable =
   | 'REFRESH_TOKEN_TTL'
 
   // /////////////////////////////////////
+  // Cookie
+  // /////////////////////////////////////
+  | 'COOKIE_SECURE'
+  | 'COOKIE_SAME_SITE'
+  | 'COOKIE_DOMAIN'
+  | 'COOKIE_PREFIX'
+
+  // /////////////////////////////////////
   // Security
   // /////////////////////////////////////
   // Secret string for the project
@@ -124,6 +132,11 @@ export const defaults: Partial<Record<AllowedEnvironmentVariable, any>> = {
   // Session
   ACCESS_TOKEN_TTL: '8h',
   REFRESH_TOKEN_TTL: '7d',
+
+  // Cookie
+  COOKIE_SECURE: false,
+  COOKIE_SAME_SITE: 'lax',
+  COOKIE_PREFIX: 'superfast',
 
   // Security
   SECRET: uuidv4(),

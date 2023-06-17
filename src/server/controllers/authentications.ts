@@ -1,11 +1,10 @@
-import express, { Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
-import { AuthUser } from '../../config/types.js';
+import express, { CookieOptions, Request, Response } from 'express';
+import ms from 'ms';
 import { env } from '../../env.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
-import { permissionsHandler } from '../middleware/permissionsHandler.js';
 import { UsersRepository } from '../repositories/users.js';
-import { InvalidCredentialsException } from '../../exceptions/invalidCredentials.js';
+import { decodeJwt } from '../utilities/decodeJwt.js';
+import { sign } from '../utilities/sign.js';
 
 const router = express.Router();
 
@@ -15,40 +14,35 @@ router.post(
     const repository = new UsersRepository();
 
     const user = await repository.login(req.body.email, req.body.password);
-    const token = toToken(user);
+    user.appAccess = true;
+
+    const token = sign(user);
+    const decoded = decodeJwt(token);
+
+    const cookieOptions: CookieOptions = {
+      path: '/',
+      httpOnly: true,
+      maxAge: ms(env.REFRESH_TOKEN_TTL as string),
+      secure: env.COOKIE_SECURE ?? false,
+      sameSite: (env.COOKIE_SAME_SITE as 'lax' | 'strict' | 'none') || 'strict',
+      domain: env.COOKIE_DOMAIN,
+    };
+    res.cookie(`${env.COOKIE_PREFIX}-token`, token, cookieOptions);
 
     res.json({
       token,
+      user,
+      exp: decoded?.exp,
     });
   })
 );
 
-router.get(
-  '/me',
-  permissionsHandler(),
-  asyncHandler(async (req: Request, res: Response) => {
-    const repository = new UsersRepository();
-
-    const user = await repository.readMe({ id: Number(req.userId) });
-    if (!user) {
-      throw new InvalidCredentialsException('token_invalid_or_expired');
-    }
-
-    const token = toToken(user);
-
-    res.json({
-      token,
-    });
+router.post(
+  '/authentications/logout',
+  asyncHandler(async (_req: Request, res: Response) => {
+    res.clearCookie(`${env.COOKIE_PREFIX}-token`);
+    res.status(204).send();
   })
 );
-
-const toToken = (user: AuthUser) => {
-  user.appAccess = true;
-  const token = jwt.sign(user, env.SECRET, {
-    expiresIn: env.ACCESS_TOKEN_TTL,
-  });
-
-  return token;
-};
 
 export const authentications = router;
