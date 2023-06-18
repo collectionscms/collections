@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useContext, useMemo } from 'react';
+import React, { createContext, useCallback, useContext, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
@@ -10,6 +10,7 @@ import { AuthContext } from './types.js';
 const Context = createContext({} as AuthContext);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [tokenInMemory, setTokenInMemory] = useState<string>();
   const navigate = useNavigate();
 
   const login = () =>
@@ -18,6 +19,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       async (url: string, { arg }: { arg: Record<string, any> }) => {
         return api.post<{ token: string; user: AuthUser }>(url, arg).then((res) => {
           setAuthorization(res.data.token);
+          setTokenInMemory(res.data.token);
           mutate(res.data);
           return res.data;
         });
@@ -29,6 +31,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return api.post(url).then((res) => {
         removeAuthorization();
         mutate({ token: null, user: null }, false);
+        setTokenInMemory(undefined);
         return res;
       });
     });
@@ -68,6 +71,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       .then(({ data }) => {
         if (data.token) {
           setAuthorization(data.token);
+          setTokenInMemory(data.token);
         }
         return data;
       })
@@ -113,6 +117,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       hasPermission,
       login,
       logout,
+      token: tokenInMemory,
     }),
     [me, permissions, hasPermission, login, logout]
   );
