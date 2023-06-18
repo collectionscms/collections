@@ -1,9 +1,9 @@
 import express, { Request, Response } from 'express';
+import { env } from '../../env.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
 import { multipartHandler } from '../middleware/multipartHandler.js';
 import { permissionsHandler } from '../middleware/permissionsHandler.js';
 import { FilesRepository } from '../repositories/files.js';
-import { getStorage } from '../storages/storage.js';
 
 const router = express.Router();
 
@@ -17,9 +17,9 @@ router.post(
     const repository = new FilesRepository();
     const file = await repository.readOne(keys[0]);
 
-    const raw = await getRawData(file.id);
+    const url = assetPath(file.file_name_disk);
 
-    res.json({ file, raw });
+    res.json({ file: { ...file, url } });
   })
 );
 
@@ -32,21 +32,12 @@ router.get(
     const repository = new FilesRepository();
     const file = await repository.readOne(id);
 
-    const raw = await getRawData(id);
+    const url = assetPath(file.file_name_disk);
 
-    res.json({ file, raw });
+    res.json({ file: { ...file, url } });
   })
 );
 
-// Retrieves the raw data from a file.
-// The raw data is retrieved from uploaded storage.
-const getRawData = async (id: number): Promise<string> => {
-  const repository = new FilesRepository();
-  const file = await repository.readOne(id);
-
-  const storage = getStorage(file.storage);
-  const key = storage.key(file.file_name_disk);
-  return await storage.get(key);
-};
+const assetPath = (fileNameDisk: string) => `${env.PUBLIC_SERVER_URL}/assets/${fileNameDisk}`;
 
 export const files = router;
