@@ -32,7 +32,7 @@ const FileImageTypeImpl: React.FC<Props> = ({
       try {
         const res = await getFileImageTrigger();
         if (res) {
-          setContent(`data:${res.file.type};base64,${res.raw}`);
+          setContent(res.file.url || null);
           setValue(meta.field, res.file.id);
         }
       } catch (e) {
@@ -55,7 +55,7 @@ const FileImageTypeImpl: React.FC<Props> = ({
     try {
       const res = await createFileImageTrigger(params);
       if (res) {
-        setContent(`data:${res.file.type};base64,${res.raw}`);
+        setContent(res.file.url || null);
         setValue(meta.field, res.file.id);
       }
     } catch (e) {
