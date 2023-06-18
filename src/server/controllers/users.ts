@@ -138,7 +138,7 @@ router.post(
     mail.sendEmail({
       to: user.email,
       subject: 'Reset Password',
-      html: `${env.SERVER_URL}/admin/auth/reset-password/${user.reset_password_token}`,
+      html: `${env.PUBLIC_SERVER_URL}/admin/auth/reset-password/${user.reset_password_token}`,
     });
 
     res.json({
