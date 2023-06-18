@@ -15,7 +15,6 @@ export type ContentContext = {
     canFetch?: boolean,
     config?: SWRConfiguration
   ) => SWRResponse<Field[]>;
-  getPreviewContents: (collection: string) => SWRMutationResponse<any[]>;
   createContent: (collection: string) => SWRMutationResponse<number, any, Record<string, any>, any>;
   updateContent: (
     collection: string,
