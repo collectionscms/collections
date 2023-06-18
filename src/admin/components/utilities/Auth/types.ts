@@ -3,6 +3,7 @@ import { AuthUser, Permission, PermissionsAction } from '../../../../config/type
 
 export type AuthContext<T = AuthUser> = {
   user: T | null | undefined;
+  token?: string;
   permissions: Permission[] | null;
   hasPermission: (collection: string, action: PermissionsAction) => boolean;
   login: () => SWRMutationResponse<
