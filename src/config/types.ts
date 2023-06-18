@@ -86,6 +86,6 @@ export type Permission = {
 
 export type ProjectSetting = {} & ProjectSettingSchema;
 
-export type File = {} & FileSchema;
+export type File = { url?: string } & FileSchema;
 
 export type Relation = {} & RelationSchema;
