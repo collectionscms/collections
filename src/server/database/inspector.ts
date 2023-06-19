@@ -1,4 +1,4 @@
-import schemaInspector from 'knex-schema-inspector';
+import { SchemaInspector } from 'knex-schema-inspector';
 import { getDatabase } from './connection.js';
 
 type SchemaInfo = {
@@ -23,7 +23,7 @@ type ColumnInfo = {
 };
 
 export const getSchemaInfo = async (): Promise<SchemaInfo> => {
-  const inspector = schemaInspector(getDatabase());
+  const inspector = SchemaInspector(getDatabase());
 
   const result: SchemaInfo = {};
 
