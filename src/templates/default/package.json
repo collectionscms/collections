@@ -14,7 +14,6 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "superfastcms": "latest",
-    "sqlite3": "^5.1.4"
+    "superfastcms": "latest"
   }
 }
