@@ -8,6 +8,8 @@ const __dirname = path.dirname(__filename);
 
 let database: Knex | null = null;
 
+export type DBClient = 'sqlite3' | 'mysql' | 'pg';
+
 export type Credentials = {
   filename?: string;
   host?: string;
@@ -15,6 +17,7 @@ export type Credentials = {
   database?: string;
   user?: string;
   password?: string;
+  ssl?: boolean;
 };
 
 /**
@@ -24,17 +27,28 @@ export type Credentials = {
  * @param credentials
  * @returns
  */
-export const getDatabase = (client: 'sqlite3' | 'mysql' | 'pg', credentials: Credentials): Knex => {
+export const getDatabase = (): Knex => {
   if (database) return database;
   const migrationFiles = path.join(__dirname, 'migrations');
+  const client = env.DB_CLIENT;
   let connection: Knex.Config['connection'] = {};
 
   if (client === 'sqlite3') {
     connection = {
-      filename: credentials.filename || env.DB_FILENAME,
+      filename: env.DB_FILENAME,
     };
   } else {
-    connection = { ...credentials };
+    connection = {
+      host: env.DB_HOST,
+      port: Number(env.DB_PORT),
+      database: env.DB_DATABASE,
+      user: env.DB_USER,
+      password: env.DB_PASSWORD,
+    };
+
+    if (env.DB_SSL === 'true' && client === 'pg') {
+      connection.ssl = env.DB_SSL;
+    }
   }
 
   const config: Knex.Config = {

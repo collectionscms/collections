@@ -70,7 +70,6 @@ router.post(
 
       const fields: Field[] = [
         {
-          id: null,
           collection: req.body.collection,
           field: 'id',
           label: 'id',
@@ -83,7 +82,6 @@ router.post(
           options: null,
         },
         req.body.status && {
-          id: null,
           collection: req.body.collection,
           field: 'status',
           label: 'Status',
