@@ -1,29 +1,36 @@
 import fse from 'fs-extra';
 import { defaults } from '../../env.js';
+import { Credentials, DBClient } from '../../server/database/connection.js';
 import { Output } from '../../utilities/output.js';
 
-export const writeEnvFile = async (projectDir: string, databaseName: string): Promise<void> => {
+export const writeEnvFile = async (
+  projectDir: string,
+  dbClient: DBClient,
+  credentials: Credentials
+): Promise<void> => {
   Output.info('Create .env file.');
 
-  let configs: string = '';
+  const variables: Record<string, any> = { ...defaults, DB_CLIENT: dbClient };
 
-  for (let [key, value] of Object.entries(defaults)) {
-    if (key === 'DB_FILENAME') {
-      value = `./${databaseName}.db`;
-    }
+  for (const [key, value] of Object.entries(credentials)) {
+    variables[`DB_${key.toUpperCase()}`] = value;
+  }
 
+  let stringVars: string = '';
+
+  for (let [key, value] of Object.entries(variables)) {
     if (key === 'MIGRATE_EXTENSIONS') {
       value = '.js';
     }
 
     switch (typeof value) {
       case 'string':
-        configs += `${key}="${value}"\n`;
+        stringVars += `${key}="${value}"\n`;
         break;
       default:
-        configs += `${key}=${value}\n`;
+        stringVars += `${key}=${value}\n`;
     }
   }
 
-  await fse.outputFile(`${projectDir}/.env`, configs);
+  await fse.outputFile(`${projectDir}/.env`, stringVars);
 };
