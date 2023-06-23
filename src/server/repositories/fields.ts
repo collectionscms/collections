@@ -28,8 +28,7 @@ export class FieldsRepository extends BaseRepository<Field> {
 
   async create(item: Omit<Field, 'id'>): Promise<number> {
     await this.checkUniqueField(item.collection, item.field);
-    const [output] = await this.queryBuilder.insert(item);
-    return output;
+    return super.create(item);
   }
 
   private async checkUniqueField(collection: string, field: string) {

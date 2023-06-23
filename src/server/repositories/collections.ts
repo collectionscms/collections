@@ -16,8 +16,7 @@ export class CollectionsRepository extends BaseRepository<Collection> {
 
   async create(item: Omit<Collection, 'id'>): Promise<number> {
     await this.checkUniqueCollection(item.collection);
-    const [output] = await this.queryBuilder.insert(item);
-    return output;
+    return super.create(item);
   }
 
   private async checkUniqueCollection(collection: string) {
