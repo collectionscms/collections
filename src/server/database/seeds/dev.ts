@@ -307,7 +307,7 @@ const createCollectionTables = async (database: Knex): Promise<void> => {
   });
 
   Output.info('Adding collection data...');
-  const PostsRepository = new ContentsRepository('post');
+  const PostsRepository = new ContentsRepository('Post');
   await PostsRepository.createMany([
     {
       id: 1,
@@ -339,7 +339,7 @@ const createCollectionTables = async (database: Knex): Promise<void> => {
     },
   ]);
 
-  const companiesRepository = new ContentsRepository('company');
+  const companiesRepository = new ContentsRepository('Company');
   await companiesRepository.createMany([
     {
       id: 1,
