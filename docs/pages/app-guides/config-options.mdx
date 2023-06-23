@@ -36,11 +36,17 @@ MIGRATE_EXTENSIONS=".js"
 
 ## Database
 
-| 変数名             | 説明                                | 初期値           |
-| :----------------- | :---------------------------------- | :--------------- |
-| DB_CLIENT          | Database クライアント(sqlite3)      | `sqlite3`        |
-| DB_FILENAME        | Database ファイルへのパス           | `./data.db`      |
-| MIGRATE_EXTENSIONS | migrations として扱うファイル拡張子 | `.js` (変更不可) |
+| 変数名             | 説明                                       | 初期値           |
+| :----------------- | :----------------------------------------- | :--------------- |
+| DB_CLIENT          | Database クライアント                      | --               |
+| DB_FILENAME        | Database ファイルへのパス(SQLite)          | --               |
+| DB_USER            | Database ユーザー情報                      | --               |
+| DB_PASSWORD        | Database パスワード                        | --               |
+| DB_DATABASE        | Database データベース名                    | --               |
+| DB_HOST            | Database ホスト                            | --               |
+| DB_PORT            | Database ポート                            | --               |
+| DB_SSL             | Database SSL(PostgreSQL / `true`, `false`) | --               |
+| MIGRATE_EXTENSIONS | migrations として扱うファイル拡張子        | `.js` (変更不可) |
 
 ## Express
 
