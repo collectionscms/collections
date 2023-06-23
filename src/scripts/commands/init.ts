@@ -2,7 +2,6 @@ import { execa } from 'execa';
 import ora from 'ora';
 import path from 'path';
 import process from 'process';
-import { migrate } from '../../server/database/migrate.js';
 import { Output } from '../../utilities/output.js';
 import { chooseDatabase } from '../operations/chooseDatabase.js';
 import { copyCommonFiles } from '../operations/copyCommonFiles.js';
@@ -39,10 +38,15 @@ export const scriptInit = async (projectName: string) => {
     await execa('npm', ['install', dbClient, '--production'], { cwd: projectDir });
     await execa('npm', ['install'], { cwd: projectDir });
 
-    // migrate to latest
-    await migrate('latest');
-
     spinner.stop();
+  } catch (err) {
+    onError(err);
+  }
+
+  try {
+    await execa('npm', ['run', 'migrate:latest'], {
+      cwd: projectDir,
+    });
   } catch (err) {
     onError(err);
   }
