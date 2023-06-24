@@ -2,11 +2,13 @@ import express, { Request, Response } from 'express';
 import { Knex } from 'knex';
 import { Field } from '../../config/types.js';
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
+import { SchemaOverview } from '../database/overview.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
 import {
   collectionPermissionsHandler,
   permissionsHandler,
 } from '../middleware/permissionsHandler.js';
+import { BaseTransaction } from '../repositories/base.js';
 import { CollectionsRepository } from '../repositories/collections.js';
 import { FieldsRepository } from '../repositories/fields.js';
 import { RelationsRepository } from '../repositories/relations.js';
@@ -36,7 +38,6 @@ router.post(
   '/fields',
   permissionsHandler([{ collection: 'superfast_fields', action: 'create' }]),
   asyncHandler(async (req: Request, res: Response) => {
-    const collection = req.params.collection;
     const repository = new FieldsRepository();
 
     await repository.transaction(async (tx) => {
@@ -128,12 +129,17 @@ router.patch(
   })
 );
 
+/**
+ * Delete fields.
+ * Execute in order of relation -> entity to avoid DB constraint errors.
+ */
 router.delete(
   '/collections/:collectionId/fields/:id',
   permissionsHandler([{ collection: 'superfast_fields', action: 'delete' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const collectionId = Number(req.params.collectionId);
     const id = Number(req.params.id);
+
     const repository = new FieldsRepository();
     const collectionsRepository = new CollectionsRepository();
     const relationsRepository = new RelationsRepository();
@@ -142,10 +148,9 @@ router.delete(
     const field = await repository.readOne(id);
 
     await repository.transaction(async (tx) => {
+      /////////////////////////// Delete Relation ///////////////////////////
+
       await repository.transacting(tx).delete(id);
-      await tx.transaction.schema.alterTable(collection.collection, (table) => {
-        table.dropColumn(field.field);
-      });
 
       if (collection.status_field === field.field) {
         await collectionsRepository.transacting(tx).update(collectionId, {
@@ -159,14 +164,7 @@ router.delete(
         .read({ one_collection: collection.collection, one_field: field.field });
 
       for (let relation of oneRelations) {
-        await repository.transacting(tx).deleteMany({
-          collection: relation.many_collection,
-          field: relation.many_field,
-        });
-
-        await tx.transaction.schema.table(relation.many_collection, (table) => {
-          table.dropColumn(relation.many_field);
-        });
+        await deleteField(req.schema, tx, relation.many_collection, relation.many_field);
       }
 
       // Delete one relation fields
@@ -176,17 +174,10 @@ router.delete(
       });
 
       for (let relation of manyRelations) {
-        await repository.transacting(tx).deleteMany({
-          collection: relation.one_collection,
-          field: relation.one_field,
-        });
-
-        await tx.transaction.schema.table(relation.one_collection, (table) => {
-          table.dropColumn(relation.one_field!);
-        });
+        await deleteField(req.schema, tx, relation.one_collection, relation.one_field);
       }
 
-      // Delete relations
+      // Delete relations schema
       await relationsRepository
         .transacting(tx)
         .deleteMany({ many_collection: field.collection, many_field: field.field });
@@ -195,10 +186,50 @@ router.delete(
         .transacting(tx)
         .deleteMany({ one_collection: field.collection, one_field: field.field });
 
+      /////////////////////////// Delete Entity ///////////////////////////
+
+      await deleteField(req.schema, tx, collection.collection, field.field);
+
       res.status(204).end();
     });
   })
 );
+
+/**
+ * Delete meta and entity fields.
+ *
+ * @param schema
+ * @param tx
+ * @param collection
+ * @param field
+ */
+const deleteField = async (
+  schema: SchemaOverview,
+  tx: BaseTransaction,
+  collection: string,
+  field: string
+) => {
+  const hasEntity = !schema.collections[collection].fields[field].alias;
+  const existingRelation = schema.relations.find(
+    (existingRelation) =>
+      (existingRelation.collection === collection && existingRelation.field === field) ||
+      (existingRelation.relatedCollection === collection && existingRelation.relatedField === field)
+  );
+
+  if (hasEntity) {
+    await tx.transaction.schema.table(collection, (table) => {
+      // If the FK already exists in the DB, drop it first
+      if (existingRelation !== undefined) table.dropForeign(field);
+      table.dropColumn(field);
+    });
+  }
+
+  const repository = new FieldsRepository();
+  await repository.transacting(tx).deleteMany({
+    collection,
+    field,
+  });
+};
 
 const addColumnToTable = (field: Field, table: Knex.CreateTableBuilder, alter: boolean = false) => {
   let column = null;
