@@ -20,7 +20,6 @@ import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import React, { useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Field } from '../../../../../../../config/types.js';
 import { logger } from '../../../../../../../utilities/logger.js';
 import { shallowEqualObject } from '../../../../../../../utilities/shallowEqualObject.js';
 import {
@@ -33,10 +32,9 @@ import { Props } from '../types.js';
 export const ListOneToManyType: React.FC<Props> = (props) => {
   const { collection, expanded, handleChange, onEditing, onSuccess } = props;
   const { t } = useTranslation();
-  const { createField, getCollections, createRelation } = useField();
+  const { getCollections, createRelationalFields } = useField();
   const { data: collections } = getCollections();
-  const { trigger: createFieldTrigger, isMutating } = createField();
-  const { trigger: createRelationTrigger } = createRelation();
+  const { trigger: createRelationalFieldsTrigger, isMutating } = createRelationalFields();
   const defaultValues = {
     field: '',
     label: '',
@@ -64,35 +62,36 @@ export const ListOneToManyType: React.FC<Props> = (props) => {
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
-      const results = await Promise.all([
-        createFieldTrigger({
-          collection: collection,
-          field: form.field,
-          label: form.label,
-          interface: 'listOneToMany',
-          required: form.required,
-          readonly: false,
-          hidden: false,
-        }),
-        createFieldTrigger({
-          collection: form.related_collection,
-          field: form.foreign_key,
-          label: collection,
-          interface: 'selectDropdownManyToOne',
-          required: false,
-          readonly: false,
-          hidden: true,
-        }),
-      ]);
-
-      await createRelationTrigger({
-        many_collection: form.related_collection,
-        many_field: form.foreign_key,
-        one_collection: collection,
-        one_field: form.field,
+      const results = await createRelationalFieldsTrigger({
+        fields: [
+          {
+            collection: collection,
+            field: form.field,
+            label: form.label,
+            interface: 'listOneToMany',
+            required: form.required,
+            readonly: false,
+            hidden: false,
+          },
+          {
+            collection: form.related_collection,
+            field: form.foreign_key,
+            label: collection,
+            interface: 'selectDropdownManyToOne',
+            required: false,
+            readonly: false,
+            hidden: true,
+          },
+        ],
+        relation: {
+          many_collection: form.related_collection,
+          many_field: form.foreign_key,
+          one_collection: collection,
+          one_field: form.field,
+        },
       });
       reset();
-      onSuccess(results[0] as Field);
+      onSuccess(results![0]);
     } catch (e) {
       logger.error(e);
     }
