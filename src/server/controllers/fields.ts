@@ -51,6 +51,37 @@ router.post(
   })
 );
 
+/**
+ * Add relational fields.
+ */
+router.post(
+  '/fields/relations',
+  permissionsHandler([{ collection: 'superfast_fields', action: 'create' }]),
+  asyncHandler(async (req: Request, res: Response) => {
+    const fieldsRepository = new FieldsRepository();
+    const relationsRepository = new RelationsRepository();
+
+    await fieldsRepository.transaction(async (tx) => {
+      const relationId = await relationsRepository.transacting(tx).create(req.body.relation);
+      const relation = await relationsRepository.transacting(tx).readOne(relationId);
+
+      var fields: Field[] = [];
+
+      for (const postField of req.body.fields) {
+        const fieldId = await fieldsRepository.transacting(tx).create(postField);
+        const field = await fieldsRepository.transacting(tx).readOne(fieldId);
+        fields.push(field);
+
+        await tx.transaction.schema.alterTable(field.collection, (table) => {
+          addColumnToTable(field, table)?.references('id').inTable(relation.one_collection);
+        });
+      }
+
+      res.json({ fields });
+    });
+  })
+);
+
 router.patch(
   '/fields',
   permissionsHandler([{ collection: 'superfast_fields', action: 'update' }]),
