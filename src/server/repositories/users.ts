@@ -18,8 +18,7 @@ export class UsersRepository extends BaseRepository<User> {
 
   async create(item: Omit<User, 'id'>): Promise<number> {
     await this.checkUniqueEmail(item.email);
-    const [output] = await this.queryBuilder.insert(item);
-    return output;
+    return super.create(item);
   }
 
   async update(id: number, item: Partial<User>): Promise<boolean> {

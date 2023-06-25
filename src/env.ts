@@ -33,6 +33,12 @@ type AllowedEnvironmentVariable =
   // /////////////////////////////////////
   | 'DB_CLIENT'
   | 'DB_FILENAME'
+  | 'DB_USER'
+  | 'DB_PASSWORD'
+  | 'DB_DATABASE'
+  | 'DB_HOST'
+  | 'DB_PORT'
+  | 'DB_SSL'
   | 'MIGRATE_EXTENSIONS'
 
   // /////////////////////////////////////
@@ -115,8 +121,6 @@ export const defaults: Partial<Record<AllowedEnvironmentVariable, any>> = {
   STORAGE_LOCAL_ROOT: 'uploads',
 
   // Database
-  DB_CLIENT: 'sqlite3',
-  DB_FILENAME: './data.db',
   MIGRATE_EXTENSIONS: '.ts',
 
   // Express

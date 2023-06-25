@@ -133,8 +133,6 @@ router.delete(
     const contentsRepository = new ContentsRepository(collection);
 
     await contentsRepository.transaction(async (tx) => {
-      await contentsRepository.transacting(tx).delete(id);
-
       // Relational foreign key to null
       const relations = req.schema.relations.filter(
         (relation) => relation.collection === collection
@@ -147,6 +145,8 @@ router.delete(
           await repository.transacting(tx).update(content.id, { [relation.relatedField]: null });
         }
       }
+
+      await contentsRepository.transacting(tx).delete(id);
 
       res.status(204).end();
     });

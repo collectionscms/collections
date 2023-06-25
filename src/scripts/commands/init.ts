@@ -1,9 +1,12 @@
 import { execa } from 'execa';
 import ora from 'ora';
 import path from 'path';
+import process from 'process';
 import { Output } from '../../utilities/output.js';
+import { chooseDatabase } from '../operations/chooseDatabase.js';
 import { copyCommonFiles } from '../operations/copyCommonFiles.js';
 import { createFirstUser } from '../operations/createFirstUser.js';
+import { makeCredentials } from '../operations/makeCredentials.js';
 import { writeEnvFile } from '../operations/writeEnvFile.js';
 
 export const scriptInit = async (projectName: string) => {
@@ -23,20 +26,22 @@ export const scriptInit = async (projectName: string) => {
   }
 
   try {
-    await writeEnvFile(projectDir, 'data');
-  } catch (err) {
-    onError(err);
-  }
+    const dbClient = await chooseDatabase();
+    const credentials = await makeCredentials(dbClient, projectDir);
 
-  const spinner = ora('Installing dependencies...').start();
+    // write env file
+    await writeEnvFile(projectDir, dbClient, credentials);
 
-  try {
+    const spinner = ora('Installing dependencies...').start();
+
+    // install database driver and dependencies
+    await execa('npm', ['install', dbClient, '--production'], { cwd: projectDir });
     await execa('npm', ['install'], { cwd: projectDir });
+
+    spinner.stop();
   } catch (err) {
     onError(err);
   }
-
-  spinner.stop();
 
   try {
     await execa('npm', ['run', 'migrate:latest'], {

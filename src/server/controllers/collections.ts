@@ -1,8 +1,10 @@
 import express, { Request, Response } from 'express';
 import { Field } from '../../config/types.js';
 import { RecordNotFoundException } from '../../exceptions/database/recordNotFound.js';
+import { SchemaOverview } from '../database/overview.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
 import { permissionsHandler } from '../middleware/permissionsHandler.js';
+import { BaseTransaction } from '../repositories/base.js';
 import { CollectionsRepository } from '../repositories/collections.js';
 import { FieldsRepository } from '../repositories/fields.js';
 import { PermissionsRepository } from '../repositories/permissions.js';
@@ -70,7 +72,6 @@ router.post(
 
       const fields: Field[] = [
         {
-          id: null,
           collection: req.body.collection,
           field: 'id',
           label: 'id',
@@ -83,7 +84,6 @@ router.post(
           options: null,
         },
         req.body.status && {
-          id: null,
           collection: req.body.collection,
           field: 'status',
           label: 'Status',
@@ -144,20 +144,24 @@ router.patch(
   })
 );
 
+/**
+ * Delete a collection.
+ * Execute in order of relation -> entity to avoid DB constraint errors.
+ */
 router.delete(
   '/collections/:id',
   permissionsHandler([{ collection: 'superfast_collections', action: 'delete' }]),
   asyncHandler(async (req: Request, res: Response) => {
-    const id = Number(req.params.id);
     const repository = new CollectionsRepository();
     const fieldsRepository = new FieldsRepository();
     const permissionsRepository = new PermissionsRepository();
     const relationsRepository = new RelationsRepository();
 
+    const id = Number(req.params.id);
     const collection = await repository.readOne(id);
 
     await repository.transaction(async (tx) => {
-      await tx.transaction.schema.dropTable(collection.collection);
+      /////////////////////////// Delete Relation ///////////////////////////
       await repository.transacting(tx).delete(id);
       await fieldsRepository.transacting(tx).deleteMany({ collection: collection.collection });
       await permissionsRepository.transacting(tx).deleteMany({ collection: collection.collection });
@@ -168,14 +172,7 @@ router.delete(
         .read({ one_collection: collection.collection });
 
       for (let relation of oneRelations) {
-        await fieldsRepository.transacting(tx).deleteMany({
-          collection: relation.many_collection,
-          field: relation.many_field,
-        });
-
-        await tx.transaction.schema.table(relation.many_collection, (table) => {
-          table.dropColumn(relation.many_field);
-        });
+        await deleteField(req.schema, tx, relation.many_collection, relation.many_field);
       }
 
       // Delete one relation fields
@@ -184,14 +181,7 @@ router.delete(
       });
 
       for (let relation of manyRelations) {
-        await fieldsRepository.transacting(tx).deleteMany({
-          collection: relation.one_collection,
-          field: relation.one_field,
-        });
-
-        await tx.transaction.schema.table(relation.one_collection, (table) => {
-          table.dropColumn(relation.one_field!);
-        });
+        await deleteField(req.schema, tx, relation.one_collection, relation.one_field);
       }
 
       // Delete relations
@@ -203,9 +193,49 @@ router.delete(
         .transacting(tx)
         .deleteMany({ one_collection: collection.collection });
 
+      /////////////////////////// Delete Entity ///////////////////////////
+
+      await tx.transaction.schema.dropTable(collection.collection);
+
       res.status(204).end();
     });
   })
 );
+
+/**
+ * Delete meta and entity fields.
+ *
+ * @param schema
+ * @param tx
+ * @param collection
+ * @param field
+ */
+const deleteField = async (
+  schema: SchemaOverview,
+  tx: BaseTransaction,
+  collection: string,
+  field: string
+) => {
+  const hasEntity = !schema.collections[collection].fields[field].alias;
+  const existingRelation = schema.relations.find(
+    (existingRelation) =>
+      (existingRelation.collection === collection && existingRelation.field === field) ||
+      (existingRelation.relatedCollection === collection && existingRelation.relatedField === field)
+  );
+
+  if (hasEntity) {
+    await tx.transaction.schema.table(collection, (table) => {
+      // If the FK already exists in the DB, drop it first
+      if (existingRelation !== undefined) table.dropForeign(field);
+      table.dropColumn(field);
+    });
+  }
+
+  const repository = new FieldsRepository();
+  await repository.transacting(tx).deleteMany({
+    collection,
+    field,
+  });
+};
 
 export const collections = router;

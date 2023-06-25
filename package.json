@@ -161,6 +161,8 @@
     "jamstack"
   ],
   "optionalDependencies": {
-    "nodemailer-sendgrid": "^1.0.3"
+    "mysql": "^2.18.1",
+    "nodemailer-sendgrid": "^1.0.3",
+    "pg": "^8.11.0"
   }
 }

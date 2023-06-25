@@ -1,5 +1,6 @@
 import type { Knex } from 'knex';
 import { getDatabase } from '../database/connection.js';
+import { env } from '../../env.js';
 
 export type AbstractRepositoryOptions = {
   knex?: Knex;
@@ -9,7 +10,7 @@ type AbstractRepository<T> = {
   read(data: Partial<T>): Promise<T[]>;
   readOne(id: number | Partial<T>): Promise<T>;
   create(item: Omit<T, 'id'>): Promise<number>;
-  createMany(items: T[]): Promise<T[]>;
+  createMany(items: T[]): Promise<void>;
   update(id: number, item: Partial<T>): Promise<boolean>;
   delete(id: number): Promise<boolean>;
 };
@@ -48,13 +49,33 @@ export abstract class BaseRepository<T> implements AbstractRepository<T> {
     return this.queryBuilder.where('id', id).first();
   }
 
+  /**
+   * Create a single new item.
+   * Align return values by specifying returning.
+   * However, MySQL is not specified because it is not supported.
+   * see: https://knexjs.org/guide/query-builder.html#returning
+   *
+   * @param item
+   * @returns
+   */
   async create(item: Omit<T, 'id'>): Promise<number> {
-    const [output] = await this.queryBuilder.insert(item);
-    return output;
+    const builder = this.queryBuilder.insert(item);
+
+    switch (env.DB_CLIENT) {
+      case 'sqlite3':
+      case 'pg':
+        builder.returning('id');
+        break;
+    }
+
+    const result = await builder.then((result) => result[0]);
+    const id = typeof result === 'object' ? result['id'] : result;
+
+    return id;
   }
 
-  createMany(items: T[]): Promise<T[]> {
-    return this.queryBuilder.insert<T>(items) as Promise<T[]>;
+  createMany(items: T[]): Promise<void> {
+    return this.queryBuilder.insert(items);
   }
 
   update(id: number, item: Partial<T>): Promise<boolean> {
