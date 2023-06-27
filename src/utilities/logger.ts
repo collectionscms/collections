@@ -15,6 +15,16 @@ const httpLoggerOptions: LoggerOptions = {
     paths: ['req.headers.authorization', 'req.headers.cookie'],
     censor: '--redacted--',
   },
+  transport: {
+    target: 'pino-pretty',
+    options: {
+      ignore: 'hostname,pid',
+      hideObject: process.env.PUBLIC_LOG_HIDE_OBJECT || true,
+      sync: true,
+      translateTime: 'SYS:HH:MM:ss',
+      messageFormat: '{req.method} {req.url} {res.statusCode} {responseTime}ms',
+    },
+  },
 };
 
 const redactQuery = (originalPath: string) => {
