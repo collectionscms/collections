@@ -101,6 +101,7 @@ type AllowedEnvironmentVariable =
   // /////////////////////////////////////
   // "fatal", "error", "warn", "info", "debug", "trace", "silent"
   | 'PUBLIC_LOG_LEVEL'
+  | 'PUBLIC_LOG_HIDE_OBJECT'
 
   // /////////////////////////////////////
   // Email
@@ -156,6 +157,7 @@ export const defaults: Partial<Record<AllowedEnvironmentVariable, any>> = {
 
   // Log
   PUBLIC_LOG_LEVEL: 'info',
+  PUBLIC_LOG_HIDE_OBJECT: true,
 
   // Email
   EMAIL_TRANSPORT: 'sendgrid',
