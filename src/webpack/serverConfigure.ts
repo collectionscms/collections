@@ -11,6 +11,7 @@ export const serverConfigure: webpack.Configuration = {
   externals: {
     argon2: 'argon2',
     knex: 'knex',
+    pino: 'pino',
   },
   output: {
     path: pathList.build(),
