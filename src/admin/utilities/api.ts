@@ -25,9 +25,9 @@ var refreshing = false;
  * refresh the token and retry the request. If the token refresh fails, the
  * function will call the provided onError function.
  *
- * 401(token_expired): Retries requests that fail due to expired access tokens.
- * 403(invalid_token): Calls the provided onError function.
- * Other: Retry the request three times.
+ * 401(token_expired): Retry after request token.
+ * 500: Retry the request three times.
+ * other: No retry.
  *
  * @param onRequestToken A function that returns a new access token.
  * @param onError A function that is called when the token refresh fails.
@@ -39,11 +39,6 @@ export const attachRetry = (onRequestToken: () => Promise<string | null>, onErro
 
       const apiError = error.response?.data as ApiError;
       if (!apiError) return false;
-
-      if (apiError.code === 'invalid_token') {
-        onError();
-        return false;
-      }
 
       if (apiError.code === 'token_expired') {
         refreshing = true;
@@ -63,9 +58,11 @@ export const attachRetry = (onRequestToken: () => Promise<string | null>, onErro
         refreshing = false;
 
         return true;
+      } else if (apiError.status === 500) {
+        return true;
+      } else {
+        return false;
       }
-
-      return true;
     },
   });
 };
