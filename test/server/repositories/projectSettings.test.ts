@@ -2,7 +2,7 @@ import knex, { Knex } from 'knex';
 import { ProjectSettingsRepository } from '../../../src/server/repositories/projectSettings.js';
 import { config, vendors } from '../../config.js';
 
-describe('プロジェクト設定', () => {
+describe('Project Settings', () => {
   const databases = new Map<string, Knex>();
   const tableName = 'superfast_project_settings';
 
@@ -18,7 +18,7 @@ describe('プロジェクト設定', () => {
     }
   });
 
-  describe('プロジェクト設定が1件取得できる', () => {
+  describe('One project setting can be fetched', () => {
     it.each(vendors)('%s', async (vendor) => {
       const config = databases.get(vendor);
 
@@ -29,7 +29,7 @@ describe('プロジェクト設定', () => {
     });
   });
 
-  describe('プロジェクト名を更新できる', () => {
+  describe('Project name can be updated', () => {
     it.each(vendors)('%s', async (vendor) => {
       const config = databases.get(vendor);
 
@@ -44,7 +44,7 @@ describe('プロジェクト設定', () => {
     });
   });
 
-  describe('プロジェクト名更新で失敗する', () => {
+  describe('Project name update fails', () => {
     it.each(vendors)('%s', async (vendor) => {
       const config = databases.get(vendor);
       const nonExistPrimaryKey = -1;
