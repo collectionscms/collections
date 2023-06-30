@@ -1,6 +1,7 @@
 import { writeFileSync } from 'fs';
 import knex from 'knex';
-import { config, vendors } from '../config.js';
+import { config } from '../config.js';
+import { testVendors } from '../utilities/testVendors.js';
 
 let started = false;
 
@@ -8,7 +9,7 @@ export default async (): Promise<void> => {
   if (started) return;
   started = true;
 
-  vendors.map(async (vendor) => {
+  testVendors.map(async (vendor) => {
     const database = knex(config.knexConfig[vendor]!);
     if (vendor === 'sqlite3') {
       writeFileSync('test.db', '');
@@ -20,5 +21,6 @@ export default async (): Promise<void> => {
   });
 
   console.log('\n\n');
+  console.log('Setup vendors:', testVendors);
   console.log('🟢 Starting tests! \n');
 };

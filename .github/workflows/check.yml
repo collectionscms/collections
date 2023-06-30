@@ -31,3 +31,16 @@ jobs:
 
       - name: Run ESLint
         run: yarn lint
+
+  unit:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: yarn install
+        run: yarn install
+
+      - name: Component Tests
+        run: yarn test:components
