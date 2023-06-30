@@ -1,7 +1,7 @@
 import { Knex } from 'knex';
 
-export const vendors = ['sqlite3'];
-type Vendor = (typeof vendors)[number];
+export const allVendors = ['sqlite3'];
+type Vendor = (typeof allVendors)[number];
 
 export type Config = {
   knexConfig: Record<Vendor, Knex.Config>;
