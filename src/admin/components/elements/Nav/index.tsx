@@ -59,7 +59,6 @@ const NavIcon: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           width: '44px',
           height: '44px',
         }}
-        color="sidebarIcon"
       >
         {children}
       </IconButton>
@@ -110,7 +109,6 @@ const NavModuleBar = () => {
       sx={{
         alignItems: 'center',
         width: '60px',
-        bgcolor: 'sidebar.main',
       }}
     >
       <NavHeader />
