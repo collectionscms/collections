@@ -1,16 +1,6 @@
 import * as createPalette from '@mui/material/styles';
 
 export declare module '@mui/material/styles' {
-  interface Palette {
-    sidebar: Palette['primary'];
-    sidebarIcon: Palette['primary'];
-  }
-
-  interface PaletteOptions {
-    sidebar?: PaletteOptions['primary'];
-    sidebarIcon?: PaletteOptions['primary'];
-  }
-
   interface SimplePaletteColorOptions {
     lighter?: string;
     darker?: string;
@@ -55,11 +45,5 @@ export declare module '@mui/material/styles' {
     A400?: string;
     A700?: string;
     A800?: string;
-  }
-}
-
-declare module '@mui/material/IconButton' {
-  interface IconButtonPropsColorOverrides {
-    sidebarIcon: true;
   }
 }
