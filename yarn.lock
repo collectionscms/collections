@@ -4371,9 +4371,9 @@ eslint-plugin-import@^2.25.2:
     tsconfig-paths "^3.14.1"
 
 eslint-plugin-jest@^27.2.1:
-  version "27.2.1"
-  resolved "https://registry.npmjs.org/eslint-plugin-jest/-/eslint-plugin-jest-27.2.1.tgz"
-  integrity sha512-l067Uxx7ZT8cO9NJuf+eJHvt6bqJyz2Z29wykyEdz/OtmcELQl2MQGQLX8J94O1cSJWAwUSEvCjwjA7KEK3Hmg==
+  version "27.2.2"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-27.2.2.tgz#be4ded5f91905d9ec89aa8968d39c71f3b072c0c"
+  integrity sha512-euzbp06F934Z7UDl5ZUaRPLAc9MKjh0rMPERrHT7UhlCEwgb25kBj37TvMgWeHZVkR5I9CayswrpoaqZU1RImw==
   dependencies:
     "@typescript-eslint/utils" "^5.10.0"
 
@@ -7090,7 +7090,22 @@ optionator@^0.9.1:
     type-check "^0.4.0"
     word-wrap "^1.2.3"
 
-ora@^6.1.2, ora@^6.3.0:
+ora@^5.4.1:
+  version "5.4.1"
+  resolved "https://registry.yarnpkg.com/ora/-/ora-5.4.1.tgz#1b2678426af4ac4a509008e5e4ac9e9959db9e18"
+  integrity sha512-5b6Y85tPxZZ7QytO+BQzysW31HJku27cRIlkbAXaNx+BdcVi+LlRFmVXzeF6a7JCwJpyw5c4b+YSVImQIrBpuQ==
+  dependencies:
+    bl "^4.1.0"
+    chalk "^4.1.0"
+    cli-cursor "^3.1.0"
+    cli-spinners "^2.5.0"
+    is-interactive "^1.0.0"
+    is-unicode-supported "^0.1.0"
+    log-symbols "^4.1.0"
+    strip-ansi "^6.0.0"
+    wcwidth "^1.0.1"
+
+ora@^6.3.0:
   version "6.3.1"
   resolved "https://registry.yarnpkg.com/ora/-/ora-6.3.1.tgz#a4e9e5c2cf5ee73c259e8b410273e706a2ad3ed6"
   integrity sha512-ERAyNnZOfqM+Ao3RAvIXkYh5joP220yf59gVe2X/cI6SiCxIdi4c9HZKZD8R6q/RDXEje1THBju6iExiSsgJaQ==
