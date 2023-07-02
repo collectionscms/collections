@@ -8,11 +8,11 @@ import {
   useContent,
 } from '../../../../../pages/collections/Context/index.js';
 import { buildColumnFields } from '../../../../../pages/collections/List/buildColumnFields.js';
+import { theme } from '../../../../../themes/Default/index.js';
 import { buildColumns } from '../../../../../utilities/buildColumns.js';
 import { CheckBoxTable } from '../../../../elements/Table/CheckBoxTable/index.js';
 import { Column } from '../../../../elements/Table/types.js';
 import { ComposeWrapper } from '../../../../utilities/ComposeWrapper/index.js';
-import { theme } from '../../../../utilities/Theme/Default/index.js';
 import { Props } from './types.js';
 
 const AddExistContentsImpl: React.FC<Props> = ({
