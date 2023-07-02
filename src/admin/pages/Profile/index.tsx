@@ -12,8 +12,8 @@ import {
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { Mode } from '../../../types/config.js';
 import { useColorMode } from '../../components/utilities/ColorMode/index.js';
-import { Mode } from '../../components/utilities/ColorMode/types.js';
 import { useDocumentInfo } from '../../components/utilities/DocumentInfo/index.js';
 
 export const Profile: React.FC = () => {

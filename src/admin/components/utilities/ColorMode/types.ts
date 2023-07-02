@@ -1,4 +1,4 @@
-export type Mode = 'light' | 'dark';
+import { Mode } from '../../../../types/config.js';
 
 export type ModeContext = {
   mode: Mode;
