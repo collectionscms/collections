@@ -11,6 +11,7 @@ import { themeDark } from '../../../themes/Dark/index.js';
 import { theme as themeLight } from '../../../themes/Default/index.js';
 import { componentsOverrides } from '../../../themes/overrides/index.js';
 import { CustomShadowProps, CustomShadows } from '../../../themes/shadows.js';
+import { Typography } from '../../../themes/typography.js';
 import { useColorMode } from '../ColorMode/index.js';
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -18,6 +19,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const theme: Theme = mode === 'light' ? themeLight : themeDark;
 
   const customShadows = useMemo<CustomShadowProps>(() => CustomShadows(mode, theme), [theme]);
+  const customTypography = useMemo(() => Typography(), []);
 
   const themeOptions: ThemeOptions = useMemo(
     () => ({
@@ -39,8 +41,9 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       },
       palette: theme.palette,
       customShadows: customShadows,
+      typography: customTypography,
     }),
-    [theme, customShadows]
+    [theme, customShadows, customTypography]
   );
 
   const themes = createTheme(themeOptions);
