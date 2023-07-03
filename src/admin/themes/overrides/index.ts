@@ -23,6 +23,7 @@ import { Typography } from './Typography.js';
 import { Dialog } from './Dialog.js';
 import { DialogContentText } from './DialogContentText.js';
 import { DialogTitle } from './DialogTitle.js';
+import { Link } from './Link.js';
 
 export const componentsOverrides = (theme: Theme) => {
   return Object.assign(
@@ -49,6 +50,7 @@ export const componentsOverrides = (theme: Theme) => {
     CardContent(),
     Dialog(),
     DialogContentText(theme),
-    DialogTitle()
+    DialogTitle(),
+    Link()
   );
 };
