@@ -2,7 +2,7 @@ import { Box, CheckboxProps } from '@mui/material';
 import { Theme } from '@mui/material/styles';
 import React from 'react';
 import { ExtendedStyleProps } from '../../../types/mui/style.js';
-import { getColors } from '../colors.js';
+import { getColors } from '../../utilities/getColors.js';
 
 const smallStyle = { size: 16, dotSize: 8, position: 3 };
 const mediumStyle = { size: 20, dotSize: 10, position: 4 };
