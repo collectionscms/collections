@@ -15,6 +15,9 @@ import { TableFooter } from './TableFooter.js';
 import { TableHead } from './TableHead.js';
 import { TableRow } from './TableRow.js';
 import { Typography } from './Typography.js';
+import { Button } from './Button.js';
+import { ButtonBase } from './ButtonBase.js';
+import { ButtonGroup } from './ButtonGroup.js';
 
 export const componentsOverrides = (theme: Theme) => {
   return Object.assign(
@@ -33,6 +36,9 @@ export const componentsOverrides = (theme: Theme) => {
     Accordion(theme),
     AccordionDetails(theme),
     AccordionSummary(theme),
-    Typography()
+    Typography(),
+    Button(theme),
+    ButtonBase(),
+    ButtonGroup()
   );
 };
