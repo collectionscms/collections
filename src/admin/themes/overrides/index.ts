@@ -18,6 +18,7 @@ import { Typography } from './Typography.js';
 import { Button } from './Button.js';
 import { ButtonBase } from './ButtonBase.js';
 import { ButtonGroup } from './ButtonGroup.js';
+import { Tooltip } from './Tooltip.js';
 
 export const componentsOverrides = (theme: Theme) => {
   return Object.assign(
@@ -39,6 +40,7 @@ export const componentsOverrides = (theme: Theme) => {
     Typography(),
     Button(theme),
     ButtonBase(),
-    ButtonGroup()
+    ButtonGroup(),
+    Tooltip(theme)
   );
 };
