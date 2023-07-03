@@ -3,6 +3,10 @@ import { Accordion } from './Accordion.js';
 import { AccordionDetails } from './AccordionDetails.js';
 import { AccordionSummary } from './AccordionSummary.js';
 import { AppBar } from './AppBar.js';
+import { Button } from './Button.js';
+import { ButtonBase } from './ButtonBase.js';
+import { ButtonGroup } from './ButtonGroup.js';
+import { CardContent } from './CardContent.js';
 import { Checkbox } from './Checkbox.js';
 import { ListItemButton } from './ListItemButton.js';
 import { ListItemIcon } from './ListItemIcon.js';
@@ -14,11 +18,8 @@ import { TableCell } from './TableCell.js';
 import { TableFooter } from './TableFooter.js';
 import { TableHead } from './TableHead.js';
 import { TableRow } from './TableRow.js';
-import { Typography } from './Typography.js';
-import { Button } from './Button.js';
-import { ButtonBase } from './ButtonBase.js';
-import { ButtonGroup } from './ButtonGroup.js';
 import { Tooltip } from './Tooltip.js';
+import { Typography } from './Typography.js';
 
 export const componentsOverrides = (theme: Theme) => {
   return Object.assign(
@@ -41,6 +42,7 @@ export const componentsOverrides = (theme: Theme) => {
     Button(theme),
     ButtonBase(),
     ButtonGroup(),
-    Tooltip(theme)
+    Tooltip(theme),
+    CardContent()
   );
 };
