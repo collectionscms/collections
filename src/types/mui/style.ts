@@ -16,3 +16,5 @@ export type ExtendedStyleProps = {
   color: ColorProps;
   theme: Theme;
 };
+
+export type ButtonVariantProps = 'contained' | 'light' | 'outlined' | 'dashed' | 'text' | 'shadow';
