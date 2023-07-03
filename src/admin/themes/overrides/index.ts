@@ -20,6 +20,9 @@ import { TableHead } from './TableHead.js';
 import { TableRow } from './TableRow.js';
 import { Tooltip } from './Tooltip.js';
 import { Typography } from './Typography.js';
+import { Dialog } from './Dialog.js';
+import { DialogContentText } from './DialogContentText.js';
+import { DialogTitle } from './DialogTitle.js';
 
 export const componentsOverrides = (theme: Theme) => {
   return Object.assign(
@@ -43,6 +46,9 @@ export const componentsOverrides = (theme: Theme) => {
     ButtonBase(),
     ButtonGroup(),
     Tooltip(theme),
-    CardContent()
+    CardContent(),
+    Dialog(),
+    DialogContentText(theme),
+    DialogTitle()
   );
 };
