@@ -1,9 +1,12 @@
-export const ListItemIcon = () => {
+import { Theme } from '@mui/material';
+
+export const ListItemIcon = (theme: Theme) => {
   return {
     MuiListItemIcon: {
-      defaultProps: {
-        sx: {
-          minWidth: '32px',
+      styleOverrides: {
+        root: {
+          minWidth: 24,
+          color: theme.palette.text.primary,
         },
       },
     },

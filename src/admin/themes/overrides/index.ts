@@ -29,7 +29,7 @@ export const componentsOverrides = (theme: Theme) => {
     AppBar(theme),
     ListSubheader(),
     ListItemButton(theme),
-    ListItemIcon(),
+    ListItemIcon(theme),
     ListItemText(),
     Checkbox(theme),
     Radio(theme),
