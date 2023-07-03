@@ -8,10 +8,16 @@ import { ButtonBase } from './ButtonBase.js';
 import { ButtonGroup } from './ButtonGroup.js';
 import { CardContent } from './CardContent.js';
 import { Checkbox } from './Checkbox.js';
+import { Dialog } from './Dialog.js';
+import { DialogContentText } from './DialogContentText.js';
+import { DialogTitle } from './DialogTitle.js';
+import { IconButton } from './IconButton.js';
+import { Link } from './Link.js';
 import { ListItemButton } from './ListItemButton.js';
 import { ListItemIcon } from './ListItemIcon.js';
 import { ListItemText } from './ListItemText.js';
 import { ListSubheader } from './ListSubheader.js';
+import { LoadingButton } from './LoadingButton.js';
 import { Radio } from './Radio.js';
 import { TableBody } from './TableBody.js';
 import { TableCell } from './TableCell.js';
@@ -20,10 +26,6 @@ import { TableHead } from './TableHead.js';
 import { TableRow } from './TableRow.js';
 import { Tooltip } from './Tooltip.js';
 import { Typography } from './Typography.js';
-import { Dialog } from './Dialog.js';
-import { DialogContentText } from './DialogContentText.js';
-import { DialogTitle } from './DialogTitle.js';
-import { Link } from './Link.js';
 
 export const componentsOverrides = (theme: Theme) => {
   return Object.assign(
@@ -46,6 +48,8 @@ export const componentsOverrides = (theme: Theme) => {
     Button(theme),
     ButtonBase(),
     ButtonGroup(),
+    LoadingButton(),
+    IconButton(theme),
     Tooltip(theme),
     CardContent(),
     Dialog(),
