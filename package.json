@@ -102,6 +102,7 @@
     "rimraf": "^5.0.0",
     "sqlite3": "^5.1.6",
     "style-loader": "^3.3.2",
+    "superfast-ui": "^0.1.0-alpha-4",
     "swr": "^2.1.5",
     "uuid": "^9.0.0",
     "webpack": "^5.81.0",
