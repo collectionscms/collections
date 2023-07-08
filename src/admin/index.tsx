@@ -11,6 +11,7 @@ import { ConfigProvider } from './components/utilities/Config/index.js';
 import { SWRConfigure } from './components/utilities/SWRConfigure/index.js';
 import { ThemeCustomization } from './components/utilities/Theme/index.js';
 import lazy from './utilities/lazy.js';
+import 'simplebar-react/dist/simplebar.min.css';
 
 const Loading = Loader(lazy(() => import('./components/elements/Loading/index.js'), 'Loading'));
 
