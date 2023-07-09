@@ -1,27 +1,42 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWR from 'swr';
-import { Collection } from '../../../../config/types.js';
+import { AuthUser, Collection, Permission } from '../../../../config/types.js';
 import { api } from '../../../utilities/api.js';
 import { useAuth } from '../Auth/index.js';
+import { ConfigContext, Props } from './types.js';
 
-type ContextType = {
-  collections: Collection[];
+const Context = createContext({} as ConfigContext);
+
+const filteredPermittedCollections = (
+  user: AuthUser | null,
+  permissions: Permission[] | null,
+  collections: Collection[]
+): Collection[] => {
+  if (!user || !permissions) return [];
+  if (user.adminAccess) return collections;
+
+  return collections.filter((collection) =>
+    permissions?.some((permission) => permission.collection === collection.collection)
+  );
 };
 
-const Context = createContext<ContextType>({} as any);
-
-export const ConfigProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { user } = useAuth();
+export const ConfigProvider: React.FC<Props> = ({ children }) => {
+  const { user, permissions } = useAuth();
 
   const { data: collections } = useSWR(
     user ? '/collections' : null,
-    (url) => api.get<{ collections: Collection[] }>(url).then((res) => res.data.collections),
+    (url) =>
+      api
+        .get<{ collections: Collection[] }>(url)
+        .then((res) =>
+          filteredPermittedCollections(user || null, permissions || null, res.data.collections)
+        ),
     { suspense: true }
   );
 
   const value = useMemo(
     () => ({
-      collections,
+      permittedCollections: collections,
     }),
     [collections]
   );
@@ -29,4 +44,6 @@ export const ConfigProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   return <Context.Provider value={value}>{children}</Context.Provider>;
 };
 
-export const useConfig = () => useContext(Context);
+export const useConfig = (): ConfigContext => useContext(Context);
+
+export default Context;
