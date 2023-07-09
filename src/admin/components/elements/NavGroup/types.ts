@@ -1,7 +1,25 @@
-import React from 'react';
-import { Group } from '../NavItem/types';
+import { SvgIconTypeMap } from '@mui/material';
+import { OverridableComponent } from '@mui/material/OverridableComponent';
+import { ComponentClass, FunctionComponent } from 'react';
 
 export type Props = {
   group: Group;
-  children: React.ReactNode;
+};
+
+export type OverrideIcon =
+  | (OverridableComponent<SvgIconTypeMap<{}, 'svg'>> & {
+      muiName: string;
+    })
+  | ComponentClass<any>
+  | FunctionComponent<any>;
+
+export type Group = {
+  label: string;
+  items: GroupItem[];
+};
+
+export type GroupItem = {
+  label: string;
+  href: string;
+  icon: OverrideIcon;
 };
