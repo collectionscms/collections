@@ -1,4 +1,4 @@
-export type ContextType = {
+export type DocumentContext = {
   localizedLabel: string;
 };
 
