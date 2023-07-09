@@ -1,4 +1,4 @@
-import { Group } from '../../elements/NavItem/types.js';
+import { Group } from '../../elements/NavGroup/types.js';
 
 export type Props = {
   group: Group;
