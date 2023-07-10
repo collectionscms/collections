@@ -41,9 +41,6 @@ const DefaultListPageImpl: React.FC<Props> = ({ collection }) => {
       <Grid container>
         <Grid xs>
           <Grid container alignItems="center" spacing={3}>
-            <Grid>
-              <h1>{collection.collection}</h1>
-            </Grid>
             {hasPermission(collection.collection, 'create') && (
               <Grid>
                 <Button

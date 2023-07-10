@@ -64,9 +64,6 @@ const SingletonPageImpl: React.FC<Props> = ({ collection }) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={2}>
-        <Grid xs>
-          <h1>{collection.collection}</h1>
-        </Grid>
         <Grid container columnSpacing={2} alignItems="center">
           <Grid>
             <ApiPreview collection={collection.collection} singleton={collection.singleton} />

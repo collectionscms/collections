@@ -8,7 +8,6 @@ import { useTranslation } from 'react-i18next';
 import { logger } from '../../../utilities/logger.js';
 import { Loading } from '../../components/elements/Loading/index.js';
 import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.js';
-import { useDocumentInfo } from '../../components/utilities/DocumentInfo/index.js';
 import {
   FormValues,
   updateProjectSetting as updateProjectSettingSchema,
@@ -16,7 +15,6 @@ import {
 import { ProjectSettingContextProvider, useProjectSetting } from './Context/index.js';
 
 const ProjectImpl: React.FC = () => {
-  const { localizedLabel } = useDocumentInfo();
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
   const { getProjectSetting, updateProjectSetting } = useProjectSetting();
@@ -50,9 +48,6 @@ const ProjectImpl: React.FC = () => {
     <Suspense fallback={<Loading />}>
       <Stack component="form" onSubmit={handleSubmit(onSubmit)} rowGap={3}>
         <Grid container spacing={2}>
-          <Grid xs>
-            <h1>{localizedLabel}</h1>
-          </Grid>
           <Grid container columnSpacing={2} alignItems="center">
             <Grid>
               <Button variant="contained" type="submit" disabled={isMutating}>

@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { logger } from '../../../../utilities/logger.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
-import { useDocumentInfo } from '../../../components/utilities/DocumentInfo/index.js';
+
 import {
   FormValues,
   createCollection as createCollectionSchema,
@@ -27,7 +27,7 @@ import { CollectionContextProvider, useCollection } from '../Context/index.js';
 const CreateContentTypePageImpl: React.FC = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { localizedLabel } = useDocumentInfo();
+
   const { enqueueSnackbar } = useSnackbar();
   const { createCollection } = useCollection();
   const { trigger, isMutating } = createCollection;
@@ -53,9 +53,6 @@ const CreateContentTypePageImpl: React.FC = () => {
   return (
     <Stack component="form" onSubmit={handleSubmit(onSubmit)} rowGap={3}>
       <Grid container spacing={2}>
-        <Grid xs>
-          <h1>{localizedLabel}</h1>
-        </Grid>
         <Grid container columnSpacing={2} alignItems="center">
           <Grid>
             <Button variant="contained" type="submit" disabled={isMutating}>

@@ -9,13 +9,11 @@ import { Cell } from '../../components/elements/Table/Cell/index.js';
 import { Type } from '../../components/elements/Table/Cell/types.js';
 import { Table } from '../../components/elements/Table/index.js';
 import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.js';
-import { useDocumentInfo } from '../../components/utilities/DocumentInfo/index.js';
 import { buildColumns } from '../../utilities/buildColumns.js';
 import { RoleContextProvider, useRole } from './Context/index.js';
 
 const RolePageImpl: React.FC = () => {
   const { t } = useTranslation();
-  const { localizedLabel } = useDocumentInfo();
   const { getRoles } = useRole();
   const { data } = getRoles();
 
@@ -34,9 +32,6 @@ const RolePageImpl: React.FC = () => {
     <Stack rowGap={3}>
       <Grid container spacing={2}>
         <Grid container alignItems="center" spacing={3}>
-          <Grid>
-            <h1>{localizedLabel}</h1>
-          </Grid>
           <Grid>
             <Button
               variant="outlined"

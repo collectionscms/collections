@@ -23,7 +23,6 @@ import { logger } from '../../../../utilities/logger.js';
 import { DeleteHeaderButton } from '../../../components/elements/DeleteHeaderButton/index.js';
 import { Loading } from '../../../components/elements/Loading/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
-import { useDocumentInfo } from '../../../components/utilities/DocumentInfo/index.js';
 import {
   FormValues,
   updateCollection as updateCollectionSchema,
@@ -47,7 +46,6 @@ const EditContentTypePageImpl: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
-  const { localizedLabel } = useDocumentInfo();
   const { getCollection, updateCollection, getFields, updateFields } = useCollection();
   const { data: meta, trigger: getCollectionTrigger } = getCollection(id);
   const { data: fields = [], mutate } = getFields(meta?.collection || null);
@@ -193,9 +191,6 @@ const EditContentTypePageImpl: React.FC = () => {
       )}
       <Stack component="form" onSubmit={handleSubmit(onSubmit)} rowGap={3}>
         <Grid container spacing={2}>
-          <Grid xs>
-            <h1>{localizedLabel}</h1>
-          </Grid>
           <Grid container columnSpacing={2} alignItems="center">
             <Grid>
               <DeleteHeaderButton id={id} slug="collections" onSuccess={handleDeletionSuccess} />
