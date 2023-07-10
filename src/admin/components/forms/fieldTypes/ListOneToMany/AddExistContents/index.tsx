@@ -12,7 +12,6 @@ import { buildColumns } from '../../../../../utilities/buildColumns.js';
 import { CheckBoxTable } from '../../../../elements/Table/CheckBoxTable/index.js';
 import { Column } from '../../../../elements/Table/types.js';
 import { ComposeWrapper } from '../../../../utilities/ComposeWrapper/index.js';
-import { theme } from '../../../../utilities/Theme/Default/index.js';
 import { Props } from './types.js';
 
 const AddExistContentsImpl: React.FC<Props> = ({
@@ -84,12 +83,7 @@ const AddExistContentsImpl: React.FC<Props> = ({
 
   return (
     <Stack>
-      <Drawer
-        anchor="right"
-        open={openState}
-        onClose={onToggle()}
-        sx={{ zIndex: theme.zIndex.appBar + 200 }}
-      >
+      <Drawer anchor="right" open={openState} onClose={onToggle()}>
         <Box sx={{ width: 660 }}>
           <Stack direction="row" columnGap={2} sx={{ p: 1 }}>
             <IconButton aria-label="close" onClick={onClose}>
