@@ -1,11 +1,12 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Navigate } from 'react-router-dom';
 import { settingsGroupNavItems } from '../../../utilities/groupNavItems.js';
 import lazy from '../../../utilities/lazy.js';
 import { Loader } from '../../elements/Loader/index.js';
+import { MainHeader } from '../../elements/MainHeader/index.js';
 import { MainLayout } from '../../layouts/Main/index.js';
 import { useAuth } from '../../utilities/Auth/index.js';
-import { DocumentInfoProvider } from '../../utilities/DocumentInfo/index.js';
 
 const Project = Loader(lazy(() => import('../../../pages/Project/index.js'), 'Project'));
 const Role = Loader(lazy(() => import('../../../pages/Role/index.js'), 'RolePage'));
@@ -32,6 +33,7 @@ const group = settingsGroupNavItems();
 
 export const SettingRoutes = () => {
   const { user } = useAuth();
+  const { t } = useTranslation();
 
   if (!user) {
     return {
@@ -61,9 +63,9 @@ export const SettingRoutes = () => {
       {
         path: 'project',
         element: (
-          <DocumentInfoProvider label="project_setting">
+          <MainHeader label={t('project_setting')}>
             <Project />
-          </DocumentInfoProvider>
+          </MainHeader>
         ),
       },
 
@@ -73,25 +75,25 @@ export const SettingRoutes = () => {
       {
         path: 'content-types',
         element: (
-          <DocumentInfoProvider label="content_type">
+          <MainHeader label={t('content_type')}>
             <ContentType />
-          </DocumentInfoProvider>
+          </MainHeader>
         ),
       },
       {
         path: 'content-types/create',
         element: (
-          <DocumentInfoProvider label="create.content_type">
+          <MainHeader label={t('create.content_type')}>
             <CreateContentType />
-          </DocumentInfoProvider>
+          </MainHeader>
         ),
       },
       {
         path: 'content-types/:id',
         element: (
-          <DocumentInfoProvider label="edit.content_type">
+          <MainHeader label={t('edit.content_type')}>
             <EditContentType />
-          </DocumentInfoProvider>
+          </MainHeader>
         ),
       },
 
@@ -101,25 +103,25 @@ export const SettingRoutes = () => {
       {
         path: 'roles',
         element: (
-          <DocumentInfoProvider label="role">
+          <MainHeader label={t('role')}>
             <Role />
-          </DocumentInfoProvider>
+          </MainHeader>
         ),
       },
       {
         path: 'roles/create',
         element: (
-          <DocumentInfoProvider label="create.role">
+          <MainHeader label={t('create.role')}>
             <CreateRole />
-          </DocumentInfoProvider>
+          </MainHeader>
         ),
       },
       {
         path: 'roles/:id',
         element: (
-          <DocumentInfoProvider label="edit.role">
+          <MainHeader label={t('edit.role')}>
             <EditRole />
-          </DocumentInfoProvider>
+          </MainHeader>
         ),
       },
 
@@ -129,25 +131,25 @@ export const SettingRoutes = () => {
       {
         path: 'users',
         element: (
-          <DocumentInfoProvider label="user">
+          <MainHeader label={t('user')}>
             <User />
-          </DocumentInfoProvider>
+          </MainHeader>
         ),
       },
       {
         path: 'users/create',
         element: (
-          <DocumentInfoProvider label="create.user">
+          <MainHeader label={t('create.user')}>
             <CreateUser />
-          </DocumentInfoProvider>
+          </MainHeader>
         ),
       },
       {
         path: 'users/:id',
         element: (
-          <DocumentInfoProvider label="edit.user">
+          <MainHeader label={t('edit.user')}>
             <EditUser />
-          </DocumentInfoProvider>
+          </MainHeader>
         ),
       },
     ],

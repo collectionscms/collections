@@ -24,7 +24,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { logger } from '../../../../utilities/logger.js';
 import { Loading } from '../../../components/elements/Loading/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
-import { useDocumentInfo } from '../../../components/utilities/DocumentInfo/index.js';
 import {
   FormValues,
   createUser as createUserSchema,
@@ -32,7 +31,6 @@ import {
 import { UserContextProvider, useUser } from '../Context/index.js';
 
 const CreateUserPageImpl: React.FC = () => {
-  const { localizedLabel } = useDocumentInfo();
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
@@ -80,9 +78,6 @@ const CreateUserPageImpl: React.FC = () => {
     <Suspense fallback={<Loading />}>
       <Stack component="form" onSubmit={handleSubmit(onSubmit)} rowGap={3}>
         <Grid container spacing={2}>
-          <Grid xs={12} sm>
-            <h1>{localizedLabel}</h1>
-          </Grid>
           <Grid container columnSpacing={2} alignItems="center">
             <Grid>
               <Button variant="contained" type="submit" disabled={isMutating}>

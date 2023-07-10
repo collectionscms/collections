@@ -9,12 +9,10 @@ import { Cell } from '../../components/elements/Table/Cell/index.js';
 import { Type } from '../../components/elements/Table/Cell/types.js';
 import { Table } from '../../components/elements/Table/index.js';
 import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.js';
-import { useDocumentInfo } from '../../components/utilities/DocumentInfo/index.js';
 import { buildColumns } from '../../utilities/buildColumns.js';
 import { UserContextProvider, useUser } from './Context/index.js';
 
 const UserPageImpl: React.FC = () => {
-  const { localizedLabel } = useDocumentInfo();
   const { t } = useTranslation();
   const { getUsers } = useUser();
   const { data } = getUsers();
@@ -55,9 +53,6 @@ const UserPageImpl: React.FC = () => {
     <Stack rowGap={3}>
       <Grid container>
         <Grid container alignItems="center" spacing={3}>
-          <Grid>
-            <h1>{localizedLabel}</h1>
-          </Grid>
           <Grid>
             <Button
               variant="outlined"

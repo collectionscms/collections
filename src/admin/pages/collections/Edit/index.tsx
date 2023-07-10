@@ -100,13 +100,6 @@ const EditCollectionPageImpl: React.FC<Props> = ({ collection }) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={2}>
-        <Grid xs={12} sm>
-          <h1>
-            {id
-              ? t('edit.custom', { page: collection.collection })
-              : t('create.custom', { page: collection.collection })}
-          </h1>
-        </Grid>
         <Grid container columnSpacing={2} alignItems="center">
           {id ? (
             <>

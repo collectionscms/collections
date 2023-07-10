@@ -8680,7 +8680,7 @@ stylis@4.2.0:
   resolved "https://registry.yarnpkg.com/stylis/-/stylis-4.2.0.tgz#79daee0208964c8fe695a42fcffcac633a211a51"
   integrity sha512-Orov6g6BB1sDfYgzWfTHDOxamtX1bE/zo104Dh9e6fqJ3PooipYyfJ0pUmrZO2wAvO8YbEyeFrkV91XTsGMSrw==
 
-superfast-ui@^0.1.0-alpha-19:
+superfast-ui@^0.1.0-alpha-20:
   version "0.1.0-alpha-20"
   resolved "https://registry.yarnpkg.com/superfast-ui/-/superfast-ui-0.1.0-alpha-20.tgz#3ffea4068475de537cc771092213a3fe681757b2"
   integrity sha512-4fsQeLBRpuC4OAPNkG8hOTySTWrJrvKvU1l9yGwpyGHV9HPVbghHlFpjIKs+SNNuGHwLUNUiLGjiT150ylPJ+w==

@@ -16,7 +16,6 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { logger } from '../../../../utilities/logger.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
-import { useDocumentInfo } from '../../../components/utilities/DocumentInfo/index.js';
 import {
   FormValues,
   createRole as createRoleSchema,
@@ -24,7 +23,6 @@ import {
 import { RoleContextProvider, useRole } from '../Context/index.js';
 
 const CreateRolePageImpl: React.FC = () => {
-  const { localizedLabel } = useDocumentInfo();
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
@@ -60,9 +58,6 @@ const CreateRolePageImpl: React.FC = () => {
   return (
     <Stack component="form" onSubmit={handleSubmit(onSubmit)} rowGap={3}>
       <Grid container spacing={2}>
-        <Grid xs={12} sm>
-          <h1>{localizedLabel}</h1>
-        </Grid>
         <Grid container columnSpacing={2} alignItems="center">
           <Grid>
             <Button variant="contained" type="submit" disabled={isMutating}>

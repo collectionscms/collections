@@ -14,10 +14,8 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useColorMode } from '../../components/utilities/ColorMode/index.js';
 import { Mode } from '../../components/utilities/ColorMode/types.js';
-import { useDocumentInfo } from '../../components/utilities/DocumentInfo/index.js';
 
 export const Profile: React.FC = () => {
-  const { localizedLabel } = useDocumentInfo();
   const { t, i18n } = useTranslation();
   const { mode, setMode, autoMode } = useColorMode();
 
@@ -27,11 +25,6 @@ export const Profile: React.FC = () => {
 
   return (
     <Stack rowGap={3}>
-      <Grid container spacing={2}>
-        <Grid xs>
-          <h1>{localizedLabel}</h1>
-        </Grid>
-      </Grid>
       <Grid container spacing={3} xs={12} xl={6}>
         <Grid xs={12} md={6}>
           <FormControl fullWidth>

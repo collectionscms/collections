@@ -9,12 +9,10 @@ import { Cell } from '../../components/elements/Table/Cell/index.js';
 import { Type } from '../../components/elements/Table/Cell/types.js';
 import { Table } from '../../components/elements/Table/index.js';
 import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.js';
-import { useDocumentInfo } from '../../components/utilities/DocumentInfo/index.js';
 import { buildColumns } from '../../utilities/buildColumns.js';
 import { CollectionContextProvider, useCollection } from './Context/index.js';
 
 const ContentTypePageImpl: React.FC = () => {
-  const { localizedLabel } = useDocumentInfo();
   const { t } = useTranslation();
   const { getCollections } = useCollection();
   const { data } = getCollections();
@@ -30,9 +28,6 @@ const ContentTypePageImpl: React.FC = () => {
     <Stack rowGap={3}>
       <Grid container spacing={2}>
         <Grid container alignItems="center" spacing={3}>
-          <Grid>
-            <h1>{localizedLabel}</h1>
-          </Grid>
           <Grid>
             <Button
               variant="outlined"

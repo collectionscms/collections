@@ -27,7 +27,6 @@ import { logger } from '../../../../utilities/logger.js';
 import { DeleteHeaderButton } from '../../../components/elements/DeleteHeaderButton/index.js';
 import { Loading } from '../../../components/elements/Loading/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
-import { useDocumentInfo } from '../../../components/utilities/DocumentInfo/index.js';
 import {
   FormValues,
   updateRole as updateRoleSchema,
@@ -40,7 +39,6 @@ const EditRolePageImpl: React.FC = () => {
   const { id } = useParams();
   if (!id) throw new Error('id is not defined');
 
-  const { localizedLabel } = useDocumentInfo();
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
@@ -112,9 +110,6 @@ const EditRolePageImpl: React.FC = () => {
     <Suspense fallback={<Loading />}>
       <Stack component="form" onSubmit={handleSubmit(onSubmit)} rowGap={3}>
         <Grid container spacing={2}>
-          <Grid xs>
-            <h1>{localizedLabel}</h1>
-          </Grid>
           <Grid container columnSpacing={2} alignItems="center">
             <Grid>
               <DeleteHeaderButton id={id} slug="roles" onSuccess={handleDeletionSuccess} />
