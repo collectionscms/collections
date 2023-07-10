@@ -1,10 +1,12 @@
 import React, { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Navigate } from 'react-router-dom';
 import { EditCollectionPage as Edit } from '../../../pages/collections/Edit/index.js';
 import List from '../../../pages/collections/List/index.js';
 import { collectionsGroupNavItems } from '../../../utilities/groupNavItems.js';
 import lazy from '../../../utilities/lazy.js';
 import { Loader } from '../../elements/Loader/index.js';
+import { MainHeader } from '../../elements/MainHeader/index.js';
 import { MainLayout } from '../../layouts/Main/index.js';
 import { useAuth } from '../../utilities/Auth/index.js';
 import { useConfig } from '../../utilities/Config/index.js';
@@ -19,6 +21,7 @@ const CreateFirstCollection = Loader(
 
 export const CollectionRoutes = () => {
   const { user } = useAuth();
+  const { t } = useTranslation();
   const { permittedCollections } = useConfig();
 
   const { group } = useMemo(() => {
@@ -49,15 +52,27 @@ export const CollectionRoutes = () => {
       ...permittedCollections.flatMap((collection) => [
         {
           path: `${collection.collection}`,
-          element: <List key={collection.collection} collection={collection} />,
+          element: (
+            <MainHeader label={collection.collection}>
+              <List key={collection.collection} collection={collection} />
+            </MainHeader>
+          ),
         },
         {
           path: `${collection.collection}/create`,
-          element: <Edit key={collection.collection} collection={collection} />,
+          element: (
+            <MainHeader label={t('create.custom', { page: collection.collection })}>
+              <Edit key={collection.collection} collection={collection} />
+            </MainHeader>
+          ),
         },
         {
           path: `${collection.collection}/:id`,
-          element: <Edit key={collection.collection} collection={collection} />,
+          element: (
+            <MainHeader label={t('edit.custom', { page: collection.collection })}>
+              <Edit key={collection.collection} collection={collection} />
+            </MainHeader>
+          ),
         },
       ]),
       {
