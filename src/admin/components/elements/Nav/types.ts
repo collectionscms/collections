@@ -1,7 +1,5 @@
-import { Group } from '../NavItem/types.js';
-
 export type Props = {
+  window?: () => Window;
   open: boolean;
-  group: Group;
   toggleDrawer: () => void;
 };

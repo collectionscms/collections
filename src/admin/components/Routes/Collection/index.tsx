@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import { Navigate } from 'react-router-dom';
-import { Collection } from '../../../../config/types.js';
 import { EditCollectionPage as Edit } from '../../../pages/collections/Edit/index.js';
 import List from '../../../pages/collections/List/index.js';
 import { collectionsGroupNavItems } from '../../../utilities/groupNavItems.js';
@@ -19,23 +18,13 @@ const CreateFirstCollection = Loader(
 );
 
 export const CollectionRoutes = () => {
-  const { user, permissions } = useAuth();
-  const { collections } = useConfig();
+  const { user } = useAuth();
+  const { permittedCollections } = useConfig();
 
-  const filteredPermittedCollections = (): Collection[] => {
-    if (!user) return [];
-    if (user.adminAccess) return collections;
-
-    return collections.filter((collection) =>
-      permissions?.some((permission) => permission.collection === collection.collection)
-    );
-  };
-
-  const { permittedCollections, group } = useMemo(() => {
-    const permittedCollections = filteredPermittedCollections();
-    const group = collectionsGroupNavItems(permittedCollections);
+  const { group } = useMemo(() => {
+    const group = collectionsGroupNavItems(permittedCollections || []);
     return { permittedCollections, group };
-  }, [permissions, collections]);
+  }, [permittedCollections]);
 
   if (!user) {
     return {

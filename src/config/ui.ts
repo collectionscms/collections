@@ -1,7 +1,5 @@
-const defaultConfig: any = {
+export const config: any = {
   ui: {
-    navWidth: 280,
+    navWidth: 260,
   },
 };
-
-export const config = defaultConfig;
