@@ -1,13 +1,13 @@
-import { AddOutlined } from '@mui/icons-material';
-import { Button, Stack } from '@mui/material';
-import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
+import { Stack, useMediaQuery, useTheme } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import { MainCard } from 'superfast-ui';
+import { CreateNewButton } from '../../../components/elements/CreateNewButton/index.js';
 import { RouterLink } from '../../../components/elements/Link/index.js';
 import { Cell } from '../../../components/elements/Table/Cell/index.js';
 import { Table } from '../../../components/elements/Table/index.js';
 import { Column } from '../../../components/elements/Table/types.js';
-import { useAuth } from '../../../components/utilities/Auth/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
 import { buildColumns } from '../../../utilities/buildColumns.js';
 import { ApiPreview } from '../ApiPreview/index.js';
@@ -17,9 +17,12 @@ import { Props } from './types.js';
 
 const DefaultListPageImpl: React.FC<Props> = ({ collection }) => {
   const [columns, setColumns] = useState<Column[]>([]);
-  const { hasPermission } = useAuth();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const { getContents, getFields } = useContent();
+  const theme = useTheme();
+  const smDown = useMediaQuery(theme.breakpoints.down('sm'));
+
   const { data: metaFields } = getFields(collection.collection);
   const fieldFetched = metaFields !== undefined;
   const { data: contents } = getContents(collection.collection, fieldFetched);
@@ -37,32 +40,18 @@ const DefaultListPageImpl: React.FC<Props> = ({ collection }) => {
   }, [metaFields]);
 
   return (
-    <Stack rowGap={3}>
-      <Grid container>
-        <Grid xs>
-          <Grid container alignItems="center" spacing={3}>
-            {hasPermission(collection.collection, 'create') && (
-              <Grid>
-                <Button
-                  variant="outlined"
-                  startIcon={<AddOutlined />}
-                  component={RouterLink}
-                  to="create"
-                >
-                  {t('create_new')}
-                </Button>
-              </Grid>
-            )}
-          </Grid>
-        </Grid>
-        <Grid container columnSpacing={2} alignItems="center">
-          <Grid>
-            <ApiPreview collection={collection.collection} singleton={collection.singleton} />
-          </Grid>
-        </Grid>
-      </Grid>
+    <MainCard
+      content={false}
+      title={<></>}
+      secondary={
+        <Stack direction={smDown ? 'column' : 'row'} alignItems="center" spacing={1}>
+          <CreateNewButton to="create" />
+          <ApiPreview collection={collection.collection} singleton={collection.singleton} />
+        </Stack>
+      }
+    >
       {contents !== undefined && <Table columns={columns} rows={contents} />}
-    </Stack>
+    </MainCard>
   );
 };
 

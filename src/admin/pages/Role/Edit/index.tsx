@@ -6,7 +6,6 @@ import {
   FormControlLabel,
   FormHelperText,
   InputLabel,
-  Paper,
   Stack,
   Table,
   TableBody,
@@ -22,6 +21,7 @@ import React, { Suspense, useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
+import { EmptyTable, MainCard } from 'superfast-ui';
 import { PermissionsAction, Role } from '../../../../config/types.js';
 import { logger } from '../../../../utilities/logger.js';
 import { DeleteHeaderButton } from '../../../components/elements/DeleteHeaderButton/index.js';
@@ -126,55 +126,67 @@ const EditRolePageImpl: React.FC = () => {
             {role.admin_access ? (
               <span>{t('admin_has_all_permissions')}</span>
             ) : (
-              <TableContainer component={Paper}>
-                <Table aria-label="simple table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell component="th" scope="row">
-                        {t('content_type')}
-                      </TableCell>
-                      {actions.map((action) => (
-                        <TableCell
-                          component="th"
-                          scope="row"
-                          align="center"
-                          key={action}
-                          sx={{ width: 40 }}
-                        >
-                          <PermissionHeaderCell action={action} />
+              <MainCard content={false} title={t('role_list')}>
+                <TableContainer>
+                  <Table aria-label="simple table">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell component="th" scope="row">
+                          {t('content_type')}
                         </TableCell>
-                      ))}
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {collections.map((collection) => {
-                      return (
-                        <TableRow
-                          sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                          key={collection.id}
-                        >
-                          <TableCell component="td" scope="row" sx={{ py: 0 }}>
-                            <Box display="flex" justifyContent="space-between" alignItems="center">
-                              <p>{collection.collection}</p>
-                            </Box>
+                        {actions.map((action) => (
+                          <TableCell
+                            component="th"
+                            scope="row"
+                            align="center"
+                            key={action}
+                            sx={{ width: 40 }}
+                          >
+                            <PermissionHeaderCell action={action} />
                           </TableCell>
-                          {actions.map((action) => (
-                            <TableCell component="td" scope="row" key={action} sx={{ py: 0 }}>
-                              <PermissionToggleButton
-                                roleId={id}
-                                permissions={permissions}
-                                collection={collection.collection}
-                                action={action}
-                                onSuccess={handlePermissionSuccess}
-                              />
-                            </TableCell>
-                          ))}
-                        </TableRow>
-                      );
-                    })}
-                  </TableBody>
-                </Table>
-              </TableContainer>
+                        ))}
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {[].length > 0 ? (
+                        <>
+                          {collections.map((collection) => {
+                            return (
+                              <TableRow
+                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                key={collection.id}
+                              >
+                                <TableCell component="td" scope="row" sx={{ py: 0 }}>
+                                  <Box
+                                    display="flex"
+                                    justifyContent="space-between"
+                                    alignItems="center"
+                                  >
+                                    <p>{collection.collection}</p>
+                                  </Box>
+                                </TableCell>
+                                {actions.map((action) => (
+                                  <TableCell component="td" scope="row" key={action} sx={{ py: 0 }}>
+                                    <PermissionToggleButton
+                                      roleId={id}
+                                      permissions={permissions}
+                                      collection={collection.collection}
+                                      action={action}
+                                      onSuccess={handlePermissionSuccess}
+                                    />
+                                  </TableCell>
+                                ))}
+                              </TableRow>
+                            );
+                          })}
+                        </>
+                      ) : (
+                        <EmptyTable msg={t('no_roles')} colSpan={12} />
+                      )}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </MainCard>
             )}
           </Grid>
         </Grid>
