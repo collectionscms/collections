@@ -1,8 +1,10 @@
-import { Box, Button, Drawer, Stack, TextField, useTheme } from '@mui/material';
+import { Send } from '@mui/icons-material';
+import { Box, Button, Drawer, Stack, TextField, Tooltip, useTheme } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { IconButton } from 'superfast-ui';
 import { useAuth } from '../../../components/utilities/Auth/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
 import { ContentContextProvider } from '../Context/index.js';
@@ -44,9 +46,11 @@ const ApiPreviewImpl: React.FC<Props> = ({ collection, singleton }) => {
 
   return (
     <>
-      <Button variant="contained" onClick={toggleDrawer(true)}>
-        {t('api_preview')}
-      </Button>
+      <Tooltip title={t('api_preview')}>
+        <IconButton color="secondary" onClick={toggleDrawer(true)}>
+          <Send />
+        </IconButton>
+      </Tooltip>
       <Drawer
         anchor="right"
         open={open}
