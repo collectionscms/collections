@@ -1,9 +1,8 @@
-import { AddOutlined } from '@mui/icons-material';
-import { Button, Stack } from '@mui/material';
-import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { MainCard } from 'superfast-ui';
 import { Role } from '../../../config/types.js';
+import { CreateNewButton } from '../../components/elements/CreateNewButton/index.js';
 import { RouterLink } from '../../components/elements/Link/index.js';
 import { Cell } from '../../components/elements/Table/Cell/index.js';
 import { Type } from '../../components/elements/Table/Cell/types.js';
@@ -29,23 +28,9 @@ const RolePageImpl: React.FC = () => {
   });
 
   return (
-    <Stack rowGap={3}>
-      <Grid container spacing={2}>
-        <Grid container alignItems="center" spacing={3}>
-          <Grid>
-            <Button
-              variant="outlined"
-              startIcon={<AddOutlined />}
-              component={RouterLink}
-              to="create"
-            >
-              {t('create_new')}
-            </Button>
-          </Grid>
-        </Grid>
-      </Grid>
+    <MainCard content={false} title={<></>} secondary={<CreateNewButton to="create" />}>
       {data !== undefined && <Table columns={columns} rows={data} />}
-    </Stack>
+    </MainCard>
   );
 };
 
