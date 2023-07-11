@@ -97,6 +97,7 @@
   "select_contents": "コンテンツを選択",
   "logout_inactivity": "しばらく操作が行われなかったため、管理画面からログアウトしました。",
   "role_list": "ロール一覧",
+  "content_list": "コンテンツ一覧",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",
