@@ -5,12 +5,12 @@ import {
   Checkbox,
   FormControlLabel,
   FormHelperText,
+  FormLabel,
   InputLabel,
   MenuItem,
   Select,
   Stack,
   TextField,
-  Typography,
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { useSnackbar } from 'notistack';
@@ -18,9 +18,10 @@ import React, { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
+import { MainCard } from 'superfast-ui';
 import { Collection, Field } from '../../../../config/types.js';
 import { logger } from '../../../../utilities/logger.js';
-import { DeleteHeaderButton } from '../../../components/elements/DeleteHeaderButton/index.js';
+import { DeleteButton } from '../../../components/elements/DeleteButton/index.js';
 import { Loading } from '../../../components/elements/Loading/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
 import {
@@ -94,8 +95,8 @@ const EditContentTypePageImpl: React.FC = () => {
     setCreateFieldOpen(state);
   };
 
-  const handleDeletionSuccess = () => {
-    navigate(`../content-types`);
+  const navigateToList = () => {
+    navigate('../content-types');
   };
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
@@ -189,165 +190,189 @@ const EditContentTypePageImpl: React.FC = () => {
           />
         </>
       )}
-      <Stack component="form" onSubmit={handleSubmit(onSubmit)} rowGap={3}>
-        <Grid container spacing={2}>
-          <Grid container columnSpacing={2} alignItems="center">
-            <Grid>
-              <DeleteHeaderButton id={id} slug="collections" onSuccess={handleDeletionSuccess} />
+      <Grid container spacing={2.5} sx={{ mb: 1 }}>
+        <Grid xs={12} lg={8}>
+          <MainCard>
+            <Grid container gap={2} columns={{ xs: 1, md: 2 }}>
+              <Grid xs={12}>
+                <Stack spacing={1}>
+                  <SortableFieldList
+                    items={sortableFields}
+                    onChange={handleChangeSortableItems}
+                    renderItem={(item) => (
+                      <SortableFieldList.Item id={item.id}>
+                        <Box display="flex" justifyContent="space-between" alignItems="center">
+                          <SortableFieldList.DragHandle />
+                          <Box sx={{ flexGrow: 1 }}>{item.field}</Box>
+                          {item.field !== 'id' && (
+                            <SortableFieldList.ItemMenu
+                              onClickItem={(e) => onOpenMenu(e.currentTarget, item)}
+                            />
+                          )}
+                        </Box>
+                      </SortableFieldList.Item>
+                    )}
+                  />
+                </Stack>
+                <Button
+                  variant="contained"
+                  onClick={() => onToggleCreateField(true)}
+                  size="large"
+                  fullWidth
+                  sx={{ mt: 2 }}
+                >
+                  {t('add_field')}
+                </Button>
+              </Grid>
             </Grid>
-            <Grid>
-              <Button variant="contained" type="submit" disabled={isMutating}>
-                {t('update')}
-              </Button>
-            </Grid>
-          </Grid>
+          </MainCard>
         </Grid>
-        <Grid container gap={2} columns={{ xs: 1, md: 2 }}>
-          <Grid xs={1}>
-            <Stack gap={1}>
-              <SortableFieldList
-                items={sortableFields}
-                onChange={handleChangeSortableItems}
-                renderItem={(item) => (
-                  <SortableFieldList.Item id={item.id}>
-                    <Box display="flex" justifyContent="space-between" alignItems="center">
-                      <SortableFieldList.DragHandle />
-                      <Box sx={{ flexGrow: 1 }}>{item.field}</Box>
-                      {item.field !== 'id' && (
-                        <SortableFieldList.ItemMenu
-                          onClickItem={(e) => onOpenMenu(e.currentTarget, item)}
+      </Grid>
+      <Grid container spacing={2.5}>
+        <Grid xs={12} lg={8}>
+          <MainCard>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Grid container spacing={3}>
+                <Grid xs={12} sm={6}>
+                  <Stack spacing={1}>
+                    <Controller
+                      name="hidden"
+                      control={control}
+                      render={({ field }) => (
+                        <FormControlLabel
+                          {...field}
+                          label="Hidden"
+                          control={<Checkbox checked={field.value} />}
                         />
                       )}
-                    </Box>
-                  </SortableFieldList.Item>
-                )}
-              />
-            </Stack>
-            <Button
-              variant="contained"
-              onClick={() => onToggleCreateField(true)}
-              size="large"
-              fullWidth
-              sx={{ mt: 2 }}
-            >
-              {t('add_field')}
-            </Button>
-          </Grid>
+                    />
+                  </Stack>
+                </Grid>
+                <Grid xs={12} sm={6}>
+                  <Stack spacing={1}>
+                    <Controller
+                      name="singleton"
+                      control={control}
+                      render={({ field }) => (
+                        <FormControlLabel
+                          {...field}
+                          label="Singleton"
+                          control={<Checkbox checked={field.value} />}
+                        />
+                      )}
+                    />
+                  </Stack>
+                </Grid>
+                <Grid xs={12}>
+                  <FormLabel>{t('public_status')}</FormLabel>
+                </Grid>
+                <Grid xs={12} sm={6}>
+                  <Stack spacing={1}>
+                    <InputLabel>{t('public_status_field')}</InputLabel>
+                    <Controller
+                      name="status_field"
+                      control={control}
+                      defaultValue={''}
+                      render={({ field }) => (
+                        <Select
+                          {...field}
+                          fullWidth
+                          defaultValue={''}
+                          error={errors.status_field !== undefined}
+                        >
+                          <MenuItem value="">
+                            <em>None</em>
+                          </MenuItem>
+                          {fields
+                            .filter((field) => !field.readonly)
+                            .map((field) => (
+                              <MenuItem value={field.field} key={field.id}>
+                                {field.field}
+                              </MenuItem>
+                            ))}
+                        </Select>
+                      )}
+                    />
+                    <FormHelperText error>{errors.status_field?.message}</FormHelperText>
+                  </Stack>
+                </Grid>
+                <Grid xs={12} sm={6}>
+                  <Stack spacing={1}>
+                    <InputLabel>{t('draft')}</InputLabel>
+                    <Controller
+                      name="draft_value"
+                      control={control}
+                      render={({ field }) => (
+                        <TextField
+                          {...field}
+                          type="text"
+                          fullWidth
+                          error={errors.draft_value !== undefined}
+                        />
+                      )}
+                    />
+                    <FormHelperText error>{errors.draft_value?.message}</FormHelperText>
+                  </Stack>
+                </Grid>
+                <Grid xs={12} sm={6}>
+                  <Stack spacing={1}>
+                    <InputLabel>{t('published')}</InputLabel>
+                    <Controller
+                      name="publish_value"
+                      control={control}
+                      render={({ field }) => (
+                        <TextField
+                          {...field}
+                          type="text"
+                          fullWidth
+                          error={errors.publish_value !== undefined}
+                        />
+                      )}
+                    />
+                    <FormHelperText error>{errors.publish_value?.message}</FormHelperText>
+                  </Stack>
+                </Grid>
+                <Grid xs={12} sm={6}>
+                  <Stack spacing={1}>
+                    <InputLabel>{t('archived')}</InputLabel>
+                    <Controller
+                      name="archive_value"
+                      control={control}
+                      render={({ field }) => (
+                        <TextField
+                          {...field}
+                          type="text"
+                          fullWidth
+                          error={errors.archive_value !== undefined}
+                        />
+                      )}
+                    />
+                    <FormHelperText error>{errors.archive_value?.message}</FormHelperText>
+                  </Stack>
+                </Grid>
+                <Grid xs={12}>
+                  <Stack
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="space-between"
+                    sx={{ width: 1 }}
+                  >
+                    <DeleteButton id={id} slug="collections" onSuccess={navigateToList} />
+                    <Stack direction="row" spacing={1}>
+                      <Button variant="outlined" color="secondary" onClick={navigateToList}>
+                        {t('cancel')}
+                      </Button>
+                      <Button variant="contained" type="submit" disabled={isMutating}>
+                        {t('update')}
+                      </Button>
+                    </Stack>
+                  </Stack>
+                </Grid>
+              </Grid>
+            </form>
+          </MainCard>
         </Grid>
-        <Grid container spacing={3} columns={{ xs: 1, md: 4 }}>
-          <Grid xs={1}>
-            <Box>
-              <Controller
-                name="hidden"
-                control={control}
-                render={({ field }) => (
-                  <FormControlLabel
-                    {...field}
-                    label="Hidden"
-                    control={<Checkbox checked={field.value} />}
-                  />
-                )}
-              />
-            </Box>
-          </Grid>
-          <Grid xs={1}>
-            <Box>
-              <Controller
-                name="singleton"
-                control={control}
-                render={({ field }) => (
-                  <FormControlLabel
-                    {...field}
-                    label="Singleton"
-                    control={<Checkbox checked={field.value} />}
-                  />
-                )}
-              />
-            </Box>
-          </Grid>
-        </Grid>
-        <Typography variant="h6">{t('public_status')}</Typography>
-        <Grid container spacing={3} columns={{ xs: 1, md: 4 }}>
-          <Grid xs={1}>
-            <InputLabel>{t('public_status_field')}</InputLabel>
-            <Controller
-              name="status_field"
-              control={control}
-              defaultValue={''}
-              render={({ field }) => (
-                <Select
-                  {...field}
-                  fullWidth
-                  defaultValue={''}
-                  error={errors.status_field !== undefined}
-                >
-                  <MenuItem value="">
-                    <em>None</em>
-                  </MenuItem>
-                  {fields
-                    .filter((field) => !field.readonly)
-                    .map((field) => (
-                      <MenuItem value={field.field} key={field.id}>
-                        {field.field}
-                      </MenuItem>
-                    ))}
-                </Select>
-              )}
-            />
-            <FormHelperText error>{errors.status_field?.message}</FormHelperText>
-          </Grid>
-          <Grid xs={1}>
-            <InputLabel>{t('draft')}</InputLabel>
-            <Controller
-              name="draft_value"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  type="text"
-                  fullWidth
-                  error={errors.draft_value !== undefined}
-                />
-              )}
-            />
-            <FormHelperText error>{errors.draft_value?.message}</FormHelperText>
-          </Grid>
-        </Grid>
-        <Grid container spacing={3} columns={{ xs: 1, md: 4 }}>
-          <Grid xs={1}>
-            <InputLabel>{t('published')}</InputLabel>
-            <Controller
-              name="publish_value"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  type="text"
-                  fullWidth
-                  error={errors.publish_value !== undefined}
-                />
-              )}
-            />
-            <FormHelperText error>{errors.publish_value?.message}</FormHelperText>
-          </Grid>
-          <Grid xs={1}>
-            <InputLabel>{t('archived')}</InputLabel>
-            <Controller
-              name="archive_value"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  type="text"
-                  fullWidth
-                  error={errors.archive_value !== undefined}
-                />
-              )}
-            />
-            <FormHelperText error>{errors.archive_value?.message}</FormHelperText>
-          </Grid>
-        </Grid>
-      </Stack>
+      </Grid>
     </>
   );
 };
