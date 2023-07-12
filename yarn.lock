@@ -5333,9 +5333,9 @@ i18next-browser-languagedetector@^7.0.1:
     "@babel/runtime" "^7.19.4"
 
 i18next@^23.1.0:
-  version "23.2.3"
-  resolved "https://registry.npmjs.org/i18next/-/i18next-23.2.3.tgz"
-  integrity sha512-5spO7L0rNmW0jFuNhz+gfirlFt1anle4mTy4+gFkgsH0+T3R5++4oncBrzeKa7v8pweRyGBoGmOpboqlxovg6A==
+  version "23.2.10"
+  resolved "https://registry.yarnpkg.com/i18next/-/i18next-23.2.10.tgz#a9db1aaf84d8853da402888c837aeaf8fa7f71e2"
+  integrity sha512-oVFO06H/njXpvLfXDjlAX3LN8VMMhMn1I8wl+EzJqcMtRW0Glc6apy9mtmOq3AnA2QBPAFMvxIfkdlLFqGKKLw==
   dependencies:
     "@babel/runtime" "^7.22.5"
 
