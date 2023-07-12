@@ -14,6 +14,7 @@ import {
   TableHead,
   TableRow,
   TextField,
+  Typography,
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { useSnackbar } from 'notistack';
@@ -24,7 +25,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { EmptyTable, MainCard } from 'superfast-ui';
 import { PermissionsAction, Role } from '../../../../config/types.js';
 import { logger } from '../../../../utilities/logger.js';
-import { DeleteHeaderButton } from '../../../components/elements/DeleteHeaderButton/index.js';
+import { DeleteButton } from '../../../components/elements/DeleteButton/index.js';
 import { Loading } from '../../../components/elements/Loading/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
 import {
@@ -86,7 +87,7 @@ const EditRolePageImpl: React.FC = () => {
     setValue('admin_access', Boolean(role.admin_access));
   };
 
-  const handleDeletionSuccess = () => {
+  const navigateToList = () => {
     navigate(`../roles`);
   };
 
@@ -108,135 +109,158 @@ const EditRolePageImpl: React.FC = () => {
 
   return (
     <Suspense fallback={<Loading />}>
-      <Stack component="form" onSubmit={handleSubmit(onSubmit)} rowGap={3}>
-        <Grid container spacing={2}>
-          <Grid container columnSpacing={2} alignItems="center">
-            <Grid>
-              <DeleteHeaderButton id={id} slug="roles" onSuccess={handleDeletionSuccess} />
-            </Grid>
-            <Grid>
-              <Button variant="contained" type="submit" disabled={isUpdateRoleMutating}>
-                {t('update')}
-              </Button>
-            </Grid>
-          </Grid>
-        </Grid>
-        <Grid container spacing={3} columns={{ xs: 1, md: 4 }}>
-          <Grid xs={1} md={2}>
+      <Grid container spacing={2.5} sx={{ mb: 1 }}>
+        <Grid xs={12} lg={8}>
+          <MainCard content={false} title={t('role_list')}>
             {role.admin_access ? (
-              <span>{t('admin_has_all_permissions')}</span>
+              <Typography align="center" color="secondary" sx={{ p: 2 }}>
+                {t('admin_has_all_permissions')}
+              </Typography>
             ) : (
-              <MainCard content={false} title={t('role_list')}>
-                <TableContainer>
-                  <Table aria-label="simple table">
-                    <TableHead>
-                      <TableRow>
-                        <TableCell component="th" scope="row">
-                          {t('content_type')}
+              <TableContainer>
+                <Table aria-label="simple table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell component="th" scope="row">
+                        {t('content_type')}
+                      </TableCell>
+                      {actions.map((action) => (
+                        <TableCell
+                          component="th"
+                          scope="row"
+                          align="center"
+                          key={action}
+                          sx={{ width: 40, fontSize: '1rem' }}
+                        >
+                          <PermissionHeaderCell action={action} />
                         </TableCell>
-                        {actions.map((action) => (
-                          <TableCell
-                            component="th"
-                            scope="row"
-                            align="center"
-                            key={action}
-                            sx={{ width: 40 }}
-                          >
-                            <PermissionHeaderCell action={action} />
-                          </TableCell>
-                        ))}
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {[].length > 0 ? (
-                        <>
-                          {collections.map((collection) => {
-                            return (
-                              <TableRow
-                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                key={collection.id}
-                              >
-                                <TableCell component="td" scope="row" sx={{ py: 0 }}>
-                                  <Box
-                                    display="flex"
-                                    justifyContent="space-between"
-                                    alignItems="center"
-                                  >
-                                    <p>{collection.collection}</p>
-                                  </Box>
+                      ))}
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {collections.length > 0 ? (
+                      <>
+                        {collections.map((collection) => {
+                          return (
+                            <TableRow
+                              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                              key={collection.id}
+                            >
+                              <TableCell component="td" scope="row" sx={{ py: 0 }}>
+                                <Box
+                                  display="flex"
+                                  justifyContent="space-between"
+                                  alignItems="center"
+                                >
+                                  <p>{collection.collection}</p>
+                                </Box>
+                              </TableCell>
+                              {actions.map((action) => (
+                                <TableCell component="td" scope="row" key={action} sx={{ py: 0 }}>
+                                  <PermissionToggleButton
+                                    roleId={id}
+                                    permissions={permissions}
+                                    collection={collection.collection}
+                                    action={action}
+                                    onSuccess={handlePermissionSuccess}
+                                  />
                                 </TableCell>
-                                {actions.map((action) => (
-                                  <TableCell component="td" scope="row" key={action} sx={{ py: 0 }}>
-                                    <PermissionToggleButton
-                                      roleId={id}
-                                      permissions={permissions}
-                                      collection={collection.collection}
-                                      action={action}
-                                      onSuccess={handlePermissionSuccess}
-                                    />
-                                  </TableCell>
-                                ))}
-                              </TableRow>
-                            );
-                          })}
-                        </>
-                      ) : (
-                        <EmptyTable msg={t('no_roles')} colSpan={12} />
-                      )}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </MainCard>
+                              ))}
+                            </TableRow>
+                          );
+                        })}
+                      </>
+                    ) : (
+                      <EmptyTable msg={t('no_roles')} colSpan={12} />
+                    )}
+                  </TableBody>
+                </Table>
+              </TableContainer>
             )}
-          </Grid>
+          </MainCard>
         </Grid>
-        <Grid container spacing={3} columns={{ xs: 1, md: 4 }}>
-          <Grid xs={1}>
-            <InputLabel required>{t('name')}</InputLabel>
-            <Controller
-              name="name"
-              control={control}
-              render={({ field }) => (
-                <TextField {...field} type="text" fullWidth error={errors.name !== undefined} />
-              )}
-            />
-            <FormHelperText error>{errors.name?.message}</FormHelperText>
-          </Grid>
-          <Grid xs={1}>
-            <InputLabel>{t('admin_access')}</InputLabel>
-            <Controller
-              name="admin_access"
-              control={control}
-              render={({ field }) => (
-                <FormControlLabel
-                  {...field}
-                  label={t('is_active')}
-                  control={<Checkbox checked={field.value} />}
-                />
-              )}
-            />
-            <FormHelperText error>{errors.admin_access?.message}</FormHelperText>
-          </Grid>
+      </Grid>
+      <Grid container spacing={2.5}>
+        <Grid xs={12} lg={8}>
+          <MainCard>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Grid container spacing={3}>
+                <Grid xs={12} sm={6}>
+                  <Stack spacing={1}>
+                    <InputLabel required>{t('name')}</InputLabel>
+                    <Controller
+                      name="name"
+                      control={control}
+                      render={({ field }) => (
+                        <TextField
+                          {...field}
+                          type="text"
+                          fullWidth
+                          error={errors.name !== undefined}
+                        />
+                      )}
+                    />
+                    <FormHelperText error>{errors.name?.message}</FormHelperText>
+                  </Stack>
+                </Grid>
+                <Grid xs={12} sm={6}>
+                  <Stack spacing={1}>
+                    <InputLabel>{t('admin_access')}</InputLabel>
+                    <Controller
+                      name="admin_access"
+                      control={control}
+                      render={({ field }) => (
+                        <FormControlLabel
+                          {...field}
+                          label={t('is_active')}
+                          control={<Checkbox checked={field.value} />}
+                        />
+                      )}
+                    />
+                    <FormHelperText error>{errors.admin_access?.message}</FormHelperText>
+                  </Stack>
+                </Grid>
+                <Grid xs={12}>
+                  <Stack spacing={1}>
+                    <InputLabel>{t('description')}</InputLabel>
+                    <Controller
+                      name="description"
+                      control={control}
+                      render={({ field }) => (
+                        <TextField
+                          {...field}
+                          type="text"
+                          fullWidth
+                          error={errors.description !== undefined}
+                        />
+                      )}
+                    />
+                    <FormHelperText error>{errors.description?.message}</FormHelperText>
+                  </Stack>
+                </Grid>
+                <Grid xs={12}>
+                  <Stack
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="space-between"
+                    sx={{ width: 1 }}
+                  >
+                    <DeleteButton id={id} slug="roles" onSuccess={navigateToList} />
+                    <Stack direction="row" spacing={1}>
+                      <Button variant="outlined" color="secondary" onClick={navigateToList}>
+                        {t('cancel')}
+                      </Button>
+                      <Button variant="contained" type="submit" disabled={isUpdateRoleMutating}>
+                        {t('update')}
+                      </Button>
+                    </Stack>
+                  </Stack>
+                </Grid>
+              </Grid>
+            </form>
+          </MainCard>
         </Grid>
-        <Grid container spacing={3} columns={{ xs: 1, md: 4 }}>
-          <Grid xs={1} md={2}>
-            <InputLabel>{t('description')}</InputLabel>
-            <Controller
-              name="description"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  type="text"
-                  fullWidth
-                  error={errors.description !== undefined}
-                />
-              )}
-            />
-            <FormHelperText error>{errors.description?.message}</FormHelperText>
-          </Grid>
-        </Grid>
-      </Stack>
+      </Grid>
     </Suspense>
   );
 };
