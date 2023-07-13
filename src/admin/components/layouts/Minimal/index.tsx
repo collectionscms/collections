@@ -1,7 +1,7 @@
-import { Stack } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import React from 'react';
 import { Outlet } from 'react-router-dom';
+import { AuthCard } from 'superfast-ui';
 
 export const MinimalLayout: React.FC = () => {
   return (
@@ -12,9 +12,9 @@ export const MinimalLayout: React.FC = () => {
       direction="row"
       sx={{ minHeight: '100vh' }}
     >
-      <Stack spacing={4} sx={{ width: '500px', px: { xs: 2 } }}>
+      <AuthCard>
         <Outlet />
-      </Stack>
+      </AuthCard>
     </Grid>
   );
 };
