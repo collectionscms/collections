@@ -16,13 +16,13 @@ import {
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { useSnackbar } from 'notistack';
-import React, { Suspense, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { MainCard } from 'superfast-ui';
 import { v4 as uuidv4 } from 'uuid';
 import { logger } from '../../../../utilities/logger.js';
-import { Loading } from '../../../components/elements/Loading/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
 import {
   FormValues,
@@ -66,6 +66,10 @@ const CreateUserPageImpl: React.FC = () => {
     setValue('api_key', uuidv4());
   };
 
+  const navigateToList = () => {
+    navigate('../users');
+  };
+
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
       await trigger(form);
@@ -75,165 +79,186 @@ const CreateUserPageImpl: React.FC = () => {
   };
 
   return (
-    <Suspense fallback={<Loading />}>
-      <Stack component="form" onSubmit={handleSubmit(onSubmit)} rowGap={3}>
-        <Grid container spacing={2}>
-          <Grid container columnSpacing={2} alignItems="center">
-            <Grid>
-              <Button variant="contained" type="submit" disabled={isMutating}>
-                {t('save')}
-              </Button>
+    <Grid container spacing={2.5}>
+      <Grid xs={12} lg={8}>
+        <MainCard>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Grid container spacing={3}>
+              <Grid xs={12} sm={6}>
+                <Stack spacing={1}>
+                  <InputLabel required>{t('last_name')}</InputLabel>
+                  <Controller
+                    name="last_name"
+                    control={control}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        type="text"
+                        fullWidth
+                        error={errors.last_name !== undefined}
+                      />
+                    )}
+                  />
+                  <FormHelperText error>{errors.last_name?.message}</FormHelperText>
+                </Stack>
+              </Grid>
+              <Grid xs={12} sm={6}>
+                <Stack spacing={1}>
+                  <InputLabel required>{t('first_name')}</InputLabel>
+                  <Controller
+                    name="first_name"
+                    control={control}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        type="text"
+                        fullWidth
+                        error={errors.first_name !== undefined}
+                      />
+                    )}
+                  />
+                  <FormHelperText error>{errors.first_name?.message}</FormHelperText>
+                </Stack>
+              </Grid>
+              <Grid xs={12} sm={6}>
+                <Stack spacing={1}>
+                  <InputLabel required>{t('user_name')}</InputLabel>
+                  <Controller
+                    name="user_name"
+                    control={control}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        type="text"
+                        fullWidth
+                        error={errors.user_name !== undefined}
+                      />
+                    )}
+                  />
+                  <FormHelperText error>{errors.user_name?.message}</FormHelperText>
+                </Stack>
+              </Grid>
+              <Grid xs={12} sm={6}>
+                <Stack spacing={1}>
+                  <InputLabel required>{t('email')}</InputLabel>
+                  <Controller
+                    name="email"
+                    control={control}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        type="text"
+                        fullWidth
+                        error={errors.email !== undefined}
+                      />
+                    )}
+                  />
+                  <FormHelperText error>{errors.email?.message}</FormHelperText>
+                </Stack>
+              </Grid>
+              <Grid xs={12} sm={6}>
+                <Stack spacing={1}>
+                  <InputLabel required>{t('password')}</InputLabel>
+                  <Controller
+                    name="password"
+                    control={control}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        type="password"
+                        fullWidth
+                        error={errors.password !== undefined}
+                      />
+                    )}
+                  />
+                  <FormHelperText error>{errors.password?.message}</FormHelperText>
+                </Stack>
+              </Grid>
+              <Grid xs={12}>
+                <Stack spacing={1}>
+                  <InputLabel>{t('api_key')}</InputLabel>
+                  <Controller
+                    name="api_key"
+                    control={control}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        type="text"
+                        placeholder={t('generate_api_key_placeholder')}
+                        fullWidth
+                        InputProps={{
+                          readOnly: true,
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <Tooltip title={t('generate_api_key')} placement="top">
+                                <IconButton
+                                  aria-label="generate api key"
+                                  onClick={onGenerateApiKey}
+                                >
+                                  <CachedOutlined />
+                                </IconButton>
+                              </Tooltip>
+                            </InputAdornment>
+                          ),
+                        }}
+                        error={errors.api_key !== undefined}
+                      />
+                    )}
+                  />
+                  <FormHelperText error>{errors.api_key?.message}</FormHelperText>
+                </Stack>
+              </Grid>
+              <Grid xs={12} sm={6}>
+                <Stack spacing={1}>
+                  <InputLabel>{t('role')}</InputLabel>
+                  <Controller
+                    name="role_id"
+                    control={control}
+                    render={({ field }) => (
+                      <Select {...field} fullWidth>
+                        {roles &&
+                          roles.map((role) => (
+                            <MenuItem value={role.id} key={role.id}>
+                              {role.name}
+                            </MenuItem>
+                          ))}
+                      </Select>
+                    )}
+                  />
+                </Stack>
+              </Grid>
+              <Grid xs={12} sm={6}>
+                <Stack spacing={1}>
+                  <InputLabel>{t('status')}</InputLabel>
+                  <Controller
+                    name="is_active"
+                    control={control}
+                    render={({ field }) => (
+                      <FormControlLabel
+                        {...field}
+                        label={t('is_active')}
+                        control={<Checkbox checked={field.value} />}
+                      />
+                    )}
+                  />
+                  <FormHelperText error>{errors.is_active?.message}</FormHelperText>
+                </Stack>
+              </Grid>
+              <Grid xs={12}>
+                <Stack direction="row" justifyContent="flex-end" spacing={1}>
+                  <Button variant="outlined" color="secondary" onClick={navigateToList}>
+                    {t('cancel')}
+                  </Button>
+                  <Button variant="contained" type="submit" disabled={isMutating}>
+                    {t('save')}
+                  </Button>
+                </Stack>
+              </Grid>
             </Grid>
-          </Grid>
-        </Grid>
-        <Grid container spacing={3} columns={{ xs: 1, md: 4 }}>
-          <Grid xs={1}>
-            <InputLabel required>{t('last_name')}</InputLabel>
-            <Controller
-              name="last_name"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  type="text"
-                  fullWidth
-                  error={errors.last_name !== undefined}
-                />
-              )}
-            />
-            <FormHelperText error>{errors.last_name?.message}</FormHelperText>
-          </Grid>
-          <Grid xs={1}>
-            <InputLabel required>{t('first_name')}</InputLabel>
-            <Controller
-              name="first_name"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  type="text"
-                  fullWidth
-                  error={errors.first_name !== undefined}
-                />
-              )}
-            />
-            <FormHelperText error>{errors.first_name?.message}</FormHelperText>
-          </Grid>
-        </Grid>
-        <Grid container spacing={3} columns={{ xs: 1, md: 4 }}>
-          <Grid xs={1}>
-            <InputLabel required>{t('user_name')}</InputLabel>
-            <Controller
-              name="user_name"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  type="text"
-                  fullWidth
-                  error={errors.user_name !== undefined}
-                />
-              )}
-            />
-            <FormHelperText error>{errors.user_name?.message}</FormHelperText>
-          </Grid>
-          <Grid xs={1}>
-            <InputLabel required>{t('email')}</InputLabel>
-            <Controller
-              name="email"
-              control={control}
-              render={({ field }) => (
-                <TextField {...field} type="text" fullWidth error={errors.email !== undefined} />
-              )}
-            />
-            <FormHelperText error>{errors.email?.message}</FormHelperText>
-          </Grid>
-        </Grid>
-        <Grid container spacing={3} columns={{ xs: 1, md: 4 }}>
-          <Grid xs={1}>
-            <InputLabel required>{t('password')}</InputLabel>
-            <Controller
-              name="password"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  type="password"
-                  fullWidth
-                  error={errors.password !== undefined}
-                />
-              )}
-            />
-            <FormHelperText error>{errors.password?.message}</FormHelperText>
-          </Grid>
-        </Grid>
-        <Grid container spacing={3} columns={{ xs: 1, md: 4 }}>
-          <Grid xs={1} md={2}>
-            <InputLabel>{t('api_key')}</InputLabel>
-            <Controller
-              name="api_key"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  type="text"
-                  placeholder={t('generate_api_key_placeholder')}
-                  fullWidth
-                  InputProps={{
-                    readOnly: true,
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <Tooltip title={t('generate_api_key')} placement="top">
-                          <IconButton aria-label="generate api key" onClick={onGenerateApiKey}>
-                            <CachedOutlined />
-                          </IconButton>
-                        </Tooltip>
-                      </InputAdornment>
-                    ),
-                  }}
-                  error={errors.api_key !== undefined}
-                />
-              )}
-            />
-            <FormHelperText error>{errors.api_key?.message}</FormHelperText>
-          </Grid>
-        </Grid>
-        <Grid container spacing={3} columns={{ xs: 1, md: 4 }}>
-          <Grid xs={1}>
-            <InputLabel>{t('role')}</InputLabel>
-            <Controller
-              name="role_id"
-              control={control}
-              render={({ field }) => (
-                <Select {...field} fullWidth>
-                  {roles &&
-                    roles.map((role) => (
-                      <MenuItem value={role.id} key={role.id}>
-                        {role.name}
-                      </MenuItem>
-                    ))}
-                </Select>
-              )}
-            />
-          </Grid>
-          <Grid xs={1}>
-            <InputLabel>{t('status')}</InputLabel>
-            <Controller
-              name="is_active"
-              control={control}
-              render={({ field }) => (
-                <FormControlLabel
-                  {...field}
-                  label={t('is_active')}
-                  control={<Checkbox checked={field.value} />}
-                />
-              )}
-            />
-            <FormHelperText error>{errors.is_active?.message}</FormHelperText>
-          </Grid>
-        </Grid>
-      </Stack>
-    </Suspense>
+          </form>
+        </MainCard>
+      </Grid>
+    </Grid>
   );
 };
 

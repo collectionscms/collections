@@ -46,7 +46,7 @@ const ApiPreviewImpl: React.FC<Props> = ({ collection, singleton }) => {
 
   return (
     <>
-      <Tooltip title={t('api_preview')}>
+      <Tooltip title={t('api_preview')} arrow placement="top">
         <IconButton color="secondary" onClick={toggleDrawer(true)}>
           <Send />
         </IconButton>

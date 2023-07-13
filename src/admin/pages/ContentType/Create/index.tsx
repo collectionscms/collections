@@ -2,12 +2,13 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Button,
   Checkbox,
+  Divider,
   FormControlLabel,
   FormHelperText,
+  FormLabel,
   InputLabel,
   Stack,
   TextField,
-  Typography,
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { useSnackbar } from 'notistack';
@@ -15,9 +16,9 @@ import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { MainCard } from 'superfast-ui';
 import { logger } from '../../../../utilities/logger.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
-
 import {
   FormValues,
   createCollection as createCollectionSchema,
@@ -40,6 +41,10 @@ const CreateContentTypePageImpl: React.FC = () => {
     resolver: yupResolver(createCollectionSchema(t)),
   });
 
+  const navigateToList = () => {
+    navigate('../content-types');
+  };
+
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
       const collectionId = await trigger(form);
@@ -51,57 +56,76 @@ const CreateContentTypePageImpl: React.FC = () => {
   };
 
   return (
-    <Stack component="form" onSubmit={handleSubmit(onSubmit)} rowGap={3}>
-      <Grid container spacing={2}>
-        <Grid container columnSpacing={2} alignItems="center">
-          <Grid>
-            <Button variant="contained" type="submit" disabled={isMutating}>
-              {t('save')}
-            </Button>
-          </Grid>
-        </Grid>
+    <Grid container spacing={2.5}>
+      <Grid xs={12} lg={8}>
+        <MainCard>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Grid container spacing={3}>
+              <Grid xs={12} sm={6}>
+                <Stack spacing={1}>
+                  <InputLabel required>{t('name')}</InputLabel>
+                  <Controller
+                    name="collection"
+                    control={control}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        type="text"
+                        fullWidth
+                        error={errors.collection !== undefined}
+                      />
+                    )}
+                  />
+                  <FormHelperText error>{errors.collection?.message}</FormHelperText>
+                </Stack>
+              </Grid>
+              <Grid xs={12} sm={6}>
+                <Stack spacing={1}>
+                  <InputLabel>{t('content_data_type')}</InputLabel>
+                  <Controller
+                    name="singleton"
+                    control={control}
+                    render={({ field }) => (
+                      <FormControlLabel {...field} label="Singleton" control={<Checkbox />} />
+                    )}
+                  />
+                  <FormHelperText error>{errors.singleton?.message}</FormHelperText>
+                </Stack>
+              </Grid>
+              <Grid xs={12}>
+                <Stack spacing={2}>
+                  <Divider />
+                  <FormLabel>{t('optional_system_fields')}</FormLabel>
+                </Stack>
+              </Grid>
+              <Grid xs={12} sm={6}>
+                <Stack spacing={1}>
+                  <InputLabel>{t('public_status')}</InputLabel>
+                  <Controller
+                    name="status"
+                    control={control}
+                    render={({ field }) => (
+                      <FormControlLabel {...field} label={t('valid')} control={<Checkbox />} />
+                    )}
+                  />
+                  <FormHelperText error>{errors.status?.message}</FormHelperText>
+                </Stack>
+              </Grid>
+              <Grid xs={12}>
+                <Stack direction="row" justifyContent="flex-end" spacing={1}>
+                  <Button variant="outlined" color="secondary" onClick={navigateToList}>
+                    {t('cancel')}
+                  </Button>
+                  <Button variant="contained" type="submit" disabled={isMutating}>
+                    {t('save')}
+                  </Button>
+                </Stack>
+              </Grid>
+            </Grid>
+          </form>
+        </MainCard>
       </Grid>
-      <Grid container spacing={3} xs={12} xl={6}>
-        <Grid xs={12} md={6}>
-          <InputLabel required>{t('name')}</InputLabel>
-          <Controller
-            name="collection"
-            control={control}
-            render={({ field }) => (
-              <TextField {...field} type="text" fullWidth error={errors.collection !== undefined} />
-            )}
-          />
-          <FormHelperText error>{errors.collection?.message}</FormHelperText>
-        </Grid>
-        <Grid xs={12} md={6}>
-          <InputLabel>{t('content_data_type')}</InputLabel>
-          <Controller
-            name="singleton"
-            control={control}
-            render={({ field }) => (
-              <FormControlLabel {...field} label="Singleton" control={<Checkbox />} />
-            )}
-          />
-        </Grid>
-        <FormHelperText error>{errors.singleton?.message}</FormHelperText>
-      </Grid>
-      <Grid container xs={12} xl={6}>
-        <Typography variant="h6">{t('optional_system_fields')}</Typography>
-      </Grid>
-      <Grid container spacing={3} xs={12} xl={6}>
-        <Grid xs={12} md={6}>
-          <InputLabel>{t('public_status')}</InputLabel>
-          <Controller
-            name="status"
-            control={control}
-            render={({ field }) => (
-              <FormControlLabel {...field} label={t('valid')} control={<Checkbox />} />
-            )}
-          />
-          <FormHelperText error>{errors.status?.message}</FormHelperText>
-        </Grid>
-      </Grid>
-    </Stack>
+    </Grid>
   );
 };
 

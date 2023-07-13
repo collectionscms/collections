@@ -5,6 +5,7 @@ import { useSnackbar } from 'notistack';
 import React, { Suspense, useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { MainCard } from 'superfast-ui';
 import { logger } from '../../../utilities/logger.js';
 import { Loading } from '../../components/elements/Loading/index.js';
 import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.js';
@@ -46,36 +47,42 @@ const ProjectImpl: React.FC = () => {
 
   return (
     <Suspense fallback={<Loading />}>
-      <Stack component="form" onSubmit={handleSubmit(onSubmit)} rowGap={3}>
-        <Grid container spacing={2}>
-          <Grid container columnSpacing={2} alignItems="center">
-            <Grid>
-              <Button variant="contained" type="submit" disabled={isMutating}>
-                {t('update')}
-              </Button>
-            </Grid>
-          </Grid>
+      <Grid container spacing={2.5}>
+        <Grid xs={12} lg={8}>
+          <MainCard>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Grid container spacing={3}>
+                <Grid xs={12}>
+                  <Stack spacing={1}>
+                    <InputLabel>{t('project_name')}</InputLabel>
+                    <Controller
+                      name="name"
+                      control={control}
+                      render={({ field }) => (
+                        <TextField
+                          {...field}
+                          type="text"
+                          fullWidth
+                          placeholder={`${t('input_placeholder')} Superfast`}
+                          error={errors.name !== undefined}
+                        />
+                      )}
+                    />
+                    <FormHelperText error>{errors.name?.message}</FormHelperText>
+                  </Stack>
+                </Grid>
+                <Grid xs={12}>
+                  <Stack direction="row" justifyContent="flex-end">
+                    <Button variant="contained" type="submit" disabled={isMutating}>
+                      {t('update')}
+                    </Button>
+                  </Stack>
+                </Grid>
+              </Grid>
+            </form>
+          </MainCard>
         </Grid>
-        <Grid container columns={{ xs: 1, lg: 4 }}>
-          <Grid xs={1}>
-            <InputLabel required>{t('project_name')}</InputLabel>
-            <Controller
-              name="name"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  type="text"
-                  fullWidth
-                  placeholder={`${t('input_placeholder')} Superfast`}
-                  error={errors.name !== undefined}
-                />
-              )}
-            />
-            <FormHelperText error>{errors.name?.message}</FormHelperText>
-          </Grid>
-        </Grid>
-      </Stack>
+      </Grid>
     </Suspense>
   );
 };

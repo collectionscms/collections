@@ -1,4 +1,4 @@
-import { Box, FormHelperText, InputLabel } from '@mui/material';
+import { FormHelperText, InputLabel, Stack } from '@mui/material';
 import React from 'react';
 import { Field } from '../../../../config/types.js';
 import { fieldTypes } from '../fieldTypes/index.js';
@@ -23,13 +23,11 @@ export const RenderFields: React.FC<Props> = ({ form, fields }) => {
         const FieldComponent = fieldTypes[meta.interface];
 
         return (
-          <Box key={meta.field}>
-            <InputLabel htmlFor={meta.field} required={Boolean(meta.required)}>
-              {meta.label}
-            </InputLabel>
+          <Stack key={meta.field} spacing={1}>
+            <InputLabel required={Boolean(meta.required)}>{meta.label}</InputLabel>
             <FieldComponent form={form} field={meta} />
             <FormHelperText error>{invalidMessage(meta.field)}</FormHelperText>
-          </Box>
+          </Stack>
         );
       })}
     </>
