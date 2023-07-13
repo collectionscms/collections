@@ -24,9 +24,7 @@ export const RenderFields: React.FC<Props> = ({ form, fields }) => {
 
         return (
           <Stack key={meta.field} spacing={1}>
-            <InputLabel htmlFor={meta.field} required={Boolean(meta.required)}>
-              {meta.label}
-            </InputLabel>
+            <InputLabel required={Boolean(meta.required)}>{meta.label}</InputLabel>
             <FieldComponent form={form} field={meta} />
             <FormHelperText error>{invalidMessage(meta.field)}</FormHelperText>
           </Stack>

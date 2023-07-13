@@ -88,7 +88,7 @@ const EditRolePageImpl: React.FC = () => {
   };
 
   const navigateToList = () => {
-    navigate(`../roles`);
+    navigate('../roles');
   };
 
   const handlePermissionSuccess = (permissionId: number) => {

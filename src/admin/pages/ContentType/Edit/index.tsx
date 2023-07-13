@@ -96,7 +96,7 @@ const EditContentTypePageImpl: React.FC = () => {
   };
 
   const navigateToList = () => {
-    navigate(`../content-types`);
+    navigate('../content-types');
   };
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {

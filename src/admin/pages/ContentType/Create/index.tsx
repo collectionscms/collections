@@ -16,10 +16,9 @@ import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { MainCard } from 'superfast-ui';
 import { logger } from '../../../../utilities/logger.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
-
-import { MainCard } from 'superfast-ui';
 import {
   FormValues,
   createCollection as createCollectionSchema,

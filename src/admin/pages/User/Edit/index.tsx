@@ -88,7 +88,7 @@ const EditUserPageImpl: React.FC = () => {
   };
 
   const navigateToList = () => {
-    navigate(`../users`);
+    navigate('../users');
   };
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
