@@ -28,7 +28,7 @@ const LoginImpl: React.FC = () => {
   const { user, login } = useAuth();
   const { trigger, isMutating } = login();
   const { getProjectSetting } = useLogin();
-  const { data: projectSetting } = getProjectSetting();
+  const { data: projectSetting } = getProjectSetting({ suspense: true });
 
   const {
     control,
@@ -87,7 +87,7 @@ const LoginImpl: React.FC = () => {
                 name="password"
                 control={control}
                 render={({ field }) => (
-                  <TextField {...field} type="password" error={errors.email !== undefined} />
+                  <TextField {...field} type="password" error={errors.password !== undefined} />
                 )}
               />
               <FormHelperText error>{errors.password?.message}</FormHelperText>
