@@ -1,22 +1,20 @@
-import { CssBaseline, ThemeProvider as MuiThemeProvider } from '@mui/material';
-import React from 'react';
+import { CssBaseline, StyledEngineProvider, ThemeProvider } from '@mui/material';
+import React, { useMemo } from 'react';
+import { createCustomTheme } from 'superfast-ui';
 import { useColorMode } from '../ColorMode/index.js';
-import { themeDark } from './Dark/index.js';
-import { theme } from './Default/index.js';
-import { componentsOverrides } from './overrides/index.js';
 
-export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const ThemeCustomization: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { mode } = useColorMode();
-  const themes = mode === 'light' ? theme : themeDark;
-
-  themes.components = componentsOverrides(themes);
+  const themes = useMemo(() => createCustomTheme(mode), [mode]);
 
   return (
-    <MuiThemeProvider theme={themes}>
-      <CssBaseline />
-      {children}
-    </MuiThemeProvider>
+    <StyledEngineProvider injectFirst>
+      <ThemeProvider theme={themes}>
+        <CssBaseline />
+        {children}
+      </ThemeProvider>
+    </StyledEngineProvider>
   );
 };
 
-export default ThemeProvider;
+export default ThemeCustomization;

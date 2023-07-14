@@ -4,6 +4,7 @@ import { useSnackbar } from 'notistack';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { MainCard } from 'superfast-ui';
 import { logger } from '../../../../utilities/logger.js';
 import { RenderFields } from '../../../components/forms/RenderFields/index.js';
 import { useAuth } from '../../../components/utilities/Auth/index.js';
@@ -62,38 +63,41 @@ const SingletonPageImpl: React.FC<Props> = ({ collection }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Grid container spacing={2}>
-        <Grid xs>
-          <h1>{collection.collection}</h1>
-        </Grid>
-        <Grid container columnSpacing={2} alignItems="center">
-          <Grid>
+    <Grid container spacing={2.5}>
+      <Grid xs={12} lg={8}>
+        <MainCard
+          title={<></>}
+          secondary={
             <ApiPreview collection={collection.collection} singleton={collection.singleton} />
-          </Grid>
-          <Grid>
-            <Button
-              variant="contained"
-              type="submit"
-              disabled={
-                !hasPermission(collection.collection, 'update') ||
-                isCreateMutating ||
-                isUpdateMutating
-              }
-            >
-              {t('update')}
-            </Button>
-          </Grid>
-        </Grid>
+          }
+        >
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Grid container spacing={3}>
+              <Grid xs={12}>
+                <Stack spacing={1}>
+                  <RenderFields form={formContext} fields={metaFields || []} />
+                </Stack>
+              </Grid>
+              <Grid xs={12}>
+                <Stack direction="row" justifyContent="flex-end" spacing={1}>
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    disabled={
+                      !hasPermission(collection.collection, 'update') ||
+                      isCreateMutating ||
+                      isUpdateMutating
+                    }
+                  >
+                    {t('update')}
+                  </Button>
+                </Stack>
+              </Grid>
+            </Grid>
+          </form>
+        </MainCard>
       </Grid>
-      <Grid container columns={{ xs: 1, lg: 2 }}>
-        <Grid xs={1}>
-          <Stack rowGap={3}>
-            <RenderFields form={formContext} fields={metaFields || []} />
-          </Stack>
-        </Grid>
-      </Grid>
-    </form>
+    </Grid>
   );
 };
 

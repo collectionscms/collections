@@ -5,13 +5,13 @@ import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
+import { MainCard } from 'superfast-ui';
 import { Field } from '../../../../config/types.js';
 import { logger } from '../../../../utilities/logger.js';
-import { DeleteHeaderButton } from '../../../components/elements/DeleteHeaderButton/index.js';
+import { DeleteButton } from '../../../components/elements/DeleteButton/index.js';
 import { RenderFields } from '../../../components/forms/RenderFields/index.js';
 import { useAuth } from '../../../components/utilities/Auth/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
-import { ApiPreview } from '../ApiPreview/index.js';
 import { ContentContextProvider, useContent } from '../Context/index.js';
 import { Props } from './types.js';
 
@@ -78,7 +78,7 @@ const EditCollectionPageImpl: React.FC<Props> = ({ collection }) => {
     setContentValue(metaFields, content);
   }, [metaFields, content]);
 
-  const handleDeletionSuccess = () => {
+  const navigateToList = () => {
     navigate(`/admin/collections/${collection.collection}`);
   };
 
@@ -98,60 +98,63 @@ const EditCollectionPageImpl: React.FC<Props> = ({ collection }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Grid container spacing={2}>
-        <Grid xs={12} sm>
-          <h1>
-            {id
-              ? t('edit.custom', { page: collection.collection })
-              : t('create.custom', { page: collection.collection })}
-          </h1>
-        </Grid>
-        <Grid container columnSpacing={2} alignItems="center">
-          {id ? (
-            <>
-              <Grid>
-                <DeleteHeaderButton
-                  id={id}
-                  slug={`collections/${collection.collection}/contents`}
-                  disabled={!hasPermission(collection.collection, 'delete')}
-                  onSuccess={handleDeletionSuccess}
-                />
+    <Grid container spacing={2.5}>
+      <Grid xs={12} lg={8}>
+        <MainCard>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Grid container spacing={3}>
+              <Grid xs={12}>
+                <Stack spacing={1}>
+                  <RenderFields form={formContext} fields={metaFields || []} />
+                </Stack>
               </Grid>
-              <Grid>
-                <ApiPreview collection={collection.collection} singleton={collection.singleton} />
+              <Grid xs={12}>
+                {id ? (
+                  <Stack
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="space-between"
+                    sx={{ width: 1 }}
+                  >
+                    <DeleteButton
+                      id={id}
+                      slug={`collections/${collection.collection}/contents`}
+                      disabled={!hasPermission(collection.collection, 'delete')}
+                      onSuccess={navigateToList}
+                    />
+                    <Stack direction="row" spacing={1}>
+                      <Button variant="outlined" color="secondary" onClick={navigateToList}>
+                        {t('cancel')}
+                      </Button>
+                      <Button variant="contained" type="submit" disabled={isUpdateMutating}>
+                        {t('update')}
+                      </Button>
+                    </Stack>
+                  </Stack>
+                ) : (
+                  <Grid xs={12}>
+                    <Stack direction="row" justifyContent="flex-end" spacing={1}>
+                      <Button variant="outlined" color="secondary" onClick={navigateToList}>
+                        {t('cancel')}
+                      </Button>
+                      <Button
+                        variant="contained"
+                        type="submit"
+                        disabled={
+                          !hasPermission(collection.collection, 'create') || isCreateMutating
+                        }
+                      >
+                        {t('save')}
+                      </Button>
+                    </Stack>
+                  </Grid>
+                )}
               </Grid>
-              <Grid>
-                <Button
-                  variant="contained"
-                  type="submit"
-                  disabled={!hasPermission(collection.collection, 'update') || isUpdateMutating}
-                >
-                  {t('update')}
-                </Button>
-              </Grid>
-            </>
-          ) : (
-            <Grid>
-              <Button
-                variant="contained"
-                type="submit"
-                disabled={!hasPermission(collection.collection, 'create') || isCreateMutating}
-              >
-                {t('save')}
-              </Button>
             </Grid>
-          )}
-        </Grid>
+          </form>
+        </MainCard>
       </Grid>
-      <Grid container columns={{ xs: 1, lg: 2 }}>
-        <Grid xs={1}>
-          <Stack rowGap={3}>
-            <RenderFields form={formContext} fields={metaFields || []} />
-          </Stack>
-        </Grid>
-      </Grid>
-    </form>
+    </Grid>
   );
 };
 

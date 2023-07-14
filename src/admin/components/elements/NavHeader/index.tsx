@@ -1,27 +1,23 @@
-import { MenuOutlined } from '@mui/icons-material';
-import { AppBar, IconButton, Toolbar, useMediaQuery, useTheme } from '@mui/material';
+import { ButtonBase, useTheme } from '@mui/material';
 import React from 'react';
-import { Props } from './types.js';
+import { RouterLink } from '../Link/index.js';
+import { Logo } from '../Logo/index.js';
+import { NavHeaderStyled } from './styled.js';
 
-export const NavHeader: React.FC<Props> = ({ toggleDrawer }) => {
+export const NavHeader: React.FC = () => {
   const theme = useTheme();
-  const lgDown = useMediaQuery(theme.breakpoints.down('lg'));
-
-  const mainHeader = (
-    <Toolbar>
-      <IconButton
-        onClick={toggleDrawer}
-        sx={{
-          display: {
-            xs: 'inline-flex',
-            lg: 'none',
-          },
-        }}
-      >
-        <MenuOutlined />
-      </IconButton>
-    </Toolbar>
+  return (
+    <NavHeaderStyled
+      theme={theme}
+      sx={{
+        minHeight: '80px',
+        width: 'inherit',
+        pl: '24px',
+      }}
+    >
+      <ButtonBase disableRipple component={RouterLink} to={'/admin'} sx={{ width: 30, height: 30 }}>
+        <Logo />
+      </ButtonBase>
+    </NavHeaderStyled>
   );
-
-  return lgDown ? <AppBar color="inherit">{mainHeader}</AppBar> : <></>;
 };

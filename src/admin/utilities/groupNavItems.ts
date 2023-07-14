@@ -1,13 +1,13 @@
 import {
-  AccountCircleOutlined,
-  AdminPanelSettingsOutlined,
-  GroupOutlined,
-  LabelOutlined,
-  PublicOutlined,
-  TableViewOutlined,
-} from '@mui/icons-material';
+  InsertRowAboveOutlined,
+  SafetyOutlined,
+  SettingOutlined,
+  TeamOutlined,
+  UnorderedListOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
 import { Collection } from '../../config/types.js';
-import { Group } from '../components/elements/NavItem/types.js';
+import { Group } from '../components/elements/NavGroup/types.js';
 
 export const collectionsGroupNavItems = (collections: Collection[]): Group => {
   return {
@@ -15,7 +15,7 @@ export const collectionsGroupNavItems = (collections: Collection[]): Group => {
     items: collections.map((meta) => ({
       label: `${meta.collection}`,
       href: `/admin/collections/${meta.collection}`,
-      Icon: LabelOutlined,
+      icon: UnorderedListOutlined,
     })),
   };
 };
@@ -29,7 +29,7 @@ export const profileNavItems = (): Group => {
       {
         label: 'profile',
         href: `${path}/me`,
-        Icon: AccountCircleOutlined,
+        icon: UserOutlined,
       },
     ],
   };
@@ -44,22 +44,22 @@ export const settingsGroupNavItems = (): Group => {
       {
         label: 'project_setting',
         href: `${path}/project`,
-        Icon: PublicOutlined,
+        icon: SettingOutlined,
       },
       {
         label: 'content_type',
         href: `${path}/content-types`,
-        Icon: TableViewOutlined,
+        icon: InsertRowAboveOutlined,
       },
       {
         label: 'role',
         href: `${path}/roles`,
-        Icon: AdminPanelSettingsOutlined,
+        icon: SafetyOutlined,
       },
       {
         label: 'user',
         href: `${path}/users`,
-        Icon: GroupOutlined,
+        icon: TeamOutlined,
       },
     ],
   };

@@ -14,9 +14,9 @@ import React, { useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { MainCard } from 'superfast-ui';
 import { logger } from '../../../../utilities/logger.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
-import { useDocumentInfo } from '../../../components/utilities/DocumentInfo/index.js';
 import {
   FormValues,
   createRole as createRoleSchema,
@@ -24,7 +24,6 @@ import {
 import { RoleContextProvider, useRole } from '../Context/index.js';
 
 const CreateRolePageImpl: React.FC = () => {
-  const { localizedLabel } = useDocumentInfo();
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
@@ -43,6 +42,10 @@ const CreateRolePageImpl: React.FC = () => {
     resolver: yupResolver(createRoleSchema()),
   });
 
+  const navigateToList = () => {
+    navigate('../roles');
+  };
+
   useEffect(() => {
     if (roleId === undefined) return;
     enqueueSnackbar(t('toast.created_successfully'), { variant: 'success' });
@@ -58,66 +61,79 @@ const CreateRolePageImpl: React.FC = () => {
   };
 
   return (
-    <Stack component="form" onSubmit={handleSubmit(onSubmit)} rowGap={3}>
-      <Grid container spacing={2}>
-        <Grid xs={12} sm>
-          <h1>{localizedLabel}</h1>
-        </Grid>
-        <Grid container columnSpacing={2} alignItems="center">
-          <Grid>
-            <Button variant="contained" type="submit" disabled={isMutating}>
-              {t('save')}
-            </Button>
-          </Grid>
-        </Grid>
+    <Grid container spacing={2.5}>
+      <Grid xs={12} lg={8}>
+        <MainCard>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Grid container spacing={3}>
+              <Grid xs={12} sm={6}>
+                <Stack spacing={1}>
+                  <InputLabel required>{t('name')}</InputLabel>
+                  <Controller
+                    name="name"
+                    control={control}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        type="text"
+                        fullWidth
+                        error={errors.name !== undefined}
+                      />
+                    )}
+                  />
+                  <FormHelperText error>{errors.name?.message}</FormHelperText>
+                </Stack>
+              </Grid>
+              <Grid xs={12} sm={6}>
+                <Stack spacing={1}>
+                  <InputLabel>{t('admin_access')}</InputLabel>
+                  <Controller
+                    name="admin_access"
+                    control={control}
+                    render={({ field }) => (
+                      <FormControlLabel
+                        {...field}
+                        label={t('is_active')}
+                        control={<Checkbox checked={field.value} />}
+                      />
+                    )}
+                  />
+                  <FormHelperText error>{errors.admin_access?.message}</FormHelperText>
+                </Stack>
+              </Grid>
+              <Grid xs={12}>
+                <Stack spacing={1}>
+                  <InputLabel>{t('description')}</InputLabel>
+                  <Controller
+                    name="description"
+                    control={control}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        type="text"
+                        fullWidth
+                        error={errors.description !== undefined}
+                      />
+                    )}
+                  />
+                  <FormHelperText error>{errors.description?.message}</FormHelperText>
+                </Stack>
+              </Grid>
+              <Grid xs={12}>
+                <Stack direction="row" justifyContent="flex-end" spacing={1}>
+                  <Button variant="outlined" color="secondary" onClick={navigateToList}>
+                    {t('cancel')}
+                  </Button>
+                  <Button variant="contained" type="submit" disabled={isMutating}>
+                    {t('save')}
+                  </Button>
+                </Stack>
+              </Grid>
+            </Grid>
+          </form>
+        </MainCard>
       </Grid>
-      <Grid container spacing={3} columns={{ xs: 1, md: 4 }}>
-        <Grid xs={1}>
-          <InputLabel required>{t('name')}</InputLabel>
-          <Controller
-            name="name"
-            control={control}
-            render={({ field }) => (
-              <TextField {...field} type="text" fullWidth error={errors.name !== undefined} />
-            )}
-          />
-          <FormHelperText error>{errors.name?.message}</FormHelperText>
-        </Grid>
-        <Grid xs={1}>
-          <InputLabel>{t('admin_access')}</InputLabel>
-          <Controller
-            name="admin_access"
-            control={control}
-            render={({ field }) => (
-              <FormControlLabel
-                {...field}
-                label={t('is_active')}
-                control={<Checkbox checked={field.value} />}
-              />
-            )}
-          />
-          <FormHelperText error>{errors.admin_access?.message}</FormHelperText>
-        </Grid>
-      </Grid>
-      <Grid container spacing={3} columns={{ xs: 1, md: 4 }}>
-        <Grid xs={1} md={2}>
-          <InputLabel>{t('description')}</InputLabel>
-          <Controller
-            name="description"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                type="text"
-                fullWidth
-                error={errors.description !== undefined}
-              />
-            )}
-          />
-          <FormHelperText error>{errors.description?.message}</FormHelperText>
-        </Grid>
-      </Grid>
-    </Stack>
+    </Grid>
   );
 };
 
