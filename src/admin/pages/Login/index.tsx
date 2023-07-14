@@ -69,12 +69,12 @@ const LoginImpl: React.FC = () => {
         <Grid container spacing={3}>
           <Grid xs={12}>
             <Stack spacing={1}>
-              <InputLabel>{t('email')}</InputLabel>
+              <InputLabel htmlFor="email">{t('email')}</InputLabel>
               <Controller
                 name="email"
                 control={control}
                 render={({ field }) => (
-                  <TextField {...field} type="text" error={errors.email !== undefined} />
+                  <TextField {...field} id="email" type="text" error={errors.email !== undefined} />
                 )}
               />
               <FormHelperText error>{errors.email?.message}</FormHelperText>
@@ -82,12 +82,17 @@ const LoginImpl: React.FC = () => {
           </Grid>
           <Grid xs={12}>
             <Stack spacing={1}>
-              <InputLabel>{t('password')}</InputLabel>
+              <InputLabel htmlFor="password">{t('password')}</InputLabel>
               <Controller
                 name="password"
                 control={control}
                 render={({ field }) => (
-                  <TextField {...field} type="password" error={errors.password !== undefined} />
+                  <TextField
+                    {...field}
+                    id="password"
+                    type="password"
+                    error={errors.password !== undefined}
+                  />
                 )}
               />
               <FormHelperText error>{errors.password?.message}</FormHelperText>
