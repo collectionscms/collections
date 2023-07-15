@@ -27,7 +27,6 @@
   "save": "Save",
   "delete": "Delete",
   "read": "Read",
-  "ok": "OK",
   "cancel": "Cancel",
   "search_by": "Search by {{field_name}}",
   "user_name": "User Name",
