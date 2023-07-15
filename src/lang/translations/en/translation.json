@@ -64,6 +64,7 @@
   "back_to_home": "Back to Home",
   "collection_not_found": "Collection Not Found",
   "register_content_type": "Register Content Type",
+  "create_first_content_type": "Define the type, length, and relationship of the content to be created!",
   "go_to_registration": "Go to Content Type",
   "back_to_login": "Back to Login",
   "submit": "Submit",

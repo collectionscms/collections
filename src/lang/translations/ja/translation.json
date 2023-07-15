@@ -64,6 +64,7 @@
   "back_to_home": "ホームに戻る",
   "collection_not_found": "登録されたコンテンツはありません",
   "register_content_type": "コンテンツタイプを登録しよう",
+  "create_first_content_type": "作成するコンテンツの型や長さ、関連を定義しよう！",
   "go_to_registration": "登録に進む",
   "back_to_login": "ログインに戻る",
   "submit": "送信",
