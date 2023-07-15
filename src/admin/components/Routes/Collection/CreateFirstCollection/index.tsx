@@ -1,38 +1,31 @@
-import { Button, Stack } from '@mui/material';
+import { Button, Stack, Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { RouterLink } from '../../../elements/Link/index.js';
+import { Link as RouterLink } from 'react-router-dom';
 
 export const CreateFirstCollection: React.FC = () => {
   const { t } = useTranslation();
 
   return (
-    <Stack rowGap={3}>
-      <Grid container spacing={2}>
-        <Grid xs>
-          <h1>{t('content_management')}</h1>
-        </Grid>
-      </Grid>
-      <Grid
-        container
-        alignItems="center"
-        justifyContent="center"
-        direction="row"
-        sx={{ minHeight: '40vh' }}
-      >
-        <Stack rowGap={3}>
-          <h2>{t('register_content_type')}</h2>
-          <Button
-            variant="outlined"
-            size="large"
-            component={RouterLink}
-            to="/admin/settings/content-types"
-          >
+    <Grid
+      container
+      direction="column"
+      alignItems="center"
+      justifyContent="center"
+      sx={{ minHeight: '100vh', overflow: 'hidden' }}
+    >
+      <Grid xs={12}>
+        <Stack spacing={2} justifyContent="center" alignItems="center">
+          <Typography variant="h2">{t('register_content_type')}</Typography>
+          <Typography color="textSecondary" align="center" sx={{ width: { xs: '73%', sm: '61%' } }}>
+            {t('create_first_content_type')}
+          </Typography>
+          <Button component={RouterLink} to="/admin/settings/content-types" variant="contained">
             {t('go_to_registration')}
           </Button>
         </Stack>
       </Grid>
-    </Stack>
+    </Grid>
   );
 };
