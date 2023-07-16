@@ -100,6 +100,8 @@
   "content_list": "Content List",
   "not_found": "The page you are looking was moved, removed, or might never exist!",
   "decide": "Decide",
+  "hide_within_app": "Hide within the App",
+  "treat_single_object": "Treat as single object",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion.",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",

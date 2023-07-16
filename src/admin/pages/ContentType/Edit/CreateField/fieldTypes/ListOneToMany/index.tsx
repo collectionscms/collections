@@ -1,10 +1,6 @@
-import { NodeIndexOutlined, SubnodeOutlined } from '@ant-design/icons';
+import { SubnodeOutlined } from '@ant-design/icons';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Box,
   Button,
   Checkbox,
   FormControlLabel,
@@ -14,7 +10,6 @@ import {
   Select,
   Stack,
   TextField,
-  Typography,
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import React, { useEffect } from 'react';
@@ -26,6 +21,7 @@ import {
   FormValues,
   createListOneToMany as schema,
 } from '../../../../../../fields/schemas/collectionFields/listOneToMany/createListOneToMany.js';
+import { Accordion } from '../../../Accordion/index.js';
 import { useField } from '../../Context/index.js';
 import { Props } from '../types.js';
 
@@ -98,128 +94,125 @@ export const ListOneToManyType: React.FC<Props> = (props) => {
   };
 
   return (
-    <Stack component="form" onSubmit={handleSubmit(onSubmit)}>
-      <Accordion
-        expanded={expanded}
-        square
-        disableGutters
-        onChange={() => handleChange('listOneToMany')}
-      >
-        <AccordionSummary aria-controls="panel-content" id="panel-header">
-          <Stack direction="row" columnGap={2}>
-            <Box display="flex" alignItems="center" sx={{ fontSize: '20px' }}>
-              <SubnodeOutlined />
-            </Box>
-            <Stack direction="column">
-              <Typography variant="subtitle1">{t('field_interface.list_o2m')}</Typography>
-              <Typography variant="caption">{t('field_interface.list_o2m_caption')}</Typography>
+    <Accordion
+      expanded={expanded}
+      title={t('field_interface.list_o2m')}
+      description={t('field_interface.list_o2m_caption')}
+      icon={SubnodeOutlined}
+      type="bottom"
+      handleChange={() => handleChange('listOneToMany')}
+    >
+      <Stack component="form" onSubmit={handleSubmit(onSubmit)} rowGap={3}>
+        <Grid container spacing={3} columns={{ xs: 1, sm: 4 }}>
+          <Grid xs={1} sm={2}>
+            <Stack spacing={1}>
+              <InputLabel required>{t('field')}</InputLabel>
+              <Controller
+                name="field"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    type="text"
+                    fullWidth
+                    placeholder={`${t('input_placeholder')} name`}
+                    error={errors.field !== undefined}
+                  />
+                )}
+              />
+              <FormHelperText error>{errors.field?.message}</FormHelperText>
             </Stack>
-          </Stack>
-        </AccordionSummary>
-        <AccordionDetails sx={{ p: 3 }}>
-          <Stack rowGap={3}>
-            <Grid container spacing={3} columns={{ xs: 1, sm: 4 }}>
-              <Grid xs={1} sm={2}>
-                <InputLabel required>{t('field')}</InputLabel>
-                <Controller
-                  name="field"
-                  control={control}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      type="text"
-                      fullWidth
-                      placeholder={`${t('input_placeholder')} name`}
-                      error={errors.field !== undefined}
-                    />
-                  )}
-                />
-                <FormHelperText error>{errors.field?.message}</FormHelperText>
-              </Grid>
-              <Grid xs={1} sm={2}>
-                <InputLabel required>{t('label')}</InputLabel>
-                <Controller
-                  name="label"
-                  control={control}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      type="text"
-                      fullWidth
-                      placeholder={`${t('input_placeholder')} ${t('name')}`}
-                      error={errors.label !== undefined}
-                    />
-                  )}
-                />
-                <FormHelperText error>{errors.label?.message}</FormHelperText>
-              </Grid>
-              <Grid xs={1} sm={2}>
-                <InputLabel required>{t('related_content')}</InputLabel>
-                <Controller
-                  name="related_collection"
-                  control={control}
-                  defaultValue={''}
-                  render={({ field }) => (
-                    <Select
-                      {...field}
-                      fullWidth
-                      defaultValue={''}
-                      error={errors.related_collection !== undefined}
-                    >
-                      <MenuItem value="">
-                        <em>None</em>
-                      </MenuItem>
-                      {collections &&
-                        collections
-                          .filter((meta) => meta.collection !== collection)
-                          .map((collection) => (
-                            <MenuItem value={collection.collection} key={collection.collection}>
-                              {collection.collection}
-                            </MenuItem>
-                          ))}
-                    </Select>
-                  )}
-                />
-                <FormHelperText error>{errors.related_collection?.message}</FormHelperText>
-              </Grid>
-              <Grid xs={1} sm={2}>
-                <InputLabel required>{t('foreign_key')}</InputLabel>
-                <Controller
-                  name="foreign_key"
-                  control={control}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      type="text"
-                      fullWidth
-                      error={errors.foreign_key !== undefined}
-                    />
-                  )}
-                />
-                <FormHelperText error>{errors.foreign_key?.message}</FormHelperText>
-              </Grid>
-              <Grid xs={1} sm={2}>
-                <InputLabel htmlFor="field">{t('required_fields')}</InputLabel>
-                <Controller
-                  name="required"
-                  control={control}
-                  render={({ field }) => (
-                    <FormControlLabel
-                      {...field}
-                      label={t('required_at_creation')}
-                      control={<Checkbox />}
-                    />
-                  )}
-                />
-                <FormHelperText error>{errors.required?.message}</FormHelperText>
-              </Grid>
-            </Grid>
-            <Button variant="contained" type="submit" size="large" disabled={isMutating} fullWidth>
-              {t('save')}
-            </Button>
-          </Stack>
-        </AccordionDetails>
-      </Accordion>
-    </Stack>
+          </Grid>
+          <Grid xs={1} sm={2}>
+            <Stack spacing={1}>
+              <InputLabel required>{t('label')}</InputLabel>
+              <Controller
+                name="label"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    type="text"
+                    fullWidth
+                    placeholder={`${t('input_placeholder')} ${t('name')}`}
+                    error={errors.label !== undefined}
+                  />
+                )}
+              />
+              <FormHelperText error>{errors.label?.message}</FormHelperText>
+            </Stack>
+          </Grid>
+          <Grid xs={1} sm={2}>
+            <Stack spacing={1}>
+              <InputLabel required>{t('related_content')}</InputLabel>
+              <Controller
+                name="related_collection"
+                control={control}
+                defaultValue={''}
+                render={({ field }) => (
+                  <Select
+                    {...field}
+                    fullWidth
+                    defaultValue={''}
+                    error={errors.related_collection !== undefined}
+                  >
+                    <MenuItem value="">
+                      <em>None</em>
+                    </MenuItem>
+                    {collections &&
+                      collections
+                        .filter((meta) => meta.collection !== collection)
+                        .map((collection) => (
+                          <MenuItem value={collection.collection} key={collection.collection}>
+                            {collection.collection}
+                          </MenuItem>
+                        ))}
+                  </Select>
+                )}
+              />
+              <FormHelperText error>{errors.related_collection?.message}</FormHelperText>
+            </Stack>
+          </Grid>
+          <Grid xs={1} sm={2}>
+            <Stack spacing={1}>
+              <InputLabel required>{t('foreign_key')}</InputLabel>
+              <Controller
+                name="foreign_key"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    type="text"
+                    fullWidth
+                    error={errors.foreign_key !== undefined}
+                  />
+                )}
+              />
+              <FormHelperText error>{errors.foreign_key?.message}</FormHelperText>
+            </Stack>
+          </Grid>
+          <Grid xs={1} sm={2}>
+            <Stack spacing={1}>
+              <InputLabel>{t('required_fields')}</InputLabel>
+              <Controller
+                name="required"
+                control={control}
+                render={({ field }) => (
+                  <FormControlLabel
+                    {...field}
+                    label={t('required_at_creation')}
+                    control={<Checkbox />}
+                  />
+                )}
+              />
+              <FormHelperText error>{errors.required?.message}</FormHelperText>
+            </Stack>
+          </Grid>
+        </Grid>
+        <Button variant="contained" type="submit" disabled={isMutating} fullWidth>
+          {t('save')}
+        </Button>
+      </Stack>
+    </Accordion>
   );
 };

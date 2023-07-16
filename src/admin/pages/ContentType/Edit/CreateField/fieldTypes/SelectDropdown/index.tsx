@@ -1,9 +1,6 @@
 import { CloseCircleOutlined, PlusOutlined, UnorderedListOutlined } from '@ant-design/icons';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
   Box,
   Button,
   Checkbox,
@@ -27,6 +24,7 @@ import {
   FormValues,
   createSelectDropdown as schema,
 } from '../../../../../../fields/schemas/collectionFields/selectDropdown/createSelectDropdown.js';
+import { Accordion } from '../../../Accordion/index.js';
 import { useField } from '../../Context/index.js';
 import { CreateChoice } from '../CreateChoice/index.js';
 import { Props } from '../types.js';
@@ -100,117 +98,102 @@ export const SelectDropdownType: React.FC<Props> = (props) => {
         onSuccess={(choice) => onCreateChoiceSuccessfully(choice)}
         onClose={() => onToggleCreateChoice(false)}
       />
-      <Stack component="form" onSubmit={handleSubmit(onSubmit)}>
-        <Accordion
-          expanded={expanded}
-          square
-          disableGutters
-          onChange={() => handleChange('selectDropdown')}
-        >
-          <AccordionSummary aria-controls="panel-content" id="panel-header">
-            <Stack direction="row" columnGap={2}>
-              <Box display="flex" alignItems="center" sx={{ fontSize: '20px' }}>
-                <UnorderedListOutlined />
-              </Box>
-              <Stack direction="column">
-                <Typography variant="subtitle1">{t('field_interface.select_dropdown')}</Typography>
-                <Typography variant="caption">
-                  {t('field_interface.select_dropdown_caption')}
-                </Typography>
+      <Accordion
+        expanded={expanded}
+        title={t('field_interface.select_dropdown')}
+        description={t('field_interface.select_dropdown_caption')}
+        icon={UnorderedListOutlined}
+        type="middle"
+        handleChange={() => handleChange('selectDropdown')}
+      >
+        <Stack component="form" onSubmit={handleSubmit(onSubmit)} rowGap={3}>
+          <Grid container spacing={3} columns={{ xs: 1, sm: 4 }}>
+            <Grid xs={1} sm={2}>
+              <Stack spacing={1}>
+                <InputLabel required>{t('field')}</InputLabel>
+                <Controller
+                  name="field"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      type="text"
+                      fullWidth
+                      placeholder={`${t('input_placeholder')} name`}
+                      error={errors.field !== undefined}
+                    />
+                  )}
+                />
+                <FormHelperText error>{errors.field?.message}</FormHelperText>
               </Stack>
-            </Stack>
-          </AccordionSummary>
-          <AccordionDetails sx={{ p: 3 }}>
-            <Stack rowGap={3}>
-              <Grid container spacing={3} columns={{ xs: 1, sm: 4 }}>
-                <Grid xs={1} sm={2}>
-                  <InputLabel required>{t('field')}</InputLabel>
-                  <Controller
-                    name="field"
-                    control={control}
-                    render={({ field }) => (
-                      <TextField
-                        {...field}
-                        type="text"
-                        fullWidth
-                        placeholder={`${t('input_placeholder')} name`}
-                        error={errors.field !== undefined}
-                      />
-                    )}
-                  />
-                  <FormHelperText error>{errors.field?.message}</FormHelperText>
-                </Grid>
-                <Grid xs={1} sm={2}>
-                  <InputLabel required>{t('label')}</InputLabel>
-                  <Controller
-                    name="label"
-                    control={control}
-                    render={({ field }) => (
-                      <TextField
-                        {...field}
-                        type="text"
-                        fullWidth
-                        placeholder={`${t('input_placeholder')} ${t('name')}`}
-                        error={errors.label !== undefined}
-                      />
-                    )}
-                  />
-                  <FormHelperText error>{errors.label?.message}</FormHelperText>
-                </Grid>
-                <Grid xs={1} sm={2}>
-                  <InputLabel htmlFor="field">{t('required_fields')}</InputLabel>
-                  <Controller
-                    name="required"
-                    control={control}
-                    render={({ field }) => (
-                      <FormControlLabel
-                        {...field}
-                        label={t('required_at_creation')}
-                        control={<Checkbox />}
-                      />
-                    )}
-                  />
-                  <FormHelperText error>{errors.required?.message}</FormHelperText>
-                </Grid>
-              </Grid>
-              <Divider />
-              <Typography>{t('choices')}</Typography>
-              <Stack rowGap={1}>
-                {fields.length > 0 ? (
-                  fields.map((field, index) => (
-                    <Stack direction="row" columnGap={1} key={field.id}>
-                      <Box display="flex" alignItems="center">
-                        <Typography>{field.label}</Typography>
-                      </Box>
-                      <IconButton color="secondary" onClick={() => remove(index)}>
-                        <CloseCircleOutlined />
-                      </IconButton>
-                    </Stack>
-                  ))
-                ) : (
-                  <Typography variant="caption">{t('no_choice')}</Typography>
-                )}
+            </Grid>
+            <Grid xs={1} sm={2}>
+              <Stack spacing={1}>
+                <InputLabel required>{t('label')}</InputLabel>
+                <Controller
+                  name="label"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      type="text"
+                      fullWidth
+                      placeholder={`${t('input_placeholder')} ${t('name')}`}
+                      error={errors.label !== undefined}
+                    />
+                  )}
+                />
+                <FormHelperText error>{errors.label?.message}</FormHelperText>
               </Stack>
-              <Button
-                variant="outlined"
-                startIcon={<PlusOutlined style={{ fontSize: '10px' }} />}
-                onClick={() => onToggleCreateChoice(true)}
-              >
-                {t('add_new_choice')}
-              </Button>
-              <Button
-                variant="contained"
-                type="submit"
-                size="large"
-                disabled={isMutating}
-                fullWidth
-              >
-                {t('save')}
-              </Button>
-            </Stack>
-          </AccordionDetails>
-        </Accordion>
-      </Stack>
+            </Grid>
+            <Grid xs={1} sm={2}>
+              <Stack spacing={1}>
+                <InputLabel>{t('required_fields')}</InputLabel>
+                <Controller
+                  name="required"
+                  control={control}
+                  render={({ field }) => (
+                    <FormControlLabel
+                      {...field}
+                      label={t('required_at_creation')}
+                      control={<Checkbox />}
+                    />
+                  )}
+                />
+                <FormHelperText error>{errors.required?.message}</FormHelperText>
+              </Stack>
+            </Grid>
+          </Grid>
+          <Divider />
+          <Typography>{t('choices')}</Typography>
+          <Stack rowGap={1}>
+            {fields.length > 0 ? (
+              fields.map((field, index) => (
+                <Stack direction="row" columnGap={1} key={field.id}>
+                  <Box display="flex" alignItems="center">
+                    <Typography>{field.label}</Typography>
+                  </Box>
+                  <IconButton color="secondary" onClick={() => remove(index)}>
+                    <CloseCircleOutlined />
+                  </IconButton>
+                </Stack>
+              ))
+            ) : (
+              <Typography variant="caption">{t('no_choice')}</Typography>
+            )}
+          </Stack>
+          <Button
+            variant="outlined"
+            startIcon={<PlusOutlined style={{ fontSize: '10px' }} />}
+            onClick={() => onToggleCreateChoice(true)}
+          >
+            {t('add_new_choice')}
+          </Button>
+          <Button variant="contained" type="submit" disabled={isMutating} fullWidth>
+            {t('save')}
+          </Button>
+        </Stack>
+      </Accordion>
     </>
   );
 };
