@@ -1,4 +1,4 @@
-import { Box, useTheme } from '@mui/material';
+import { Box, Divider, useTheme } from '@mui/material';
 import React, { useMemo } from 'react';
 import {
   collectionsGroupNavItems,
@@ -40,6 +40,7 @@ export const NavContent: React.FC = () => {
         {navHeader}
         {navGroups}
       </ScrollBar>
+      <Divider sx={{ mx: 1 }} />
       <Box
         sx={{
           marginTop: 'auto',

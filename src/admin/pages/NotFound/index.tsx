@@ -1,8 +1,8 @@
-import { Button, Stack } from '@mui/material';
+import { Button, Stack, Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { RouterLink } from '../../components/elements/Link/index.js';
+import { Link as RouterLink } from 'react-router-dom';
 
 export const NotFound: React.FC = () => {
   const { t } = useTranslation();
@@ -10,17 +10,22 @@ export const NotFound: React.FC = () => {
   return (
     <Grid
       container
+      direction="column"
       alignItems="center"
       justifyContent="center"
-      direction="row"
-      sx={{ minHeight: '100vh' }}
+      sx={{ minHeight: '100vh', overflow: 'hidden' }}
     >
-      <Stack rowGap={3}>
-        <h1>Nothing found</h1>
-        <Button variant="outlined" size="large" component={RouterLink} to="/admin/collections">
-          {t('back_to_home')}
-        </Button>
-      </Stack>
+      <Grid xs={12}>
+        <Stack spacing={2} justifyContent="center" alignItems="center">
+          <Typography variant="h1">Nothing found</Typography>
+          <Typography color="textSecondary" align="center" sx={{ width: { xs: '73%', sm: '61%' } }}>
+            {t('not_found')}
+          </Typography>
+          <Button component={RouterLink} to="/admin/collections" variant="contained">
+            {t('back_to_home')}
+          </Button>
+        </Stack>
+      </Grid>
     </Grid>
   );
 };

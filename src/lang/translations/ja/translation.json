@@ -27,7 +27,6 @@
   "save": "保存",
   "delete": "削除",
   "read": "閲覧",
-  "ok": "OK",
   "cancel": "キャンセル",
   "search_by": "{{field_name}}で検索",
   "user_name": "ユーザー名",
@@ -64,6 +63,7 @@
   "back_to_home": "ホームに戻る",
   "collection_not_found": "登録されたコンテンツはありません",
   "register_content_type": "コンテンツタイプを登録しよう",
+  "create_first_content_type": "作成するコンテンツの型や長さ、関連を定義しよう！",
   "go_to_registration": "登録に進む",
   "back_to_login": "ログインに戻る",
   "submit": "送信",
@@ -98,6 +98,7 @@
   "logout_inactivity": "しばらく操作が行われなかったため、管理画面からログアウトしました。",
   "role_list": "ロール一覧",
   "content_list": "コンテンツ一覧",
+  "not_found": "お探しのページは移動されたか、削除されたか、あるいは存在しない可能性があります！",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",

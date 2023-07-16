@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { logger } from '../../../../utilities/logger.js';
 import { ComposeWrapper } from '../../utilities/ComposeWrapper/index.js';
-import { BaseDialog } from '../BaseDialog/index.js';
+import { DeleteDialog } from '../DeleteDialog/index.js';
 import { DocumentContextProvider, useDocument } from '../DeleteDocument/Context/index.js';
 import { Props } from './types.js';
 
@@ -33,11 +33,11 @@ const DeleteDocumentImpl: React.FC<Props> = ({ id, slug, openState, onSuccess, o
   }, [data]);
 
   return (
-    <BaseDialog
+    <DeleteDialog
       open={openState}
       title={t('dialog.confirm_deletion_title')}
       body={t('dialog.confirm_deletion')}
-      confirm={{ label: t('ok'), action: handleDelete }}
+      confirm={{ label: t('delete'), action: handleDelete }}
       cancel={{ label: t('cancel'), action: handleClose }}
     />
   );
