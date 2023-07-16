@@ -1,9 +1,9 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link as RouterLink } from 'react-router-dom';
 import { MainCard } from 'superfast-ui';
 import { Collection } from '../../../config/types.js';
 import { CreateNewButton } from '../../components/elements/CreateNewButton/index.js';
-import { RouterLink } from '../../components/elements/Link/index.js';
 import { Cell } from '../../components/elements/Table/Cell/index.js';
 import { Type } from '../../components/elements/Table/Cell/types.js';
 import { Table } from '../../components/elements/Table/index.js';
