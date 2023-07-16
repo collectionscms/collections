@@ -1,6 +1,6 @@
 import { ButtonBase, useTheme } from '@mui/material';
 import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { RouterLink } from '../Link/index.js';
 import { Logo } from '../Logo/index.js';
 import { NavHeaderStyled } from './styled.js';
 
