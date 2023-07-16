@@ -86,7 +86,11 @@ const CreateContentTypePageImpl: React.FC = () => {
                     name="singleton"
                     control={control}
                     render={({ field }) => (
-                      <FormControlLabel {...field} label="Singleton" control={<Checkbox />} />
+                      <FormControlLabel
+                        {...field}
+                        label={t('treat_single_object')}
+                        control={<Checkbox />}
+                      />
                     )}
                   />
                   <FormHelperText error>{errors.singleton?.message}</FormHelperText>

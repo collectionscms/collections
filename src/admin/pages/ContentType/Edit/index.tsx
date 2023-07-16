@@ -217,7 +217,6 @@ const EditContentTypePageImpl: React.FC = () => {
                 <Button
                   variant="contained"
                   onClick={() => onToggleCreateField(true)}
-                  size="large"
                   fullWidth
                   sx={{ mt: 2 }}
                 >
@@ -235,13 +234,14 @@ const EditContentTypePageImpl: React.FC = () => {
               <Grid container spacing={3}>
                 <Grid xs={12} sm={6}>
                   <Stack spacing={1}>
+                    <InputLabel>{t('hidden')}</InputLabel>
                     <Controller
                       name="hidden"
                       control={control}
                       render={({ field }) => (
                         <FormControlLabel
                           {...field}
-                          label="Hidden"
+                          label={t('hide_within_app')}
                           control={<Checkbox checked={field.value} />}
                         />
                       )}
@@ -250,13 +250,14 @@ const EditContentTypePageImpl: React.FC = () => {
                 </Grid>
                 <Grid xs={12} sm={6}>
                   <Stack spacing={1}>
+                    <InputLabel>{t('content_data_type')}</InputLabel>
                     <Controller
                       name="singleton"
                       control={control}
                       render={({ field }) => (
                         <FormControlLabel
                           {...field}
-                          label="Singleton"
+                          label={t('treat_single_object')}
                           control={<Checkbox checked={field.value} />}
                         />
                       )}
