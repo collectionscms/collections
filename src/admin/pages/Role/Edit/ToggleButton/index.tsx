@@ -1,6 +1,6 @@
-import { CheckOutlined, ClearOutlined } from '@mui/icons-material';
-import { IconButton } from '@mui/material';
+import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import React, { useState } from 'react';
+import { IconButton } from 'superfast-ui';
 import { PermissionsAction } from '../../../../../config/types.js';
 import { EditRoleMenu } from '../Menu/index.js';
 import { Props } from './types.js';
@@ -59,7 +59,7 @@ export const PermissionToggleButton: React.FC<Props> = (props) => {
           color="error"
           onClick={(e) => openMenu(e.currentTarget, null, collection, action)}
         >
-          <ClearOutlined />
+          <CloseOutlined />
         </IconButton>
       )}
     </>

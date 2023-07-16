@@ -1,5 +1,5 @@
+import { AlignLeftOutlined } from '@ant-design/icons';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { NotesOutlined } from '@mui/icons-material';
 import {
   Accordion,
   AccordionDetails,
@@ -79,8 +79,8 @@ export const InputMultilineType: React.FC<Props> = (props) => {
       >
         <AccordionSummary aria-controls="panel1a-content" id="panel1a-header">
           <Stack direction="row" columnGap={2}>
-            <Box display="flex" alignItems="center">
-              <NotesOutlined />
+            <Box display="flex" alignItems="center" sx={{ fontSize: '20px' }}>
+              <AlignLeftOutlined />
             </Box>
             <Stack direction="column">
               <Typography variant="subtitle1">{t('field_interface.input_multi_line')}</Typography>
@@ -90,7 +90,7 @@ export const InputMultilineType: React.FC<Props> = (props) => {
             </Stack>
           </Stack>
         </AccordionSummary>
-        <AccordionDetails sx={{ py: 3 }}>
+        <AccordionDetails sx={{ p: 3 }}>
           <Stack rowGap={3}>
             <Grid container spacing={3} columns={{ xs: 1, sm: 4 }}>
               <Grid xs={1} sm={2}>

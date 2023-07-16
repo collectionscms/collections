@@ -1,5 +1,4 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { CheckBoxOutlined } from '@mui/icons-material';
 import {
   Accordion,
   AccordionDetails,
@@ -26,6 +25,7 @@ import {
 } from '../../../../../../fields/schemas/collectionFields/boolean/createBoolean.js';
 import { useField } from '../../Context/index.js';
 import { Props } from '../types.js';
+import { CheckSquareOutlined } from '@ant-design/icons';
 
 export const BooleanType: React.FC<Props> = (props) => {
   const { collection, expanded, handleChange, onEditing, onSuccess } = props;
@@ -81,8 +81,8 @@ export const BooleanType: React.FC<Props> = (props) => {
       <Accordion expanded={expanded} square disableGutters onChange={() => handleChange('boolean')}>
         <AccordionSummary aria-controls="panel-content" id="panel-header">
           <Stack direction="row" columnGap={2}>
-            <Box display="flex" alignItems="center">
-              <CheckBoxOutlined />
+            <Box display="flex" alignItems="center" sx={{ fontSize: '20px' }}>
+              <CheckSquareOutlined />
             </Box>
             <Stack direction="column">
               <Typography variant="subtitle1">{t('field_interface.boolean')}</Typography>
@@ -90,7 +90,7 @@ export const BooleanType: React.FC<Props> = (props) => {
             </Stack>
           </Stack>
         </AccordionSummary>
-        <AccordionDetails sx={{ py: 3 }}>
+        <AccordionDetails sx={{ p: 3 }}>
           <Stack rowGap={3}>
             <Grid container spacing={3} columns={{ xs: 1, sm: 4 }}>
               <Grid xs={1} sm={2}>

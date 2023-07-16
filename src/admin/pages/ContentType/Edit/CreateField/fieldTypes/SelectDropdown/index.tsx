@@ -1,5 +1,5 @@
+import { CloseCircleOutlined, PlusOutlined, UnorderedListOutlined } from '@ant-design/icons';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { AddOutlined, Cancel, FormatListBulletedOutlined } from '@mui/icons-material';
 import {
   Accordion,
   AccordionDetails,
@@ -10,7 +10,6 @@ import {
   Divider,
   FormControlLabel,
   FormHelperText,
-  IconButton,
   InputLabel,
   Stack,
   TextField,
@@ -20,6 +19,7 @@ import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import React, { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { IconButton } from 'superfast-ui';
 import { Choice } from '../../../../../../../config/types.js';
 import { logger } from '../../../../../../../utilities/logger.js';
 import { shallowEqualObject } from '../../../../../../../utilities/shallowEqualObject.js';
@@ -109,8 +109,8 @@ export const SelectDropdownType: React.FC<Props> = (props) => {
         >
           <AccordionSummary aria-controls="panel-content" id="panel-header">
             <Stack direction="row" columnGap={2}>
-              <Box display="flex" alignItems="center">
-                <FormatListBulletedOutlined />
+              <Box display="flex" alignItems="center" sx={{ fontSize: '20px' }}>
+                <UnorderedListOutlined />
               </Box>
               <Stack direction="column">
                 <Typography variant="subtitle1">{t('field_interface.select_dropdown')}</Typography>
@@ -120,7 +120,7 @@ export const SelectDropdownType: React.FC<Props> = (props) => {
               </Stack>
             </Stack>
           </AccordionSummary>
-          <AccordionDetails sx={{ py: 3 }}>
+          <AccordionDetails sx={{ p: 3 }}>
             <Stack rowGap={3}>
               <Grid container spacing={3} columns={{ xs: 1, sm: 4 }}>
                 <Grid xs={1} sm={2}>
@@ -182,8 +182,8 @@ export const SelectDropdownType: React.FC<Props> = (props) => {
                       <Box display="flex" alignItems="center">
                         <Typography>{field.label}</Typography>
                       </Box>
-                      <IconButton onClick={() => remove(index)}>
-                        <Cancel />
+                      <IconButton color="secondary" onClick={() => remove(index)}>
+                        <CloseCircleOutlined />
                       </IconButton>
                     </Stack>
                   ))
@@ -193,7 +193,7 @@ export const SelectDropdownType: React.FC<Props> = (props) => {
               </Stack>
               <Button
                 variant="outlined"
-                startIcon={<AddOutlined />}
+                startIcon={<PlusOutlined style={{ fontSize: '10px' }} />}
                 onClick={() => onToggleCreateChoice(true)}
               >
                 {t('add_new_choice')}

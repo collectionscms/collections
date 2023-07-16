@@ -1,7 +1,8 @@
-import { Cancel } from '@mui/icons-material';
-import { Box, Button, IconButton } from '@mui/material';
+import { CloseCircleOutlined } from '@ant-design/icons';
+import { Box, Button } from '@mui/material';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { IconButton } from 'superfast-ui';
 import { ContentContextProvider } from '../../../../pages/collections/Context/index.js';
 import { ComposeWrapper } from '../../../utilities/ComposeWrapper/index.js';
 import { Props } from '../types.js';
@@ -41,8 +42,8 @@ export const SelectDropdownManyToOneTypeImpl: React.FC<Props> = ({
       {watch(meta.field) && (
         <Box key={watch(meta.field)} display="flex" alignItems="center">
           {watch(meta.field)}
-          <IconButton onClick={() => removeSelectedContent()}>
-            <Cancel />
+          <IconButton color="secondary" onClick={() => removeSelectedContent()}>
+            <CloseCircleOutlined />
           </IconButton>
         </Box>
       )}

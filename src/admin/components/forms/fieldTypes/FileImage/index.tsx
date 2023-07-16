@@ -1,4 +1,4 @@
-import { PhotoCamera } from '@mui/icons-material';
+import { CameraFilled } from '@ant-design/icons';
 import { Box, IconButton } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -82,9 +82,9 @@ const FileImageTypeImpl: React.FC<Props> = ({
           backgroundRepeat: 'no-repeat',
         }}
       >
-        <IconButton color="primary" aria-label="upload picture" component="label">
+        <IconButton color="secondary" component="label" sx={{ fontSize: '30px' }}>
           <input hidden accept="image/*" type="file" onChange={onSelectedFile} />
-          <PhotoCamera />
+          <CameraFilled />
         </IconButton>
         <input hidden {...register(meta.field, { ...required })} />
       </Box>
