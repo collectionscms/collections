@@ -1,10 +1,9 @@
 import { Stack, useMediaQuery, useTheme } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { MainCard } from 'superfast-ui';
 import { CreateNewButton } from '../../../components/elements/CreateNewButton/index.js';
-import { RouterLink } from '../../../components/elements/Link/index.js';
 import { Cell } from '../../../components/elements/Table/Cell/index.js';
 import { Table } from '../../../components/elements/Table/index.js';
 import { Column } from '../../../components/elements/Table/types.js';

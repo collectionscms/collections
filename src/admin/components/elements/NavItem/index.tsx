@@ -1,7 +1,7 @@
 import { ListItemButton, ListItemIcon, ListItemText, Typography, useTheme } from '@mui/material';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { RouterLink } from '../Link/index.js';
+import { Link as RouterLink } from 'react-router-dom';
 import { Props } from './types.js';
 
 export const NavItem: React.FC<Props> = ({ item }) => {
