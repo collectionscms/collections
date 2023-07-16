@@ -99,6 +99,7 @@
   "role_list": "Role List",
   "content_list": "Content List",
   "not_found": "The page you are looking was moved, removed, or might never exist!",
+  "decide": "Decide",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion.",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",

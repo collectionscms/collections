@@ -99,6 +99,7 @@
   "role_list": "ロール一覧",
   "content_list": "コンテンツ一覧",
   "not_found": "お探しのページは移動されたか、削除されたか、あるいは存在しない可能性があります！",
+  "decide": "決定",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",
