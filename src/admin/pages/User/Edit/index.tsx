@@ -1,11 +1,10 @@
+import { SyncOutlined } from '@ant-design/icons';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { CachedOutlined } from '@mui/icons-material';
 import {
   Button,
   Checkbox,
   FormControlLabel,
   FormHelperText,
-  IconButton,
   InputAdornment,
   InputLabel,
   MenuItem,
@@ -20,7 +19,7 @@ import React, { Suspense, useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
-import { MainCard } from 'superfast-ui';
+import { IconButton, MainCard } from 'superfast-ui';
 import { v4 as uuidv4 } from 'uuid';
 import { User } from '../../../../config/types.js';
 import { logger } from '../../../../utilities/logger.js';
@@ -206,13 +205,14 @@ const EditUserPageImpl: React.FC = () => {
                 </Grid>
                 <Grid xs={12}>
                   <Stack spacing={1}>
-                    <InputLabel>{t('api_key')}</InputLabel>
+                    <InputLabel htmlFor="api_key">{t('api_key')}</InputLabel>
                     <Controller
                       name="api_key"
                       control={control}
                       render={({ field }) => (
                         <TextField
                           {...field}
+                          id="api_key"
                           type="text"
                           placeholder={
                             user.api_key
@@ -226,10 +226,11 @@ const EditUserPageImpl: React.FC = () => {
                               <InputAdornment position="end">
                                 <Tooltip title={t('generate_api_key')} placement="top">
                                   <IconButton
-                                    aria-label="generate api key"
+                                    edge="end"
+                                    color="secondary"
                                     onClick={onGenerateApiKey}
                                   >
-                                    <CachedOutlined />
+                                    <SyncOutlined />
                                   </IconButton>
                                 </Tooltip>
                               </InputAdornment>

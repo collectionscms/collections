@@ -1,5 +1,5 @@
+import { NodeIndexOutlined, SubnodeOutlined } from '@ant-design/icons';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { SettingsEthernetOutlined } from '@mui/icons-material';
 import {
   Accordion,
   AccordionDetails,
@@ -107,8 +107,8 @@ export const ListOneToManyType: React.FC<Props> = (props) => {
       >
         <AccordionSummary aria-controls="panel-content" id="panel-header">
           <Stack direction="row" columnGap={2}>
-            <Box display="flex" alignItems="center">
-              <SettingsEthernetOutlined />
+            <Box display="flex" alignItems="center" sx={{ fontSize: '20px' }}>
+              <SubnodeOutlined />
             </Box>
             <Stack direction="column">
               <Typography variant="subtitle1">{t('field_interface.list_o2m')}</Typography>
@@ -116,7 +116,7 @@ export const ListOneToManyType: React.FC<Props> = (props) => {
             </Stack>
           </Stack>
         </AccordionSummary>
-        <AccordionDetails sx={{ py: 3 }}>
+        <AccordionDetails sx={{ p: 3 }}>
           <Stack rowGap={3}>
             <Grid container spacing={3} columns={{ xs: 1, sm: 4 }}>
               <Grid xs={1} sm={2}>

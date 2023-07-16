@@ -1,4 +1,4 @@
-import { Send } from '@mui/icons-material';
+import { SendOutlined } from '@ant-design/icons';
 import { Box, Button, Drawer, Stack, TextField, Tooltip, useTheme } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import axios from 'axios';
@@ -10,7 +10,7 @@ import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/ind
 import { ContentContextProvider } from '../Context/index.js';
 import { Props } from './types.js';
 
-const ApiPreviewImpl: React.FC<Props> = ({ collection, singleton }) => {
+const ApiPreviewImpl: React.FC<Props> = ({ collection }) => {
   const { t } = useTranslation();
   const theme = useTheme();
   const { token } = useAuth();
@@ -48,7 +48,7 @@ const ApiPreviewImpl: React.FC<Props> = ({ collection, singleton }) => {
     <>
       <Tooltip title={t('api_preview')} arrow placement="top">
         <IconButton color="secondary" onClick={toggleDrawer(true)}>
-          <Send />
+          <SendOutlined style={{ fontSize: '20px' }} />
         </IconButton>
       </Tooltip>
       <Drawer

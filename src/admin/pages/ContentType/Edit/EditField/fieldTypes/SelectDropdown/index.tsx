@@ -1,5 +1,5 @@
+import { CloseCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { AddOutlined, Cancel } from '@mui/icons-material';
 import {
   Box,
   Button,
@@ -7,7 +7,6 @@ import {
   Divider,
   FormControlLabel,
   FormHelperText,
-  IconButton,
   InputLabel,
   Stack,
   TextField,
@@ -17,6 +16,7 @@ import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import React, { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { IconButton } from 'superfast-ui';
 import { Choice } from '../../../../../../../config/types.js';
 import { logger } from '../../../../../../../utilities/logger.js';
 import { shallowEqualObject } from '../../../../../../../utilities/shallowEqualObject.js';
@@ -105,7 +105,7 @@ export const SelectDropdownType: React.FC<Props> = (props) => {
         onSuccess={(choice) => handleCreateChoiceSuccess(choice)}
         onClose={() => onToggleCreateChoice(false)}
       />
-      <Stack component="form" onSubmit={handleSubmit(onSubmit)} sx={{ p: 2 }}>
+      <Stack component="form" onSubmit={handleSubmit(onSubmit)}>
         <Stack rowGap={3}>
           <Grid container spacing={3} columns={{ xs: 1, sm: 4 }}>
             <Grid xs={1} sm={2}>
@@ -184,8 +184,8 @@ export const SelectDropdownType: React.FC<Props> = (props) => {
                   <Box display="flex" alignItems="center">
                     <Typography>{field.label}</Typography>
                   </Box>
-                  <IconButton onClick={() => remove(index)}>
-                    <Cancel />
+                  <IconButton color="secondary" onClick={() => remove(index)}>
+                    <CloseCircleOutlined />
                   </IconButton>
                 </Stack>
               ))
@@ -195,7 +195,7 @@ export const SelectDropdownType: React.FC<Props> = (props) => {
           </Stack>
           <Button
             variant="outlined"
-            startIcon={<AddOutlined />}
+            startIcon={<PlusOutlined style={{ fontSize: '10px' }} />}
             onClick={() => onToggleCreateChoice(true)}
           >
             {t('add_new_choice')}

@@ -44,7 +44,7 @@ const DefaultListPageImpl: React.FC<Props> = ({ collection }) => {
       content={false}
       title={<></>}
       secondary={
-        <Stack direction={smDown ? 'column' : 'row'} alignItems="center" spacing={1}>
+        <Stack direction={smDown ? 'column' : 'row'} alignItems="center" spacing={2}>
           <CreateNewButton to="create" />
           <ApiPreview collection={collection.collection} singleton={collection.singleton} />
         </Stack>

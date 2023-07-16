@@ -1,7 +1,8 @@
-import { CloseOutlined } from '@mui/icons-material';
-import { Box, Button, Drawer, IconButton, Stack, Typography } from '@mui/material';
+import { CloseOutlined } from '@ant-design/icons';
+import { Box, Button, Divider, Drawer, Stack, Typography } from '@mui/material';
 import { t } from 'i18next';
 import React, { useEffect, useState } from 'react';
+import { IconButton } from 'superfast-ui';
 import { referencedTypes } from '../../../../../../server/database/schemas.js';
 import {
   ContentContextProvider,
@@ -9,6 +10,7 @@ import {
 } from '../../../../../pages/collections/Context/index.js';
 import { buildColumnFields } from '../../../../../pages/collections/List/buildColumnFields.js';
 import { buildColumns } from '../../../../../utilities/buildColumns.js';
+import { ScrollBar } from '../../../../elements/ScrollBar/index.js';
 import { RadioGroupTable } from '../../../../elements/Table/RadioGroupTable/index.js';
 import { Column } from '../../../../elements/Table/types.js';
 import { ComposeWrapper } from '../../../../utilities/ComposeWrapper/index.js';
@@ -69,20 +71,42 @@ const AddExistContentsImpl: React.FC<Props> = ({
 
   return (
     <Stack>
-      <Drawer anchor="right" open={openState} onClose={onToggle()}>
-        <Box sx={{ width: 660 }}>
-          <Stack direction="row" columnGap={2} sx={{ p: 1 }}>
-            <IconButton aria-label="close" onClick={onClose}>
-              <CloseOutlined />
-            </IconButton>
-            <Box display="flex" alignItems="center">
-              <Typography variant="h6">{t('select_contents')}</Typography>
-            </Box>
-          </Stack>
-          <Stack rowGap={3} sx={{ p: 2 }}>
+      <Drawer
+        anchor="right"
+        open={openState}
+        onClose={onToggle()}
+        PaperProps={{
+          sx: {
+            width: { xs: 340, md: 660 },
+          },
+        }}
+      >
+        <ScrollBar
+          sx={{
+            '& .simplebar-content': {
+              display: 'flex',
+              flexDirection: 'column',
+            },
+          }}
+        >
+          <Box sx={{ p: 3 }}>
+            <Stack direction="row" alignItems="center" justifyContent="space-between">
+              <Typography variant="h4">{t('select_contents')}</Typography>
+              <IconButton
+                color="secondary"
+                size="small"
+                sx={{ fontSize: '0.875rem' }}
+                onClick={onClose}
+              >
+                <CloseOutlined />
+              </IconButton>
+            </Stack>
+          </Box>
+          <Divider />
+          <Stack rowGap={3} sx={{ p: 3 }}>
             <RadioGroupTable columns={columns} rows={contents || []} onChange={handleSelect} />
           </Stack>
-          <Stack sx={{ p: 2 }}>
+          <Stack sx={{ px: 3 }}>
             <Button
               variant="contained"
               onClick={onSelected}
@@ -90,10 +114,10 @@ const AddExistContentsImpl: React.FC<Props> = ({
               size="large"
               fullWidth
             >
-              {t('save')}
+              {t('decide')}
             </Button>
           </Stack>
-        </Box>
+        </ScrollBar>
       </Drawer>
     </Stack>
   );

@@ -1,9 +1,11 @@
-import { CloseOutlined } from '@mui/icons-material';
-import { Box, Drawer, IconButton, Stack, Typography, useTheme } from '@mui/material';
+import { CloseOutlined } from '@ant-design/icons';
+import { Box, Divider, Drawer, Stack, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { IconButton } from 'superfast-ui';
 import { Field } from '../../../../../config/types.js';
 import { BaseDialog } from '../../../../components/elements/BaseDialog/index.js';
+import { ScrollBar } from '../../../../components/elements/ScrollBar/index.js';
 import { ComposeWrapper } from '../../../../components/utilities/ComposeWrapper/index.js';
 import { FieldContextProvider } from './Context/index.js';
 import { BooleanType } from './fieldTypes/Boolean/index.js';
@@ -21,7 +23,6 @@ const EditFieldImpl: React.FC<Props> = ({ field, open, onSuccess, onClose }) => 
   const [openUnsavedDialog, setOpenUnsavedDialog] = useState(false);
   const [drawerVisibility, setDrawerVisibility] = useState(false);
   const [editing, setEditing] = useState(false);
-  const theme = useTheme();
   const { t } = useTranslation();
 
   const onToggle = () => (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -82,70 +83,99 @@ const EditFieldImpl: React.FC<Props> = ({ field, open, onSuccess, onClose }) => 
         anchor="right"
         open={open}
         onClose={onToggle()}
-        sx={{ zIndex: theme.zIndex.appBar + 200 }}
+        PaperProps={{
+          sx: {
+            width: { xs: 340, md: 660 },
+          },
+        }}
+        hidden={drawerVisibility}
       >
-        <Box sx={{ maxWidth: 660 }} hidden={drawerVisibility}>
-          <Stack direction="row" columnGap={2} sx={{ p: 1 }}>
-            <IconButton aria-label="close" onClick={onDrawerClose}>
-              <CloseOutlined />
-            </IconButton>
-            <Box display="flex" alignItems="center">
-              <Typography variant="h6">{t('edit_field')}</Typography>
-            </Box>
-          </Stack>
-          {field.interface === 'input' && (
-            <InputType field={field} onEditing={handleEditing} onSuccess={handleEditedSuccess} />
-          )}
-          {field.interface === 'inputMultiline' && (
-            <InputMultilineType
-              field={field}
-              onEditing={handleEditing}
-              onSuccess={handleEditedSuccess}
-            />
-          )}
-          {field.interface === 'inputRichTextMd' && (
-            <InputRichTextMdType
-              field={field}
-              onEditing={handleEditing}
-              onSuccess={handleEditedSuccess}
-            />
-          )}
-          {(field.interface === 'selectDropdown' || field.interface === 'selectDropdownStatus') && (
-            <SelectDropdownType
-              field={field}
-              onEditing={handleEditing}
-              onSuccess={handleEditedSuccess}
-              onChangeParentViewInvisible={handleChangeParentViewInvisible}
-            />
-          )}
-          {field.interface === 'boolean' && (
-            <BooleanType field={field} onEditing={handleEditing} onSuccess={handleEditedSuccess} />
-          )}
-          {field.interface === 'dateTime' && (
-            <DateTimeType field={field} onEditing={handleEditing} onSuccess={handleEditedSuccess} />
-          )}
-          {field.interface === 'fileImage' && (
-            <FileImageType
-              field={field}
-              onEditing={handleEditing}
-              onSuccess={handleEditedSuccess}
-            />
-          )}
-          {field.interface === 'listOneToMany' && (
-            <ListOneToManyType
-              field={field}
-              onEditing={handleEditing}
-              onSuccess={handleEditedSuccess}
-            />
-          )}
-          {field.interface === 'selectDropdownManyToOne' && (
-            <SelectDropdownManyToOneType
-              field={field}
-              onEditing={handleEditing}
-              onSuccess={handleEditedSuccess}
-            />
-          )}
-        </Box>
+        <ScrollBar
+          sx={{
+            '& .simplebar-content': {
+              display: 'flex',
+              flexDirection: 'column',
+            },
+          }}
+        >
+          <Box sx={{ p: 3 }}>
+            <Stack direction="row" alignItems="center" justifyContent="space-between">
+              <Typography variant="h4">{t('edit_field')}</Typography>
+              <IconButton
+                color="secondary"
+                size="small"
+                sx={{ fontSize: '0.875rem' }}
+                onClick={onDrawerClose}
+              >
+                <CloseOutlined />
+              </IconButton>
+            </Stack>
+          </Box>
+          <Divider />
+          <Box sx={{ p: 3 }}>
+            {field.interface === 'input' && (
+              <InputType field={field} onEditing={handleEditing} onSuccess={handleEditedSuccess} />
+            )}
+            {field.interface === 'inputMultiline' && (
+              <InputMultilineType
+                field={field}
+                onEditing={handleEditing}
+                onSuccess={handleEditedSuccess}
+              />
+            )}
+            {field.interface === 'inputRichTextMd' && (
+              <InputRichTextMdType
+                field={field}
+                onEditing={handleEditing}
+                onSuccess={handleEditedSuccess}
+              />
+            )}
+            {(field.interface === 'selectDropdown' ||
+              field.interface === 'selectDropdownStatus') && (
+              <SelectDropdownType
+                field={field}
+                onEditing={handleEditing}
+                onSuccess={handleEditedSuccess}
+                onChangeParentViewInvisible={handleChangeParentViewInvisible}
+              />
+            )}
+            {field.interface === 'boolean' && (
+              <BooleanType
+                field={field}
+                onEditing={handleEditing}
+                onSuccess={handleEditedSuccess}
+              />
+            )}
+            {field.interface === 'dateTime' && (
+              <DateTimeType
+                field={field}
+                onEditing={handleEditing}
+                onSuccess={handleEditedSuccess}
+              />
+            )}
+            {field.interface === 'fileImage' && (
+              <FileImageType
+                field={field}
+                onEditing={handleEditing}
+                onSuccess={handleEditedSuccess}
+              />
+            )}
+            {field.interface === 'listOneToMany' && (
+              <ListOneToManyType
+                field={field}
+                onEditing={handleEditing}
+                onSuccess={handleEditedSuccess}
+              />
+            )}
+            {field.interface === 'selectDropdownManyToOne' && (
+              <SelectDropdownManyToOneType
+                field={field}
+                onEditing={handleEditing}
+                onSuccess={handleEditedSuccess}
+              />
+            )}
+          </Box>
+        </ScrollBar>
       </Drawer>
     </Box>
   );

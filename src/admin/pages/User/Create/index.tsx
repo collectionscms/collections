@@ -1,11 +1,10 @@
+import { SyncOutlined } from '@ant-design/icons';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { CachedOutlined } from '@mui/icons-material';
 import {
   Button,
   Checkbox,
   FormControlLabel,
   FormHelperText,
-  IconButton,
   InputAdornment,
   InputLabel,
   MenuItem,
@@ -20,7 +19,7 @@ import React, { useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { MainCard } from 'superfast-ui';
+import { IconButton, MainCard } from 'superfast-ui';
 import { v4 as uuidv4 } from 'uuid';
 import { logger } from '../../../../utilities/logger.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
@@ -176,13 +175,14 @@ const CreateUserPageImpl: React.FC = () => {
               </Grid>
               <Grid xs={12}>
                 <Stack spacing={1}>
-                  <InputLabel>{t('api_key')}</InputLabel>
+                  <InputLabel htmlFor="api_key">{t('api_key')}</InputLabel>
                   <Controller
                     name="api_key"
                     control={control}
                     render={({ field }) => (
                       <TextField
                         {...field}
+                        id="api_key"
                         type="text"
                         placeholder={t('generate_api_key_placeholder')}
                         fullWidth
@@ -191,11 +191,8 @@ const CreateUserPageImpl: React.FC = () => {
                           endAdornment: (
                             <InputAdornment position="end">
                               <Tooltip title={t('generate_api_key')} placement="top">
-                                <IconButton
-                                  aria-label="generate api key"
-                                  onClick={onGenerateApiKey}
-                                >
-                                  <CachedOutlined />
+                                <IconButton edge="end" color="secondary" onClick={onGenerateApiKey}>
+                                  <SyncOutlined />
                                 </IconButton>
                               </Tooltip>
                             </InputAdornment>
