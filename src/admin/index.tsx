@@ -1,4 +1,3 @@
-import { SnackbarProvider } from 'notistack';
 import React, { Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter as Router } from 'react-router-dom';
@@ -9,6 +8,7 @@ import { AuthProvider } from './components/utilities/Auth/index.js';
 import { ColorModeProvider } from './components/utilities/ColorMode/index.js';
 import { ConfigProvider } from './components/utilities/Config/index.js';
 import { SWRConfigure } from './components/utilities/SWRConfigure/index.js';
+import { Snackbar } from './components/utilities/Snackbar/index.js';
 import { ThemeCustomization } from './components/utilities/Theme/index.js';
 import lazy from './utilities/lazy.js';
 import 'simplebar-react/dist/simplebar.min.css';
@@ -20,7 +20,7 @@ const Index = () => (
     <ColorModeProvider>
       <ThemeCustomization>
         <Router>
-          <SnackbarProvider maxSnack={3} anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}>
+          <Snackbar>
             <SWRConfigure>
               <AuthProvider>
                 <ConfigProvider>
@@ -28,7 +28,7 @@ const Index = () => (
                 </ConfigProvider>
               </AuthProvider>
             </SWRConfigure>
-          </SnackbarProvider>
+          </Snackbar>
         </Router>
       </ThemeCustomization>
     </ColorModeProvider>
