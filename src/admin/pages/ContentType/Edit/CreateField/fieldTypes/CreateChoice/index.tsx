@@ -16,6 +16,7 @@ import { t } from 'i18next';
 import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { IconButton } from 'superfast-ui';
+import { ScrollBar } from '../../../../../../components/elements/ScrollBar/index.js';
 import {
   FormValues,
   createChoice as schema,
@@ -50,14 +51,21 @@ export const CreateChoice: React.FC<Props> = ({ openState, onSuccess, onClose })
   };
 
   return (
-    <Box>
-      <Drawer
-        anchor="right"
-        open={openState}
-        onClose={onToggle()}
-        PaperProps={{
-          sx: {
-            width: { xs: 340, md: 660 },
+    <Drawer
+      anchor="right"
+      open={openState}
+      onClose={onToggle()}
+      PaperProps={{
+        sx: {
+          width: { xs: 340, md: 660 },
+        },
+      }}
+    >
+      <ScrollBar
+        sx={{
+          '& .simplebar-content': {
+            display: 'flex',
+            flexDirection: 'column',
           },
         }}
       >
@@ -79,44 +87,48 @@ export const CreateChoice: React.FC<Props> = ({ openState, onSuccess, onClose })
           <Stack rowGap={3} sx={{ p: 3 }}>
             <Grid container spacing={3} columns={{ xs: 1, sm: 4 }}>
               <Grid xs={1} sm={2}>
-                <InputLabel required>{t('value')}</InputLabel>
-                <Controller
-                  name="value"
-                  control={control}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      type="text"
-                      fullWidth
-                      error={errors.value !== undefined}
-                    />
-                  )}
-                />
-                <FormHelperText error>{errors.value?.message}</FormHelperText>
+                <Stack spacing={1}>
+                  <InputLabel required>{t('value')}</InputLabel>
+                  <Controller
+                    name="value"
+                    control={control}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        type="text"
+                        fullWidth
+                        error={errors.value !== undefined}
+                      />
+                    )}
+                  />
+                  <FormHelperText error>{errors.value?.message}</FormHelperText>
+                </Stack>
               </Grid>
               <Grid xs={1} sm={2}>
-                <InputLabel required>{t('label')}</InputLabel>
-                <Controller
-                  name="label"
-                  control={control}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      type="text"
-                      fullWidth
-                      error={errors.label !== undefined}
-                    />
-                  )}
-                />
-                <FormHelperText error>{errors.label?.message}</FormHelperText>
+                <Stack spacing={1}>
+                  <InputLabel required>{t('label')}</InputLabel>
+                  <Controller
+                    name="label"
+                    control={control}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        type="text"
+                        fullWidth
+                        error={errors.label !== undefined}
+                      />
+                    )}
+                  />
+                  <FormHelperText error>{errors.label?.message}</FormHelperText>
+                </Stack>
               </Grid>
             </Grid>
-            <Button variant="contained" type="submit" size="large" fullWidth>
+            <Button variant="contained" type="submit" fullWidth>
               {t('add')}
             </Button>
           </Stack>
         </Stack>
-      </Drawer>
-    </Box>
+      </ScrollBar>
+    </Drawer>
   );
 };
