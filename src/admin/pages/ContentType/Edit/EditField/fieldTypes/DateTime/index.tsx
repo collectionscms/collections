@@ -72,7 +72,7 @@ export const DateTimeType: React.FC<Props> = (props) => {
 
   return (
     <>
-      <Stack component="form" onSubmit={handleSubmit(onSubmit)} sx={{ p: 2 }}>
+      <Stack component="form" onSubmit={handleSubmit(onSubmit)}>
         <Stack rowGap={3}>
           <Grid container spacing={3} columns={{ xs: 1, sm: 4 }}>
             <Grid xs={1} sm={2}>
