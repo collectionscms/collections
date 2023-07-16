@@ -1,7 +1,7 @@
 import { ListItemButton, ListItemIcon, ListItemText, Typography, useTheme } from '@mui/material';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { RouterLink } from '../Link/index.js';
+import { NavLink } from '../NavLink/index.js';
 import { Props } from './types.js';
 
 export const NavItem: React.FC<Props> = ({ item }) => {
@@ -16,7 +16,7 @@ export const NavItem: React.FC<Props> = ({ item }) => {
   return (
     <ListItemButton
       to={href}
-      component={RouterLink}
+      component={NavLink}
       sx={{
         minWidth: 28,
         pl: 3,

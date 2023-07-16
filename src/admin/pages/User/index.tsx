@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { MainCard } from 'superfast-ui';
 import { User } from '../../../config/types.js';
 import { CreateNewButton } from '../../components/elements/CreateNewButton/index.js';
-import { RouterLink } from '../../components/elements/Link/index.js';
+import { Link as RouterLink } from 'react-router-dom';
 import { Cell } from '../../components/elements/Table/Cell/index.js';
 import { Type } from '../../components/elements/Table/Cell/types.js';
 import { Table } from '../../components/elements/Table/index.js';
