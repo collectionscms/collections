@@ -6,7 +6,6 @@ import {
   Divider,
   Drawer,
   FormHelperText,
-  IconButton,
   InputLabel,
   Stack,
   TextField,
@@ -16,6 +15,7 @@ import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { t } from 'i18next';
 import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { IconButton } from 'superfast-ui';
 import {
   FormValues,
   createChoice as schema,

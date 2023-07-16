@@ -1,7 +1,8 @@
 import { DeleteOutlined } from '@ant-design/icons';
-import { IconButton, Tooltip } from '@mui/material';
+import { Tooltip } from '@mui/material';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { IconButton } from 'superfast-ui';
 import { DeleteDocument } from '../DeleteDocument/index.js';
 import { Props } from './types.js';
 

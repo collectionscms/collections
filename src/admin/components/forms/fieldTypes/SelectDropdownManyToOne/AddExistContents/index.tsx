@@ -1,7 +1,8 @@
 import { CloseOutlined } from '@ant-design/icons';
-import { Box, Button, Divider, Drawer, IconButton, Stack, Typography } from '@mui/material';
+import { Box, Button, Divider, Drawer, Stack, Typography } from '@mui/material';
 import { t } from 'i18next';
 import React, { useEffect, useState } from 'react';
+import { IconButton } from 'superfast-ui';
 import { referencedTypes } from '../../../../../../server/database/schemas.js';
 import {
   ContentContextProvider,
