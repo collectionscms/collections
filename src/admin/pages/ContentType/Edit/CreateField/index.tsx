@@ -1,9 +1,11 @@
-import { CloseOutlined } from '@mui/icons-material';
-import { Box, Drawer, IconButton, Stack, Typography, useTheme } from '@mui/material';
+import { CloseOutlined } from '@ant-design/icons';
+import { Box, Drawer, Stack, Typography, useTheme } from '@mui/material';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { IconButton } from 'superfast-ui';
 import { Field, FieldInterface } from '../../../../../config/types.js';
 import { BaseDialog } from '../../../../components/elements/BaseDialog/index.js';
+import { ScrollBar } from '../../../../components/elements/ScrollBar/index.js';
 import { ComposeWrapper } from '../../../../components/utilities/ComposeWrapper/index.js';
 import { FieldContextProvider } from './Context/index.js';
 import { BooleanType } from './fieldTypes/Boolean/index.js';
@@ -86,17 +88,34 @@ const CreateFieldImpl: React.FC<Props> = ({ collection, openState, onSuccess, on
         anchor="right"
         open={openState}
         onClose={onToggle()}
-        sx={{ zIndex: theme.zIndex.appBar + 200 }}
+        PaperProps={{
+          sx: {
+            width: { xs: 340, md: 660 },
+          },
+        }}
+        hidden={drawerVisibility}
       >
-        <Box sx={{ overflowY: 'scroll', maxWidth: 660 }} hidden={drawerVisibility}>
-          <Stack direction="row" columnGap={2} sx={{ p: 1 }}>
-            <IconButton aria-label="close" onClick={onDrawerClose}>
-              <CloseOutlined />
-            </IconButton>
-            <Box display="flex" alignItems="center">
-              <Typography variant="h6">{t('select_field_type')}</Typography>
-            </Box>
-          </Stack>
+        <ScrollBar
+          sx={{
+            '& .simplebar-content': {
+              display: 'flex',
+              flexDirection: 'column',
+            },
+          }}
+        >
+          <Box sx={{ p: 3 }}>
+            <Stack direction="row" alignItems="center" justifyContent="space-between">
+              <Typography variant="h4">{t('select_field_type')}</Typography>
+              <IconButton
+                color="secondary"
+                size="small"
+                sx={{ fontSize: '0.875rem' }}
+                onClick={onDrawerClose}
+              >
+                <CloseOutlined />
+              </IconButton>
+            </Stack>
+          </Box>
           <InputType
             collection={collection}
             expanded={fieldInterface === 'input'}
@@ -154,7 +173,7 @@ const CreateFieldImpl: React.FC<Props> = ({ collection, openState, onSuccess, on
             onEditing={handleEditing}
             onSuccess={handleAdditionSuccess}
           />
-        </Box>
+        </ScrollBar>
       </Drawer>
     </Box>
   );

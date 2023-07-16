@@ -1,8 +1,9 @@
+import { CloseOutlined } from '@ant-design/icons';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { CloseOutlined } from '@mui/icons-material';
 import {
   Box,
   Button,
+  Divider,
   Drawer,
   FormHelperText,
   IconButton,
@@ -10,7 +11,6 @@ import {
   Stack,
   TextField,
   Typography,
-  useTheme,
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { t } from 'i18next';
@@ -23,7 +23,6 @@ import {
 import { Props } from './types.js';
 
 export const CreateChoice: React.FC<Props> = ({ openState, onSuccess, onClose }) => {
-  const theme = useTheme();
   const {
     control,
     handleSubmit,
@@ -56,18 +55,28 @@ export const CreateChoice: React.FC<Props> = ({ openState, onSuccess, onClose })
         anchor="right"
         open={openState}
         onClose={onToggle()}
-        sx={{ zIndex: theme.zIndex.appBar + 200 }}
+        PaperProps={{
+          sx: {
+            width: { xs: 340, md: 660 },
+          },
+        }}
       >
-        <Stack direction="row" columnGap={2} sx={{ p: 1 }}>
-          <IconButton aria-label="close" onClick={onClose}>
-            <CloseOutlined />
-          </IconButton>
-          <Box display="flex" alignItems="center">
-            <Typography variant="h6">{t('add_new_choice')}</Typography>
-          </Box>
-        </Stack>
+        <Box sx={{ p: 3 }}>
+          <Stack direction="row" alignItems="center" justifyContent="space-between">
+            <Typography variant="h4">{t('add_new_choice')}</Typography>
+            <IconButton
+              color="secondary"
+              size="small"
+              sx={{ fontSize: '0.875rem' }}
+              onClick={onClose}
+            >
+              <CloseOutlined />
+            </IconButton>
+          </Stack>
+        </Box>
+        <Divider />
         <Stack component="form" onSubmit={handleSubmit(onSubmit)}>
-          <Stack rowGap={3} sx={{ p: 2 }}>
+          <Stack rowGap={3} sx={{ p: 3 }}>
             <Grid container spacing={3} columns={{ xs: 1, sm: 4 }}>
               <Grid xs={1} sm={2}>
                 <InputLabel required>{t('value')}</InputLabel>
