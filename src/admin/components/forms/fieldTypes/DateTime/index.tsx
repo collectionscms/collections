@@ -33,6 +33,7 @@ export const DateTimeType: React.FC<Props> = ({
           <DateTimePicker
             {...register(meta.field, { ...required })}
             format="YYYY-MM-DD HH:mm"
+            ampm={false}
             onChange={(date: Date | null) => {
               // Converts a date string from the local timezone to UTC.
               field.onChange(dayjs(date).utc().format('YYYY-MM-DD HH:mm'));
