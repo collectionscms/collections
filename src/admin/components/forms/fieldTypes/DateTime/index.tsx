@@ -51,7 +51,7 @@ export const DateTimeType: React.FC<Props> = ({
                 fullWidth: true,
                 disabled: Boolean(meta.readonly),
                 error: errors[meta.field] !== undefined,
-                value: field.value && dayjs.utc(field.value).local(),
+                value: field.value ? dayjs.utc(field.value).local() : null,
               },
             }}
           />
