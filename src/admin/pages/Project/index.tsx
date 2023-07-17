@@ -50,13 +50,14 @@ const ProjectImpl: React.FC = () => {
               <Grid container spacing={3}>
                 <Grid xs={12}>
                   <Stack spacing={1}>
-                    <InputLabel>{t('project_name')}</InputLabel>
+                    <InputLabel htmlFor="project_name">{t('project_name')}</InputLabel>
                     <Controller
                       name="name"
                       control={control}
                       render={({ field }) => (
                         <TextField
                           {...field}
+                          id="project_name"
                           type="text"
                           fullWidth
                           placeholder={`${t('input_placeholder')} Superfast`}
