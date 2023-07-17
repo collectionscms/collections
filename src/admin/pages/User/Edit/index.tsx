@@ -42,7 +42,7 @@ const EditUserPageImpl: React.FC = () => {
   const { getRoles, getUser, updateUser } = useUser();
   const { data: user, trigger: getUserTrigger } = getUser(id);
   const { data: roles } = getRoles({ suspense: true });
-  const { data: updatedUser, trigger, isMutating } = updateUser(id);
+  const { trigger, isMutating } = updateUser(id);
   const {
     control,
     handleSubmit,
@@ -64,12 +64,6 @@ const EditUserPageImpl: React.FC = () => {
 
     getUser();
   }, []);
-
-  useEffect(() => {
-    if (updatedUser === undefined) return;
-    enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
-    navigate('../users');
-  }, [updatedUser]);
 
   const setDefaultValue = (user: User) => {
     setValue('first_name', user.first_name);
@@ -96,6 +90,8 @@ const EditUserPageImpl: React.FC = () => {
 
     try {
       await trigger(form);
+      enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
+      navigate('../users');
     } catch (e) {
       logger.error(e);
     }

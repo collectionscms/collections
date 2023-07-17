@@ -2,7 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, FormHelperText, InputLabel, Stack, TextField } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { useSnackbar } from 'notistack';
-import React, { Suspense, useEffect } from 'react';
+import React, { Suspense } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { MainCard } from 'superfast-ui';
@@ -22,7 +22,7 @@ const ProjectImpl: React.FC = () => {
   const { data: projectSetting } = getProjectSetting({
     suspense: true,
   });
-  const { data: updatedProjectSetting, trigger, isMutating } = updateProjectSetting();
+  const { trigger, isMutating } = updateProjectSetting();
   const {
     control,
     handleSubmit,
@@ -32,14 +32,10 @@ const ProjectImpl: React.FC = () => {
     resolver: yupResolver(updateProjectSettingSchema()),
   });
 
-  useEffect(() => {
-    if (updatedProjectSetting === undefined) return;
-    enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
-  }, [updatedProjectSetting]);
-
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
       await trigger(form);
+      enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
     } catch (e) {
       logger.error(e);
     }
@@ -54,13 +50,14 @@ const ProjectImpl: React.FC = () => {
               <Grid container spacing={3}>
                 <Grid xs={12}>
                   <Stack spacing={1}>
-                    <InputLabel>{t('project_name')}</InputLabel>
+                    <InputLabel htmlFor="project_name">{t('project_name')}</InputLabel>
                     <Controller
                       name="name"
                       control={control}
                       render={({ field }) => (
                         <TextField
                           {...field}
+                          id="project_name"
                           type="text"
                           fullWidth
                           placeholder={`${t('input_placeholder')} Superfast`}

@@ -47,11 +47,7 @@ const EditRolePageImpl: React.FC = () => {
   const { data: role, trigger: getRoleTrigger } = getRole(id);
   const { data: collections = [] } = getCollections({ suspense: true });
   const { data: permissions = [], mutate } = getPermissions(id, { suspense: true });
-  const {
-    data: updatedRole,
-    trigger: updateRoleTrigger,
-    isMutating: isUpdateRoleMutating,
-  } = updateRole(id);
+  const { trigger: updateRoleTrigger, isMutating: isUpdateRoleMutating } = updateRole(id);
   const {
     control,
     handleSubmit,
@@ -75,12 +71,6 @@ const EditRolePageImpl: React.FC = () => {
     getRole();
   }, []);
 
-  useEffect(() => {
-    if (updatedRole === undefined) return;
-    enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
-    navigate('../roles');
-  }, [updatedRole]);
-
   const setDefaultValue = (role: Role) => {
     setValue('name', role.name);
     setValue('description', role.description);
@@ -95,9 +85,11 @@ const EditRolePageImpl: React.FC = () => {
     mutate(permissions.filter((permission) => permission.id !== permissionId));
   };
 
-  const onSubmit: SubmitHandler<FormValues> = (form: FormValues) => {
+  const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
-      updateRoleTrigger(form);
+      await updateRoleTrigger(form);
+      enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
+      navigate('../roles');
     } catch (error) {
       logger.error(error);
     }

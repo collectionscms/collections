@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { useSnackbar } from 'notistack';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -28,7 +28,7 @@ const CreateRolePageImpl: React.FC = () => {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const { createRole } = useRole();
-  const { data: roleId, trigger, isMutating } = createRole();
+  const { trigger, isMutating } = createRole();
   const {
     control,
     handleSubmit,
@@ -46,15 +46,11 @@ const CreateRolePageImpl: React.FC = () => {
     navigate('../roles');
   };
 
-  useEffect(() => {
-    if (roleId === undefined) return;
-    enqueueSnackbar(t('toast.created_successfully'), { variant: 'success' });
-    navigate(`../roles/${roleId}`);
-  }, [roleId]);
-
-  const onSubmit: SubmitHandler<FormValues> = (form: FormValues) => {
+  const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
-      trigger(form);
+      const roleId = await trigger(form);
+      enqueueSnackbar(t('toast.created_successfully'), { variant: 'success' });
+      navigate(`../roles/${roleId}`);
     } catch (error) {
       logger.error(error);
     }

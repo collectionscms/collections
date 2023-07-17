@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { useSnackbar } from 'notistack';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -34,7 +34,7 @@ const CreateUserPageImpl: React.FC = () => {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const { createUser, getRoles } = useUser();
-  const { data: createdUser, trigger, isMutating } = createUser();
+  const { trigger, isMutating } = createUser();
   const { data: roles } = getRoles({ suspense: true });
   const {
     control,
@@ -55,12 +55,6 @@ const CreateUserPageImpl: React.FC = () => {
     resolver: yupResolver(createUserSchema(t)),
   });
 
-  useEffect(() => {
-    if (createdUser === undefined) return;
-    enqueueSnackbar(t('toast.created_successfully'), { variant: 'success' });
-    navigate('../users');
-  }, [createdUser]);
-
   const onGenerateApiKey = () => {
     setValue('api_key', uuidv4());
   };
@@ -72,6 +66,8 @@ const CreateUserPageImpl: React.FC = () => {
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
       await trigger(form);
+      enqueueSnackbar(t('toast.created_successfully'), { variant: 'success' });
+      navigate('../users');
     } catch (e) {
       logger.error(e);
     }
