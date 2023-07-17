@@ -5,7 +5,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider/L
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone.js';
 import utc from 'dayjs/plugin/utc.js';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { IconButton } from 'superfast-ui';
@@ -14,6 +14,8 @@ import { Props } from '../types.js';
 export const DateTimeType: React.FC<Props> = ({
   form: {
     register,
+    watch,
+    setValue,
     control,
     formState: { errors },
   },
@@ -23,6 +25,18 @@ export const DateTimeType: React.FC<Props> = ({
   const required = meta.required && { required: t('yup.mixed.required') };
   dayjs.extend(utc);
   dayjs.extend(timezone);
+
+  const value = watch(meta.field);
+
+  useEffect(() => {
+    if (value === undefined || value === 'Invalid Date') {
+      initializeFieldAsNull();
+    }
+  }, [value]);
+
+  const initializeFieldAsNull = () => {
+    setValue(meta.field, null);
+  };
 
   return (
     <Controller

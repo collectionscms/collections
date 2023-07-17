@@ -21,13 +21,6 @@ const FileImageTypeImpl: React.FC<Props> = ({
   const { trigger: createFileImageTrigger } = createFileImage();
 
   useEffect(() => {
-    const watchId = watch(meta.field);
-    if (watchId && watchId !== fileId) {
-      setFileId(watchId);
-    }
-  }, [watch(meta.field)]);
-
-  useEffect(() => {
     const setFileImage = async () => {
       try {
         const res = await getFileImageTrigger();
@@ -44,6 +37,22 @@ const FileImageTypeImpl: React.FC<Props> = ({
       setFileImage();
     }
   }, [fileId]);
+
+  const value = watch(meta.field);
+
+  useEffect(() => {
+    if (value === undefined) {
+      initializeFieldAsNull();
+    }
+
+    if (value && value !== fileId) {
+      setFileId(value);
+    }
+  }, [value]);
+
+  const initializeFieldAsNull = () => {
+    setValue(meta.field, null);
+  };
 
   const onSelectedFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

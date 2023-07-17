@@ -1,6 +1,6 @@
 import { CloseCircleOutlined } from '@ant-design/icons';
 import { Box, Button } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { IconButton } from 'superfast-ui';
 import { ContentContextProvider } from '../../../../pages/collections/Context/index.js';
@@ -17,6 +17,18 @@ export const SelectDropdownManyToOneTypeImpl: React.FC<Props> = ({
   const { t } = useTranslation();
   const required = meta.required && { required: t('yup.mixed.required') };
 
+  const value = watch(meta.field);
+
+  useEffect(() => {
+    if (value === undefined) {
+      initializeFieldAsNull();
+    }
+  }, [value]);
+
+  const initializeFieldAsNull = () => {
+    setValue(meta.field, null);
+  };
+
   const onToggleAddRelations = (state: boolean) => {
     setAddRelationsOpen(state);
   };
@@ -24,10 +36,6 @@ export const SelectDropdownManyToOneTypeImpl: React.FC<Props> = ({
   const handleSelectContent = (content: Partial<{ id: number }>) => {
     setAddRelationsOpen(false);
     setValue(meta.field, content.id);
-  };
-
-  const removeSelectedContent = () => {
-    setValue(meta.field, null);
   };
 
   return (
@@ -39,10 +47,10 @@ export const SelectDropdownManyToOneTypeImpl: React.FC<Props> = ({
         onSuccess={(content) => handleSelectContent(content)}
         onClose={() => onToggleAddRelations(false)}
       />
-      {watch(meta.field) && (
-        <Box key={watch(meta.field)} display="flex" alignItems="center">
-          {watch(meta.field)}
-          <IconButton color="secondary" onClick={() => removeSelectedContent()}>
+      {value && (
+        <Box key={value} display="flex" alignItems="center">
+          {value}
+          <IconButton color="secondary" onClick={() => initializeFieldAsNull()}>
             <CloseCircleOutlined />
           </IconButton>
         </Box>
