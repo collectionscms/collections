@@ -1971,13 +1971,6 @@
   resolved "https://registry.npmjs.org/@mui/core-downloads-tracker/-/core-downloads-tracker-5.12.3.tgz"
   integrity sha512-yiJZ+knaknPHuRKhRk4L6XiwppwkAahVal3LuYpvBH7GkA2g+D9WLEXOEnNYtVFUggyKf6fWGLGnx0iqzkU5YA==
 
-"@mui/icons-material@^5.11.16":
-  version "5.11.16"
-  resolved "https://registry.npmjs.org/@mui/icons-material/-/icons-material-5.11.16.tgz"
-  integrity sha512-oKkx9z9Kwg40NtcIajF9uOXhxiyTZrrm9nmIJ4UjkU2IdHpd4QVLbCc/5hZN/y0C6qzi2Zlxyr9TGddQx2vx2A==
-  dependencies:
-    "@babel/runtime" "^7.21.0"
-
 "@mui/lab@^5.0.0-alpha.134":
   version "5.0.0-alpha.135"
   resolved "https://registry.yarnpkg.com/@mui/lab/-/lab-5.0.0-alpha.135.tgz#d4c4145b63d5839cc201136fc4e152fd31690b44"
@@ -8749,18 +8742,14 @@ stylis@4.2.0:
   integrity sha512-Orov6g6BB1sDfYgzWfTHDOxamtX1bE/zo104Dh9e6fqJ3PooipYyfJ0pUmrZO2wAvO8YbEyeFrkV91XTsGMSrw==
 
 superfast-ui@^0.1.1-alpha12:
-  version "0.1.1-alpha12"
-  resolved "https://registry.yarnpkg.com/superfast-ui/-/superfast-ui-0.1.1-alpha12.tgz#4c637437826bc0ba59574df9b51ed3a430417f66"
-  integrity sha512-olfAS3cfQgxfPHbLzdikPRfKOx9U/se5Rtb27Xamv2P3hINv/rbMnirdbMqsZGydS4zOaLGLDKf4LyDQDsOfQA==
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/superfast-ui/-/superfast-ui-0.1.1.tgz#be88fcac23a94cfc77326e24e263174dc818cfe5"
+  integrity sha512-BGqKnphXpeQOvCtwWlluf4zaBM4gbFxxNqi6NsS0aWJ5UxGhdxYijJ18lE+hfp6tZuGgRVcvdSm0I1G8RS01DQ==
   dependencies:
     "@ant-design/colors" "^7.0.0"
     "@ant-design/icons" "^5.1.4"
-    "@emotion/react" "^11.10.8"
-    "@emotion/styled" "^11.10.8"
-    "@mui/icons-material" "^5.11.16"
     "@mui/lab" "^5.0.0-alpha.134"
     "@mui/material" "^5.12.2"
-    "@mui/x-date-pickers" "^6.3.0"
     react "^18.2.0"
     react-dom "^18.2.0"
 
