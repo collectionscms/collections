@@ -1,22 +1,5 @@
-/**
- * This helper copies all static files (such as .d.ts, .html, and .svg) after compilation to dist
- **/
-import copyFiles from 'copyfiles';
+import cpy from 'cpy';
 
-(async () => {
-  await new Promise<void>((resolve) => {
-    copyFiles(
-      [
-        'src/**/*.d.ts',
-        'src/**/*.html',
-        'src/**/**/*.scss',
-        'src/**/**/*.svg',
-        'src/**/**/*.json',
-        'src/**/**/*.md',
-        'dist/src',
-      ],
-      1,
-      () => resolve()
-    );
-  });
-})();
+// This helper copies all static files (such as .d.ts, .json, ...etc) after compilation to dist
+await cpy(['./prepare.mjs', './package.json'], 'dist');
+await cpy(['src/**/*.d.ts', 'src/**/*.json', 'src/**/*.md', 'src/**/*.html'], 'dist/src');
