@@ -1,5 +1,5 @@
-import AppBar from '@mui/material/AppBar';
-import { styled } from '@mui/material/styles';
+import AppBar from '@mui/material/AppBar/index.js';
+import { styled } from '@mui/material/styles/index.js';
 
 export const AppBarStyled = styled(AppBar)(({ theme }) => ({
   zIndex: theme.zIndex.drawer + 1,
