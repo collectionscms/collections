@@ -4,7 +4,7 @@ import {
   InfoCircleOutlined,
   WarningOutlined,
 } from '@ant-design/icons';
-import { styled } from '@mui/material/styles';
+import { styled } from '@mui/material/styles/index.js';
 import { SnackbarProvider } from 'notistack';
 import React from 'react';
 
