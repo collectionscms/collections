@@ -13,7 +13,7 @@
     "lint": "eslint 'src/**/*.ts' --ignore-path .gitignore",
     "lint:fix": "npm run lint -- --fix",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx}\" --ignore-path .gitignore",
-    "prepare": "husky install",
+    "prepare": "node ./prepare.mjs",
     "typecheck": "tsc -p . --noEmit",
     "copyfiles": "node --loader ts-node/esm misc/copyStaticFiles.ts",
     "compile:tsc": "tsc -p ./tsconfig.production.json",
