@@ -3,7 +3,7 @@ import { SWRMutationResponse } from 'swr/mutation';
 import { Collection, Field } from '../../../../../../config/types.js';
 
 export type FieldContext = {
-  createField: () => SWRMutationResponse<Field, any, Record<string, any>, any>;
-  createRelationalFields: () => SWRMutationResponse<Field[], any, Record<string, any>, any>;
+  createField: () => SWRMutationResponse<Field, any, string, Record<string, any>>;
+  createRelationalFields: () => SWRMutationResponse<Field[], any, string, Record<string, any>>;
   getCollections: () => SWRResponse<Collection[]>;
 };
