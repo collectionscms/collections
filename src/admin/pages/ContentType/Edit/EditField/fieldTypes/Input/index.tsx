@@ -70,14 +70,16 @@ export const InputType: React.FC<Props> = (props) => {
   };
 
   return (
-    <Stack component="form" onSubmit={handleSubmit(onSubmit)} sx={{ p: 2 }}>
-      <Stack rowGap={3}>
-        <Grid container spacing={3} columns={{ xs: 1, sm: 4 }}>
-          <Grid xs={1} sm={2}>
+    <Stack component="form" onSubmit={handleSubmit(onSubmit)} rowGap={3}>
+      <Grid container spacing={3} columns={{ xs: 1, sm: 4 }}>
+        <Grid xs={1} sm={2}>
+          <Stack spacing={1}>
             <InputLabel required>{t('field')}</InputLabel>
             <TextField type="text" fullWidth disabled defaultValue={meta.field} />
-          </Grid>
-          <Grid xs={1} sm={2}>
+          </Stack>
+        </Grid>
+        <Grid xs={1} sm={2}>
+          <Stack spacing={1}>
             <InputLabel required>{t('label')}</InputLabel>
             <Controller
               name="label"
@@ -93,9 +95,11 @@ export const InputType: React.FC<Props> = (props) => {
               )}
             />
             <FormHelperText error>{errors.label?.message}</FormHelperText>
-          </Grid>
-          <Grid xs={1} sm={2}>
-            <InputLabel htmlFor="field">{t('required_fields')}</InputLabel>
+          </Stack>
+        </Grid>
+        <Grid xs={1} sm={2}>
+          <Stack spacing={1}>
+            <InputLabel>{t('required_fields')}</InputLabel>
             <Controller
               name="required"
               control={control}
@@ -108,9 +112,11 @@ export const InputType: React.FC<Props> = (props) => {
               )}
             />
             <FormHelperText error>{errors.required?.message}</FormHelperText>
-          </Grid>
-          <Grid xs={1} sm={2}>
-            <InputLabel htmlFor="field">{t('readonly')}</InputLabel>
+          </Stack>
+        </Grid>
+        <Grid xs={1} sm={2}>
+          <Stack spacing={1}>
+            <InputLabel>{t('readonly')}</InputLabel>
             <Controller
               name="readonly"
               control={control}
@@ -123,9 +129,11 @@ export const InputType: React.FC<Props> = (props) => {
               )}
             />
             <FormHelperText error>{errors.readonly?.message}</FormHelperText>
-          </Grid>
-          <Grid xs={1} sm={2}>
-            <InputLabel htmlFor="field">{t('hidden')}</InputLabel>
+          </Stack>
+        </Grid>
+        <Grid xs={1} sm={2}>
+          <Stack spacing={1}>
+            <InputLabel>{t('hidden')}</InputLabel>
             <Controller
               name="hidden"
               control={control}
@@ -138,12 +146,12 @@ export const InputType: React.FC<Props> = (props) => {
               )}
             />
             <FormHelperText error>{errors.hidden?.message}</FormHelperText>
-          </Grid>
+          </Stack>
         </Grid>
-        <Button variant="contained" type="submit" size="large" disabled={isMutating} fullWidth>
-          {t('save')}
-        </Button>
-      </Stack>
+      </Grid>
+      <Button variant="contained" type="submit" disabled={isMutating} fullWidth>
+        {t('save')}
+      </Button>
     </Stack>
   );
 };

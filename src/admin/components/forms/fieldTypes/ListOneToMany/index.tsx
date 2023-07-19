@@ -1,7 +1,8 @@
-import { Cancel } from '@mui/icons-material';
-import { Box, Button, IconButton } from '@mui/material';
+import { CloseCircleOutlined } from '@ant-design/icons';
+import { Box, Button } from '@mui/material';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { IconButton } from 'superfast-ui';
 import { ContentContextProvider } from '../../../../pages/collections/Context/index.js';
 import { ComposeWrapper } from '../../../utilities/ComposeWrapper/index.js';
 import { Props } from '../types.js';
@@ -47,8 +48,8 @@ export const ListOneToManyTypeImpl: React.FC<Props> = ({
         watch(meta.field).map((data: any) => (
           <Box key={data.id} display="flex" alignItems="center">
             {data.id}
-            <IconButton onClick={() => removeSelectedContent(data.id)}>
-              <Cancel />
+            <IconButton color="secondary" onClick={() => removeSelectedContent(data.id)}>
+              <CloseCircleOutlined />
             </IconButton>
           </Box>
         ))}

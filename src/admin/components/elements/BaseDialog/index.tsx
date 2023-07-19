@@ -22,7 +22,7 @@ export const BaseDialog: React.FC<Props> = ({ open, title, body, confirm, cancel
         <DialogContentText>{body}</DialogContentText>
       </DialogContent>
       <DialogActions sx={{ px: 3, pb: 2 }}>
-        <Button onClick={cancel.action} autoFocus>
+        <Button onClick={cancel.action} autoFocus color="secondary">
           {cancel.label}
         </Button>
         <Button variant="contained" onClick={confirm.action}>

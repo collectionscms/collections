@@ -23,10 +23,28 @@ When you're ready for production, run `npm run build` then `npm run start`.
 
 To chat with other community members you can join the [Superfast Discord](https://discord.gg/a6FYDkV3Vk).
 
+## 📌 Road Map
+
+### Short
+
+- Beta version release
+- Publish live demo
+- Determine service name :)
+
+### Mid
+
+- GraphQL
+- Provides migration tools from legacy CMS
+
+### Long
+
+- Supports MSSQL and OracleSQL
+- Authentication via OAuth
+
 ## 💚 Tech Stack
 
 - Self-hosted - know where your data is stored!
-- DB - RDB(MySQL, PostgreSQL, SQLite).
+- DB - RDB(MySQL, PostgreSQL, SQLite)
 - Backend - Node.js, Express
 - Admin - React, MUI
 

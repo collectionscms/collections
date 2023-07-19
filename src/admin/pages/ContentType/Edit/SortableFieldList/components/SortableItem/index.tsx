@@ -1,10 +1,11 @@
+import { HolderOutlined, MoreOutlined } from '@ant-design/icons';
 import type { DraggableSyntheticListeners, UniqueIdentifier } from '@dnd-kit/core';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { DragIndicatorOutlined, MoreVertOutlined } from '@mui/icons-material';
-import { Button, Card } from '@mui/material';
+import { Card } from '@mui/material';
 import type { CSSProperties, PropsWithChildren } from 'react';
 import React, { createContext, useContext, useMemo } from 'react';
+import { IconButton } from 'superfast-ui';
 
 type Props = {
   id: UniqueIdentifier;
@@ -59,9 +60,9 @@ export const SortableItemMenu: React.FC<{
   onClickItem(e: React.MouseEvent): void;
 }> = ({ onClickItem }) => {
   return (
-    <Button onClick={onClickItem}>
-      <MoreVertOutlined />
-    </Button>
+    <IconButton color="secondary" onClick={onClickItem}>
+      <MoreOutlined style={{ fontSize: '1.15rem' }} />
+    </IconButton>
   );
 };
 
@@ -69,8 +70,8 @@ export const DragHandle: React.FC = () => {
   const { attributes, listeners, ref } = useContext(SortableItemContext);
 
   return (
-    <Button {...attributes} {...listeners} ref={ref}>
-      <DragIndicatorOutlined />
-    </Button>
+    <IconButton {...attributes} {...listeners} ref={ref}>
+      <HolderOutlined style={{ fontSize: '1.15rem' }} />
+    </IconButton>
   );
 };

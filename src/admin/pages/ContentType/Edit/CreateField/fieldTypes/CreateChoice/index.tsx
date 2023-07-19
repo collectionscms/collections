@@ -1,21 +1,22 @@
+import { CloseOutlined } from '@ant-design/icons';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { CloseOutlined } from '@mui/icons-material';
 import {
   Box,
   Button,
+  Divider,
   Drawer,
   FormHelperText,
-  IconButton,
   InputLabel,
   Stack,
   TextField,
   Typography,
-  useTheme,
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { t } from 'i18next';
 import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { IconButton } from 'superfast-ui';
+import { ScrollBar } from '../../../../../../components/elements/ScrollBar/index.js';
 import {
   FormValues,
   createChoice as schema,
@@ -23,7 +24,6 @@ import {
 import { Props } from './types.js';
 
 export const CreateChoice: React.FC<Props> = ({ openState, onSuccess, onClose }) => {
-  const theme = useTheme();
   const {
     control,
     handleSubmit,
@@ -51,63 +51,84 @@ export const CreateChoice: React.FC<Props> = ({ openState, onSuccess, onClose })
   };
 
   return (
-    <Box>
-      <Drawer
-        anchor="right"
-        open={openState}
-        onClose={onToggle()}
-        sx={{ zIndex: theme.zIndex.appBar + 200 }}
+    <Drawer
+      anchor="right"
+      open={openState}
+      onClose={onToggle()}
+      PaperProps={{
+        sx: {
+          width: { xs: 340, md: 660 },
+        },
+      }}
+    >
+      <ScrollBar
+        sx={{
+          '& .simplebar-content': {
+            display: 'flex',
+            flexDirection: 'column',
+          },
+        }}
       >
-        <Stack direction="row" columnGap={2} sx={{ p: 1 }}>
-          <IconButton aria-label="close" onClick={onClose}>
-            <CloseOutlined />
-          </IconButton>
-          <Box display="flex" alignItems="center">
-            <Typography variant="h6">{t('add_new_choice')}</Typography>
-          </Box>
-        </Stack>
+        <Box sx={{ p: 3 }}>
+          <Stack direction="row" alignItems="center" justifyContent="space-between">
+            <Typography variant="h4">{t('add_new_choice')}</Typography>
+            <IconButton
+              color="secondary"
+              size="small"
+              sx={{ fontSize: '0.875rem' }}
+              onClick={onClose}
+            >
+              <CloseOutlined />
+            </IconButton>
+          </Stack>
+        </Box>
+        <Divider />
         <Stack component="form" onSubmit={handleSubmit(onSubmit)}>
-          <Stack rowGap={3} sx={{ p: 2 }}>
+          <Stack rowGap={3} sx={{ p: 3 }}>
             <Grid container spacing={3} columns={{ xs: 1, sm: 4 }}>
               <Grid xs={1} sm={2}>
-                <InputLabel required>{t('value')}</InputLabel>
-                <Controller
-                  name="value"
-                  control={control}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      type="text"
-                      fullWidth
-                      error={errors.value !== undefined}
-                    />
-                  )}
-                />
-                <FormHelperText error>{errors.value?.message}</FormHelperText>
+                <Stack spacing={1}>
+                  <InputLabel required>{t('value')}</InputLabel>
+                  <Controller
+                    name="value"
+                    control={control}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        type="text"
+                        fullWidth
+                        error={errors.value !== undefined}
+                      />
+                    )}
+                  />
+                  <FormHelperText error>{errors.value?.message}</FormHelperText>
+                </Stack>
               </Grid>
               <Grid xs={1} sm={2}>
-                <InputLabel required>{t('label')}</InputLabel>
-                <Controller
-                  name="label"
-                  control={control}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      type="text"
-                      fullWidth
-                      error={errors.label !== undefined}
-                    />
-                  )}
-                />
-                <FormHelperText error>{errors.label?.message}</FormHelperText>
+                <Stack spacing={1}>
+                  <InputLabel required>{t('label')}</InputLabel>
+                  <Controller
+                    name="label"
+                    control={control}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        type="text"
+                        fullWidth
+                        error={errors.label !== undefined}
+                      />
+                    )}
+                  />
+                  <FormHelperText error>{errors.label?.message}</FormHelperText>
+                </Stack>
               </Grid>
             </Grid>
-            <Button variant="contained" type="submit" size="large" fullWidth>
+            <Button variant="contained" type="submit" fullWidth>
               {t('add')}
             </Button>
           </Stack>
         </Stack>
-      </Drawer>
-    </Box>
+      </ScrollBar>
+    </Drawer>
   );
 };

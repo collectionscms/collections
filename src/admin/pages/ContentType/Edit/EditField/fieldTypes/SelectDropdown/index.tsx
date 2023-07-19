@@ -1,5 +1,5 @@
+import { CloseCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { AddOutlined, Cancel } from '@mui/icons-material';
 import {
   Box,
   Button,
@@ -7,7 +7,6 @@ import {
   Divider,
   FormControlLabel,
   FormHelperText,
-  IconButton,
   InputLabel,
   Stack,
   TextField,
@@ -17,6 +16,7 @@ import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import React, { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { IconButton } from 'superfast-ui';
 import { Choice } from '../../../../../../../config/types.js';
 import { logger } from '../../../../../../../utilities/logger.js';
 import { shallowEqualObject } from '../../../../../../../utilities/shallowEqualObject.js';
@@ -105,14 +105,16 @@ export const SelectDropdownType: React.FC<Props> = (props) => {
         onSuccess={(choice) => handleCreateChoiceSuccess(choice)}
         onClose={() => onToggleCreateChoice(false)}
       />
-      <Stack component="form" onSubmit={handleSubmit(onSubmit)} sx={{ p: 2 }}>
-        <Stack rowGap={3}>
-          <Grid container spacing={3} columns={{ xs: 1, sm: 4 }}>
-            <Grid xs={1} sm={2}>
+      <Stack component="form" onSubmit={handleSubmit(onSubmit)} rowGap={3}>
+        <Grid container spacing={3} columns={{ xs: 1, sm: 4 }}>
+          <Grid xs={1} sm={2}>
+            <Stack spacing={1}>
               <InputLabel required>{t('field')}</InputLabel>
               <TextField type="text" fullWidth disabled defaultValue={meta.field} />
-            </Grid>
-            <Grid xs={1} sm={2}>
+            </Stack>
+          </Grid>
+          <Grid xs={1} sm={2}>
+            <Stack spacing={1}>
               <InputLabel required>{t('label')}</InputLabel>
               <Controller
                 name="label"
@@ -128,9 +130,11 @@ export const SelectDropdownType: React.FC<Props> = (props) => {
                 )}
               />
               <FormHelperText error>{errors.label?.message}</FormHelperText>
-            </Grid>
-            <Grid xs={1} sm={2}>
-              <InputLabel htmlFor="field">{t('required_fields')}</InputLabel>
+            </Stack>
+          </Grid>
+          <Grid xs={1} sm={2}>
+            <Stack spacing={1}>
+              <InputLabel>{t('required_fields')}</InputLabel>
               <Controller
                 name="required"
                 control={control}
@@ -143,9 +147,11 @@ export const SelectDropdownType: React.FC<Props> = (props) => {
                 )}
               />
               <FormHelperText error>{errors.required?.message}</FormHelperText>
-            </Grid>
-            <Grid xs={1} sm={2}>
-              <InputLabel htmlFor="field">{t('readonly')}</InputLabel>
+            </Stack>
+          </Grid>
+          <Grid xs={1} sm={2}>
+            <Stack spacing={1}>
+              <InputLabel>{t('readonly')}</InputLabel>
               <Controller
                 name="readonly"
                 control={control}
@@ -158,9 +164,11 @@ export const SelectDropdownType: React.FC<Props> = (props) => {
                 )}
               />
               <FormHelperText error>{errors.readonly?.message}</FormHelperText>
-            </Grid>
-            <Grid xs={1} sm={2}>
-              <InputLabel htmlFor="field">{t('hidden')}</InputLabel>
+            </Stack>
+          </Grid>
+          <Grid xs={1} sm={2}>
+            <Stack spacing={1}>
+              <InputLabel>{t('hidden')}</InputLabel>
               <Controller
                 name="hidden"
                 control={control}
@@ -173,37 +181,37 @@ export const SelectDropdownType: React.FC<Props> = (props) => {
                 )}
               />
               <FormHelperText error>{errors.hidden?.message}</FormHelperText>
-            </Grid>
+            </Stack>
           </Grid>
-          <Divider />
-          <Typography>{t('choices')}</Typography>
-          <Stack rowGap={1}>
-            {fields.length > 0 ? (
-              fields.map((field, index) => (
-                <Stack direction="row" columnGap={1} key={field.id}>
-                  <Box display="flex" alignItems="center">
-                    <Typography>{field.label}</Typography>
-                  </Box>
-                  <IconButton onClick={() => remove(index)}>
-                    <Cancel />
-                  </IconButton>
-                </Stack>
-              ))
-            ) : (
-              <Typography variant="caption">{t('no_choice')}</Typography>
-            )}
-          </Stack>
-          <Button
-            variant="outlined"
-            startIcon={<AddOutlined />}
-            onClick={() => onToggleCreateChoice(true)}
-          >
-            {t('add_new_choice')}
-          </Button>
-          <Button variant="contained" type="submit" size="large" disabled={isMutating} fullWidth>
-            {t('save')}
-          </Button>
+        </Grid>
+        <Divider />
+        <Typography>{t('choices')}</Typography>
+        <Stack rowGap={1}>
+          {fields.length > 0 ? (
+            fields.map((field, index) => (
+              <Stack direction="row" columnGap={1} key={field.id}>
+                <Box display="flex" alignItems="center">
+                  <Typography>{field.label}</Typography>
+                </Box>
+                <IconButton color="secondary" onClick={() => remove(index)}>
+                  <CloseCircleOutlined />
+                </IconButton>
+              </Stack>
+            ))
+          ) : (
+            <Typography variant="caption">{t('no_choice')}</Typography>
+          )}
         </Stack>
+        <Button
+          variant="outlined"
+          startIcon={<PlusOutlined style={{ fontSize: '10px' }} />}
+          onClick={() => onToggleCreateChoice(true)}
+        >
+          {t('add_new_choice')}
+        </Button>
+        <Button variant="contained" type="submit" disabled={isMutating} fullWidth>
+          {t('save')}
+        </Button>
       </Stack>
     </>
   );

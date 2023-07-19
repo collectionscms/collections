@@ -1,4 +1,4 @@
-import { PhotoCamera } from '@mui/icons-material';
+import { CameraFilled } from '@ant-design/icons';
 import { Box, IconButton } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -21,13 +21,6 @@ const FileImageTypeImpl: React.FC<Props> = ({
   const { trigger: createFileImageTrigger } = createFileImage();
 
   useEffect(() => {
-    const watchId = watch(meta.field);
-    if (watchId && watchId !== fileId) {
-      setFileId(watchId);
-    }
-  }, [watch(meta.field)]);
-
-  useEffect(() => {
     const setFileImage = async () => {
       try {
         const res = await getFileImageTrigger();
@@ -44,6 +37,22 @@ const FileImageTypeImpl: React.FC<Props> = ({
       setFileImage();
     }
   }, [fileId]);
+
+  const value = watch(meta.field);
+
+  useEffect(() => {
+    if (value === undefined) {
+      initializeFieldAsNull();
+    }
+
+    if (value && value !== fileId) {
+      setFileId(value);
+    }
+  }, [value]);
+
+  const initializeFieldAsNull = () => {
+    setValue(meta.field, null);
+  };
 
   const onSelectedFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -82,9 +91,9 @@ const FileImageTypeImpl: React.FC<Props> = ({
           backgroundRepeat: 'no-repeat',
         }}
       >
-        <IconButton color="primary" aria-label="upload picture" component="label">
+        <IconButton color="secondary" component="label" sx={{ fontSize: '30px' }}>
           <input hidden accept="image/*" type="file" onChange={onSelectedFile} />
-          <PhotoCamera />
+          <CameraFilled />
         </IconButton>
         <input hidden {...register(meta.field, { ...required })} />
       </Box>

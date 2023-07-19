@@ -2,13 +2,13 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, FormHelperText, InputLabel, Stack, TextField } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { useSnackbar } from 'notistack';
-import React, { Suspense, useEffect } from 'react';
+import React, { Suspense } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { MainCard } from 'superfast-ui';
 import { logger } from '../../../utilities/logger.js';
 import { Loading } from '../../components/elements/Loading/index.js';
 import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.js';
-import { useDocumentInfo } from '../../components/utilities/DocumentInfo/index.js';
 import {
   FormValues,
   updateProjectSetting as updateProjectSettingSchema,
@@ -16,14 +16,13 @@ import {
 import { ProjectSettingContextProvider, useProjectSetting } from './Context/index.js';
 
 const ProjectImpl: React.FC = () => {
-  const { localizedLabel } = useDocumentInfo();
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
   const { getProjectSetting, updateProjectSetting } = useProjectSetting();
   const { data: projectSetting } = getProjectSetting({
     suspense: true,
   });
-  const { data: updatedProjectSetting, trigger, isMutating } = updateProjectSetting();
+  const { trigger, isMutating } = updateProjectSetting();
   const {
     control,
     handleSubmit,
@@ -33,14 +32,10 @@ const ProjectImpl: React.FC = () => {
     resolver: yupResolver(updateProjectSettingSchema()),
   });
 
-  useEffect(() => {
-    if (updatedProjectSetting === undefined) return;
-    enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
-  }, [updatedProjectSetting]);
-
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
       await trigger(form);
+      enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
     } catch (e) {
       logger.error(e);
     }
@@ -48,39 +43,43 @@ const ProjectImpl: React.FC = () => {
 
   return (
     <Suspense fallback={<Loading />}>
-      <Stack component="form" onSubmit={handleSubmit(onSubmit)} rowGap={3}>
-        <Grid container spacing={2}>
-          <Grid xs>
-            <h1>{localizedLabel}</h1>
-          </Grid>
-          <Grid container columnSpacing={2} alignItems="center">
-            <Grid>
-              <Button variant="contained" type="submit" disabled={isMutating}>
-                {t('update')}
-              </Button>
-            </Grid>
-          </Grid>
+      <Grid container spacing={2.5}>
+        <Grid xs={12} lg={8}>
+          <MainCard>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Grid container spacing={3}>
+                <Grid xs={12}>
+                  <Stack spacing={1}>
+                    <InputLabel htmlFor="project_name">{t('project_name')}</InputLabel>
+                    <Controller
+                      name="name"
+                      control={control}
+                      render={({ field }) => (
+                        <TextField
+                          {...field}
+                          id="project_name"
+                          type="text"
+                          fullWidth
+                          placeholder={`${t('input_placeholder')} Superfast`}
+                          error={errors.name !== undefined}
+                        />
+                      )}
+                    />
+                    <FormHelperText error>{errors.name?.message}</FormHelperText>
+                  </Stack>
+                </Grid>
+                <Grid xs={12}>
+                  <Stack direction="row" justifyContent="flex-end">
+                    <Button variant="contained" type="submit" disabled={isMutating}>
+                      {t('update')}
+                    </Button>
+                  </Stack>
+                </Grid>
+              </Grid>
+            </form>
+          </MainCard>
         </Grid>
-        <Grid container columns={{ xs: 1, lg: 4 }}>
-          <Grid xs={1}>
-            <InputLabel required>{t('project_name')}</InputLabel>
-            <Controller
-              name="name"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  type="text"
-                  fullWidth
-                  placeholder={`${t('input_placeholder')} Superfast`}
-                  error={errors.name !== undefined}
-                />
-              )}
-            />
-            <FormHelperText error>{errors.name?.message}</FormHelperText>
-          </Grid>
-        </Grid>
-      </Stack>
+      </Grid>
     </Suspense>
   );
 };

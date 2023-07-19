@@ -18,8 +18,6 @@ export const removeAuthorization = () => {
   delete api.defaults.headers.common.Authorization;
 };
 
-var refreshing = false;
-
 /**
  * When an expired access token is detected, the function will attempt to
  * refresh the token and retry the request. If the token refresh fails, the
@@ -35,14 +33,10 @@ var refreshing = false;
 export const attachRetry = (onRequestToken: () => Promise<string | null>, onError: () => void) => {
   axiosRetry(api, {
     retryCondition: async (error: AxiosError) => {
-      if (refreshing) return false;
-
       const apiError = error.response?.data as ApiError;
       if (!apiError) return false;
 
       if (apiError.code === 'token_expired') {
-        refreshing = true;
-
         delete error.config!.headers.Authorization;
         removeAuthorization();
 
@@ -54,8 +48,6 @@ export const attachRetry = (onRequestToken: () => Promise<string | null>, onErro
 
         error.config!.headers.Authorization = `Bearer ${token}`;
         setAuthorization(token);
-
-        refreshing = false;
 
         return true;
       } else if (apiError.status === 500) {

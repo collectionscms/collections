@@ -1,11 +1,12 @@
-import { DeleteOutlineOutlined } from '@mui/icons-material';
-import { Button } from '@mui/material';
+import { DeleteOutlined } from '@ant-design/icons';
+import { Tooltip } from '@mui/material';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { IconButton } from 'superfast-ui';
 import { DeleteDocument } from '../DeleteDocument/index.js';
 import { Props } from './types.js';
 
-export const DeleteHeaderButton: React.FC<Props> = ({ id, slug, disabled, onSuccess }) => {
+export const DeleteButton: React.FC<Props> = ({ id, slug, disabled, onSuccess }) => {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
 
@@ -30,14 +31,11 @@ export const DeleteHeaderButton: React.FC<Props> = ({ id, slug, disabled, onSucc
         onSuccess={handleOnSuccess}
         onClose={handleOnClose}
       />
-      <Button
-        variant="text"
-        disabled={disabled}
-        startIcon={<DeleteOutlineOutlined />}
-        onClick={handleClickOpen}
-      >
-        {t('delete')}
-      </Button>
+      <Tooltip title={t('delete')} arrow placement="top">
+        <IconButton color="error" disabled={disabled} onClick={handleClickOpen}>
+          <DeleteOutlined />
+        </IconButton>
+      </Tooltip>
     </>
   );
 };

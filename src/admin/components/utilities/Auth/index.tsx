@@ -77,8 +77,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       })
       .catch((e) => {
         logger.error(e);
-        removeAuthorization();
-        mutate({ token: null, user: null }, false);
+        if (e.response?.status !== 401) {
+          removeAuthorization();
+          mutate({ token: null, user: null }, false);
+        }
         return null;
       })
   );

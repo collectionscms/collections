@@ -1,14 +1,16 @@
-import { Box, Button, Drawer, Stack, TextField, useTheme } from '@mui/material';
+import { SendOutlined } from '@ant-design/icons';
+import { Box, Button, Drawer, Stack, TextField, Tooltip, useTheme } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { IconButton } from 'superfast-ui';
 import { useAuth } from '../../../components/utilities/Auth/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
 import { ContentContextProvider } from '../Context/index.js';
 import { Props } from './types.js';
 
-const ApiPreviewImpl: React.FC<Props> = ({ collection, singleton }) => {
+const ApiPreviewImpl: React.FC<Props> = ({ collection }) => {
   const { t } = useTranslation();
   const theme = useTheme();
   const { token } = useAuth();
@@ -44,9 +46,11 @@ const ApiPreviewImpl: React.FC<Props> = ({ collection, singleton }) => {
 
   return (
     <>
-      <Button variant="contained" onClick={toggleDrawer(true)}>
-        {t('api_preview')}
-      </Button>
+      <Tooltip title={t('api_preview')} arrow placement="top">
+        <IconButton color="secondary" onClick={toggleDrawer(true)}>
+          <SendOutlined style={{ fontSize: '20px' }} />
+        </IconButton>
+      </Tooltip>
       <Drawer
         anchor="right"
         open={open}
