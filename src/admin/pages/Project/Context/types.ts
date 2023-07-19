@@ -4,5 +4,5 @@ import { ProjectSetting } from '../../../../config/types.js';
 
 export type ProjectSettingContext = {
   getProjectSetting: (config?: SWRConfiguration) => SWRResponse<ProjectSetting>;
-  updateProjectSetting: () => SWRMutationResponse<void, any, Record<string, any>, any>;
+  updateProjectSetting: () => SWRMutationResponse<void, any, string, Record<string, any>>;
 };

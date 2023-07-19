@@ -9,8 +9,8 @@ export type AuthContext<T = AuthUser> = {
   login: () => SWRMutationResponse<
     { token: string; user: AuthUser },
     any,
-    Record<string, any>,
-    any
+    string,
+    Record<string, any>
   >;
   logout: () => SWRMutationResponse;
 };

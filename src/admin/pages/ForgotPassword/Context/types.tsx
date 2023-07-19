@@ -1,5 +1,5 @@
 import { SWRMutationResponse } from 'swr/mutation';
 
 export type ForgotPasswordContext = {
-  forgotPassword: () => SWRMutationResponse<string, any, Record<string, any>, any>;
+  forgotPassword: () => SWRMutationResponse<string, any, string, Record<string, any>>;
 };

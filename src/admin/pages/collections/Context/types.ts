@@ -15,17 +15,17 @@ export type ContentContext = {
     canFetch?: boolean,
     config?: SWRConfiguration
   ) => SWRResponse<Field[]>;
-  createContent: (collection: string) => SWRMutationResponse<number, any, Record<string, any>, any>;
+  createContent: (collection: string) => SWRMutationResponse<number, any, string, Record<string, any>>;
   updateContent: (
     collection: string,
     id: string
-  ) => SWRMutationResponse<void, any, Record<string, any>, any>;
+  ) => SWRMutationResponse<void, any, string, Record<string, any>>;
   getFileImage: (id: string | null) => SWRMutationResponse<{ file: File; raw: string }>;
   createFileImage: () => SWRMutationResponse<
     { file: File; raw: string },
     any,
-    Record<string, any>,
-    any
+    string,
+    Record<string, any>
   >;
   getRelations: (collection: string, field: string) => SWRResponse<Relation[]>;
 };
