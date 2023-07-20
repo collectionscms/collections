@@ -1,0 +1,24 @@
+name: Integration Tests
+
+on:
+  pull_request:
+    branches:
+      - main
+
+concurrency:
+  group: integration-pr-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  integration:
+    name: sqlite3
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Yarn install
+        run: yarn install
+
+      - name: Run Tests
+        run: TEST_DB='sqlite3' yarn test:int
