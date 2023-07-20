@@ -1,0 +1,29 @@
+name: Integration Tests
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: integration-main
+  cancel-in-progress: true
+
+jobs:
+  integration:
+    name: ${{ matrix.database }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        database:
+          - sqlite3
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Yarn install
+        run: yarn install
+
+      - name: Run Tests
+        run: TEST_DB=${{ matrix.database }} yarn test:int
