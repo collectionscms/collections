@@ -1,11 +1,10 @@
 import { Knex } from 'knex';
+import { allDatabases } from './utilities/testDatabases.js';
 
-export const allVendors = ['sqlite3'];
-type Vendor = (typeof allVendors)[number];
+type Database = (typeof allDatabases)[number];
 
 export type Config = {
-  knexConfig: Record<Vendor, Knex.Config>;
-  envs: Record<Vendor, Record<string, string>>;
+  knexConfig: Record<Database, Knex.Config>;
 };
 
 const knexConfig = {
@@ -26,13 +25,6 @@ export const config: Config = {
       },
       useNullAsDefault: true,
       ...knexConfig,
-    },
-  },
-  envs: {
-    sqlite3: {
-      DB_CLIENT: 'sqlite3',
-      DB_FILENAME: './test.db',
-      PORT: '40001',
     },
   },
 };
