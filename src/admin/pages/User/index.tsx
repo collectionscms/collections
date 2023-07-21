@@ -30,13 +30,7 @@ const UserPageImpl: React.FC = () => {
 
     switch (fields[i].field) {
       case 'name':
-        return (
-          <Cell
-            colIndex={i}
-            type={fields[i].type}
-            cellData={`${row.last_name} ${row.first_name}`}
-          />
-        );
+        return <Cell colIndex={i} type={fields[i].type} cellData={`${row.user_name}`} />;
       case 'api_key':
         return <Cell colIndex={i} type={fields[i].type} cellData={row.api_key && t('valid')} />;
       case 'role':

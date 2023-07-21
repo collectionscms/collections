@@ -44,8 +44,6 @@
   "field_property": "Field Property",
   "required_fields": "Required Fields",
   "required_at_creation": "Require value at creation",
-  "last_name": "Last Name",
-  "first_name": "First Name",
   "api_key": "API Key",
   "is_active": "Active",
   "generate_api_key": "Generate API Key",

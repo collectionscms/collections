@@ -43,8 +43,6 @@ const CreateUserPageImpl: React.FC = () => {
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
-      first_name: '',
-      last_name: '',
       user_name: '',
       email: '',
       password: '',
@@ -79,42 +77,6 @@ const CreateUserPageImpl: React.FC = () => {
         <MainCard>
           <form onSubmit={handleSubmit(onSubmit)}>
             <Grid container spacing={3}>
-              <Grid xs={12} sm={6}>
-                <Stack spacing={1}>
-                  <InputLabel required>{t('last_name')}</InputLabel>
-                  <Controller
-                    name="last_name"
-                    control={control}
-                    render={({ field }) => (
-                      <TextField
-                        {...field}
-                        type="text"
-                        fullWidth
-                        error={errors.last_name !== undefined}
-                      />
-                    )}
-                  />
-                  <FormHelperText error>{errors.last_name?.message}</FormHelperText>
-                </Stack>
-              </Grid>
-              <Grid xs={12} sm={6}>
-                <Stack spacing={1}>
-                  <InputLabel required>{t('first_name')}</InputLabel>
-                  <Controller
-                    name="first_name"
-                    control={control}
-                    render={({ field }) => (
-                      <TextField
-                        {...field}
-                        type="text"
-                        fullWidth
-                        error={errors.first_name !== undefined}
-                      />
-                    )}
-                  />
-                  <FormHelperText error>{errors.first_name?.message}</FormHelperText>
-                </Stack>
-              </Grid>
               <Grid xs={12} sm={6}>
                 <Stack spacing={1}>
                   <InputLabel required>{t('user_name')}</InputLabel>

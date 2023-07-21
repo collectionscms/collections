@@ -23,8 +23,6 @@ export const seedProduction = async (email: string, password: string): Promise<v
 
     await usersRepository.createMany([
       {
-        first_name: 'Admin',
-        last_name: 'User',
         user_name: 'admin',
         email,
         password: hashed,

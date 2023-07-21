@@ -66,8 +66,6 @@ const EditUserPageImpl: React.FC = () => {
   }, []);
 
   const setDefaultValue = (user: User) => {
-    setValue('first_name', user.first_name);
-    setValue('last_name', user.last_name);
     setValue('user_name', user.user_name);
     setValue('email', user.email);
     setValue('password', '');
@@ -108,42 +106,6 @@ const EditUserPageImpl: React.FC = () => {
           <MainCard>
             <form onSubmit={handleSubmit(onSubmit)}>
               <Grid container spacing={3}>
-                <Grid xs={12} sm={6}>
-                  <Stack spacing={1}>
-                    <InputLabel required>{t('last_name')}</InputLabel>
-                    <Controller
-                      name="last_name"
-                      control={control}
-                      render={({ field }) => (
-                        <TextField
-                          {...field}
-                          type="text"
-                          fullWidth
-                          error={errors.last_name !== undefined}
-                        />
-                      )}
-                    />
-                    <FormHelperText error>{errors.last_name?.message}</FormHelperText>
-                  </Stack>
-                </Grid>
-                <Grid xs={12} sm={6}>
-                  <Stack spacing={1}>
-                    <InputLabel required>{t('first_name')}</InputLabel>
-                    <Controller
-                      name="first_name"
-                      control={control}
-                      render={({ field }) => (
-                        <TextField
-                          {...field}
-                          type="text"
-                          fullWidth
-                          error={errors.first_name !== undefined}
-                        />
-                      )}
-                    />
-                    <FormHelperText error>{errors.first_name?.message}</FormHelperText>
-                  </Stack>
-                </Grid>
                 <Grid xs={12} sm={6}>
                   <Stack spacing={1}>
                     <InputLabel required>{t('user_name')}</InputLabel>

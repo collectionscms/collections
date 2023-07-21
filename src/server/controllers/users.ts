@@ -150,8 +150,6 @@ router.post(
 const payload = (user: any) => {
   return {
     id: user.id,
-    last_name: user.last_name,
-    first_name: user.first_name,
     user_name: user.user_name,
     email: user.email,
     is_active: user.is_active,

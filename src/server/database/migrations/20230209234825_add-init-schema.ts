@@ -11,8 +11,6 @@ export async function up(knex: Knex): Promise<void> {
 
   await knex.schema.createTable('superfast_users', (table) => {
     table.increments('id').primary().notNullable();
-    table.string('first_name', 255).notNullable();
-    table.string('last_name', 255).notNullable();
     table.string('user_name', 255).notNullable();
     table.string('email', 255).unique().notNullable();
     table.string('password', 255).notNullable();
