@@ -43,4 +43,4 @@ jobs:
         run: yarn install
 
       - name: Run Tests
-        run: yarn test:components
+        run: TEST_DB='sqlite3' yarn test:components
