@@ -26,7 +26,7 @@ export type Field = {
 } & PrimaryKey;
 
 export type User = {
-  user_name: string;
+  name: string;
   email: string;
   password: string;
   is_active: boolean;

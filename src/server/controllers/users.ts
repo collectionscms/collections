@@ -150,7 +150,7 @@ router.post(
 const payload = (user: any) => {
   return {
     id: user.id,
-    user_name: user.user_name,
+    name: user.name,
     email: user.email,
     is_active: user.is_active,
     api_key: user.api_key ? '********' : null,

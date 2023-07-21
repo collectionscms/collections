@@ -3,7 +3,7 @@ import { ObjectSchema } from 'yup';
 import { yup } from '../../yup.js';
 
 export type FormValues = {
-  user_name: string;
+  name: string;
   email: string;
   password?: string | null;
   is_active: boolean;
@@ -13,7 +13,7 @@ export type FormValues = {
 
 export const updateUser = (t: TFunction): ObjectSchema<FormValues> => {
   return yup.object().shape({
-    user_name: yup
+    name: yup
       .string()
       .matches(/^[_0-9a-zA-Z]+$/, t('yup.custom.alphanumeric_and_underscore'))
       .required()

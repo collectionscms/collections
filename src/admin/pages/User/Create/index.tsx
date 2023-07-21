@@ -43,7 +43,7 @@ const CreateUserPageImpl: React.FC = () => {
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
-      user_name: '',
+      name: '',
       email: '',
       password: '',
       api_key: '',
@@ -79,20 +79,20 @@ const CreateUserPageImpl: React.FC = () => {
             <Grid container spacing={3}>
               <Grid xs={12} sm={6}>
                 <Stack spacing={1}>
-                  <InputLabel required>{t('user_name')}</InputLabel>
+                  <InputLabel required>{t('name')}</InputLabel>
                   <Controller
-                    name="user_name"
+                    name="name"
                     control={control}
                     render={({ field }) => (
                       <TextField
                         {...field}
                         type="text"
                         fullWidth
-                        error={errors.user_name !== undefined}
+                        error={errors.name !== undefined}
                       />
                     )}
                   />
-                  <FormHelperText error>{errors.user_name?.message}</FormHelperText>
+                  <FormHelperText error>{errors.name?.message}</FormHelperText>
                 </Stack>
               </Grid>
               <Grid xs={12} sm={6}>
@@ -131,7 +131,7 @@ const CreateUserPageImpl: React.FC = () => {
                   <FormHelperText error>{errors.password?.message}</FormHelperText>
                 </Stack>
               </Grid>
-              <Grid xs={12}>
+              <Grid xs={12} sm={6}>
                 <Stack spacing={1}>
                   <InputLabel htmlFor="api_key">{t('api_key')}</InputLabel>
                   <Controller
