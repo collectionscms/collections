@@ -18,12 +18,19 @@ jobs:
       matrix:
         database:
           - sqlite3
+          - mysql
+          - maria
+          - postgres
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Yarn install
         run: yarn install
+
+      - name: Start Services
+        if: matrix.database != 'sqlite3'
+        run: docker compose -f test/docker-compose.yml up ${{ matrix.database }} -d --quiet-pull --wait
 
       - name: Run Tests
         run: TEST_DB=${{ matrix.database }} yarn test:int

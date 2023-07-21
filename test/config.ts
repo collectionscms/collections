@@ -27,5 +27,38 @@ export const config: Config = {
       useNullAsDefault: true,
       ...knexConfig,
     },
+    mysql: {
+      client: 'mysql',
+      connection: {
+        database: 'superfast',
+        user: 'root',
+        password: 'password',
+        host: 'localhost',
+        port: 30100,
+      },
+      ...knexConfig,
+    },
+    maria: {
+      client: 'mysql',
+      connection: {
+        database: 'superfast',
+        user: 'root',
+        password: 'password',
+        host: 'localhost',
+        port: 30101,
+      },
+      ...knexConfig,
+    },
+    postgres: {
+      client: 'pg',
+      connection: {
+        database: 'superfast',
+        user: 'postgres',
+        password: 'password',
+        host: 'localhost',
+        port: 30200,
+      },
+      ...knexConfig,
+    },
   },
 };
