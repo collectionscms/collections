@@ -1,6 +1,7 @@
 import { Knex } from 'knex';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { promisify } from 'util';
 import { allDatabases } from './utilities/testDatabases.js';
 
 type Database = (typeof allDatabases)[number];
@@ -31,6 +32,13 @@ export const config: Config = {
         filename: './test.db',
       },
       useNullAsDefault: true,
+      pool: {
+        afterCreate: async (conn: any, done: any) => {
+          const run = promisify(conn.run.bind(conn));
+          await run('PRAGMA foreign_keys = ON');
+          done(null, conn);
+        },
+      },
       ...knexConfig,
     },
     mysql: {
