@@ -8,7 +8,7 @@ type Database = (typeof allDatabases)[number];
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const migrationFiles = path.join(__dirname, '../src/server/database/migrations');
+const migrationFiles = path.join(__dirname, '../src/api/database/migrations');
 
 export type Config = {
   knexConfig: Record<Database, Knex.Config & { waitTestSql: string }>;

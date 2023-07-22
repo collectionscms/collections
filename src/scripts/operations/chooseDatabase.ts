@@ -1,5 +1,5 @@
 import inquirer from 'inquirer';
-import { DBClient } from '../../server/database/connection.js';
+import { DBClient } from '../../api/database/connection.js';
 import { Output } from '../../utilities/output.js';
 
 const drivers: Record<DBClient, string> = {

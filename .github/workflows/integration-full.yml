@@ -8,8 +8,8 @@ on:
     branches:
       - main
     paths:
-      - src/server/**
-      - test/server/**
+      - src/api/**
+      - test/api/**
       - package.json
       - .github/workflows/integration-full.yml
 

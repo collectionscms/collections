@@ -1,4 +1,4 @@
-import { SchemaOverview, CollectionOverview } from '../server/database/overview.js';
+import { SchemaOverview, CollectionOverview } from '../api/database/overview.js';
 
 export {};
 

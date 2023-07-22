@@ -1,6 +1,6 @@
 import fse from 'fs-extra';
 import { defaults } from '../../env.js';
-import { Credentials, DBClient } from '../../server/database/connection.js';
+import { Credentials, DBClient } from '../../api/database/connection.js';
 import { Output } from '../../utilities/output.js';
 
 export const writeEnvFile = async (

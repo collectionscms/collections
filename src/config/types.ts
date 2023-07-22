@@ -7,7 +7,7 @@ import {
   Relation as RelationSchema,
   Role as RoleSchema,
   User as UserSchema,
-} from '../server/database/schemas.js';
+} from '../api/database/schemas.js';
 
 // /////////////////////////////////////
 // Configure
