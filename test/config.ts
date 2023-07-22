@@ -1,7 +1,13 @@
 import { Knex } from 'knex';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { allDatabases } from './utilities/testDatabases.js';
 
 type Database = (typeof allDatabases)[number];
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const migrationFiles = path.join(__dirname, '../src/server/database/migrations');
 
 export type Config = {
   knexConfig: Record<Database, Knex.Config & { waitTestSql: string }>;
@@ -10,7 +16,7 @@ export type Config = {
 const knexConfig = {
   waitTestSql: 'SELECT 1',
   migrations: {
-    directory: './test/setups/migrations',
+    directory: migrationFiles,
   },
   seeds: {
     directory: './test/setups/seeds',

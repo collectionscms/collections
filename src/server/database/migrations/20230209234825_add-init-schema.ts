@@ -1,6 +1,6 @@
 import { Knex } from 'knex';
 
-export async function up(knex: Knex): Promise<void> {
+export const up = async (knex: Knex): Promise<void> => {
   await knex.schema.createTable('superfast_roles', (table) => {
     table.increments('id').primary().notNullable();
     table.string('name', 255).notNullable();
@@ -84,9 +84,9 @@ export async function up(knex: Knex): Promise<void> {
     table.integer('height');
     table.timestamps(true, true);
   });
-}
+};
 
-export async function down(knex: Knex): Promise<void> {
+export const down = async (knex: Knex): Promise<void> => {
   await knex.schema
     .dropTable('superfast_roles')
     .dropTable('superfast_users')
@@ -96,4 +96,4 @@ export async function down(knex: Knex): Promise<void> {
     .dropTable('superfast_relations')
     .dropTable('superfast_project_settings')
     .dropTable('superfast_files');
-}
+};
