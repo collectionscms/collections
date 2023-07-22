@@ -4,6 +4,14 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
+    paths:
+      - src/server/**
+      - test/server/**
+      - package.json
+      - .github/workflows/integration-full.yml
 
 concurrency:
   group: integration-main
