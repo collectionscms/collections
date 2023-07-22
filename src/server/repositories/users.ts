@@ -64,7 +64,7 @@ export class UsersRepository extends BaseRepository<User> {
 
   async login(email: string, password: string): Promise<AuthUser> {
     const user = await this.queryBuilder
-      .select('u.id', 'u.user_name', 'u.password', 'u.email', 'u.api_key', {
+      .select('u.id', 'u.name', 'u.password', 'u.email', 'u.api_key', {
         role_id: 'r.id',
         admin_access: 'r.admin_access',
       })
@@ -94,7 +94,7 @@ export class UsersRepository extends BaseRepository<User> {
     }
 
     const user = await this.queryBuilder
-      .select('u.id', 'u.user_name', 'u.api_key', {
+      .select('u.id', 'u.name', 'u.api_key', {
         role_id: 'r.id',
         admin_access: 'r.admin_access',
       })
@@ -118,13 +118,13 @@ export class UsersRepository extends BaseRepository<User> {
   private toAuthUser(user: {
     id: number;
     role_id: number;
-    user_name: string;
+    name: string;
     admin_access: boolean;
   }): AuthUser {
     return {
       id: user.id,
       roleId: user.role_id,
-      userName: user.user_name,
+      name: user.name,
       adminAccess: user.admin_access,
       appAccess: null,
     };

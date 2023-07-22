@@ -64,9 +64,7 @@ const seedingData = async (): Promise<void> => {
   await usersRepository.createMany([
     {
       id: 1,
-      first_name: 'User',
-      last_name: 'Admin',
-      user_name: 'admin',
+      name: 'admin',
       email: 'admin@example.com',
       password,
       is_active: true,
@@ -74,9 +72,7 @@ const seedingData = async (): Promise<void> => {
     },
     {
       id: 2,
-      first_name: 'User',
-      last_name: 'Editor',
-      user_name: 'editor',
+      name: 'editor',
       email: 'editor@example.com',
       password,
       is_active: false,

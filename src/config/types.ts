@@ -24,7 +24,7 @@ export type Config = {
 export type AuthUser = {
   id: number;
   roleId: number;
-  userName: string;
+  name: string;
   adminAccess: boolean;
   appAccess: boolean | null; // access from applications.
 };

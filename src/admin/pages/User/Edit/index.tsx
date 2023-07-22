@@ -66,9 +66,7 @@ const EditUserPageImpl: React.FC = () => {
   }, []);
 
   const setDefaultValue = (user: User) => {
-    setValue('first_name', user.first_name);
-    setValue('last_name', user.last_name);
-    setValue('user_name', user.user_name);
+    setValue('name', user.name);
     setValue('email', user.email);
     setValue('password', '');
     setValue('api_key', '');
@@ -110,56 +108,20 @@ const EditUserPageImpl: React.FC = () => {
               <Grid container spacing={3}>
                 <Grid xs={12} sm={6}>
                   <Stack spacing={1}>
-                    <InputLabel required>{t('last_name')}</InputLabel>
+                    <InputLabel required>{t('name')}</InputLabel>
                     <Controller
-                      name="last_name"
+                      name="name"
                       control={control}
                       render={({ field }) => (
                         <TextField
                           {...field}
                           type="text"
                           fullWidth
-                          error={errors.last_name !== undefined}
+                          error={errors.name !== undefined}
                         />
                       )}
                     />
-                    <FormHelperText error>{errors.last_name?.message}</FormHelperText>
-                  </Stack>
-                </Grid>
-                <Grid xs={12} sm={6}>
-                  <Stack spacing={1}>
-                    <InputLabel required>{t('first_name')}</InputLabel>
-                    <Controller
-                      name="first_name"
-                      control={control}
-                      render={({ field }) => (
-                        <TextField
-                          {...field}
-                          type="text"
-                          fullWidth
-                          error={errors.first_name !== undefined}
-                        />
-                      )}
-                    />
-                    <FormHelperText error>{errors.first_name?.message}</FormHelperText>
-                  </Stack>
-                </Grid>
-                <Grid xs={12} sm={6}>
-                  <Stack spacing={1}>
-                    <InputLabel required>{t('user_name')}</InputLabel>
-                    <Controller
-                      name="user_name"
-                      control={control}
-                      render={({ field }) => (
-                        <TextField
-                          {...field}
-                          type="text"
-                          fullWidth
-                          error={errors.user_name !== undefined}
-                        />
-                      )}
-                    />
-                    <FormHelperText error>{errors.user_name?.message}</FormHelperText>
+                    <FormHelperText error>{errors.name?.message}</FormHelperText>
                   </Stack>
                 </Grid>
                 <Grid xs={12} sm={6}>
@@ -199,7 +161,7 @@ const EditUserPageImpl: React.FC = () => {
                     <FormHelperText error>{errors.password?.message}</FormHelperText>
                   </Stack>
                 </Grid>
-                <Grid xs={12}>
+                <Grid xs={12} sm={6}>
                   <Stack spacing={1}>
                     <InputLabel htmlFor="api_key">{t('api_key')}</InputLabel>
                     <Controller
