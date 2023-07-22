@@ -1,6 +1,7 @@
 import knex, { Knex } from 'knex';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { promisify } from 'util';
 import { env } from '../../env.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -32,10 +33,19 @@ export const getDatabase = (): Knex => {
   const migrationFiles = path.join(__dirname, 'migrations');
   const client = env.DB_CLIENT;
   let connection: Knex.Config['connection'] = {};
+  let pool: Knex.Config['pool'] = {};
 
   if (client === 'sqlite3') {
     connection = {
       filename: env.DB_FILENAME,
+    };
+
+    pool = {
+      afterCreate: async (conn: any, done: any) => {
+        const run = promisify(conn.run.bind(conn));
+        await run('PRAGMA foreign_keys = ON');
+        done(null, conn);
+      },
     };
   } else {
     connection = {
@@ -59,6 +69,7 @@ export const getDatabase = (): Knex => {
       directory: migrationFiles,
       loadExtensions: [env.MIGRATE_EXTENSIONS],
     },
+    pool,
   };
 
   database = knex(config);
