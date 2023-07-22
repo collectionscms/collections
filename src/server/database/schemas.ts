@@ -30,11 +30,11 @@ export type User = {
   email: string;
   password: string;
   is_active: boolean;
-  reset_password_token: string | null;
-  reset_password_expiration: number | null;
-  api_key: string | null;
-  role_id: number | null;
-  updated_at: Date;
+  reset_password_token?: string | null;
+  reset_password_expiration?: number | null;
+  api_key?: string | null;
+  role_id?: number | null;
+  updated_at?: Date;
 } & PrimaryKey;
 
 export type Role = {
