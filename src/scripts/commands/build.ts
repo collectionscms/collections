@@ -4,21 +4,21 @@ import webpack from 'webpack';
 import { logger } from '../../utilities/logger.js';
 import { pathList } from '../../utilities/pathList.js';
 import { adminConfigure } from '../../webpack/adminConfigure.js';
-import { serverConfigure } from '../../webpack/serverConfigure.js';
+import { apiConfigure } from '../../webpack/apiConfigure.js';
 
 export const scriptBuild = async () => {
   rimraf(pathList.build());
 
-  serverConfigure.mode = 'production';
-  serverConfigure.entry = pathList.root('scripts', 'entries', 'start.js');
-  serverConfigure.output!.path = pathList.build();
+  apiConfigure.mode = 'production';
+  apiConfigure.entry = pathList.root('scripts', 'entries', 'start.js');
+  apiConfigure.output!.path = pathList.build();
 
-  const compiler = webpack(adminConfigure);
-  const serverCompiler = webpack(serverConfigure);
+  const adminCompiler = webpack(adminConfigure);
+  const apiCompiler = webpack(apiConfigure);
 
   try {
-    await compilerRun(serverCompiler);
-    await compilerRun(compiler);
+    await compilerRun(adminCompiler);
+    await compilerRun(apiCompiler);
 
     console.log(chalk.green('✅ Built Successfully'));
   } catch (e) {

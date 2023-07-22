@@ -1,6 +1,6 @@
 import knex, { Knex } from 'knex';
-import { User } from '../../../src/server/database/schemas.js';
-import { UsersRepository } from '../../../src/server/repositories/users.js';
+import { User } from '../../../src/api/database/schemas.js';
+import { UsersRepository } from '../../../src/api/repositories/users.js';
 import { config } from '../../config.js';
 import { testDatabases } from '../../utilities/testDatabases.js';
 

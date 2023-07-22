@@ -1,7 +1,7 @@
 import inquirer from 'inquirer';
 import { Credentials } from 'nodemailer/lib/smtp-connection';
 import path from 'path';
-import { DBClient } from '../../server/database/connection.js';
+import { DBClient } from '../../api/database/connection.js';
 
 const filename = ({ filepath }: { filepath: string }): Record<string, string> => ({
   type: 'input',

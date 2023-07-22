@@ -3,7 +3,7 @@ import { Box, Button, Divider, Drawer, Stack, Typography } from '@mui/material';
 import { t } from 'i18next';
 import React, { useEffect, useState } from 'react';
 import { IconButton } from 'superfast-ui';
-import { referencedTypes } from '../../../../../../server/database/schemas.js';
+import { referencedTypes } from '../../../../../../api/database/schemas.js';
 import {
   ContentContextProvider,
   useContent,

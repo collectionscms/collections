@@ -1,5 +1,5 @@
 import knex, { Knex } from 'knex';
-import { ProjectSettingsRepository } from '../../../src/server/repositories/projectSettings.js';
+import { ProjectSettingsRepository } from '../../../src/api/repositories/projectSettings.js';
 import { config } from '../../config.js';
 import { testDatabases } from '../../utilities/testDatabases.js';
 

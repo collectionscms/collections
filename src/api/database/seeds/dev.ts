@@ -1,6 +1,6 @@
 import { Knex } from 'knex';
 import { v4 as uuidv4 } from 'uuid';
-import { oneWayHash } from '../../../server/utilities/oneWayHash.js';
+import { oneWayHash } from '../../utilities/oneWayHash.js';
 import { Output } from '../../../utilities/output.js';
 import { CollectionsRepository } from '../../repositories/collections.js';
 import { ContentsRepository } from '../../repositories/contents.js';
