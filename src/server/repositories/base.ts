@@ -1,6 +1,5 @@
 import type { Knex } from 'knex';
 import { getDatabase } from '../database/connection.js';
-import { env } from '../../env.js';
 
 export type AbstractRepositoryOptions = {
   knex?: Knex;
@@ -61,7 +60,7 @@ export abstract class BaseRepository<T> implements AbstractRepository<T> {
   async create(item: Omit<T, 'id'>): Promise<number> {
     const builder = this.queryBuilder.insert(item);
 
-    switch (env.DB_CLIENT) {
+    switch (this.knex.client.config.client) {
       case 'sqlite3':
       case 'pg':
         builder.returning('id');
