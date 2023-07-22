@@ -10,15 +10,15 @@ import { env } from '../../env.js';
 import { initAdminServer } from '../../express/admin.js';
 import { pathList } from '../../utilities/pathList.js';
 import { adminConfigure } from '../../webpack/adminConfigure.js';
-import { serverConfigure } from '../../webpack/serverConfigure.js';
+import { apiConfigure } from '../../webpack/apiConfigure.js';
 
 export const scriptDev = async () => {
   // /////////////////////////////////////
-  // Server
+  // API
   // /////////////////////////////////////
-  serverConfigure.entry = pathList.root('scripts', 'entries', 'dev.js');
-  serverConfigure.output!.path = pathList.devBuild();
-  serverConfigure.plugins = [
+  apiConfigure.entry = pathList.root('scripts', 'entries', 'dev.js');
+  apiConfigure.output!.path = pathList.devBuild();
+  apiConfigure.plugins = [
     new WebpackShellPluginNext({
       onBuildEnd: {
         scripts: [
@@ -32,8 +32,8 @@ export const scriptDev = async () => {
     }),
   ];
 
-  const serverCompiler = webpack(serverConfigure);
-  serverCompiler.watch(
+  const apiCompiler = webpack(apiConfigure);
+  apiCompiler.watch(
     {
       aggregateTimeout: 300,
     },

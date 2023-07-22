@@ -1,7 +1,7 @@
 import webpack from 'webpack';
 import { pathList } from '../utilities/pathList.js';
 
-export const serverConfigure: webpack.Configuration = {
+export const apiConfigure: webpack.Configuration = {
   mode: 'development',
   target: 'node',
   devtool: 'inline-source-map',
