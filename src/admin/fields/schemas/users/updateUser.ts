@@ -13,11 +13,7 @@ export type FormValues = {
 
 export const updateUser = (t: TFunction): ObjectSchema<FormValues> => {
   return yup.object().shape({
-    name: yup
-      .string()
-      .matches(/^[_0-9a-zA-Z]+$/, t('yup.custom.alphanumeric_and_underscore'))
-      .required()
-      .max(60),
+    name: yup.string().required().max(250),
     email: yup.string().required().email().max(250),
     password: yup
       .string()
