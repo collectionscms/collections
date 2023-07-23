@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { MainCard } from 'superfast-ui';
 import { User } from '../../../config/types.js';
 import { CreateNewButton } from '../../components/elements/CreateNewButton/index.js';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link } from '../../components/elements/Link/index.js';
 import { Cell } from '../../components/elements/Table/Cell/index.js';
 import { Type } from '../../components/elements/Table/Cell/types.js';
 import { Table } from '../../components/elements/Table/index.js';
@@ -33,7 +33,7 @@ const UserPageImpl: React.FC = () => {
       case 'role':
         return <Cell colIndex={i} type={fields[i].type} cellData={row.role?.name} />;
       case 'name':
-        return <RouterLink to={`${row.id}`}>{defaultCell}</RouterLink>;
+        return <Link href={`${row.id}`}>{defaultCell}</Link>;
       default:
         return defaultCell;
     }
