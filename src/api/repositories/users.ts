@@ -120,6 +120,7 @@ export class UsersRepository extends BaseRepository<User> {
     role_id: number;
     name: string;
     admin_access: boolean;
+    api_key: string;
   }): AuthUser {
     return {
       id: user.id,
@@ -127,6 +128,7 @@ export class UsersRepository extends BaseRepository<User> {
       name: user.name,
       adminAccess: user.admin_access,
       appAccess: null,
+      apiKey: user.api_key,
     };
   }
 }
