@@ -1,60 +1,44 @@
-import 'easymde/dist/easymde.min.css';
-import React, { useMemo } from 'react';
+import { Box } from '@mui/material';
+import MDEditor from '@uiw/react-md-editor';
+import React from 'react';
 import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { SimpleMdeReact } from 'react-simplemde-editor';
-import { logger } from '../../../../../utilities/logger.js';
-import { useContent } from '../../../../pages/collections/Context/index.js';
+import { useColorMode } from '../../../utilities/ColorMode/index.js';
 import { Props } from '../types.js';
+import { commands } from './commands.js';
+import './index.css';
 
 export const InputRichTextMdType: React.FC<Props> = ({
   form: { control, register },
   field: meta,
 }) => {
   const { t } = useTranslation();
+  const { mode } = useColorMode();
   const required = meta.required && { required: t('yup.mixed.required') };
-
-  const { createFileImage } = useContent();
-  const { trigger: createFileImageTrigger } = createFileImage();
-
-  const imageUploadFunction = async (file: File, onSuccess: (url: string) => void) => {
-    const params = new FormData();
-    params.append('image', file);
-
-    try {
-      const res = await createFileImageTrigger(params);
-      if (res) {
-        onSuccess(`${window.location.origin}/assets/${res.file.file_name_disk}`);
-      }
-    } catch (e) {
-      logger.error(e);
-    }
-  };
-
-  const options = useMemo(() => {
-    return {
-      uploadImage: true,
-      imageUploadFunction,
-      spellChecker: false,
-      status: false,
-      imageAccept: 'image/png, image/jpeg, image/gif, image/webp',
-      placeholder: 'Type in Markdown',
-    } as EasyMDE.Options;
-  }, []);
 
   return (
     <Controller
       name={meta.field}
       control={control}
       render={({ field }) => (
-        <SimpleMdeReact
-          {...register(meta.field, { ...required })}
-          onChange={(value: string) => {
-            field.onChange(value);
-          }}
-          options={options}
-          value={field.value}
-        />
+        <Box className="container" data-color-mode={mode}>
+          <MDEditor
+            {...register(meta.field, { ...required })}
+            value={field.value}
+            height={400}
+            onChange={(value) => field.onChange(value)}
+            commands={[
+              commands.bold(t('bold')),
+              commands.italic(t('italic')),
+              commands.strikethrough(t('strikethrough')),
+              commands.unorderedList(t('unordered_list')),
+              commands.orderedList(t('ordered_list')),
+              commands.link(t('link')),
+              commands.image(t('image')),
+            ]}
+            extraCommands={[commands.fullScreen(t('full_screen'))]}
+          />
+        </Box>
       )}
     />
   );
