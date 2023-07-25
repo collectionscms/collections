@@ -70,6 +70,8 @@ export const up = async (knex: Knex): Promise<void> => {
   await knex.schema.createTable('superfast_project_settings', (table) => {
     table.increments('id').primary().notNullable();
     table.string('name', 100).notNullable();
+    table.text('before_login');
+    table.text('after_login');
     table.timestamps(true, true);
   });
 
