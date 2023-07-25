@@ -28,7 +28,11 @@ const ProjectImpl: React.FC = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<FormValues>({
-    defaultValues: { name: projectSetting?.name },
+    defaultValues: {
+      name: projectSetting?.name,
+      before_login: projectSetting?.before_login,
+      after_login: projectSetting?.after_login,
+    },
     resolver: yupResolver(updateProjectSettingSchema()),
   });
 
@@ -48,7 +52,7 @@ const ProjectImpl: React.FC = () => {
           <MainCard>
             <form onSubmit={handleSubmit(onSubmit)}>
               <Grid container spacing={3}>
-                <Grid xs={12}>
+                <Grid xs={12} sm={6}>
                   <Stack spacing={1}>
                     <InputLabel htmlFor="project_name">{t('project_name')}</InputLabel>
                     <Controller
@@ -66,6 +70,50 @@ const ProjectImpl: React.FC = () => {
                       )}
                     />
                     <FormHelperText error>{errors.name?.message}</FormHelperText>
+                  </Stack>
+                </Grid>
+                <Grid xs={12}>
+                  <Stack spacing={1}>
+                    <InputLabel htmlFor="before_login">{t('login_top_label')}</InputLabel>
+                    <Controller
+                      name="before_login"
+                      control={control}
+                      render={({ field }) => (
+                        <TextField
+                          {...field}
+                          id="before_login"
+                          type="text"
+                          multiline
+                          rows={2}
+                          fullWidth
+                          placeholder={`${t('input_placeholder')} Support Hours 9:00 - 18:00`}
+                          error={errors.before_login !== undefined}
+                        />
+                      )}
+                    />
+                    <FormHelperText error>{errors.before_login?.message}</FormHelperText>
+                  </Stack>
+                </Grid>
+                <Grid xs={12}>
+                  <Stack spacing={1}>
+                    <InputLabel htmlFor="after_login">{t('login_bottom_label')}</InputLabel>
+                    <Controller
+                      name="after_login"
+                      control={control}
+                      render={({ field }) => (
+                        <TextField
+                          {...field}
+                          id="after_login"
+                          type="text"
+                          multiline
+                          rows={2}
+                          fullWidth
+                          placeholder={`${t('input_placeholder')} <a href="#">Contact us</a>`}
+                          error={errors.after_login !== undefined}
+                        />
+                      )}
+                    />
+                    <FormHelperText error>{errors.after_login?.message}</FormHelperText>
                   </Stack>
                 </Grid>
                 <Grid xs={12}>

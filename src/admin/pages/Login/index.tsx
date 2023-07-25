@@ -10,6 +10,7 @@ import {
   Typography,
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
+import DOMPurify from 'dompurify';
 import React, { useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -45,6 +46,10 @@ const LoginImpl: React.FC = () => {
     }
   }, [user]);
 
+  const sanitizedHtml = (source: string) => {
+    return <Box dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(source) }} />;
+  };
+
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
       await trigger(form);
@@ -59,63 +64,77 @@ const LoginImpl: React.FC = () => {
 
   return (
     <>
-      <Stack direction="row" justifyContent="left" alignItems="center" spacing={2} sx={{ mb: 3.5 }}>
-        <Box sx={{ width: '40px', height: '40px' }}>
-          <Logo />
-        </Box>
-        <Typography variant="h3">{projectSetting?.name}</Typography>
-      </Stack>
-      <Stack component="form" onSubmit={handleSubmit(onSubmit)}>
-        <Grid container spacing={3}>
-          <Grid xs={12}>
-            <Stack spacing={1}>
-              <InputLabel htmlFor="email">{t('email')}</InputLabel>
-              <Controller
-                name="email"
-                control={control}
-                render={({ field }) => (
-                  <TextField {...field} id="email" type="text" error={errors.email !== undefined} />
-                )}
-              />
-              <FormHelperText error>{errors.email?.message}</FormHelperText>
-            </Stack>
+      <Stack spacing={3.5}>
+        <Stack direction="row" justifyContent="left" alignItems="center" spacing={2}>
+          <Box sx={{ width: '40px', height: '40px' }}>
+            <Logo />
+          </Box>
+          <Typography variant="h3">{projectSetting?.name}</Typography>
+        </Stack>
+        {projectSetting?.before_login && sanitizedHtml(projectSetting.before_login)}
+        <Stack component="form" onSubmit={handleSubmit(onSubmit)}>
+          <Grid container spacing={3}>
+            <Grid xs={12}>
+              <Stack spacing={1}>
+                <InputLabel htmlFor="email">{t('email')}</InputLabel>
+                <Controller
+                  name="email"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      id="email"
+                      type="text"
+                      error={errors.email !== undefined}
+                    />
+                  )}
+                />
+                <FormHelperText error>{errors.email?.message}</FormHelperText>
+              </Stack>
+            </Grid>
+            <Grid xs={12}>
+              <Stack spacing={1}>
+                <InputLabel htmlFor="password">{t('password')}</InputLabel>
+                <Controller
+                  name="password"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      id="password"
+                      type="password"
+                      error={errors.password !== undefined}
+                    />
+                  )}
+                />
+                <FormHelperText error>{errors.password?.message}</FormHelperText>
+              </Stack>
+            </Grid>
+            <Grid xs={12} sx={{ mt: -1 }}>
+              <Link
+                variant="h6"
+                component={RouterLink}
+                to="/admin/auth/forgot"
+                color="text.primary"
+              >
+                {t('forgot')}
+              </Link>
+            </Grid>
+            <Grid xs={12}>
+              <Button
+                disableElevation
+                fullWidth
+                variant="contained"
+                type="submit"
+                size="large"
+                disabled={isMutating}
+              >
+                {t('login')}
+              </Button>
+            </Grid>
           </Grid>
-          <Grid xs={12}>
-            <Stack spacing={1}>
-              <InputLabel htmlFor="password">{t('password')}</InputLabel>
-              <Controller
-                name="password"
-                control={control}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    id="password"
-                    type="password"
-                    error={errors.password !== undefined}
-                  />
-                )}
-              />
-              <FormHelperText error>{errors.password?.message}</FormHelperText>
-            </Stack>
-          </Grid>
-          <Grid xs={12} sx={{ mt: -1 }}>
-            <Link variant="h6" component={RouterLink} to="/admin/auth/forgot" color="text.primary">
-              {t('forgot')}
-            </Link>
-          </Grid>
-          <Grid xs={12}>
-            <Button
-              disableElevation
-              fullWidth
-              variant="contained"
-              type="submit"
-              size="large"
-              disabled={isMutating}
-            >
-              {t('login')}
-            </Button>
-          </Grid>
-        </Grid>
+        </Stack>
+        {projectSetting?.after_login && sanitizedHtml(projectSetting.after_login)}
       </Stack>
     </>
   );
