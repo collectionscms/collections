@@ -107,6 +107,8 @@
   "link": "リンク",
   "image": "画像",
   "full_screen": "全画面",
+  "login_top_label": "ログインラベル（上部）",
+  "login_bottom_label": "ログインラベル（下部）",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",
