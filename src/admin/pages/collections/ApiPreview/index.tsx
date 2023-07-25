@@ -15,7 +15,7 @@ import axios, { AxiosError } from 'axios';
 import React, { useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { CodeCard, IconButton, MainCard } from 'superfast-ui';
+import { IconButton, MainCard, SyntaxHighlighter } from 'superfast-ui';
 import { ScrollBar } from '../../../components/elements/ScrollBar/index.js';
 import { TabPanel } from '../../../components/elements/TabPanel/index.js';
 import { useAuth } from '../../../components/utilities/Auth/index.js';
@@ -156,7 +156,9 @@ const ApiPreviewImpl: React.FC<Props> = ({ collection }) => {
               </TabPanel>
             </Stack>
             <Box sx={{ p: 3 }}>
-              <CodeCard language="json" codeString={content || 'no data'} />
+              <MainCard codeHighlight content={false}>
+                <SyntaxHighlighter language="json" codeString={content || 'No data'} />
+              </MainCard>
             </Box>
           </ScrollBar>
         </Drawer>
