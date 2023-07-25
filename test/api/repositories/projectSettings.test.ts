@@ -19,40 +19,47 @@ describe('Project Settings', () => {
     }
   });
 
-  describe('One project setting can be fetched', () => {
-    it.each(testDatabases)('%s', async (database) => {
+  describe('Get', () => {
+    it.each(testDatabases)('%s - should get', async (database) => {
       const connection = databases.get(database)!;
 
-      const service = new ProjectSettingsRepository(tableName, { knex: connection });
-      const data = await service.read({});
+      const repository = new ProjectSettingsRepository(tableName, { knex: connection });
+      const data = await repository.read({});
 
       expect(data[0].name).toBe('superfast');
+      expect(data[0].before_login).toBe('Support Hours 9:00 - 18:00');
+      expect(data[0].after_login).toBe('<a href="#">Contact us</a>');
     });
   });
 
-  describe('Project name can be updated', () => {
-    it.each(testDatabases)('%s', async (database) => {
+  describe('Update', () => {
+    it.each(testDatabases)('%s - should update', async (database) => {
       const connection = databases.get(database)!;
 
-      const service = new ProjectSettingsRepository(tableName, { knex: connection });
-      const data = await service.read({});
+      const repository = new ProjectSettingsRepository(tableName, { knex: connection });
+      const data = await repository.read({});
       const id = data[0].id;
-      const result = await service.update(id, { name: 'superfast2' });
-      const projectSetting = await service.readOne(id);
+      const newData = {
+        name: 'superfast2',
+        before_login: 'Support Hours 10:00 - 19:00',
+        after_login: '<a href="#">support desk</a>',
+      };
+
+      const result = await repository.update(id, newData);
+      const projectSetting = await repository.readOne(id);
 
       expect(result).toBeTruthy();
-      expect(projectSetting.name).toBe('superfast2');
+      expect(projectSetting.name).toBe(newData.name);
+      expect(projectSetting.before_login).toBe(newData.before_login);
+      expect(projectSetting.after_login).toBe(newData.after_login);
     });
-  });
 
-  describe('Project name update fails', () => {
-    it.each(testDatabases)('%s', async (database) => {
+    it.each(testDatabases)('%s - should update fails', async (database) => {
       const connection = databases.get(database)!;
       const nonExistPrimaryKey = -1;
 
-      const service = new ProjectSettingsRepository(tableName, { knex: connection });
-      const result = await service.update(nonExistPrimaryKey, { name: 'superfast2' });
-
+      const repository = new ProjectSettingsRepository(tableName, { knex: connection });
+      const result = await repository.update(nonExistPrimaryKey, { name: 'superfast2' });
       expect(result).toBeFalsy();
     });
   });
