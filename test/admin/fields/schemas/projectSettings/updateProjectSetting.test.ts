@@ -2,11 +2,25 @@ import { updateProjectSetting } from '../../../../../src/admin/fields/schemas/pr
 import { randomString } from '../../../../utilities/factories.js';
 
 describe('Project Settings Update', () => {
-  it('Success', async () => {
-    expect(await updateProjectSetting().isValid({ name: 'example' })).toEqual(true);
+  it('success', async () => {
+    expect(
+      await updateProjectSetting().isValid({
+        name: 'example',
+        before_login: 'Support Hours 9:00 - 18:00',
+        after_login: '<a href="#">Contact us</a>',
+      })
+    ).toEqual(true);
   });
 
-  it('Boundary value check for number of name characters', async () => {
+  it('success with required fields only', async () => {
+    expect(
+      await updateProjectSetting().isValid({
+        name: 'example',
+      })
+    ).toEqual(true);
+  });
+
+  it('boundary value check for number of name characters', async () => {
     expect(await updateProjectSetting().isValid({ name: randomString(100) })).toEqual(true);
     expect(await updateProjectSetting().isValid({ name: randomString(101) })).toEqual(false);
   });

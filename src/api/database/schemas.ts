@@ -51,6 +51,8 @@ export type Permission = {
 
 export type ProjectSetting = {
   name: string;
+  before_login?: string | null;
+  after_login?: string | null;
 } & PrimaryKey;
 
 export type File = {
