@@ -33,7 +33,9 @@ export const seedProduction = async (email: string, password: string): Promise<v
 
     // Project
     Output.info('Creating project settings...');
-    await database('superfast_project_settings').insert([{ name: 'Superfast' }]);
+    await database('superfast_project_settings').insert([
+      { name: 'Superfast', before_login: '', after_login: '' },
+    ]);
 
     process.exit(0);
   } catch (e) {
