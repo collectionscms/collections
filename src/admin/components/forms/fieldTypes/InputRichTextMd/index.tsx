@@ -23,7 +23,7 @@ export const InputRichTextMdType: React.FC<Props> = ({
     return match ? match[1] : '';
   };
 
-  const getCode = (nodes: React.ReactNode[]): string =>
+  const getCode = (nodes: React.ReactNode[] = []): string =>
     nodes
       .map((node) => {
         if (typeof node === 'string') return node;
