@@ -2821,13 +2821,14 @@
     unist-util-visit "^4.1.0"
 
 "@uiw/react-md-editor@^3.23.3":
-  version "3.23.3"
-  resolved "https://registry.yarnpkg.com/@uiw/react-md-editor/-/react-md-editor-3.23.3.tgz#cb7bdd251265f958b7479d99d172967342569445"
-  integrity sha512-19A3atJgDzmNudDN9otkmnV3DYZzqVUqaHj3bo1qdwOzZIYiHlL65NuknzJBZqYkgAP0p4ZZhs1riyvVT7gWyA==
+  version "3.23.4"
+  resolved "https://registry.yarnpkg.com/@uiw/react-md-editor/-/react-md-editor-3.23.4.tgz#ad91206c0800c0fee433163f35d40d255a866798"
+  integrity sha512-2Odij/vgh1mrSzYG0wCFjmUhWyarYN3HypGbu+rxkgTJK8x+MrmlroXU2YcUGwt0PP56s8loobqtsMsCvo7JgQ==
   dependencies:
     "@babel/runtime" "^7.14.6"
     "@uiw/react-markdown-preview" "^4.1.5"
     rehype "~12.0.1"
+    rehype-prism-plus "~1.6.1"
 
 "@webassemblyjs/ast@1.11.5", "@webassemblyjs/ast@^1.11.5":
   version "1.11.5"
@@ -9066,7 +9067,7 @@ refractor@^3.6.0:
     parse-entities "^2.0.0"
     prismjs "~1.27.0"
 
-refractor@^4.7.0:
+refractor@^4.7.0, refractor@^4.8.0:
   version "4.8.1"
   resolved "https://registry.yarnpkg.com/refractor/-/refractor-4.8.1.tgz#fbdd889333a3d86c9c864479622855c9b38e9d42"
   integrity sha512-/fk5sI0iTgFYlmVGYVew90AoYnNMP6pooClx/XKqyeeCQXrL0Kvgn8V0VEht5ccdljbzzF1i3Q213gcntkRExg==
@@ -9138,6 +9139,18 @@ rehype-prism-plus@~1.5.0:
     hast-util-to-string "^2.0.0"
     parse-numeric-range "^1.3.0"
     refractor "^4.7.0"
+    rehype-parse "^8.0.2"
+    unist-util-filter "^4.0.0"
+    unist-util-visit "^4.0.0"
+
+rehype-prism-plus@~1.6.1:
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/rehype-prism-plus/-/rehype-prism-plus-1.6.1.tgz#84a89c7a7756ddcb112df40b9df5f465c3ea9981"
+  integrity sha512-HCLGvrbn9J1FSvsHo3/mJstToVJGe8czeUULpgPZhc3X21XJHCjYlZSBL4dH784WPUz/sW4PCATf8J1o7fgblA==
+  dependencies:
+    hast-util-to-string "^2.0.0"
+    parse-numeric-range "^1.3.0"
+    refractor "^4.8.0"
     rehype-parse "^8.0.2"
     unist-util-filter "^4.0.0"
     unist-util-visit "^4.0.0"
