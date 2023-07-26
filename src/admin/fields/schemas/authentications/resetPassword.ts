@@ -11,11 +11,9 @@ export const resetPassword = (t: TFunction): ObjectSchema<FormValues> => {
   return yup.object().shape({
     password: yup
       .string()
-      .matches(/[a-zA-z]+/, t('yup.custom.one_character'))
-      .matches(/[0-9]+/, t('yup.custom.one_number'))
-      .matches(/[@$!%*#?&]+/, t('yup.custom.one_special_character'))
+      .matches(/[a-zA-z0-9@$!%*#?&]+/, t('yup.custom.alphanumeric_and_special_character'))
       .required()
-      .min(8)
+      .min(4)
       .max(250)
       .required(),
     token: yup.string().required(),
