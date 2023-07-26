@@ -15,7 +15,7 @@ export const createFirstUser = async (projectDir: string): Promise<void> => {
       validate: (input: string) => {
         const emailSchema = Joi.string().email().required();
         const { error } = emailSchema.validate(input);
-        if (error) throw new Error('The email entered is not a valid email address!');
+        if (error) throw new Error(error.message);
         return true;
       },
     },
@@ -25,7 +25,13 @@ export const createFirstUser = async (projectDir: string): Promise<void> => {
       message: 'Password',
       mask: '*',
       validate: (input: string | null) => {
-        if (input === null || input === '') throw new Error('The password cannot be empty!');
+        const passwordSchema = Joi.string()
+          .regex(/[a-zA-z0-9@$!%*#?&]+/)
+          .min(4)
+          .max(250)
+          .required();
+        const { error } = passwordSchema.validate(input);
+        if (error) throw new Error(error.message);
         return true;
       },
     },

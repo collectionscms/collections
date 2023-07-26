@@ -18,13 +18,11 @@ export const updateUser = (t: TFunction): ObjectSchema<FormValues> => {
     password: yup
       .string()
       .notRequired()
-      .matches(/[a-zA-z]+/, { message: t('yup.custom.one_character'), excludeEmptyString: true })
-      .matches(/[0-9]+/, { message: t('yup.custom.one_number'), excludeEmptyString: true })
-      .matches(/[@$!%*#?&]+/, {
-        message: t('yup.custom.one_special_character'),
+      .matches(/[a-zA-z0-9@$!%*#?&]+/, {
+        message: t('yup.custom.alphanumeric_and_special_character'),
         excludeEmptyString: true,
       })
-      .min(8)
+      .min(4)
       .max(250)
       .transform((value) => value || null),
     api_key: yup

@@ -229,11 +229,8 @@
       "is_value": "{{value}}でなければなりません"
     },
     "custom": {
-      "alphanumeric": "半角英数字で入力してください",
-      "alphanumeric_and_underscore": "半角英数字およびアンダースコア（_）で入力してください",
-      "one_character": "半角英字1文字以上入力してください",
-      "one_number": "半角数字1文字以上入力してください",
-      "one_special_character": "記号「@$!%*#?&」1文字以上入力してください"
+      "alphanumeric_and_special_character": "半角英数字および記号「@$!%*#?&」で入力してください",
+      "alphanumeric_and_underscore": "半角英数字およびアンダースコア（_）で入力してください"
     }
   }
 }

@@ -279,6 +279,8 @@ const seedingData = async (): Promise<void> => {
     {
       id: 1,
       name: 'Superfast',
+      before_login: '',
+      after_login: '',
     },
   ]);
 };
