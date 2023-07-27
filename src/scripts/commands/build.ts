@@ -9,16 +9,20 @@ import { apiConfigure } from '../../webpack/apiConfigure.js';
 export const scriptBuild = async () => {
   rimraf(pathList.build());
 
-  apiConfigure.mode = 'production';
-  apiConfigure.entry = pathList.root('scripts', 'entries', 'start.js');
-  apiConfigure.output!.path = pathList.build();
+  const apiCompiler = webpack({
+    ...apiConfigure,
+    mode: 'production',
+    entry: pathList.root('scripts', 'entries', 'start.js'),
+  });
 
-  const adminCompiler = webpack(adminConfigure);
-  const apiCompiler = webpack(apiConfigure);
+  const adminCompiler = webpack({
+    ...adminConfigure,
+    mode: 'production',
+  });
 
   try {
-    await compilerRun(adminCompiler);
     await compilerRun(apiCompiler);
+    await compilerRun(adminCompiler);
 
     console.log(chalk.green('✅ Built Successfully'));
   } catch (e) {
