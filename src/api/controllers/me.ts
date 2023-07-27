@@ -13,20 +13,22 @@ const router = express.Router();
 router.get(
   '/me',
   asyncHandler(async (req: Request, res: Response) => {
+    const repository = new UsersRepository();
+
     // Get access token from request parameter.
     if (req.userId) {
-      const repository = new UsersRepository();
-      const user = await repository.readMe({ id: Number(req.userId) });
-      if (!user) throw new RecordNotFoundException('record_not_found');
-      user.appAccess = true;
+      const me = await repository.readMe({ id: Number(req.userId) });
+      if (!me?.user) throw new RecordNotFoundException('record_not_found');
+      me.user.appAccess = true;
 
-      const accessToken = sign(user, env.ACCESS_TOKEN_TTL);
-      const refreshToken = sign(user, env.REFRESH_TOKEN_TTL);
+      const accessToken = sign(me.user, env.ACCESS_TOKEN_TTL);
+      const refreshToken = sign(me.user, env.REFRESH_TOKEN_TTL);
 
       res.cookie(`${env.COOKIE_PREFIX}-refresh-token`, refreshToken, cookieOptions);
 
       return res.json({
-        user,
+        user: me.user,
+        apiKey: me.apiKey,
         token: accessToken,
       });
     }
@@ -35,10 +37,13 @@ router.get(
     const token = getExtractJwt(req);
     if (token) {
       const verified = verifyJwt(token);
-      return res.json({ user: verified, token: token });
+      const me = await repository.readMe({ id: verified.id });
+      if (!me) throw new RecordNotFoundException('record_not_found');
+
+      return res.json({ user: me.user, apiKey: me.apiKey, token: token });
     }
 
-    res.json({ user: null, token: null });
+    res.json({ user: null, apiKey: null, token: null });
   })
 );
 

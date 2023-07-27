@@ -80,7 +80,10 @@ export class UsersRepository extends BaseRepository<User> {
     return this.toAuthUser(user);
   }
 
-  async readMe(data: { id?: number; apiKey?: string }): Promise<AuthUser | null> {
+  async readMe(data: { id?: number; apiKey?: string }): Promise<{
+    user: AuthUser;
+    apiKey: string | null;
+  } | null> {
     if (!data.id && !data.apiKey) return null;
 
     const condition: { [index: string]: any } = {};
@@ -103,7 +106,7 @@ export class UsersRepository extends BaseRepository<User> {
       .where(condition)
       .first();
 
-    return user ? this.toAuthUser(user) : null;
+    return user ? { user: this.toAuthUser(user), apiKey: user.api_key } : null;
   }
 
   readResetPasswordToken(token: string): Promise<User> {
@@ -120,7 +123,6 @@ export class UsersRepository extends BaseRepository<User> {
     role_id: number;
     name: string;
     admin_access: boolean;
-    api_key: string;
   }): AuthUser {
     return {
       id: user.id,
@@ -128,7 +130,6 @@ export class UsersRepository extends BaseRepository<User> {
       name: user.name,
       adminAccess: user.admin_access,
       appAccess: null,
-      apiKey: user.api_key,
     };
   }
 }
