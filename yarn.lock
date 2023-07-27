@@ -9947,10 +9947,10 @@ stylis@4.2.0:
   resolved "https://registry.yarnpkg.com/stylis/-/stylis-4.2.0.tgz#79daee0208964c8fe695a42fcffcac633a211a51"
   integrity sha512-Orov6g6BB1sDfYgzWfTHDOxamtX1bE/zo104Dh9e6fqJ3PooipYyfJ0pUmrZO2wAvO8YbEyeFrkV91XTsGMSrw==
 
-superfast-ui@^0.1.4:
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/superfast-ui/-/superfast-ui-0.1.4.tgz#247b3ffd85437b61ae98e1eca91987f704422467"
-  integrity sha512-zuEKP9JzQK2A0pmd9BvZcv9Se4ADkR0VIm6p227it+FGhovYKzlWr6ZJ3mWoGnCzbdawD0vRBKuTHggqb8RRgA==
+superfast-ui@^0.1.5:
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/superfast-ui/-/superfast-ui-0.1.5.tgz#5bae65ef9043d4a8a643d4881f11bffcdfc24cd3"
+  integrity sha512-uQ46feqxQJZsCMWzbiCe2uACMEXfK/fAV4f4RlgXzuy9wdhWit+kpNnC3OhgVWdXSURVmisPYZiLgR4ZdewVOw==
   dependencies:
     "@ant-design/colors" "^7.0.0"
     "@ant-design/icons" "^5.1.4"
