@@ -27,7 +27,6 @@ export type AuthUser = {
   name: string;
   adminAccess: boolean;
   appAccess: boolean | null; // access from applications.
-  apiKey: string | null;
 };
 
 // /////////////////////////////////////
