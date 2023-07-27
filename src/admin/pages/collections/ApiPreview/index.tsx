@@ -1,4 +1,4 @@
-import { SendOutlined } from '@ant-design/icons';
+import { ArrowRightOutlined, SendOutlined } from '@ant-design/icons';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Box,
@@ -16,6 +16,7 @@ import React, { useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { IconButton, MainCard, SyntaxHighlighter } from 'superfast-ui';
+import { Link } from '../../../components/elements/Link/index.js';
 import { ScrollBar } from '../../../components/elements/ScrollBar/index.js';
 import { TabPanel } from '../../../components/elements/TabPanel/index.js';
 import { useAuth } from '../../../components/utilities/Auth/index.js';
@@ -33,8 +34,7 @@ const ApiPreviewImpl: React.FC<Props> = ({ collection }) => {
   const [tabIndex] = useState(0);
 
   const { t } = useTranslation();
-  const { user } = useAuth();
-  const apiKey = user?.apiKey || 'none';
+  const { user, apiKey } = useAuth();
 
   const {
     control,
@@ -149,8 +149,15 @@ const ApiPreviewImpl: React.FC<Props> = ({ collection }) => {
               <TabPanel value={tabIndex} index={0}>
                 <MainCard codeHighlight codeString={curlCodeString}>
                   <Stack spacing={0.5}>
-                    <Typography color="secondary">Header</Typography>
-                    <Typography sx={{ wordBreak: 'break-all' }}>{apiKey}</Typography>
+                    <Typography color="secondary">{t('api_key')}</Typography>
+                    {apiKey ? (
+                      <Typography sx={{ wordBreak: 'break-all' }}>{apiKey}</Typography>
+                    ) : (
+                      <Link href={`/admin/settings/users/${user?.id}`}>
+                        <ArrowRightOutlined style={{ marginRight: 2 }} />
+                        {t('go_to_registration')}
+                      </Link>
+                    )}
                   </Stack>
                 </MainCard>
               </TabPanel>

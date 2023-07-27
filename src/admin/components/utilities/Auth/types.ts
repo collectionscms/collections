@@ -3,6 +3,7 @@ import { AuthUser, Permission, PermissionsAction } from '../../../../config/type
 
 export type AuthContext<T = AuthUser> = {
   user: T | null | undefined;
+  apiKey?: string | null;
   token?: string;
   permissions: Permission[] | null;
   hasPermission: (collection: string, action: PermissionsAction) => boolean;
