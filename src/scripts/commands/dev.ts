@@ -24,7 +24,7 @@ export const scriptDev = async () => {
         scripts: [
           `ADMIN_PATH="${pathList.admin()}" nodemon -q --watch ${pathList.devBuild()} ${pathList.devBuild(
             'main'
-          )} ./index.ts`,
+          )}`,
         ],
         parallel: true,
         blocking: false,

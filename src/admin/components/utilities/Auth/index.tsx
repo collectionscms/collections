@@ -11,6 +11,7 @@ const Context = createContext({} as AuthContext);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [tokenInMemory, setTokenInMemory] = useState<string>();
+  const [apiKey, setApiKey] = useState<string | null>();
   const navigate = useNavigate();
 
   const login = () =>
@@ -20,7 +21,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return api.post<{ token: string; user: AuthUser }>(url, arg).then((res) => {
           setAuthorization(res.data.token);
           setTokenInMemory(res.data.token);
-          mutate(res.data);
+          mutate({ ...res.data, apiKey: null });
           return res.data;
         });
       }
@@ -30,7 +31,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     useSWRMutation(`/authentications/logout`, async (url: string) => {
       return api.post(url).then((res) => {
         removeAuthorization();
-        mutate({ token: null, user: null }, false);
+        mutate({ token: null, user: null, apiKey: null }, false);
         setTokenInMemory(undefined);
         return res;
       });
@@ -66,12 +67,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     api
       .get<{
         token: string | null;
+        apiKey: string | null;
         user: AuthUser | null;
       }>(url)
       .then(({ data }) => {
         if (data.token) {
           setAuthorization(data.token);
           setTokenInMemory(data.token);
+          setApiKey(data.apiKey);
         }
         return data;
       })
@@ -79,7 +82,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         logger.error(e);
         if (e.response?.status !== 401) {
           removeAuthorization();
-          mutate({ token: null, user: null }, false);
+          mutate({ token: null, apiKey: null, user: null }, false);
         }
         return null;
       })
@@ -120,6 +123,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       login,
       logout,
       token: tokenInMemory,
+      apiKey,
     }),
     [me, permissions, hasPermission, login, logout]
   );

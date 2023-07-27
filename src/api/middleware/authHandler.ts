@@ -7,7 +7,8 @@ export const authHandler: RequestHandler = asyncHandler(
   async (req: Request, _res: Response, next: NextFunction) => {
     if (req.token) {
       const repository = new UsersRepository();
-      const user = (await repository.readMe({ apiKey: req.token })) || verifyJwt(req.token);
+      const me = await repository.readMe({ apiKey: req.token });
+      const user = me?.user || verifyJwt(req.token);
 
       if (user) {
         req.userId = user.id;
