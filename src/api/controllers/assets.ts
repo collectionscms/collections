@@ -1,10 +1,17 @@
 import express, { Request, Response } from 'express';
+import { FileNotFoundException } from '../../exceptions/storage/fileNotFound.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
 import { FilesRepository } from '../repositories/files.js';
 import { getStorage } from '../storages/storage.js';
-import { FileNotFoundException } from '../../exceptions/storage/fileNotFound.js';
 
 const router = express.Router();
+
+router.get(
+  '/',
+  asyncHandler(async (_req: Request, res: Response) => {
+    res.redirect('/admin');
+  })
+);
 
 router.get(
   '/assets/:fileName',
