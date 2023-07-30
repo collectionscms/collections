@@ -2,11 +2,11 @@
 
 ## ⭐ What is Superfast
 
-Open-source Headless CMS built with React, Node.js, RDB. We are planning an importer to make the transition from a legacy CMS.
+Open source Headless CMS built with React, Node.js, RDB. We are planning an importer to make the transition from a legacy CMS.
 
 ### Features
 
-- 📚 Support English/日本語
+- 📚 Support English / 日本語
 - 😻 Markdown can be used (with GitHub flavored markdown)
 - 🌒 Support light-mode/dark-mode
 - 📱 Responsive Design
@@ -15,11 +15,11 @@ Open-source Headless CMS built with React, Node.js, RDB. We are planning an impo
 
 Our extended documentation is available on our website.
 
-[日本語版](https://superfastcms.vercel.app/)
+- [日本語版](https://superfastcms.vercel.app/)
 
 ## 🚀 Installation
 
-The easiest way to get started with Superfast is to use the create-superfast-app package:
+The easiest way to get started with Superfast is to use the create-superfast-app package.
 
 ```sh
 npx create-superfast-app my-app
