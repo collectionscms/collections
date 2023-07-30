@@ -88,6 +88,24 @@ const CreateFieldImpl: React.FC<Props> = ({ collection, openState, onSuccess, on
         anchor="right"
         open={openState}
         onClose={onToggle()}
+        sx={{
+          '& .MuiAccordion-root': {
+            borderColor: theme.palette.divider,
+            '& .MuiAccordionSummary-root': {
+              bgcolor: 'transparent',
+              flexDirection: 'row',
+              '&:focus-visible': {
+                bgcolor: 'primary.lighter',
+              },
+            },
+            '& .MuiAccordionDetails-root': {
+              borderColor: theme.palette.divider,
+            },
+            '& .Mui-expanded': {
+              color: theme.palette.primary.main,
+            },
+          },
+        }}
         PaperProps={{
           sx: {
             width: { xs: 340, md: 660 },
