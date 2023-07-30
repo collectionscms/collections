@@ -18,7 +18,7 @@ export const initApiServer = async (app: Express) => {
 
   app
     .listen(port, () => {
-      let message = chalk.green('Staring!');
+      let message = chalk.green('Starting!');
       message += `\n\n${chalk.bold('- API:')}    ${host}:${port}`;
       message += `\n${chalk.bold('- Admin:')}  ${host}:${port}/admin`;
 
