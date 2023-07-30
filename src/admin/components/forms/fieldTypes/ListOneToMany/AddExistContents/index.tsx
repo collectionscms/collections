@@ -117,20 +117,20 @@ const AddExistContentsImpl: React.FC<Props> = ({
             </Stack>
           </Box>
           <Divider />
-          <Stack rowGap={3} sx={{ p: 3 }}>
-            <CheckBoxTable columns={columns} rows={excludedContents} onChange={handleCheck} />
-          </Stack>
-          <Stack sx={{ px: 3 }}>
-            <Button
-              variant="contained"
-              onClick={onSelected}
-              disabled={selectedContentIds.length === 0}
-              size="large"
-              fullWidth
-            >
-              {t('decide')}
-            </Button>
-          </Stack>
+          <Box sx={{ p: 3 }}>
+            <Stack rowGap={3}>
+              <CheckBoxTable columns={columns} rows={excludedContents} onChange={handleCheck} />
+              <Button
+                variant="contained"
+                onClick={onSelected}
+                disabled={selectedContentIds.length === 0}
+                size="large"
+                fullWidth
+              >
+                {t('decide')}
+              </Button>
+            </Stack>
+          </Box>
         </ScrollBar>
       </Drawer>
     </Stack>

@@ -47,7 +47,7 @@ const LoginImpl: React.FC = () => {
   }, [user]);
 
   const sanitizedHtml = (source: string) => {
-    return <Box dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(source) }} />;
+    return <Typography dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(source) }} />;
   };
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
@@ -111,12 +111,7 @@ const LoginImpl: React.FC = () => {
               </Stack>
             </Grid>
             <Grid xs={12} sx={{ mt: -1 }}>
-              <Link
-                variant="h6"
-                component={RouterLink}
-                to="/admin/auth/forgot"
-                color="text.primary"
-              >
+              <Link variant="h6" component={RouterLink} to="/admin/auth/forgot">
                 {t('forgot')}
               </Link>
             </Grid>

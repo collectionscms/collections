@@ -1,4 +1,4 @@
-# Getting started with Sueprfast 🚀
+# Getting started with Superfast 🚀
 
 Welcome to Superfast!
 

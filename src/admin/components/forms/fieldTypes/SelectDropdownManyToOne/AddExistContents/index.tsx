@@ -103,20 +103,20 @@ const AddExistContentsImpl: React.FC<Props> = ({
             </Stack>
           </Box>
           <Divider />
-          <Stack rowGap={3} sx={{ p: 3 }}>
-            <RadioGroupTable columns={columns} rows={contents || []} onChange={handleSelect} />
-          </Stack>
-          <Stack sx={{ px: 3 }}>
-            <Button
-              variant="contained"
-              onClick={onSelected}
-              disabled={selectedContent === null}
-              size="large"
-              fullWidth
-            >
-              {t('decide')}
-            </Button>
-          </Stack>
+          <Box sx={{ p: 3 }}>
+            <Stack rowGap={3}>
+              <RadioGroupTable columns={columns} rows={contents || []} onChange={handleSelect} />
+              <Button
+                variant="contained"
+                onClick={onSelected}
+                disabled={selectedContent === null}
+                size="large"
+                fullWidth
+              >
+                {t('decide')}
+              </Button>
+            </Stack>
+          </Box>
         </ScrollBar>
       </Drawer>
     </Stack>
