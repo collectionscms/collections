@@ -91,7 +91,7 @@
     "nodemailer": "^6.9.1",
     "nodemon": "^3.0.0",
     "notistack": "^3.0.1",
-    "ora": "^6.3.0",
+    "ora": "^7.0.0",
     "pino": "^8.11.0",
     "pino-http": "^8.3.3",
     "pino-pretty": "^10.0.0",
