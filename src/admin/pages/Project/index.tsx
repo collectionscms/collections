@@ -3,6 +3,7 @@ import { Button, FormHelperText, InputLabel, Stack, TextField } from '@mui/mater
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { useSnackbar } from 'notistack';
 import React, { Suspense } from 'react';
+import dayjs from 'dayjs';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { MainCard } from 'superfast-ui';
@@ -108,7 +109,9 @@ const ProjectImpl: React.FC = () => {
                           multiline
                           rows={2}
                           fullWidth
-                          placeholder={`${t('input_placeholder')} <a href="#">Contact us</a>`}
+                          placeholder={`${t(
+                            'input_placeholder'
+                          )} Copyright © ${dayjs().year()} Your Company.`}
                           error={errors.after_login !== undefined}
                         />
                       )}

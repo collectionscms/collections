@@ -10,6 +10,11 @@ export const Cell: React.FC<Props> = (props) => {
   const { t } = useTranslation();
   dayjs.extend(utc);
 
+  const truncate = (value: string) => {
+    const MAX_LENGTH = 50;
+    return value.length > MAX_LENGTH ? value.substring(0, MAX_LENGTH) + '...' : value;
+  };
+
   const sanitizedCellData: any = () => {
     if (colIndex === 0 && (cellData === null || String(cellData).trim() === '')) {
       return 'No data';
@@ -17,7 +22,7 @@ export const Cell: React.FC<Props> = (props) => {
 
     switch (type) {
       case Type.Text || Type.Number:
-        return cellData;
+        return truncate(String(cellData));
       case Type.Date:
         return dayjs.utc(String(cellData)).local().format('YYYY-MM-DD HH:mm');
       case Type.Status:
@@ -26,7 +31,7 @@ export const Cell: React.FC<Props> = (props) => {
       case Type.Boolean:
         return castToBoolean(cellData) ? t('enabled') : t('disabled');
       case Type.Object:
-        return JSON.stringify(cellData);
+        return truncate(JSON.stringify(cellData));
       case Type.Array:
         const data = cellData as Partial<{ id: number }>[];
         const ids = data.map((item) => item.id).join(', ');
