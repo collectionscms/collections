@@ -12,12 +12,12 @@ export class FieldsService {
 
   /**
    * Creates a new field in the database and adds a corresponding column to the collection's table.
-   * @param body
+   * @param data
    * @returns
    */
-  async createField(body: Omit<Field, 'id'>): Promise<Field> {
-    const result = await this.repository.transaction(async (tx) => {
-      const fieldId = await this.repository.transacting(tx).create(body);
+  async createField(data: Omit<Field, 'id'>): Promise<Field> {
+    const field = await this.repository.transaction(async (tx) => {
+      const fieldId = await this.repository.transacting(tx).create(data);
       const field = await this.repository.transacting(tx).readOne(fieldId);
       await tx.transaction.schema.alterTable(field.collection, (table) => {
         addColumnToTable(field, table);
@@ -25,12 +25,12 @@ export class FieldsService {
       return field;
     });
 
-    return result;
+    return field;
   }
 }
 
 export const addColumnToTable = (
-  field: Field,
+  field: { interface: string; field: string; options: string | null },
   table: Knex.CreateTableBuilder,
   alter: boolean = false
 ) => {
