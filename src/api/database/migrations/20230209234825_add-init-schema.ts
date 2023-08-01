@@ -6,7 +6,6 @@ export const up = async (knex: Knex): Promise<void> => {
     table.string('name', 255).notNullable();
     table.string('description', 255);
     table.boolean('admin_access').notNullable().defaultTo(0);
-    table.timestamps(true, true);
   });
 
   await knex.schema.createTable('superfast_users', (table) => {
@@ -19,7 +18,6 @@ export const up = async (knex: Knex): Promise<void> => {
     table.string('reset_password_expiration', 255);
     table.string('api_key', 255);
     table.integer('role_id').unsigned().index().references('id').inTable('superfast_roles');
-    table.timestamps(true, true);
   });
 
   await knex.schema.createTable('superfast_permissions', (table) => {
@@ -27,7 +25,6 @@ export const up = async (knex: Knex): Promise<void> => {
     table.string('collection', 255).notNullable();
     table.string('action', 255).notNullable();
     table.integer('role_id').unsigned().index().references('id').inTable('superfast_roles');
-    table.timestamps(true, true);
     table.unique(['collection', 'action', 'role_id']);
   });
 
@@ -40,7 +37,6 @@ export const up = async (knex: Knex): Promise<void> => {
     table.string('draft_value', 64);
     table.string('publish_value', 64);
     table.string('archive_value', 64);
-    table.timestamps(true, true);
   });
 
   await knex.schema.createTable('superfast_fields', (table) => {
@@ -55,7 +51,6 @@ export const up = async (knex: Knex): Promise<void> => {
     table.boolean('required').notNullable().defaultTo(0);
     table.boolean('hidden').notNullable().defaultTo(0);
     table.integer('sort', 8);
-    table.timestamps(true, true);
   });
 
   await knex.schema.createTable('superfast_relations', (table) => {
@@ -64,7 +59,6 @@ export const up = async (knex: Knex): Promise<void> => {
     table.string('many_field', 64).notNullable();
     table.string('one_collection', 64).notNullable();
     table.string('one_field', 64).notNullable();
-    table.timestamps(true, true);
   });
 
   await knex.schema.createTable('superfast_project_settings', (table) => {
@@ -72,7 +66,6 @@ export const up = async (knex: Knex): Promise<void> => {
     table.string('name', 100).notNullable();
     table.text('before_login');
     table.text('after_login');
-    table.timestamps(true, true);
   });
 
   await knex.schema.createTable('superfast_files', (table) => {
@@ -84,7 +77,6 @@ export const up = async (knex: Knex): Promise<void> => {
     table.bigInteger('file_size');
     table.integer('width');
     table.integer('height');
-    table.timestamps(true, true);
   });
 };
 

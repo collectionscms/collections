@@ -66,7 +66,6 @@ router.post(
 
       await tx.transaction.schema.createTable(req.body.collection, (table) => {
         table.increments();
-        table.timestamps(true, true);
         req.body.status && table.string('status').notNullable();
       });
 
