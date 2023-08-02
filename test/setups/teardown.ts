@@ -18,6 +18,7 @@ export default async function teardown(
     const database = knex(knexConfig);
 
     await database.migrate.rollback(knexConfig.migrations, true);
+    await database.schema.dropTableIfExists('collection_formula_one_constructors');
 
     if (testDatabase === 'sqlite3') {
       unlinkSync('test.db');
