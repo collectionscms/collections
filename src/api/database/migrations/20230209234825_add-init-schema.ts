@@ -89,6 +89,14 @@ export const up = async (knex: Knex): Promise<void> => {
 };
 
 export const down = async (knex: Knex): Promise<void> => {
+  await knex.schema.table('superfast_permissions', (table) => {
+    table.dropForeign(['role_id']);
+  });
+
+  await knex.schema.table('superfast_users', (table) => {
+    table.dropForeign('role_id');
+  });
+
   await knex.schema
     .dropTable('superfast_roles')
     .dropTable('superfast_users')
