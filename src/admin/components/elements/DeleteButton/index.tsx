@@ -32,9 +32,11 @@ export const DeleteButton: React.FC<Props> = ({ id, slug, disabled, onSuccess })
         onClose={handleOnClose}
       />
       <Tooltip title={t('delete')} arrow placement="top">
-        <IconButton color="error" disabled={disabled} onClick={handleClickOpen}>
-          <DeleteOutlined />
-        </IconButton>
+        <span>
+          <IconButton color="error" disabled={disabled} onClick={handleClickOpen}>
+            <DeleteOutlined />
+          </IconButton>
+        </span>
       </Tooltip>
     </>
   );
