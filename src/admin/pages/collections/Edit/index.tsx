@@ -49,6 +49,16 @@ const EditCollectionPageImpl: React.FC<Props> = ({ collection }) => {
     if (id) getContent();
   }, []);
 
+  useEffect(() => {
+    if (metaFields === undefined) return;
+    setDefaultValue(metaFields);
+  }, [metaFields]);
+
+  useEffect(() => {
+    if (metaFields === undefined || content === undefined) return;
+    setContentValue(metaFields, content);
+  }, [metaFields, content]);
+
   const setDefaultValue = (fields: Field[]) => {
     fields
       .filter((field) => !field.hidden)
@@ -68,19 +78,13 @@ const EditCollectionPageImpl: React.FC<Props> = ({ collection }) => {
       });
   };
 
-  useEffect(() => {
-    if (metaFields === undefined) return;
-    setDefaultValue(metaFields);
-  }, [metaFields]);
-
-  useEffect(() => {
-    if (metaFields === undefined || content === undefined) return;
-    setContentValue(metaFields, content);
-  }, [metaFields, content]);
-
   const navigateToList = () => {
     navigate(`/admin/collections/${collection.collection}`);
   };
+
+  const hasSavePermission = id
+    ? hasPermission(collection.collection, 'update')
+    : hasPermission(collection.collection, 'create');
 
   const onSubmit = async (data: Record<string, any>) => {
     try {
@@ -126,7 +130,11 @@ const EditCollectionPageImpl: React.FC<Props> = ({ collection }) => {
                       <Button variant="outlined" color="secondary" onClick={navigateToList}>
                         {t('cancel')}
                       </Button>
-                      <Button variant="contained" type="submit" disabled={isUpdateMutating}>
+                      <Button
+                        variant="contained"
+                        type="submit"
+                        disabled={!hasSavePermission || isUpdateMutating}
+                      >
                         {t('update')}
                       </Button>
                     </Stack>
@@ -140,9 +148,7 @@ const EditCollectionPageImpl: React.FC<Props> = ({ collection }) => {
                       <Button
                         variant="contained"
                         type="submit"
-                        disabled={
-                          !hasPermission(collection.collection, 'create') || isCreateMutating
-                        }
+                        disabled={!hasSavePermission || isCreateMutating}
                       >
                         {t('save')}
                       </Button>
