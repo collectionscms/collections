@@ -80,8 +80,8 @@ describe('Field', () => {
 
         const field = {
           ...data,
-          field: 'created_at',
-          label: 'created_at',
+          field: 'id',
+          label: 'id',
         } as Omit<Field, 'id'>;
 
         const result = service.createField(field);
@@ -90,10 +90,10 @@ describe('Field', () => {
         // meta data should not be duplicated.
         const fetchFields = await repository.read({
           collection: 'collection_formula_one_constructors',
-          field: 'created_at',
+          field: 'id',
         });
 
-        expect(fetchFields).toHaveLength(0);
+        expect(fetchFields).toHaveLength(1);
       }
     );
   });
