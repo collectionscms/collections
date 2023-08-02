@@ -293,7 +293,6 @@ const createCollectionTables = async (database: Knex): Promise<void> => {
     table.string('body', 255);
     table.string('author', 255);
     table.string('status', 255);
-    table.timestamps(true, true);
   });
 
   await database.schema.createTable('Company', (table) => {
@@ -301,7 +300,6 @@ const createCollectionTables = async (database: Knex): Promise<void> => {
     table.string('name', 255);
     table.string('email', 255);
     table.string('address', 255);
-    table.timestamps(true, true);
   });
 
   Output.info('Adding collection data...');
