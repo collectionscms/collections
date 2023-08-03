@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Props } from './types';
 
-export const CreateNewButton: React.FC<Props> = ({ to }) => {
+export const CreateNewButton: React.FC<Props> = ({ to, disabled }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
@@ -13,6 +13,7 @@ export const CreateNewButton: React.FC<Props> = ({ to }) => {
     <Button
       variant="contained"
       size="small"
+      disabled={disabled}
       startIcon={<PlusOutlined style={{ fontSize: '10px' }} />}
       onClick={() => navigate(to)}
     >

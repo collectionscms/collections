@@ -7,7 +7,7 @@ import { ConfigContext, Props } from './types.js';
 
 const Context = createContext({} as ConfigContext);
 
-const filteredPermittedCollections = (
+const filteredCollectionsWithReadPermission = (
   user: AuthUser | null,
   permissions: Permission[] | null,
   collections: Collection[]
@@ -15,8 +15,12 @@ const filteredPermittedCollections = (
   if (!user || !permissions) return [];
   if (user.adminAccess) return collections;
 
-  return collections.filter((collection) =>
-    permissions?.some((permission) => permission.collection === collection.collection)
+  return collections.filter(
+    (collection) =>
+      permissions?.some(
+        (permission) =>
+          permission.collection === collection.collection && permission.action === 'read'
+      )
   );
 };
 
@@ -29,7 +33,11 @@ export const ConfigProvider: React.FC<Props> = ({ children }) => {
       api
         .get<{ collections: Collection[] }>(url)
         .then((res) =>
-          filteredPermittedCollections(user || null, permissions || null, res.data.collections)
+          filteredCollectionsWithReadPermission(
+            user || null,
+            permissions || null,
+            res.data.collections
+          )
         ),
     { suspense: true }
   );

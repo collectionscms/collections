@@ -192,7 +192,7 @@ const EditContentTypePageImpl: React.FC = () => {
       )}
       <Grid container spacing={2.5} sx={{ mb: 1 }}>
         <Grid xs={12} lg={8}>
-          <MainCard>
+          <MainCard title={t('fields_and_layout')} subheader={t('auto_save')}>
             <Grid container gap={2} columns={{ xs: 1, md: 2 }}>
               <Grid xs={12}>
                 <Stack spacing={1}>
