@@ -56,7 +56,7 @@ const EditRolePageImpl: React.FC = () => {
   } = useForm<FormValues>({
     resolver: yupResolver(updateRoleSchema()),
   });
-  const actions: PermissionsAction[] = ['create', 'read', 'update', 'delete'];
+  const actions: PermissionsAction[] = ['read', 'create', 'update', 'delete'];
 
   useEffect(() => {
     const getRole = async () => {
@@ -103,7 +103,7 @@ const EditRolePageImpl: React.FC = () => {
     <Suspense fallback={<Loading />}>
       <Grid container spacing={2.5} sx={{ mb: 1 }}>
         <Grid xs={12} lg={8}>
-          <MainCard content={false} title={t('role_list')}>
+          <MainCard content={false} title={t('role_list')} subheader={t('auto_save')}>
             {role.admin_access ? (
               <Typography align="center" color="secondary" sx={{ p: 2 }}>
                 {t('admin_has_all_permissions')}

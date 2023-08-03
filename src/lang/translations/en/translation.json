@@ -109,6 +109,8 @@
   "full_screen": "Full Screen",
   "login_top_label": "Login label (Top)",
   "login_bottom_label": "Login label (Bottom)",
+  "auto_save": "Auto Save",
+  "fields_and_layout": "Fields & Layout",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion.",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",
