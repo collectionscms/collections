@@ -1,6 +1,6 @@
+/* eslint-disable max-len */
 import { Knex } from 'knex';
 import { v4 as uuidv4 } from 'uuid';
-import { oneWayHash } from '../../utilities/oneWayHash.js';
 import { Output } from '../../../utilities/output.js';
 import { CollectionsRepository } from '../../repositories/collections.js';
 import { ContentsRepository } from '../../repositories/contents.js';
@@ -9,6 +9,9 @@ import { PermissionsRepository } from '../../repositories/permissions.js';
 import { ProjectSettingsRepository } from '../../repositories/projectSettings.js';
 import { RolesRepository } from '../../repositories/roles.js';
 import { UsersRepository } from '../../repositories/users.js';
+import { CollectionsService } from '../../services/collections.js';
+import { FieldsService } from '../../services/fields.js';
+import { oneWayHash } from '../../utilities/oneWayHash.js';
 import { getDatabase } from '../connection.js';
 
 export const seedDev = async (): Promise<void> => {
@@ -16,8 +19,8 @@ export const seedDev = async (): Promise<void> => {
 
   try {
     await resetAll(database);
-    await seedingData();
-    await createCollectionTables(database);
+    await seedingSystemData();
+    await seedingCollectionData();
 
     process.exit(0);
   } catch (e) {
@@ -40,7 +43,7 @@ const resetAll = async (database: Knex): Promise<void> => {
   await database.schema.dropTableIfExists('Company');
 };
 
-const seedingData = async (): Promise<void> => {
+const seedingSystemData = async (): Promise<void> => {
   const rolesRepository = new RolesRepository();
   const usersRepository = new UsersRepository();
   const permissionsRepository = new PermissionsRepository();
@@ -48,11 +51,14 @@ const seedingData = async (): Promise<void> => {
   const fieldsRepository = new FieldsRepository();
   const projectSettingsRepository = new ProjectSettingsRepository();
 
+  const collectionsService = new CollectionsService(collectionsRepository, fieldsRepository);
+  const fieldsService = new FieldsService(fieldsRepository);
+
   // Role
   Output.info('Creating roles...');
   await rolesRepository.createMany([
-    { id: 1, name: 'Administrator', description: '管理者', admin_access: true },
-    { id: 2, name: 'Editor', description: '編集者', admin_access: false },
+    { name: 'Administrator', description: 'Administrator', admin_access: true },
+    { name: 'Editor', description: 'Editor', admin_access: true },
   ] as any[]);
 
   // User
@@ -63,7 +69,6 @@ const seedingData = async (): Promise<void> => {
 
   await usersRepository.createMany([
     {
-      id: 1,
       name: 'admin',
       email: 'admin@example.com',
       password,
@@ -71,7 +76,6 @@ const seedingData = async (): Promise<void> => {
       role_id: adminRole.id,
     },
     {
-      id: 2,
       name: 'editor',
       email: 'editor@example.com',
       password,
@@ -117,144 +121,113 @@ const seedingData = async (): Promise<void> => {
     },
   ]);
 
-  // Collection
-  Output.info('Creating collections...');
-  await collectionsRepository.createMany([
-    {
-      collection: 'Post',
-      singleton: false,
-      hidden: false,
-      status_field: 'status',
-      draft_value: '下書き',
-      publish_value: '公開中',
-      archive_value: '公開終了',
-    },
-    {
-      collection: 'Company',
-      singleton: true,
-      hidden: false,
-      status_field: null,
-      draft_value: null,
-      publish_value: null,
-      archive_value: null,
-    },
-  ]);
+  // Collection: Post
+  Output.info('Creating Post collection...');
+  await collectionsService.createCollection({
+    collection: 'Post',
+    singleton: false,
+    hidden: false,
+    status: true,
+    status_field: null,
+    draft_value: null,
+    publish_value: null,
+    archive_value: null,
+  });
 
-  // Field
-  Output.info('Creating fields...');
-  await fieldsRepository.createMany([
-    // Fields related to collection Post
-    {
-      collection: 'Post',
-      field: 'id',
-      label: 'id',
-      special: null,
-      interface: 'input',
-      options: null,
-      readonly: true,
-      required: true,
-      hidden: true,
-      sort: 1,
-    },
-    {
-      collection: 'Post',
-      field: 'title',
-      label: 'タイトル',
-      special: null,
-      interface: 'input',
-      options: null,
-      readonly: false,
-      required: false,
-      hidden: false,
-      sort: 2,
-    },
-    {
-      collection: 'Post',
-      field: 'body',
-      label: '本文',
-      special: null,
-      interface: 'inputMultiline',
-      options: null,
-      readonly: false,
-      required: false,
-      hidden: false,
-      sort: 3,
-    },
-    {
-      collection: 'Post',
-      field: 'author',
-      label: '著者',
-      special: null,
-      interface: 'input',
-      options: null,
-      readonly: false,
-      required: false,
-      hidden: false,
-      sort: 4,
-    },
-    {
-      collection: 'Post',
-      field: 'status',
-      label: '公開ステータス',
-      special: null,
-      interface: 'selectDropdownStatus',
-      options:
-        '{"choices":[{"label":"下書き","value":"下書き"},{"label":"公開中","value":"公開中"},{"label":"公開終了","value":"公開終了"}]}',
-      readonly: false,
-      required: true,
-      hidden: false,
-      sort: 5,
-    },
-    // Fields related to collection Company
-    {
-      collection: 'Company',
-      field: 'id',
-      label: 'id',
-      special: null,
-      interface: 'input',
-      options: null,
-      readonly: true,
-      required: true,
-      hidden: true,
-      sort: 1,
-    },
-    {
-      collection: 'Company',
-      field: 'name',
-      label: '会社名',
-      special: null,
-      interface: 'input',
-      options: null,
-      readonly: false,
-      required: false,
-      hidden: false,
-      sort: 2,
-    },
-    {
-      collection: 'Company',
-      field: 'email',
-      label: 'メールアドレス',
-      special: null,
-      interface: 'input',
-      options: null,
-      readonly: false,
-      required: false,
-      hidden: false,
-      sort: 3,
-    },
-    {
-      collection: 'Company',
-      field: 'address',
-      label: '住所',
-      special: null,
-      interface: 'input',
-      options: null,
-      readonly: false,
-      required: false,
-      hidden: false,
-      sort: 4,
-    },
-  ]);
+  // Fields: Post
+  Output.info('Creating Post fields...');
+  await fieldsService.createField({
+    collection: 'Post',
+    field: 'title',
+    label: 'Title',
+    special: null,
+    interface: 'input',
+    options: null,
+    readonly: false,
+    required: false,
+    hidden: false,
+    sort: 1,
+  });
+
+  await fieldsService.createField({
+    collection: 'Post',
+    field: 'body',
+    label: 'Body',
+    special: null,
+    interface: 'inputMultiline',
+    options: null,
+    readonly: false,
+    required: false,
+    hidden: false,
+    sort: 2,
+  });
+
+  await fieldsService.createField({
+    collection: 'Post',
+    field: 'author',
+    label: 'Author',
+    special: null,
+    interface: 'input',
+    options: null,
+    readonly: false,
+    required: false,
+    hidden: false,
+    sort: 3,
+  });
+
+  // Collection: Company
+  Output.info('Creating Company collection...');
+  await collectionsService.createCollection({
+    collection: 'Company',
+    singleton: true,
+    hidden: false,
+    status: false,
+    status_field: null,
+    draft_value: null,
+    publish_value: null,
+    archive_value: null,
+  });
+
+  // Fields: Company
+  Output.info('Creating Company fields...');
+  await fieldsService.createField({
+    collection: 'Company',
+    field: 'name',
+    label: 'Company Name',
+    special: null,
+    interface: 'input',
+    options: null,
+    readonly: false,
+    required: false,
+    hidden: false,
+    sort: 1,
+  });
+
+  await fieldsService.createField({
+    collection: 'Company',
+    field: 'email',
+    label: 'Mail Address',
+    special: null,
+    interface: 'input',
+    options: null,
+    readonly: false,
+    required: false,
+    hidden: false,
+    sort: 2,
+  });
+
+  await fieldsService.createField({
+    collection: 'Company',
+    field: 'address',
+    label: 'Address',
+    special: null,
+    interface: 'input',
+    options: null,
+    readonly: false,
+    required: false,
+    hidden: false,
+    sort: 3,
+  });
 
   // Project Setting
   Output.info('Creating project settings...');
@@ -267,63 +240,48 @@ const seedingData = async (): Promise<void> => {
   ]);
 };
 
-const createCollectionTables = async (database: Knex): Promise<void> => {
-  Output.info('Creating collection tables...');
-  await database.schema.createTable('Post', (table) => {
-    table.increments();
-    table.string('title', 255);
-    table.string('body', 255);
-    table.string('author', 255);
-    table.string('status', 255);
-  });
-
-  await database.schema.createTable('Company', (table) => {
-    table.increments();
-    table.string('name', 255);
-    table.string('email', 255);
-    table.string('address', 255);
-  });
-
+const seedingCollectionData = async (): Promise<void> => {
   Output.info('Adding collection data...');
-  const PostsRepository = new ContentsRepository('Post');
-  await PostsRepository.createMany([
+  const postsRepository = new ContentsRepository('Post');
+  await postsRepository.createMany([
     {
-      id: 1,
-      title: 'Superfastは、デベロッパーファーストのHeadless CMSです。',
-      body: 'TypeScript、Node.js、Reactで構築された無料かつオープンソースのHeadless CMSであり、アプリケーションフレームワークです。',
+      title: 'Makes migration from legacy CMS seamless',
+      body: 'Superfast is open source Headless CMS built with React, Node.js, RDB. We are planning an importer to make the transition from a legacy CMS.',
       author: 'admin',
-      status: '公開中',
+      status: 'published',
     },
     {
-      id: 2,
-      title: '2023年6月〜 デモ版の提供を開始しました。',
-      body: 'アドレス: https://demo.xxxx.xx',
+      title: 'June 2023- Demo version is now available',
+      body: 'URL: https://demo.superfastcms.com/admin',
       author: 'admin',
-      status: '公開中',
+      status: 'published',
     },
     {
-      id: 3,
-      title: '[WIP] 1.0に到達するまでのロードマップ',
-      body: 'こちらの記事は書きかけです。',
+      title: '[WIP] Road map to reach 1.0',
+      body: 'in progress...',
       author: 'admin',
-      status: '下書き',
+      status: 'draft',
     },
     {
-      id: 4,
-      title: 'α版を公開しました',
-      body: '2023年3月にα版を公開しました！',
+      title: 'Alpha version is now available!',
+      body: 'Alpha version was released in March 2023.',
       author: 'admin',
-      status: '公開終了',
+      status: 'archived',
+    },
+    {
+      title: 'Beta version is now available!!',
+      body: 'Beta version was released in August 2023.',
+      author: 'admin',
+      status: 'published',
     },
   ]);
 
   const companiesRepository = new ContentsRepository('Company');
   await companiesRepository.createMany([
     {
-      id: 1,
       name: 'Rocketa Inc.',
       email: 'kazane.shimizu@rocketa.co.jp',
-      address: '東京都渋谷区渋谷3-1-9 YAZAWAビル3F',
+      address: 'YAZAWA Bldg. 3F, 3-1-9 Shibuya, Shibuya-ku, Tokyo',
     },
   ]);
 };
