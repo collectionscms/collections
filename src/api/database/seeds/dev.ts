@@ -86,37 +86,31 @@ const seedingData = async (): Promise<void> => {
   await permissionsRepository.createMany([
     // Editor
     {
-      id: 1,
       collection: 'Post',
       action: 'read',
       role_id: editorRole.id,
     },
     {
-      id: 2,
       collection: 'Post',
       action: 'create',
       role_id: editorRole.id,
     },
     {
-      id: 3,
       collection: 'Post',
       action: 'update',
       role_id: editorRole.id,
     },
     {
-      id: 4,
       collection: 'Company',
       action: 'read',
       role_id: editorRole.id,
     },
     {
-      id: 5,
       collection: 'Company',
       action: 'create',
       role_id: editorRole.id,
     },
     {
-      id: 6,
       collection: 'Company',
       action: 'update',
       role_id: editorRole.id,
@@ -127,7 +121,6 @@ const seedingData = async (): Promise<void> => {
   Output.info('Creating collections...');
   await collectionsRepository.createMany([
     {
-      id: 1,
       collection: 'Post',
       singleton: false,
       hidden: false,
@@ -137,7 +130,6 @@ const seedingData = async (): Promise<void> => {
       archive_value: '公開終了',
     },
     {
-      id: 2,
       collection: 'Company',
       singleton: true,
       hidden: false,
@@ -153,7 +145,6 @@ const seedingData = async (): Promise<void> => {
   await fieldsRepository.createMany([
     // Fields related to collection Post
     {
-      id: 1,
       collection: 'Post',
       field: 'id',
       label: 'id',
@@ -166,7 +157,6 @@ const seedingData = async (): Promise<void> => {
       sort: 1,
     },
     {
-      id: 2,
       collection: 'Post',
       field: 'title',
       label: 'タイトル',
@@ -179,7 +169,6 @@ const seedingData = async (): Promise<void> => {
       sort: 2,
     },
     {
-      id: 3,
       collection: 'Post',
       field: 'body',
       label: '本文',
@@ -192,7 +181,6 @@ const seedingData = async (): Promise<void> => {
       sort: 3,
     },
     {
-      id: 4,
       collection: 'Post',
       field: 'author',
       label: '著者',
@@ -205,7 +193,6 @@ const seedingData = async (): Promise<void> => {
       sort: 4,
     },
     {
-      id: 5,
       collection: 'Post',
       field: 'status',
       label: '公開ステータス',
@@ -220,7 +207,6 @@ const seedingData = async (): Promise<void> => {
     },
     // Fields related to collection Company
     {
-      id: 6,
       collection: 'Company',
       field: 'id',
       label: 'id',
@@ -233,7 +219,6 @@ const seedingData = async (): Promise<void> => {
       sort: 1,
     },
     {
-      id: 7,
       collection: 'Company',
       field: 'name',
       label: '会社名',
@@ -246,7 +231,6 @@ const seedingData = async (): Promise<void> => {
       sort: 2,
     },
     {
-      id: 8,
       collection: 'Company',
       field: 'email',
       label: 'メールアドレス',
@@ -259,7 +243,6 @@ const seedingData = async (): Promise<void> => {
       sort: 3,
     },
     {
-      id: 9,
       collection: 'Company',
       field: 'address',
       label: '住所',
@@ -277,7 +260,6 @@ const seedingData = async (): Promise<void> => {
   Output.info('Creating project settings...');
   await projectSettingsRepository.createMany([
     {
-      id: 1,
       name: 'Superfast',
       before_login: '',
       after_login: '',
