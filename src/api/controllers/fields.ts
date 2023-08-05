@@ -1,7 +1,6 @@
 import express, { Request, Response } from 'express';
 import { Knex } from 'knex';
 import { Field } from '../../config/types.js';
-
 import { SchemaOverview } from '../database/overview.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
 import {
@@ -22,11 +21,12 @@ router.get(
   asyncHandler(async (req: Request, res: Response) => {
     const repository = new FieldsRepository();
 
-    const fields = await repository.read({ collection: req.params.collection });
-
-    fields.forEach((field) => {
-      field.field = field.field;
-      field.fieldOption = field.options ? JSON.parse(field.options) : null;
+    const fieldSchemas = await repository.read({ collection: req.params.collection });
+    const fields = fieldSchemas.map((field) => {
+      return {
+        ...field,
+        fieldOption: field.options ? JSON.parse(field.options) : null,
+      } as Field;
     });
 
     res.json({
@@ -65,7 +65,7 @@ router.post(
       for (const postField of req.body.fields) {
         const fieldId = await fieldsRepository.transacting(tx).create(postField);
         const field = await fieldsRepository.transacting(tx).readOne(fieldId);
-        fields.push(field);
+        fields.push(field as Field);
 
         await tx.transaction.schema.alterTable(field.collection, (table) => {
           addColumnToTable(field, table)?.references('id').inTable(relation.one_collection);

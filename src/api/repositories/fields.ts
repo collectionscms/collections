@@ -1,8 +1,8 @@
-import { Field } from '../../config/types.js';
 import { RecordNotUniqueException } from '../../exceptions/database/recordNotUnique.js';
+import { FieldSchema } from '../database/schemas.js';
 import { AbstractRepositoryOptions, BaseRepository, BaseTransaction } from './base.js';
 
-export class FieldsRepository extends BaseRepository<Field> {
+export class FieldsRepository extends BaseRepository<FieldSchema> {
   constructor(collection: string = 'superfast_fields', options?: AbstractRepositoryOptions) {
     super(collection, options);
   }
@@ -22,11 +22,11 @@ export class FieldsRepository extends BaseRepository<Field> {
    * @param data
    * @returns
    */
-  read(data: Partial<Field> = {}): Promise<Field[]> {
+  read(data: Partial<FieldSchema> = {}): Promise<FieldSchema[]> {
     return this.queryBuilder.where(data).orderBy('sort', 'asc', 'last').orderBy('sort', 'asc');
   }
 
-  async create(item: Omit<Field, 'id'>): Promise<number> {
+  async create(item: Omit<FieldSchema, 'id'>): Promise<number> {
     await this.checkUniqueField(item.collection, item.field);
     return super.create(item);
   }

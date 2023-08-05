@@ -22,7 +22,7 @@ export class FieldsService {
       await tx.transaction.schema.alterTable(field.collection, (table) => {
         addColumnToTable(field, table);
       });
-      return field;
+      return field as Field;
     });
 
     return field;
@@ -30,7 +30,7 @@ export class FieldsService {
 }
 
 export const addColumnToTable = (
-  field: { interface: string; field: string; options: string | null },
+  field: { interface: string | null; field: string; options: string | null },
   table: Knex.CreateTableBuilder,
   alter: boolean = false
 ) => {

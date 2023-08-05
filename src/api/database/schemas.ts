@@ -12,7 +12,7 @@ export type Collection = {
   archive_value: string | null;
 } & PrimaryKey;
 
-export type Field = {
+export type FieldSchema = {
   collection: string;
   field: string;
   label: string;
