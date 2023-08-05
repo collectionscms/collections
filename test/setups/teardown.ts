@@ -1,5 +1,5 @@
 import { unlinkSync } from 'fs';
-import knex from 'knex';
+import knex, { Knex } from 'knex';
 import { JestConfigWithTsJest } from 'ts-jest/dist/types.js';
 import { config } from '../config.js';
 import { testDatabases } from '../utilities/testDatabases.js';
@@ -18,12 +18,25 @@ export default async function teardown(
     const database = knex(knexConfig);
 
     await database.migrate.rollback(knexConfig.migrations, true);
-    await database.schema.dropTableIfExists('collection_f1_constructors');
+    await dropCollections(database.schema);
 
     if (testDatabase === 'sqlite3') {
       unlinkSync('test.db');
     }
 
     await database.destroy();
+  }
+}
+
+async function dropCollections(schema: Knex.SchemaBuilder) {
+  const tableNames = [
+    'collection_f1_constructors',
+    'collection_f1_2023_driver_standings',
+    'collection_f1_2022_driver_standings',
+    'collection_f1_grand_prix_races',
+  ];
+
+  for (const tableName of tableNames) {
+    await schema.dropTableIfExists(tableName);
   }
 }
