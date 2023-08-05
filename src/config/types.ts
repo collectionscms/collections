@@ -1,6 +1,6 @@
 import {
   Collection as CollectionSchema,
-  Field as FieldSchema,
+  FieldSchema,
   File as FileSchema,
   Permission as PermissionSchema,
   ProjectSetting as ProjectSettingSchema,

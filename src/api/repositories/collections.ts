@@ -2,6 +2,7 @@ import { Collection } from '../../config/types.js';
 import { RecordNotUniqueException } from '../../exceptions/database/recordNotUnique.js';
 import { AbstractRepositoryOptions, BaseRepository, BaseTransaction } from './base.js';
 
+// TODO: Repository layer concerns allows only schema. see: ./fields.ts
 export class CollectionsRepository extends BaseRepository<Collection> {
   constructor(collection: string = 'superfast_collections', options?: AbstractRepositoryOptions) {
     super(collection, options);
