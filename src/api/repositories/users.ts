@@ -4,6 +4,7 @@ import { RecordNotUniqueException } from '../../exceptions/database/recordNotUni
 import { InvalidCredentialsException } from '../../exceptions/invalidCredentials.js';
 import { AbstractRepositoryOptions, BaseRepository, BaseTransaction } from './base.js';
 
+// TODO: Repository layer concerns allows only schema. see: ./fields.ts
 export class UsersRepository extends BaseRepository<User> {
   constructor(collection: string = 'superfast_users', options?: AbstractRepositoryOptions) {
     super(collection, options);
