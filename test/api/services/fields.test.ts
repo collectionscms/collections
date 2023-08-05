@@ -10,7 +10,7 @@ describe('Field', () => {
   const databases = new Map<string, Knex>();
 
   const data = {
-    collection: 'collection_formula_one_constructors',
+    collection: 'collection_f1_constructors',
     interface: 'input',
     required: false,
     readonly: false,
@@ -64,7 +64,7 @@ describe('Field', () => {
 
       // meta data should not be created
       const fetchFields = await repository.read({
-        collection: 'collection_formula_one_constructors',
+        collection: 'collection_f1_constructors',
         field: 'point',
       });
 
@@ -89,7 +89,7 @@ describe('Field', () => {
 
         // meta data should not be duplicated.
         const fetchFields = await repository.read({
-          collection: 'collection_formula_one_constructors',
+          collection: 'collection_f1_constructors',
           field: 'id',
         });
 
