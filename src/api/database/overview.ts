@@ -1,6 +1,8 @@
+import { Knex } from 'knex';
 import { CollectionsRepository } from '../repositories/collections.js';
 import { FieldsRepository } from '../repositories/fields.js';
 import { RelationsRepository } from '../repositories/relations.js';
+import { getDatabase } from './connection.js';
 import { getSchemaInfo } from './inspector.js';
 
 export type CollectionOverview = {
@@ -32,8 +34,9 @@ export type SchemaOverview = {
   relations: Relation[];
 };
 
-export const getSchemaOverview = async (): Promise<SchemaOverview> => {
-  const schemaInfo = await getSchemaInfo();
+export const getSchemaOverview = async (options?: { database?: Knex }): Promise<SchemaOverview> => {
+  const database = options?.database || getDatabase();
+  const schemaInfo = await getSchemaInfo(database);
 
   const collectionsRepository = new CollectionsRepository();
   const fieldsRepository = new FieldsRepository();
@@ -47,13 +50,16 @@ export const getSchemaOverview = async (): Promise<SchemaOverview> => {
   for (let collection of collections) {
     const collectionFields = fields
       .filter((field) => field.collection === collection.collection)
-      .reduce((acc, field) => {
-        acc[field.field] = {
-          field: field.field,
-          alias: schemaInfo[collection.collection].columns[field.field] === undefined,
-        };
-        return acc;
-      }, {} as { [name: string]: FieldOverview });
+      .reduce(
+        (acc, field) => {
+          acc[field.field] = {
+            field: field.field,
+            alias: schemaInfo[collection.collection].columns[field.field] === undefined,
+          };
+          return acc;
+        },
+        {} as { [name: string]: FieldOverview }
+      );
 
     result.collections[collection.collection] = {
       collection: collection.collection,

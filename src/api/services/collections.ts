@@ -34,6 +34,7 @@ export class CollectionsService {
 
       await tx.transaction.schema.createTable(data.collection, (table) => {
         table.increments();
+        table.timestamps(true, true);
         data.status && table.string('status').notNullable();
       });
 
@@ -62,6 +63,30 @@ export class CollectionsService {
         field: 'id',
         label: 'id',
         interface: 'input',
+        required: true,
+        readonly: true,
+        hidden: true,
+        special: null,
+        sort: 0,
+        options: null,
+      },
+      {
+        collection: data.collection,
+        field: 'created_at',
+        label: 'Created At',
+        interface: 'dateTime',
+        required: true,
+        readonly: true,
+        hidden: true,
+        special: null,
+        sort: null,
+        options: null,
+      },
+      {
+        collection: data.collection,
+        field: 'updated_at',
+        label: 'Updated At',
+        interface: 'dateTime',
         required: true,
         readonly: true,
         hidden: true,

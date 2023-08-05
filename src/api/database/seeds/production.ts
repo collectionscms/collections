@@ -13,7 +13,7 @@ export const seedProduction = async (email: string, password: string): Promise<v
     // Role
     Output.info('Creating roles...');
     await rolesRepository.createMany([
-      { id: 1, name: 'Administrator', description: 'Administrator', admin_access: true },
+      { name: 'Administrator', description: 'Administrator', admin_access: true },
     ] as any[]);
 
     // User

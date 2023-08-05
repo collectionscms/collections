@@ -1,10 +1,12 @@
 import knex, { Knex } from 'knex';
+import { SchemaInfo, getSchemaInfo } from '../../../src/api/database/inspector.js';
+import { FieldSchema } from '../../../src/api/database/schemas.js';
 import { CollectionsRepository } from '../../../src/api/repositories/collections.js';
 import { FieldsRepository } from '../../../src/api/repositories/fields.js';
 import { CollectionsService } from '../../../src/api/services/collections.js';
+import { Collection } from '../../../src/config/types.js';
 import { config } from '../../config.js';
 import { testDatabases } from '../../utilities/testDatabases.js';
-import { Collection } from '../../../src/config/types.js';
 
 describe('Collection', () => {
   const tableName = 'superfast_collections';
@@ -43,6 +45,27 @@ describe('Collection', () => {
     }
   });
 
+  const expectCollectionFields = (
+    collection: string,
+    fields: FieldSchema[],
+    schemaInfo: SchemaInfo
+  ) => {
+    // meta
+    expect(fields).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ collection: collection, field: 'id' }),
+        expect.objectContaining({ collection: collection, field: 'created_at' }),
+        expect.objectContaining({ collection: collection, field: 'updated_at' }),
+      ])
+    );
+
+    // columns
+    const columns = schemaInfo[collection].columns;
+    expect(columns.id).toBeTruthy();
+    expect(columns.created_at).toBeTruthy();
+    expect(columns.updated_at).toBeTruthy();
+  };
+
   describe('Create', () => {
     it.each(testDatabases)('%s - should create', async (database) => {
       const connection = databases.get(database)!;
@@ -53,8 +76,13 @@ describe('Collection', () => {
       const result = await service.createCollection(data);
       expect(result).toBeTruthy();
 
-      const collection = await repository.readOne(result);
-      expect(collection.status_field).toBeNull();
+      const meta = await repository.readOne(result);
+      expect(meta.status_field).toBeNull();
+
+      // check collection meta / columns
+      const fields = await fieldsRepository.read({ collection: data.collection });
+      const schemaInfo = await getSchemaInfo(connection);
+      expectCollectionFields(data.collection, fields, schemaInfo);
     });
 
     it.each(testDatabases)('%s - should create with status', async (database) => {
@@ -66,11 +94,16 @@ describe('Collection', () => {
       const result = await service.createCollection(data1);
       expect(result).toBeTruthy();
 
-      const collection = await repository.readOne(result);
-      expect(collection.status_field).toBe('status');
-      expect(collection.draft_value).toBe('draft');
-      expect(collection.publish_value).toBe('published');
-      expect(collection.archive_value).toBe('archived');
+      const meta = await repository.readOne(result);
+      expect(meta.status_field).toBe('status');
+      expect(meta.draft_value).toBe('draft');
+      expect(meta.publish_value).toBe('published');
+      expect(meta.archive_value).toBe('archived');
+
+      // check collection meta / columns
+      const fields = await fieldsRepository.read({ collection: data1.collection });
+      const schemaInfo = await getSchemaInfo(connection);
+      expectCollectionFields(data1.collection, fields, schemaInfo);
     });
   });
 });
