@@ -73,7 +73,7 @@ export abstract class BaseRepository<T> implements AbstractRepository<T> {
     return id;
   }
 
-  createMany(items: T[]): Promise<void> {
+  createMany(items: Omit<T, 'id'>[]): Promise<void> {
     return this.queryBuilder.insert(items);
   }
 

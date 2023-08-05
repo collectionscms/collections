@@ -2,7 +2,7 @@ type PrimaryKey = {
   id: number;
 };
 
-export type Collection = {
+export type CollectionSchema = {
   collection: string;
   singleton: boolean;
   hidden: boolean;
@@ -22,7 +22,7 @@ export type FieldSchema = {
   readonly: boolean;
   required: boolean;
   hidden: boolean;
-  sort: number;
+  sort: number | null;
 } & PrimaryKey;
 
 export type User = {
