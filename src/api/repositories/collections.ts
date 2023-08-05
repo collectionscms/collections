@@ -1,9 +1,8 @@
-import { Collection } from '../../config/types.js';
 import { RecordNotUniqueException } from '../../exceptions/database/recordNotUnique.js';
+import { CollectionSchema } from '../database/schemas.js';
 import { AbstractRepositoryOptions, BaseRepository, BaseTransaction } from './base.js';
 
-// TODO: Repository layer concerns allows only schema. see: ./fields.ts
-export class CollectionsRepository extends BaseRepository<Collection> {
+export class CollectionsRepository extends BaseRepository<CollectionSchema> {
   constructor(collection: string = 'superfast_collections', options?: AbstractRepositoryOptions) {
     super(collection, options);
   }
@@ -15,7 +14,7 @@ export class CollectionsRepository extends BaseRepository<Collection> {
     return repositoryTransaction;
   }
 
-  async create(item: Omit<Collection, 'id'>): Promise<number> {
+  async create(item: Omit<CollectionSchema, 'id'>): Promise<number> {
     await this.checkUniqueCollection(item.collection);
     return super.create(item);
   }

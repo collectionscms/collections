@@ -1,5 +1,5 @@
 import {
-  Collection as CollectionSchema,
+  CollectionSchema,
   FieldSchema,
   File as FileSchema,
   Permission as PermissionSchema,
@@ -45,7 +45,7 @@ export type ApiError = {
 // Schema
 // /////////////////////////////////////
 
-export type Collection = {} & CollectionSchema;
+export type Collection = { status?: boolean } & CollectionSchema;
 
 export type FieldInterface =
   | 'input'
