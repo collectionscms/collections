@@ -1,24 +1,48 @@
 import { Knex } from 'knex';
 
-export const seed = async (knex: Knex): Promise<void> => {
-  await knex('superfast_collections').insert([
+export const seed = async (database: Knex): Promise<void> => {
+  const collectionName = 'collection_f1_constructors';
+
+  await database('superfast_collections').insert([
     {
-      collection: 'collection_f1_constructors',
+      collection: collectionName,
       singleton: false,
       hidden: false,
     },
   ]);
 
-  await knex('superfast_fields').insert([
+  await database('superfast_fields').insert([
     {
-      collection: 'collection_f1_constructors',
+      collection: collectionName,
       field: 'id',
       label: 'id',
       interface: 'input',
     },
+    {
+      collection: collectionName,
+      field: 'year',
+      label: 'Year',
+      interface: 'input',
+    },
+    {
+      collection: collectionName,
+      field: 'team_name',
+      label: 'Team Name',
+      interface: 'input',
+    },
   ]);
 
-  await knex.schema.createTable('collection_f1_constructors', (table) => {
+  await database.schema.createTable(collectionName, (table) => {
     table.increments();
+    table.timestamps(true, true);
+    table.string('year', 255);
+    table.string('team_name', 255);
   });
+
+  await database(collectionName).insert([
+    {
+      year: 2022,
+      team_name: 'Red Bull',
+    },
+  ]);
 };

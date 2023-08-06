@@ -34,6 +34,7 @@ async function dropCollections(schema: Knex.SchemaBuilder) {
     'collection_f1_2023_driver_standings',
     'collection_f1_2022_driver_standings',
     'collection_f1_grand_prix_races',
+    'collection_f1_ferrari_team_stats',
   ];
 
   for (const tableName of tableNames) {

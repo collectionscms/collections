@@ -26,8 +26,7 @@ export class UsersRepository extends BaseRepository<User> {
     if (item.email) {
       await this.checkUniqueEmail(item.email, id);
     }
-
-    return this.queryBuilder.where('id', id).update(item);
+    return super.update(id, item);
   }
 
   private async checkUniqueEmail(email: string, myId?: number) {

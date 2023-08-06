@@ -1,5 +1,6 @@
 import type { Knex } from 'knex';
 import { getDatabase } from '../database/connection.js';
+import { getSchemaInfo } from '../database/inspector.js';
 
 export type AbstractRepositoryOptions = {
   knex?: Knex;
@@ -77,7 +78,11 @@ export abstract class BaseRepository<T> implements AbstractRepository<T> {
     return this.queryBuilder.insert(items);
   }
 
-  update(id: number, item: Partial<T>): Promise<boolean> {
+  async update(id: number, item: Partial<T>): Promise<boolean> {
+    const schemaInfo = await getSchemaInfo(this.knex);
+    if (schemaInfo[this.collection].columns.updated_at) {
+      item = { ...item, updated_at: this.knex.fn.now() };
+    }
     return this.queryBuilder.where('id', id).update(item);
   }
 

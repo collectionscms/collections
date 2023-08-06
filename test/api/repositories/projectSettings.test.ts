@@ -52,6 +52,11 @@ describe('Project Settings', () => {
       expect(projectSetting.name).toBe(newData.name);
       expect(projectSetting.before_login).toBe(newData.before_login);
       expect(projectSetting.after_login).toBe(newData.after_login);
+
+      const before = new Date(data[0].updated_at!).getTime();
+      const after = new Date(projectSetting.updated_at!).getTime();
+
+      expect(after).toBeGreaterThan(before);
     });
 
     it.each(testDatabases)('%s - should update fails', async (database) => {

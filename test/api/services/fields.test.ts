@@ -1,27 +1,57 @@
 import knex, { Knex } from 'knex';
+import { CollectionsRepository } from '../../../src/api/repositories/collections.js';
 import { FieldsRepository } from '../../../src/api/repositories/fields.js';
+import { CollectionsService } from '../../../src/api/services/collections.js';
 import { FieldsService } from '../../../src/api/services/fields.js';
-import { Field } from '../../../src/config/types.js';
+import { Collection, Field } from '../../../src/config/types.js';
 import { config } from '../../config.js';
 import { testDatabases } from '../../utilities/testDatabases.js';
 
 describe('Field', () => {
-  const tableName = 'superfast_fields';
+  const collectionsTableName = 'superfast_collections';
+  const fieldsTableName = 'superfast_fields';
+  const collectionName = 'collection_f1_ferrari_team_stats';
   const databases = new Map<string, Knex>();
 
-  const data = {
-    collection: 'collection_f1_constructors',
+  const collectionData: Omit<Collection, 'id'> = {
+    collection: collectionName,
+    singleton: false,
+    hidden: false,
+    status_field: null,
+    draft_value: null,
+    publish_value: null,
+    archive_value: null,
+  };
+
+  const fieldData: Omit<Field, 'id'> = {
+    collection: collectionName,
     interface: 'input',
     required: false,
     readonly: false,
     hidden: false,
+    field: '',
+    label: '',
+    special: null,
+    options: null,
+    sort: null,
   };
 
   beforeAll(async () => {
     for (const database of testDatabases) {
       databases.set(database, knex(config.knexConfig[database]!));
+
+      await createCollection(database);
     }
   });
+
+  const createCollection = async (database: string) => {
+    const connection = databases.get(database)!;
+    const repository = new CollectionsRepository(collectionsTableName, { knex: connection });
+    const fieldsRepository = new FieldsRepository(fieldsTableName, { knex: connection });
+    const service = new CollectionsService(repository, fieldsRepository);
+
+    await service.createCollection(collectionData);
+  };
 
   afterAll(async () => {
     for (const [_, connection] of databases) {
@@ -32,11 +62,11 @@ describe('Field', () => {
   describe('Create', () => {
     it.each(testDatabases)('%s - should create', async (database) => {
       const connection = databases.get(database)!;
-      const repository = new FieldsRepository(tableName, { knex: connection });
+      const repository = new FieldsRepository(fieldsTableName, { knex: connection });
       const service = new FieldsService(repository);
 
       const field = {
-        ...data,
+        ...fieldData,
         field: 'team_name',
         label: 'Team Name',
       } as Omit<Field, 'id'>;
@@ -47,11 +77,11 @@ describe('Field', () => {
 
     it.each(testDatabases)('%s - should throw on duplication column error', async (database) => {
       const connection = databases.get(database)!;
-      const repository = new FieldsRepository(tableName, { knex: connection });
+      const repository = new FieldsRepository(fieldsTableName, { knex: connection });
       const service = new FieldsService(repository);
 
       const field = {
-        ...data,
+        ...fieldData,
         field: 'point',
         label: 'Point',
       } as Omit<Field, 'id'>;
@@ -64,7 +94,7 @@ describe('Field', () => {
 
       // meta data should not be created
       const fetchFields = await repository.read({
-        collection: 'collection_f1_constructors',
+        collection: collectionName,
         field: 'point',
       });
 
@@ -75,11 +105,11 @@ describe('Field', () => {
       '%s - should throw on duplication system column error',
       async (database) => {
         const connection = databases.get(database)!;
-        const repository = new FieldsRepository(tableName, { knex: connection });
+        const repository = new FieldsRepository(fieldsTableName, { knex: connection });
         const service = new FieldsService(repository);
 
         const field = {
-          ...data,
+          ...fieldData,
           field: 'id',
           label: 'id',
         } as Omit<Field, 'id'>;
@@ -89,7 +119,7 @@ describe('Field', () => {
 
         // meta data should not be duplicated.
         const fetchFields = await repository.read({
-          collection: 'collection_f1_constructors',
+          collection: collectionName,
           field: 'id',
         });
 
