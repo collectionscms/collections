@@ -1,5 +1,7 @@
+export type PrimaryKey = number; // | string;
+
 type Common = {
-  id: number;
+  id: PrimaryKey;
   created_at?: Date;
   updated_at?: Date;
 };
