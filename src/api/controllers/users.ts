@@ -8,6 +8,7 @@ import { asyncHandler } from '../middleware/asyncHandler.js';
 import { permissionsHandler } from '../middleware/permissionsHandler.js';
 import { UsersRepository } from '../repositories/users.js';
 import { MailService } from '../services/mail.js';
+import { ProjectSettingsService } from '../services/projectSettings.js';
 import { oneWayHash } from '../utilities/oneWayHash.js';
 
 const router = express.Router();
@@ -134,8 +135,12 @@ router.post(
 
     await repository.update(user.id, user);
 
+    const projectSettingsService = new ProjectSettingsService({ schema: req.schema });
+    const projectSettings = await projectSettingsService.readMany();
+    const projectName = projectSettings[0].name;
+
     const mail = new MailService();
-    mail.sendEmail({
+    mail.sendEmail(projectName, {
       to: user.email,
       subject: 'Reset Password',
       html: `${env.PUBLIC_SERVER_URL}/admin/auth/reset-password/${user.reset_password_token}`,

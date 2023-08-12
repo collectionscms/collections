@@ -6,20 +6,21 @@ import { CollectionsRepository } from '../../repositories/collections.js';
 import { ContentsRepository } from '../../repositories/contents.js';
 import { FieldsRepository } from '../../repositories/fields.js';
 import { PermissionsRepository } from '../../repositories/permissions.js';
-import { ProjectSettingsRepository } from '../../repositories/projectSettings.js';
 import { RolesRepository } from '../../repositories/roles.js';
 import { UsersRepository } from '../../repositories/users.js';
 import { CollectionsService } from '../../services/collections.js';
 import { FieldsService } from '../../services/fields.js';
+import { ProjectSettingsService } from '../../services/projectSettings.js';
 import { oneWayHash } from '../../utilities/oneWayHash.js';
 import { getDatabase } from '../connection.js';
+import { getSchemaOverview } from '../overview.js';
 
 export const seedDev = async (): Promise<void> => {
   const database = getDatabase();
 
   try {
     await resetAll(database);
-    await seedingSystemData();
+    await seedingSystemData(database);
     await seedingCollectionData();
 
     process.exit(0);
@@ -43,13 +44,16 @@ const resetAll = async (database: Knex): Promise<void> => {
   await database.schema.dropTableIfExists('Company');
 };
 
-const seedingSystemData = async (): Promise<void> => {
+const seedingSystemData = async (database: Knex): Promise<void> => {
+  const schema = await getSchemaOverview({ database });
+
   const rolesRepository = new RolesRepository();
   const usersRepository = new UsersRepository();
   const permissionsRepository = new PermissionsRepository();
   const collectionsRepository = new CollectionsRepository();
   const fieldsRepository = new FieldsRepository();
-  const projectSettingsRepository = new ProjectSettingsRepository();
+
+  const projectSettingsService = new ProjectSettingsService({ database, schema });
 
   const collectionsService = new CollectionsService(collectionsRepository, fieldsRepository);
   const fieldsService = new FieldsService(fieldsRepository);
@@ -231,13 +235,11 @@ const seedingSystemData = async (): Promise<void> => {
 
   // Project Setting
   Output.info('Creating project settings...');
-  await projectSettingsRepository.createMany([
-    {
-      name: 'Superfast',
-      before_login: '',
-      after_login: '',
-    },
-  ]);
+  await projectSettingsService.createOne({
+    name: 'Superfast',
+    before_login: '',
+    after_login: '',
+  });
 };
 
 const seedingCollectionData = async (): Promise<void> => {
