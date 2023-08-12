@@ -10,7 +10,9 @@ type AbstractService<T> = {
   readMany(query?: Query): Promise<T[]>;
   readByQuery(query: Query): Promise<T[]>;
   createOne(data: Partial<T>): Promise<PrimaryKey>;
+  createMany(data: Partial<T>[]): Promise<PrimaryKey[]>;
   updateOne(key: PrimaryKey, data: Partial<T>): Promise<PrimaryKey>;
+  deleteOne(key: PrimaryKey): Promise<boolean>;
 };
 
 export type AbstractServiceOptions = {
@@ -55,5 +57,15 @@ export class BaseService<T> implements AbstractService<T> {
 
   async updateOne(key: PrimaryKey, data: Partial<T>): Promise<PrimaryKey> {
     return await update({ database: this.database, collection: this.collection, key, data });
+  }
+
+  async createMany(data: Partial<T>[]): Promise<number[]> {
+    //TODO: implement
+    throw new Error('Method not implemented.');
+  }
+
+  async deleteOne(id: number): Promise<boolean> {
+    //TODO: implement
+    throw new Error('Method not implemented.');
   }
 }
