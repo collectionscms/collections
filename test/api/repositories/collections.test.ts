@@ -9,7 +9,7 @@ describe('Collections', () => {
   const databases = new Map<string, Knex>();
 
   const data: Omit<CollectionSchema, 'id'> = {
-    collection: 'collection_f1_grand_prix_races',
+    collection: 'collection_f1_constructors',
     singleton: false,
     hidden: false,
     status_field: null,

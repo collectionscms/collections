@@ -1,7 +1,7 @@
 import { Knex } from 'knex';
 
 export const seed = async (database: Knex): Promise<void> => {
-  const collectionName = 'collection_f1_constructors';
+  const collectionName = 'collection_f1_grand_prix_races';
 
   await database('superfast_collections').insert([
     {
@@ -26,8 +26,8 @@ export const seed = async (database: Knex): Promise<void> => {
     },
     {
       collection: collectionName,
-      field: 'team_name',
-      label: 'Team Name',
+      field: 'circuit',
+      label: 'Circuit',
       interface: 'input',
     },
   ]);
@@ -36,13 +36,13 @@ export const seed = async (database: Knex): Promise<void> => {
     table.increments();
     table.timestamps(true, true);
     table.string('year', 255);
-    table.string('team_name', 255);
+    table.string('circuit', 255);
   });
 
   await database(collectionName).insert([
     {
       year: 2022,
-      team_name: 'Red Bull',
+      circuit: 'Bahrain',
     },
   ]);
 };
