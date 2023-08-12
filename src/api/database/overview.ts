@@ -1,6 +1,5 @@
 import { Knex } from 'knex';
 import { CollectionsRepository } from '../repositories/collections.js';
-import { FieldsRepository } from '../repositories/fields.js';
 import { RelationsRepository } from '../repositories/relations.js';
 import { getDatabase } from './connection.js';
 import { getSchemaInfo } from './inspector.js';
@@ -34,46 +33,56 @@ export type SchemaOverview = {
   relations: Relation[];
 };
 
+/**
+ * Get schema overview
+ * @param options
+ * @returns schema overview
+ */
 export const getSchemaOverview = async (options?: { database?: Knex }): Promise<SchemaOverview> => {
   const database = options?.database || getDatabase();
   const schemaInfo = await getSchemaInfo(database);
+  const schema: SchemaOverview = { collections: {}, relations: [] };
 
-  const collectionsRepository = new CollectionsRepository();
-  const fieldsRepository = new FieldsRepository();
-  const relationsRepository = new RelationsRepository();
-
+  // /////////////////////////////////////
+  // Collections
+  // /////////////////////////////////////
+  const collectionsRepository = new CollectionsRepository('superfast_collections', {
+    knex: database,
+  });
   const collections = await collectionsRepository.read();
-  const fields = await fieldsRepository.read();
 
-  const result: SchemaOverview = { collections: {}, relations: [] };
+  for (const [collection, info] of Object.entries(schemaInfo)) {
+    const metaCollection = collections.find((c) => c.collection === collection);
 
-  for (let collection of collections) {
-    const collectionFields = fields
-      .filter((field) => field.collection === collection.collection)
-      .reduce(
-        (acc, field) => {
-          acc[field.field] = {
-            field: field.field,
-            alias: schemaInfo[collection.collection].columns[field.field] === undefined,
+    schema.collections[collection] = {
+      collection: collection,
+      singleton: metaCollection && metaCollection.singleton ? true : false,
+      statusField: metaCollection ? metaCollection.status_field : null,
+      draftValue: metaCollection ? metaCollection.draft_value : null,
+      publishValue: metaCollection ? metaCollection.publish_value : null,
+      archiveValue: metaCollection ? metaCollection.archive_value : null,
+      fields: Object.values(info.columns).reduce(
+        (acc, column) => {
+          acc[column.column_name] = {
+            field: column.column_name,
+            alias: info.columns[column.column_name] === undefined,
           };
           return acc;
         },
         {} as { [name: string]: FieldOverview }
-      );
-
-    result.collections[collection.collection] = {
-      collection: collection.collection,
-      singleton: collection.singleton,
-      statusField: collection.status_field,
-      draftValue: collection.draft_value,
-      publishValue: collection.publish_value,
-      archiveValue: collection.archive_value,
-      fields: collectionFields,
+      ),
     };
   }
 
+  // /////////////////////////////////////
+  // Relations
+  // /////////////////////////////////////
+  const relationsRepository = new RelationsRepository('superfast_relations', {
+    knex: database,
+  });
   const relations = await relationsRepository.read();
-  result.relations = relations.map((relation) => {
+
+  schema.relations = relations.map((relation) => {
     return {
       collection: relation.one_collection,
       field: relation.one_field,
@@ -82,5 +91,5 @@ export const getSchemaOverview = async (options?: { database?: Knex }): Promise<
     };
   });
 
-  return result;
+  return schema;
 };
