@@ -34,7 +34,7 @@ export type SchemaOverview = {
 };
 
 /**
- * Get schema overview
+ * @description get schema overview
  * @param options
  * @returns schema overview
  */
