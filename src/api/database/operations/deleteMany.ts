@@ -11,9 +11,7 @@ export type Arguments = {
 export const deleteMany = async (args: Arguments): Promise<void> => {
   let { collection, database, keys } = args;
 
-  database.transaction(async (tx) => {
-    for (const key of keys) {
-      await deleteOne({ database: tx, collection, key: key });
-    }
-  });
+  for (const key of keys) {
+    await deleteOne({ database, collection, key: key });
+  }
 };
