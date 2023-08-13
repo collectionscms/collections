@@ -6,9 +6,9 @@ import { permissionsHandler } from '../middleware/permissionsHandler.js';
 import { BaseTransaction } from '../repositories/base.js';
 import { CollectionsRepository } from '../repositories/collections.js';
 import { FieldsRepository } from '../repositories/fields.js';
-import { PermissionsRepository } from '../repositories/permissions.js';
 import { RelationsRepository } from '../repositories/relations.js';
 import { CollectionsService } from '../services/collections.js';
+import { PermissionsService } from '../services/permissions.js';
 
 const router = express.Router();
 
@@ -99,7 +99,6 @@ router.delete(
   asyncHandler(async (req: Request, res: Response) => {
     const repository = new CollectionsRepository();
     const fieldsRepository = new FieldsRepository();
-    const permissionsRepository = new PermissionsRepository();
     const relationsRepository = new RelationsRepository();
 
     const id = Number(req.params.id);
@@ -109,7 +108,17 @@ router.delete(
       /////////////////////////// Delete Relation ///////////////////////////
       await repository.transacting(tx).delete(id);
       await fieldsRepository.transacting(tx).deleteMany({ collection: collection.collection });
-      await permissionsRepository.transacting(tx).deleteMany({ collection: collection.collection });
+
+      const permissionsService = new PermissionsService({
+        database: tx.transaction,
+        schema: req.schema,
+      });
+
+      const permissions = await permissionsService.readMany({
+        filter: { collection: collection.collection },
+      });
+      const ids = permissions.map((permission) => permission.id);
+      await permissionsService.deleteMany(ids);
 
       // Delete many relation fields
       const oneRelations = await relationsRepository

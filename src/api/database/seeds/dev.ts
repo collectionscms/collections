@@ -5,11 +5,11 @@ import { Output } from '../../../utilities/output.js';
 import { CollectionsRepository } from '../../repositories/collections.js';
 import { ContentsRepository } from '../../repositories/contents.js';
 import { FieldsRepository } from '../../repositories/fields.js';
-import { PermissionsRepository } from '../../repositories/permissions.js';
 import { RolesRepository } from '../../repositories/roles.js';
 import { UsersRepository } from '../../repositories/users.js';
 import { CollectionsService } from '../../services/collections.js';
 import { FieldsService } from '../../services/fields.js';
+import { PermissionsService } from '../../services/permissions.js';
 import { ProjectSettingsService } from '../../services/projectSettings.js';
 import { oneWayHash } from '../../utilities/oneWayHash.js';
 import { getDatabase } from '../connection.js';
@@ -49,20 +49,20 @@ const seedingSystemData = async (database: Knex): Promise<void> => {
 
   const rolesRepository = new RolesRepository();
   const usersRepository = new UsersRepository();
-  const permissionsRepository = new PermissionsRepository();
   const collectionsRepository = new CollectionsRepository();
   const fieldsRepository = new FieldsRepository();
 
-  const projectSettingsService = new ProjectSettingsService({ database, schema });
-
   const collectionsService = new CollectionsService(collectionsRepository, fieldsRepository);
   const fieldsService = new FieldsService(fieldsRepository);
+
+  const projectSettingsService = new ProjectSettingsService({ database, schema });
+  const permissionsService = new PermissionsService({ database, schema });
 
   // Role
   Output.info('Creating roles...');
   await rolesRepository.createMany([
     { name: 'Administrator', description: 'Administrator', admin_access: true },
-    { name: 'Editor', description: 'Editor', admin_access: true },
+    { name: 'Editor', description: 'Editor', admin_access: false },
   ] as any[]);
 
   // User
@@ -91,7 +91,7 @@ const seedingSystemData = async (database: Knex): Promise<void> => {
 
   // Permission
   Output.info('Creating permissions...');
-  await permissionsRepository.createMany([
+  await permissionsService.createMany([
     // Editor
     {
       collection: 'Post',
