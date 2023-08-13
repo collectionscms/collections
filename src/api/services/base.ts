@@ -25,9 +25,13 @@ type AbstractService<T extends TypeWithId = any> = {
 };
 
 export type AbstractServiceOptions = {
-  database?: Knex;
+  database?: Knex | Knex.Transaction;
   schema: SchemaOverview;
 };
+
+export class BaseTransaction {
+  constructor(readonly transaction: Knex.Transaction<any, any[]>) {}
+}
 
 export class BaseService<T extends TypeWithId = any> implements AbstractService<T> {
   collection: string;
@@ -38,6 +42,13 @@ export class BaseService<T extends TypeWithId = any> implements AbstractService<
     this.collection = collection;
     this.schema = options.schema;
     this.database = options.database || getDatabase();
+  }
+
+  async transaction<T>(callback: (trx: BaseTransaction) => Promise<T>) {
+    return this.database.transaction(async (tx) => {
+      const baseTx = new BaseTransaction(tx);
+      return callback(baseTx);
+    });
   }
 
   /**
