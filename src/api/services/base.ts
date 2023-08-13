@@ -5,13 +5,13 @@ import { readById } from '../database/operations/readById.js';
 import { readByQuery } from '../database/operations/readByQuery.js';
 import { update } from '../database/operations/update.js';
 import { SchemaOverview } from '../database/overview.js';
-import { PrimaryKey } from '../database/schemas.js';
+import { PrimaryKey, TypeWithId } from '../database/schemas.js';
 
 type Query = {
   filter?: Record<string, any>;
 };
 
-type AbstractService<T> = {
+type AbstractService<T extends TypeWithId = any> = {
   readOne(key: PrimaryKey): Promise<T>;
   readMany(query?: Query): Promise<T[]>;
   createOne(data: Partial<T>): Promise<PrimaryKey>;
@@ -25,7 +25,7 @@ export type AbstractServiceOptions = {
   schema: SchemaOverview;
 };
 
-export class BaseService<T> implements AbstractService<T> {
+export class BaseService<T extends TypeWithId = any> implements AbstractService<T> {
   collection: string;
   database: Knex;
   schema: SchemaOverview;
