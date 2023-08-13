@@ -3,9 +3,9 @@ import { RecordNotFoundException } from '../../exceptions/database/recordNotFoun
 import { UnprocessableEntityException } from '../../exceptions/unprocessableEntity.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
 import { permissionsHandler } from '../middleware/permissionsHandler.js';
-import { PermissionsRepository } from '../repositories/permissions.js';
 import { RolesRepository } from '../repositories/roles.js';
 import { UsersRepository } from '../repositories/users.js';
+import { PermissionsService } from '../services/permissions.js';
 
 const router = express.Router();
 
@@ -68,7 +68,6 @@ router.delete(
   asyncHandler(async (req: Request, res: Response) => {
     const id = Number(req.params.id);
     const repository = new RolesRepository();
-    const permissionsRepository = new PermissionsRepository();
     const usersRepository = new UsersRepository();
 
     const users = await usersRepository.read({ role_id: id });
@@ -85,7 +84,17 @@ router.delete(
     }
 
     await repository.transaction(async (tx) => {
-      await permissionsRepository.transacting(tx).deleteMany({ role_id: id });
+      const permissionsService = new PermissionsService({
+        database: tx.transaction,
+        schema: req.schema,
+      });
+      const permissions = await permissionsService.readMany({
+        filter: { role_id: id },
+      });
+
+      const ids = permissions.map((permission) => permission.id);
+      await permissionsService.deleteMany(ids);
+
       await repository.transacting(tx).delete(id);
       res.status(204).end();
     });
@@ -97,9 +106,9 @@ router.get(
   permissionsHandler(),
   asyncHandler(async (req: Request, res: Response) => {
     const id = Number(req.params.id);
-    const permissionsRepository = new PermissionsRepository();
+    const permissionsService = new PermissionsService({ schema: req.schema });
 
-    const permissions = await permissionsRepository.read({ role_id: id });
+    const permissions = await permissionsService.readMany({ filter: { role_id: id } });
 
     res.json({ permissions });
   })
@@ -110,14 +119,14 @@ router.post(
   permissionsHandler([{ collection: 'superfast_permissions', action: 'create' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const id = Number(req.params.id);
-    const permissionsRepository = new PermissionsRepository();
+    const permissionsService = new PermissionsService({ schema: req.schema });
 
     const data = {
       ...req.body,
       role_id: id,
     };
 
-    const permissionId = await permissionsRepository.create(data);
+    const permissionId = await permissionsService.createOne(data);
 
     res.json({
       id: permissionId,
@@ -130,9 +139,9 @@ router.delete(
   permissionsHandler([{ collection: 'superfast_permissions', action: 'delete' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const permissionId = Number(req.params.permissionId);
-    const permissionsRepository = new PermissionsRepository();
+    const permissionsService = new PermissionsService({ schema: req.schema });
 
-    await permissionsRepository.delete(permissionId);
+    await permissionsService.deleteOne(permissionId);
 
     res.status(204).end();
   })

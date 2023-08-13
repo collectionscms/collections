@@ -1,6 +1,9 @@
 import { Knex } from 'knex';
 import { getDatabase } from '../database/connection.js';
+import { createMany } from '../database/operations/createMany.js';
 import { createOne } from '../database/operations/createOne.js';
+import { deleteMany } from '../database/operations/deleteMany.js';
+import { deleteOne } from '../database/operations/deleteOne.js';
 import { readById } from '../database/operations/readById.js';
 import { readByQuery } from '../database/operations/readByQuery.js';
 import { updateOne } from '../database/operations/updateOne.js';
@@ -17,13 +20,18 @@ type AbstractService<T extends TypeWithId = any> = {
   createOne(data: Partial<T>): Promise<PrimaryKey>;
   createMany(data: Partial<T>[]): Promise<PrimaryKey[]>;
   updateOne(key: PrimaryKey, data: Partial<T>): Promise<PrimaryKey>;
-  deleteOne(key: PrimaryKey): Promise<boolean>;
+  deleteOne(key: PrimaryKey): Promise<void>;
+  deleteMany(keys: PrimaryKey[]): Promise<void>;
 };
 
 export type AbstractServiceOptions = {
-  database?: Knex;
+  database?: Knex | Knex.Transaction;
   schema: SchemaOverview;
 };
+
+export class BaseTransaction {
+  constructor(readonly transaction: Knex.Transaction<any, any[]>) {}
+}
 
 export class BaseService<T extends TypeWithId = any> implements AbstractService<T> {
   collection: string;
@@ -34,6 +42,13 @@ export class BaseService<T extends TypeWithId = any> implements AbstractService<
     this.collection = collection;
     this.schema = options.schema;
     this.database = options.database || getDatabase();
+  }
+
+  async transaction<T>(callback: (trx: BaseTransaction) => Promise<T>) {
+    return this.database.transaction(async (tx) => {
+      const baseTx = new BaseTransaction(tx);
+      return callback(baseTx);
+    });
   }
 
   /**
@@ -77,13 +92,28 @@ export class BaseService<T extends TypeWithId = any> implements AbstractService<
     return await updateOne({ database: this.database, collection: this.collection, key, data });
   }
 
-  async createMany(data: Partial<T>[]): Promise<number[]> {
-    //TODO: implement
-    throw new Error('Method not implemented.');
+  /**
+   * @description create multiple items
+   * @param data
+   * @returns primary keys
+   */
+  async createMany(data: Partial<T>[]): Promise<PrimaryKey[]> {
+    return await createMany({ database: this.database, collection: this.collection, data });
   }
 
-  async deleteOne(id: number): Promise<boolean> {
-    //TODO: implement
-    throw new Error('Method not implemented.');
+  /**
+   * @description delete single item by primary key
+   * @param key
+   */
+  async deleteOne(key: PrimaryKey): Promise<void> {
+    await deleteOne({ database: this.database, collection: this.collection, key });
+  }
+
+  /**
+   * @description delete multiple items by primary keys
+   * @param keys
+   */
+  async deleteMany(keys: PrimaryKey[]): Promise<void> {
+    await deleteMany({ database: this.database, collection: this.collection, keys });
   }
 }

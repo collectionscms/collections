@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { PermissionsAction } from '../../config/types.js';
 import { ForbiddenException } from '../../exceptions/forbidden.js';
 import { InvalidCredentialsException } from '../../exceptions/invalidCredentials.js';
-import { PermissionsRepository } from '../repositories/permissions.js';
+import { PermissionsService } from '../services/permissions.js';
 
 export const collectionPermissionsHandler =
   (action: PermissionsAction) => async (req: Request, res: Response, next: NextFunction) => {
@@ -11,8 +11,13 @@ export const collectionPermissionsHandler =
     }
 
     if (!req.adminAccess) {
-      const repository = new PermissionsRepository();
-      const userPermissions = await repository.read({ role_id: Number(req.roleId) });
+      const permissionsService = new PermissionsService({
+        schema: req.schema,
+      });
+
+      const userPermissions = await permissionsService.readMany({
+        filter: { role_id: Number(req.roleId) },
+      });
 
       const hasPermission = userPermissions.some(
         (userPermission) =>
@@ -35,8 +40,13 @@ export const permissionsHandler =
     }
 
     if (!req.adminAccess && permissions.length > 0) {
-      const repository = new PermissionsRepository();
-      const userPermissions = await repository.read({ role_id: Number(req.roleId) });
+      const permissionsService = new PermissionsService({
+        schema: req.schema,
+      });
+
+      const userPermissions = await permissionsService.readMany({
+        filter: { role_id: Number(req.roleId) },
+      });
 
       const hasPermission = permissions.every((permission) =>
         userPermissions.some(
