@@ -1,24 +1,27 @@
 import { Output } from '../../../utilities/output.js';
-import { RolesRepository } from '../../repositories/roles.js';
 import { UsersRepository } from '../../repositories/users.js';
+import { RolesService } from '../../services/roles.js';
 import { oneWayHash } from '../../utilities/oneWayHash.js';
 import { getDatabase } from '../connection.js';
+import { getSchemaOverview } from '../overview.js';
 
 export const seedProduction = async (email: string, password: string): Promise<void> => {
   const database = getDatabase();
-  const rolesRepository = new RolesRepository();
+  const schema = await getSchemaOverview({ database });
   const usersRepository = new UsersRepository();
+
+  const rolesService = new RolesService({ database, schema });
 
   try {
     // Role
     Output.info('Creating roles...');
-    await rolesRepository.createMany([
+    await rolesService.createMany([
       { name: 'Administrator', description: 'Administrator', admin_access: true },
     ] as any[]);
 
     // User
     Output.info('Creating users...');
-    const adminRole = await rolesRepository.readOne(1);
+    const adminRole = await rolesService.readOne(1);
     const hashed = await oneWayHash(password);
 
     await usersRepository.createMany([

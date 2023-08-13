@@ -5,12 +5,12 @@ import { Output } from '../../../utilities/output.js';
 import { CollectionsRepository } from '../../repositories/collections.js';
 import { ContentsRepository } from '../../repositories/contents.js';
 import { FieldsRepository } from '../../repositories/fields.js';
-import { RolesRepository } from '../../repositories/roles.js';
 import { UsersRepository } from '../../repositories/users.js';
 import { CollectionsService } from '../../services/collections.js';
 import { FieldsService } from '../../services/fields.js';
 import { PermissionsService } from '../../services/permissions.js';
 import { ProjectSettingsService } from '../../services/projectSettings.js';
+import { RolesService } from '../../services/roles.js';
 import { oneWayHash } from '../../utilities/oneWayHash.js';
 import { getDatabase } from '../connection.js';
 import { getSchemaOverview } from '../overview.js';
@@ -47,7 +47,6 @@ const resetAll = async (database: Knex): Promise<void> => {
 const seedingSystemData = async (database: Knex): Promise<void> => {
   const schema = await getSchemaOverview({ database });
 
-  const rolesRepository = new RolesRepository();
   const usersRepository = new UsersRepository();
   const collectionsRepository = new CollectionsRepository();
   const fieldsRepository = new FieldsRepository();
@@ -57,18 +56,19 @@ const seedingSystemData = async (database: Knex): Promise<void> => {
 
   const projectSettingsService = new ProjectSettingsService({ database, schema });
   const permissionsService = new PermissionsService({ database, schema });
+  const rolesService = new RolesService({ database, schema });
 
   // Role
   Output.info('Creating roles...');
-  await rolesRepository.createMany([
+  await rolesService.createMany([
     { name: 'Administrator', description: 'Administrator', admin_access: true },
     { name: 'Editor', description: 'Editor', admin_access: false },
   ] as any[]);
 
   // User
   Output.info('Creating users...');
-  const adminRole = await rolesRepository.readOne(1);
-  const editorRole = await rolesRepository.readOne(2);
+  const adminRole = await rolesService.readOne(1);
+  const editorRole = await rolesService.readOne(2);
   const password = await oneWayHash('password');
 
   await usersRepository.createMany([
