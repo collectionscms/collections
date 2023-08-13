@@ -80,35 +80,6 @@ export class UsersRepository extends BaseRepository<User> {
     return this.toAuthUser(user);
   }
 
-  async readMe(data: { id?: number; apiKey?: string }): Promise<{
-    user: AuthUser;
-    apiKey: string | null;
-  } | null> {
-    if (!data.id && !data.apiKey) return null;
-
-    const condition: { [index: string]: any } = {};
-
-    if (data.id) {
-      condition['u.id'] = data.id;
-    }
-
-    if (data.apiKey) {
-      condition['u.api_key'] = data.apiKey;
-    }
-
-    const user = await this.queryBuilder
-      .select('u.id', 'u.name', 'u.api_key', {
-        role_id: 'r.id',
-        admin_access: 'r.admin_access',
-      })
-      .from('superfast_users AS u')
-      .join('superfast_roles AS r', 'r.id', 'u.role_id')
-      .where(condition)
-      .first();
-
-    return user ? { user: this.toAuthUser(user), apiKey: user.api_key } : null;
-  }
-
   readResetPasswordToken(token: string): Promise<User> {
     return this.queryBuilder
       .select('u.*')
