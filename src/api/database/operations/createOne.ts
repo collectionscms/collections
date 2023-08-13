@@ -7,7 +7,7 @@ export type Arguments = {
   data: Record<string, unknown>;
 };
 
-export const create = async (args: Arguments): Promise<PrimaryKey> => {
+export const createOne = async (args: Arguments): Promise<PrimaryKey> => {
   let { database, collection, data } = args;
 
   const builder = database(collection).insert(data);

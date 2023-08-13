@@ -1,9 +1,9 @@
 import { Knex } from 'knex';
 import { getDatabase } from '../database/connection.js';
-import { create } from '../database/operations/create.js';
+import { createOne } from '../database/operations/createOne.js';
 import { readById } from '../database/operations/readById.js';
 import { readByQuery } from '../database/operations/readByQuery.js';
-import { update } from '../database/operations/update.js';
+import { updateOne } from '../database/operations/updateOne.js';
 import { SchemaOverview } from '../database/overview.js';
 import { PrimaryKey, TypeWithId } from '../database/schemas.js';
 
@@ -64,7 +64,7 @@ export class BaseService<T extends TypeWithId = any> implements AbstractService<
    * @returns primary key
    */
   async createOne(data: Partial<T>): Promise<PrimaryKey> {
-    return await create({ database: this.database, collection: this.collection, data });
+    return await createOne({ database: this.database, collection: this.collection, data });
   }
 
   /**
@@ -74,7 +74,7 @@ export class BaseService<T extends TypeWithId = any> implements AbstractService<
    * @returns primary key
    */
   async updateOne(key: PrimaryKey, data: Partial<T>): Promise<PrimaryKey> {
-    return await update({ database: this.database, collection: this.collection, key, data });
+    return await updateOne({ database: this.database, collection: this.collection, key, data });
   }
 
   async createMany(data: Partial<T>[]): Promise<number[]> {

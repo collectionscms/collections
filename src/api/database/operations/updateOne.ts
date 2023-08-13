@@ -9,7 +9,7 @@ export type Arguments = {
   data: Record<string, unknown>;
 };
 
-export const update = async (args: Arguments): Promise<PrimaryKey> => {
+export const updateOne = async (args: Arguments): Promise<PrimaryKey> => {
   let { database, collection, key, data } = args;
 
   const schemaInfo = await getSchemaInfo(database);
