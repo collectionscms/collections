@@ -1625,7 +1625,7 @@
   resolved "https://registry.npmjs.org/@mui/types/-/types-7.2.4.tgz"
   integrity sha512-LBcwa8rN84bKF+f5sDyku42w1NTxaPgPyYKODsh01U1fVstTClbUoSA96oyRBnSNyEiAVjKm6Gwx9vjR+xyqHA==
 
-"@mui/utils@^5.13.7", "@mui/utils@^5.14.1", "@mui/utils@^5.14.4":
+"@mui/utils@^5.13.7", "@mui/utils@^5.14.3", "@mui/utils@^5.14.4":
   version "5.14.4"
   resolved "https://registry.yarnpkg.com/@mui/utils/-/utils-5.14.4.tgz#498cc2b08e46776c1e4327bfd8c23ad2f5890bc6"
   integrity sha512-4ANV0txPD3x0IcTCSEHKDWnsutg1K3m6Vz5IckkbLXVYu17oOZCVUdOKsb/txUmaCd0v0PmSRe5PW+Mlvns5dQ==
@@ -1637,14 +1637,14 @@
     react-is "^18.2.0"
 
 "@mui/x-date-pickers@^6.3.0":
-  version "6.11.0"
-  resolved "https://registry.yarnpkg.com/@mui/x-date-pickers/-/x-date-pickers-6.11.0.tgz#2bbd7c2748d066ed06742c6942e3d5ad5d01c75f"
-  integrity sha512-yVGfpH3scUauLaHWvzckD0xswboC48YAaJ4568YTkKozXFSPPkvK7VGSQ+qo1u8K2UjYh1iZoff3k0EoDDPnww==
+  version "6.11.1"
+  resolved "https://registry.yarnpkg.com/@mui/x-date-pickers/-/x-date-pickers-6.11.1.tgz#6382608a95f9655d5f08fc2ee7366982002443d2"
+  integrity sha512-0NnBen60iZNBmJK7m2UU9jPZXW9RRyBL3meAupWyq+j6bLpSWG+8O2TnP1E3KFC7q66bPG6qOGOKKGfzFyR3cg==
   dependencies:
     "@babel/runtime" "^7.22.6"
-    "@mui/utils" "^5.14.1"
+    "@mui/utils" "^5.14.3"
     "@types/react-transition-group" "^4.4.6"
-    clsx "^1.2.1"
+    clsx "^2.0.0"
     prop-types "^15.8.1"
     react-transition-group "^4.4.5"
 
