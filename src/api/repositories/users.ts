@@ -80,15 +80,6 @@ export class UsersRepository extends BaseRepository<User> {
     return this.toAuthUser(user);
   }
 
-  readResetPasswordToken(token: string): Promise<User> {
-    return this.queryBuilder
-      .select('u.*')
-      .from('superfast_users AS u')
-      .where('u.reset_password_token', token)
-      .where('u.reset_password_expiration', '>', Date.now())
-      .first();
-  }
-
   private toAuthUser(user: {
     id: number;
     role_id: number;
