@@ -19,12 +19,13 @@ export class UsersService extends BaseService<User> {
    * @returns auth user or null
    */
   async readMe(params: { primaryKey?: PrimaryKey; apiKey?: string }): Promise<Me | null> {
-    if (!params.primaryKey && !params.apiKey) return null;
+    const { primaryKey, apiKey } = params;
+    if (!primaryKey && !apiKey) return null;
 
-    let filter = params.primaryKey ? { id: params.primaryKey } : { api_key: params.apiKey };
-    const user = await this.readMany({ filter: filter }).then((users) =>
-      users.length > 0 ? users[0] : null
-    );
+    const user = await this.readMany({
+      filter: primaryKey ? { id: { _eq: primaryKey } } : { api_key: { _eq: apiKey } },
+    }).then((users) => (users.length > 0 ? users[0] : null));
+
     if (!user || !user.role_id) return null;
 
     const rolesService = new RolesService({ schema: this.schema });

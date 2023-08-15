@@ -22,7 +22,9 @@ export class RolesService extends BaseService<Role> {
 
     const role = await this.readOne(key);
     if (role.admin_access) {
-      const roles = await this.readMany({ filter: { admin_access: true } });
+      const roles = await this.readMany({
+        filter: { admin_access: { _eq: true } },
+      });
       if (roles.length === 1) {
         throw new UnprocessableEntityException('can_not_delete_last_admin_role');
       }
@@ -38,7 +40,7 @@ export class RolesService extends BaseService<Role> {
       });
 
       const permissions = await permissionsService.readMany({
-        filter: { role_id: key },
+        filter: { role_id: { _eq: key } },
       });
 
       const keys = permissions.map((permission) => permission.id);
