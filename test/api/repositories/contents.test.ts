@@ -10,12 +10,26 @@ describe('Contents', () => {
 
   beforeAll(async () => {
     for (const database of testDatabases) {
-      databases.set(database, knex(config.knexConfig[database]!));
+      const connection = knex(config.knexConfig[database]!);
+      databases.set(database, connection);
+      await insertRecords(connection);
     }
   });
 
+  const insertRecords = async (connection: Knex) => {
+    await connection(tableName).insert([
+      {
+        year: '2022',
+        round: '1',
+        circuit: 'Bahrain',
+        updated_at: '2022-01-01 00:00:00',
+      },
+    ]);
+  };
+
   afterAll(async () => {
     for (const [_, connection] of databases) {
+      await connection(tableName).del();
       await connection.destroy();
     }
   });
@@ -25,7 +39,7 @@ describe('Contents', () => {
       const connection = databases.get(database)!;
 
       const repository = new ContentsRepository(tableName, { knex: connection });
-      const data = await repository.create({ year: 2023, round: 1, circuit: 'Bahrain' });
+      const data = await repository.create({ year: '2023', round: '1', circuit: 'Bahrain' });
 
       expect(data).toBeTruthy();
     });
@@ -36,7 +50,7 @@ describe('Contents', () => {
       const connection = databases.get(database)!;
 
       const repository = new ContentsRepository(tableName, { knex: connection });
-      const data = await repository.read({ year: 2022, circuit: 'Bahrain' });
+      const data = await repository.read({ year: '2022', circuit: 'Bahrain' });
       const id = data[0].id;
 
       const result = await repository.update(id, { circuit: 'Bahrain International Circuit' });

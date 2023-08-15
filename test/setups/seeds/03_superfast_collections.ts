@@ -45,11 +45,4 @@ export const seed = async (database: Knex): Promise<void> => {
     table.string('round', 255);
     table.string('circuit', 255);
   });
-
-  await database(collectionName).insert([
-    {
-      year: 2022,
-      circuit: 'Bahrain',
-    },
-  ]);
 };
