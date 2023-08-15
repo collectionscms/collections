@@ -183,7 +183,8 @@
     "invalid_secret_key": "シークレットキーが有効ではありません。",
     "file_does_not_exist": "ファイルが存在しません。",
     "token_expired": "トークンの有効期限が切れました。",
-    "invalid_token": "無効なトークンです。"
+    "invalid_token": "無効なトークンです。",
+    "invalid_query": "無効なクエリーです。"
   },
   "yup": {
     "mixed": {

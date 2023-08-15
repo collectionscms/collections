@@ -115,7 +115,7 @@ router.delete(
       });
 
       const permissions = await permissionsService.readMany({
-        filter: { collection: collection.collection },
+        filter: { collection: { _eq: collection.collection } },
       });
       const ids = permissions.map((permission) => permission.id);
       await permissionsService.deleteMany(ids);

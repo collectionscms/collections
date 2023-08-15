@@ -16,7 +16,7 @@ export const collectionPermissionsHandler =
       });
 
       const userPermissions = await permissionsService.readMany({
-        filter: { role_id: Number(req.roleId) },
+        filter: { role_id: { _eq: Number(req.roleId) } },
       });
 
       const hasPermission = userPermissions.some(
@@ -45,7 +45,7 @@ export const permissionsHandler =
       });
 
       const userPermissions = await permissionsService.readMany({
-        filter: { role_id: Number(req.roleId) },
+        filter: { role_id: { _eq: Number(req.roleId) } },
       });
 
       const hasPermission = permissions.every((permission) =>

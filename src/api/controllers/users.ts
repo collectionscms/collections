@@ -9,6 +9,7 @@ import { permissionsHandler } from '../middleware/permissionsHandler.js';
 import { UsersRepository } from '../repositories/users.js';
 import { MailService } from '../services/mail.js';
 import { ProjectSettingsService } from '../services/projectSettings.js';
+import { UsersService } from '../services/users.js';
 import { oneWayHash } from '../utilities/oneWayHash.js';
 
 const router = express.Router();
@@ -98,14 +99,21 @@ router.post(
     const token = req.body.token;
     const password = req.body.password;
 
-    const repository = new UsersRepository();
-    const user = await repository.readResetPasswordToken(token);
+    const service = new UsersService({ schema: req.schema });
+    const users = await service.readMany({
+      filter: {
+        _and: [
+          { reset_password_token: { _eq: token } },
+          { reset_password_expiration: { _gt: Date.now() } },
+        ],
+      },
+    });
 
-    if (!user) {
+    if (users.length === 0) {
       throw new InvalidCredentialsException('token_invalid_or_expired');
     }
 
-    await repository.update(user.id, {
+    await service.updateOne(users[0].id, {
       password: await oneWayHash(password),
       reset_password_expiration: Date.now(),
     });

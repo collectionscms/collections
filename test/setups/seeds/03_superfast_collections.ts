@@ -20,6 +20,12 @@ export const seed = async (database: Knex): Promise<void> => {
     },
     {
       collection: collectionName,
+      field: 'round',
+      label: 'Round',
+      interface: 'input',
+    },
+    {
+      collection: collectionName,
       field: 'year',
       label: 'Year',
       interface: 'input',
@@ -36,13 +42,7 @@ export const seed = async (database: Knex): Promise<void> => {
     table.increments();
     table.timestamps(true, true);
     table.string('year', 255);
+    table.string('round', 255);
     table.string('circuit', 255);
   });
-
-  await database(collectionName).insert([
-    {
-      year: 2022,
-      circuit: 'Bahrain',
-    },
-  ]);
 };

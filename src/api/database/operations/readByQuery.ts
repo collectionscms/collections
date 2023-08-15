@@ -1,15 +1,48 @@
 import { Knex } from 'knex';
+import { InvalidQueryException } from '../../../exceptions/invalidQuery.js';
+import { FieldFilter, Filter } from '../types.js';
 
 export type Arguments = {
   collection: string;
   database: Knex;
-  filter?: Record<string, any>;
+  filter?: Filter | null;
 };
 
-export const readByQuery = async <T>(args: Arguments): Promise<T[]> => {
-  let { database, collection, filter = {} } = args;
+const applyFilter = (
+  builder: Knex.QueryBuilder,
+  field: string,
+  fieldFilter: FieldFilter,
+  syntax: 'where' | 'andWhere' | 'orWhere'
+) => {
+  const { _eq, _gt } = fieldFilter as FieldFilter;
+  if (_eq) {
+    builder[syntax]({ [field]: _eq });
+  } else if (_gt) {
+    builder[syntax](field, '>', _gt);
+  } else {
+    throw new InvalidQueryException();
+  }
+};
 
-  const results = await database(collection).where(filter).select();
+export const readByQuery = async <T>({ database, collection, filter }: Arguments): Promise<T[]> => {
+  const builder = database(collection);
 
+  if (filter) {
+    for (const [key, value] of Object.entries(filter)) {
+      if (key === '_and' || key === '_or') {
+        const filters = value as Filter[];
+        for (const filter of filters) {
+          for (const [field, fieldFilter] of Object.entries(filter)) {
+            const syntax = key === '_and' ? 'andWhere' : 'orWhere';
+            applyFilter(builder, field, fieldFilter, syntax);
+          }
+        }
+      } else {
+        applyFilter(builder, key, value, 'where');
+      }
+    }
+  }
+
+  const results = await builder.select();
   return results;
 };
