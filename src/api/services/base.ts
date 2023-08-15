@@ -9,10 +9,7 @@ import { readByQuery } from '../database/operations/readByQuery.js';
 import { updateOne } from '../database/operations/updateOne.js';
 import { SchemaOverview } from '../database/overview.js';
 import { PrimaryKey, TypeWithId } from '../database/schemas.js';
-
-type Query = {
-  filter?: Record<string, any>;
-};
+import { Query } from '../database/types.js';
 
 type AbstractService<T extends TypeWithId = any> = {
   readOne(key: PrimaryKey): Promise<T>;
