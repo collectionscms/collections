@@ -25,7 +25,7 @@ describe('Contents', () => {
       const connection = databases.get(database)!;
 
       const repository = new ContentsRepository(tableName, { knex: connection });
-      const data = await repository.create({ year: 2023, circuit: 'Bahrain' });
+      const data = await repository.create({ year: 2023, round: 1, circuit: 'Bahrain' });
 
       expect(data).toBeTruthy();
     });
