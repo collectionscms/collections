@@ -6,11 +6,11 @@ import { v4 as uuidv4 } from 'uuid';
 import { File } from '../../config/types.js';
 import { env } from '../../env.js';
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
-import { FileService } from '../services/file.js';
+import { FilesService } from '../services/files.js';
 
 export const multipartHandler: RequestHandler = (req, res, next) => {
   const busboy = Busboy({ headers: req.headers });
-  const service = new FileService();
+  const service = new FilesService({ schema: req.schema });
 
   let fileName = '';
   let type = '';
