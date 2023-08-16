@@ -5,12 +5,12 @@ import { Output } from '../../../utilities/output.js';
 import { CollectionsRepository } from '../../repositories/collections.js';
 import { ContentsRepository } from '../../repositories/contents.js';
 import { FieldsRepository } from '../../repositories/fields.js';
-import { UsersRepository } from '../../repositories/users.js';
 import { CollectionsService } from '../../services/collections.js';
 import { FieldsService } from '../../services/fields.js';
 import { PermissionsService } from '../../services/permissions.js';
 import { ProjectSettingsService } from '../../services/projectSettings.js';
 import { RolesService } from '../../services/roles.js';
+import { UsersService } from '../../services/users.js';
 import { oneWayHash } from '../../utilities/oneWayHash.js';
 import { getDatabase } from '../connection.js';
 import { getSchemaOverview } from '../overview.js';
@@ -47,7 +47,6 @@ const resetAll = async (database: Knex): Promise<void> => {
 const seedingSystemData = async (database: Knex): Promise<void> => {
   const schema = await getSchemaOverview({ database });
 
-  const usersRepository = new UsersRepository();
   const collectionsRepository = new CollectionsRepository();
   const fieldsRepository = new FieldsRepository();
 
@@ -57,6 +56,7 @@ const seedingSystemData = async (database: Knex): Promise<void> => {
   const projectSettingsService = new ProjectSettingsService({ database, schema });
   const permissionsService = new PermissionsService({ database, schema });
   const rolesService = new RolesService({ database, schema });
+  const usersService = new UsersService({ database, schema });
 
   // Role
   Output.info('Creating roles...');
@@ -71,7 +71,7 @@ const seedingSystemData = async (database: Knex): Promise<void> => {
   const editorRole = await rolesService.readOne(2);
   const password = await oneWayHash('password');
 
-  await usersRepository.createMany([
+  await usersService.createMany([
     {
       name: 'admin',
       email: 'admin@example.com',
