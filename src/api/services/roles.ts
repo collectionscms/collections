@@ -1,8 +1,8 @@
 import { UnprocessableEntityException } from '../../exceptions/unprocessableEntity.js';
 import { PrimaryKey, Role } from '../database/schemas.js';
-import { UsersRepository } from '../repositories/users.js';
 import { AbstractServiceOptions, BaseService } from './base.js';
 import { PermissionsService } from './permissions.js';
+import { UsersService } from './users.js';
 
 export class RolesService extends BaseService<Role> {
   constructor(options: AbstractServiceOptions) {
@@ -14,8 +14,8 @@ export class RolesService extends BaseService<Role> {
    * @param key
    */
   async deleteWithPermissions(key: PrimaryKey): Promise<void> {
-    const usersRepository = new UsersRepository();
-    const users = await usersRepository.read({ role_id: key });
+    const usersService = new UsersService({ schema: this.schema });
+    const users = await usersService.readMany({ filter: { role_id: { _eq: key } } });
     if (users.length > 0) {
       throw new UnprocessableEntityException('can_not_delete_role_in_use');
     }

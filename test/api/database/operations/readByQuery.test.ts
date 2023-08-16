@@ -140,10 +140,16 @@ describe('Read By Query', () => {
       const results1 = readByQuery<CollectionType>({
         database: connection,
         collection: tableName,
-        filter: { _and: [{ circuit: { _eq: 'Bahrain' } }, { circuit: { _eq: undefined } }] },
+        filter: { circuit: '' as any },
       });
 
       const results2 = readByQuery<CollectionType>({
+        database: connection,
+        collection: tableName,
+        filter: { _and: [{ circuit: { _eq: 'Bahrain' } }, { circuit: { _eq: undefined } }] },
+      });
+
+      const results3 = readByQuery<CollectionType>({
         database: connection,
         collection: tableName,
         filter: { _or: [{ circuit: { _gt: undefined } }, { circuit: { _eq: 'Bahrain' } }] },
@@ -152,6 +158,7 @@ describe('Read By Query', () => {
       expect(results).rejects.toThrow();
       expect(results1).rejects.toThrow();
       expect(results2).rejects.toThrow();
+      expect(results3).rejects.toThrow();
     });
   });
 });

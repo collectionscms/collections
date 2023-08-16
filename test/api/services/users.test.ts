@@ -1,11 +1,11 @@
 import knex, { Knex } from 'knex';
+import { getSchemaOverview } from '../../../src/api/database/overview.js';
 import { User } from '../../../src/api/database/schemas.js';
-import { UsersRepository } from '../../../src/api/repositories/users.js';
+import { UsersService } from '../../../src/api/services/users.js';
 import { config } from '../../config.js';
 import { testDatabases } from '../../utilities/testDatabases.js';
 
 describe('Users', () => {
-  const tableName = 'superfast_users';
   const databases = new Map<string, Knex>();
 
   const data: Omit<User, 'id'> = {
@@ -32,20 +32,22 @@ describe('Users', () => {
   describe('Create', () => {
     it.each(testDatabases)('%s - should create', async (database) => {
       const connection = databases.get(database)!;
+      const schema = await getSchemaOverview({ database: connection });
 
-      const repository = new UsersRepository(tableName, { knex: connection });
-      const result = await repository.create(data);
+      const service = new UsersService({ database: connection, schema });
+      const result = await service.createOne(data);
 
       expect(result).toBeTruthy();
     });
 
     it.each(testDatabases)('%s - should throw foreign key constraint errors', async (database) => {
       const connection = databases.get(database)!;
+      const schema = await getSchemaOverview({ database: connection });
       const unexpectedId = -1;
 
-      const repository = new UsersRepository(tableName, { knex: connection });
+      const service = new UsersService({ database: connection, schema });
       data.role_id = unexpectedId;
-      const result = repository.create(data);
+      const result = service.createOne(data);
 
       expect(result).rejects.toThrow();
     });
@@ -54,12 +56,15 @@ describe('Users', () => {
   describe('Update', () => {
     it.each(testDatabases)('%s - should update', async (database) => {
       const connection = databases.get(database)!;
+      const schema = await getSchemaOverview({ database: connection });
 
-      const repository = new UsersRepository(tableName, { knex: connection });
-      const user = (await repository.read({ email: 'michael@superfastcms.com' }))[0];
+      const service = new UsersService({ database: connection, schema });
+      const user = await service
+        .readMany({ filter: { email: { _eq: 'michael@superfastcms.com' } } })
+        .then((users) => users[0]);
 
-      const result = await repository.update(user.id, { name: 'Schumi' });
-      const updatedUser = await repository.readOne(user.id);
+      const result = await service.updateOne(user.id, { name: 'Schumi' });
+      const updatedUser = await service.readOne(user.id);
 
       expect(result).toBeTruthy();
       expect(updatedUser.name).toBe('Schumi');

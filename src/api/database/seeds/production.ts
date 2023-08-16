@@ -1,6 +1,6 @@
 import { Output } from '../../../utilities/output.js';
-import { UsersRepository } from '../../repositories/users.js';
 import { RolesService } from '../../services/roles.js';
+import { UsersService } from '../../services/users.js';
 import { oneWayHash } from '../../utilities/oneWayHash.js';
 import { getDatabase } from '../connection.js';
 import { getSchemaOverview } from '../overview.js';
@@ -8,8 +8,7 @@ import { getSchemaOverview } from '../overview.js';
 export const seedProduction = async (email: string, password: string): Promise<void> => {
   const database = getDatabase();
   const schema = await getSchemaOverview({ database });
-  const usersRepository = new UsersRepository();
-
+  const usersService = new UsersService({ database, schema });
   const rolesService = new RolesService({ database, schema });
 
   try {
@@ -24,7 +23,7 @@ export const seedProduction = async (email: string, password: string): Promise<v
     const adminRole = await rolesService.readOne(1);
     const hashed = await oneWayHash(password);
 
-    await usersRepository.createMany([
+    await usersService.createMany([
       {
         name: 'admin',
         email,
