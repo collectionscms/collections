@@ -20,6 +20,7 @@ type ColumnInfo = {
   numeric_precision?: number | null;
   numeric_scale?: number | null;
   max_length: number | null;
+  foreign_key_column: string | null;
 };
 
 export const getSchemaInfo = async (database: Knex): Promise<SchemaInfo> => {
@@ -43,6 +44,7 @@ export const getSchemaInfo = async (database: Knex): Promise<SchemaInfo> => {
           numeric_precision: column.numeric_precision,
           numeric_scale: column.numeric_scale,
           max_length: column.max_length,
+          foreign_key_column: column.foreign_key_column,
         };
         return acc;
       },
