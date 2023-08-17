@@ -1,6 +1,6 @@
 import knex, { Knex } from 'knex';
 import { SchemaInfo, getSchemaInfo } from '../../../src/api/database/inspector.js';
-import { FieldSchema } from '../../../src/api/database/schemas.js';
+import { Field } from '../../../src/api/database/schemas.js';
 import { CollectionsRepository } from '../../../src/api/repositories/collections.js';
 import { FieldsRepository } from '../../../src/api/repositories/fields.js';
 import { CollectionsService } from '../../../src/api/services/collections_deprecated.js';
@@ -45,11 +45,7 @@ describe('Collection', () => {
     }
   });
 
-  const expectCollectionFields = (
-    collection: string,
-    fields: FieldSchema[],
-    schemaInfo: SchemaInfo
-  ) => {
+  const expectCollectionFields = (collection: string, fields: Field[], schemaInfo: SchemaInfo) => {
     // meta
     expect(fields).toEqual(
       expect.arrayContaining([

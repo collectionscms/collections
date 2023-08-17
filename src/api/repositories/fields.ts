@@ -1,8 +1,8 @@
 import { RecordNotUniqueException } from '../../exceptions/database/recordNotUnique.js';
-import { FieldSchema } from '../database/schemas.js';
+import { Field } from '../database/schemas.js';
 import { AbstractRepositoryOptions, BaseRepository, BaseTransaction } from './base.js';
 
-export class FieldsRepository extends BaseRepository<FieldSchema> {
+export class FieldsRepository extends BaseRepository<Field> {
   constructor(collection: string = 'superfast_fields', options?: AbstractRepositoryOptions) {
     super(collection, options);
   }

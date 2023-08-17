@@ -1,6 +1,6 @@
 import {
-  CollectionSchema,
-  FieldSchema,
+  Collection as CollectionSchema,
+  Field as FieldSchema,
   File as FileSchema,
   Permission as PermissionSchema,
   ProjectSetting as ProjectSettingSchema,
@@ -66,6 +66,8 @@ export type Choice = {
   label: string;
   value: string;
 };
+
+// TODO move to translators
 export type Field = {
   interface: FieldInterface;
   fieldOption?: FieldOption | null;

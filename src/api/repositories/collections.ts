@@ -1,8 +1,8 @@
 import { RecordNotUniqueException } from '../../exceptions/database/recordNotUnique.js';
-import { CollectionSchema } from '../database/schemas.js';
+import { Collection } from '../database/schemas.js';
 import { AbstractRepositoryOptions, BaseRepository, BaseTransaction } from './base.js';
 
-export class CollectionsRepository extends BaseRepository<CollectionSchema> {
+export class CollectionsRepository extends BaseRepository<Collection> {
   constructor(collection: string = 'superfast_collections', options?: AbstractRepositoryOptions) {
     super(collection, options);
   }
@@ -14,7 +14,7 @@ export class CollectionsRepository extends BaseRepository<CollectionSchema> {
     return repositoryTransaction;
   }
 
-  async create(item: Omit<CollectionSchema, 'id'>): Promise<number> {
+  async create(item: Omit<Collection, 'id'>): Promise<number> {
     await this.checkUniqueCollection(item.collection);
     return super.create(item);
   }

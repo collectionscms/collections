@@ -1,5 +1,5 @@
 import { Collection } from '../../config/types.js';
-import { CollectionSchema, Field } from '../database/schemas.js';
+import { Collection as CollectionSchema, Field } from '../database/schemas.js';
 import { CollectionsRepository } from '../repositories/collections.js';
 import { FieldsRepository } from '../repositories/fields.js';
 

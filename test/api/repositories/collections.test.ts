@@ -1,5 +1,5 @@
 import knex, { Knex } from 'knex';
-import { CollectionSchema } from '../../../src/api/database/schemas.js';
+import { Collection } from '../../../src/api/database/schemas.js';
 import { CollectionsRepository } from '../../../src/api/repositories/collections.js';
 import { config } from '../../config.js';
 import { testDatabases } from '../../utilities/testDatabases.js';
@@ -8,7 +8,7 @@ describe('Collections', () => {
   const tableName = 'superfast_collections';
   const databases = new Map<string, Knex>();
 
-  const data: Omit<CollectionSchema, 'id'> = {
+  const data: Omit<Collection, 'id'> = {
     collection: 'collection_f1_constructors',
     singleton: false,
     hidden: false,
