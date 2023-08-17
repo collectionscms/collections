@@ -1,7 +1,7 @@
 import knex, { Knex } from 'knex';
 import { CollectionsRepository } from '../../../src/api/repositories/collections.js';
 import { FieldsRepository } from '../../../src/api/repositories/fields.js';
-import { CollectionsService } from '../../../src/api/services/collections.js';
+import { CollectionsService } from '../../../src/api/services/collections_deprecated.js';
 import { FieldsService } from '../../../src/api/services/fields.js';
 import { Collection, Field } from '../../../src/config/types.js';
 import { config } from '../../config.js';

@@ -5,7 +5,7 @@ import { Output } from '../../../utilities/output.js';
 import { CollectionsRepository } from '../../repositories/collections.js';
 import { ContentsRepository } from '../../repositories/contents.js';
 import { FieldsRepository } from '../../repositories/fields.js';
-import { CollectionsService } from '../../services/collections.js';
+import { CollectionsService } from '../../services/collections_deprecated.js';
 import { FieldsService } from '../../services/fields.js';
 import { PermissionsService } from '../../services/permissions.js';
 import { ProjectSettingsService } from '../../services/projectSettings.js';

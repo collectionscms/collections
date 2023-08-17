@@ -3,7 +3,7 @@ import { SchemaInfo, getSchemaInfo } from '../../../src/api/database/inspector.j
 import { FieldSchema } from '../../../src/api/database/schemas.js';
 import { CollectionsRepository } from '../../../src/api/repositories/collections.js';
 import { FieldsRepository } from '../../../src/api/repositories/fields.js';
-import { CollectionsService } from '../../../src/api/services/collections.js';
+import { CollectionsService } from '../../../src/api/services/collections_deprecated.js';
 import { Collection } from '../../../src/config/types.js';
 import { config } from '../../config.js';
 import { testDatabases } from '../../utilities/testDatabases.js';

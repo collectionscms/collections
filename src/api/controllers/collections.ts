@@ -7,7 +7,7 @@ import { BaseTransaction } from '../repositories/base.js';
 import { CollectionsRepository } from '../repositories/collections.js';
 import { FieldsRepository } from '../repositories/fields.js';
 import { RelationsRepository } from '../repositories/relations.js';
-import { CollectionsService } from '../services/collections.js';
+import { CollectionsService } from '../services/collections_deprecated.js';
 import { PermissionsService } from '../services/permissions.js';
 
 const router = express.Router();

@@ -1,5 +1,5 @@
 import { Collection } from '../../config/types.js';
-import { CollectionSchema, FieldSchema } from '../database/schemas.js';
+import { CollectionSchema, Field } from '../database/schemas.js';
 import { CollectionsRepository } from '../repositories/collections.js';
 import { FieldsRepository } from '../repositories/fields.js';
 
@@ -56,8 +56,8 @@ export class CollectionsService {
   private buildFields = (
     data: Omit<CollectionSchema, 'id'>,
     hasStatus: boolean
-  ): Omit<FieldSchema, 'id'>[] => {
-    const fields: Omit<FieldSchema, 'id'>[] = [
+  ): Omit<Field, 'id'>[] => {
+    const fields: Omit<Field, 'id'>[] = [
       {
         collection: data.collection,
         field: 'id',
