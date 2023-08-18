@@ -79,7 +79,15 @@ export type GetField = {
   fieldOption?: FieldOption | null;
 } & FieldSchema;
 
-export type Collection = { status?: boolean } & CollectionSchema;
+// Collection
+// TODO Subdivided
+export type Collection = {} & CollectionSchema;
+
+export type PostCollection = { status?: boolean } & CollectionSchema;
+
+export type GetCollection = {
+  fields: Field[];
+} & CollectionSchema;
 
 export type User = {
   role?: Role;
