@@ -13,10 +13,4 @@ export class RelationsRepository extends BaseRepository<GetRelation> {
     });
     return repositoryTransaction;
   }
-
-  readRelations(collection: string, field: string): Promise<Relation[]> {
-    return this.queryBuilder
-      .where({ one_collection: collection, one_field: field })
-      .orWhere({ many_collection: collection, many_field: field });
-  }
 }
