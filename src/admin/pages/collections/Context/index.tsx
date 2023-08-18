@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWR, { SWRConfiguration, SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
-import { Field, File, Relation } from '../../../../config/types.js';
+import { File, GetField, Relation } from '../../../../config/types.js';
 import { api } from '../../../utilities/api.js';
 import { ContentContext } from './types.js';
 
@@ -31,7 +31,7 @@ export const ContentContextProvider: React.FC<{ children: React.ReactNode }> = (
   ): SWRResponse =>
     useSWR(
       canFetch ? `/collections/${collection}/fields` : null,
-      (url) => api.get<{ fields: Field[] }>(url).then((res) => res.data.fields),
+      (url) => api.get<{ fields: GetField[] }>(url).then((res) => res.data.fields),
       config
     );
 
