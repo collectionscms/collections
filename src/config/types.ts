@@ -98,4 +98,4 @@ export type ProjectSetting = {} & ProjectSettingSchema;
 
 export type File = { url?: string } & FileSchema;
 
-export type Relation = {} & RelationSchema;
+export type GetRelation = {} & RelationSchema;
