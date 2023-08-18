@@ -42,11 +42,10 @@ export type ApiError = {
 };
 
 // /////////////////////////////////////
-// Schema
+// DTO
 // /////////////////////////////////////
 
-export type Collection = { status?: boolean } & CollectionSchema;
-
+// Field
 export type FieldInterface =
   | 'input'
   | 'inputMultiline'
@@ -58,20 +57,29 @@ export type FieldInterface =
   | 'listOneToMany'
   | 'selectDropdownManyToOne'
   | 'selectDropdownStatus'; // public status
+
 export type FieldOption = {
   choices?: Choice[];
   defaultValue?: any;
 };
+
 export type Choice = {
   label: string;
   value: string;
 };
 
-// TODO move to translators
+// TODO Subdivided
 export type Field = {
   interface: FieldInterface;
   fieldOption?: FieldOption | null;
 } & FieldSchema;
+
+export type GetField = {
+  interface: FieldInterface;
+  fieldOption?: FieldOption | null;
+} & FieldSchema;
+
+export type Collection = { status?: boolean } & CollectionSchema;
 
 export type User = {
   role?: Role;
