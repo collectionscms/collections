@@ -1,16 +1,12 @@
 import knex, { Knex } from 'knex';
 import { getSchemaOverview } from '../../../src/api/database/overview.js';
-import { CollectionsRepository } from '../../../src/api/repositories/collections.js';
-import { FieldsRepository } from '../../../src/api/repositories/fields.js';
-import { CollectionsService } from '../../../src/api/services/collections_deprecated.js';
+import { CollectionsService } from '../../../src/api/services/collections.js';
 import { FieldsService } from '../../../src/api/services/fields.js';
 import { Collection, Field } from '../../../src/config/types.js';
 import { config } from '../../config.js';
 import { testDatabases } from '../../utilities/testDatabases.js';
 
 describe('Field', () => {
-  const collectionsTableName = 'superfast_collections';
-  const fieldsTableName = 'superfast_fields';
   const collectionName = 'collection_f1_ferrari_team_stats';
   const databases = new Map<string, Knex>();
 
@@ -47,10 +43,9 @@ describe('Field', () => {
 
   const createCollection = async (database: string) => {
     const connection = databases.get(database)!;
-    const repository = new CollectionsRepository(collectionsTableName, { knex: connection });
-    const fieldsRepository = new FieldsRepository(fieldsTableName, { knex: connection });
-    const service = new CollectionsService(repository, fieldsRepository);
+    const schema = await getSchemaOverview({ database: connection });
 
+    const service = new CollectionsService({ database: connection, schema });
     await service.createCollection(collectionData);
   };
 
