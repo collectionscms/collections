@@ -9,7 +9,7 @@ import { readByQuery } from '../database/operations/readByQuery.js';
 import { updateOne } from '../database/operations/updateOne.js';
 import { SchemaOverview } from '../database/overview.js';
 import { PrimaryKey, TypeWithId } from '../database/schemas.js';
-import { Query } from '../database/types.js';
+import { Query, Sort } from '../database/types.js';
 
 type AbstractService<T extends TypeWithId = any> = {
   readOne(key: PrimaryKey): Promise<T>;
@@ -62,11 +62,12 @@ export class BaseService<T extends TypeWithId = any> implements AbstractService<
    * @param query
    * @returns items
    */
-  async readMany(query: Query = {}): Promise<T[]> {
+  async readMany(query: Query = {}, sorts?: Sort[]): Promise<T[]> {
     return await readByQuery<T>({
       database: this.database,
       collection: this.collection,
       filter: query.filter,
+      sorts: sorts || null,
     });
   }
 
