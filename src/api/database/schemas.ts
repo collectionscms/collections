@@ -6,7 +6,7 @@ export type TypeWithId = {
   updated_at?: Date;
 };
 
-export type CollectionSchema = {
+export type Collection = {
   collection: string;
   singleton: boolean;
   hidden: boolean;
@@ -16,7 +16,7 @@ export type CollectionSchema = {
   archive_value: string | null;
 } & TypeWithId;
 
-export type FieldSchema = {
+export type Field = {
   collection: string;
   field: string;
   label: string;

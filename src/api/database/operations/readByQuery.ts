@@ -1,11 +1,12 @@
 import { Knex } from 'knex';
 import { InvalidQueryException } from '../../../exceptions/invalidQuery.js';
-import { FieldFilter, Filter } from '../types.js';
+import { FieldFilter, Filter, Sort } from '../types.js';
 
 export type Arguments = {
   collection: string;
   database: Knex;
   filter?: Filter | null;
+  sorts?: Sort[] | null;
 };
 
 const applyFilter = (
@@ -24,7 +25,12 @@ const applyFilter = (
   }
 };
 
-export const readByQuery = async <T>({ database, collection, filter }: Arguments): Promise<T[]> => {
+export const readByQuery = async <T>({
+  database,
+  collection,
+  filter,
+  sorts,
+}: Arguments): Promise<T[]> => {
   const builder = database(collection);
 
   if (filter) {
@@ -40,6 +46,12 @@ export const readByQuery = async <T>({ database, collection, filter }: Arguments
       } else {
         applyFilter(builder, key, value, 'where');
       }
+    }
+  }
+
+  if (sorts) {
+    for (const sort of sorts) {
+      builder.orderBy(sort.column, sort.order, sort.nulls);
     }
   }
 

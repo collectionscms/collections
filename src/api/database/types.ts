@@ -22,3 +22,9 @@ export type FieldFilterOperator = {
   _eq?: string | number | boolean;
   _gt?: string | number | boolean;
 };
+
+export type Sort = {
+  column: string;
+  order: string;
+  nulls?: string | undefined;
+};

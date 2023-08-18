@@ -13,6 +13,38 @@ describe('Read By Query', () => {
     circuit: string;
   };
 
+  const records = [
+    {
+      year: '2021',
+      round: '1',
+      circuit: 'Bahrain',
+    },
+    {
+      year: '2022',
+      round: '1',
+      circuit: 'Bahrain',
+    },
+    {
+      year: '2023',
+      round: '1',
+      circuit: 'Bahrain',
+    },
+    {
+      year: '2023',
+      round: '2',
+      circuit: 'Saudi Arabia',
+    },
+    {
+      year: '2023',
+      round: null,
+      circuit: 'Las Vegas',
+    },
+  ];
+
+  const insertRecords = async (connection: Knex) => {
+    await connection(tableName).insert(records);
+  };
+
   beforeAll(async () => {
     for (const database of testDatabases) {
       const connection = knex(config.knexConfig[database]!);
@@ -20,31 +52,6 @@ describe('Read By Query', () => {
       await insertRecords(connection);
     }
   });
-
-  const insertRecords = async (connection: Knex) => {
-    await connection(tableName).insert([
-      {
-        year: '2021',
-        round: '1',
-        circuit: 'Bahrain',
-      },
-      {
-        year: '2022',
-        round: '1',
-        circuit: 'Bahrain',
-      },
-      {
-        year: '2023',
-        round: '1',
-        circuit: 'Bahrain',
-      },
-      {
-        year: '2023',
-        round: '2',
-        circuit: 'Saudi Arabia',
-      },
-    ]);
-  };
 
   afterAll(async () => {
     for (const [_, connection] of databases) {
@@ -58,7 +65,7 @@ describe('Read By Query', () => {
       const connection = databases.get(database)!;
       const results = await readByQuery({ database: connection, collection: tableName });
 
-      expect(results).toHaveLength(4);
+      expect(results).toHaveLength(records.length);
     });
 
     // circuit = "Bahrain"
@@ -70,7 +77,10 @@ describe('Read By Query', () => {
         collection: tableName,
         filter: { circuit: { _eq: 'Bahrain' } },
       });
-      expect(results).toHaveLength(3);
+
+      const expectedRecords = records.filter((record) => record.circuit === 'Bahrain');
+
+      expect(results).toHaveLength(expectedRecords.length);
       expect(results).toEqual(
         expect.arrayContaining([
           expect.objectContaining({ circuit: 'Bahrain', year: '2021' }),
@@ -93,7 +103,12 @@ describe('Read By Query', () => {
             _and: [{ circuit: { _eq: 'Bahrain' } }, { year: { _gt: '2021' } }],
           },
         });
-        expect(results).toHaveLength(2);
+
+        const expectedRecords = records.filter(
+          (record) => record.circuit === 'Bahrain' && record.year > '2021'
+        );
+
+        expect(results).toHaveLength(expectedRecords.length);
         expect(results).toEqual(
           expect.arrayContaining([
             expect.objectContaining({ circuit: 'Bahrain', year: '2022' }),
@@ -116,7 +131,12 @@ describe('Read By Query', () => {
             _or: [{ circuit: { _eq: 'Bahrain' } }, { circuit: { _eq: 'Saudi Arabia' } }],
           },
         });
-        expect(results).toHaveLength(4);
+
+        const expectedRecords = records.filter(
+          (record) => record.circuit === 'Bahrain' || record.circuit === 'Saudi Arabia'
+        );
+
+        expect(results).toHaveLength(expectedRecords.length);
         expect(results).toEqual(
           expect.arrayContaining([
             expect.objectContaining({ circuit: 'Bahrain', year: '2021' }),
@@ -159,6 +179,46 @@ describe('Read By Query', () => {
       expect(results1).rejects.toThrow();
       expect(results2).rejects.toThrow();
       expect(results3).rejects.toThrow();
+    });
+  });
+
+  describe('Get sorted records', () => {
+    // round 1, 2 ... null
+    it.each(testDatabases)('%s - should get in asc order, null is last', async (database) => {
+      const connection = databases.get(database)!;
+      const results = await readByQuery<CollectionType>({
+        database: connection,
+        collection: tableName,
+        filter: { year: { _eq: '2023' } },
+        sorts: [{ column: 'round', order: 'asc', nulls: 'last' }],
+      });
+
+      expect(results).toStrictEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ year: '2023', round: '1', circuit: 'Bahrain' }),
+          expect.objectContaining({ year: '2023', round: '2', circuit: 'Saudi Arabia' }),
+          expect.objectContaining({ year: '2023', round: null, circuit: 'Las Vegas' }),
+        ])
+      );
+    });
+
+    // round null ... 2, 1
+    it.each(testDatabases)('%s - should get in desc order, null is first', async (database) => {
+      const connection = databases.get(database)!;
+      const results = await readByQuery<CollectionType>({
+        database: connection,
+        collection: tableName,
+        filter: { year: { _eq: '2023' } },
+        sorts: [{ column: 'round', order: 'desc', nulls: 'first' }],
+      });
+
+      expect(results).toStrictEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ year: '2023', round: null, circuit: 'Las Vegas' }),
+          expect.objectContaining({ year: '2023', round: '2', circuit: 'Saudi Arabia' }),
+          expect.objectContaining({ year: '2023', round: '1', circuit: 'Bahrain' }),
+        ])
+      );
     });
   });
 });
