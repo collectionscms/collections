@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWR, { SWRConfiguration, SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
-import { Collection, GetField } from '../../../../config/types.js';
+import { Collection, GetCollection, GetField } from '../../../../config/types.js';
 import { api } from '../../../utilities/api.js';
 import { CollectionContext } from './types.js';
 
@@ -12,7 +12,7 @@ export const CollectionContextProvider: React.FC<{ children: React.ReactNode }> 
 }) => {
   const getCollection = (id: string): SWRMutationResponse =>
     useSWRMutation(`/collections/${id}`, (url) =>
-      api.get<{ collection: Collection }>(url).then((res) => res.data.collection)
+      api.get<{ collection: GetCollection }>(url).then((res) => res.data.collection)
     );
 
   const getCollections = (): SWRResponse =>

@@ -1,5 +1,5 @@
 import { Knex } from 'knex';
-import { CollectionsRepository } from '../repositories/collections.js';
+import { CollectionsService } from '../services/collections.js';
 import { FieldsService } from '../services/fields.js';
 import { RelationsService } from '../services/relations.js';
 import { getDatabase } from './connection.js';
@@ -47,10 +47,8 @@ export const getSchemaOverview = async (options?: { database?: Knex }): Promise<
   // /////////////////////////////////////
   // Collections
   // /////////////////////////////////////
-  const collectionsRepository = new CollectionsRepository('superfast_collections', {
-    knex: database,
-  });
-  const collections = await collectionsRepository.read();
+  const collectionsService = new CollectionsService({ database, schema });
+  const collections = await collectionsService.readMany();
 
   for (const [collection, info] of Object.entries(schemaInfo)) {
     const metaCollection = collections.find((c) => c.collection === collection);

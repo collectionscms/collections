@@ -54,7 +54,7 @@ export class FieldsService extends BaseService<Field> {
       const field = await service.readOne(key);
 
       await tx.schema.alterTable(field.collection, (table) => {
-        addColumnToTable(field, table);
+        this.addColumnToTable(field, table);
       });
 
       return field;
@@ -76,7 +76,7 @@ export class FieldsService extends BaseService<Field> {
       if (data.options) {
         const field = await service.readOne(key);
         await tx.schema.alterTable(field.collection, (table: Knex.CreateTableBuilder) => {
-          addColumnToTable(field, table, true);
+          this.addColumnToTable(field, table, true);
         });
       }
     });
@@ -107,7 +107,7 @@ export class FieldsService extends BaseService<Field> {
         fields.push(field as Field);
 
         await tx.schema.alterTable(field.collection, (table) => {
-          addColumnToTable(field, table)?.references('id').inTable(relation.one_collection);
+          this.addColumnToTable(field, table)?.references('id').inTable(relation.one_collection);
         });
       }
 
@@ -154,7 +154,7 @@ export class FieldsService extends BaseService<Field> {
       });
 
       for (let relation of oneRelations) {
-        await executeFieldDelete(fieldsService, relation.many_collection, relation.many_field);
+        await this.executeFieldDelete(relation.many_collection, relation.many_field);
       }
 
       // Delete one relation fields
@@ -168,7 +168,7 @@ export class FieldsService extends BaseService<Field> {
       });
 
       for (let relation of manyRelations) {
-        await executeFieldDelete(fieldsService, relation.one_collection, relation.one_field);
+        await this.executeFieldDelete(relation.one_collection, relation.one_field);
       }
 
       // Delete relations schema
@@ -181,8 +181,40 @@ export class FieldsService extends BaseService<Field> {
       // /////////////////////////////////////
       // Delete Entity
       // /////////////////////////////////////
-      await executeFieldDelete(fieldsService, collection.collection, field.field);
+      await this.executeFieldDelete(collection.collection, field.field);
     });
+  }
+
+  /**
+   * @description Delete meta and entity fields.
+   * @param fieldsService
+   * @param collection
+   * @param field
+   */
+  async executeFieldDelete(collection: string, field: string) {
+    const hasEntity = !this.schema.collections[collection].fields[field].alias;
+    const existingRelation = this.schema.relations.find(
+      (existingRelation) =>
+        (existingRelation.collection === collection && existingRelation.field === field) ||
+        (existingRelation.relatedCollection === collection &&
+          existingRelation.relatedField === field)
+    );
+
+    if (hasEntity) {
+      await this.database.schema.table(collection, (table) => {
+        // If the FK already exists in the DB, drop it first
+        if (existingRelation !== undefined) table.dropForeign(field);
+        table.dropColumn(field);
+      });
+    }
+
+    const fields = await this.readMany({
+      filter: {
+        _and: [{ collection: { _eq: collection } }, { field: { _eq: field } }],
+      },
+    });
+    const fieldIds = fields.map((field) => field.id);
+    await this.deleteMany(fieldIds);
   }
 
   private async checkUniqueField(collection: string, field: string) {
@@ -196,90 +228,55 @@ export class FieldsService extends BaseService<Field> {
       throw new RecordNotUniqueException('already_registered_name');
     }
   }
-}
 
-/**
- * @description Delete meta and entity fields.
- * @param fieldsService
- * @param collection
- * @param field
- */
-const executeFieldDelete = async (
-  fieldsService: FieldsService,
-  collection: string,
-  field: string
-) => {
-  const hasEntity = !fieldsService.schema.collections[collection].fields[field].alias;
-  const existingRelation = fieldsService.schema.relations.find(
-    (existingRelation) =>
-      (existingRelation.collection === collection && existingRelation.field === field) ||
-      (existingRelation.relatedCollection === collection && existingRelation.relatedField === field)
-  );
+  private addColumnToTable = (
+    field: { interface: string | null; field: string; options: string | null },
+    table: Knex.CreateTableBuilder,
+    alter: boolean = false
+  ) => {
+    let column = null;
 
-  if (hasEntity) {
-    await fieldsService.database.schema.table(collection, (table) => {
-      // If the FK already exists in the DB, drop it first
-      if (existingRelation !== undefined) table.dropForeign(field);
-      table.dropColumn(field);
-    });
-  }
-
-  const fields = await fieldsService.readMany({
-    filter: {
-      _and: [{ collection: { _eq: collection } }, { field: { _eq: field } }],
-    },
-  });
-  const fieldIds = fields.map((field) => field.id);
-  await fieldsService.deleteMany(fieldIds);
-};
-
-export const addColumnToTable = (
-  field: { interface: string | null; field: string; options: string | null },
-  table: Knex.CreateTableBuilder,
-  alter: boolean = false
-) => {
-  let column = null;
-
-  switch (field.interface) {
-    case 'input':
-      column = table.string(field.field, 255);
-      break;
-    case 'selectDropdown':
-      column = table.string(field.field, 255).defaultTo('');
-      break;
-    case 'inputMultiline':
-    case 'inputRichTextMd':
-      column = table.text(field.field);
-      break;
-    case 'boolean': {
-      const value = field.options ? JSON.parse(field.options) : null;
-      column = table.boolean(field.field).defaultTo(value?.defaultValue || false);
-      break;
+    switch (field.interface) {
+      case 'input':
+        column = table.string(field.field, 255);
+        break;
+      case 'selectDropdown':
+        column = table.string(field.field, 255).defaultTo('');
+        break;
+      case 'inputMultiline':
+      case 'inputRichTextMd':
+        column = table.text(field.field);
+        break;
+      case 'boolean': {
+        const value = field.options ? JSON.parse(field.options) : null;
+        column = table.boolean(field.field).defaultTo(value?.defaultValue || false);
+        break;
+      }
+      case 'dateTime':
+        column = table.dateTime(field.field);
+        break;
+      case 'fileImage':
+        column = table
+          .integer(field.field)
+          .unsigned()
+          .index()
+          .references('id')
+          .inTable('superfast_files');
+        break;
+      case 'listOneToMany':
+        // noop
+        break;
+      case 'selectDropdownManyToOne':
+        column = table.integer(field.field).unsigned().index();
+        break;
+      default:
+        throw new InvalidPayloadException('unexpected_field_type_specified');
     }
-    case 'dateTime':
-      column = table.dateTime(field.field);
-      break;
-    case 'fileImage':
-      column = table
-        .integer(field.field)
-        .unsigned()
-        .index()
-        .references('id')
-        .inTable('superfast_files');
-      break;
-    case 'listOneToMany':
-      // noop
-      break;
-    case 'selectDropdownManyToOne':
-      column = table.integer(field.field).unsigned().index();
-      break;
-    default:
-      throw new InvalidPayloadException('unexpected_field_type_specified');
-  }
 
-  if (column && alter) {
-    column.alter();
-  }
+    if (column && alter) {
+      column.alter();
+    }
 
-  return column;
-};
+    return column;
+  };
+}
