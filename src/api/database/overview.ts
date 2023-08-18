@@ -1,7 +1,7 @@
 import { Knex } from 'knex';
 import { CollectionsRepository } from '../repositories/collections.js';
-import { RelationsRepository } from '../repositories/relations.js';
 import { FieldsService } from '../services/fields.js';
+import { RelationsService } from '../services/relations.js';
 import { getDatabase } from './connection.js';
 import { getSchemaInfo } from './inspector.js';
 
@@ -94,10 +94,8 @@ export const getSchemaOverview = async (options?: { database?: Knex }): Promise<
   // /////////////////////////////////////
   // Relations
   // /////////////////////////////////////
-  const relationsRepository = new RelationsRepository('superfast_relations', {
-    knex: database,
-  });
-  const relations = await relationsRepository.read();
+  const relationsService = new RelationsService({ database, schema });
+  const relations = await relationsService.readMany();
 
   schema.relations = relations.map((relation) => {
     return {
