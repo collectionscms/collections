@@ -1,7 +1,7 @@
 import { Knex } from 'knex';
 import { CollectionsRepository } from '../repositories/collections.js';
-import { FieldsRepository } from '../repositories/fields.js';
 import { RelationsRepository } from '../repositories/relations.js';
+import { FieldsService } from '../services/fields.js';
 import { getDatabase } from './connection.js';
 import { getSchemaInfo } from './inspector.js';
 
@@ -78,10 +78,8 @@ export const getSchemaOverview = async (options?: { database?: Knex }): Promise<
   // /////////////////////////////////////
   // Alias fields
   // /////////////////////////////////////
-  const fieldsRepository = new FieldsRepository('superfast_fields', {
-    knex: database,
-  });
-  const fields = await fieldsRepository.read();
+  const fieldsService = new FieldsService({ database, schema });
+  const fields = await fieldsService.readMany();
 
   for (const field of fields) {
     if (!schema.collections[field.collection]) continue;

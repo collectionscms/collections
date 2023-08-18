@@ -51,12 +51,12 @@ const seedingSystemData = async (database: Knex): Promise<void> => {
   const fieldsRepository = new FieldsRepository();
 
   const collectionsService = new CollectionsService(collectionsRepository, fieldsRepository);
-  const fieldsService = new FieldsService(fieldsRepository);
 
   const projectSettingsService = new ProjectSettingsService({ database, schema });
   const permissionsService = new PermissionsService({ database, schema });
   const rolesService = new RolesService({ database, schema });
   const usersService = new UsersService({ database, schema });
+  const fieldsService = new FieldsService({ database, schema });
 
   // Role
   Output.info('Creating roles...');
