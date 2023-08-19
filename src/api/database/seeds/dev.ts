@@ -2,25 +2,24 @@
 import { Knex } from 'knex';
 import { v4 as uuidv4 } from 'uuid';
 import { Output } from '../../../utilities/output.js';
-import { CollectionsRepository } from '../../repositories/collections.js';
-import { ContentsRepository } from '../../repositories/contents.js';
-import { FieldsRepository } from '../../repositories/fields.js';
-import { PermissionsRepository } from '../../repositories/permissions.js';
-import { ProjectSettingsRepository } from '../../repositories/projectSettings.js';
-import { RolesRepository } from '../../repositories/roles.js';
-import { UsersRepository } from '../../repositories/users.js';
 import { CollectionsService } from '../../services/collections.js';
+import { ContentsService } from '../../services/contents.js';
 import { FieldsService } from '../../services/fields.js';
+import { PermissionsService } from '../../services/permissions.js';
+import { ProjectSettingsService } from '../../services/projectSettings.js';
+import { RolesService } from '../../services/roles.js';
+import { UsersService } from '../../services/users.js';
 import { oneWayHash } from '../../utilities/oneWayHash.js';
 import { getDatabase } from '../connection.js';
+import { getSchemaOverview } from '../overview.js';
 
 export const seedDev = async (): Promise<void> => {
   const database = getDatabase();
 
   try {
     await resetAll(database);
-    await seedingSystemData();
-    await seedingCollectionData();
+    await seedingSystemData(database);
+    await seedingCollectionData(database);
 
     process.exit(0);
   } catch (e) {
@@ -43,31 +42,30 @@ const resetAll = async (database: Knex): Promise<void> => {
   await database.schema.dropTableIfExists('Company');
 };
 
-const seedingSystemData = async (): Promise<void> => {
-  const rolesRepository = new RolesRepository();
-  const usersRepository = new UsersRepository();
-  const permissionsRepository = new PermissionsRepository();
-  const collectionsRepository = new CollectionsRepository();
-  const fieldsRepository = new FieldsRepository();
-  const projectSettingsRepository = new ProjectSettingsRepository();
+const seedingSystemData = async (database: Knex): Promise<void> => {
+  const schema = await getSchemaOverview({ database });
 
-  const collectionsService = new CollectionsService(collectionsRepository, fieldsRepository);
-  const fieldsService = new FieldsService(fieldsRepository);
+  const projectSettingsService = new ProjectSettingsService({ database, schema });
+  const permissionsService = new PermissionsService({ database, schema });
+  const rolesService = new RolesService({ database, schema });
+  const usersService = new UsersService({ database, schema });
+  const fieldsService = new FieldsService({ database, schema });
+  const collectionsService = new CollectionsService({ database, schema });
 
   // Role
   Output.info('Creating roles...');
-  await rolesRepository.createMany([
+  await rolesService.createMany([
     { name: 'Administrator', description: 'Administrator', admin_access: true },
-    { name: 'Editor', description: 'Editor', admin_access: true },
+    { name: 'Editor', description: 'Editor', admin_access: false },
   ] as any[]);
 
   // User
   Output.info('Creating users...');
-  const adminRole = await rolesRepository.readOne(1);
-  const editorRole = await rolesRepository.readOne(2);
+  const adminRole = await rolesService.readOne(1);
+  const editorRole = await rolesService.readOne(2);
   const password = await oneWayHash('password');
 
-  await usersRepository.createMany([
+  await usersService.createMany([
     {
       name: 'admin',
       email: 'admin@example.com',
@@ -87,7 +85,7 @@ const seedingSystemData = async (): Promise<void> => {
 
   // Permission
   Output.info('Creating permissions...');
-  await permissionsRepository.createMany([
+  await permissionsService.createMany([
     // Editor
     {
       collection: 'Post',
@@ -231,19 +229,19 @@ const seedingSystemData = async (): Promise<void> => {
 
   // Project Setting
   Output.info('Creating project settings...');
-  await projectSettingsRepository.createMany([
-    {
-      name: 'Superfast',
-      before_login: '',
-      after_login: '',
-    },
-  ]);
+  await projectSettingsService.createOne({
+    name: 'Superfast',
+    before_login: '',
+    after_login: '',
+  });
 };
 
-const seedingCollectionData = async (): Promise<void> => {
+const seedingCollectionData = async (database: Knex): Promise<void> => {
+  const schema = await getSchemaOverview({ database });
+
   Output.info('Adding collection data...');
-  const postsRepository = new ContentsRepository('Post');
-  await postsRepository.createMany([
+  const postsService = new ContentsService('Post', { database, schema });
+  await postsService.createMany([
     {
       title: 'Makes migration from legacy CMS seamless',
       body: 'Superfast is open source Headless CMS built with React, Node.js, RDB. We are planning an importer to make the transition from a legacy CMS.',
@@ -276,8 +274,8 @@ const seedingCollectionData = async (): Promise<void> => {
     },
   ]);
 
-  const companiesRepository = new ContentsRepository('Company');
-  await companiesRepository.createMany([
+  const companiesService = new ContentsService('Company', { database, schema });
+  await companiesService.createMany([
     {
       name: 'Rocketa Inc.',
       email: 'kazane.shimizu@rocketa.co.jp',

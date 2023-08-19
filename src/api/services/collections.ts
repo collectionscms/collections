@@ -1,25 +1,26 @@
-import { Collection } from '../../config/types.js';
-import { CollectionSchema, FieldSchema } from '../database/schemas.js';
-import { CollectionsRepository } from '../repositories/collections.js';
-import { FieldsRepository } from '../repositories/fields.js';
+import { PostCollection } from '../../config/types.js';
+import { RecordNotUniqueException } from '../../exceptions/database/recordNotUnique.js';
+import { Collection, Field, PrimaryKey } from '../database/schemas.js';
+import { AbstractServiceOptions, BaseService } from './base.js';
+import { FieldsService } from './fields.js';
+import { PermissionsService } from './permissions.js';
+import { RelationsService } from './relations.js';
 
-export class CollectionsService {
-  repository: CollectionsRepository;
-  fieldsRepository: FieldsRepository;
-
-  constructor(repository: CollectionsRepository, fieldsRepository: FieldsRepository) {
-    this.repository = repository;
-    this.fieldsRepository = fieldsRepository;
+export class CollectionsService extends BaseService<Collection> {
+  constructor(options: AbstractServiceOptions) {
+    super('superfast_collections', options);
   }
 
   /**
-   * @description create collection with fields
+   * @description Create collection with fields
    * @param data
-   * @returns collection id
+   * @returns primary key
    */
-  async createCollection(data: Omit<Collection, 'id'>): Promise<number> {
+  async createCollection(data: Omit<PostCollection, 'id'>): Promise<PrimaryKey> {
+    await this.checkUniqueCollection(data.collection);
+
     const { ['status']: _, ...removedStatusData } = data;
-    const fullData: Omit<CollectionSchema, 'id'> = data.status
+    const fullData: Omit<Collection, 'id'> = data.status
       ? {
           ...removedStatusData,
           status_field: 'status',
@@ -29,17 +30,19 @@ export class CollectionsService {
         }
       : removedStatusData;
 
-    const collectionId = await this.repository.transaction(async (tx) => {
-      const collectionId = await this.repository.transacting(tx).create(fullData);
+    const collectionId = await this.database.transaction(async (tx) => {
+      const collectionsService = new CollectionsService({ database: tx, schema: this.schema });
+      const collectionId = await collectionsService.createOne(fullData);
 
-      await tx.transaction.schema.createTable(data.collection, (table) => {
+      await tx.schema.createTable(data.collection, (table) => {
         table.increments();
         table.timestamps(true, true);
         data.status && table.string('status').notNullable();
       });
 
+      const fieldsService = new FieldsService({ database: tx, schema: this.schema });
       const fields = this.buildFields(data, data.status || false);
-      await this.fieldsRepository.transacting(tx).createMany(fields);
+      await fieldsService.createMany(fields);
 
       return collectionId;
     });
@@ -48,16 +51,117 @@ export class CollectionsService {
   }
 
   /**
-   * @description build fields array
+   * @description Update a collection
+   * @param key
+   * @param data
+   */
+  async updateCollection(key: PrimaryKey, data: Omit<Collection, 'id'>): Promise<void> {
+    await this.database.transaction(async (tx) => {
+      const service = new CollectionsService({ database: tx, schema: this.schema });
+      await service.updateOne(key, data);
+
+      if (data.status_field) {
+        const collection = await service.readOne(key);
+
+        const fieldsService = new FieldsService({ database: tx, schema: this.schema });
+        const fields = await fieldsService.readMany({
+          filter: {
+            _and: [
+              { collection: { _eq: collection.collection } },
+              { field: { _eq: data.status_field } },
+            ],
+          },
+        });
+
+        await fieldsService.updateOne(fields[0].id, {
+          interface: 'selectDropdownStatus',
+          required: true,
+          options: JSON.stringify({
+            choices: [
+              { label: data.draft_value, value: data.draft_value },
+              { label: data.publish_value, value: data.publish_value },
+              { label: data.archive_value, value: data.archive_value },
+            ],
+          }),
+        });
+      }
+    });
+  }
+
+  /**
+   * @description Delete a collection
+   * Execute in order of relation -> entity to avoid DB constraint errors
+   * @param key
+   */
+  async deleteCollection(key: PrimaryKey): Promise<void> {
+    await this.database.transaction(async (tx) => {
+      /////////////////////////// Delete Relation ///////////////////////////
+      const collectionsService = new CollectionsService({ database: tx, schema: this.schema });
+      const collection = await collectionsService.readOne(key);
+
+      await collectionsService.deleteOne(key);
+
+      const fieldsService = new FieldsService({ database: tx, schema: this.schema });
+      const fieldIds = await fieldsService
+        .readMany({
+          filter: { collection: { _eq: collection.collection } },
+        })
+        .then((fields) => fields.map((field) => field.id));
+
+      await fieldsService.deleteMany(fieldIds);
+
+      const permissionsService = new PermissionsService({
+        database: tx,
+        schema: this.schema,
+      });
+
+      const permissions = await permissionsService.readMany({
+        filter: { collection: { _eq: collection.collection } },
+      });
+      const ids = permissions.map((permission) => permission.id);
+      await permissionsService.deleteMany(ids);
+
+      // Delete many relation fields
+      const relationsService = new RelationsService({ database: tx, schema: this.schema });
+
+      const oneRelations = await relationsService.readMany({
+        filter: { one_collection: { _eq: collection.collection } },
+      });
+
+      for (let relation of oneRelations) {
+        await fieldsService.executeFieldDelete(relation.many_collection, relation.many_field);
+      }
+
+      // Delete one relation fields
+      const manyRelations = await relationsService.readMany({
+        filter: { many_collection: { _eq: collection.collection } },
+      });
+
+      for (let relation of manyRelations) {
+        await fieldsService.executeFieldDelete(relation.one_collection, relation.one_field);
+      }
+
+      // Delete relations
+      const relationIds = [...oneRelations, ...manyRelations]
+        .filter((relation) => relation.id)
+        .map((relation) => relation.id);
+
+      await relationsService.deleteMany(relationIds);
+
+      ///////////////////////// Delete Entity ///////////////////////////
+
+      await tx.schema.dropTable(collection.collection);
+    });
+  }
+
+  /**
+   * @description Build fields array
    * @param data
    * @param hasStatus
    * @returns fields array
    */
-  private buildFields = (
-    data: Omit<CollectionSchema, 'id'>,
-    hasStatus: boolean
-  ): Omit<FieldSchema, 'id'>[] => {
-    const fields: Omit<FieldSchema, 'id'>[] = [
+  private buildFields = (data: Omit<Collection, 'id'>, hasStatus: boolean): Omit<Field, 'id'>[] => {
+    const fields: Omit<Field, 'id'>[] = [
       {
         collection: data.collection,
         field: 'id',
@@ -119,4 +223,14 @@ export class CollectionsService {
 
     return fields;
   };
+
+  private async checkUniqueCollection(collection: string) {
+    const collections = await this.readMany({
+      filter: { collection: { _eq: collection } },
+    });
+
+    if (collections.length) {
+      throw new RecordNotUniqueException('already_registered_name');
+    }
+  }
 }

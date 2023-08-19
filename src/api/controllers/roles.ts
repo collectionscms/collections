@@ -1,11 +1,9 @@
 import express, { Request, Response } from 'express';
 import { RecordNotFoundException } from '../../exceptions/database/recordNotFound.js';
-import { UnprocessableEntityException } from '../../exceptions/unprocessableEntity.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
 import { permissionsHandler } from '../middleware/permissionsHandler.js';
-import { PermissionsRepository } from '../repositories/permissions.js';
-import { RolesRepository } from '../repositories/roles.js';
-import { UsersRepository } from '../repositories/users.js';
+import { PermissionsService } from '../services/permissions.js';
+import { RolesService } from '../services/roles.js';
 
 const router = express.Router();
 
@@ -13,9 +11,8 @@ router.get(
   '/roles',
   permissionsHandler([{ collection: 'superfast_roles', action: 'read' }]),
   asyncHandler(async (req: Request, res: Response) => {
-    const repository = new RolesRepository();
-
-    const roles = await repository.read();
+    const rolesService = new RolesService({ schema: req.schema });
+    const roles = await rolesService.readMany();
 
     res.json({ roles });
   })
@@ -26,9 +23,10 @@ router.get(
   permissionsHandler([{ collection: 'superfast_roles', action: 'read' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const id = Number(req.params.id);
-    const repository = new RolesRepository();
 
-    const role = await repository.readOne(id);
+    const rolesService = new RolesService({ schema: req.schema });
+    const role = await rolesService.readOne(id);
+
     if (!role) throw new RecordNotFoundException('record_not_found');
 
     res.json({ role });
@@ -39,9 +37,8 @@ router.post(
   '/roles',
   permissionsHandler([{ collection: 'superfast_roles', action: 'create' }]),
   asyncHandler(async (req: Request, res: Response) => {
-    const repository = new RolesRepository();
-
-    const roleId = await repository.create(req.body);
+    const rolesService = new RolesService({ schema: req.schema });
+    const roleId = await rolesService.createOne(req.body);
 
     res.json({
       id: roleId,
@@ -54,9 +51,9 @@ router.patch(
   permissionsHandler([{ collection: 'superfast_roles', action: 'update' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const id = Number(req.params.id);
-    const repository = new RolesRepository();
 
-    await repository.update(id, req.body);
+    const rolesService = new RolesService({ schema: req.schema });
+    await rolesService.updateOne(id, req.body);
 
     res.status(204).end();
   })
@@ -67,28 +64,11 @@ router.delete(
   permissionsHandler([{ collection: 'superfast_roles', action: 'delete' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const id = Number(req.params.id);
-    const repository = new RolesRepository();
-    const permissionsRepository = new PermissionsRepository();
-    const usersRepository = new UsersRepository();
 
-    const users = await usersRepository.read({ role_id: id });
-    if (users.length > 0) {
-      throw new UnprocessableEntityException('can_not_delete_role_in_use');
-    }
+    const rolesService = new RolesService({ schema: req.schema });
+    await rolesService.deleteWithPermissions(id);
 
-    const role = await repository.readOne(id);
-    if (role.admin_access) {
-      const roles = await repository.read({ admin_access: true });
-      if (roles.length === 1) {
-        throw new UnprocessableEntityException('can_not_delete_last_admin_role');
-      }
-    }
-
-    await repository.transaction(async (tx) => {
-      await permissionsRepository.transacting(tx).deleteMany({ role_id: id });
-      await repository.transacting(tx).delete(id);
-      res.status(204).end();
-    });
+    res.status(204).end();
   })
 );
 
@@ -97,9 +77,11 @@ router.get(
   permissionsHandler(),
   asyncHandler(async (req: Request, res: Response) => {
     const id = Number(req.params.id);
-    const permissionsRepository = new PermissionsRepository();
 
-    const permissions = await permissionsRepository.read({ role_id: id });
+    const permissionsService = new PermissionsService({ schema: req.schema });
+    const permissions = await permissionsService.readMany({
+      filter: { role_id: { _eq: id } },
+    });
 
     res.json({ permissions });
   })
@@ -110,14 +92,13 @@ router.post(
   permissionsHandler([{ collection: 'superfast_permissions', action: 'create' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const id = Number(req.params.id);
-    const permissionsRepository = new PermissionsRepository();
-
     const data = {
       ...req.body,
       role_id: id,
     };
 
-    const permissionId = await permissionsRepository.create(data);
+    const permissionsService = new PermissionsService({ schema: req.schema });
+    const permissionId = await permissionsService.createOne(data);
 
     res.json({
       id: permissionId,
@@ -130,9 +111,9 @@ router.delete(
   permissionsHandler([{ collection: 'superfast_permissions', action: 'delete' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const permissionId = Number(req.params.permissionId);
-    const permissionsRepository = new PermissionsRepository();
 
-    await permissionsRepository.delete(permissionId);
+    const permissionsService = new PermissionsService({ schema: req.schema });
+    await permissionsService.deleteOne(permissionId);
 
     res.status(204).end();
   })

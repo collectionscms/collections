@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import { FileNotFoundException } from '../../exceptions/storage/fileNotFound.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
-import { FilesRepository } from '../repositories/files.js';
+import { FilesService } from '../services/files.js';
 import { getStorage } from '../storages/storage.js';
 
 const router = express.Router();
@@ -16,8 +16,13 @@ router.get(
 router.get(
   '/assets/:fileName',
   asyncHandler(async (req: Request, res: Response) => {
-    const repository = new FilesRepository();
-    const file = (await repository.read({ file_name_disk: req.params.fileName }))[0];
+    const service = new FilesService({ schema: req.schema });
+
+    const file = await service
+      .readMany({
+        filter: { file_name_disk: { _eq: req.params.fileName } },
+      })
+      .then((data) => data[0]);
 
     if (!file) throw new FileNotFoundException('file_does_not_exist');
 

@@ -3,7 +3,7 @@ import { cookieOptions } from '../../constants.js';
 import { env } from '../../env.js';
 import { InvalidTokenException } from '../../exceptions/invalidToken.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
-import { UsersRepository } from '../repositories/users.js';
+import { UsersService } from '../services/users.js';
 import { getExtractJwt } from '../utilities/getExtractJwt.js';
 import { sign } from '../utilities/sign.js';
 import { verifyJwt } from '../utilities/verifyJwt.js';
@@ -13,9 +13,8 @@ const router = express.Router();
 router.post(
   '/authentications/login',
   asyncHandler(async (req: Request, res: Response) => {
-    const repository = new UsersRepository();
-
-    const user = await repository.login(req.body.email, req.body.password);
+    const service = new UsersService({ schema: req.schema });
+    const user = await service.login(req.body.email, req.body.password);
     user.appAccess = true;
 
     const accessToken = sign(user, env.ACCESS_TOKEN_TTL);

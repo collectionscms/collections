@@ -1,6 +1,5 @@
 import knex, { Knex } from 'knex';
-import { CollectionsRepository } from '../../../src/api/repositories/collections.js';
-import { FieldsRepository } from '../../../src/api/repositories/fields.js';
+import { getSchemaOverview } from '../../../src/api/database/overview.js';
 import { CollectionsService } from '../../../src/api/services/collections.js';
 import { FieldsService } from '../../../src/api/services/fields.js';
 import { Collection, Field } from '../../../src/config/types.js';
@@ -8,8 +7,6 @@ import { config } from '../../config.js';
 import { testDatabases } from '../../utilities/testDatabases.js';
 
 describe('Field', () => {
-  const collectionsTableName = 'superfast_collections';
-  const fieldsTableName = 'superfast_fields';
   const collectionName = 'collection_f1_ferrari_team_stats';
   const databases = new Map<string, Knex>();
 
@@ -46,10 +43,9 @@ describe('Field', () => {
 
   const createCollection = async (database: string) => {
     const connection = databases.get(database)!;
-    const repository = new CollectionsRepository(collectionsTableName, { knex: connection });
-    const fieldsRepository = new FieldsRepository(fieldsTableName, { knex: connection });
-    const service = new CollectionsService(repository, fieldsRepository);
+    const schema = await getSchemaOverview({ database: connection });
 
+    const service = new CollectionsService({ database: connection, schema });
     await service.createCollection(collectionData);
   };
 
@@ -62,8 +58,8 @@ describe('Field', () => {
   describe('Create', () => {
     it.each(testDatabases)('%s - should create', async (database) => {
       const connection = databases.get(database)!;
-      const repository = new FieldsRepository(fieldsTableName, { knex: connection });
-      const service = new FieldsService(repository);
+      const schema = await getSchemaOverview({ database: connection });
+      const service = new FieldsService({ database: connection, schema });
 
       const field = {
         ...fieldData,
@@ -77,8 +73,8 @@ describe('Field', () => {
 
     it.each(testDatabases)('%s - should throw on duplication column error', async (database) => {
       const connection = databases.get(database)!;
-      const repository = new FieldsRepository(fieldsTableName, { knex: connection });
-      const service = new FieldsService(repository);
+      const schema = await getSchemaOverview({ database: connection });
+      const service = new FieldsService({ database: connection, schema });
 
       const field = {
         ...fieldData,
@@ -93,9 +89,10 @@ describe('Field', () => {
       await expect(fieldFail).rejects.toThrow();
 
       // meta data should not be created
-      const fetchFields = await repository.read({
-        collection: collectionName,
-        field: 'point',
+      const fetchFields = await service.readMany({
+        filter: {
+          _and: [{ collection: { _eq: collectionName } }, { field: { _eq: 'point' } }],
+        },
       });
 
       expect(fetchFields).toHaveLength(1);
@@ -104,23 +101,24 @@ describe('Field', () => {
     it.each(testDatabases)(
       '%s - should throw on duplication system column error',
       async (database) => {
-        const connection = databases.get(database)!;
-        const repository = new FieldsRepository(fieldsTableName, { knex: connection });
-        const service = new FieldsService(repository);
-
         const field = {
           ...fieldData,
           field: 'id',
           label: 'id',
         } as Omit<Field, 'id'>;
 
+        const connection = databases.get(database)!;
+        const schema = await getSchemaOverview({ database: connection });
+        const service = new FieldsService({ database: connection, schema });
+
         const result = service.createField(field);
         await expect(result).rejects.toThrow();
 
         // meta data should not be duplicated.
-        const fetchFields = await repository.read({
-          collection: collectionName,
-          field: 'id',
+        const fetchFields = await service.readMany({
+          filter: {
+            _and: [{ collection: { _eq: collectionName } }, { field: { _eq: 'id' } }],
+          },
         });
 
         expect(fetchFields).toHaveLength(1);

@@ -1,10 +1,12 @@
-type Common = {
-  id: number;
+export type PrimaryKey = number; // | string;
+
+export type TypeWithId = {
+  id: PrimaryKey;
   created_at?: Date;
   updated_at?: Date;
 };
 
-export type CollectionSchema = {
+export type Collection = {
   collection: string;
   singleton: boolean;
   hidden: boolean;
@@ -12,9 +14,9 @@ export type CollectionSchema = {
   draft_value: string | null;
   publish_value: string | null;
   archive_value: string | null;
-} & Common;
+} & TypeWithId;
 
-export type FieldSchema = {
+export type Field = {
   collection: string;
   field: string;
   label: string;
@@ -25,7 +27,7 @@ export type FieldSchema = {
   required: boolean;
   hidden: boolean;
   sort: number | null;
-} & Common;
+} & TypeWithId;
 
 export type User = {
   name: string;
@@ -36,25 +38,25 @@ export type User = {
   reset_password_expiration?: number | null;
   api_key?: string | null;
   role_id?: number | null;
-} & Common;
+} & TypeWithId;
 
 export type Role = {
   name: string;
   description: string | null;
   admin_access: boolean;
-} & Common;
+} & TypeWithId;
 
 export type Permission = {
   collection: string;
   action: string;
   role_id: number | null;
-} & Common;
+} & TypeWithId;
 
 export type ProjectSetting = {
   name: string;
   before_login?: string | null;
   after_login?: string | null;
-} & Common;
+} & TypeWithId;
 
 export type File = {
   storage: string;
@@ -64,13 +66,13 @@ export type File = {
   file_size: number | null;
   width: number | null;
   height: number | null;
-} & Common;
+} & TypeWithId;
 
 export type Relation = {
   many_collection: string;
   many_field: string;
   one_collection: string;
   one_field: string;
-} & Common;
+} & TypeWithId;
 
 export const referencedTypes = ['listOneToMany'];

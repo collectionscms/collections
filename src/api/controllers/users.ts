@@ -6,8 +6,9 @@ import { InvalidCredentialsException } from '../../exceptions/invalidCredentials
 import { UnprocessableEntityException } from '../../exceptions/unprocessableEntity.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
 import { permissionsHandler } from '../middleware/permissionsHandler.js';
-import { UsersRepository } from '../repositories/users.js';
 import { MailService } from '../services/mail.js';
+import { ProjectSettingsService } from '../services/projectSettings.js';
+import { UsersService } from '../services/users.js';
 import { oneWayHash } from '../utilities/oneWayHash.js';
 
 const router = express.Router();
@@ -15,10 +16,9 @@ const router = express.Router();
 router.get(
   '/users',
   permissionsHandler([{ collection: 'superfast_users', action: 'read' }]),
-  asyncHandler(async (_req: Request, res: Response) => {
-    const repository = new UsersRepository();
-
-    const users = await repository.readWithRole();
+  asyncHandler(async (req: Request, res: Response) => {
+    const service = new UsersService({ schema: req.schema });
+    const users = await service.readWithRole();
 
     res.json({
       users: users.flatMap(({ ...user }) => payload(user)),
@@ -31,9 +31,10 @@ router.get(
   permissionsHandler([{ collection: 'superfast_users', action: 'read' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const id = Number(req.params.id);
-    const repository = new UsersRepository();
 
-    const user = await repository.readOneWithRole(id);
+    const service = new UsersService({ schema: req.schema });
+    const user = await service.readWithRole(id).then((users) => users[0]);
+
     if (!user) throw new RecordNotFoundException('record_not_found');
 
     res.json({
@@ -46,10 +47,14 @@ router.post(
   '/users',
   permissionsHandler([{ collection: 'superfast_users', action: 'create' }]),
   asyncHandler(async (req: Request, res: Response) => {
-    const repository = new UsersRepository();
+    const service = new UsersService({ schema: req.schema });
+    await service.checkUniqueEmail(req.body.email);
 
-    req.body.password = await oneWayHash(req.body.password);
-    const userId = await repository.create(req.body);
+    const hashed = await oneWayHash(req.body.password);
+    const userId = await service.createOne({
+      ...req.body,
+      password: hashed,
+    });
 
     res.json({
       id: userId,
@@ -62,13 +67,15 @@ router.patch(
   permissionsHandler([{ collection: 'superfast_users', action: 'update' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const id = Number(req.params.id);
-    const usersRepository = new UsersRepository();
 
-    if (req.body.password) {
-      req.body.password = await oneWayHash(req.body.password);
-    }
+    const service = new UsersService({ schema: req.schema });
+    await service.checkUniqueEmail(req.body.email, id);
 
-    await usersRepository.update(id, req.body);
+    const data = req.body.password
+      ? { ...req.body, password: await oneWayHash(req.body.password) }
+      : req.body;
+
+    await service.updateOne(id, data);
 
     res.status(204).end();
   })
@@ -79,13 +86,12 @@ router.delete(
   permissionsHandler([{ collection: 'superfast_users', action: 'delete' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const id = Number(req.params.id);
-    const usersRepository = new UsersRepository();
-
     if (req.userId === id) {
       throw new UnprocessableEntityException('can_not_delete_itself');
     }
 
-    await usersRepository.delete(id);
+    const service = new UsersService({ schema: req.schema });
+    await service.deleteOne(id);
 
     res.status(204).end();
   })
@@ -97,14 +103,21 @@ router.post(
     const token = req.body.token;
     const password = req.body.password;
 
-    const repository = new UsersRepository();
-    const user = await repository.readResetPasswordToken(token);
+    const service = new UsersService({ schema: req.schema });
+    const users = await service.readMany({
+      filter: {
+        _and: [
+          { reset_password_token: { _eq: token } },
+          { reset_password_expiration: { _gt: Date.now() } },
+        ],
+      },
+    });
 
-    if (!user) {
+    if (users.length === 0) {
       throw new InvalidCredentialsException('token_invalid_or_expired');
     }
 
-    await repository.update(user.id, {
+    await service.updateOne(users[0].id, {
       password: await oneWayHash(password),
       reset_password_expiration: Date.now(),
     });
@@ -118,9 +131,12 @@ router.post(
 router.post(
   '/users/forgot-password',
   asyncHandler(async (req: Request, res: Response) => {
-    const repository = new UsersRepository();
-    const users = await repository.read({ email: req.body.email });
-    const user = users[0];
+    const service = new UsersService({ schema: req.schema });
+    const user = await service
+      .readMany({
+        filter: { email: { _eq: req.body.email } },
+      })
+      .then((users) => users[0]);
 
     if (!user) {
       throw new InvalidCredentialsException('unregistered_email_address');
@@ -132,10 +148,14 @@ router.post(
     user.reset_password_token = token;
     user.reset_password_expiration = Date.now() + 3600000; // 1 hour
 
-    await repository.update(user.id, user);
+    await service.updateOne(user.id, user);
+
+    const projectSettingsService = new ProjectSettingsService({ schema: req.schema });
+    const projectSettings = await projectSettingsService.readMany();
+    const projectName = projectSettings[0].name;
 
     const mail = new MailService();
-    mail.sendEmail({
+    mail.sendEmail(projectName, {
       to: user.email,
       subject: 'Reset Password',
       html: `${env.PUBLIC_SERVER_URL}/admin/auth/reset-password/${user.reset_password_token}`,

@@ -1,6 +1,7 @@
 import { Knex } from 'knex';
-import { CollectionsRepository } from '../repositories/collections.js';
-import { RelationsRepository } from '../repositories/relations.js';
+import { CollectionsService } from '../services/collections.js';
+import { FieldsService } from '../services/fields.js';
+import { RelationsService } from '../services/relations.js';
 import { getDatabase } from './connection.js';
 import { getSchemaInfo } from './inspector.js';
 
@@ -34,7 +35,7 @@ export type SchemaOverview = {
 };
 
 /**
- * Get schema overview
+ * @description get schema overview
  * @param options
  * @returns schema overview
  */
@@ -46,10 +47,8 @@ export const getSchemaOverview = async (options?: { database?: Knex }): Promise<
   // /////////////////////////////////////
   // Collections
   // /////////////////////////////////////
-  const collectionsRepository = new CollectionsRepository('superfast_collections', {
-    knex: database,
-  });
-  const collections = await collectionsRepository.read();
+  const collectionsService = new CollectionsService({ database, schema });
+  const collections = await collectionsService.readMany();
 
   for (const [collection, info] of Object.entries(schemaInfo)) {
     const metaCollection = collections.find((c) => c.collection === collection);
@@ -75,12 +74,26 @@ export const getSchemaOverview = async (options?: { database?: Knex }): Promise<
   }
 
   // /////////////////////////////////////
+  // Alias fields
+  // /////////////////////////////////////
+  const fieldsService = new FieldsService({ database, schema });
+  const fields = await fieldsService.readMany();
+
+  for (const field of fields) {
+    if (!schema.collections[field.collection]) continue;
+    if (schema.collections[field.collection].fields[field.field]) continue;
+
+    schema.collections[field.collection].fields[field.field] = {
+      field: field.field,
+      alias: true,
+    };
+  }
+
+  // /////////////////////////////////////
   // Relations
   // /////////////////////////////////////
-  const relationsRepository = new RelationsRepository('superfast_relations', {
-    knex: database,
-  });
-  const relations = await relationsRepository.read();
+  const relationsService = new RelationsService({ database, schema });
+  const relations = await relationsService.readMany();
 
   schema.relations = relations.map((relation) => {
     return {

@@ -1,10 +1,10 @@
 import knex, { Knex } from 'knex';
-import { ProjectSettingsRepository } from '../../../src/api/repositories/projectSettings.js';
+import { getSchemaOverview } from '../../../src/api/database/overview.js';
+import { ProjectSettingsService } from '../../../src/api/services/projectSettings.js';
 import { config } from '../../config.js';
 import { testDatabases } from '../../utilities/testDatabases.js';
 
 describe('Project Settings', () => {
-  const tableName = 'superfast_project_settings';
   const databases = new Map<string, Knex>();
 
   beforeAll(async () => {
@@ -22,9 +22,10 @@ describe('Project Settings', () => {
   describe('Get', () => {
     it.each(testDatabases)('%s - should get', async (database) => {
       const connection = databases.get(database)!;
+      const schema = await getSchemaOverview({ database: connection });
 
-      const repository = new ProjectSettingsRepository(tableName, { knex: connection });
-      const data = await repository.read({});
+      const service = new ProjectSettingsService({ database: connection, schema });
+      const data = await service.readMany({});
 
       expect(data[0].name).toBe('superfast');
       expect(data[0].before_login).toBe('Support Hours 9:00 - 18:00');
@@ -35,9 +36,10 @@ describe('Project Settings', () => {
   describe('Update', () => {
     it.each(testDatabases)('%s - should update', async (database) => {
       const connection = databases.get(database)!;
+      const schema = await getSchemaOverview({ database: connection });
 
-      const repository = new ProjectSettingsRepository(tableName, { knex: connection });
-      const data = await repository.read({});
+      const service = new ProjectSettingsService({ database: connection, schema });
+      const data = await service.readMany({});
       const id = data[0].id;
       const newData = {
         name: 'superfast2',
@@ -45,8 +47,8 @@ describe('Project Settings', () => {
         after_login: '<a href="#">support desk</a>',
       };
 
-      const result = await repository.update(id, newData);
-      const projectSetting = await repository.readOne(id);
+      const result = await service.updateOne(id, newData);
+      const projectSetting = await service.readOne(id);
 
       expect(result).toBeTruthy();
       expect(projectSetting.name).toBe(newData.name);
@@ -61,10 +63,12 @@ describe('Project Settings', () => {
 
     it.each(testDatabases)('%s - should update fails', async (database) => {
       const connection = databases.get(database)!;
+      const schema = await getSchemaOverview({ database: connection });
+
       const nonExistPrimaryKey = -1;
 
-      const repository = new ProjectSettingsRepository(tableName, { knex: connection });
-      const result = await repository.update(nonExistPrimaryKey, { name: 'superfast2' });
+      const service = new ProjectSettingsService({ database: connection, schema });
+      const result = await service.updateOne(nonExistPrimaryKey, { name: 'superfast2' });
       expect(result).toBeFalsy();
     });
   });

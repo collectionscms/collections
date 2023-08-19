@@ -73,7 +73,9 @@ describe('Schema Overview', () => {
         fields: {
           id: { alias: false, field: 'id' },
           circuit: { alias: false, field: 'circuit' },
+          round: { alias: false, field: 'round' },
           year: { alias: false, field: 'year' },
+          circuit_stats: { alias: true, field: 'circuit_stats' },
           created_at: { alias: false, field: 'created_at' },
           updated_at: { alias: false, field: 'updated_at' },
         },

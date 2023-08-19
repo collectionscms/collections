@@ -3,7 +3,6 @@ import { mailer } from '../../email/mailer.js';
 import { Message } from '../../email/types.js';
 import { env } from '../../env.js';
 import { logger } from '../../utilities/logger.js';
-import { ProjectSettingsRepository } from '../repositories/projectSettings.js';
 
 export class MailService {
   mailer: Transporter;
@@ -17,13 +16,9 @@ export class MailService {
     });
   }
 
-  async sendEmail(message: Message): Promise<void> {
-    const repository = new ProjectSettingsRepository();
-
+  async sendEmail(projectName: string, message: Message): Promise<void> {
     try {
-      const projectSettings = await repository.read();
-      const from = `${projectSettings[0].name} <${env.EMAIL_FROM as string}>`;
-
+      const from = `${projectName} <${env.EMAIL_FROM as string}>`;
       this.mailer.sendMail({ from, ...message });
     } catch (e) {
       logger.error(`Failed to send mail to ${message.to}, subject: ${message.subject}`, e);
