@@ -42,10 +42,9 @@ export type ApiError = {
 };
 
 // /////////////////////////////////////
-// DTO
+// DTO: Field
 // /////////////////////////////////////
 
-// Field
 export type FieldInterface =
   | 'input'
   | 'inputMultiline'
@@ -79,31 +78,60 @@ export type GetField = {
   fieldOption?: FieldOption | null;
 } & FieldSchema;
 
-// Collection
+// /////////////////////////////////////
+// DTO: Collection
+// /////////////////////////////////////
+
 // TODO Subdivided
 export type Collection = {} & CollectionSchema;
 
-export type PostCollection = { status?: boolean } & CollectionSchema;
+export type PostCollection = {
+  status?: boolean;
+} & CollectionSchema;
 
 export type GetCollection = {
   fields: Field[];
 } & CollectionSchema;
 
+// /////////////////////////////////////
+// DTO: User
+// /////////////////////////////////////
+
 export type User = {
   role?: Role;
 } & UserSchema;
 
+// /////////////////////////////////////
+// DTO: Role
+// /////////////////////////////////////
+
 export type Role = {
   permissions: Permission[];
 } & RoleSchema;
+
+// /////////////////////////////////////
+// DTO: Permission
+// /////////////////////////////////////
 
 export type PermissionsAction = 'create' | 'read' | 'update' | 'delete';
 export type Permission = {
   action: PermissionsAction;
 } & PermissionSchema;
 
+// /////////////////////////////////////
+// DTO: Project Setting
+// /////////////////////////////////////
+
 export type ProjectSetting = {} & ProjectSettingSchema;
 
+// /////////////////////////////////////
+// DTO: File
+// /////////////////////////////////////
+
 export type File = { url?: string } & FileSchema;
+
+// /////////////////////////////////////
+// DTO: Relation
+// /////////////////////////////////////
 
 export type GetRelation = {} & RelationSchema;
