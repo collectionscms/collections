@@ -21,6 +21,7 @@ export type FieldFilter = {
 export type FieldFilterOperator = {
   _eq?: string | number | boolean;
   _gt?: string | number | boolean;
+  _in?: (string | number)[];
 };
 
 export type Sort = {

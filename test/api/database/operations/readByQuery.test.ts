@@ -148,6 +148,62 @@ describe('Read By Query', () => {
       }
     );
 
+    // circuit IN ("Bahrain", 'Saudi Arabia')
+    it.each(testDatabases)(
+      '%s - should get records filtered by _in condition',
+      async (database) => {
+        const connection = databases.get(database)!;
+
+        const results = await readByQuery<CollectionType>({
+          database: connection,
+          collection: tableName,
+          filter: { circuit: { _in: ['Bahrain', 'Saudi Arabia'] } },
+        });
+
+        const expectedRecords = records.filter(
+          (record) => record.circuit === 'Bahrain' || record.circuit === 'Saudi Arabia'
+        );
+
+        expect(results).toHaveLength(expectedRecords.length);
+        expect(results).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({ circuit: 'Bahrain', year: '2021' }),
+            expect.objectContaining({ circuit: 'Bahrain', year: '2022' }),
+            expect.objectContaining({ circuit: 'Bahrain', year: '2023' }),
+            expect.objectContaining({ circuit: 'Saudi Arabia', year: '2023' }),
+          ])
+        );
+      }
+    );
+
+    // year = "2023" AND circuit IN ("Bahrain", 'Saudi Arabia')
+    it.each(testDatabases)(
+      '%s - should get records filtered by _and with _in condition',
+      async (database) => {
+        const connection = databases.get(database)!;
+
+        const results = await readByQuery<CollectionType>({
+          database: connection,
+          collection: tableName,
+          filter: {
+            _and: [{ year: { _eq: '2023' } }, { circuit: { _in: ['Bahrain', 'Saudi Arabia'] } }],
+          },
+        });
+
+        const expectedRecords = records
+          .filter((record) => record.year === '2023')
+          .filter((record) => record.circuit === 'Bahrain' || record.circuit === 'Saudi Arabia');
+
+        expect(results).toHaveLength(expectedRecords.length);
+        expect(results).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({ circuit: 'Bahrain', year: '2023' }),
+            expect.objectContaining({ circuit: 'Saudi Arabia', year: '2023' }),
+          ])
+        );
+      }
+    );
+
     it.each(testDatabases)('%s - should throw invalid query', async (database) => {
       const connection = databases.get(database)!;
 

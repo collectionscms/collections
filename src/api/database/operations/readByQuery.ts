@@ -15,11 +15,13 @@ const applyFilter = (
   fieldFilter: FieldFilter,
   syntax: 'where' | 'andWhere' | 'orWhere'
 ) => {
-  const { _eq, _gt } = fieldFilter as FieldFilter;
+  const { _eq, _gt, _in } = fieldFilter as FieldFilter;
   if (_eq) {
     builder[syntax]({ [field]: _eq });
   } else if (_gt) {
     builder[syntax](field, '>', _gt);
+  } else if (_in) {
+    builder[syntax](field, 'in', _in);
   } else {
     throw new InvalidQueryException();
   }
