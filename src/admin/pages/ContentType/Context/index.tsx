@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWR, { SWRConfiguration, SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
-import { Collection, GetCollection, GetField } from '../../../../config/types.js';
+import { Collection, GetCollection, GetField, PostCollection } from '../../../../config/types.js';
 import { api } from '../../../utilities/api.js';
 import { CollectionContext } from './types.js';
 
@@ -22,7 +22,7 @@ export const CollectionContextProvider: React.FC<{ children: React.ReactNode }> 
 
   const createCollection = useSWRMutation(
     '/collections',
-    async (url: string, { arg }: { arg: Record<string, any> }) => {
+    async (url: string, { arg }: { arg: Omit<PostCollection, 'id'> }) => {
       return api.post<{ id: number }>(url, arg).then((res) => res.data.id);
     }
   );
