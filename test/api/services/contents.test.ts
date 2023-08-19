@@ -1,6 +1,7 @@
 import knex, { Knex } from 'knex';
 import { describe } from 'node:test';
-import { ContentsRepository } from '../../../src/api/repositories/contents.js';
+import { getSchemaOverview } from '../../../src/api/database/overview.js';
+import { ContentsService } from '../../../src/api/services/contents.js';
 import { config } from '../../config.js';
 import { testDatabases } from '../../utilities/testDatabases.js';
 
@@ -37,9 +38,10 @@ describe('Contents', () => {
   describe('Create', () => {
     it.each(testDatabases)('%s - should create', async (database) => {
       const connection = databases.get(database)!;
+      const schema = await getSchemaOverview({ database: connection });
 
-      const repository = new ContentsRepository(tableName, { knex: connection });
-      const data = await repository.create({ year: '2023', round: '1', circuit: 'Bahrain' });
+      const service = new ContentsService(tableName, { database: connection, schema });
+      const data = await service.createOne({ year: '2023', round: '1', circuit: 'Bahrain' });
 
       expect(data).toBeTruthy();
     });
@@ -48,18 +50,24 @@ describe('Contents', () => {
   describe('Update', () => {
     it.each(testDatabases)('%s - should update', async (database) => {
       const connection = databases.get(database)!;
+      const schema = await getSchemaOverview({ database: connection });
 
-      const repository = new ContentsRepository(tableName, { knex: connection });
-      const data = await repository.read({ year: '2022', circuit: 'Bahrain' });
-      const id = data[0].id;
+      const service = new ContentsService(tableName, { database: connection, schema });
+      const data = await service
+        .readMany({
+          filter: {
+            _and: [{ year: { _eq: '2022' } }, { circuit: { _eq: 'Bahrain' } }],
+          },
+        })
+        .then((data) => data[0]);
 
-      const result = await repository.update(id, { circuit: 'Bahrain International Circuit' });
-      const updatedContent = await repository.readOne(id);
+      const result = await service.updateOne(data.id, { circuit: 'Bahrain International Circuit' });
+      const updatedContent = await service.readOne(data.id);
 
       expect(result).toBeTruthy();
       expect(updatedContent.circuit).toBe('Bahrain International Circuit');
 
-      const before = new Date(data[0].updated_at).getTime();
+      const before = new Date(data.updated_at).getTime();
       const after = new Date(updatedContent.updated_at).getTime();
 
       expect(after).toBeGreaterThan(before);

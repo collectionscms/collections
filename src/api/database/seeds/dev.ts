@@ -2,8 +2,8 @@
 import { Knex } from 'knex';
 import { v4 as uuidv4 } from 'uuid';
 import { Output } from '../../../utilities/output.js';
-import { ContentsRepository } from '../../repositories/contents.js';
 import { CollectionsService } from '../../services/collections.js';
+import { ContentsService } from '../../services/contents.js';
 import { FieldsService } from '../../services/fields.js';
 import { PermissionsService } from '../../services/permissions.js';
 import { ProjectSettingsService } from '../../services/projectSettings.js';
@@ -19,7 +19,7 @@ export const seedDev = async (): Promise<void> => {
   try {
     await resetAll(database);
     await seedingSystemData(database);
-    await seedingCollectionData();
+    await seedingCollectionData(database);
 
     process.exit(0);
   } catch (e) {
@@ -236,10 +236,12 @@ const seedingSystemData = async (database: Knex): Promise<void> => {
   });
 };
 
-const seedingCollectionData = async (): Promise<void> => {
+const seedingCollectionData = async (database: Knex): Promise<void> => {
+  const schema = await getSchemaOverview({ database });
+
   Output.info('Adding collection data...');
-  const postsRepository = new ContentsRepository('Post');
-  await postsRepository.createMany([
+  const postsService = new ContentsService('Post', { database, schema });
+  await postsService.createMany([
     {
       title: 'Makes migration from legacy CMS seamless',
       body: 'Superfast is open source Headless CMS built with React, Node.js, RDB. We are planning an importer to make the transition from a legacy CMS.',
@@ -272,8 +274,8 @@ const seedingCollectionData = async (): Promise<void> => {
     },
   ]);
 
-  const companiesRepository = new ContentsRepository('Company');
-  await companiesRepository.createMany([
+  const companiesService = new ContentsService('Company', { database, schema });
+  await companiesService.createMany([
     {
       name: 'Rocketa Inc.',
       email: 'kazane.shimizu@rocketa.co.jp',
