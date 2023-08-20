@@ -19,6 +19,7 @@ export type CollectionOverview = {
 
 export type FieldOverview = {
   field: string;
+  special: string | null;
   alias: boolean;
 };
 
@@ -50,6 +51,9 @@ export const getSchemaOverview = async (options?: { database?: Knex }): Promise<
   const collectionsService = new CollectionsService({ database, schema });
   const collections = await collectionsService.readMany();
 
+  const fieldsService = new FieldsService({ database, schema });
+  const fields = await fieldsService.readMany();
+
   for (const [collection, info] of Object.entries(schemaInfo)) {
     const metaCollection = collections.find((c) => c.collection === collection);
 
@@ -62,8 +66,13 @@ export const getSchemaOverview = async (options?: { database?: Knex }): Promise<
       archiveValue: metaCollection ? metaCollection.archive_value : null,
       fields: Object.values(info.columns).reduce(
         (acc, column) => {
+          const field = fields.find(
+            (f) => f.collection === collection && f.field === column.column_name
+          );
+
           acc[column.column_name] = {
             field: column.column_name,
+            special: field?.special || null,
             alias: info.columns[column.column_name] === undefined,
           };
           return acc;
@@ -76,15 +85,13 @@ export const getSchemaOverview = async (options?: { database?: Knex }): Promise<
   // /////////////////////////////////////
   // Alias fields
   // /////////////////////////////////////
-  const fieldsService = new FieldsService({ database, schema });
-  const fields = await fieldsService.readMany();
-
   for (const field of fields) {
     if (!schema.collections[field.collection]) continue;
     if (schema.collections[field.collection].fields[field.field]) continue;
 
     schema.collections[field.collection].fields[field.field] = {
       field: field.field,
+      special: field.special,
       alias: true,
     };
   }
