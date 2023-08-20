@@ -253,7 +253,7 @@ export class FieldsService extends BaseService<Field> {
         break;
       }
       case 'dateTime':
-        column = table.dateTime(field.field);
+        column = table.timestamp(field.field);
         break;
       case 'fileImage':
         column = table
