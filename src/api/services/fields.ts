@@ -168,7 +168,7 @@ export class FieldsService extends BaseService<Field> {
       });
 
       for (let relation of oneRelations) {
-        await this.executeFieldDelete(relation.many_collection, relation.many_field);
+        await this.executeFieldDelete(tx, relation.many_collection, relation.many_field);
       }
 
       // Delete one relation fields
@@ -182,7 +182,7 @@ export class FieldsService extends BaseService<Field> {
       });
 
       for (let relation of manyRelations) {
-        await this.executeFieldDelete(relation.one_collection, relation.one_field);
+        await this.executeFieldDelete(tx, relation.one_collection, relation.one_field);
       }
 
       // Delete relations schema
@@ -193,9 +193,9 @@ export class FieldsService extends BaseService<Field> {
       await relationsService.deleteMany(relationIds);
 
       // /////////////////////////////////////
-      // Delete Entity
+      // Delete Field
       // /////////////////////////////////////
-      await this.executeFieldDelete(collection.collection, field.field);
+      await this.executeFieldDelete(tx, collection.collection, field.field);
     });
   }
 
@@ -205,7 +205,10 @@ export class FieldsService extends BaseService<Field> {
    * @param collection
    * @param field
    */
-  async executeFieldDelete(collection: string, field: string) {
+  async executeFieldDelete(tx: Knex.Transaction, collection: string, field: string) {
+    // /////////////////////////////////////
+    // Delete Entity
+    // /////////////////////////////////////
     const hasEntity = !this.schema.collections[collection].fields[field].alias;
     const existingRelation = this.schema.relations.find(
       (existingRelation) =>
@@ -214,21 +217,30 @@ export class FieldsService extends BaseService<Field> {
           existingRelation.relatedField === field)
     );
 
+    const service = new FieldsService({ database: tx, schema: this.schema });
+
     if (hasEntity) {
-      await this.database.schema.table(collection, (table) => {
+      await service.database.schema.table(collection, (table) => {
         // If the FK already exists in the DB, drop it first
         if (existingRelation !== undefined) table.dropForeign(field);
         table.dropColumn(field);
       });
     }
 
-    const fields = await this.readMany({
-      filter: {
-        _and: [{ collection: { _eq: collection } }, { field: { _eq: field } }],
-      },
-    });
-    const fieldIds = fields.map((field) => field.id);
-    await this.deleteMany(fieldIds);
+    // /////////////////////////////////////
+    // Delete Meta
+    // /////////////////////////////////////
+    const fieldIds = await service
+      .readMany({
+        filter: {
+          _and: [{ collection: { _eq: collection } }, { field: { _eq: field } }],
+        },
+      })
+      .then((fields) => fields.map((field) => field.id));
+
+    if (fieldIds.length > 0) {
+      await service.deleteMany(fieldIds);
+    }
   }
 
   private async checkUniqueField(collection: string, field: string) {
