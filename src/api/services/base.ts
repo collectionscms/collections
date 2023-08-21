@@ -1,5 +1,6 @@
 import { Knex } from 'knex';
 import { getDatabase } from '../database/connection.js';
+import { Helpers, getHelpers } from '../database/helpers/index.js';
 import { createMany } from '../database/operations/createMany.js';
 import { createOne } from '../database/operations/createOne.js';
 import { deleteMany } from '../database/operations/deleteMany.js';
@@ -34,11 +35,13 @@ export class BaseService<T extends TypeWithId = any> implements AbstractService<
   collection: string;
   database: Knex;
   schema: SchemaOverview;
+  helpers: Helpers;
 
   constructor(collection: string, options: AbstractServiceOptions) {
     this.collection = collection;
     this.schema = options.schema;
     this.database = options.database || getDatabase();
+    this.helpers = getHelpers(this.database);
   }
 
   async transaction<T>(callback: (trx: BaseTransaction) => Promise<T>) {
@@ -54,7 +57,12 @@ export class BaseService<T extends TypeWithId = any> implements AbstractService<
    * @returns item
    */
   async readOne(key: PrimaryKey): Promise<T> {
-    return await readById<T>({ database: this.database, collection: this.collection, key });
+    return await readById<T>({
+      collection: this.collection,
+      database: this.database,
+      schema: this.schema,
+      key,
+    });
   }
 
   /**
@@ -64,8 +72,9 @@ export class BaseService<T extends TypeWithId = any> implements AbstractService<
    */
   async readMany(query: Query = {}, sorts?: Sort[]): Promise<T[]> {
     return await readByQuery<T>({
-      database: this.database,
       collection: this.collection,
+      database: this.database,
+      schema: this.schema,
       filter: query.filter,
       sorts: sorts || null,
     });
@@ -77,7 +86,12 @@ export class BaseService<T extends TypeWithId = any> implements AbstractService<
    * @returns primary key
    */
   async createOne(data: Partial<T>): Promise<PrimaryKey> {
-    return await createOne({ database: this.database, collection: this.collection, data });
+    return await createOne({
+      database: this.database,
+      collection: this.collection,
+      data,
+      schema: this.schema,
+    });
   }
 
   /**
@@ -87,7 +101,13 @@ export class BaseService<T extends TypeWithId = any> implements AbstractService<
    * @returns primary key
    */
   async updateOne(key: PrimaryKey, data: Partial<T>): Promise<PrimaryKey> {
-    return await updateOne({ database: this.database, collection: this.collection, key, data });
+    return await updateOne({
+      database: this.database,
+      collection: this.collection,
+      key,
+      schema: this.schema,
+      data,
+    });
   }
 
   /**
@@ -96,7 +116,12 @@ export class BaseService<T extends TypeWithId = any> implements AbstractService<
    * @returns primary keys
    */
   async createMany(data: Partial<T>[]): Promise<PrimaryKey[]> {
-    return await createMany({ database: this.database, collection: this.collection, data });
+    return await createMany({
+      database: this.database,
+      collection: this.collection,
+      data,
+      schema: this.schema,
+    });
   }
 
   /**

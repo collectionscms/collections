@@ -24,7 +24,7 @@ export const Cell: React.FC<Props> = (props) => {
       case Type.Text || Type.Number:
         return truncate(String(cellData));
       case Type.Date:
-        return dayjs.utc(String(cellData)).local().format('YYYY-MM-DD HH:mm');
+        return dayjs(String(cellData)).local().format('YYYY-MM-DD HH:mm');
       case Type.Status:
         // TODO Display icons by status.
         return cellData;

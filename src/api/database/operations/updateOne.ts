@@ -1,21 +1,24 @@
 import { Knex } from 'knex';
-import { getSchemaInfo } from '../inspector.js';
+import { getHelpers } from '../helpers/index.js';
+import { SchemaOverview } from '../overview.js';
 import { PrimaryKey } from '../schemas.js';
+import { applyTransformersToFields } from '../transformers.js';
 
 export type Arguments = {
   collection: string;
   database: Knex;
   key: PrimaryKey;
+  schema: SchemaOverview;
   data: Record<string, unknown>;
 };
 
 export const updateOne = async (args: Arguments): Promise<PrimaryKey> => {
-  let { database, collection, key, data } = args;
+  let { database, collection, key, schema, data } = args;
+  const helpers = getHelpers(args.database);
+  const overview = schema.collections[collection];
 
-  const schemaInfo = await getSchemaInfo(database);
-
-  if (schemaInfo[args.collection].columns.updated_at) {
-    data = { ...data, updated_at: database.fn.now() };
+  if (overview) {
+    await applyTransformersToFields('update', data, schema.collections[collection], helpers);
   }
 
   return database(collection).where({ id: key }).update(data);

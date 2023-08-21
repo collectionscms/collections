@@ -1,6 +1,7 @@
 import { pick } from '../../utilities/pick.js';
 import { CollectionOverview, FieldOverview } from '../database/overview.js';
 import { PrimaryKey } from '../database/schemas.js';
+import { applyTransformersToSpecialFields } from '../database/transformers.js';
 import { FieldFilter, Query } from '../database/types.js';
 import { AbstractServiceOptions, BaseService } from './base.js';
 
@@ -28,7 +29,9 @@ export class ContentsService extends BaseService<any> {
       (field) => field.alias
     );
 
-    // alias fields
+    // /////////////////////////////////////
+    // Alias fields
+    // /////////////////////////////////////
     for (let field of aliasFields) {
       const relation = this.schema.relations.filter(
         (relation) => relation.collection === this.collection && relation.field === field.field
@@ -44,13 +47,20 @@ export class ContentsService extends BaseService<any> {
       children[field.field] = { relatedField: relation.relatedField, data };
     }
 
-    // contents
+    // /////////////////////////////////////
+    // Contents
+    // /////////////////////////////////////
+    const overview = this.schema.collections[this.collection];
     for (let content of contents) {
       for (let field of aliasFields) {
         const child = children[field.field];
         content[field.field] = child.data.filter(
           (data: any) => data[child.relatedField] === content.id
         );
+      }
+
+      if (overview) {
+        applyTransformersToSpecialFields('read', content, overview, this.helpers);
       }
     }
 
@@ -67,14 +77,23 @@ export class ContentsService extends BaseService<any> {
     const contentId = await this.database.transaction(async (tx) => {
       const relationDeletedBody = pick(data, this.nonAliasFields(fields));
 
+      const overview = this.schema.collections[this.collection];
+      if (overview) {
+        applyTransformersToSpecialFields('create', relationDeletedBody, overview, this.helpers);
+      }
+
+      // /////////////////////////////////////
       // Save content
+      // /////////////////////////////////////
       const contentsService = new ContentsService(this.collection, {
         database: tx,
         schema: this.schema,
       });
       const contentId = await contentsService.createOne(relationDeletedBody);
 
+      // /////////////////////////////////////
       // Update relational foreign key
+      // /////////////////////////////////////
       const relations = this.schema.relations.filter(
         (relation) => relation.collection === this.collection
       );
@@ -114,16 +133,25 @@ export class ContentsService extends BaseService<any> {
     fields: FieldOverview[]
   ): Promise<void> {
     await this.database.transaction(async (tx) => {
+      // /////////////////////////////////////
       // Update content
+      // /////////////////////////////////////
       const relationDeletedBody = pick(data, this.nonAliasFields(fields));
       const contentsService = new ContentsService(this.collection, {
         database: tx,
         schema: this.schema,
       });
 
+      const overview = this.schema.collections[this.collection];
+      if (overview) {
+        applyTransformersToSpecialFields('update', relationDeletedBody, overview, this.helpers);
+      }
+
       await contentsService.updateOne(key, relationDeletedBody);
 
+      // /////////////////////////////////////
       // Update relational foreign key
+      // /////////////////////////////////////
       const relations = this.schema.relations.filter(
         (relation) => relation.collection === this.collection
       );
@@ -154,7 +182,9 @@ export class ContentsService extends BaseService<any> {
         schema: this.schema,
       });
 
+      // /////////////////////////////////////
       // Relational foreign key to null
+      // /////////////////////////////////////
       const relations = this.schema.relations.filter(
         (relation) => relation.collection === this.collection
       );
@@ -173,6 +203,9 @@ export class ContentsService extends BaseService<any> {
         }
       }
 
+      // /////////////////////////////////////
+      // Delete content
+      // /////////////////////////////////////
       await contentsService.deleteOne(key);
     });
   }

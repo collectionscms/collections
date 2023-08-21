@@ -49,8 +49,7 @@ export const DateTimeType: React.FC<Props> = ({
             format="YYYY-MM-DD HH:mm"
             ampm={false}
             onChange={(date: Date | null) => {
-              // Converts a date string from the local timezone to UTC.
-              field.onChange(dayjs(date).utc().format('YYYY-MM-DD HH:mm'));
+              field.onChange(dayjs(date).format('YYYY-MM-DD HH:mm'));
             }}
             slots={{
               openPickerButton(ownerState) {
@@ -66,7 +65,7 @@ export const DateTimeType: React.FC<Props> = ({
                 fullWidth: true,
                 disabled: Boolean(meta.readonly),
                 error: errors[meta.field] !== undefined,
-                value: field.value ? dayjs.utc(field.value).local() : null,
+                value: field.value ? dayjs(field.value).local() : null,
               },
             }}
           />

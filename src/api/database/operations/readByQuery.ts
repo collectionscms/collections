@@ -1,10 +1,14 @@
 import { Knex } from 'knex';
 import { InvalidQueryException } from '../../../exceptions/invalidQuery.js';
+import { getHelpers } from '../helpers/index.js';
+import { SchemaOverview } from '../overview.js';
+import { applyTransformersToFields } from '../transformers.js';
 import { FieldFilter, Filter, Sort } from '../types.js';
 
 export type Arguments = {
   collection: string;
   database: Knex;
+  schema: SchemaOverview;
   filter?: Filter | null;
   sorts?: Sort[] | null;
 };
@@ -27,13 +31,11 @@ const applyFilter = (
   }
 };
 
-export const readByQuery = async <T>({
-  database,
-  collection,
-  filter,
-  sorts,
-}: Arguments): Promise<T[]> => {
+export const readByQuery = async <T>(args: Arguments): Promise<T[]> => {
+  let { database, collection, schema, filter, sorts } = args;
+  const helpers = getHelpers(args.database);
   const builder = database(collection);
+  const overview = schema.collections[collection];
 
   if (filter) {
     for (const [key, value] of Object.entries(filter)) {
@@ -58,5 +60,12 @@ export const readByQuery = async <T>({
   }
 
   const results = await builder.select();
+
+  if (overview) {
+    for (const result of results) {
+      await applyTransformersToFields('read', result, schema.collections[collection], helpers);
+    }
+  }
+
   return results;
 };

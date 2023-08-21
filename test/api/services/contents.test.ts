@@ -1,36 +1,89 @@
+import dayjs from 'dayjs';
+import timezone from 'dayjs/plugin/timezone.js';
+import utc from 'dayjs/plugin/utc.js';
 import knex, { Knex } from 'knex';
 import { describe } from 'node:test';
+import { getHelpers } from '../../../src/api/database/helpers/index.js';
 import { getSchemaOverview } from '../../../src/api/database/overview.js';
 import { ContentsService } from '../../../src/api/services/contents.js';
 import { config } from '../../config.js';
 import { testDatabases } from '../../utilities/testDatabases.js';
 
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
 describe('Contents', () => {
-  const tableName = 'collection_f1_grand_prix_races';
+  const tableName = 'collection_f1_grand_prix_race_stats';
   const databases = new Map<string, Knex>();
 
   beforeAll(async () => {
     for (const database of testDatabases) {
       const connection = knex(config.knexConfig[database]!);
       databases.set(database, connection);
-      await insertRecords(connection);
+      await createCollection(database);
     }
   });
 
-  const insertRecords = async (connection: Knex) => {
+  const createCollection = async (database: string) => {
+    const connection = databases.get(database)!;
+    const helpers = getHelpers(connection);
+
+    await connection('superfast_collections').insert([
+      {
+        collection: tableName,
+        singleton: false,
+        hidden: false,
+      },
+    ]);
+
+    await connection('superfast_fields').insert([
+      {
+        collection: tableName,
+        field: 'id',
+        label: 'id',
+        interface: 'input',
+      },
+      {
+        collection: tableName,
+        field: 'year',
+        label: 'Year',
+        interface: 'input',
+      },
+      {
+        collection: tableName,
+        field: 'circuit',
+        label: 'Circuit',
+        interface: 'input',
+      },
+      {
+        collection: tableName,
+        field: 'start_date',
+        label: 'Start Date',
+        interface: 'dateTime',
+        special: 'cast-timestamp',
+      },
+    ]);
+
+    await connection.schema.createTable(tableName, (table) => {
+      table.increments();
+      table.timestamps(true, true);
+      table.string('year', 255);
+      table.string('circuit', 255);
+      table.timestamp('start_date');
+    });
+
     await connection(tableName).insert([
       {
         year: '2022',
-        round: '1',
-        circuit: 'Bahrain',
-        updated_at: '2022-01-01 00:00:00',
+        circuit: 'Monaco',
+        created_at: helpers.date.writeTimestamp('2022-01-01 00:00:00'),
+        updated_at: helpers.date.writeTimestamp('2022-01-01 00:00:00'),
       },
     ]);
   };
 
   afterAll(async () => {
     for (const [_, connection] of databases) {
-      await connection(tableName).del();
       await connection.destroy();
     }
   });
@@ -41,7 +94,11 @@ describe('Contents', () => {
       const schema = await getSchemaOverview({ database: connection });
 
       const service = new ContentsService(tableName, { database: connection, schema });
-      const data = await service.createOne({ year: '2023', round: '1', circuit: 'Bahrain' });
+
+      const data = await service.createContent(
+        { year: '2023', circuit: 'Monaco' },
+        Object.values(schema.collections[tableName].fields)
+      );
 
       expect(data).toBeTruthy();
     });
@@ -53,26 +110,54 @@ describe('Contents', () => {
       const schema = await getSchemaOverview({ database: connection });
 
       const service = new ContentsService(tableName, { database: connection, schema });
-      const data = await service
+      const fetchedContent = await service
         .readMany({
           filter: {
-            _and: [{ year: { _eq: '2022' } }, { circuit: { _eq: 'Bahrain' } }],
+            _and: [{ year: { _eq: '2022' } }, { circuit: { _eq: 'Monaco' } }],
           },
         })
         .then((data) => data[0]);
 
-      const result = await service.updateOne(data.id, { circuit: 'Bahrain International Circuit' });
-      const updatedContent = await service.readOne(data.id);
+      const result = await service.updateOne(fetchedContent.id, {
+        circuit: 'Monaco in Monte Carlo',
+      });
+      const updatedContent = await service.readOne(fetchedContent.id);
 
       expect(result).toBeTruthy();
-      expect(updatedContent.circuit).toBe('Bahrain International Circuit');
+      expect(updatedContent.circuit).toBe('Monaco in Monte Carlo');
 
-      const before = new Date(data.updated_at).getTime();
-      const after = new Date(updatedContent.updated_at).getTime();
-
-      expect(after).toBeGreaterThan(before);
+      const before = dayjs(fetchedContent.updated_at);
+      const after = dayjs(updatedContent.updated_at);
+      expect(after.diff(before)).toBeGreaterThan(0);
     });
 
     // TODO cases without updated_at
+  });
+
+  describe('Get', () => {
+    it.each(testDatabases)('%s - should display dateTime including time zone', async (database) => {
+      const connection = databases.get(database)!;
+      const schema = await getSchemaOverview({ database: connection });
+
+      const localTime = dayjs.tz('2023-05-28T15:00:00', 'Europe/Monaco');
+
+      const service = new ContentsService(tableName, { database: connection, schema });
+      const id = await service.createContent(
+        {
+          year: '2023',
+          circuit: 'Monaco',
+          start_date: localTime,
+        },
+        Object.values(schema.collections[tableName].fields)
+      );
+      const result = await service.readOne(id);
+      const startDate = dayjs(result.start_date);
+
+      expect(startDate.format('YYYY-MM-DD HH:mm')).toBe(
+        localTime.local().format('YYYY-MM-DD HH:mm')
+      );
+      expect(startDate.tz('Europe/Monaco').format('YYYY-MM-DD HH:mm')).toBe('2023-05-28 15:00');
+      expect(startDate.tz('Asia/Tokyo').format('YYYY-MM-DD HH:mm')).toBe('2023-05-28 22:00');
+    });
   });
 });

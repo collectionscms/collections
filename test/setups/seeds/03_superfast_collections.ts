@@ -36,6 +36,18 @@ export const seed = async (database: Knex): Promise<void> => {
       label: 'Circuit',
       interface: 'input',
     },
+    {
+      collection: collectionName,
+      field: 'created_at',
+      label: 'Created At',
+      interface: 'dateTime',
+    },
+    {
+      collection: collectionName,
+      field: 'updated_at',
+      label: 'Updated At',
+      interface: 'dateTime',
+    },
   ]);
 
   await database.schema.createTable(collectionName, (table) => {
