@@ -95,7 +95,9 @@ export class CollectionsService extends BaseService<Collection> {
    */
   async deleteCollection(key: PrimaryKey): Promise<void> {
     await this.database.transaction(async (tx) => {
-      /////////////////////////// Delete Relation ///////////////////////////
+      // /////////////////////////////////////
+      // Delete Relation
+      // /////////////////////////////////////
       const collectionsService = new CollectionsService({ database: tx, schema: this.schema });
       const collection = await collectionsService.readOne(key);
 
@@ -129,7 +131,7 @@ export class CollectionsService extends BaseService<Collection> {
       });
 
       for (let relation of oneRelations) {
-        await fieldsService.executeFieldDelete(relation.many_collection, relation.many_field);
+        await fieldsService.executeFieldDelete(tx, relation.many_collection, relation.many_field);
       }
 
       // Delete one relation fields
@@ -138,7 +140,7 @@ export class CollectionsService extends BaseService<Collection> {
       });
 
       for (let relation of manyRelations) {
-        await fieldsService.executeFieldDelete(relation.one_collection, relation.one_field);
+        await fieldsService.executeFieldDelete(tx, relation.one_collection, relation.one_field);
       }
 
       // Delete relations
@@ -148,8 +150,9 @@ export class CollectionsService extends BaseService<Collection> {
 
       await relationsService.deleteMany(relationIds);
 
-      ///////////////////////// Delete Entity ///////////////////////////
-
+      // /////////////////////////////////////
+      // Delete Entity
+      // /////////////////////////////////////
       await tx.schema.dropTable(collection.collection);
     });
   }

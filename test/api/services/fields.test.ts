@@ -125,4 +125,22 @@ describe('Field', () => {
       }
     );
   });
+
+  describe('Delete', () => {
+    it.each(testDatabases)('%s - should delete', async (database) => {
+      const connection = databases.get(database)!;
+      const schema = await getSchemaOverview({ database: connection });
+      const service = new FieldsService({ database: connection, schema });
+
+      const field = await service
+        .readMany({
+          filter: { field: { _eq: 'team_name' } },
+        })
+        .then((data) => data[0]);
+
+      await service.deleteField(field.id);
+      const data = await service.readOne(field.id);
+      expect(data).toBeUndefined();
+    });
+  });
 });

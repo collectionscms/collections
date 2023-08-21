@@ -84,11 +84,10 @@ router.delete(
   '/collections/:collectionId/fields/:id',
   permissionsHandler([{ collection: 'superfast_fields', action: 'delete' }]),
   asyncHandler(async (req: Request, res: Response) => {
-    const collectionId = Number(req.params.collectionId);
     const fieldId = Number(req.params.id);
 
     const service = new FieldsService({ schema: req.schema });
-    await service.deleteField(collectionId, fieldId);
+    await service.deleteField(fieldId);
 
     res.status(204).end();
   })
