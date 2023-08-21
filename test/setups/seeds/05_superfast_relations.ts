@@ -25,6 +25,18 @@ export const seed = async (database: Knex): Promise<void> => {
       label: 'Name',
       interface: 'input',
     },
+    {
+      collection: collectionName,
+      field: 'created_at',
+      label: 'Created At',
+      interface: 'dateTime',
+    },
+    {
+      collection: collectionName,
+      field: 'updated_at',
+      label: 'Updated At',
+      interface: 'dateTime',
+    },
     // one to many fields
     {
       collection: belongingCollectionName,
