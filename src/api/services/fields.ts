@@ -127,27 +127,33 @@ export class FieldsService extends BaseService<Field> {
 
   /**
    * @description Delete field and related fields
-   * @param collectionKey
-   * @param fieldKey
+   * @param key
    */
-  async deleteField(collectionKey: PrimaryKey, fieldKey: PrimaryKey): Promise<void> {
+  async deleteField(key: PrimaryKey): Promise<void> {
+    const field = await this.readOne(key);
+
     const collectionsService = new CollectionsService({
       database: this.database,
       schema: this.schema,
     });
-    const collection = await collectionsService.readOne(collectionKey);
-    const field = await this.readOne(fieldKey);
+    const collection = await collectionsService
+      .readMany({
+        filter: {
+          collection: { _eq: field.collection },
+        },
+      })
+      .then((data) => data[0]);
 
     await this.database.transaction(async (tx) => {
       // /////////////////////////////////////
       // Delete Relation
       // /////////////////////////////////////
       const fieldsService = new FieldsService({ database: tx, schema: this.schema });
-      await fieldsService.deleteOne(fieldKey);
+      await fieldsService.deleteOne(key);
 
       if (collection.status_field === field.field) {
         const collectionsService = new CollectionsService({ database: tx, schema: this.schema });
-        await collectionsService.updateOne(collectionKey, { status_field: null });
+        await collectionsService.updateOne(collection.id, { status_field: null });
       }
 
       // Delete many relation fields
