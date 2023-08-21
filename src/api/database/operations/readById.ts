@@ -21,7 +21,7 @@ export const readById = async <T>(args: Arguments): Promise<T> => {
     .select()
     .then((results) => results[0]);
 
-  if (overview) {
+  if (result && overview) {
     await applyTransformersToFields('read', result, overview, helpers);
   }
 
