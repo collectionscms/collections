@@ -49,7 +49,10 @@ export const DateTimeType: React.FC<Props> = ({
             format="YYYY-MM-DD HH:mm"
             ampm={false}
             onChange={(date: Date | null) => {
-              field.onChange(dayjs(date).format('YYYY-MM-DD HH:mm'));
+              const dateTime = dayjs(date);
+              if (dateTime.isValid()) {
+                field.onChange(dateTime.format('YYYY-MM-DD HH:mm'));
+              }
             }}
             slots={{
               openPickerButton(ownerState) {
