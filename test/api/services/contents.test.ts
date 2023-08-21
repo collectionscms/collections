@@ -1,4 +1,6 @@
 import dayjs from 'dayjs';
+import timezone from 'dayjs/plugin/timezone.js';
+import utc from 'dayjs/plugin/utc.js';
 import knex, { Knex } from 'knex';
 import { describe } from 'node:test';
 import { getHelpers } from '../../../src/api/database/helpers/index.js';
@@ -6,6 +8,9 @@ import { getSchemaOverview } from '../../../src/api/database/overview.js';
 import { ContentsService } from '../../../src/api/services/contents.js';
 import { config } from '../../config.js';
 import { testDatabases } from '../../utilities/testDatabases.js';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 describe('Contents', () => {
   const tableName = 'collection_f1_grand_prix_race_stats';
@@ -50,6 +55,13 @@ describe('Contents', () => {
         label: 'Circuit',
         interface: 'input',
       },
+      {
+        collection: tableName,
+        field: 'start_date',
+        label: 'Start Date',
+        interface: 'dateTime',
+        special: 'cast-timestamp',
+      },
     ]);
 
     await connection.schema.createTable(tableName, (table) => {
@@ -57,6 +69,7 @@ describe('Contents', () => {
       table.timestamps(true, true);
       table.string('year', 255);
       table.string('circuit', 255);
+      table.timestamp('start_date');
     });
 
     await connection(tableName).insert([
@@ -119,5 +132,32 @@ describe('Contents', () => {
     });
 
     // TODO cases without updated_at
+  });
+
+  describe('Get', () => {
+    it.each(testDatabases)('%s - should display dateTime including time zone', async (database) => {
+      const connection = databases.get(database)!;
+      const schema = await getSchemaOverview({ database: connection });
+
+      const localTime = dayjs.tz('2023-05-28T15:00:00', 'Europe/Monaco');
+
+      const service = new ContentsService(tableName, { database: connection, schema });
+      const id = await service.createContent(
+        {
+          year: '2023',
+          circuit: 'Monaco',
+          start_date: localTime,
+        },
+        Object.values(schema.collections[tableName].fields)
+      );
+      const result = await service.readOne(id);
+      const startDate = dayjs(result.start_date);
+
+      expect(startDate.format('YYYY-MM-DD HH:mm')).toBe(
+        localTime.local().format('YYYY-MM-DD HH:mm')
+      );
+      expect(startDate.tz('Europe/Monaco').format('YYYY-MM-DD HH:mm')).toBe('2023-05-28 15:00');
+      expect(startDate.tz('Asia/Tokyo').format('YYYY-MM-DD HH:mm')).toBe('2023-05-28 22:00');
+    });
   });
 });
