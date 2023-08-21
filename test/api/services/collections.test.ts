@@ -116,4 +116,22 @@ describe('Collection', () => {
       expect(result).rejects.toThrow();
     });
   });
+
+  describe('Delete', () => {
+    it.each(testDatabases)('%s - should delete', async (database) => {
+      const connection = databases.get(database)!;
+      const schema = await getSchemaOverview({ database: connection });
+      const service = new CollectionsService({ database: connection, schema });
+
+      const fetchedCollection = await service
+        .readMany({
+          filter: { collection: { _eq: data1.collection } },
+        })
+        .then((data) => data[0]);
+
+      await service.deleteCollection(fetchedCollection.id);
+      const data = await service.readOne(fetchedCollection.id);
+      expect(data).toBeUndefined();
+    });
+  });
 });
