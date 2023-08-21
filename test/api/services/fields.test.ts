@@ -125,4 +125,24 @@ describe('Field', () => {
       }
     );
   });
+
+  describe('Delete', () => {
+    it.each(testDatabases)('%s - should delete', async (database) => {
+      const connection = databases.get(database)!;
+      const schema = await getSchemaOverview({ database: connection });
+      const service = new FieldsService({ database: connection, schema });
+
+      const field = {
+        ...fieldData,
+        field: 'base',
+        label: 'Base',
+      } as Omit<Field, 'id'>;
+
+      const createdField = await service.createField(field);
+      expect(createdField).toBeTruthy();
+
+      const result = await service.deleteField(createdField.id);
+      expect(result).toBeTruthy();
+    });
+  });
 });
