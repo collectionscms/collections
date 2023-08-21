@@ -132,17 +132,15 @@ describe('Field', () => {
       const schema = await getSchemaOverview({ database: connection });
       const service = new FieldsService({ database: connection, schema });
 
-      const field = {
-        ...fieldData,
-        field: 'base',
-        label: 'Base',
-      } as Omit<Field, 'id'>;
+      const field = await service
+        .readMany({
+          filter: { field: { _eq: 'team_name' } },
+        })
+        .then((data) => data[0]);
 
-      const createdField = await service.createField(field);
-      expect(createdField).toBeTruthy();
-
-      const result = await service.deleteField(createdField.id);
-      expect(result).toBeTruthy();
+      await service.deleteField(field.id);
+      const data = await service.readOne(field.id);
+      expect(data).toBeUndefined();
     });
   });
 });
