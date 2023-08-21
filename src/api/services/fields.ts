@@ -50,6 +50,14 @@ export class FieldsService extends BaseService<Field> {
 
     const field = this.database.transaction(async (tx) => {
       const service = new FieldsService({ database: tx, schema: this.schema });
+
+      if (data.interface) {
+        const flag = this.helpers.date.fieldFlagForField(data.interface);
+        if (flag) {
+          data.special = flag;
+        }
+      }
+
       const key = await service.createOne(data);
       const field = await service.readOne(key);
 
