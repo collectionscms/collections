@@ -4,6 +4,7 @@ import { DatabaseHelper } from '../types.js';
 export type AbstractDateHelper = {
   readTimestampString(date: string): string;
   writeTimestamp(date: string): string;
+  fieldFlagForField(fieldInterface: string): string;
 };
 
 export abstract class DateHelper extends DatabaseHelper implements AbstractDateHelper {
