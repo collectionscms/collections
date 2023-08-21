@@ -1,11 +1,10 @@
+import dayjs from 'dayjs';
+import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
 import { Helpers } from './helpers/index.js';
 import { CollectionOverview } from './overview.js';
+import { date } from 'joi';
 
 export type Action = 'create' | 'read' | 'update';
-
-type Transformers = {
-  [type: string]: (context: { action: Action; value: any; helpers: Helpers }) => Promise<any>;
-};
 
 /**
  * @description Reset the value if the field is subject to a transform.
@@ -57,7 +56,11 @@ export const applyTransformersToSpecialFields = async (
   }
 };
 
-export const transformers: Transformers = {
+type Transformers = {
+  [type: string]: (context: { action: Action; value: any; helpers: Helpers }) => Promise<any>;
+};
+
+const transformers: Transformers = {
   async created_at({ action, value, helpers }) {
     switch (action) {
       case 'create':
@@ -80,12 +83,19 @@ export const transformers: Transformers = {
     }
   },
   async 'cast-timestamp'({ action, value, helpers }) {
+    if (!value) return value;
+
+    const date = dayjs(value);
+    if (!date.isValid()) {
+      throw new InvalidPayloadException('invalid_date_format');
+    }
+
     switch (action) {
       case 'create':
       case 'update':
-        return helpers.date.writeTimestamp(new Date(value).toISOString());
+        return helpers.date.writeTimestamp(date.toISOString());
       case 'read':
-        return helpers.date.readTimestampString(new Date(value).toISOString());
+        return helpers.date.readTimestampString(date.toISOString());
       default:
         return value;
     }
