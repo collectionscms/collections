@@ -3,8 +3,8 @@ import { DBClient } from '../../api/database/connection.js';
 import { Output } from '../../utilities/output.js';
 
 const drivers: Record<DBClient, string> = {
-  mysql: 'MySQL / MariaDB / Aurora',
-  pg: 'PostgreSQL / Redshift',
+  mysql: 'MySQL / MariaDB',
+  pg: 'PostgreSQL',
   sqlite3: 'SQLite',
 };
 

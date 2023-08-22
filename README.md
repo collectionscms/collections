@@ -2,13 +2,13 @@
 
 ## ⭐ What is Superfast
 
-Open source Headless CMS built with React, Node.js, RDB. We are planning an importer to make the transition from a legacy CMS.
+This open-source Headless CMS uses React, Node.js, and RDB. Just model in the GUI, register data – retrieving via API is seamless! We're also developing an importer to smooth legacy CMS migration.
 
 ### Features
 
 - 📚 Support English / 日本語
 - 😻 Markdown can be used (with GitHub flavored markdown)
-- 🌒 Support light-mode/dark-mode
+- 🌒 Support light-mode / dark-mode
 - 📱 Responsive Design
 
 ## 📚 Usage & Documentation

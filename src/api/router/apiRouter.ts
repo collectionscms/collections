@@ -15,7 +15,6 @@ import { users } from '../controllers/users.js';
 import { authHandler } from '../middleware/authHandler.js';
 import { corsMiddleware } from '../middleware/cors.js';
 import { extractTokenHandler } from '../middleware/extractTokenHandler.js';
-import { schemaOverview } from '../middleware/schemaOverview.js';
 
 const router = express.Router();
 
@@ -27,8 +26,6 @@ router.use(cookieParser());
 router.use(express.json({ limit: env.REQ_LIMIT }));
 router.use(express.urlencoded({ limit: env.REQ_LIMIT, extended: true }));
 router.use(expressLogger);
-
-router.use(schemaOverview);
 
 router.use(extractTokenHandler);
 router.use(authHandler);
