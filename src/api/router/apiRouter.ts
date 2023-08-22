@@ -1,7 +1,7 @@
 import cookieParser from 'cookie-parser';
 import express from 'express';
 import { env } from '../../env.js';
-import { expressLogger } from '../../utilities/logger.js';
+import { expressLogger } from '../../utilities/expressLogger.js';
 import { authentications } from '../controllers/authentications.js';
 import { collections } from '../controllers/collections.js';
 import { contents } from '../controllers/contents.js';
