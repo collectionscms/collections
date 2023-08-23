@@ -56,7 +56,6 @@ describe('Read By Query', () => {
 
   afterAll(async () => {
     for (const [_, connection] of databases) {
-      await connection(tableName).del();
       await connection.destroy();
     }
   });
