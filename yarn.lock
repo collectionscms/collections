@@ -9039,9 +9039,9 @@ react-hook-form@^7.43.9:
   integrity sha512-HGDV1JOOBPZj10LB3+OZgfDBTn+IeEsNOKiq/cxbQAIbKaiJUe/KV8DBUzsx0Gx/7IG/orWqRRm736JwOfUSWQ==
 
 react-i18next@^13.0.0:
-  version "13.0.3"
-  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-13.0.3.tgz#8eedc5c2ab57f4641540778cc7373c8ed891523c"
-  integrity sha512-/t4kt4Y2o+21hbvx+o9zpVnmoiud7KLDncyZFGN0U6TGAWYaXdTsp/ytAHFcKKSAODg4noIMaOO3X7bMgCqLHw==
+  version "13.2.0"
+  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-13.2.0.tgz#9d7a574144738e46dd4c66573907f56942435ced"
+  integrity sha512-YD8xMc+I0jkHHLotd8ERMzZ53hMaCBVLCndbcbBveJn3FbppRP4jyYOAkmR8XItN01sTD9ilAjoEjpH1i42IgA==
   dependencies:
     "@babel/runtime" "^7.22.5"
     html-parse-stringify "^3.0.1"
