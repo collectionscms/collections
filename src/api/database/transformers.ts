@@ -65,6 +65,9 @@ const transformers: Transformers = {
     switch (action) {
       case 'create':
         return helpers.date.writeTimestamp(new Date().toISOString());
+      case 'update':
+        if (!value) return value;
+        return helpers.date.writeTimestamp(new Date(value).toISOString());
       case 'read':
         return helpers.date.readTimestampString(new Date(value).toISOString());
       default:
