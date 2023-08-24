@@ -57,6 +57,12 @@ describe('Contents', () => {
       },
       {
         collection: tableName,
+        field: 'is_shootout',
+        label: 'Shootout',
+        interface: 'boolean',
+      },
+      {
+        collection: tableName,
         field: 'start_date',
         label: 'Start Date',
         interface: 'dateTime',
@@ -69,6 +75,7 @@ describe('Contents', () => {
       table.timestamps(true, true);
       table.string('year', 255);
       table.string('circuit', 255);
+      table.boolean('is_shootout');
       table.timestamp('start_date');
     });
 
@@ -76,6 +83,7 @@ describe('Contents', () => {
       {
         year: '2022',
         circuit: 'Monaco',
+        is_shootout: false,
         created_at: helpers.date.writeTimestamp('2022-01-01 00:00:00'),
         updated_at: helpers.date.writeTimestamp('2022-01-01 00:00:00'),
       },
@@ -96,7 +104,7 @@ describe('Contents', () => {
       const service = new ContentsService(tableName, { database: connection, schema });
 
       const data = await service.createContent(
-        { year: '2023', circuit: 'Monaco' },
+        { year: '2023', circuit: 'Monaco', is_shootout: false },
         Object.values(schema.collections[tableName].fields)
       );
 
@@ -135,6 +143,31 @@ describe('Contents', () => {
   });
 
   describe('Get', () => {
+    it.each(testDatabases)('%s - should get', async (database) => {
+      const connection = databases.get(database)!;
+      const schema = await getSchemaOverview({ database: connection });
+
+      const service = new ContentsService(tableName, { database: connection, schema });
+      const fetchedContent = await service
+        .readMany({
+          filter: {
+            _and: [{ year: { _eq: '2023' } }, { circuit: { _eq: 'Monaco' } }],
+          },
+        })
+        .then((data) => data[0]);
+
+      const result = await service.readOne(fetchedContent.id);
+
+      expect(result).toBeTruthy();
+      expect(result).toEqual(
+        expect.objectContaining({
+          year: '2023',
+          circuit: 'Monaco',
+          is_shootout: false,
+        })
+      );
+    });
+
     it.each(testDatabases)('%s - should display dateTime including time zone', async (database) => {
       const connection = databases.get(database)!;
       const schema = await getSchemaOverview({ database: connection });

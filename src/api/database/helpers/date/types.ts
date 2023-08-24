@@ -20,6 +20,8 @@ export abstract class DateHelper extends DatabaseHelper implements AbstractDateH
     switch (fieldInterface) {
       case 'dateTime':
         return 'cast-timestamp';
+      case 'boolean':
+        return 'cast-boolean';
       default:
         return '';
     }

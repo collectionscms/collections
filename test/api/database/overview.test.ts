@@ -50,8 +50,8 @@ describe('Schema Overview', () => {
         fields: {
           id: { alias: false, special: null, field: 'id' },
           collection: { alias: false, special: null, field: 'collection' },
-          singleton: { alias: false, special: null, field: 'singleton' },
-          hidden: { alias: false, special: null, field: 'hidden' },
+          singleton: { alias: false, special: 'cast-boolean', field: 'singleton' },
+          hidden: { alias: false, special: 'cast-boolean', field: 'hidden' },
           status_field: { alias: false, special: null, field: 'status_field' },
           draft_value: { alias: false, special: null, field: 'draft_value' },
           publish_value: { alias: false, special: null, field: 'publish_value' },
@@ -75,6 +75,7 @@ describe('Schema Overview', () => {
           circuit: { alias: false, special: null, field: 'circuit' },
           round: { alias: false, special: null, field: 'round' },
           year: { alias: false, special: null, field: 'year' },
+          is_shootout: { alias: false, special: 'cast-boolean', field: 'is_shootout' },
           circuit_stats: { alias: true, special: null, field: 'circuit_stats' },
           created_at: { alias: false, special: null, field: 'created_at' },
           updated_at: { alias: false, special: null, field: 'updated_at' },

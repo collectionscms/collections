@@ -4,6 +4,7 @@ import { FieldsService } from '../services/fields.js';
 import { RelationsService } from '../services/relations.js';
 import { getDatabase } from './connection.js';
 import { getSchemaInfo } from './inspector.js';
+import { Field } from './schemas.js';
 
 export type CollectionOverview = {
   collection: string;
@@ -72,7 +73,7 @@ export const getSchemaOverview = async (options?: { database?: Knex }): Promise<
 
           acc[column.column_name] = {
             field: column.column_name,
-            special: field?.special || null,
+            special: getSpecialField(field || null, column.data_type),
             alias: info.columns[column.column_name] === undefined,
           };
           return acc;
@@ -91,7 +92,7 @@ export const getSchemaOverview = async (options?: { database?: Knex }): Promise<
 
     schema.collections[field.collection].fields[field.field] = {
       field: field.field,
-      special: field.special,
+      special: getSpecialField(field, null),
       alias: true,
     };
   }
@@ -112,4 +113,15 @@ export const getSchemaOverview = async (options?: { database?: Knex }): Promise<
   });
 
   return schema;
+};
+
+export const getSpecialField = (field: Field | null, dataType: string | null): string | null => {
+  if (field?.special) return field.special;
+
+  switch (dataType) {
+    case 'boolean':
+      return 'cast-boolean';
+    default:
+      return null;
+  }
 };
