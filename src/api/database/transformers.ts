@@ -2,59 +2,8 @@ import dayjs from 'dayjs';
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
 import { Helpers } from './helpers/index.js';
 import { CollectionOverview } from './overview.js';
-import { date } from 'joi';
 
 export type Action = 'create' | 'read' | 'update';
-
-/**
- * @description Reset the value if the field is subject to a transform.
- * @param action
- * @param data
- * @param overview
- * @param helpers
- */
-export const applyTransformersToFields = async (
-  action: Action,
-  data: Record<string, any>,
-  overview: CollectionOverview,
-  helpers: Helpers
-) => {
-  for (const field in overview.fields) {
-    if (field in transformers) {
-      const itemKey = field as keyof typeof data;
-      data[itemKey] = await transformers[field]({
-        action,
-        value: data[itemKey],
-        helpers,
-      });
-    }
-  }
-};
-
-/**
- * @description Reset the value if the special is subject to a transform
- * @param action
- * @param data
- * @param overview
- * @param helpers
- */
-export const applyTransformersToSpecialFields = async (
-  action: Action,
-  data: Record<string, any>,
-  overview: CollectionOverview,
-  helpers: Helpers
-) => {
-  for (const [key, value] of Object.entries(data)) {
-    const special = overview.fields[key]?.special;
-    if (special && special in transformers) {
-      data[key] = await transformers[special]({
-        action,
-        value,
-        helpers,
-      });
-    }
-  }
-};
 
 type Transformers = {
   [type: string]: (context: { action: Action; value: any; helpers: Helpers }) => Promise<any>;
@@ -85,6 +34,9 @@ const transformers: Transformers = {
         return value;
     }
   },
+};
+
+const castTransformers: Transformers = {
   async 'cast-timestamp'({ action, value, helpers }) {
     if (!value) return value;
 
@@ -103,4 +55,46 @@ const transformers: Transformers = {
         return value;
     }
   },
+};
+
+/**
+ * @description Applies transformers to the given data based on the collection overview.
+ * @param action
+ * @param data
+ * @param overview
+ * @param helpers
+ */
+export const applyTransformers = async (
+  action: Action,
+  data: Record<string, any>,
+  overview: CollectionOverview,
+  helpers: Helpers
+) => {
+  // /////////////////////////////////////
+  // Fields
+  // /////////////////////////////////////
+  for (const field in overview.fields) {
+    if (field in transformers) {
+      const itemKey = field as keyof typeof data;
+      data[itemKey] = await transformers[field]({
+        action,
+        value: data[itemKey],
+        helpers,
+      });
+    }
+  }
+
+  // /////////////////////////////////////
+  // Cast
+  // /////////////////////////////////////
+  for (const [key, value] of Object.entries(data)) {
+    const special = overview.fields[key]?.special;
+    if (special && special in castTransformers) {
+      data[key] = await castTransformers[special]({
+        action,
+        value,
+        helpers,
+      });
+    }
+  }
 };

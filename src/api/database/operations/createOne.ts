@@ -2,7 +2,7 @@ import { Knex } from 'knex';
 import { getHelpers } from '../helpers/index.js';
 import { SchemaOverview } from '../overview.js';
 import { PrimaryKey } from '../schemas.js';
-import { applyTransformersToFields } from '../transformers.js';
+import { applyTransformers } from '../transformers.js';
 
 export type Arguments = {
   collection: string;
@@ -17,7 +17,7 @@ export const createOne = async (args: Arguments): Promise<PrimaryKey> => {
   const overview = schema.collections[collection];
 
   if (overview) {
-    await applyTransformersToFields('create', data, overview, helpers);
+    await applyTransformers('create', data, overview, helpers);
   }
 
   const builder = database(collection).insert(data);

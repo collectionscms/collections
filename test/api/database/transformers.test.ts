@@ -1,14 +1,15 @@
+import dayjs from 'dayjs';
 import knex, { Knex } from 'knex';
 import { describe } from 'node:test';
 import { getHelpers } from '../../../src/api/database/helpers/index.js';
 import { CollectionOverview } from '../../../src/api/database/overview.js';
-import { applyTransformersToSpecialFields } from '../../../src/api/database/transformers.js';
+import { applyTransformers } from '../../../src/api/database/transformers.js';
 import { config } from '../../config.js';
 import { testDatabases } from '../../utilities/testDatabases.js';
 
 describe('Transformers', () => {
   const databases = new Map<string, Knex>();
-  const mockOverview: CollectionOverview = {
+  const overview: CollectionOverview = {
     collection: 'mock_collections',
     singleton: false,
     statusField: null,
@@ -17,6 +18,8 @@ describe('Transformers', () => {
     archiveValue: null,
     fields: {
       id: { alias: false, special: null, field: 'id' },
+      created_at: { alias: false, special: null, field: 'created_at' },
+      updated_at: { alias: false, special: null, field: 'updated_at' },
       date: { alias: false, special: 'cast-timestamp', field: 'date' },
     },
   };
@@ -33,52 +36,107 @@ describe('Transformers', () => {
     }
   });
 
-  describe('applyTransformersToSpecialFields', () => {
-    describe('action - create / update', () => {
-      it.each(testDatabases)('%s - should get converted write timestamp', async (database) => {
+  describe('applyTransformers', () => {
+    it.each(testDatabases)(
+      '%s - should apply create action transform to the given data',
+      async (database) => {
         const connection = databases.get(database)!;
         const helper = getHelpers(connection);
 
-        const now = new Date().toISOString();
-        const content = { date: now };
+        const timestamp = '2022-01-01T00:00:00.000Z';
+        const date = dayjs(timestamp).toISOString();
+        const data = {
+          created_at: null,
+          updated_at: null,
+          date,
+        };
 
-        await applyTransformersToSpecialFields('create', content, mockOverview, helper);
-        expect(content.date).toBe(helper.date.writeTimestamp(now));
-      });
+        await applyTransformers('create', data, overview, helper);
 
-      it.each(testDatabases)('%s - should get null', async (database) => {
+        expect(data.created_at).not.toBeNull();
+        expect(data.updated_at).not.toBeNull();
+
+        if (database === 'mysql') {
+          const formattedDate = dayjs(timestamp).format('YYYY-MM-DD HH:mm:ss');
+          expect(data.date).toBe(formattedDate);
+        } else {
+          expect(data.date).toBe(timestamp);
+        }
+      }
+    );
+
+    it.each(testDatabases)(
+      '%s - should apply update action transform to the given data',
+      async (database) => {
         const connection = databases.get(database)!;
         const helper = getHelpers(connection);
 
-        const content = { date: null };
+        const timestamp = '2022-01-01T00:00:00.000Z';
+        const date = dayjs(timestamp).toISOString();
+        const data = {
+          created_at: date,
+          updated_at: date,
+          date,
+        };
 
-        await applyTransformersToSpecialFields('update', content, mockOverview, helper);
-        expect(content.date).toBe(null);
-      });
+        await applyTransformers('update', data, overview, helper);
 
-      it.each(testDatabases)('%s - should throw invalid payload', async (database) => {
+        if (database === 'mysql') {
+          const formattedDate = dayjs(timestamp).format('YYYY-MM-DD HH:mm:ss');
+          expect(data.created_at).toBe(formattedDate);
+          expect(data.updated_at).not.toBe(formattedDate);
+          expect(data.date).toBe(formattedDate);
+        } else {
+          expect(data.created_at).toBe(timestamp);
+          expect(data.updated_at).not.toBe(timestamp);
+          expect(data.date).toBe(timestamp);
+        }
+      }
+    );
+
+    it.each(testDatabases)(
+      '%s - should apply read action transform to the given data',
+      async (database) => {
         const connection = databases.get(database)!;
         const helper = getHelpers(connection);
 
-        const content = { date: '2021-xx-29 09:00:00' };
+        const timestamp = '2022-01-01T00:00:00.000Z';
+        const date = dayjs(timestamp).toISOString();
+        const data = {
+          created_at: date,
+          updated_at: date,
+          date,
+        };
 
-        expect(
-          applyTransformersToSpecialFields('create', content, mockOverview, helper)
-        ).rejects.toThrow();
-      });
+        await applyTransformers('read', data, overview, helper);
+
+        expect(data.created_at).toBe(timestamp);
+        expect(data.updated_at).toBe(timestamp);
+        expect(data.date).toBe(timestamp);
+      }
+    );
+
+    it.each(testDatabases)('%s - should not apply', async (database) => {
+      const connection = databases.get(database)!;
+      const helper = getHelpers(connection);
+
+      const data = {
+        date: null,
+        not_in_overview: 'value',
+      };
+
+      await applyTransformers('update', data, overview, helper);
+      expect(data.date).toBe(null);
+      expect(data.not_in_overview).toBe('value');
     });
 
-    describe('action - read', () => {
-      it.each(testDatabases)('%s - should get converted read timestamp', async (database) => {
-        const connection = databases.get(database)!;
-        const helper = getHelpers(connection);
+    it.each(testDatabases)('%s - should throw invalid payload', async (database) => {
+      const connection = databases.get(database)!;
+      const helper = getHelpers(connection);
 
-        const now = new Date().toISOString();
-        const content = { date: now };
+      const data = { date: '2021-xx-29 09:00:00' };
 
-        await applyTransformersToSpecialFields('read', content, mockOverview, helper);
-        expect(content.date).toBe(helper.date.readTimestampString(now));
-      });
+      expect(applyTransformers('create', data, overview, helper)).rejects.toThrow();
     });
   });
 });

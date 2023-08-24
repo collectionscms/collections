@@ -1,7 +1,6 @@
 import { pick } from '../../utilities/pick.js';
 import { CollectionOverview, FieldOverview } from '../database/overview.js';
 import { PrimaryKey } from '../database/schemas.js';
-import { applyTransformersToSpecialFields } from '../database/transformers.js';
 import { FieldFilter, Query } from '../database/types.js';
 import { AbstractServiceOptions, BaseService } from './base.js';
 
@@ -58,10 +57,6 @@ export class ContentsService extends BaseService<any> {
           (data: any) => data[child.relatedField] === content.id
         );
       }
-
-      if (overview) {
-        applyTransformersToSpecialFields('read', content, overview, this.helpers);
-      }
     }
 
     return contents;
@@ -76,11 +71,6 @@ export class ContentsService extends BaseService<any> {
   async createContent(data: Record<string, any>, fields: FieldOverview[]): Promise<PrimaryKey> {
     const contentId = await this.database.transaction(async (tx) => {
       const relationDeletedBody = pick(data, this.nonAliasFields(fields));
-
-      const overview = this.schema.collections[this.collection];
-      if (overview) {
-        applyTransformersToSpecialFields('create', relationDeletedBody, overview, this.helpers);
-      }
 
       // /////////////////////////////////////
       // Save content
@@ -141,11 +131,6 @@ export class ContentsService extends BaseService<any> {
         database: tx,
         schema: this.schema,
       });
-
-      const overview = this.schema.collections[this.collection];
-      if (overview) {
-        applyTransformersToSpecialFields('update', relationDeletedBody, overview, this.helpers);
-      }
 
       await contentsService.updateOne(key, relationDeletedBody);
 
