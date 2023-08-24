@@ -2,7 +2,7 @@ import { Knex } from 'knex';
 import { getHelpers } from '../helpers/index.js';
 import { SchemaOverview } from '../overview.js';
 import { PrimaryKey } from '../schemas.js';
-import { applyTransformersToFields } from '../transformers.js';
+import { applyTransformers } from '../transformers.js';
 
 export type Arguments = {
   collection: string;
@@ -22,7 +22,7 @@ export const readById = async <T>(args: Arguments): Promise<T> => {
     .then((results) => results[0]);
 
   if (result && overview) {
-    await applyTransformersToFields('read', result, overview, helpers);
+    await applyTransformers('read', result, overview, helpers);
   }
 
   return result;
