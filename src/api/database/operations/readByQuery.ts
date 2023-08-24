@@ -2,7 +2,7 @@ import { Knex } from 'knex';
 import { InvalidQueryException } from '../../../exceptions/invalidQuery.js';
 import { getHelpers } from '../helpers/index.js';
 import { SchemaOverview } from '../overview.js';
-import { applyTransformersToFields } from '../transformers.js';
+import { applyTransformers } from '../transformers.js';
 import { FieldFilter, Filter, Sort } from '../types.js';
 
 export type Arguments = {
@@ -63,7 +63,7 @@ export const readByQuery = async <T>(args: Arguments): Promise<T[]> => {
 
   if (overview) {
     for (const result of results) {
-      await applyTransformersToFields('read', result, schema.collections[collection], helpers);
+      await applyTransformers('read', result, schema.collections[collection], helpers);
     }
   }
 
