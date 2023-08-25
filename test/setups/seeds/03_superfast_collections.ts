@@ -38,6 +38,12 @@ export const seed = async (database: Knex): Promise<void> => {
     },
     {
       collection: collectionName,
+      field: 'is_shootout',
+      label: 'Shootout',
+      interface: 'boolean',
+    },
+    {
+      collection: collectionName,
       field: 'created_at',
       label: 'Created At',
       interface: 'dateTime',
@@ -56,5 +62,6 @@ export const seed = async (database: Knex): Promise<void> => {
     table.string('year', 255);
     table.string('round', 255);
     table.string('circuit', 255);
+    table.boolean('is_shootout');
   });
 };

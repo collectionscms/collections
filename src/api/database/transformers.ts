@@ -55,6 +55,19 @@ const castTransformers: Transformers = {
         return value;
     }
   },
+  async 'cast-boolean'({ action, value }) {
+    if (action === 'read') {
+      if (value === true || value === 1 || value === '1') {
+        return true;
+      } else if (value === false || value === 0 || value === '0') {
+        return false;
+      } else if (value === null || value === '') {
+        return null;
+      }
+    }
+
+    return value;
+  },
 };
 
 /**
@@ -71,7 +84,7 @@ export const applyTransformers = async (
   helpers: Helpers
 ) => {
   // /////////////////////////////////////
-  // Fields
+  // Transforms by schema
   // /////////////////////////////////////
   for (const field in overview.fields) {
     if (field in transformers) {
@@ -85,7 +98,7 @@ export const applyTransformers = async (
   }
 
   // /////////////////////////////////////
-  // Cast
+  // Transforms by data
   // /////////////////////////////////////
   for (const [key, value] of Object.entries(data)) {
     const special = overview.fields[key]?.special;

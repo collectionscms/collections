@@ -74,7 +74,7 @@ export class UsersService extends BaseService<User> {
    * @returns users
    */
   async readWithRole(key?: PrimaryKey): Promise<User[]> {
-    const rolesService = new RolesService({ schema: this.schema });
+    const rolesService = new RolesService({ database: this.database, schema: this.schema });
     const roles = await rolesService.readMany();
 
     const filter = key ? { filter: { id: { _eq: key } } } : {};

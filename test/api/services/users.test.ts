@@ -29,6 +29,31 @@ describe('Users', () => {
     }
   });
 
+  describe('Get', () => {
+    it.each(testDatabases)('%s - should get with role', async (database) => {
+      const connection = databases.get(database)!;
+      const schema = await getSchemaOverview({ database: connection });
+
+      const service = new UsersService({ database: connection, schema });
+      const users = await service.readWithRole();
+
+      expect(users).toBeTruthy();
+
+      const user = users.find((user) => user.email === 'michael@superfastcms.com');
+
+      expect(user).toEqual(
+        expect.objectContaining({
+          name: 'Michael Schumacher',
+          email: 'michael@superfastcms.com',
+          is_active: true,
+          role_id: 1,
+          role_name: 'Administrator',
+          role_admin_access: true,
+        })
+      );
+    });
+  });
+
   describe('Create', () => {
     it.each(testDatabases)('%s - should create', async (database) => {
       const connection = databases.get(database)!;
