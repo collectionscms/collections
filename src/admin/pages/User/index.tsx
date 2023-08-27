@@ -5,7 +5,7 @@ import { User } from '../../../config/types.js';
 import { CreateNewButton } from '../../components/elements/CreateNewButton/index.js';
 import { Link } from '../../components/elements/Link/index.js';
 import { Cell } from '../../components/elements/Table/Cell/index.js';
-import { Type } from '../../components/elements/Table/Cell/types.js';
+import { cells } from '../../components/elements/Table/Cell/types.js';
 import { Table } from '../../components/elements/Table/index.js';
 import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.js';
 import { buildColumns } from '../../utilities/buildColumns.js';
@@ -17,11 +17,11 @@ const UserPageImpl: React.FC = () => {
   const { data } = getUsers();
 
   const fields = [
-    { field: 'name', label: t('name'), type: Type.Text },
-    { field: 'email', label: t('email'), type: Type.Text },
-    { field: 'api_key', label: t('api_key'), type: Type.Text },
-    { field: 'role', label: t('role'), type: Type.Text },
-    { field: 'updated_at', label: t('updated_at'), type: Type.Date },
+    { field: 'name', label: t('name'), type: cells.text() },
+    { field: 'email', label: t('email'), type: cells.text() },
+    { field: 'api_key', label: t('api_key'), type: cells.text() },
+    { field: 'role', label: t('role'), type: cells.text() },
+    { field: 'updated_at', label: t('updated_at'), type: cells.date() },
   ];
 
   const columns = buildColumns(fields, (i: number, row: User, data: any) => {

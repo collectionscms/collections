@@ -1,5 +1,5 @@
 import React from 'react';
-import { Type } from './Cell/types.js';
+import { CellType } from './Cell/types.js';
 
 export type Column = {
   field: ColumnField;
@@ -10,7 +10,7 @@ export type Column = {
 export type ColumnField = {
   field: string;
   label: string;
-  type: (typeof Type)[keyof typeof Type];
+  type: CellType;
 };
 
 export type Props = {
