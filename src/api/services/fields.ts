@@ -267,6 +267,7 @@ export class FieldsService extends BaseService<Field> {
         column = table.string(field.field, 255);
         break;
       case 'selectDropdown':
+      case 'selectDropdownStatus':
         column = table.string(field.field, 255).defaultTo('');
         break;
       case 'inputMultiline':
