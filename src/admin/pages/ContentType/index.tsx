@@ -5,7 +5,7 @@ import { Collection } from '../../../config/types.js';
 import { CreateNewButton } from '../../components/elements/CreateNewButton/index.js';
 import { Link } from '../../components/elements/Link/index.js';
 import { Cell } from '../../components/elements/Table/Cell/index.js';
-import { Type } from '../../components/elements/Table/Cell/types.js';
+import { cells } from '../../components/elements/Table/Cell/types.js';
 import { Table } from '../../components/elements/Table/index.js';
 import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.js';
 import { buildColumns } from '../../utilities/buildColumns.js';
@@ -16,7 +16,7 @@ const ContentTypePageImpl: React.FC = () => {
   const { getCollections } = useCollection();
   const { data } = getCollections();
 
-  const fields = [{ field: 'collection', label: t('name'), type: Type.Text }];
+  const fields = [{ field: 'collection', label: t('name'), type: cells.text() }];
 
   const columns = buildColumns(fields, (i: number, row: Collection, data: any) => {
     const cell = <Cell colIndex={i} type={fields[i].type} cellData={data} />;

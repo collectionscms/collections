@@ -8936,11 +8936,6 @@ pure-rand@^6.0.0:
   resolved "https://registry.npmjs.org/pure-rand/-/pure-rand-6.0.2.tgz"
   integrity sha512-6Yg0ekpKICSjPswYOuC5sku/TSWaRYlA0qsXqJgM/d/4pLPHPuTxK7Nbf7jFKzAeedUhR8C7K9Uv63FBsSo8xQ==
 
-q@^1.5.1:
-  version "1.5.1"
-  resolved "https://registry.npmjs.org/q/-/q-1.5.1.tgz"
-  integrity sha512-kV/CThkXo6xyFEZUugw/+pIOywXcDbFYgSct5cT3gqlbkBE1SJdwy6UQoZvodiWF/ckQLZyDE/Bu1M6gVu5lVw==
-
 qs@6.11.0:
   version "6.11.0"
   resolved "https://registry.npmjs.org/qs/-/qs-6.11.0.tgz"
@@ -10141,10 +10136,10 @@ stylis@4.2.0:
   resolved "https://registry.yarnpkg.com/stylis/-/stylis-4.2.0.tgz#79daee0208964c8fe695a42fcffcac633a211a51"
   integrity sha512-Orov6g6BB1sDfYgzWfTHDOxamtX1bE/zo104Dh9e6fqJ3PooipYyfJ0pUmrZO2wAvO8YbEyeFrkV91XTsGMSrw==
 
-superfast-ui@^0.1.5:
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/superfast-ui/-/superfast-ui-0.1.5.tgz#5bae65ef9043d4a8a643d4881f11bffcdfc24cd3"
-  integrity sha512-uQ46feqxQJZsCMWzbiCe2uACMEXfK/fAV4f4RlgXzuy9wdhWit+kpNnC3OhgVWdXSURVmisPYZiLgR4ZdewVOw==
+superfast-ui@^0.1.7:
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/superfast-ui/-/superfast-ui-0.1.7.tgz#8039f7055204f21de602b9c827a5e5f3343af0eb"
+  integrity sha512-06qQ15ADMurg2XVpJuMXyXGcDO7goG+23Tsfl6BOQ6gDlTLT1V0f7XUYgXGPt19jzmAm0bvQUjIv5JT+yV3UrQ==
   dependencies:
     "@ant-design/colors" "^7.0.0"
     "@ant-design/icons" "^5.1.4"

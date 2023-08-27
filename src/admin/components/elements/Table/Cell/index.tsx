@@ -2,8 +2,9 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc.js';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { Chip } from 'superfast-ui';
 import { castToBoolean } from '../../../../utilities/castToBoolean.js';
-import { Props, Type } from './types.js';
+import { Props } from './types.js';
 
 export const Cell: React.FC<Props> = (props) => {
   const { colIndex, type, cellData } = props;
@@ -20,19 +21,31 @@ export const Cell: React.FC<Props> = (props) => {
       return 'No data';
     }
 
-    switch (type) {
-      case Type.Text || Type.Number:
+    switch (type.fieldType) {
+      case 'text' || 'number':
         return truncate(String(cellData));
-      case Type.Date:
+      case 'date':
         return dayjs(String(cellData)).local().format('YYYY-MM-DD HH:mm');
-      case Type.Status:
-        // TODO Display icons by status.
+      case 'status':
+        const statusChoice = type.options?.choices?.[cellData as string];
+        if (statusChoice) {
+          const { status, choice } = statusChoice;
+          switch (status) {
+            case 'draft':
+              return <Chip color="secondary" label={choice.label} size="small" variant="light" />;
+            case 'published':
+              return <Chip color="success" label={choice.label} size="small" variant="light" />;
+            case 'archived':
+              return <Chip color="error" label={choice.label} size="small" variant="light" />;
+          }
+        }
+
         return cellData;
-      case Type.Boolean:
+      case 'boolean':
         return castToBoolean(cellData) ? t('enabled') : t('disabled');
-      case Type.Object:
+      case 'object':
         return truncate(JSON.stringify(cellData));
-      case Type.Array:
+      case 'array':
         const data = cellData as Partial<{ id: number }>[];
         const ids = data.map((item) => item.id).join(', ');
         return ids ? '[' + ids + ']' : '';

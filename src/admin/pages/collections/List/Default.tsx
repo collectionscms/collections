@@ -28,7 +28,7 @@ const DefaultListPageImpl: React.FC<Props> = ({ collection }) => {
 
   useEffect(() => {
     if (metaFields === undefined) return;
-    const columnFields = buildColumnFields(metaFields);
+    const columnFields = buildColumnFields(collection, metaFields);
 
     const columns = buildColumns(columnFields, (i: number, row: any, data: any) => {
       const cell = <Cell colIndex={i} type={columnFields[i].type} cellData={data} />;

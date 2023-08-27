@@ -1,37 +1,53 @@
-import { Type } from '../../../../admin/components/elements/Table/Cell/types.js';
+import {
+  CellType,
+  StatusChoices,
+  cells,
+} from '../../../../admin/components/elements/Table/Cell/types.js';
 import { ColumnField } from '../../../../admin/components/elements/Table/types.js';
-import { Field } from '../../../../config/types.js';
+import { Collection, Field } from '../../../../config/types.js';
 
-export const buildColumnFields = (fields: Field[]): ColumnField[] => {
+export const buildColumnFields = (collection: Collection, fields: Field[]): ColumnField[] => {
   return fields
     .filter((field) => !field.hidden)
     .map((field) => {
       return {
         field: field.field,
         label: field.label,
-        type: toType(field.interface),
+        type: toType(collection, field),
       };
     });
 };
 
-const toType = (fieldInterface: string): (typeof Type)[keyof typeof Type] => {
-  switch (fieldInterface) {
+const toType = (collection: Collection, field: Field): CellType => {
+  switch (field.interface) {
     case 'input':
     case 'inputMultiline':
     case 'inputRichTextMd':
     case 'fileImage':
     case 'selectDropdown':
     case 'selectDropdownManyToOne':
-      return Type.Text;
+      return cells.text();
     case 'selectDropdownStatus':
-      return Type.Status;
+      const choices: StatusChoices = {};
+
+      for (const choice of field.fieldOption?.choices || []) {
+        if (choice.value === collection.draft_value) {
+          choices[choice.value] = { status: 'draft', choice };
+        } else if (choice.value === collection.publish_value) {
+          choices[choice.value] = { status: 'published', choice };
+        } else if (choice.value === collection.archive_value) {
+          choices[choice.value] = { status: 'archived', choice };
+        }
+      }
+
+      return cells.status({ choices });
     case 'boolean':
-      return Type.Boolean;
+      return cells.boolean();
     case 'dateTime':
-      return Type.Date;
+      return cells.date();
     case 'listOneToMany':
-      return Type.Array;
+      return cells.array();
     default:
-      return Type.Object;
+      return cells.object();
   }
 };

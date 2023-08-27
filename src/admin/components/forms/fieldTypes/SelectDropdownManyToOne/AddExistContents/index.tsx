@@ -26,27 +26,26 @@ const AddExistContentsImpl: React.FC<Props> = ({
   const [columns, setColumns] = useState<Column[]>([]);
   const [selectedContent, setSelectedContent] = useState<any>(null);
 
-  const { getRelations, getContents, getFields } = useContent();
-  const { data: relations } = getRelations(collection, field);
-  const relationFetched = (relations && relations[0] !== null) || false;
+  const { getRelations, getContents, getFields, getCollections } = useContent();
 
-  const { data: fields } = getFields(relations ? relations[0].one_collection : '', relationFetched);
+  const relation = getRelations(collection, field).data?.[0];
+  const relationFetched = relation !== undefined || false;
 
-  const { data: content } = getContents(
-    relations ? relations[0].one_collection : '',
-    relationFetched
-  );
+  const relatedCollection = getCollections(relation?.one_collection || null).data?.collections?.[0];
+  const fields = getFields(relation ? relation.one_collection : '', relationFetched).data;
+  const content = getContents(relation ? relation.one_collection : '', relationFetched).data;
+
   // Convert to array in case of singleton.
   const contents = content && !Array.isArray(content) ? [content] : content;
 
   useEffect(() => {
-    if (fields === undefined) return;
+    if (relatedCollection === undefined || fields === undefined) return;
     // excludes referenced fields.
     const filtered = fields.filter((field) => !referencedTypes.includes(field.interface));
-    const columnFields = buildColumnFields(filtered);
+    const columnFields = buildColumnFields(relatedCollection, filtered);
     const columns = buildColumns(columnFields);
     setColumns(columns);
-  }, [fields]);
+  }, [relatedCollection, fields]);
 
   const handleSelect = (row: any) => {
     setSelectedContent(row);
