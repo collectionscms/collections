@@ -1,6 +1,12 @@
 import { SWRConfiguration, SWRResponse } from 'swr';
 import { SWRMutationResponse } from 'swr/mutation';
-import { Collection, File, GetField, GetRelation } from '../../../../config/types.js';
+import {
+  File,
+  GetCollection,
+  GetCollections,
+  GetField,
+  GetRelation,
+} from '../../../../config/types.js';
 
 export type ContentContext = {
   // If the collection model is a singleton, return any.
@@ -30,5 +36,5 @@ export type ContentContext = {
     Record<string, any>
   >;
   getRelations: (collection: string, field: string) => SWRResponse<GetRelation[]>;
-  getCollections: (collection: string | null) => SWRResponse<Collection[]>;
+  getCollections: (collection: string | null) => SWRResponse<GetCollections>;
 };

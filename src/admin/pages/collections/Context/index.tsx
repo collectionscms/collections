@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWR, { SWRConfiguration, SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
-import { Collection, File, GetField, GetRelation } from '../../../../config/types.js';
+import { File, GetCollections, GetField, GetRelation } from '../../../../config/types.js';
 import { api } from '../../../utilities/api.js';
 import { ContentContext } from './types.js';
 
@@ -68,7 +68,7 @@ export const ContentContextProvider: React.FC<{ children: React.ReactNode }> = (
 
   const getCollections = (collection: string | null): SWRResponse =>
     useSWR(collection ? `/collections?collection=${collection}` : null, (url) =>
-      api.get<{ collections: Collection[] }>(url).then((res) => res.data.collections)
+      api.get<{ collections: GetCollections }>(url).then((res) => res.data)
     );
 
   const value = useMemo(

@@ -89,9 +89,9 @@ export type PostCollection = {
   status?: boolean;
 } & CollectionSchema;
 
-export type GetCollection = {
-  fields: Field[];
-} & CollectionSchema;
+export type GetCollection = {} & CollectionSchema;
+
+export type GetCollections = { collections: GetCollection[] };
 
 // /////////////////////////////////////
 // DTO: User
