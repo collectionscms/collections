@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
 import { GetCollection } from '../../config/types.js';
 import { RecordNotFoundException } from '../../exceptions/database/recordNotFound.js';
+import { Query } from '../database/types.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
 import { permissionsHandler } from '../middleware/permissionsHandler.js';
 import { CollectionsService } from '../services/collections.js';
@@ -30,8 +31,13 @@ router.get(
   '/collections',
   permissionsHandler(),
   asyncHandler(async (req: Request, res: Response) => {
+    const query: Query = {};
+    if (req.query.collection) {
+      query.filter = { collection: { _eq: req.query.collection as string } };
+    }
+
     const service = new CollectionsService({ schema: req.schema });
-    const collections = await service.readMany();
+    const collections = await service.readMany(query);
 
     res.json({ collections });
   })

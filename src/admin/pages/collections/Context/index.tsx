@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWR, { SWRConfiguration, SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
-import { File, GetField, GetRelation } from '../../../../config/types.js';
+import { Collection, File, GetField, GetRelation } from '../../../../config/types.js';
 import { api } from '../../../utilities/api.js';
 import { ContentContext } from './types.js';
 
@@ -66,6 +66,11 @@ export const ContentContextProvider: React.FC<{ children: React.ReactNode }> = (
       api.get<{ relations: GetRelation[] }>(url).then((res) => res.data.relations)
     );
 
+  const getCollections = (collection: string | null): SWRResponse =>
+    useSWR(collection ? `/collections?collection=${collection}` : null, (url) =>
+      api.get<{ collections: Collection[] }>(url).then((res) => res.data.collections)
+    );
+
   const value = useMemo(
     () => ({
       getContents,
@@ -76,6 +81,7 @@ export const ContentContextProvider: React.FC<{ children: React.ReactNode }> = (
       getFileImage,
       createFileImage,
       getRelations,
+      getCollections,
     }),
     [
       getContents,
@@ -86,6 +92,7 @@ export const ContentContextProvider: React.FC<{ children: React.ReactNode }> = (
       getFileImage,
       createFileImage,
       getRelations,
+      getCollections,
     ]
   );
 
