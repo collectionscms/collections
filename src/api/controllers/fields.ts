@@ -15,8 +15,15 @@ router.get(
     const service = new FieldsService({ schema: req.schema });
     const fields = await service.getFields(req.params.collection);
 
+    const fieldWithOptions = fields.map((field) => {
+      return {
+        ...field,
+        fieldOption: field.options ? JSON.parse(field.options) : null,
+      };
+    });
+
     res.json({
-      fields,
+      fields: fieldWithOptions,
     });
   })
 );
