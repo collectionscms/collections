@@ -1,5 +1,4 @@
 import { Knex } from 'knex';
-import { GetField } from '../../config/types.js';
 import { RecordNotUniqueException } from '../../exceptions/database/recordNotUnique.js';
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
 import { Field, PrimaryKey, Relation } from '../database/schemas.js';
@@ -19,7 +18,7 @@ export class FieldsService extends BaseService<Field> {
    * @param collection
    * @returns fields
    */
-  async getFields(collection: string): Promise<GetField[]> {
+  async getFields(collection: string): Promise<Field[]> {
     const fields = await this.readMany(
       {
         filter: { collection: { _eq: collection } },
@@ -29,15 +28,7 @@ export class FieldsService extends BaseService<Field> {
         { column: 'sort', order: 'asc' },
       ]
     );
-
-    const getFields = fields.map((field) => {
-      return {
-        ...field,
-        fieldOption: field.options ? JSON.parse(field.options) : null,
-      } as GetField;
-    });
-
-    return getFields;
+    return fields;
   }
 
   /**
