@@ -1,5 +1,4 @@
 import express, { Request, Response } from 'express';
-import { GetCollection, GetCollections } from '../../config/types.js';
 import { RecordNotFoundException } from '../../exceptions/database/recordNotFound.js';
 import { Query } from '../database/types.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
@@ -21,7 +20,7 @@ router.get(
     res.json({
       collection: {
         ...collection,
-      } as GetCollection,
+      },
     });
   })
 );
@@ -38,7 +37,7 @@ router.get(
     const service = new CollectionsService({ schema: req.schema });
     const collections = await service.readMany(query);
 
-    res.json({ collections } as GetCollections);
+    res.json({ collections });
   })
 );
 
