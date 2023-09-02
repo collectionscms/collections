@@ -1,4 +1,3 @@
-import { PostCollection } from '../../config/types.js';
 import { RecordNotUniqueException } from '../../exceptions/database/recordNotUnique.js';
 import { Collection, Field, PrimaryKey } from '../database/schemas.js';
 import { AbstractServiceOptions, BaseService } from './base.js';
@@ -12,23 +11,23 @@ export class CollectionsService extends BaseService<Collection> {
   }
 
   /**
-   * @description Create collection with fields
+   * @description Create collection with system fields
    * @param data
+   * @param status
    * @returns primary key
    */
-  async createCollection(data: Omit<PostCollection, 'id'>): Promise<PrimaryKey> {
+  async createCollection(data: Omit<Collection, 'id'>, status: boolean): Promise<PrimaryKey> {
     await this.checkUniqueCollection(data.collection);
 
-    const { ['status']: _, ...removedStatusData } = data;
-    const fullData: Omit<Collection, 'id'> = data.status
+    const fullData: Omit<Collection, 'id'> = status
       ? {
-          ...removedStatusData,
+          ...data,
           status_field: 'status',
           draft_value: 'draft',
           publish_value: 'published',
           archive_value: 'archived',
         }
-      : removedStatusData;
+      : data;
 
     const collectionId = await this.database.transaction(async (tx) => {
       const collectionsService = new CollectionsService({ database: tx, schema: this.schema });
@@ -37,11 +36,11 @@ export class CollectionsService extends BaseService<Collection> {
       await tx.schema.createTable(data.collection, (table) => {
         table.increments();
         table.timestamps(true, true);
-        data.status && table.string('status').notNullable();
+        status && table.string('status').notNullable();
       });
 
       const fieldsService = new FieldsService({ database: tx, schema: this.schema });
-      const fields = this.buildFields(data, data.status || false);
+      const fields = this.buildFields(data, status || false);
       await fieldsService.createMany(fields);
 
       return collectionId;

@@ -19,7 +19,7 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { MainCard } from 'superfast-ui';
-import { Collection, Field } from '../../../../config/types.js';
+import { Collection, Field } from '../../../config/types.js';
 import { logger } from '../../../../utilities/logger.js';
 import { DeleteButton } from '../../../components/elements/DeleteButton/index.js';
 import { Loading } from '../../../components/elements/Loading/index.js';

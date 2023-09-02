@@ -1,6 +1,6 @@
 import { FormHelperText, InputLabel, Stack } from '@mui/material';
 import React from 'react';
-import { Field } from '../../../../config/types.js';
+import { Field } from '../../../config/types.js';
 import { fieldTypes } from '../fieldTypes/index.js';
 import { Props } from './types.js';
 

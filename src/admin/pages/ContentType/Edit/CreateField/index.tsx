@@ -3,7 +3,7 @@ import { Box, Drawer, Stack, Typography, useTheme } from '@mui/material';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { IconButton } from 'superfast-ui';
-import { Field, FieldInterface } from '../../../../../config/types.js';
+import { Field, FieldInterface } from '../../../../config/types.js';
 import { BaseDialog } from '../../../../components/elements/BaseDialog/index.js';
 import { ScrollBar } from '../../../../components/elements/ScrollBar/index.js';
 import { ComposeWrapper } from '../../../../components/utilities/ComposeWrapper/index.js';

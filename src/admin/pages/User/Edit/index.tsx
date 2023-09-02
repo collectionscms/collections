@@ -21,7 +21,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { IconButton, MainCard } from 'superfast-ui';
 import { v4 as uuidv4 } from 'uuid';
-import { User } from '../../../../config/types.js';
+import { User } from '../../../config/types.js';
 import { logger } from '../../../../utilities/logger.js';
 import { DeleteButton } from '../../../components/elements/DeleteButton/index.js';
 import { Loading } from '../../../components/elements/Loading/index.js';

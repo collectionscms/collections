@@ -1,4 +1,4 @@
-import { Choice } from '../../../../../config/types.js';
+import { Choice } from '../../../../config/types.js';
 
 export enum FieldType {
   Text = 'text',

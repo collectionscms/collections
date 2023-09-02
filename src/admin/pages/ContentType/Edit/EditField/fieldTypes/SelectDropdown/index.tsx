@@ -17,7 +17,7 @@ import React, { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { IconButton } from 'superfast-ui';
-import { Choice } from '../../../../../../../config/types.js';
+import { Choice } from '../../../../../../config/types.js';
 import { logger } from '../../../../../../../utilities/logger.js';
 import { shallowEqualObject } from '../../../../../../../utilities/shallowEqualObject.js';
 import {

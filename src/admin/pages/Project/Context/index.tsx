@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWR, { SWRConfiguration } from 'swr';
 import useSWRMutation from 'swr/mutation';
-import { ProjectSetting } from '../../../../config/types.js';
+import { ProjectSetting } from '../../../config/types.js';
 import { api } from '../../../utilities/api.js';
 import { ProjectSettingContext } from './types';
 

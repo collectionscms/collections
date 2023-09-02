@@ -3,7 +3,7 @@ import { createOne } from '../../../../src/api/database/operations/createOne.js'
 import { deleteOne } from '../../../../src/api/database/operations/deleteOne.js';
 import { readById } from '../../../../src/api/database/operations/readById.js';
 import { getSchemaOverview } from '../../../../src/api/database/overview.js';
-import { User } from '../../../../src/config/types.js';
+import { User } from '../../../../src/api/database/schemas.js';
 import { config } from '../../../config.js';
 import { testDatabases } from '../../../utilities/testDatabases.js';
 

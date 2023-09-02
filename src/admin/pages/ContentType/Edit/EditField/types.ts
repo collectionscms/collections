@@ -1,4 +1,4 @@
-import { Field } from '../../../../../config/types.js';
+import { Field } from '../../../../config/types.js';
 
 export type Props = {
   field: Field;

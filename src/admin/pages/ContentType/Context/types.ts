@@ -1,6 +1,6 @@
 import { SWRConfiguration, SWRResponse } from 'swr';
 import { SWRMutationResponse } from 'swr/mutation';
-import { Collection, GetCollection, GetField, PostCollection } from '../../../../config/types.js';
+import { Collection, GetCollection, GetField, PostCollection } from '../../../config/types.js';
 
 export type CollectionContext = {
   getCollection: (id: string) => SWRMutationResponse<GetCollection>;

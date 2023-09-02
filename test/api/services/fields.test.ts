@@ -1,8 +1,8 @@
 import knex, { Knex } from 'knex';
 import { getSchemaOverview } from '../../../src/api/database/overview.js';
+import { Collection, Field } from '../../../src/api/database/schemas.js';
 import { CollectionsService } from '../../../src/api/services/collections.js';
 import { FieldsService } from '../../../src/api/services/fields.js';
-import { Collection, Field } from '../../../src/config/types.js';
 import { config } from '../../config.js';
 import { testDatabases } from '../../utilities/testDatabases.js';
 
@@ -46,7 +46,7 @@ describe('Field', () => {
     const schema = await getSchemaOverview({ database: connection });
 
     const service = new CollectionsService({ database: connection, schema });
-    await service.createCollection(collectionData);
+    await service.createCollection(collectionData, false);
   };
 
   afterAll(async () => {
