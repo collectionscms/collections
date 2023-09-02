@@ -1,7 +1,7 @@
 import argon2 from 'argon2';
-import { AuthUser } from '../../config/types.js';
 import { RecordNotUniqueException } from '../../exceptions/database/recordNotUnique.js';
 import { InvalidCredentialsException } from '../../exceptions/invalidCredentials.js';
+import { AuthUser } from '../config/types.js';
 import { PrimaryKey, User } from '../database/schemas.js';
 import { AbstractServiceOptions, BaseService } from './base.js';
 import { RolesService } from './roles.js';
