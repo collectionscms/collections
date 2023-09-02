@@ -1,3 +1,4 @@
+import { AuthUser as AuthUserEntity } from '../../api/config/types.js';
 import {
   Collection as CollectionSchema,
   Field as FieldSchema,
@@ -7,7 +8,7 @@ import {
   Relation as RelationSchema,
   Role as RoleSchema,
   User as UserSchema,
-} from '../api/database/schemas.js';
+} from '../../api/database/schemas.js';
 
 // /////////////////////////////////////
 // Configure
@@ -15,18 +16,6 @@ import {
 
 export type Config = {
   serverUrl: string;
-};
-
-// /////////////////////////////////////
-// Authentication
-// /////////////////////////////////////
-
-export type AuthUser = {
-  id: number;
-  roleId: number;
-  name: string;
-  adminAccess: boolean;
-  appAccess: boolean | null; // access from applications.
 };
 
 // /////////////////////////////////////
@@ -40,6 +29,12 @@ export type ApiError = {
     message?: string;
   };
 };
+
+// /////////////////////////////////////
+// DTO: Authentication
+// /////////////////////////////////////
+
+export type AuthUser = {} & AuthUserEntity;
 
 // /////////////////////////////////////
 // DTO: Field

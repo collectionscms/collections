@@ -1,4 +1,4 @@
-import { Field, FieldInterface } from '../../../../../../config/types.js';
+import { Field, FieldInterface } from '../../../../../config/types.js';
 
 export type Props = {
   collection: string;

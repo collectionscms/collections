@@ -3,7 +3,7 @@ import { useSnackbar } from 'notistack';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { SWRConfig } from 'swr';
-import { ApiError } from '../../../../config/types.js';
+import { ApiError } from '../../../config/types.js';
 import { Props } from './types.js';
 
 export const SWRConfigure: React.FC<Props> = ({ children }) => {

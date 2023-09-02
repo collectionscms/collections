@@ -1,5 +1,5 @@
 import { SWRMutationResponse } from 'swr/mutation';
-import { AuthUser, Permission, PermissionsAction } from '../../../../config/types.js';
+import { AuthUser, Permission, PermissionsAction } from '../../../config/types.js';
 
 export type AuthContext<T = AuthUser> = {
   user: T | null | undefined;

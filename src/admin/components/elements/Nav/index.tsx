@@ -1,6 +1,6 @@
 import { Box, Drawer, useMediaQuery, useTheme } from '@mui/material';
 import React, { useMemo } from 'react';
-import { config } from '../../../../config/ui.js';
+import { config } from '../../../config/ui.js';
 import { NavContent } from '../NavContent/index.js';
 import { MinimalStyled } from './minimal.js';
 import { Props } from './types.js';

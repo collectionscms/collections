@@ -6,7 +6,7 @@ import {
   GetCollections,
   GetField,
   GetRelation,
-} from '../../../../config/types.js';
+} from '../../../config/types.js';
 
 export type ContentContext = {
   // If the collection model is a singleton, return any.

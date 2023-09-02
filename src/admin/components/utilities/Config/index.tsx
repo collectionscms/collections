@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWR from 'swr';
-import { AuthUser, Collection, Permission } from '../../../../config/types.js';
+import { AuthUser, Collection, Permission } from '../../../config/types.js';
 import { api } from '../../../utilities/api.js';
 import { useAuth } from '../Auth/index.js';
 import { ConfigContext, Props } from './types.js';

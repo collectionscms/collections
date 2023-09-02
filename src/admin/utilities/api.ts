@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import axiosRetry from 'axios-retry';
-import { ApiError } from '../../config/types.js';
+import { ApiError } from '../config/types.js';
 
 export const api = axios.create({
   baseURL: '/api',

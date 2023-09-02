@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWR, { SWRResponse } from 'swr';
 import useSWRMutation from 'swr/mutation';
-import { Collection, Field } from '../../../../../../config/types.js';
+import { Collection, Field } from '../../../../../config/types.js';
 import { api } from '../../../../../utilities/api.js';
 import { FieldContext } from './types.js';
 

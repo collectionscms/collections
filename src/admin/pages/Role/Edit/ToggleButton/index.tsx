@@ -1,7 +1,7 @@
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import React, { useState } from 'react';
 import { IconButton } from 'superfast-ui';
-import { PermissionsAction } from '../../../../../config/types.js';
+import { PermissionsAction } from '../../../../config/types.js';
 import { EditRoleMenu } from '../Menu/index.js';
 import { Props } from './types.js';
 

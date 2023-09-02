@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWR, { SWRConfiguration, SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
-import { Collection, Permission, Role } from '../../../../config/types.js';
+import { Collection, Permission, Role } from '../../../config/types.js';
 import { api } from '../../../utilities/api.js';
 import { RoleContext } from './types.js';
 

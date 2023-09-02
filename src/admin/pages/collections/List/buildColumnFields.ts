@@ -4,7 +4,7 @@ import {
   cells,
 } from '../../../../admin/components/elements/Table/Cell/types.js';
 import { ColumnField } from '../../../../admin/components/elements/Table/types.js';
-import { Collection, Field } from '../../../../config/types.js';
+import { Collection, Field } from '../../../config/types.js';
 
 export const buildColumnFields = (collection: Collection, fields: Field[]): ColumnField[] => {
   return fields

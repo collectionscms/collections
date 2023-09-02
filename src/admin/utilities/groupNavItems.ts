@@ -6,7 +6,7 @@ import {
   UnorderedListOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { Collection } from '../../config/types.js';
+import { Collection } from '../config/types.js';
 import { Group } from '../components/elements/NavGroup/types.js';
 
 export const collectionsGroupNavItems = (collections: Collection[]): Group => {
