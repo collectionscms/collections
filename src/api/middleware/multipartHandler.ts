@@ -3,7 +3,7 @@ import { RequestHandler } from 'express';
 import sizeOf from 'image-size';
 import { extension } from 'mime-types';
 import { v4 as uuidv4 } from 'uuid';
-import { File } from '../../config/types.js';
+import { File } from '../../api/database/schemas.js';
 import { env } from '../../env.js';
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
 import { FilesService } from '../services/files.js';
