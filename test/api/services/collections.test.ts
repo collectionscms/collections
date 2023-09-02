@@ -1,10 +1,9 @@
 import knex, { Knex } from 'knex';
 import { SchemaInfo, getSchemaInfo } from '../../../src/api/database/inspector.js';
 import { getSchemaOverview } from '../../../src/api/database/overview.js';
-import { Field } from '../../../src/api/database/schemas.js';
+import { Collection, Field } from '../../../src/api/database/schemas.js';
 import { CollectionsService } from '../../../src/api/services/collections.js';
 import { FieldsService } from '../../../src/api/services/fields.js';
-import { Collection, PostCollection } from '../../../src/config/types.js';
 import { config } from '../../config.js';
 import { testDatabases } from '../../utilities/testDatabases.js';
 
@@ -25,7 +24,7 @@ describe('Collection', () => {
     ...commonData,
   };
 
-  const data1: Omit<PostCollection, 'id'> = {
+  const data1: Omit<Collection, 'id'> = {
     collection: 'collection_f1_2022_driver_standings',
     ...commonData,
   };
