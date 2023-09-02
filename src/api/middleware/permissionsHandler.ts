@@ -1,8 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
-import { PermissionsAction } from '../../config/types.js';
 import { ForbiddenException } from '../../exceptions/forbidden.js';
 import { InvalidCredentialsException } from '../../exceptions/invalidCredentials.js';
 import { PermissionsService } from '../services/permissions.js';
+
+type PermissionsAction = 'create' | 'read' | 'update' | 'delete';
 
 export const collectionPermissionsHandler =
   (action: PermissionsAction) => async (req: Request, res: Response, next: NextFunction) => {
