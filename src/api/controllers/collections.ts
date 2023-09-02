@@ -45,8 +45,10 @@ router.post(
   '/collections',
   permissionsHandler([{ collection: 'superfast_collections', action: 'create' }]),
   asyncHandler(async (req: Request, res: Response) => {
+    const { ['status']: status, ...data } = req.body;
+
     const service = new CollectionsService({ schema: req.schema });
-    const collectionId = await service.createCollection(req.body);
+    const collectionId = await service.createCollection(data, status || false);
 
     res.json({ id: collectionId });
   })

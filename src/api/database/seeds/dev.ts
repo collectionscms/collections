@@ -121,16 +121,18 @@ const seedingSystemData = async (database: Knex): Promise<void> => {
 
   // Collection: Post
   Output.info('Creating Post collection...');
-  await collectionsService.createCollection({
-    collection: 'Post',
-    singleton: false,
-    hidden: false,
-    status: true,
-    status_field: null,
-    draft_value: null,
-    publish_value: null,
-    archive_value: null,
-  });
+  await collectionsService.createCollection(
+    {
+      collection: 'Post',
+      singleton: false,
+      hidden: false,
+      status_field: null,
+      draft_value: null,
+      publish_value: null,
+      archive_value: null,
+    },
+    true
+  );
 
   // Fields: Post
   Output.info('Creating Post fields...');
@@ -175,16 +177,18 @@ const seedingSystemData = async (database: Knex): Promise<void> => {
 
   // Collection: Company
   Output.info('Creating Company collection...');
-  await collectionsService.createCollection({
-    collection: 'Company',
-    singleton: true,
-    hidden: false,
-    status: false,
-    status_field: null,
-    draft_value: null,
-    publish_value: null,
-    archive_value: null,
-  });
+  await collectionsService.createCollection(
+    {
+      collection: 'Company',
+      singleton: true,
+      hidden: false,
+      status_field: null,
+      draft_value: null,
+      publish_value: null,
+      archive_value: null,
+    },
+    false
+  );
 
   // Fields: Company
   Output.info('Creating Company fields...');

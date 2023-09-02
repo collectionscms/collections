@@ -27,7 +27,6 @@ describe('Collection', () => {
 
   const data1: Omit<PostCollection, 'id'> = {
     collection: 'collection_f1_2022_driver_standings',
-    status: true,
     ...commonData,
   };
 
@@ -68,7 +67,7 @@ describe('Collection', () => {
       const collectionsService = new CollectionsService({ database: connection, schema });
       const fieldsService = new FieldsService({ database: connection, schema });
 
-      const result = await collectionsService.createCollection(data);
+      const result = await collectionsService.createCollection(data, false);
       expect(result).toBeTruthy();
 
       const meta = await collectionsService.readOne(result);
@@ -89,7 +88,7 @@ describe('Collection', () => {
       const collectionsService = new CollectionsService({ database: connection, schema });
       const fieldsService = new FieldsService({ database: connection, schema });
 
-      const result = await collectionsService.createCollection(data1);
+      const result = await collectionsService.createCollection(data1, true);
       expect(result).toBeTruthy();
 
       const meta = await collectionsService.readOne(result);
@@ -111,7 +110,7 @@ describe('Collection', () => {
       const schema = await getSchemaOverview({ database: connection });
 
       const collectionsService = new CollectionsService({ database: connection, schema });
-      const result = collectionsService.createCollection(data);
+      const result = collectionsService.createCollection(data, false);
 
       expect(result).rejects.toThrow();
     });

@@ -46,7 +46,7 @@ describe('Field', () => {
     const schema = await getSchemaOverview({ database: connection });
 
     const service = new CollectionsService({ database: connection, schema });
-    await service.createCollection(collectionData);
+    await service.createCollection(collectionData, false);
   };
 
   afterAll(async () => {
