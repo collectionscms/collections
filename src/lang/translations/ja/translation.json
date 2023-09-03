@@ -185,7 +185,8 @@
     "token_expired": "トークンの有効期限が切れました。",
     "invalid_token": "無効なトークンです。",
     "invalid_query": "無効なクエリーです。",
-    "invalid_date_format": "無効な日付フォーマットです"
+    "invalid_date_format": "無効な日付フォーマットです",
+    "unsupported_media_type": "サポートされていないメディア形式です。"
   },
   "yup": {
     "mixed": {

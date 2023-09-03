@@ -185,7 +185,8 @@
     "token_expired": "Token expired.",
     "invalid_token": "Invalid token.",
     "invalid_query": "Invalid query.",
-    "invalid_date_format": "Invalid date format."
+    "invalid_date_format": "Invalid date format.",
+    "unsupported_media_type": "Unsupported media type."
   },
   "yup": {
     "mixed": {
