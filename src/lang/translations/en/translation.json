@@ -111,6 +111,11 @@
   "login_bottom_label": "Login label (Bottom)",
   "auto_save": "Auto Save",
   "fields_and_layout": "Fields & Layout",
+  "import": "Import",
+  "import_from_wordpress": "Import from WordPress",
+  "import_posts_from_wordpress_xml": "Import posts from WordPress XML",
+  "upload_xml_file": "Upload XML file",
+  "upload_file_manually": "Upload file",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion.",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",
@@ -122,7 +127,8 @@
   "toast": {
     "created_successfully": "Created successfully.",
     "updated_successfully": "Updated successfully.",
-    "deleted_successfully": "Deleted successfully."
+    "deleted_successfully": "Deleted successfully.",
+    "imported_successfully": "Imported successfully."
   },
   "create": {
     "user": "Create User",
