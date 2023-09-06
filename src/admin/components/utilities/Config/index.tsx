@@ -27,7 +27,7 @@ const filteredCollectionsWithReadPermission = (
 export const ConfigProvider: React.FC<Props> = ({ children }) => {
   const { user, permissions } = useAuth();
 
-  const { data: collections } = useSWR(
+  const { data: collections, mutate } = useSWR(
     user ? '/collections' : null,
     (url) =>
       api
@@ -42,11 +42,16 @@ export const ConfigProvider: React.FC<Props> = ({ children }) => {
     { suspense: true }
   );
 
+  const revalidateCollections = () => {
+    mutate();
+  };
+
   const value = useMemo(
     () => ({
       permittedCollections: collections,
+      revalidateCollections,
     }),
-    [collections]
+    [collections, revalidateCollections]
   );
 
   return <Context.Provider value={value}>{children}</Context.Provider>;
