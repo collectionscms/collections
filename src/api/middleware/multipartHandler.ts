@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { File } from '../../api/database/schemas.js';
 import { env } from '../../env.js';
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
+import { logger } from '../../utilities/logger.js';
 import { FilesService } from '../services/files.js';
 
 export const multipartHandler: RequestHandler = (req, res, next) => {
@@ -40,15 +41,25 @@ export const multipartHandler: RequestHandler = (req, res, next) => {
 
   busboy.on('finish', async () => {
     if (fileData) {
-      const dimensions = sizeOf(fileData);
+      let width = null;
+      let height = null;
+
+      try {
+        const dimensions = sizeOf(fileData);
+        width = dimensions.width ?? null;
+        height = dimensions.height ?? null;
+      } catch (err) {
+        logger.info(err, `Couldn't get dimensions of file "${fileName}"`);
+      }
+
       const meta: Omit<File, 'id'> = {
         storage: env.STORAGE_DRIVER,
         file_name: fileName,
         file_name_disk: `${uuidv4()}.${extension(type)}`,
         file_size: fileData.byteLength,
         type: type,
-        width: dimensions.width ?? null,
-        height: dimensions.height ?? null,
+        width,
+        height,
       };
 
       const key = await service.upload(fileData, meta);
@@ -63,6 +74,7 @@ export const multipartHandler: RequestHandler = (req, res, next) => {
     if (fileCount === 0) throw new InvalidPayloadException('no_file_req_body');
     if (fileCount === savedFileKeys.length) {
       res.locals.savedFileKeys = savedFileKeys;
+      res.locals.fileData = fileData;
       return next();
     }
   };

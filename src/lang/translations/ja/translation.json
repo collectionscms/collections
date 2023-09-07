@@ -111,6 +111,11 @@
   "login_bottom_label": "ログインラベル（下部）",
   "auto_save": "自動保存",
   "fields_and_layout": "フィールド & レイアウト",
+  "import": "インポート",
+  "import_from_wordpress": "WordPress からインポート",
+  "import_posts_from_wordpress_xml": "WordPress XML から記事をインポート",
+  "upload_xml_file": "XML ファイルをアップロード",
+  "upload_file_manually": "ファイルをアップロード",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",
@@ -122,7 +127,8 @@
   "toast": {
     "created_successfully": "登録しました",
     "updated_successfully": "更新しました",
-    "deleted_successfully": "削除しました"
+    "deleted_successfully": "削除しました",
+    "imported_successfully": "インポートしました"
   },
   "create": {
     "user": "ユーザー 新規登録",
@@ -185,7 +191,8 @@
     "token_expired": "トークンの有効期限が切れました。",
     "invalid_token": "無効なトークンです。",
     "invalid_query": "無効なクエリーです。",
-    "invalid_date_format": "無効な日付フォーマットです"
+    "invalid_date_format": "無効な日付フォーマットです",
+    "unsupported_media_type": "サポートされていないメディア形式です。"
   },
   "yup": {
     "mixed": {

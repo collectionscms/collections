@@ -2,8 +2,11 @@ import express, { Request, Response } from 'express';
 import { RecordNotFoundException } from '../../exceptions/database/recordNotFound.js';
 import { Query } from '../database/types.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
+import { multipartHandler } from '../middleware/multipartHandler.js';
 import { permissionsHandler } from '../middleware/permissionsHandler.js';
 import { CollectionsService } from '../services/collections.js';
+import { FilesService } from '../services/files.js';
+import { ImportDataService } from '../services/importData.js';
 
 const router = express.Router();
 
@@ -77,6 +80,23 @@ router.delete(
     await service.deleteCollection(id);
 
     res.status(204).end();
+  })
+);
+
+router.post(
+  '/collections/import',
+  asyncHandler(multipartHandler),
+  permissionsHandler([{ collection: 'superfast_collections', action: 'create' }]),
+  asyncHandler(async (req: Request, res: Response) => {
+    const keys = res.locals.savedFileKeys;
+    const filesService = new FilesService({ schema: req.schema });
+    const file = await filesService.readOne(keys[0]);
+
+    const fileData = res.locals.fileData;
+    const importDataService = new ImportDataService({ schema: req.schema });
+    await importDataService.importData(file.type, fileData);
+
+    return res.status(200).end();
   })
 );
 
