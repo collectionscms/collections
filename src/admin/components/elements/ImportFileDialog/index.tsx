@@ -1,27 +1,18 @@
-import { CloseOutlined, UploadOutlined } from '@ant-design/icons';
-import {
-  Box,
-  Button,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  Grid,
-  Stack,
-  Typography,
-  useTheme,
-} from '@mui/material';
+import { CloseOutlined } from '@ant-design/icons';
+import { Dialog, DialogContent, DialogTitle, Grid, Stack } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { IconButton } from 'superfast-ui';
 import { logger } from '../../../../utilities/logger.js';
 import { ComposeWrapper } from '../../utilities/ComposeWrapper/index.js';
+import { SingleFileUpload } from '../SingleFileUpload/index.js';
+import { CustomFile } from '../SingleFileUpload/types.js';
 import { ImportFileContextProvider, useImportFile } from './Context/index.js';
 import { Props } from './types.js';
 
 const ImportFileImpl: React.FC<Props> = ({ open, onSuccess, onClose }) => {
   const { t } = useTranslation();
-  const theme = useTheme();
   const { enqueueSnackbar } = useSnackbar();
   const { importWordPressXml } = useImportFile();
   const { trigger } = importWordPressXml();
@@ -30,8 +21,8 @@ const ImportFileImpl: React.FC<Props> = ({ open, onSuccess, onClose }) => {
     onClose();
   };
 
-  const handleSelectedFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+  const handleSetFiles = async (files: CustomFile[] | null) => {
+    const file = files?.[0];
     if (!file) return;
 
     const params = new FormData();
@@ -47,7 +38,7 @@ const ImportFileImpl: React.FC<Props> = ({ open, onSuccess, onClose }) => {
   };
 
   return (
-    <Dialog open={open} onClose={handleClose} maxWidth="xs">
+    <Dialog open={open} onClose={handleClose} maxWidth="xs" fullWidth={true}>
       <Grid
         container
         spacing={2}
@@ -56,7 +47,7 @@ const ImportFileImpl: React.FC<Props> = ({ open, onSuccess, onClose }) => {
         sx={{ borderBottom: '1px solid {theme.palette.divider}' }}
       >
         <Grid item>
-          <DialogTitle>{t('import_posts_from_wordpress_xml')}</DialogTitle>
+          <DialogTitle>{t('import_from_wordpress_xml')}</DialogTitle>
         </Grid>
         <Grid item sx={{ mr: 1.5 }}>
           <IconButton color="secondary" onClick={handleClose}>
@@ -65,33 +56,9 @@ const ImportFileImpl: React.FC<Props> = ({ open, onSuccess, onClose }) => {
         </Grid>
       </Grid>
       <DialogContent>
-        <Box
-          sx={{
-            border: 1,
-            borderStyle: 'dashed',
-            borderColor: theme.palette.primary.main,
-            borderRadius: '4px',
-          }}
-        >
-          <Stack
-            spacing={1}
-            direction="column"
-            sx={{ p: 8, alignItems: 'center', justifyContent: 'center' }}
-          >
-            <Typography variant="h5" align="center">
-              {t('upload_xml_file')}
-            </Typography>
-            <Button
-              variant="text"
-              size="small"
-              component="label"
-              startIcon={<UploadOutlined style={{ fontSize: '16px' }} />}
-            >
-              <input hidden type="file" onChange={handleSelectedFile} />
-              <Typography>{t('upload_file_manually')}</Typography>
-            </Button>
-          </Stack>
-        </Box>
+        <Stack spacing={1.5} alignItems="center">
+          <SingleFileUpload accept={{ 'text/xml': ['.xml'] }} onSetFiles={handleSetFiles} />
+        </Stack>
       </DialogContent>
     </Dialog>
   );
