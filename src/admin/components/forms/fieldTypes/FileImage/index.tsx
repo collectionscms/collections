@@ -1,9 +1,11 @@
-import { CameraFilled } from '@ant-design/icons';
-import { Box, IconButton } from '@mui/material';
+import { Stack } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { logger } from '../../../../../utilities/logger.js';
+import { File } from '../../../../config/types.js';
 import { ContentContextProvider, useContent } from '../../../../pages/collections/Context/index.js';
+import { SingleFileUpload } from '../../../elements/SingleFileUpload/index.js';
+import { CustomFile } from '../../../elements/SingleFileUpload/types.js';
 import { ComposeWrapper } from '../../../utilities/ComposeWrapper/index.js';
 import { Props } from '../types.js';
 
@@ -13,7 +15,7 @@ const FileImageTypeImpl: React.FC<Props> = ({
 }) => {
   const { t } = useTranslation();
   const required = meta.required && { required: t('yup.mixed.required') };
-  const [content, setContent] = useState<string | null>(null);
+  const [file, setFile] = useState<File | null>(null);
   const [fileId, setFileId] = useState<string | null>(null);
 
   const { getFileImage, createFileImage } = useContent();
@@ -25,7 +27,7 @@ const FileImageTypeImpl: React.FC<Props> = ({
       try {
         const res = await getFileImageTrigger();
         if (res) {
-          setContent(res.file.url || null);
+          setFile(res.file || null);
           setValue(meta.field, res.file.id);
         }
       } catch (e) {
@@ -54,50 +56,37 @@ const FileImageTypeImpl: React.FC<Props> = ({
     setValue(meta.field, null);
   };
 
-  const onSelectedFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+  const handleSetFiles = async (files: CustomFile[] | null) => {
+    const file = files?.[0];
+    if (!file) {
+      setFile(null);
+      setValue(meta.field, null);
+      return;
+    }
 
     const params = new FormData();
     params.append('image', file);
 
     try {
       const res = await createFileImageTrigger(params);
-      if (res) {
-        setContent(res.file.url || null);
-        setValue(meta.field, res.file.id);
-      }
+      setValue(meta.field, res.file.id);
     } catch (e) {
       logger.error(e);
+      setFile(null);
     }
   };
 
   return (
-    <Box
-      sx={{
-        border: 1,
-        borderStyle: `${content ? 'none' : 'dashed'}`,
-      }}
-    >
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          crop: 'center',
-          p: 8,
-          backgroundImage: `url(${content || null})`,
-          backgroundPosition: 'center center',
-          backgroundSize: 'cover',
-          backgroundRepeat: 'no-repeat',
-        }}
-      >
-        <IconButton color="secondary" component="label" sx={{ fontSize: '30px' }}>
-          <input hidden accept="image/*" type="file" onChange={onSelectedFile} />
-          <CameraFilled />
-        </IconButton>
-        <input hidden {...register(meta.field, { ...required })} />
-      </Box>
-    </Box>
+    <>
+      <Stack spacing={1.5} alignItems="center">
+        <SingleFileUpload
+          accept={{ 'image/*': [] }}
+          files={file ? [{ name: file.file_name, preview: file.url }] : null}
+          onSetFiles={handleSetFiles}
+        />
+      </Stack>
+      <input hidden {...register(meta.field, { ...required })} />
+    </>
   );
 };
 
