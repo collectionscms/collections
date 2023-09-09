@@ -59,7 +59,7 @@ export const CreateFirstCollection: React.FC = () => {
               <Divider orientation="vertical" flexItem />
               <Stack spacing={0.5} alignItems="center">
                 <Button onClick={showDialog} variant="contained">
-                  {t('import_from_wordpress')}
+                  {t('import_from_wordpress_xml')}
                 </Button>
               </Stack>
             </Stack>

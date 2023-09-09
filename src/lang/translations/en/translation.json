@@ -112,9 +112,11 @@
   "auto_save": "Auto Save",
   "fields_and_layout": "Fields & Layout",
   "import": "Import",
-  "import_from_wordpress": "Import from WordPress",
-  "import_posts_from_wordpress_xml": "Import posts from WordPress XML",
+  "import_from_wordpress_xml": "Import from WordPress XML",
   "upload_xml_file": "Upload XML file",
+  "drag_and_drop_title": "Drag & Drop",
+  "drag_and_drop_body1": "Or ",
+  "drag_and_drop_body2": "select a file",
   "upload_file_manually": "Upload file",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion.",
