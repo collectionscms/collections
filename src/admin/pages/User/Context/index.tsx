@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useMemo } from 'react';
-import useSWR, { SWRConfiguration } from 'swr';
+import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
 import { Role, User } from '../../../config/types.js';
 import { api } from '../../../utilities/api.js';
@@ -28,12 +28,10 @@ export const UserContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       return api.patch(url, arg).then((res) => res.data);
     });
 
-  const getRoles = (config?: SWRConfiguration) =>
-    useSWR(
-      '/roles',
-      (url) => api.get<{ roles: Role[] }>(url).then((res) => res.data.roles),
-      config
-    );
+  const getRoles = () =>
+    useSWR('/roles', (url) => api.get<{ roles: Role[] }>(url).then((res) => res.data.roles), {
+      suspense: true,
+    });
 
   const value = useMemo(
     () => ({

@@ -18,16 +18,16 @@ import {
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { useSnackbar } from 'notistack';
-import React, { Suspense, useEffect } from 'react';
+import React, { Suspense } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { EmptyTable, MainCard } from 'superfast-ui';
-import { PermissionsAction, Role } from '../../../config/types.js';
 import { logger } from '../../../../utilities/logger.js';
 import { DeleteButton } from '../../../components/elements/DeleteButton/index.js';
 import { Loading } from '../../../components/elements/Loading/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
+import { PermissionsAction } from '../../../config/types.js';
 import {
   FormValues,
   updateRole as updateRoleSchema,
@@ -44,38 +44,23 @@ const EditRolePageImpl: React.FC = () => {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const { getRole, getCollections, getPermissions, updateRole } = useRole();
-  const { data: role, trigger: getRoleTrigger } = getRole(id);
+  const { data: role } = getRole(id);
   const { data: collections = [] } = getCollections({ suspense: true });
   const { data: permissions = [], mutate } = getPermissions(id, { suspense: true });
   const { trigger: updateRoleTrigger, isMutating: isUpdateRoleMutating } = updateRole(id);
   const {
     control,
     handleSubmit,
-    setValue,
     formState: { errors },
   } = useForm<FormValues>({
+    defaultValues: {
+      name: role.name,
+      description: role.description,
+      admin_access: Boolean(role.admin_access),
+    },
     resolver: yupResolver(updateRoleSchema()),
   });
   const actions: PermissionsAction[] = ['read', 'create', 'update', 'delete'];
-
-  useEffect(() => {
-    const getRole = async () => {
-      try {
-        const role = await getRoleTrigger();
-        if (role) setDefaultValue(role);
-      } catch (error) {
-        logger.error(error);
-      }
-    };
-
-    getRole();
-  }, []);
-
-  const setDefaultValue = (role: Role) => {
-    setValue('name', role.name);
-    setValue('description', role.description);
-    setValue('admin_access', Boolean(role.admin_access));
-  };
 
   const navigateToList = () => {
     navigate('../roles');
@@ -95,12 +80,8 @@ const EditRolePageImpl: React.FC = () => {
     }
   };
 
-  if (!role) {
-    return <Loading />;
-  }
-
   return (
-    <Suspense fallback={<Loading />}>
+    <>
       <Grid container spacing={2.5} sx={{ mb: 1 }}>
         <Grid xs={12} lg={8}>
           <MainCard content={false} title={t('role_list')} subheader={t('auto_save')}>
@@ -253,7 +234,7 @@ const EditRolePageImpl: React.FC = () => {
           </MainCard>
         </Grid>
       </Grid>
-    </Suspense>
+    </>
   );
 };
 

@@ -9,12 +9,14 @@ const Context = createContext({} as RoleContext);
 
 export const RoleContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const getRoles = () =>
-    useSWR('/roles', (url) => api.get<{ roles: Role[] }>(url).then((res) => res.data.roles));
+    useSWR('/roles', (url) => api.get<{ roles: Role[] }>(url).then((res) => res.data.roles), {
+      suspense: true,
+    });
 
-  const getRole = (id: string): SWRMutationResponse =>
-    useSWRMutation(`/roles/${id}`, (url) =>
-      api.get<{ role: Role }>(url).then((res) => res.data.role)
-    );
+  const getRole = (id: string) =>
+    useSWR(`/roles/${id}`, (url) => api.get<{ role: Role }>(url).then((res) => res.data.role), {
+      suspense: true,
+    });
 
   const createRole = () =>
     useSWRMutation(`/roles`, async (url: string, { arg }: { arg: Record<string, any> }) => {

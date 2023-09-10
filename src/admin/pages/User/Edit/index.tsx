@@ -39,7 +39,7 @@ const EditUserPageImpl: React.FC = () => {
   const { enqueueSnackbar } = useSnackbar();
   const { getRoles, getUser, updateUser } = useUser();
   const { data: user } = getUser(id);
-  const { data: roles } = getRoles({ suspense: true });
+  const { data: roles } = getRoles();
   const { trigger, isMutating } = updateUser(id);
   const {
     control,
@@ -51,7 +51,7 @@ const EditUserPageImpl: React.FC = () => {
       name: user.name,
       email: user.email,
       password: '',
-      api_key: user.api_key,
+      api_key: '',
       is_active: Boolean(user.is_active),
       role_id: user.role!.id.toString(),
     },
@@ -189,12 +189,11 @@ const EditUserPageImpl: React.FC = () => {
                       control={control}
                       render={({ field }) => (
                         <Select {...field} fullWidth>
-                          {roles &&
-                            roles.map((role) => (
-                              <MenuItem value={role.id} key={role.id}>
-                                {role.name}
-                              </MenuItem>
-                            ))}
+                          {roles.map((role) => (
+                            <MenuItem value={role.id} key={role.id}>
+                              {role.name}
+                            </MenuItem>
+                          ))}
                         </Select>
                       )}
                     />

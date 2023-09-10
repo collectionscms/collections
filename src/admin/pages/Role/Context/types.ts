@@ -3,8 +3,20 @@ import { SWRMutationResponse } from 'swr/mutation';
 import { Collection, Permission, Role } from '../../../config/types.js';
 
 export type RoleContext = {
-  getRoles: () => SWRResponse<Role[]>;
-  getRole: (id: string) => SWRMutationResponse<Role>;
+  getRoles: () => SWRResponse<
+    Role[],
+    Error,
+    {
+      suspense: true;
+    }
+  >;
+  getRole: (id: string) => SWRResponse<
+    Role,
+    Error,
+    {
+      suspense: true;
+    }
+  >;
   createRole: () => SWRMutationResponse<number, any, string, Record<string, any>>;
   updateRole: (id: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
   getCollections: (config?: SWRConfiguration) => SWRResponse<Collection[]>;
