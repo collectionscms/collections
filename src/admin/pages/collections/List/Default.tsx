@@ -1,13 +1,13 @@
 import { Stack, useMediaQuery, useTheme } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { MainCard } from 'superfast-ui';
 import { CreateNewButton } from '../../../components/elements/CreateNewButton/index.js';
 import { Link } from '../../../components/elements/Link/index.js';
 import { Cell } from '../../../components/elements/Table/Cell/index.js';
 import { Table } from '../../../components/elements/Table/index.js';
-import { Column } from '../../../components/elements/Table/types.js';
 import { useAuth } from '../../../components/utilities/Auth/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
+import { Collection, GetField } from '../../../config/types.js';
 import { buildColumns } from '../../../utilities/buildColumns.js';
 import { ApiPreview } from '../ApiPreview/index.js';
 import { ContentContextProvider, useContent } from '../Context/index.js';
@@ -15,19 +15,15 @@ import { buildColumnFields } from './buildColumnFields.js';
 import { Props } from './types.js';
 
 const DefaultListPageImpl: React.FC<Props> = ({ collection }) => {
-  const [columns, setColumns] = useState<Column[]>([]);
-
   const { hasPermission } = useAuth();
   const { getContents, getFields } = useContent();
   const theme = useTheme();
   const smDown = useMediaQuery(theme.breakpoints.down('sm'));
 
   const { data: metaFields } = getFields(collection.collection);
-  const fieldFetched = metaFields !== undefined;
-  const { data: contents } = getContents(collection.collection, fieldFetched);
+  const { data: contents } = getContents(collection.collection);
 
-  useEffect(() => {
-    if (metaFields === undefined) return;
+  const getColumns = (collection: Collection, metaFields: GetField[]) => {
     const columnFields = buildColumnFields(collection, metaFields);
 
     const columns = buildColumns(columnFields, (i: number, row: any, data: any) => {
@@ -35,8 +31,9 @@ const DefaultListPageImpl: React.FC<Props> = ({ collection }) => {
       return i === 0 ? <Link href={`${row.id}`}>{cell}</Link> : cell;
     });
 
-    setColumns(columns);
-  }, [metaFields]);
+    return columns;
+  };
+  const columns = getColumns(collection, metaFields);
 
   return (
     <MainCard
@@ -49,7 +46,7 @@ const DefaultListPageImpl: React.FC<Props> = ({ collection }) => {
         </Stack>
       }
     >
-      {contents !== undefined && <Table columns={columns} rows={contents} />}
+      <Table columns={columns} rows={contents} />
     </MainCard>
   );
 };

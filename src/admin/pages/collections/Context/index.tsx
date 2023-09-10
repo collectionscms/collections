@@ -1,38 +1,32 @@
 import React, { createContext, useContext, useMemo } from 'react';
-import useSWR, { SWRConfiguration, SWRResponse } from 'swr';
+import useSWR from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
-import { File, GetCollections, GetField, GetRelation } from '../../../config/types.js';
+import { File, GetCollection, GetField, GetRelation } from '../../../config/types.js';
 import { api } from '../../../utilities/api.js';
 import { ContentContext } from './types.js';
 
 const Context = createContext({} as ContentContext);
 
 export const ContentContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const getContents = (
-    collection: string,
-    canFetch: boolean = true,
-    config?: SWRConfiguration
-  ): SWRResponse =>
+  const getContents = (collection: string) =>
     useSWR(
-      canFetch ? `/collections/${collection}/contents` : null,
+      `/collections/${collection}/contents`,
       (url) => api.get(url).then((res) => res.data.data),
-      config
+      { suspense: true }
     );
 
-  const getContent = (collection: string, id: string | null): SWRMutationResponse =>
-    useSWRMutation(id ? `/collections/${collection}/contents/${id}` : null, (url) =>
-      api.get<{ data: any }>(url).then((res) => res.data.data)
-    );
-
-  const getFields = (
-    collection: string,
-    canFetch: boolean = true,
-    config?: SWRConfiguration
-  ): SWRResponse =>
+  const getContent = (collection: string, id: string) =>
     useSWR(
-      canFetch ? `/collections/${collection}/fields` : null,
+      `/collections/${collection}/contents/${id}`,
+      (url) => api.get<{ data: any }>(url).then((res) => res.data.data),
+      { suspense: true }
+    );
+
+  const getFields = (collection: string) =>
+    useSWR(
+      `/collections/${collection}/fields`,
       (url) => api.get<{ fields: GetField[] }>(url).then((res) => res.data.fields),
-      config
+      { suspense: true }
     );
 
   const createContent = (collection: string) =>
@@ -61,9 +55,11 @@ export const ContentContextProvider: React.FC<{ children: React.ReactNode }> = (
       return api.post<{ file: File; raw: string }>(url, arg).then((res) => res.data);
     });
 
-  const getRelations = (collection: string, field: string): SWRResponse =>
-    useSWR(`/relations/${collection}/${field}`, (url) =>
-      api.get<{ relations: GetRelation[] }>(url).then((res) => res.data.relations)
+  const getRelations = (collection: string, field: string) =>
+    useSWR(
+      `/relations/${collection}/${field}`,
+      (url) => api.get<{ relations: GetRelation[] }>(url).then((res) => res.data.relations),
+      { suspense: true }
     );
 
   const getCollection = (collection: string) =>
