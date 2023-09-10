@@ -1,13 +1,13 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { MainCard } from 'superfast-ui';
-import { User } from '../../config/types.js';
 import { CreateNewButton } from '../../components/elements/CreateNewButton/index.js';
 import { Link } from '../../components/elements/Link/index.js';
 import { Cell } from '../../components/elements/Table/Cell/index.js';
 import { cells } from '../../components/elements/Table/Cell/types.js';
 import { Table } from '../../components/elements/Table/index.js';
 import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.js';
+import { User } from '../../config/types.js';
 import { buildColumns } from '../../utilities/buildColumns.js';
 import { UserContextProvider, useUser } from './Context/index.js';
 
@@ -41,7 +41,7 @@ const UserPageImpl: React.FC = () => {
 
   return (
     <MainCard content={false} title={<></>} secondary={<CreateNewButton to="create" />}>
-      {data !== undefined && <Table columns={columns} rows={data} />}
+      <Table columns={columns} rows={data} />
     </MainCard>
   );
 };

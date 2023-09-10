@@ -15,16 +15,14 @@ import {
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { useSnackbar } from 'notistack';
-import React, { Suspense, useEffect } from 'react';
+import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { IconButton, MainCard } from 'superfast-ui';
 import { v4 as uuidv4 } from 'uuid';
-import { User } from '../../../config/types.js';
 import { logger } from '../../../../utilities/logger.js';
 import { DeleteButton } from '../../../components/elements/DeleteButton/index.js';
-import { Loading } from '../../../components/elements/Loading/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
 import {
   FormValues,
@@ -40,7 +38,7 @@ const EditUserPageImpl: React.FC = () => {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const { getRoles, getUser, updateUser } = useUser();
-  const { data: user, trigger: getUserTrigger } = getUser(id);
+  const { data: user } = getUser(id);
   const { data: roles } = getRoles({ suspense: true });
   const { trigger, isMutating } = updateUser(id);
   const {
@@ -49,30 +47,16 @@ const EditUserPageImpl: React.FC = () => {
     setValue,
     formState: { errors },
   } = useForm<FormValues>({
+    defaultValues: {
+      name: user.name,
+      email: user.email,
+      password: '',
+      api_key: user.api_key,
+      is_active: Boolean(user.is_active),
+      role_id: user.role!.id.toString(),
+    },
     resolver: yupResolver(updateUserSchema(t)),
   });
-
-  useEffect(() => {
-    const getUser = async () => {
-      try {
-        const user = await getUserTrigger();
-        if (user) setDefaultValue(user);
-      } catch (error) {
-        logger.error(error);
-      }
-    };
-
-    getUser();
-  }, []);
-
-  const setDefaultValue = (user: User) => {
-    setValue('name', user.name);
-    setValue('email', user.email);
-    setValue('password', '');
-    setValue('api_key', '');
-    setValue('is_active', Boolean(user.is_active));
-    setValue('role_id', user.role!.id.toString());
-  };
 
   const onGenerateApiKey = () => {
     setValue('api_key', uuidv4());
@@ -95,12 +79,8 @@ const EditUserPageImpl: React.FC = () => {
     }
   };
 
-  if (!user) {
-    return <Loading />;
-  }
-
   return (
-    <Suspense fallback={<Loading />}>
+    <>
       <Grid container spacing={2.5}>
         <Grid xs={12} lg={8}>
           <MainCard>
@@ -260,7 +240,7 @@ const EditUserPageImpl: React.FC = () => {
           </MainCard>
         </Grid>
       </Grid>
-    </Suspense>
+    </>
   );
 };
 
