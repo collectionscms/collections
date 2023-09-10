@@ -18,7 +18,7 @@ const CreateCollectionPageImpl: React.FC<Props> = ({ collection }) => {
   const { enqueueSnackbar } = useSnackbar();
   const { hasPermission } = useAuth();
   const navigate = useNavigate();
-  const { getFields, createContent, updateContent } = useContent();
+  const { getFields, createContent } = useContent();
 
   const { data: metaFields } = getFields(collection.collection);
 
