@@ -11,7 +11,7 @@ export const ContentContextProvider: React.FC<{ children: React.ReactNode }> = (
   const getContents = (collection: string) =>
     useSWR(
       `/collections/${collection}/contents`,
-      (url) => api.get(url).then((res) => res.data.data),
+      (url) => api.get(url).then((res) => (res.data.data ? res.data.data : {})),
       { suspense: true }
     );
 
