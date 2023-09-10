@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Navigate } from 'react-router-dom';
+import { CreateCollectionPage as Create } from '../../../pages/collections/Create/index.js';
 import { EditCollectionPage as Edit } from '../../../pages/collections/Edit/index.js';
 import List from '../../../pages/collections/List/index.js';
 import { collectionsGroupNavItems } from '../../../utilities/groupNavItems.js';
@@ -62,7 +63,7 @@ export const CollectionRoutes = () => {
           path: `${collection.collection}/create`,
           element: (
             <MainHeader label={t('create.custom', { page: collection.collection })}>
-              <Edit key={collection.collection} collection={collection} />
+              <Create key={collection.collection} collection={collection} />
             </MainHeader>
           ),
         },
