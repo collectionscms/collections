@@ -10,9 +10,11 @@ const Context = createContext({} as CollectionContext);
 export const CollectionContextProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const getCollection = (id: string): SWRMutationResponse =>
-    useSWRMutation(`/collections/${id}`, (url) =>
-      api.get<{ collection: GetCollection }>(url).then((res) => res.data.collection)
+  const getCollection = (collection: string) =>
+    useSWR(
+      `/collections/${collection}`,
+      (url) => api.get<{ collection: GetCollection }>(url).then((res) => res.data.collection),
+      { suspense: true }
     );
 
   const getCollections = (): SWRResponse =>
