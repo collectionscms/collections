@@ -66,9 +66,11 @@ export const ContentContextProvider: React.FC<{ children: React.ReactNode }> = (
       api.get<{ relations: GetRelation[] }>(url).then((res) => res.data.relations)
     );
 
-  const getCollections = (collection: string | null): SWRResponse =>
-    useSWR(collection ? `/collections?collection=${collection}` : null, (url) =>
-      api.get<{ collections: GetCollections }>(url).then((res) => res.data)
+  const getCollection = (collection: string) =>
+    useSWR(
+      `/collections/${collection}`,
+      (url) => api.get<{ collection: GetCollection }>(url).then((res) => res.data.collection),
+      { suspense: true }
     );
 
   const value = useMemo(
@@ -81,7 +83,7 @@ export const ContentContextProvider: React.FC<{ children: React.ReactNode }> = (
       getFileImage,
       createFileImage,
       getRelations,
-      getCollections,
+      getCollection,
     }),
     [
       getContents,
@@ -92,7 +94,7 @@ export const ContentContextProvider: React.FC<{ children: React.ReactNode }> = (
       getFileImage,
       createFileImage,
       getRelations,
-      getCollections,
+      getCollection,
     ]
   );
 

@@ -36,5 +36,5 @@ export type ContentContext = {
     Record<string, any>
   >;
   getRelations: (collection: string, field: string) => SWRResponse<GetRelation[]>;
-  getCollections: (collection: string | null) => SWRResponse<GetCollections>;
+  getCollection: (collection: string) => SWRResponse<GetCollection, Error, { suspense: true }>;
 };
