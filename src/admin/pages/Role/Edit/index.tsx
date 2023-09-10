@@ -45,8 +45,8 @@ const EditRolePageImpl: React.FC = () => {
   const { enqueueSnackbar } = useSnackbar();
   const { getRole, getCollections, getPermissions, updateRole } = useRole();
   const { data: role } = getRole(id);
-  const { data: collections = [] } = getCollections({ suspense: true });
-  const { data: permissions = [], mutate } = getPermissions(id, { suspense: true });
+  const { data: collections } = getCollections();
+  const { data: permissions, mutate } = getPermissions(id);
   const { trigger: updateRoleTrigger, isMutating: isUpdateRoleMutating } = updateRole(id);
   const {
     control,

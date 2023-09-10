@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useMemo } from 'react';
-import useSWR, { SWRConfiguration, SWRResponse } from 'swr';
+import useSWR, { SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
 import { Collection, Permission, Role } from '../../../config/types.js';
 import { api } from '../../../utilities/api.js';
@@ -28,18 +28,18 @@ export const RoleContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       return api.patch(url, arg).then((res) => res.data);
     });
 
-  const getCollections = (config?: SWRConfiguration): SWRResponse =>
+  const getCollections = (): SWRResponse =>
     useSWR(
       '/collections',
       (url) => api.get<{ collections: Collection[] }>(url).then((res) => res.data.collections),
-      config
+      { suspense: true }
     );
 
-  const getPermissions = (id: string, config?: SWRConfiguration): SWRResponse =>
+  const getPermissions = (id: string): SWRResponse =>
     useSWR(
       `/roles/${id}/permissions`,
       (url) => api.get<{ permissions: Permission[] }>(url).then((res) => res.data.permissions),
-      config
+      { suspense: true }
     );
 
   const createPermission = (id: string) =>
