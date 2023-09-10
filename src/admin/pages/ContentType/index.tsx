@@ -67,7 +67,7 @@ const ContentTypePageImpl: React.FC = () => {
 
   return (
     <MainCard content={false} title={<></>} secondary={buttons}>
-      {data !== undefined && <Table columns={columns} rows={data} />}
+      <Table columns={columns} rows={data} />
     </MainCard>
   );
 };
