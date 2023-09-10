@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useMemo } from 'react';
-import useSWR, { SWRConfiguration } from 'swr';
+import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
 import { ProjectSetting } from '../../../config/types.js';
 import { api } from '../../../utilities/api.js';
@@ -10,12 +10,12 @@ const Context = createContext({} as ProjectSettingContext);
 export const ProjectSettingContextProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const getProjectSetting = (config?: SWRConfiguration) =>
+  const getProjectSetting = () =>
     useSWR(
       '/project-settings',
       (url) =>
         api.get<{ projectSetting: ProjectSetting }>(url).then((res) => res.data.projectSetting),
-      config
+      { suspense: true }
     );
 
   const updateProjectSetting = () =>
