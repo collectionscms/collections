@@ -7,9 +7,15 @@ const Context = createContext({} as DocumentContext);
 
 export const DocumentContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const deleteDocument = (id: string, slug: string): SWRMutationResponse =>
-    useSWRMutation(`/${slug}/${id}`, async (url: string, { arg }) => {
-      return api.delete(url, arg).then((res) => res.data);
-    });
+    useSWRMutation(
+      `/${slug}/${id}`,
+      async (url: string, { arg }) => {
+        return api.delete(url, arg).then((res) => res.data);
+      },
+      {
+        revalidate: false,
+      }
+    );
 
   const value = useMemo(
     () => ({
