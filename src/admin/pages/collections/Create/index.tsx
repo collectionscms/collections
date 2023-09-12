@@ -4,40 +4,32 @@ import { useSnackbar } from 'notistack';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { MainCard } from 'superfast-ui';
 import { logger } from '../../../../utilities/logger.js';
-import { DeleteButton } from '../../../components/elements/DeleteButton/index.js';
 import { RenderFields } from '../../../components/forms/RenderFields/index.js';
 import { useAuth } from '../../../components/utilities/Auth/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
 import { ContentContextProvider, useContent } from '../Context/index.js';
 import { Props } from './types.js';
 
-const EditCollectionPageImpl: React.FC<Props> = ({ collection }) => {
-  const { id } = useParams();
-  if (!id) throw new Error('id is not defined');
-
+const CreateCollectionPageImpl: React.FC<Props> = ({ collection }) => {
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
   const { hasPermission } = useAuth();
   const navigate = useNavigate();
-  const { getContent, getFields, updateContent } = useContent();
+  const { getFields, createContent } = useContent();
 
   const { data: metaFields } = getFields(collection.collection);
-  const { data: content } = getContent(collection.collection, id);
 
-  const { trigger: updateTrigger, isMutating: isUpdateMutating } = updateContent(
-    collection.collection,
-    content.id
+  const { trigger: createTrigger, isMutating: isCreateMutating } = createContent(
+    collection.collection
   );
 
   const formContext = useForm({
     defaultValues: metaFields.reduce(
       (acc, field) => {
-        if (content[field.field]) {
-          acc[field.field] = content[field.field];
-        } else if (field.fieldOption?.defaultValue) {
+        if (field.fieldOption?.defaultValue) {
           acc[field.field] = field.fieldOption?.defaultValue;
         }
 
@@ -51,12 +43,12 @@ const EditCollectionPageImpl: React.FC<Props> = ({ collection }) => {
     navigate(`/admin/collections/${collection.collection}`);
   };
 
-  const hasSavePermission = hasPermission(collection.collection, 'update');
+  const hasSavePermission = hasPermission(collection.collection, 'create');
 
   const onSubmit = async (data: Record<string, any>) => {
     try {
-      await updateTrigger(data);
-      enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
+      await createTrigger(data);
+      enqueueSnackbar(t('toast.created_successfully'), { variant: 'success' });
       navigate(`/admin/collections/${collection.collection}`);
     } catch (e) {
       logger.error(e);
@@ -75,31 +67,20 @@ const EditCollectionPageImpl: React.FC<Props> = ({ collection }) => {
                 </Stack>
               </Grid>
               <Grid xs={12}>
-                <Stack
-                  direction="row"
-                  alignItems="center"
-                  justifyContent="space-between"
-                  sx={{ width: 1 }}
-                >
-                  <DeleteButton
-                    id={id}
-                    slug={`collections/${collection.collection}/contents`}
-                    disabled={!hasPermission(collection.collection, 'delete')}
-                    onSuccess={navigateToList}
-                  />
-                  <Stack direction="row" spacing={1}>
+                <Grid xs={12}>
+                  <Stack direction="row" justifyContent="flex-end" spacing={1}>
                     <Button variant="outlined" color="secondary" onClick={navigateToList}>
                       {t('cancel')}
                     </Button>
                     <Button
                       variant="contained"
                       type="submit"
-                      disabled={!hasSavePermission || isUpdateMutating}
+                      disabled={!hasSavePermission || isCreateMutating}
                     >
-                      {t('update')}
+                      {t('save')}
                     </Button>
                   </Stack>
-                </Stack>
+                </Grid>
               </Grid>
             </Grid>
           </form>
@@ -109,6 +90,6 @@ const EditCollectionPageImpl: React.FC<Props> = ({ collection }) => {
   );
 };
 
-export const EditCollectionPage = ComposeWrapper({ context: ContentContextProvider })(
-  EditCollectionPageImpl
+export const CreateCollectionPage = ComposeWrapper({ context: ContentContextProvider })(
+  CreateCollectionPageImpl
 );

@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useMemo } from 'react';
-import useSWR, { SWRConfiguration, SWRResponse } from 'swr';
-import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
+import useSWR, { SWRResponse } from 'swr';
+import useSWRMutation from 'swr/mutation';
 import { Collection, GetCollection, GetField, PostCollection } from '../../../config/types.js';
 import { api } from '../../../utilities/api.js';
 import { CollectionContext } from './types.js';
@@ -10,14 +10,18 @@ const Context = createContext({} as CollectionContext);
 export const CollectionContextProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const getCollection = (id: string): SWRMutationResponse =>
-    useSWRMutation(`/collections/${id}`, (url) =>
-      api.get<{ collection: GetCollection }>(url).then((res) => res.data.collection)
+  const getCollection = (collection: string) =>
+    useSWR(
+      `/collections/${collection}`,
+      (url) => api.get<{ collection: GetCollection }>(url).then((res) => res.data.collection),
+      { suspense: true }
     );
 
   const getCollections = (): SWRResponse =>
-    useSWR('/collections', (url) =>
-      api.get<{ collections: Collection[] }>(url).then((res) => res.data.collections)
+    useSWR(
+      '/collections',
+      (url) => api.get<{ collections: Collection[] }>(url).then((res) => res.data.collections),
+      { suspense: true }
     );
 
   const createCollection = useSWRMutation(
@@ -35,11 +39,11 @@ export const CollectionContextProvider: React.FC<{ children: React.ReactNode }> 
       }
     );
 
-  const getFields = (collection: string | null, config?: SWRConfiguration): SWRResponse =>
+  const getFields = (collection: string) =>
     useSWR(
-      () => (collection ? `/collections/${collection}/fields` : null),
+      `/collections/${collection}/fields`,
       (url) => api.get<{ fields: GetField[] }>(url).then((res) => res.data.fields),
-      config
+      { suspense: true }
     );
 
   const updateFields = () =>

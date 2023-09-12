@@ -37,7 +37,7 @@ const ContentTypePageImpl: React.FC = () => {
 
   const columns = buildColumns(fields, (i: number, row: Collection, data: any) => {
     const cell = <Cell colIndex={i} type={fields[i].type} cellData={data} />;
-    return i === 0 ? <Link href={`${row.id}`}>{cell}</Link> : cell;
+    return i === 0 ? <Link href={`${row.collection}`}>{cell}</Link> : cell;
   });
 
   const buttons = (
@@ -67,7 +67,7 @@ const ContentTypePageImpl: React.FC = () => {
 
   return (
     <MainCard content={false} title={<></>} secondary={buttons}>
-      {data !== undefined && <Table columns={columns} rows={data} />}
+      <Table columns={columns} rows={data} />
     </MainCard>
   );
 };

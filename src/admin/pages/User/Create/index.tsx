@@ -35,7 +35,7 @@ const CreateUserPageImpl: React.FC = () => {
   const { enqueueSnackbar } = useSnackbar();
   const { createUser, getRoles } = useUser();
   const { trigger, isMutating } = createUser();
-  const { data: roles } = getRoles({ suspense: true });
+  const { data: roles } = getRoles();
   const {
     control,
     handleSubmit,

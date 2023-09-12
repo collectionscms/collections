@@ -1,14 +1,13 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, FormHelperText, InputLabel, Stack, TextField } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
-import { useSnackbar } from 'notistack';
-import React, { Suspense } from 'react';
 import dayjs from 'dayjs';
+import { useSnackbar } from 'notistack';
+import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { MainCard } from 'superfast-ui';
 import { logger } from '../../../utilities/logger.js';
-import { Loading } from '../../components/elements/Loading/index.js';
 import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.js';
 import {
   FormValues,
@@ -20,9 +19,7 @@ const ProjectImpl: React.FC = () => {
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
   const { getProjectSetting, updateProjectSetting } = useProjectSetting();
-  const { data: projectSetting } = getProjectSetting({
-    suspense: true,
-  });
+  const { data: projectSetting } = getProjectSetting();
   const { trigger, isMutating } = updateProjectSetting();
   const {
     control,
@@ -30,9 +27,9 @@ const ProjectImpl: React.FC = () => {
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
-      name: projectSetting?.name,
-      before_login: projectSetting?.before_login,
-      after_login: projectSetting?.after_login,
+      name: projectSetting.name,
+      before_login: projectSetting.before_login,
+      after_login: projectSetting.after_login,
     },
     resolver: yupResolver(updateProjectSettingSchema()),
   });
@@ -47,7 +44,7 @@ const ProjectImpl: React.FC = () => {
   };
 
   return (
-    <Suspense fallback={<Loading />}>
+    <>
       <Grid container spacing={2.5}>
         <Grid xs={12} lg={8}>
           <MainCard>
@@ -131,7 +128,7 @@ const ProjectImpl: React.FC = () => {
           </MainCard>
         </Grid>
       </Grid>
-    </Suspense>
+    </>
   );
 };
 

@@ -1,5 +1,5 @@
 import { useSnackbar } from 'notistack';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { logger } from '../../../../utilities/logger.js';
 import { ComposeWrapper } from '../../utilities/ComposeWrapper/index.js';
@@ -11,7 +11,7 @@ const DeleteDocumentImpl: React.FC<Props> = ({ id, slug, openState, onSuccess, o
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
   const { deleteDocument } = useDocument();
-  const { data, trigger, reset, isMutating } = deleteDocument(id, slug);
+  const { trigger, reset } = deleteDocument(id, slug);
 
   const handleClose = () => {
     onClose();
@@ -20,17 +20,13 @@ const DeleteDocumentImpl: React.FC<Props> = ({ id, slug, openState, onSuccess, o
   const handleDelete = async () => {
     try {
       await trigger();
+      enqueueSnackbar(t('toast.deleted_successfully'), { variant: 'success' });
+      onSuccess();
+      reset();
     } catch (error) {
       logger.error(error);
     }
   };
-
-  useEffect(() => {
-    if (data === undefined) return;
-    enqueueSnackbar(t('toast.deleted_successfully'), { variant: 'success' });
-    onSuccess();
-    reset();
-  }, [data]);
 
   return (
     <DeleteDialog

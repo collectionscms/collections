@@ -14,16 +14,15 @@ import {
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { useSnackbar } from 'notistack';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { MainCard } from 'superfast-ui';
-import { Collection, Field } from '../../../config/types.js';
 import { logger } from '../../../../utilities/logger.js';
 import { DeleteButton } from '../../../components/elements/DeleteButton/index.js';
-import { Loading } from '../../../components/elements/Loading/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
+import { Field } from '../../../config/types.js';
 import {
   FormValues,
   updateCollection as updateCollectionSchema,
@@ -35,61 +34,40 @@ import { EditMenu } from './Menu/index.js';
 import { SortableFieldList } from './SortableFieldList/index.js';
 
 const EditContentTypePageImpl: React.FC = () => {
-  const [createFieldOpen, setCreateFieldOpen] = useState(false);
-  const [editFieldOpen, setEditFieldOpen] = useState(false);
-  const [menu, setMenu] = useState<EventTarget | null>(null);
-  const [selectedField, setSelectedField] = useState<Field | null>(null);
-  const [sortableFields, setSortableFields] = useState<Field[]>([]);
-
-  const { id } = useParams();
-  if (!id) throw new Error('id is not defined');
+  const { collection } = useParams();
+  if (!collection) throw new Error('collection is not defined');
 
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
+
   const { getCollection, updateCollection, getFields, updateFields } = useCollection();
-  const { data: meta, trigger: getCollectionTrigger } = getCollection(id);
-  const { data: fields = [], mutate } = getFields(meta?.collection || null);
-  const { trigger, isMutating } = updateCollection(id);
+  const { data: metaCollection } = getCollection(collection);
+  const { data: fields, mutate } = getFields(collection);
+  const { trigger, isMutating } = updateCollection(metaCollection.id.toString());
   const { trigger: updateFieldsTrigger } = updateFields();
+
+  const [createFieldOpen, setCreateFieldOpen] = useState(false);
+  const [editFieldOpen, setEditFieldOpen] = useState(false);
+  const [menu, setMenu] = useState<EventTarget | null>(null);
+  const [selectedField, setSelectedField] = useState<Field | null>(null);
+  const [sortableFields, setSortableFields] = useState<Field[]>(fields);
+
   const {
     control,
     handleSubmit,
-    setValue,
     formState: { errors },
   } = useForm<FormValues>({
+    defaultValues: {
+      hidden: Boolean(metaCollection.hidden),
+      singleton: Boolean(metaCollection.singleton),
+      status_field: metaCollection.status_field || '',
+      draft_value: metaCollection.draft_value || '',
+      publish_value: metaCollection.publish_value || '',
+      archive_value: metaCollection.archive_value || '',
+    },
     resolver: yupResolver(updateCollectionSchema()),
   });
-
-  useEffect(() => {
-    const getCollection = async () => {
-      try {
-        const collection = await getCollectionTrigger();
-        if (collection) {
-          setDefaultValue(collection);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    getCollection();
-  }, []);
-
-  const setDefaultValue = (collection: Collection) => {
-    setValue('hidden', Boolean(collection.hidden));
-    setValue('singleton', Boolean(collection.singleton));
-    setValue('status_field', collection.status_field || '');
-    setValue('draft_value', collection.draft_value || '');
-    setValue('publish_value', collection.publish_value || '');
-    setValue('archive_value', collection.archive_value || '');
-  };
-
-  useEffect(() => {
-    if (fields && fields.length) {
-      setSortableFields(fields);
-    }
-  }, [fields]);
 
   const onToggleCreateField = (state: boolean) => {
     setCreateFieldOpen(state);
@@ -156,18 +134,15 @@ const EditContentTypePageImpl: React.FC = () => {
   };
 
   const handleDeleteFieldSuccess = () => {
-    mutate(fields.filter((field) => field.id !== selectedField?.id));
+    const fields = sortableFields.filter((field) => field.id !== selectedField?.id);
+    setSortableFields(fields);
     onCloseMenu();
   };
-
-  if (!meta || !fields) {
-    return <Loading />;
-  }
 
   return (
     <>
       <CreateField
-        collection={meta.collection}
+        collection={metaCollection.collection}
         openState={createFieldOpen}
         onSuccess={(field) => handleCreateFieldSuccess(field)}
         onClose={() => onToggleCreateField(false)}
@@ -182,7 +157,7 @@ const EditContentTypePageImpl: React.FC = () => {
           />
           <EditMenu
             id={selectedField.id.toString()}
-            collectionId={id}
+            collectionId={metaCollection.id.toString()}
             menu={menu}
             onEdit={() => handleEditField(true)}
             onSuccess={handleDeleteFieldSuccess}
@@ -358,7 +333,11 @@ const EditContentTypePageImpl: React.FC = () => {
                     justifyContent="space-between"
                     sx={{ width: 1 }}
                   >
-                    <DeleteButton id={id} slug="collections" onSuccess={navigateToList} />
+                    <DeleteButton
+                      id={metaCollection.id.toString()}
+                      slug="collections"
+                      onSuccess={navigateToList}
+                    />
                     <Stack direction="row" spacing={1}>
                       <Button variant="outlined" color="secondary" onClick={navigateToList}>
                         {t('cancel')}

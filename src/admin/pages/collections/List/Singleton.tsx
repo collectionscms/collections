@@ -1,7 +1,7 @@
 import { Button, Stack } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { useSnackbar } from 'notistack';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { MainCard } from 'superfast-ui';
@@ -18,9 +18,9 @@ const SingletonPageImpl: React.FC<Props> = ({ collection }) => {
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
   const { getContents, getFields, createContent, updateContent } = useContent();
+
   const { data: metaFields } = getFields(collection.collection);
-  const fieldFetched = metaFields !== undefined;
-  const { data: content } = getContents(collection.collection, fieldFetched);
+  const { data: content } = getContents(collection.collection);
 
   const { trigger: createTrigger, isMutating: isCreateMutating } = createContent(
     collection.collection
@@ -30,21 +30,21 @@ const SingletonPageImpl: React.FC<Props> = ({ collection }) => {
     isMutating: isUpdateMutating,
     reset,
   } = updateContent(collection.collection, content?.id);
-  const formContext = useForm();
-  const { handleSubmit, setValue } = formContext;
 
-  const setDefaultValue = (content: Record<string, any>) => {
-    metaFields
-      ?.filter((field) => !field.hidden)
-      .forEach((field) => {
-        setValue(field.field, content[field.field]);
-      });
-  };
+  const formContext = useForm({
+    defaultValues: metaFields.reduce(
+      (acc, field) => {
+        if (content[field.field]) {
+          acc[field.field] = content[field.field];
+        } else if (field.fieldOption?.defaultValue) {
+          acc[field.field] = field.fieldOption?.defaultValue;
+        }
 
-  useEffect(() => {
-    if (content === undefined) return;
-    setDefaultValue(content);
-  }, [content]);
+        return acc;
+      },
+      {} as Record<string, any>
+    ),
+  });
 
   const onSubmit = async (data: Record<string, any>) => {
     reset();
@@ -71,11 +71,11 @@ const SingletonPageImpl: React.FC<Props> = ({ collection }) => {
             <ApiPreview collection={collection.collection} singleton={collection.singleton} />
           }
         >
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={formContext.handleSubmit(onSubmit)}>
             <Grid container spacing={3}>
               <Grid xs={12}>
                 <Stack spacing={1}>
-                  <RenderFields form={formContext} fields={metaFields || []} />
+                  <RenderFields form={formContext} fields={metaFields} />
                 </Stack>
               </Grid>
               <Grid xs={12}>

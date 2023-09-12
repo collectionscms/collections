@@ -1,26 +1,12 @@
-import { SWRConfiguration, SWRResponse } from 'swr';
+import { SWRResponse } from 'swr';
 import { SWRMutationResponse } from 'swr/mutation';
-import {
-  File,
-  GetCollection,
-  GetCollections,
-  GetField,
-  GetRelation,
-} from '../../../config/types.js';
+import { File, GetCollection, GetField, GetRelation } from '../../../config/types.js';
 
 export type ContentContext = {
   // If the collection model is a singleton, return any.
-  getContents: (
-    collection: string,
-    canFetch?: boolean,
-    config?: SWRConfiguration
-  ) => SWRResponse<any | any[]>;
-  getContent: (collection: string, id: string | null) => SWRMutationResponse<any>;
-  getFields: (
-    collection: string,
-    canFetch?: boolean,
-    config?: SWRConfiguration
-  ) => SWRResponse<GetField[]>;
+  getContents: (collection: string) => SWRResponse<any | any[], Error, { suspense: true }>;
+  getContent: (collection: string, id: string) => SWRResponse<any, Error, { suspense: true }>;
+  getFields: (collection: string) => SWRResponse<GetField[], Error, { suspense: true }>;
   createContent: (
     collection: string
   ) => SWRMutationResponse<number, any, string, Record<string, any>>;
@@ -35,6 +21,9 @@ export type ContentContext = {
     string,
     Record<string, any>
   >;
-  getRelations: (collection: string, field: string) => SWRResponse<GetRelation[]>;
-  getCollections: (collection: string | null) => SWRResponse<GetCollections>;
+  getRelations: (
+    collection: string,
+    field: string
+  ) => SWRResponse<GetRelation[], Error, { suspense: true }>;
+  getCollection: (collection: string) => SWRResponse<GetCollection, Error, { suspense: true }>;
 };

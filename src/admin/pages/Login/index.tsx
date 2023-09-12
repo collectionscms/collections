@@ -29,7 +29,7 @@ const LoginImpl: React.FC = () => {
   const { user, login } = useAuth();
   const { trigger, isMutating } = login();
   const { getProjectSetting } = useLogin();
-  const { data: projectSetting } = getProjectSetting({ suspense: true });
+  const { data: projectSetting } = getProjectSetting();
 
   const {
     control,
@@ -69,9 +69,9 @@ const LoginImpl: React.FC = () => {
           <Box sx={{ width: '40px', height: '40px' }}>
             <Logo />
           </Box>
-          <Typography variant="h3">{projectSetting?.name}</Typography>
+          <Typography variant="h3">{projectSetting.name}</Typography>
         </Stack>
-        {projectSetting?.before_login && sanitizedHtml(projectSetting.before_login)}
+        {projectSetting.before_login && sanitizedHtml(projectSetting.before_login)}
         <Stack component="form" onSubmit={handleSubmit(onSubmit)}>
           <Grid container spacing={3}>
             <Grid xs={12}>
@@ -129,7 +129,7 @@ const LoginImpl: React.FC = () => {
             </Grid>
           </Grid>
         </Stack>
-        {projectSetting?.after_login && sanitizedHtml(projectSetting.after_login)}
+        {projectSetting.after_login && sanitizedHtml(projectSetting.after_login)}
       </Stack>
     </>
   );
