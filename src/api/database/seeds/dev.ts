@@ -83,45 +83,9 @@ const seedingSystemData = async (database: Knex): Promise<void> => {
     },
   ] as any[]);
 
-  // Permission
-  Output.info('Creating permissions...');
-  await permissionsService.createMany([
-    // Editor
-    {
-      collection: 'Post',
-      action: 'read',
-      role_id: editorRole.id,
-    },
-    {
-      collection: 'Post',
-      action: 'create',
-      role_id: editorRole.id,
-    },
-    {
-      collection: 'Post',
-      action: 'update',
-      role_id: editorRole.id,
-    },
-    {
-      collection: 'Company',
-      action: 'read',
-      role_id: editorRole.id,
-    },
-    {
-      collection: 'Company',
-      action: 'create',
-      role_id: editorRole.id,
-    },
-    {
-      collection: 'Company',
-      action: 'update',
-      role_id: editorRole.id,
-    },
-  ]);
-
   // Collection: Post
   Output.info('Creating Post collection...');
-  await collectionsService.createCollection(
+  const postId = await collectionsService.createCollection(
     {
       collection: 'Post',
       singleton: false,
@@ -138,6 +102,7 @@ const seedingSystemData = async (database: Knex): Promise<void> => {
   Output.info('Creating Post fields...');
   await fieldsService.createField({
     collection: 'Post',
+    collection_id: postId,
     field: 'title',
     label: 'Title',
     special: null,
@@ -151,6 +116,7 @@ const seedingSystemData = async (database: Knex): Promise<void> => {
 
   await fieldsService.createField({
     collection: 'Post',
+    collection_id: postId,
     field: 'body',
     label: 'Body',
     special: null,
@@ -164,6 +130,7 @@ const seedingSystemData = async (database: Knex): Promise<void> => {
 
   await fieldsService.createField({
     collection: 'Post',
+    collection_id: postId,
     field: 'author',
     label: 'Author',
     special: null,
@@ -177,7 +144,7 @@ const seedingSystemData = async (database: Knex): Promise<void> => {
 
   // Collection: Company
   Output.info('Creating Company collection...');
-  await collectionsService.createCollection(
+  const companyId = await collectionsService.createCollection(
     {
       collection: 'Company',
       singleton: true,
@@ -194,6 +161,7 @@ const seedingSystemData = async (database: Knex): Promise<void> => {
   Output.info('Creating Company fields...');
   await fieldsService.createField({
     collection: 'Company',
+    collection_id: companyId,
     field: 'name',
     label: 'Company Name',
     special: null,
@@ -207,6 +175,7 @@ const seedingSystemData = async (database: Knex): Promise<void> => {
 
   await fieldsService.createField({
     collection: 'Company',
+    collection_id: companyId,
     field: 'email',
     label: 'Mail Address',
     special: null,
@@ -220,6 +189,7 @@ const seedingSystemData = async (database: Knex): Promise<void> => {
 
   await fieldsService.createField({
     collection: 'Company',
+    collection_id: companyId,
     field: 'address',
     label: 'Address',
     special: null,
@@ -230,6 +200,48 @@ const seedingSystemData = async (database: Knex): Promise<void> => {
     hidden: false,
     sort: 3,
   });
+
+  // Permission
+  Output.info('Creating permissions...');
+  await permissionsService.createMany([
+    // Editor
+    {
+      collection: 'Post',
+      collection_id: postId,
+      action: 'read',
+      role_id: editorRole.id,
+    },
+    {
+      collection: 'Post',
+      collection_id: postId,
+      action: 'create',
+      role_id: editorRole.id,
+    },
+    {
+      collection: 'Post',
+      collection_id: postId,
+      action: 'update',
+      role_id: editorRole.id,
+    },
+    {
+      collection: 'Company',
+      collection_id: companyId,
+      action: 'read',
+      role_id: editorRole.id,
+    },
+    {
+      collection: 'Company',
+      collection_id: companyId,
+      action: 'create',
+      role_id: editorRole.id,
+    },
+    {
+      collection: 'Company',
+      collection_id: companyId,
+      action: 'update',
+      role_id: editorRole.id,
+    },
+  ]);
 
   // Project Setting
   Output.info('Creating project settings...');

@@ -40,7 +40,7 @@ export class CollectionsService extends BaseService<Collection> {
       });
 
       const fieldsService = new FieldsService({ database: tx, schema: this.schema });
-      const fields = this.buildFields(data, status || false);
+      const fields = this.buildFields(collectionId, data, status || false);
       await fieldsService.createMany(fields);
 
       return collectionId;
@@ -100,8 +100,6 @@ export class CollectionsService extends BaseService<Collection> {
       const collectionsService = new CollectionsService({ database: tx, schema: this.schema });
       const collection = await collectionsService.readOne(key);
 
-      await collectionsService.deleteOne(key);
-
       const fieldsService = new FieldsService({ database: tx, schema: this.schema });
       const fieldIds = await fieldsService
         .readMany({
@@ -150,22 +148,29 @@ export class CollectionsService extends BaseService<Collection> {
       await relationsService.deleteMany(relationIds);
 
       // /////////////////////////////////////
-      // Delete Entity
+      // Delete Collection
       // /////////////////////////////////////
+      await collectionsService.deleteOne(key);
       await tx.schema.dropTable(collection.collection);
     });
   }
 
   /**
    * @description Build fields array
+   * @param collectionId
    * @param data
    * @param hasStatus
    * @returns fields array
    */
-  private buildFields = (data: Omit<Collection, 'id'>, hasStatus: boolean): Omit<Field, 'id'>[] => {
+  private buildFields = (
+    collectionId: PrimaryKey,
+    data: Omit<Collection, 'id'>,
+    hasStatus: boolean
+  ): Omit<Field, 'id'>[] => {
     const fields: Omit<Field, 'id'>[] = [
       {
         collection: data.collection,
+        collection_id: collectionId,
         field: 'id',
         label: 'id',
         interface: 'input',
@@ -178,6 +183,7 @@ export class CollectionsService extends BaseService<Collection> {
       },
       {
         collection: data.collection,
+        collection_id: collectionId,
         field: 'created_at',
         label: 'Created At',
         interface: 'dateTime',
@@ -190,6 +196,7 @@ export class CollectionsService extends BaseService<Collection> {
       },
       {
         collection: data.collection,
+        collection_id: collectionId,
         field: 'updated_at',
         label: 'Updated At',
         interface: 'dateTime',
@@ -205,6 +212,7 @@ export class CollectionsService extends BaseService<Collection> {
     if (hasStatus) {
       fields.push({
         collection: data.collection,
+        collection_id: collectionId,
         field: 'status',
         label: 'Status',
         interface: 'selectDropdownStatus',

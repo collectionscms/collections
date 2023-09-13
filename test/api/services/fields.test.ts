@@ -20,7 +20,7 @@ describe('Field', () => {
     archive_value: null,
   };
 
-  const fieldData: Omit<Field, 'id'> = {
+  const fieldData = {
     collection: collectionName,
     interface: 'input',
     required: false,
@@ -63,6 +63,7 @@ describe('Field', () => {
 
       const field = {
         ...fieldData,
+        collection_id: schema.collections[collectionName].id,
         field: 'team_name',
         label: 'Team Name',
       } as Omit<Field, 'id'>;
@@ -78,6 +79,7 @@ describe('Field', () => {
 
       const field = {
         ...fieldData,
+        collection_id: schema.collections[collectionName].id,
         field: 'point',
         label: 'Point',
       } as Omit<Field, 'id'>;
@@ -101,15 +103,16 @@ describe('Field', () => {
     it.each(testDatabases)(
       '%s - should throw on duplication system column error',
       async (database) => {
-        const field = {
-          ...fieldData,
-          field: 'id',
-          label: 'id',
-        } as Omit<Field, 'id'>;
-
         const connection = databases.get(database)!;
         const schema = await getSchemaOverview({ database: connection });
         const service = new FieldsService({ database: connection, schema });
+
+        const field = {
+          ...fieldData,
+          collection_id: schema.collections[collectionName].id,
+          field: 'id',
+          label: 'id',
+        } as Omit<Field, 'id'>;
 
         const result = service.createField(field);
         await expect(result).rejects.toThrow();
