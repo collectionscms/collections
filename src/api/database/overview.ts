@@ -4,9 +4,10 @@ import { FieldsService } from '../services/fields.js';
 import { RelationsService } from '../services/relations.js';
 import { getDatabase } from './connection.js';
 import { getSchemaInfo } from './inspector.js';
-import { Field } from './schemas.js';
+import { Field, PrimaryKey } from './schemas.js';
 
 export type CollectionOverview = {
+  id: PrimaryKey | null;
   collection: string;
   singleton: boolean;
   statusField: string | null;
@@ -59,6 +60,7 @@ export const getSchemaOverview = async (options?: { database?: Knex }): Promise<
     const metaCollection = collections.find((c) => c.collection === collection);
 
     schema.collections[collection] = {
+      id: metaCollection ? metaCollection.id : null,
       collection: collection,
       singleton: metaCollection && metaCollection.singleton ? true : false,
       statusField: metaCollection ? metaCollection.status_field : null,
