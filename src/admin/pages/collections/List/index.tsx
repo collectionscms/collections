@@ -20,8 +20,8 @@ const ListPageImpl: React.FC<Props> = ({ collection }) => {
   const theme = useTheme();
   const smDown = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const { data: metaFields } = getFields(collection.collection);
-  const { data: contents } = getContents(collection.collection);
+  const { data: metaFields } = getFields(collection.id.toString());
+  const { data: contents } = getContents(collection.id.toString());
 
   const getColumns = (collection: Collection, metaFields: GetField[]) => {
     const columnFields = buildColumnFields(collection, metaFields);
@@ -42,7 +42,7 @@ const ListPageImpl: React.FC<Props> = ({ collection }) => {
       secondary={
         <Stack direction={smDown ? 'column' : 'row'} alignItems="center" spacing={2}>
           <CreateNewButton to="create" disabled={!hasPermission(collection.collection, 'create')} />
-          <ApiPreview collection={collection.collection} singleton={collection.singleton} />
+          <ApiPreview collectionId={collection.id.toString()} singleton={collection.singleton} />
         </Stack>
       }
     >

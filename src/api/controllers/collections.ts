@@ -10,15 +10,11 @@ import { ImportDataService } from '../services/importData.js';
 const router = express.Router();
 
 router.get(
-  '/collections/:collection',
+  '/collections/:id',
   permissionsHandler(),
   asyncHandler(async (req: Request, res: Response) => {
     const service = new CollectionsService({ schema: req.schema });
-    const collection = await service
-      .readMany({
-        filter: { collection: { _eq: req.params.collection } },
-      })
-      .then((collections) => collections[0]);
+    const collection = await service.readOne(Number(req.params.id));
     if (!collection) throw new RecordNotFoundException('record_not_found');
 
     res.json({

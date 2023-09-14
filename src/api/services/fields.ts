@@ -15,13 +15,13 @@ export class FieldsService extends BaseService<Field> {
    * @description Get fields
    * Chaining orderBy is a workaround for the knex bug.
    * see: https://github.com/knex/knex/issues/5135#issuecomment-1160936433
-   * @param collection
+   * @param collectionId
    * @returns fields
    */
-  async getFields(collection: string): Promise<Field[]> {
+  async getFields(collectionId: string): Promise<Field[]> {
     const fields = await this.readMany(
       {
-        filter: { collection: { _eq: collection } },
+        filter: { collection_id: { _eq: collectionId } },
       },
       [
         { column: 'sort', order: 'asc', nulls: 'last' },

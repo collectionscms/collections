@@ -8,38 +8,38 @@ import { ContentContext } from './types.js';
 const Context = createContext({} as ContentContext);
 
 export const ContentContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const getContents = (collection: string) =>
+  const getContents = (collectionId: string) =>
     useSWR(
-      `/collections/${collection}/contents`,
+      `/collections/${collectionId}/contents`,
       (url) => api.get(url).then((res) => (res.data.data ? res.data.data : {})),
       { suspense: true }
     );
 
-  const getContent = (collection: string, id: string) =>
+  const getContent = (collectionId: string, id: string) =>
     useSWR(
-      `/collections/${collection}/contents/${id}`,
+      `/collections/${collectionId}/contents/${id}`,
       (url) => api.get<{ data: any }>(url).then((res) => res.data.data),
       { suspense: true }
     );
 
-  const getFields = (collection: string) =>
+  const getFields = (collectionId: string) =>
     useSWR(
-      `/collections/${collection}/fields`,
+      `/collections/${collectionId}/fields`,
       (url) => api.get<{ fields: GetField[] }>(url).then((res) => res.data.fields),
       { suspense: true }
     );
 
-  const createContent = (collection: string) =>
+  const createContent = (collectionId: string) =>
     useSWRMutation(
-      `/collections/${collection}/contents`,
+      `/collections/${collectionId}/contents`,
       async (url: string, { arg }: { arg: Record<string, any> }) => {
         return api.post<{ id: number }>(url, arg).then((res) => res.data.id);
       }
     );
 
-  const updateContent = (collection: string, id: string) =>
+  const updateContent = (collectionId: string, id: string) =>
     useSWRMutation(
-      `/collections/${collection}/contents/${id}`,
+      `/collections/${collectionId}/contents/${id}`,
       async (url: string, { arg }: { arg: Record<string, any> }) => {
         return api.patch(url, arg).then((res) => res.data);
       }
@@ -55,16 +55,16 @@ export const ContentContextProvider: React.FC<{ children: React.ReactNode }> = (
       return api.post<{ file: File; raw: string }>(url, arg).then((res) => res.data);
     });
 
-  const getRelations = (collection: string, field: string) =>
+  const getRelations = (collectionId: string, field: string) =>
     useSWR(
-      `/relations/${collection}/${field}`,
+      `/relations/${collectionId}/${field}`,
       (url) => api.get<{ relations: GetRelation[] }>(url).then((res) => res.data.relations),
       { suspense: true }
     );
 
-  const getCollection = (collection: string) =>
+  const getCollection = (collectionId: string) =>
     useSWR(
-      `/collections/${collection}`,
+      `/collections/${collectionId}`,
       (url) => api.get<{ collection: GetCollection }>(url).then((res) => res.data.collection),
       { suspense: true }
     );

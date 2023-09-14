@@ -8,13 +8,13 @@ export class RelationsService extends BaseService<Relation> {
 
   /**
    * @description Get relations for a collection.
-   * @param collection
+   * @param collectionId
    * @param field
    * @returns relations
    */
-  getRelations(collection: string, field: string): Promise<Relation[]> {
+  getRelations(collectionId: string, field: string): Promise<Relation[]> {
     return this.database(this.collection)
-      .where({ one_collection: collection, one_field: field })
-      .orWhere({ many_collection: collection, many_field: field });
+      .where({ one_collection_id: collectionId, one_field: field })
+      .orWhere({ many_collection_id: collectionId, many_field: field });
   }
 }

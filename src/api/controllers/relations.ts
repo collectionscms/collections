@@ -6,14 +6,14 @@ import { RelationsService } from '../services/relations.js';
 const router = express.Router();
 
 router.get(
-  '/relations/:collection/:field',
+  '/relations/:collectionId/:field',
   collectionPermissionsHandler('read'),
   asyncHandler(async (req: Request, res: Response) => {
-    const collection = req.params.collection;
+    const collectionId = req.params.collectionId;
     const field = req.params.field;
 
     const service = new RelationsService({ schema: req.schema });
-    const relations = await service.getRelations(collection, field);
+    const relations = await service.getRelations(collectionId, field);
 
     res.json({
       relations,

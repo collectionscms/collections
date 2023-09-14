@@ -24,11 +24,12 @@ const EditCollectionPageImpl: React.FC<Props> = ({ collection }) => {
   const navigate = useNavigate();
   const { getContent, getFields, updateContent } = useContent();
 
-  const { data: metaFields } = getFields(collection.collection);
-  const { data: content } = getContent(collection.collection, id);
+  const collectionId = collection.id.toString();
+  const { data: metaFields } = getFields(collectionId);
+  const { data: content } = getContent(collectionId, id);
 
   const { trigger: updateTrigger, isMutating: isUpdateMutating } = updateContent(
-    collection.collection,
+    collectionId,
     content.id
   );
 
@@ -83,7 +84,7 @@ const EditCollectionPageImpl: React.FC<Props> = ({ collection }) => {
                 >
                   <DeleteButton
                     id={id}
-                    slug={`collections/${collection.collection}/contents`}
+                    slug={`collections/${collection.id.toString()}/contents`}
                     disabled={!hasPermission(collection.collection, 'delete')}
                     onSuccess={navigateToList}
                   />

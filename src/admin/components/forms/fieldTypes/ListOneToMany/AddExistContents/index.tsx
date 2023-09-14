@@ -17,7 +17,7 @@ import { ComposeWrapper } from '../../../../utilities/ComposeWrapper/index.js';
 import { Props } from './types.js';
 
 const AddExistContentsImpl: React.FC<Props> = ({
-  collection,
+  collectionId,
   field,
   excludes,
   openState,
@@ -28,12 +28,12 @@ const AddExistContentsImpl: React.FC<Props> = ({
 
   const { getRelations, getContents, getFields, getCollection } = useContent();
 
-  const { data: relations } = getRelations(collection, field);
+  const { data: relations } = getRelations(collectionId, field);
   const relation = relations[0];
 
-  const { data: relatedCollection } = getCollection(relation.many_collection);
-  const { data: fields } = getFields(relation.many_collection);
-  const { data: content } = getContents(relation.many_collection);
+  const { data: relatedCollection } = getCollection(relation.many_collection_id.toString());
+  const { data: fields } = getFields(relation.many_collection_id.toString());
+  const { data: content } = getContents(relation.many_collection_id.toString());
 
   // Convert to array in case of singleton.
   const contents: any[] = content && !Array.isArray(content) ? [content] : content;

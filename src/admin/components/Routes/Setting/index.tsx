@@ -89,7 +89,7 @@ export const SettingRoutes = () => {
         ),
       },
       {
-        path: 'content-types/:collection',
+        path: 'content-types/:collectionId',
         element: (
           <MainHeader label={t('edit.content_type')}>
             <EditContentType />

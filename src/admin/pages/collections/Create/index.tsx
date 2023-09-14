@@ -20,11 +20,9 @@ const CreateCollectionPageImpl: React.FC<Props> = ({ collection }) => {
   const navigate = useNavigate();
   const { getFields, createContent } = useContent();
 
-  const { data: metaFields } = getFields(collection.collection);
-
-  const { trigger: createTrigger, isMutating: isCreateMutating } = createContent(
-    collection.collection
-  );
+  const collectionId = collection.id.toString();
+  const { data: metaFields } = getFields(collectionId);
+  const { trigger: createTrigger, isMutating: isCreateMutating } = createContent(collectionId);
 
   const formContext = useForm({
     defaultValues: metaFields.reduce(

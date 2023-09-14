@@ -58,10 +58,14 @@ export const ListOneToManyType: React.FC<Props> = (props) => {
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
+      const relatedCollection = collections.find(
+        (collection) => collection.collection === form.related_collection
+      );
       const results = await createRelationalFieldsTrigger({
         fields: [
           {
-            collection: collection,
+            collection: collection.collection,
+            collection_id: collection.id,
             field: form.field,
             label: form.label,
             interface: 'listOneToMany',
@@ -71,8 +75,9 @@ export const ListOneToManyType: React.FC<Props> = (props) => {
           },
           {
             collection: form.related_collection,
+            collection_id: relatedCollection?.id,
             field: form.foreign_key,
-            label: collection,
+            label: collection.collection,
             interface: 'selectDropdownManyToOne',
             required: false,
             readonly: false,
@@ -81,8 +86,10 @@ export const ListOneToManyType: React.FC<Props> = (props) => {
         ],
         relation: {
           many_collection: form.related_collection,
+          many_collection_id: relatedCollection?.id.toString(),
           many_field: form.foreign_key,
-          one_collection: collection,
+          one_collection: collection.collection,
+          one_collection_id: collection.id,
           one_field: form.field,
         },
       });
@@ -161,7 +168,7 @@ export const ListOneToManyType: React.FC<Props> = (props) => {
                     </MenuItem>
                     {collections &&
                       collections
-                        .filter((meta) => meta.collection !== collection)
+                        .filter((meta) => meta.collection !== collection.collection)
                         .map((collection) => (
                           <MenuItem value={collection.collection} key={collection.collection}>
                             {collection.collection}

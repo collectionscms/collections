@@ -4,14 +4,15 @@ import { asyncHandler } from './asyncHandler.js';
 
 export const collectionExists: RequestHandler = asyncHandler(
   async (req: Request, _res: Response, next: NextFunction) => {
-    if (!req.params.collection) return next();
+    if (!req.params.collectionId) return next();
 
-    if (req.params.collection in req.schema.collections === false) {
-      throw new ForbiddenException('forbidden');
+    for (const collection of Object.values(req.schema.collections)) {
+      if (collection.id?.toString() === req.params.collectionId) {
+        req.collection = collection;
+        return next();
+      }
     }
 
-    req.collection = req.schema.collections[req.params.collection];
-
-    return next();
+    throw new ForbiddenException('forbidden');
   }
 );

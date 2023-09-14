@@ -1,4 +1,4 @@
 export type Props = {
-  collection: string;
+  collectionId: string;
   singleton: boolean;
 };

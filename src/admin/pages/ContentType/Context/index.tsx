@@ -10,9 +10,9 @@ const Context = createContext({} as CollectionContext);
 export const CollectionContextProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const getCollection = (collection: string) =>
+  const getCollection = (collectionId: string) =>
     useSWR(
-      `/collections/${collection}`,
+      `/collections/${collectionId}`,
       (url) => api.get<{ collection: GetCollection }>(url).then((res) => res.data.collection),
       { suspense: true }
     );
@@ -39,9 +39,9 @@ export const CollectionContextProvider: React.FC<{ children: React.ReactNode }> 
       }
     );
 
-  const getFields = (collection: string) =>
+  const getFields = (collectionId: string) =>
     useSWR(
-      `/collections/${collection}/fields`,
+      `/collections/${collectionId}/fields`,
       (url) => api.get<{ fields: GetField[] }>(url).then((res) => res.data.fields),
       { suspense: true }
     );
