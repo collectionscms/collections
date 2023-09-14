@@ -39,6 +39,9 @@ async function dropCollections(database: Knex) {
     'collection_f1_grand_prix_races',
     'collection_f1_ferrari_team_stats',
     'collection_f1_grand_prix_race_stats',
+    'category',
+    'tag',
+    'post',
   ];
 
   for (const tableName of tableNames) {
