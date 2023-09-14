@@ -18,6 +18,7 @@ export type Collection = {
 
 export type Field = {
   collection: string;
+  collection_id: PrimaryKey;
   field: string;
   label: string;
   special: string | null;
@@ -48,6 +49,7 @@ export type Role = {
 
 export type Permission = {
   collection: string;
+  collection_id: PrimaryKey;
   action: string;
   role_id: number | null;
 } & TypeWithId;
@@ -70,8 +72,10 @@ export type File = {
 
 export type Relation = {
   many_collection: string;
+  many_collection_id: PrimaryKey;
   many_field: string;
   one_collection: string;
+  one_collection_id: PrimaryKey;
   one_field: string;
 } & TypeWithId;
 

@@ -10,6 +10,7 @@ import { testDatabases } from '../../utilities/testDatabases.js';
 describe('Transformers', () => {
   const databases = new Map<string, Knex>();
   const overview: CollectionOverview = {
+    id: 1,
     collection: 'mock_collections',
     singleton: false,
     statusField: null,

@@ -3,7 +3,7 @@ import { SWRMutationResponse } from 'swr/mutation';
 import { Collection, GetCollection, GetField, PostCollection } from '../../../config/types.js';
 
 export type CollectionContext = {
-  getCollection: (collection: string) => SWRResponse<
+  getCollection: (collectionId: string) => SWRResponse<
     GetCollection,
     Error,
     {
@@ -19,7 +19,7 @@ export type CollectionContext = {
   >;
   createCollection: SWRMutationResponse<number, any, string, Omit<PostCollection, 'id'>>;
   updateCollection: (id: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
-  getFields: (collection: string) => SWRResponse<
+  getFields: (collectionId: string) => SWRResponse<
     GetField[],
     Error,
     {

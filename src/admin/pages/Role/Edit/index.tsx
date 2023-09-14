@@ -133,7 +133,7 @@ const EditRolePageImpl: React.FC = () => {
                                   <PermissionToggleButton
                                     roleId={id}
                                     permissions={permissions}
-                                    collection={collection.collection}
+                                    collection={collection}
                                     action={action}
                                     onSuccess={handlePermissionSuccess}
                                   />

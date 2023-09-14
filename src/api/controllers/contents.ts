@@ -8,7 +8,7 @@ import { ContentsService } from '../services/contents.js';
 const router = express.Router();
 
 router.get(
-  '/collections/:collection/contents',
+  '/collections/:collectionId/contents',
   collectionExists,
   collectionPermissionsHandler('read'),
   asyncHandler(async (req: Request, res: Response) => {
@@ -26,7 +26,7 @@ router.get(
 );
 
 router.get(
-  '/collections/:collection/contents/:id',
+  '/collections/:collectionId/contents/:id',
   collectionExists,
   collectionPermissionsHandler('read'),
   asyncHandler(async (req: Request, res: Response) => {
@@ -47,7 +47,7 @@ router.get(
 );
 
 router.post(
-  '/collections/:collection/contents',
+  '/collections/:collectionId/contents',
   collectionExists,
   collectionPermissionsHandler('create'),
   asyncHandler(async (req: Request, res: Response) => {
@@ -66,7 +66,7 @@ router.post(
 );
 
 router.patch(
-  '/collections/:collection/contents/:id',
+  '/collections/:collectionId/contents/:id',
   collectionExists,
   collectionPermissionsHandler('update'),
   asyncHandler(async (req: Request, res: Response) => {
@@ -81,7 +81,7 @@ router.patch(
 );
 
 router.delete(
-  '/collections/:collection/contents/:id',
+  '/collections/:collectionId/contents/:id',
   collectionExists,
   collectionPermissionsHandler('delete'),
   asyncHandler(async (req: Request, res: Response) => {

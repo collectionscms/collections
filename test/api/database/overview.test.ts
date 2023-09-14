@@ -41,6 +41,7 @@ describe('Schema Overview', () => {
       // check meta collection overview
       const meta = overview.collections['superfast_collections'];
       expect(meta).toEqual({
+        id: overview.collections['superfast_collections'].id,
         collection: 'superfast_collections',
         singleton: false,
         statusField: null,
@@ -64,6 +65,7 @@ describe('Schema Overview', () => {
       // check entity collection overview
       const entity = overview.collections['collection_f1_grand_prix_races'];
       expect(entity).toEqual({
+        id: overview.collections['collection_f1_grand_prix_races'].id,
         collection: 'collection_f1_grand_prix_races',
         singleton: false,
         statusField: null,

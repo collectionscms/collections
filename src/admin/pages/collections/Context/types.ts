@@ -4,14 +4,14 @@ import { File, GetCollection, GetField, GetRelation } from '../../../config/type
 
 export type ContentContext = {
   // If the collection model is a singleton, return any.
-  getContents: (collection: string) => SWRResponse<any | any[], Error, { suspense: true }>;
-  getContent: (collection: string, id: string) => SWRResponse<any, Error, { suspense: true }>;
-  getFields: (collection: string) => SWRResponse<GetField[], Error, { suspense: true }>;
+  getContents: (collectionId: string) => SWRResponse<any | any[], Error, { suspense: true }>;
+  getContent: (collectionId: string, id: string) => SWRResponse<any, Error, { suspense: true }>;
+  getFields: (collectionId: string) => SWRResponse<GetField[], Error, { suspense: true }>;
   createContent: (
-    collection: string
+    collectionId: string
   ) => SWRMutationResponse<number, any, string, Record<string, any>>;
   updateContent: (
-    collection: string,
+    collectionId: string,
     id: string
   ) => SWRMutationResponse<void, any, string, Record<string, any>>;
   getFileImage: (id: string | null) => SWRMutationResponse<{ file: File; raw: string }>;
@@ -22,8 +22,8 @@ export type ContentContext = {
     Record<string, any>
   >;
   getRelations: (
-    collection: string,
+    collectionId: string,
     field: string
   ) => SWRResponse<GetRelation[], Error, { suspense: true }>;
-  getCollection: (collection: string) => SWRResponse<GetCollection, Error, { suspense: true }>;
+  getCollection: (collectionId: string) => SWRResponse<GetCollection, Error, { suspense: true }>;
 };

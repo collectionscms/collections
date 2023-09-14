@@ -28,7 +28,7 @@ import {
 import { ContentContextProvider } from '../Context/index.js';
 import { Props } from './types.js';
 
-const ApiPreviewImpl: React.FC<Props> = ({ collection }) => {
+const ApiPreviewImpl: React.FC<Props> = ({ collectionId }) => {
   const [open, setOpen] = useState(false);
   const [content, setContent] = useState<string | undefined>();
   const [tabIndex] = useState(0);
@@ -42,7 +42,7 @@ const ApiPreviewImpl: React.FC<Props> = ({ collection }) => {
     watch,
     formState: { errors },
   } = useForm<FormValues>({
-    defaultValues: { path: `api/collections/${collection}/contents` },
+    defaultValues: { path: `api/collections/${collectionId}/contents` },
     resolver: yupResolver(apiPreviewSchema),
   });
 

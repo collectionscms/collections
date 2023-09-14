@@ -41,7 +41,7 @@ export const SelectDropdownManyToOneTypeImpl: React.FC<Props> = ({
   return (
     <>
       <AddExistContents
-        collection={meta.collection}
+        collectionId={meta.collection_id.toString()}
         field={meta.field}
         openState={addRelationsOpen}
         onSuccess={(content) => handleSelectContent(content)}

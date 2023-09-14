@@ -22,8 +22,10 @@ export const FieldContextProvider: React.FC<{ children: React.ReactNode }> = ({ 
     );
 
   const getCollections = (): SWRResponse =>
-    useSWR('/collections', (url) =>
-      api.get<{ collections: Collection[] }>(url).then((res) => res.data.collections)
+    useSWR(
+      '/collections',
+      (url) => api.get<{ collections: Collection[] }>(url).then((res) => res.data.collections),
+      { suspense: true }
     );
 
   const value = useMemo(

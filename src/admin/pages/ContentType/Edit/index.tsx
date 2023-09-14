@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { useSnackbar } from 'notistack';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -34,16 +34,16 @@ import { EditMenu } from './Menu/index.js';
 import { SortableFieldList } from './SortableFieldList/index.js';
 
 const EditContentTypePageImpl: React.FC = () => {
-  const { collection } = useParams();
-  if (!collection) throw new Error('collection is not defined');
+  const { collectionId } = useParams();
+  if (!collectionId) throw new Error('collectionId is not defined');
 
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
   const { getCollection, updateCollection, getFields, updateFields } = useCollection();
-  const { data: metaCollection } = getCollection(collection);
-  const { data: fields, mutate } = getFields(collection);
+  const { data: metaCollection } = getCollection(collectionId);
+  const { data: fields, mutate } = getFields(collectionId);
   const { trigger, isMutating } = updateCollection(metaCollection.id.toString());
   const { trigger: updateFieldsTrigger } = updateFields();
 
@@ -68,6 +68,10 @@ const EditContentTypePageImpl: React.FC = () => {
     },
     resolver: yupResolver(updateCollectionSchema()),
   });
+
+  useEffect(() => {
+    setSortableFields(fields);
+  }, [fields]);
 
   const onToggleCreateField = (state: boolean) => {
     setCreateFieldOpen(state);
@@ -129,20 +133,21 @@ const EditContentTypePageImpl: React.FC = () => {
   };
 
   const handleEditFieldSuccess = (field: Field) => {
+    const editedFields = fields.map((f) => (f.id === field.id ? field : f));
+    mutate(editedFields);
     setEditFieldOpen(false);
-    mutate(fields.map((f) => (f.id === field.id ? field : f)));
   };
 
   const handleDeleteFieldSuccess = () => {
-    const fields = sortableFields.filter((field) => field.id !== selectedField?.id);
-    setSortableFields(fields);
+    const deletedFields = fields.filter((f) => f.id !== selectedField?.id);
+    mutate(deletedFields);
     onCloseMenu();
   };
 
   return (
     <>
       <CreateField
-        collection={metaCollection.collection}
+        collection={metaCollection}
         openState={createFieldOpen}
         onSuccess={(field) => handleCreateFieldSuccess(field)}
         onClose={() => onToggleCreateField(false)}

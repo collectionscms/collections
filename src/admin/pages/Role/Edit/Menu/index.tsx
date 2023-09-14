@@ -21,7 +21,8 @@ const EditRoleMenuImpl: React.FC<Props> = (props) => {
   const handleCreate = () => {
     try {
       createPermissionTrigger({
-        collection,
+        collection: collection.collection,
+        collection_id: collection.id,
         action,
       });
       onSuccess();

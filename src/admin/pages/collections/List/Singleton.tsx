@@ -19,12 +19,11 @@ const SingletonPageImpl: React.FC<Props> = ({ collection }) => {
   const { enqueueSnackbar } = useSnackbar();
   const { getContents, getFields, createContent, updateContent } = useContent();
 
-  const { data: metaFields } = getFields(collection.collection);
-  const { data: content } = getContents(collection.collection);
+  const collectionId = collection.id.toString();
+  const { data: metaFields } = getFields(collectionId);
+  const { data: content } = getContents(collectionId);
 
-  const { trigger: createTrigger, isMutating: isCreateMutating } = createContent(
-    collection.collection
-  );
+  const { trigger: createTrigger, isMutating: isCreateMutating } = createContent(collectionId);
   const {
     trigger: updateTrigger,
     isMutating: isUpdateMutating,
@@ -68,7 +67,7 @@ const SingletonPageImpl: React.FC<Props> = ({ collection }) => {
         <MainCard
           title={<></>}
           secondary={
-            <ApiPreview collection={collection.collection} singleton={collection.singleton} />
+            <ApiPreview collectionId={collection.id.toString()} singleton={collection.singleton} />
           }
         >
           <form onSubmit={formContext.handleSubmit(onSubmit)}>

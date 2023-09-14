@@ -1,7 +1,7 @@
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import React, { useState } from 'react';
 import { IconButton } from 'superfast-ui';
-import { PermissionsAction } from '../../../../config/types.js';
+import { Collection, PermissionsAction } from '../../../../config/types.js';
 import { EditRoleMenu } from '../Menu/index.js';
 import { Props } from './types.js';
 
@@ -9,13 +9,13 @@ export const PermissionToggleButton: React.FC<Props> = (props) => {
   const { roleId, permissions, collection, action, onSuccess } = props;
   const [menu, setMenu] = useState<EventTarget | null>(null);
   const [selectedPermissionId, setSelectedPermissionId] = useState<number | null>(null);
-  const [selectedCollection, setSelectedCollection] = useState<string | null>(null);
+  const [selectedCollection, setSelectedCollection] = useState<Collection | null>(null);
   const [selectedAction, setSelectedAction] = useState<PermissionsAction | null>(null);
 
   const openMenu = (
     currentTarget: EventTarget,
     id: number | null,
-    collection: string,
+    collection: Collection,
     action: PermissionsAction
   ) => {
     setSelectedPermissionId(id);
@@ -31,7 +31,7 @@ export const PermissionToggleButton: React.FC<Props> = (props) => {
   };
 
   const permission = permissions.filter(
-    (permission) => permission.collection === collection && permission.action === action
+    (permission) => permission.collection_id === collection.id && permission.action === action
   )[0];
 
   return (

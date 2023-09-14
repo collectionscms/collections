@@ -4,7 +4,7 @@ import { RecordNotUniqueException } from '../../exceptions/database/recordNotUni
 import { UnsupportedMediaTypeException } from '../../exceptions/unsupportedMediaType.js';
 import { getDatabase } from '../database/connection.js';
 import { SchemaOverview, getSchemaOverview } from '../database/overview.js';
-import { Field } from '../database/schemas.js';
+import { Field, PrimaryKey } from '../database/schemas.js';
 import { AbstractServiceOptions } from './base.js';
 import { CollectionsService } from './collections.js';
 import { ContentsService } from './contents.js';
@@ -56,8 +56,8 @@ export class ImportDataService {
       // Create fixed data
       // /////////////////////////////////////
 
-      await this.createCollections(tx);
-      await this.createFields(tx);
+      const collectionKeys = await this.createCollections(tx);
+      await this.createFields(tx, collectionKeys);
 
       // /////////////////////////////////////
       // Create contents from file
@@ -72,16 +72,18 @@ export class ImportDataService {
     });
   }
 
-  private async createCollections(tx: Knex.Transaction): Promise<void> {
+  private async createCollections(tx: Knex.Transaction): Promise<Record<string, PrimaryKey>> {
     const collections = [
       { collection: 'category', hasStatus: false },
       { collection: 'tag', hasStatus: false },
       { collection: 'post', hasStatus: true },
     ];
 
+    const result: Record<string, PrimaryKey> = {};
+
     const collectionsService = new CollectionsService({ database: tx, schema: this.schema });
     for (const { collection, hasStatus } of collections) {
-      await collectionsService.createCollection(
+      const collectionId = await collectionsService.createCollection(
         {
           collection,
           singleton: false,
@@ -93,13 +95,21 @@ export class ImportDataService {
         },
         hasStatus
       );
+
+      result[collection] = collectionId;
     }
+
+    return result;
   }
 
-  private async createFields(tx: Knex.Transaction): Promise<void> {
+  private async createFields(
+    tx: Knex.Transaction,
+    collectionKeys: Record<string, PrimaryKey>
+  ): Promise<void> {
     const categoryFields: Omit<Field, 'id'>[] = [
       {
         collection: 'category',
+        collection_id: collectionKeys['category'],
         field: 'slug',
         label: 'Slug',
         interface: 'input',
@@ -112,6 +122,7 @@ export class ImportDataService {
       },
       {
         collection: 'category',
+        collection_id: collectionKeys['category'],
         field: 'name',
         label: 'Name',
         interface: 'input',
@@ -127,6 +138,7 @@ export class ImportDataService {
     const tagFields: Omit<Field, 'id'>[] = [
       {
         collection: 'tag',
+        collection_id: collectionKeys['tag'],
         field: 'slug',
         label: 'Slug',
         interface: 'input',
@@ -139,6 +151,7 @@ export class ImportDataService {
       },
       {
         collection: 'tag',
+        collection_id: collectionKeys['tag'],
         field: 'name',
         label: 'Name',
         interface: 'input',
@@ -154,6 +167,7 @@ export class ImportDataService {
     const postFields: Omit<Field, 'id'>[] = [
       {
         collection: 'post',
+        collection_id: collectionKeys['post'],
         field: 'title',
         label: 'Title',
         interface: 'input',
@@ -166,6 +180,7 @@ export class ImportDataService {
       },
       {
         collection: 'post',
+        collection_id: collectionKeys['post'],
         field: 'content',
         label: 'Content',
         interface: 'inputMultiline', // TODO: Change to 'inputRichTextHtml'
@@ -178,6 +193,7 @@ export class ImportDataService {
       },
       {
         collection: 'post',
+        collection_id: collectionKeys['post'],
         field: 'slug',
         label: 'Slug',
         interface: 'input',
@@ -190,6 +206,7 @@ export class ImportDataService {
       },
       {
         collection: 'post',
+        collection_id: collectionKeys['post'],
         field: 'published_date',
         label: 'publishedDate',
         interface: 'dateTime',
@@ -202,6 +219,7 @@ export class ImportDataService {
       },
       {
         collection: 'post',
+        collection_id: collectionKeys['post'],
         field: 'is_page',
         label: 'isPage',
         interface: 'boolean',
@@ -231,13 +249,16 @@ export class ImportDataService {
     await fieldsService.createRelationalFields(
       {
         many_collection: 'category',
+        many_collection_id: collectionKeys['category'],
         many_field: 'post_id',
         one_collection: 'post',
+        one_collection_id: collectionKeys['post'],
         one_field: 'categories',
       },
       [
         {
           collection: 'post',
+          collection_id: collectionKeys['post'],
           field: 'categories',
           label: 'Categories',
           interface: 'listOneToMany',
@@ -250,6 +271,7 @@ export class ImportDataService {
         },
         {
           collection: 'category',
+          collection_id: collectionKeys['category'],
           field: 'post_id',
           label: 'Post Id',
           interface: 'selectDropdownManyToOne',
@@ -270,13 +292,16 @@ export class ImportDataService {
     await fieldsService.createRelationalFields(
       {
         many_collection: 'tag',
+        many_collection_id: collectionKeys['tag'],
         many_field: 'post_id',
         one_collection: 'post',
+        one_collection_id: collectionKeys['post'],
         one_field: 'tags',
       },
       [
         {
           collection: 'post',
+          collection_id: collectionKeys['post'],
           field: 'tags',
           label: 'Tags',
           interface: 'listOneToMany',
@@ -289,6 +314,7 @@ export class ImportDataService {
         },
         {
           collection: 'tag',
+          collection_id: collectionKeys['tag'],
           field: 'post_id',
           label: 'Post Id',
           interface: 'selectDropdownManyToOne',

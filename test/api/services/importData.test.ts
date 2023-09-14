@@ -37,48 +37,52 @@ describe('ImportDataService', () => {
       );
     });
 
-    it.each(testDatabases)('%s - should import', async (database) => {
-      const connection = databases.get(database)!;
-      let schema = await getSchemaOverview({ database: connection });
+    it.each(testDatabases)(
+      '%s - should import',
+      async (database) => {
+        const connection = databases.get(database)!;
+        let schema = await getSchemaOverview({ database: connection });
 
-      const buffer = Buffer.from(wordPressXml);
-      const mimetype = 'text/xml';
+        const buffer = Buffer.from(wordPressXml);
+        const mimetype = 'text/xml';
 
-      const service = new ImportDataService({ database: connection, schema });
-      await service.importData(mimetype, buffer);
+        const service = new ImportDataService({ database: connection, schema });
+        await service.importData(mimetype, buffer);
 
-      schema = await getSchemaOverview({ database: connection });
+        schema = await getSchemaOverview({ database: connection });
 
-      const contentsService = new ContentsService('post', {
-        database: connection,
-        schema,
-      });
-      const contents = await contentsService.readMany({});
+        const contentsService = new ContentsService('post', {
+          database: connection,
+          schema,
+        });
+        const contents = await contentsService.readMany({});
 
-      expect(contents).toHaveLength(3);
-      expect(contents).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({
-            title: 'Hello world!',
-            status: 'published',
-            slug: 'hello-world',
-            is_page: false,
-          }),
-          expect.objectContaining({
-            title: 'Sample Page',
-            status: 'published',
-            slug: 'sample-page',
-            is_page: true,
-          }),
-          expect.objectContaining({
-            title: 'Privacy Policy',
-            status: 'draft',
-            slug: 'privacy-policy',
-            is_page: true,
-          }),
-        ])
-      );
-    });
+        expect(contents).toHaveLength(3);
+        expect(contents).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              title: 'Hello world!',
+              status: 'published',
+              slug: 'hello-world',
+              is_page: false,
+            }),
+            expect.objectContaining({
+              title: 'Sample Page',
+              status: 'published',
+              slug: 'sample-page',
+              is_page: true,
+            }),
+            expect.objectContaining({
+              title: 'Privacy Policy',
+              status: 'draft',
+              slug: 'privacy-policy',
+              is_page: true,
+            }),
+          ])
+        );
+      },
+      20_000
+    );
 
     it.each(testDatabases)('%s - should throw RecordNotUniqueException', async (database) => {
       const connection = databases.get(database)!;

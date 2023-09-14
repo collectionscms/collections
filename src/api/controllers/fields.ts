@@ -9,11 +9,11 @@ import { FieldsService } from '../services/fields.js';
 const router = express.Router();
 
 router.get(
-  '/collections/:collection/fields',
+  '/collections/:collectionId/fields',
   collectionPermissionsHandler('read'),
   asyncHandler(async (req: Request, res: Response) => {
     const service = new FieldsService({ schema: req.schema });
-    const fields = await service.getFields(req.params.collection);
+    const fields = await service.getFields(req.params.collectionId);
 
     const fieldWithOptions = fields.map((field) => {
       return {
