@@ -58,7 +58,7 @@ const EditUserPageImpl: React.FC = () => {
     resolver: yupResolver(updateUserSchema(t)),
   });
 
-  const onGenerateApiKey = () => {
+  const handleGenerateApiKey = () => {
     setValue('api_key', uuidv4());
   };
 
@@ -166,7 +166,7 @@ const EditUserPageImpl: React.FC = () => {
                                   <IconButton
                                     edge="end"
                                     color="secondary"
-                                    onClick={onGenerateApiKey}
+                                    onClick={handleGenerateApiKey}
                                   >
                                     <SyncOutlined />
                                   </IconButton>
