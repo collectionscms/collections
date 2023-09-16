@@ -2,8 +2,8 @@ import React, { createContext, useCallback, useContext, useMemo, useState } from
 import { useNavigate } from 'react-router-dom';
 import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
-import { AuthUser, Permission, PermissionsAction } from '../../../config/types.js';
 import { logger } from '../../../../utilities/logger.js';
+import { AuthUser, Permission, PermissionsAction } from '../../../config/types.js';
 import { api, attachRetry, removeAuthorization, setAuthorization } from '../../../utilities/api.js';
 import { AuthContext } from './types.js';
 
@@ -115,6 +115,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     [me]
   );
 
+  const updateApiKey = (key: string) => {
+    setApiKey(key);
+  };
+
   const value = useMemo(
     () => ({
       user: me?.user,
@@ -124,6 +128,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       logout,
       token: tokenInMemory,
       apiKey,
+      updateApiKey,
     }),
     [me, permissions, hasPermission, login, logout]
   );
