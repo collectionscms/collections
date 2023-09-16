@@ -130,3 +130,14 @@ export type File = { url?: string } & FileSchema;
 // /////////////////////////////////////
 
 export type GetRelation = {} & RelationSchema;
+
+// /////////////////////////////////////
+// DTO: Me
+// /////////////////////////////////////
+
+export type Me = {
+  user: AuthUser;
+  email: string;
+  apiKey: string | null;
+  token: string;
+};

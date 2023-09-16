@@ -7,8 +7,8 @@ import { AbstractServiceOptions, BaseService } from './base.js';
 import { RolesService } from './roles.js';
 
 export type Me = {
-  user: AuthUser;
-  apiKey: string | null;
+  auth: AuthUser;
+  user: User;
 };
 
 export class UsersService extends BaseService<User> {
@@ -63,8 +63,8 @@ export class UsersService extends BaseService<User> {
     const role = await rolesService.readOne(user.role_id);
 
     return {
-      user: this.toAuthUser(user.id, role.id, user.name, Boolean(role.admin_access)),
-      apiKey: user.api_key || null,
+      auth: this.toAuthUser(user.id, role.id, user.name, Boolean(role.admin_access)),
+      user: user,
     };
   }
 

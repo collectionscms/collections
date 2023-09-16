@@ -8,13 +8,13 @@ export const authHandler: RequestHandler = asyncHandler(
     if (req.token) {
       const service = new UsersService({ schema: req.schema });
       const me = await service.readMe({ apiKey: req.token });
-      const user = me?.user || verifyJwt(req.token);
+      const auth = me?.auth || verifyJwt(req.token);
 
-      if (user) {
-        req.userId = user.id;
-        req.adminAccess = user.adminAccess;
-        req.roleId = user.roleId;
-        req.appAccess = user.appAccess ?? false;
+      if (auth) {
+        req.userId = auth.id;
+        req.adminAccess = auth.adminAccess;
+        req.roleId = auth.roleId;
+        req.appAccess = auth.appAccess ?? false;
       }
     }
 

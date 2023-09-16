@@ -18,17 +18,18 @@ router.get(
     // Get access token from request parameter.
     if (req.userId) {
       const me = await service.readMe({ primaryKey: Number(req.userId) });
-      if (!me?.user) throw new RecordNotFoundException('record_not_found');
-      me.user.appAccess = true;
+      if (!me?.auth) throw new RecordNotFoundException('record_not_found');
+      me.auth.appAccess = true;
 
-      const accessToken = sign(me.user, env.ACCESS_TOKEN_TTL);
-      const refreshToken = sign(me.user, env.REFRESH_TOKEN_TTL);
+      const accessToken = sign(me.auth, env.ACCESS_TOKEN_TTL);
+      const refreshToken = sign(me.auth, env.REFRESH_TOKEN_TTL);
 
       res.cookie(`${env.COOKIE_PREFIX}-refresh-token`, refreshToken, cookieOptions);
 
       return res.json({
-        user: me.user,
-        apiKey: me.apiKey,
+        user: me.auth,
+        email: me.user.email,
+        apiKey: me.user.api_key,
         token: accessToken,
       });
     }
@@ -40,7 +41,12 @@ router.get(
       const me = await service.readMe({ primaryKey: verified.id });
       if (!me) throw new RecordNotFoundException('record_not_found');
 
-      return res.json({ user: me.user, apiKey: me.apiKey, token: token });
+      return res.json({
+        user: me.auth,
+        email: me.user.email,
+        apiKey: me.user.api_key,
+        token: token,
+      });
     }
 
     res.json({ user: null, apiKey: null, token: null });
