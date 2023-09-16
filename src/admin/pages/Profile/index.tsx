@@ -36,10 +36,10 @@ import { ProfileContextProvider, useProfile } from './Context/index.js';
 const ProfilePageImpl: React.FC = () => {
   const { t, i18n } = useTranslation();
   const { mode, setMode, autoMode } = useColorMode();
-  const { user, updateApiKey } = useAuth();
-  const { getUser, updateUser } = useProfile();
-  const { data: me } = getUser(user?.id);
-  const { trigger, isMutating } = updateUser(me.id);
+  const { updateApiKey } = useAuth();
+  const { getMe, updateMe } = useProfile();
+  const { data: me } = getMe();
+  const { trigger, isMutating } = updateMe();
 
   const {
     control,
@@ -48,7 +48,7 @@ const ProfilePageImpl: React.FC = () => {
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
-      name: me.name,
+      name: me.user.name,
       email: me.email,
       password: '',
       api_key: '',
@@ -188,9 +188,7 @@ const ProfilePageImpl: React.FC = () => {
                           id="api_key"
                           type="text"
                           placeholder={
-                            me.api_key
-                              ? t('hidden_for_security')
-                              : t('generate_api_key_placeholder')
+                            me.apiKey ? t('hidden_for_security') : t('generate_api_key_placeholder')
                           }
                           fullWidth
                           InputProps={{

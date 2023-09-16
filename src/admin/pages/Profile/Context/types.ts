@@ -1,14 +1,14 @@
 import { SWRResponse } from 'swr';
 import { SWRMutationResponse } from 'swr/mutation';
-import { User } from '../../../config/types.js';
+import { Me } from '../../../config/types.js';
 
 export type ProfileContext = {
-  getUser: (id: string | number | undefined) => SWRResponse<
-    User,
+  getMe: () => SWRResponse<
+    Me,
     Error,
     {
       suspense: true;
     }
   >;
-  updateUser: (id: string | number) => SWRMutationResponse<void, any, string, Record<string, any>>;
+  updateMe: () => SWRMutationResponse<void, any, string, Record<string, any>>;
 };
