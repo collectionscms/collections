@@ -153,7 +153,7 @@ const ApiPreviewImpl: React.FC<Props> = ({ collectionId }) => {
                     {apiKey ? (
                       <Typography sx={{ wordBreak: 'break-all' }}>{apiKey}</Typography>
                     ) : (
-                      <Link href={`/admin/settings/users/${user?.id}`}>
+                      <Link href="/admin/me">
                         <ArrowRightOutlined style={{ marginRight: 2 }} />
                         {t('go_to_registration')}
                       </Link>
