@@ -14,4 +14,5 @@ export type AuthContext<T = AuthUser> = {
     Record<string, any>
   >;
   logout: () => SWRMutationResponse;
+  updateApiKey: (key: string) => void;
 };

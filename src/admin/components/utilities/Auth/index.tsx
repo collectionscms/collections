@@ -2,8 +2,8 @@ import React, { createContext, useCallback, useContext, useMemo, useState } from
 import { useNavigate } from 'react-router-dom';
 import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
-import { AuthUser, Permission, PermissionsAction } from '../../../config/types.js';
 import { logger } from '../../../../utilities/logger.js';
+import { AuthUser, Me, Permission, PermissionsAction } from '../../../config/types.js';
 import { api, attachRetry, removeAuthorization, setAuthorization } from '../../../utilities/api.js';
 import { AuthContext } from './types.js';
 
@@ -65,11 +65,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // On mount, get user
   const { data: me, mutate } = useSWR('/me', (url) =>
     api
-      .get<{
-        token: string | null;
-        apiKey: string | null;
-        user: AuthUser | null;
-      }>(url)
+      .get<Me>(url)
       .then(({ data }) => {
         if (data.token) {
           setAuthorization(data.token);
@@ -115,6 +111,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     [me]
   );
 
+  const updateApiKey = (key: string) => {
+    setApiKey(key);
+  };
+
   const value = useMemo(
     () => ({
       user: me?.user,
@@ -124,6 +124,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       logout,
       token: tokenInMemory,
       apiKey,
+      updateApiKey,
     }),
     [me, permissions, hasPermission, login, logout]
   );
