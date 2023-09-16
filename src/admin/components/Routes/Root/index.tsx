@@ -8,7 +8,7 @@ import { MainHeader } from '../../elements/MainHeader/index.js';
 import { MainLayout } from '../../layouts/Main/index.js';
 import { useAuth } from '../../utilities/Auth/index.js';
 
-const Profile = Loader(lazy(() => import('../../../pages/Profile/index.js'), 'Profile'));
+const ProfilePage = Loader(lazy(() => import('../../../pages/Profile/index.js'), 'ProfilePage'));
 const group = profileNavItems();
 
 export const RootRoutes = () => {
@@ -34,7 +34,7 @@ export const RootRoutes = () => {
         path: 'me',
         element: (
           <MainHeader label={t('profile')}>
-            <Profile />
+            <ProfilePage />
           </MainHeader>
         ),
       },
