@@ -117,6 +117,7 @@
   "drag_and_drop_title": "ドラッグ＆ドロップしてください",
   "drag_and_drop_body1": "または ",
   "drag_and_drop_body2": "ファイル選択",
+  "drag_to_move": "ドラッグで移動",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",

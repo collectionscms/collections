@@ -117,7 +117,7 @@
   "drag_and_drop_title": "Drag & Drop",
   "drag_and_drop_body1": "Or ",
   "drag_and_drop_body2": "select a file",
-  "upload_file_manually": "Upload file",
+  "drag_to_move": "Drag to move",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion.",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",
