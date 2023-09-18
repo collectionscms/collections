@@ -95,7 +95,7 @@
     "pino": "^8.11.0",
     "pino-http": "^8.4.0",
     "pino-pretty": "^10.0.0",
-    "plugin-wp-importer": "^0.1.1",
+    "plugin-wp-importer": "^0.1.2",
     "react": "^18.2.0",
     "react-device-detect": "^2.2.3",
     "react-dom": "^18.2.0",
