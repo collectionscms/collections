@@ -221,7 +221,7 @@ const EditContentTypePageImpl: React.FC = () => {
                       render={({ field }) => (
                         <FormControlLabel
                           {...field}
-                          label={t('hide_within_app')}
+                          label={t('hidden_on_detail')}
                           control={<Checkbox checked={field.value} />}
                         />
                       )}
