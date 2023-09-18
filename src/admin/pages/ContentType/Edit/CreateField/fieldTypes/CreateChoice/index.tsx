@@ -97,6 +97,7 @@ export const CreateChoice: React.FC<Props> = ({ openState, onSuccess, onClose })
                         {...field}
                         type="text"
                         fullWidth
+                        placeholder={`${t('input_placeholder')} january`}
                         error={errors.value !== undefined}
                       />
                     )}
@@ -115,6 +116,7 @@ export const CreateChoice: React.FC<Props> = ({ openState, onSuccess, onClose })
                         {...field}
                         type="text"
                         fullWidth
+                        placeholder={`${t('input_placeholder')} ${t('january')}`}
                         error={errors.label !== undefined}
                       />
                     )}
