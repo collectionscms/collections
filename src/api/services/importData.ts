@@ -183,7 +183,7 @@ export class ImportDataService {
         collection_id: collectionKeys['post'],
         field: 'content',
         label: 'Content',
-        interface: 'inputMultiline', // TODO: Change to 'inputRichTextHtml'
+        interface: 'inputRichTextMd', // TODO: Change to 'inputRichTextHtml'
         readonly: false,
         required: false,
         hidden: false,
