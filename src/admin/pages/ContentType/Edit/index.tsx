@@ -183,7 +183,7 @@ const EditContentTypePageImpl: React.FC = () => {
                       <SortableFieldList.Item id={item.id}>
                         <Box display="flex" justifyContent="space-between" alignItems="center">
                           <SortableFieldList.DragHandle />
-                          <Box sx={{ flexGrow: 1 }}>{item.field}</Box>
+                          <Box sx={{ flexGrow: 1, paddingLeft: 1 }}>{item.field}</Box>
                           {item.field !== 'id' && (
                             <SortableFieldList.ItemMenu
                               onClickItem={(e) => onOpenMenu(e.currentTarget, item)}
