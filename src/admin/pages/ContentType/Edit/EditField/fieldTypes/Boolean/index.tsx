@@ -154,7 +154,7 @@ export const BooleanType: React.FC<Props> = (props) => {
           </Grid>
           <Grid xs={1} sm={2}>
             <Stack spacing={1}>
-              <InputLabel>{t('hidden')}</InputLabel>
+              <InputLabel>{t('status')}</InputLabel>
               <Controller
                 name="hidden"
                 control={control}

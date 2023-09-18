@@ -183,7 +183,7 @@ const EditContentTypePageImpl: React.FC = () => {
                       <SortableFieldList.Item id={item.id}>
                         <Box display="flex" justifyContent="space-between" alignItems="center">
                           <SortableFieldList.DragHandle />
-                          <Box sx={{ flexGrow: 1 }}>{item.field}</Box>
+                          <Box sx={{ flexGrow: 1, paddingLeft: 1 }}>{item.field}</Box>
                           {item.field !== 'id' && (
                             <SortableFieldList.ItemMenu
                               onClickItem={(e) => onOpenMenu(e.currentTarget, item)}
@@ -214,14 +214,14 @@ const EditContentTypePageImpl: React.FC = () => {
               <Grid container spacing={3}>
                 <Grid xs={12} sm={6}>
                   <Stack spacing={1}>
-                    <InputLabel>{t('hidden')}</InputLabel>
+                    <InputLabel>{t('status')}</InputLabel>
                     <Controller
                       name="hidden"
                       control={control}
                       render={({ field }) => (
                         <FormControlLabel
                           {...field}
-                          label={t('hide_within_app')}
+                          label={t('hidden_on_detail')}
                           control={<Checkbox checked={field.value} />}
                         />
                       )}
