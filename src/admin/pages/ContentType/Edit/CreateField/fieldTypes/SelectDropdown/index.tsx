@@ -75,7 +75,8 @@ export const SelectDropdownType: React.FC<Props> = (props) => {
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
       const field = await trigger({
-        collection: collection,
+        collection: collection.collection,
+        collection_id: collection.id,
         field: form.field,
         label: form.label,
         interface: 'selectDropdown',
