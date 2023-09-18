@@ -6,7 +6,7 @@ export type AuthContext<T = AuthUser> = {
   apiKey?: string | null;
   token?: string;
   permissions: Permission[] | null;
-  hasPermission: (collection: string, action: PermissionsAction) => boolean;
+  hasPermission: (collectionId: string, action: PermissionsAction) => boolean;
   login: () => SWRMutationResponse<
     { token: string; user: AuthUser },
     any,
