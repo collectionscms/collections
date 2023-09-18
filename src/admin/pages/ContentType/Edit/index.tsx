@@ -214,7 +214,7 @@ const EditContentTypePageImpl: React.FC = () => {
               <Grid container spacing={3}>
                 <Grid xs={12} sm={6}>
                   <Stack spacing={1}>
-                    <InputLabel>{t('hidden')}</InputLabel>
+                    <InputLabel>{t('status')}</InputLabel>
                     <Controller
                       name="hidden"
                       control={control}
