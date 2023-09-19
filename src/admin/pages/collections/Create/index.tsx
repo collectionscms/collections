@@ -4,23 +4,23 @@ import { useSnackbar } from 'notistack';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { MainCard } from 'superfast-ui';
 import { logger } from '../../../../utilities/logger.js';
 import { RenderFields } from '../../../components/forms/RenderFields/index.js';
 import { useAuth } from '../../../components/utilities/Auth/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
+import { getCollectionId } from '../../../utilities/getCollectionId.js';
 import { ContentContextProvider, useContent } from '../Context/index.js';
-import { Props } from './types.js';
 
-const CreateCollectionPageImpl: React.FC<Props> = ({ collection }) => {
+const CreateCollectionPageImpl: React.FC = () => {
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
   const { hasPermission } = useAuth();
   const navigate = useNavigate();
   const { getFields, createContent } = useContent();
 
-  const collectionId = collection.id.toString();
+  const collectionId = getCollectionId(useLocation().pathname);
   const { data: metaFields } = getFields(collectionId);
   const { trigger: createTrigger, isMutating: isCreateMutating } = createContent(collectionId);
 
@@ -38,16 +38,16 @@ const CreateCollectionPageImpl: React.FC<Props> = ({ collection }) => {
   });
 
   const navigateToList = () => {
-    navigate(`/admin/collections/${collection.collection}`);
+    navigate(`/admin/collections/${collectionId}`);
   };
 
-  const hasSavePermission = hasPermission(collection.collection, 'create');
+  const hasSavePermission = hasPermission(collectionId, 'create');
 
   const onSubmit = async (data: Record<string, any>) => {
     try {
       await createTrigger(data);
       enqueueSnackbar(t('toast.created_successfully'), { variant: 'success' });
-      navigate(`/admin/collections/${collection.collection}`);
+      navigate(`/admin/collections/${collectionId}`);
     } catch (e) {
       logger.error(e);
     }

@@ -4,17 +4,17 @@ import { useSnackbar } from 'notistack';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { MainCard } from 'superfast-ui';
 import { logger } from '../../../../utilities/logger.js';
 import { DeleteButton } from '../../../components/elements/DeleteButton/index.js';
 import { RenderFields } from '../../../components/forms/RenderFields/index.js';
 import { useAuth } from '../../../components/utilities/Auth/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
+import { getCollectionId } from '../../../utilities/getCollectionId.js';
 import { ContentContextProvider, useContent } from '../Context/index.js';
-import { Props } from './types.js';
 
-const EditCollectionPageImpl: React.FC<Props> = ({ collection }) => {
+const EditCollectionPageImpl: React.FC = () => {
   const { id } = useParams();
   if (!id) throw new Error('id is not defined');
 
@@ -24,7 +24,7 @@ const EditCollectionPageImpl: React.FC<Props> = ({ collection }) => {
   const navigate = useNavigate();
   const { getContent, getFields, updateContent } = useContent();
 
-  const collectionId = collection.id.toString();
+  const collectionId = getCollectionId(useLocation().pathname);
   const { data: metaFields } = getFields(collectionId);
   const { data: content } = getContent(collectionId, id);
 
@@ -49,16 +49,16 @@ const EditCollectionPageImpl: React.FC<Props> = ({ collection }) => {
   });
 
   const navigateToList = () => {
-    navigate(`/admin/collections/${collection.collection}`);
+    navigate(`/admin/collections/${collectionId}`);
   };
 
-  const hasSavePermission = hasPermission(collection.collection, 'update');
+  const hasSavePermission = hasPermission(collectionId, 'update');
 
   const onSubmit = async (data: Record<string, any>) => {
     try {
       await updateTrigger(data);
       enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
-      navigate(`/admin/collections/${collection.collection}`);
+      navigate(`/admin/collections/${collectionId}`);
     } catch (e) {
       logger.error(e);
     }
@@ -84,8 +84,8 @@ const EditCollectionPageImpl: React.FC<Props> = ({ collection }) => {
                 >
                   <DeleteButton
                     id={id}
-                    slug={`collections/${collection.id.toString()}/contents`}
-                    disabled={!hasPermission(collection.collection, 'delete')}
+                    slug={`collections/${collectionId}/contents`}
+                    disabled={!hasPermission(collectionId, 'delete')}
                     onSuccess={navigateToList}
                   />
                   <Stack direction="row" spacing={1}>
