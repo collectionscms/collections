@@ -1,6 +1,6 @@
 {
   "name": "superfastcms",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0-beta.2",
   "description": "Free and Open-source Headless CMS and Application Framework built with TypeScript, Node.js, React.",
   "license": "MIT",
   "type": "module",
