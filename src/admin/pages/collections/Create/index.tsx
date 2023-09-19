@@ -38,7 +38,7 @@ const CreateCollectionPageImpl: React.FC = () => {
   });
 
   const navigateToList = () => {
-    navigate(`/admin/collections/${collectionId}`);
+    navigate(`/admin/collections/${collectionId}/contents`);
   };
 
   const hasSavePermission = hasPermission(collectionId, 'create');
@@ -47,7 +47,7 @@ const CreateCollectionPageImpl: React.FC = () => {
     try {
       await createTrigger(data);
       enqueueSnackbar(t('toast.created_successfully'), { variant: 'success' });
-      navigate(`/admin/collections/${collectionId}`);
+      navigate(`/admin/collections/${collectionId}/contents`);
     } catch (e) {
       logger.error(e);
     }

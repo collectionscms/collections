@@ -49,7 +49,7 @@ const EditCollectionPageImpl: React.FC = () => {
   });
 
   const navigateToList = () => {
-    navigate(`/admin/collections/${collectionId}`);
+    navigate(`/admin/collections/${collectionId}/contents`);
   };
 
   const hasSavePermission = hasPermission(collectionId, 'update');
@@ -58,7 +58,7 @@ const EditCollectionPageImpl: React.FC = () => {
     try {
       await updateTrigger(data);
       enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
-      navigate(`/admin/collections/${collectionId}`);
+      navigate(`/admin/collections/${collectionId}/contents`);
     } catch (e) {
       logger.error(e);
     }

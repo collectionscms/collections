@@ -31,7 +31,7 @@ const ListPageImpl: React.FC = () => {
 
     const columns = buildColumns(columnFields, (i: number, row: any, data: any) => {
       const cell = <Cell colIndex={i} type={columnFields[i].type} cellData={data} />;
-      return i === 0 ? <Link href={`contents/${row.id}`}>{cell}</Link> : cell;
+      return i === 0 ? <Link href={`${row.id}`}>{cell}</Link> : cell;
     });
 
     return columns;

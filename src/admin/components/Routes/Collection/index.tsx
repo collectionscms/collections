@@ -60,7 +60,7 @@ export const CollectionRoutes = () => {
       ...permittedCollections.flatMap((collection) => [
         collection.singleton
           ? {
-              path: `${collection.id}`,
+              path: `${collection.id}/contents`,
               element: (
                 <MainHeader label={collection.collection}>
                   <Singleton />
@@ -68,7 +68,7 @@ export const CollectionRoutes = () => {
               ),
             }
           : {
-              path: `${collection.id}`,
+              path: `${collection.id}/contents`,
               element: (
                 <MainHeader label={collection.collection}>
                   <List />
@@ -76,7 +76,7 @@ export const CollectionRoutes = () => {
               ),
             },
         {
-          path: `${collection.id}/create`,
+          path: `${collection.id}/contents/create`,
           element: (
             <MainHeader label={t('create.custom', { page: collection.collection })}>
               <CreateCollection />
