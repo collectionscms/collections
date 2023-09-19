@@ -4,22 +4,23 @@ import { useSnackbar } from 'notistack';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { useLocation } from 'react-router-dom';
 import { MainCard } from 'superfast-ui';
 import { logger } from '../../../../utilities/logger.js';
 import { RenderFields } from '../../../components/forms/RenderFields/index.js';
 import { useAuth } from '../../../components/utilities/Auth/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
+import { getCollectionId } from '../../../utilities/getCollectionId.js';
 import { ApiPreview } from '../ApiPreview/index.js';
 import { ContentContextProvider, useContent } from '../Context/index.js';
-import { Props } from './types.js';
 
-const SingletonPageImpl: React.FC<Props> = ({ collection }) => {
+const SingletonPageImpl: React.FC = () => {
   const { hasPermission } = useAuth();
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
   const { getContents, getFields, createContent, updateContent } = useContent();
 
-  const collectionId = collection.id.toString();
+  const collectionId = getCollectionId(useLocation().pathname);
   const { data: metaFields } = getFields(collectionId);
   const { data: content } = getContents(collectionId);
 
@@ -28,7 +29,7 @@ const SingletonPageImpl: React.FC<Props> = ({ collection }) => {
     trigger: updateTrigger,
     isMutating: isUpdateMutating,
     reset,
-  } = updateContent(collection.collection, content?.id);
+  } = updateContent(collectionId, content?.id);
 
   const formContext = useForm({
     defaultValues: metaFields.reduce(
@@ -66,9 +67,7 @@ const SingletonPageImpl: React.FC<Props> = ({ collection }) => {
       <Grid xs={12} lg={8}>
         <MainCard
           title={<></>}
-          secondary={
-            <ApiPreview collectionId={collection.id.toString()} singleton={collection.singleton} />
-          }
+          secondary={<ApiPreview collectionId={collectionId} singleton={true} />}
         >
           <form onSubmit={formContext.handleSubmit(onSubmit)}>
             <Grid container spacing={3}>
@@ -83,9 +82,7 @@ const SingletonPageImpl: React.FC<Props> = ({ collection }) => {
                     variant="contained"
                     type="submit"
                     disabled={
-                      !hasPermission(collection.collection, 'update') ||
-                      isCreateMutating ||
-                      isUpdateMutating
+                      !hasPermission(collectionId, 'update') || isCreateMutating || isUpdateMutating
                     }
                   >
                     {t('update')}

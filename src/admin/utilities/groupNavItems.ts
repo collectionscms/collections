@@ -14,7 +14,7 @@ export const collectionsGroupNavItems = (collections: Collection[]): Group => {
     label: 'content_management',
     items: collections.map((meta) => ({
       label: `${meta.collection}`,
-      href: `/admin/collections/${meta.collection}`,
+      href: `/admin/collections/${meta.id}/contents`,
       icon: UnorderedListOutlined,
     })),
   };
