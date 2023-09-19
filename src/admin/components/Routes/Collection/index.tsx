@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Navigate } from 'react-router-dom';
-import { Collection } from '../../../config/types.js';
 import { collectionsGroupNavItems } from '../../../utilities/groupNavItems.js';
 import lazy from '../../../utilities/lazy.js';
 import { Loader } from '../../elements/Loader/index.js';
@@ -17,38 +16,16 @@ const CollectionNotFound = Loader(
 const CreateFirstCollection = Loader(
   lazy(() => import('./CreateFirstCollection/index.js'), 'CreateFirstCollection')
 );
-
-const getListPage = (collection: Collection): JSX.Element => {
-  const ListPage = Loader(
-    lazy(() => import('../../../pages/collections/List/index.js'), 'ListPage'),
-    { collection }
-  );
-  return <ListPage />;
-};
-
-const getSingletonPage = (collection: Collection): JSX.Element => {
-  const SingletonPage = Loader(
-    lazy(() => import('../../../pages/collections/List/Singleton.js'), 'SingletonPage'),
-    { collection }
-  );
-  return <SingletonPage />;
-};
-
-const getCreateCollectionPage = (collection: Collection): JSX.Element => {
-  const CreateCollectionPage = Loader(
-    lazy(() => import('../../../pages/collections/Create/index.js'), 'CreateCollectionPage'),
-    { collection }
-  );
-  return <CreateCollectionPage />;
-};
-
-const getEditCollectionPage = (collection: Collection): JSX.Element => {
-  const EditCollectionPage = Loader(
-    lazy(() => import('../../../pages/collections/Edit/index.js'), 'EditCollectionPage'),
-    { collection }
-  );
-  return <EditCollectionPage />;
-};
+const List = Loader(lazy(() => import('../../../pages/collections/List/index.js'), 'ListPage'));
+const Singleton = Loader(
+  lazy(() => import('../../../pages/collections/List/Singleton.js'), 'SingletonPage')
+);
+const CreateCollection = Loader(
+  lazy(() => import('../../../pages/collections/Create/index.js'), 'CreateCollectionPage')
+);
+const EditCollection = Loader(
+  lazy(() => import('../../../pages/collections/Edit/index.js'), 'EditCollectionPage')
+);
 
 export const CollectionRoutes = () => {
   const { user } = useAuth();
@@ -83,32 +60,34 @@ export const CollectionRoutes = () => {
       ...permittedCollections.flatMap((collection) => [
         collection.singleton
           ? {
-              path: `${collection.collection}`,
+              path: `${collection.id}`,
               element: (
                 <MainHeader label={collection.collection}>
-                  {getSingletonPage(collection)}
+                  <Singleton />
                 </MainHeader>
               ),
             }
           : {
-              path: `${collection.collection}`,
+              path: `${collection.id}`,
               element: (
-                <MainHeader label={collection.collection}>{getListPage(collection)}</MainHeader>
+                <MainHeader label={collection.collection}>
+                  <List />
+                </MainHeader>
               ),
             },
         {
-          path: `${collection.collection}/create`,
+          path: `${collection.id}/create`,
           element: (
             <MainHeader label={t('create.custom', { page: collection.collection })}>
-              {getCreateCollectionPage(collection)}
+              <CreateCollection />
             </MainHeader>
           ),
         },
         {
-          path: `${collection.collection}/:id`,
+          path: `${collection.id}/contents/:id`,
           element: (
             <MainHeader label={t('edit.custom', { page: collection.collection })}>
-              {getEditCollectionPage(collection)}
+              <EditCollection />
             </MainHeader>
           ),
         },
