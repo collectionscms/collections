@@ -10,7 +10,7 @@ const router = express.Router();
 router.post(
   '/files',
   asyncHandler(multipartHandler),
-  permissionsHandler([{ collection: 'superfast_files', action: 'create' }]),
+  permissionsHandler(),
   asyncHandler(async (req: Request, res: Response) => {
     const keys = res.locals.savedFileKeys;
 
@@ -25,7 +25,7 @@ router.post(
 
 router.get(
   '/files/:id',
-  permissionsHandler([{ collection: 'superfast_files', action: 'read' }]),
+  permissionsHandler(),
   asyncHandler(async (req: Request, res: Response) => {
     const id = Number(req.params.id);
 
