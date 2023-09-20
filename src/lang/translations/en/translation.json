@@ -36,7 +36,7 @@
   "invalid": "Invalid",
   "description": "Description",
   "add_field": "Add Field",
-  "field": "Field Name",
+  "field_name": "Field Name",
   "label": "Label",
   "input_placeholder": "ex:",
   "select_field_type": "Select field type",

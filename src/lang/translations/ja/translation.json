@@ -36,7 +36,7 @@
   "invalid": "無効",
   "description": "説明",
   "add_field": "フィールドを追加",
-  "field": "フィールド名",
+  "field_name": "フィールド名",
   "label": "ラベル",
   "input_placeholder": "例:",
   "select_field_type": "フィールドの種類を選択",
