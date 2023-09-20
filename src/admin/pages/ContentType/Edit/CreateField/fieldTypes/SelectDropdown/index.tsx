@@ -111,7 +111,7 @@ export const SelectDropdownType: React.FC<Props> = (props) => {
           <Grid container spacing={3} columns={{ xs: 1, sm: 4 }}>
             <Grid xs={1} sm={2}>
               <Stack spacing={1}>
-                <InputLabel required>{t('field')}</InputLabel>
+                <InputLabel required>{t('field_name')}</InputLabel>
                 <Controller
                   name="field"
                   control={control}
