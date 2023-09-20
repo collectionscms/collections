@@ -1,5 +1,5 @@
 import knex, { Knex } from 'knex';
-import { getSchemaOverview } from '../../../src/api/database/overview.js';
+import { SchemaOverview, getSchemaOverview } from '../../../src/api/database/overview.js';
 import { ContentsService } from '../../../src/api/services/contents.js';
 import { ImportDataService } from '../../../src/api/services/importData.js';
 import { RecordNotUniqueException } from '../../../src/exceptions/database/recordNotUnique.js';
@@ -22,6 +22,22 @@ describe('ImportDataService', () => {
       await connection.destroy();
     }
   });
+
+  const assertExpectedData = async (
+    connection: Knex,
+    schema: SchemaOverview,
+    collection: string,
+    expectData: any[]
+  ) => {
+    const contentsService = new ContentsService(collection, {
+      database: connection,
+      schema,
+    });
+    const contents = await contentsService.readMany({});
+
+    expect(contents).toHaveLength(expectData.length);
+    expect(contents).toEqual(expect.arrayContaining(expectData));
+  };
 
   describe('Import', () => {
     it.each(testDatabases)('%s - should throw UnsupportedMediaTypeException', async (database) => {
@@ -51,35 +67,47 @@ describe('ImportDataService', () => {
 
         schema = await getSchemaOverview({ database: connection });
 
-        const contentsService = new ContentsService('post', {
-          database: connection,
-          schema,
-        });
-        const contents = await contentsService.readMany({});
+        // category
+        await assertExpectedData(connection, schema, 'category', [
+          expect.objectContaining({
+            name: 'Uncategorized',
+            slug: 'uncategorized',
+          }),
+          expect.objectContaining({
+            name: 'blog',
+            slug: 'blog',
+          }),
+        ]);
 
-        expect(contents).toHaveLength(3);
-        expect(contents).toEqual(
-          expect.arrayContaining([
-            expect.objectContaining({
-              title: 'Hello world!',
-              status: 'published',
-              slug: 'hello-world',
-              is_page: false,
-            }),
-            expect.objectContaining({
-              title: 'Sample Page',
-              status: 'published',
-              slug: 'sample-page',
-              is_page: true,
-            }),
-            expect.objectContaining({
-              title: 'Privacy Policy',
-              status: 'draft',
-              slug: 'privacy-policy',
-              is_page: true,
-            }),
-          ])
-        );
+        // tag
+        await assertExpectedData(connection, schema, 'tag', [
+          expect.objectContaining({
+            name: 'post',
+            slug: 'post',
+          }),
+        ]);
+
+        // post
+        await assertExpectedData(connection, schema, 'post', [
+          expect.objectContaining({
+            title: 'Hello world!',
+            status: 'published',
+            slug: 'hello-world',
+            is_page: false,
+          }),
+          expect.objectContaining({
+            title: 'Sample Page',
+            status: 'published',
+            slug: 'sample-page',
+            is_page: true,
+          }),
+          expect.objectContaining({
+            title: 'Privacy Policy',
+            status: 'draft',
+            slug: 'privacy-policy',
+            is_page: true,
+          }),
+        ]);
       },
       20_000
     );
