@@ -110,8 +110,8 @@ export class ImportDataService {
       {
         collection: 'category',
         collection_id: collectionKeys['category'],
-        field: 'slug',
-        label: 'Slug',
+        field: 'name',
+        label: 'Name',
         interface: 'input',
         readonly: false,
         required: false,
@@ -123,8 +123,8 @@ export class ImportDataService {
       {
         collection: 'category',
         collection_id: collectionKeys['category'],
-        field: 'name',
-        label: 'Name',
+        field: 'slug',
+        label: 'Slug',
         interface: 'input',
         readonly: false,
         required: false,
@@ -139,8 +139,8 @@ export class ImportDataService {
       {
         collection: 'tag',
         collection_id: collectionKeys['tag'],
-        field: 'slug',
-        label: 'Slug',
+        field: 'name',
+        label: 'Name',
         interface: 'input',
         readonly: false,
         required: false,
@@ -152,8 +152,8 @@ export class ImportDataService {
       {
         collection: 'tag',
         collection_id: collectionKeys['tag'],
-        field: 'name',
-        label: 'Name',
+        field: 'slug',
+        label: 'Slug',
         interface: 'input',
         readonly: false,
         required: false,
