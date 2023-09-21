@@ -6,6 +6,7 @@ export type Props = {
   collection: Collection;
   action: PermissionsAction;
   menu: any;
-  onSuccess: () => void;
+  onCreate: () => void;
+  onDelete: () => void;
   onClose: () => void;
 };
