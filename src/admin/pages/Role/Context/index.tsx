@@ -46,7 +46,7 @@ export const RoleContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
     useSWRMutation(
       `/roles/${id}/permissions`,
       async (url: string, { arg }: { arg: Record<string, any> }) => {
-        return api.post<{ permission: Permission }>(url, arg).then((res) => res.data.permission);
+        return api.post<{ id: number }>(url, arg).then((res) => res.data.id);
       }
     );
 
