@@ -2,15 +2,23 @@ import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import React, { useState } from 'react';
 import { IconButton } from 'superfast-ui';
 import { Collection, PermissionsAction } from '../../../../config/types.js';
+import { useRole } from '../../Context/index.js';
 import { EditRoleMenu } from '../Menu/index.js';
 import { Props } from './types.js';
 
 export const PermissionToggleButton: React.FC<Props> = (props) => {
-  const { roleId, permissions, collection, action, onSuccess } = props;
+  const { roleId, permissions, mutate, collection, action } = props;
   const [menu, setMenu] = useState<EventTarget | null>(null);
   const [selectedPermissionId, setSelectedPermissionId] = useState<number | null>(null);
   const [selectedCollection, setSelectedCollection] = useState<Collection | null>(null);
   const [selectedAction, setSelectedAction] = useState<PermissionsAction | null>(null);
+
+  const { createPermission, deletePermission } = useRole();
+  const { trigger: createPermissionTrigger } = createPermission(roleId);
+  const { trigger: deletePermissionTrigger } = deletePermission(
+    roleId,
+    selectedPermissionId?.toString() || ''
+  );
 
   const openMenu = (
     currentTarget: EventTarget,
@@ -25,9 +33,33 @@ export const PermissionToggleButton: React.FC<Props> = (props) => {
   };
   const closeMenu = () => setMenu(null);
 
-  const handleSuccess = () => {
+  const handleCreate = async () => {
     closeMenu();
-    onSuccess(selectedPermissionId!);
+
+    const permissionId = await createPermissionTrigger({
+      collection: selectedCollection!.collection,
+      collection_id: collection.id,
+      action,
+    });
+
+    mutate([
+      ...permissions,
+      {
+        id: permissionId,
+        collection: collection.collection,
+        collection_id: collection.id,
+        role_id: Number(roleId),
+        action,
+      },
+    ]);
+  };
+
+  const handleDelete = async () => {
+    closeMenu();
+
+    await deletePermissionTrigger();
+
+    mutate(permissions.filter((permission) => permission.id !== selectedPermissionId));
   };
 
   const permission = permissions.filter(
@@ -42,7 +74,8 @@ export const PermissionToggleButton: React.FC<Props> = (props) => {
         collection={selectedCollection!}
         action={selectedAction!}
         menu={menu}
-        onSuccess={() => handleSuccess()}
+        onCreate={() => handleCreate()}
+        onDelete={() => handleDelete()}
         onClose={() => closeMenu()}
       />
       {permission ? (

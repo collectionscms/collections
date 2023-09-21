@@ -18,14 +18,13 @@ import {
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { useSnackbar } from 'notistack';
-import React, { Suspense } from 'react';
+import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { EmptyTable, MainCard } from 'superfast-ui';
 import { logger } from '../../../../utilities/logger.js';
 import { DeleteButton } from '../../../components/elements/DeleteButton/index.js';
-import { Loading } from '../../../components/elements/Loading/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
 import { PermissionsAction } from '../../../config/types.js';
 import {
@@ -64,10 +63,6 @@ const EditRolePageImpl: React.FC = () => {
 
   const navigateToList = () => {
     navigate('../roles');
-  };
-
-  const handlePermissionSuccess = (permissionId: number) => {
-    mutate(permissions.filter((permission) => permission.id !== permissionId));
   };
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
@@ -133,9 +128,9 @@ const EditRolePageImpl: React.FC = () => {
                                   <PermissionToggleButton
                                     roleId={id}
                                     permissions={permissions}
+                                    mutate={mutate}
                                     collection={collection}
                                     action={action}
-                                    onSuccess={handlePermissionSuccess}
                                   />
                                 </TableCell>
                               ))}
