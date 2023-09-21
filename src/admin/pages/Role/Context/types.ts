@@ -33,8 +33,6 @@ export type RoleContext = {
       suspense: true;
     }
   >;
-  createPermission: (
-    id: string
-  ) => SWRMutationResponse<Permission, any, string, Record<string, any>>;
+  createPermission: (id: string) => SWRMutationResponse<number, any, string, Record<string, any>>;
   deletePermission: (id: string, permissionId: string) => SWRMutationResponse;
 };
