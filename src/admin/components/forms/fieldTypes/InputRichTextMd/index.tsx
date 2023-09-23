@@ -1,9 +1,11 @@
 import { Box } from '@mui/material';
-import MDEditor from '@uiw/react-md-editor';
-import React from 'react';
+import MDEditor, { ICommand } from '@uiw/react-md-editor';
+import React, { useRef } from 'react';
 import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { SyntaxHighlighter } from 'superfast-ui';
+import { logger } from '../../../../../utilities/logger.js';
+import { useContent } from '../../../../pages/collections/Context/index.js';
 import { useColorMode } from '../../../utilities/ColorMode/index.js';
 import { Props } from '../types.js';
 import { commands } from './commands.js';
@@ -15,6 +17,10 @@ export const InputRichTextMdType: React.FC<Props> = ({
 }) => {
   const { t } = useTranslation();
   const { mode } = useColorMode();
+  const uploadImageRef = useRef<HTMLInputElement>(null);
+  const { createFileImage } = useContent();
+  const { trigger: createFileImageTrigger } = createFileImage();
+
   const required = meta.required && { required: t('yup.mixed.required') };
 
   const getLanguage = (className = '') => {
@@ -35,6 +41,30 @@ export const InputRichTextMdType: React.FC<Props> = ({
       })
       .filter(Boolean)
       .join('');
+
+  const handleSelectedFile = async (
+    files: FileList,
+    command: ICommand,
+    executeCommand: (command: ICommand, name?: string) => void
+  ) => {
+    const values = await Promise.all(
+      Array.from(files).map(async (file) => {
+        const params = new FormData();
+        params.append('image', file);
+
+        try {
+          const res = await createFileImageTrigger(params);
+          return `![](${res.file.url})`;
+        } catch (e) {
+          logger.error(e);
+          return '';
+        }
+      })
+    );
+
+    command.value = values.join('\n');
+    executeCommand(command, command.groupName);
+  };
 
   return (
     <Controller
@@ -64,7 +94,7 @@ export const InputRichTextMdType: React.FC<Props> = ({
               commands.unorderedList(t('unordered_list')),
               commands.orderedList(t('ordered_list')),
               commands.link(t('link')),
-              commands.image(t('image')),
+              commands.image(t('image'), uploadImageRef, handleSelectedFile),
             ]}
             extraCommands={[commands.fullScreen(t('full_screen'))]}
           />

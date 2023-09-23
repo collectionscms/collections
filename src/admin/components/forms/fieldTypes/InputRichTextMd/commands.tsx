@@ -1,10 +1,10 @@
 import {
   BoldOutlined,
-  FileImageOutlined,
   FullscreenOutlined,
   ItalicOutlined,
   LinkOutlined,
   OrderedListOutlined,
+  PictureOutlined,
   StrikethroughOutlined,
   UnorderedListOutlined,
 } from '@ant-design/icons';
@@ -98,15 +98,45 @@ const link = (title: string): ICommand => ({
   ),
 });
 
-const image = (title: string): ICommand => ({
+const image = (
+  title: string,
+  ref: React.RefObject<HTMLInputElement>,
+  onSelectedFile: (
+    files: FileList,
+    command: ICommand,
+    executeCommand: (command: ICommand, name?: string) => void
+  ) => void
+): ICommand => ({
   ...mdCommands.image,
-  render: (command, _, executeCommand) => (
-    <CommandButton
-      title={title}
-      icon={FileImageOutlined}
-      onClick={() => executeCommand(command, command.groupName)}
-    />
-  ),
+  render: (command, _, executeCommand) => {
+    const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+      const files = event.target.files;
+      if (!files) return;
+
+      onSelectedFile(files, command, executeCommand);
+      ref?.current?.removeAttribute('value');
+    };
+
+    return (
+      <>
+        <input
+          hidden
+          ref={ref}
+          type="file"
+          multiple
+          accept="image/gif,image/jpeg,image/png,image/webp"
+          onChange={handleImageUpload}
+        />
+        <CommandButton
+          title={title}
+          icon={PictureOutlined}
+          onClick={() => {
+            ref.current?.click();
+          }}
+        />
+      </>
+    );
+  },
 });
 
 const fullScreen = (title: string): ICommand => ({
@@ -127,7 +157,15 @@ export type CommandTypes = {
   unorderedList(title: string): ICommand;
   orderedList(title: string): ICommand;
   link(title: string): ICommand;
-  image(title: string): ICommand;
+  image(
+    title: string,
+    ref: React.RefObject<HTMLInputElement>,
+    onSelectedFile: (
+      files: FileList,
+      command: ICommand,
+      executeCommand: (command: ICommand, name?: string) => void
+    ) => void
+  ): ICommand;
   fullScreen(title: string): ICommand;
 };
 
