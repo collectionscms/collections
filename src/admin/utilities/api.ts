@@ -1,5 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import axiosRetry from 'axios-retry';
+import { logger } from '../../utilities/logger.js';
 import { ApiError } from '../config/types.js';
 
 export const api = axios.create({
@@ -26,35 +27,41 @@ export const removeAuthorization = () => {
  * 401(token_expired): Retry after request token.
  * 500: Retry the request three times.
  * other: No retry.
- *
- * @param onRequestToken A function that returns a new access token.
- * @param onError A function that is called when the token refresh fails.
  */
-export const attachRetry = (onRequestToken: () => Promise<string | null>, onError: () => void) => {
-  axiosRetry(api, {
-    retryCondition: async (error: AxiosError) => {
-      const apiError = error.response?.data as ApiError;
-      if (!apiError) return false;
+axiosRetry(api, {
+  retries: 3,
+  retryCondition: async (error: AxiosError) => {
+    const apiError = error.response?.data as ApiError;
+    if (!apiError) return false;
 
-      if (apiError.code === 'token_expired') {
-        delete error.config!.headers.Authorization;
-        removeAuthorization();
+    if (apiError.code === 'token_expired') {
+      delete error.config!.headers.Authorization;
+      removeAuthorization();
 
-        const token = await onRequestToken();
-        if (!token) {
-          onError();
-          return false;
-        }
-
-        error.config!.headers.Authorization = `Bearer ${token}`;
-        setAuthorization(token);
-
-        return true;
-      } else if (apiError.status === 500) {
-        return true;
-      } else {
+      const token = await refresh();
+      if (!token) {
+        window.location.replace('/admin/auth/logout-inactivity');
         return false;
       }
-    },
-  });
+
+      error.config!.headers.Authorization = `Bearer ${token}`;
+      setAuthorization(token);
+
+      return true;
+    } else if (apiError.status === 500) {
+      return true;
+    } else {
+      return false;
+    }
+  },
+});
+
+const refresh = async (): Promise<string | null> => {
+  try {
+    const response = await api.post<{ token: string }>('authentications/refresh');
+    return response.data.token;
+  } catch (error) {
+    logger.error(error);
+    return null;
+  }
 };

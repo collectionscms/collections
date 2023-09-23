@@ -1,10 +1,9 @@
 import React, { createContext, useCallback, useContext, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
 import { logger } from '../../../../utilities/logger.js';
 import { AuthUser, Me, Permission, PermissionsAction } from '../../../config/types.js';
-import { api, attachRetry, removeAuthorization, setAuthorization } from '../../../utilities/api.js';
+import { api, removeAuthorization, setAuthorization } from '../../../utilities/api.js';
 import { AuthContext } from './types.js';
 
 const Context = createContext({} as AuthContext);
@@ -12,7 +11,6 @@ const Context = createContext({} as AuthContext);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [tokenInMemory, setTokenInMemory] = useState<string>();
   const [apiKey, setApiKey] = useState<string | null>();
-  const navigate = useNavigate();
 
   const login = () =>
     useSWRMutation(
@@ -36,31 +34,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return res;
       });
     });
-
-  const refresh = () =>
-    useSWRMutation(`/authentications/refresh`, async (url: string) => {
-      return api.post<{ token: string }>(url).then((res) => {
-        return res.data.token;
-      });
-    });
-
-  const { trigger: refreshTrigger } = refresh();
-
-  // Refresh tokens when 401 is responded by api.
-  attachRetry(
-    async (): Promise<string | null> => {
-      try {
-        const token = await refreshTrigger();
-        return token || null;
-      } catch (e) {
-        logger.error(e);
-        return null;
-      }
-    },
-    () => {
-      navigate('/admin/auth/logout-inactivity');
-    }
-  );
 
   // On mount, get user
   const { data: me, mutate } = useSWR('/me', (url) =>
