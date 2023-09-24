@@ -3,10 +3,10 @@ import { Box, Drawer, Stack, Typography, useTheme } from '@mui/material';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { IconButton } from 'superfast-ui';
-import { Field, FieldInterface } from '../../../../config/types.js';
-import { BaseDialog } from '../../../../components/elements/BaseDialog/index.js';
+import { ConfirmDiscardDialog } from '../../../../components/elements/ConfirmDiscardDialog/index.js';
 import { ScrollBar } from '../../../../components/elements/ScrollBar/index.js';
 import { ComposeWrapper } from '../../../../components/utilities/ComposeWrapper/index.js';
+import { Field, FieldInterface } from '../../../../config/types.js';
 import { FieldContextProvider } from './Context/index.js';
 import { BooleanType } from './fieldTypes/Boolean/index.js';
 import { DateTimeType } from './fieldTypes/DateTime/index.js';
@@ -77,12 +77,10 @@ const CreateFieldImpl: React.FC<Props> = ({ collection, openState, onSuccess, on
 
   return (
     <Box>
-      <BaseDialog
+      <ConfirmDiscardDialog
         open={openUnsavedDialog}
-        title={t('dialog.unsaved_changes_title')}
-        body={t('dialog.unsaved_changes')}
-        confirm={{ label: t('dialog.discard_changes'), action: handleDiscardChanges }}
-        cancel={{ label: t('dialog.keep_editing'), action: handleKeepEditing }}
+        onDiscard={handleDiscardChanges}
+        onKeepEditing={handleKeepEditing}
       />
       <Drawer
         anchor="right"
