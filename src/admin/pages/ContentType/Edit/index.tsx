@@ -20,6 +20,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { MainCard } from 'superfast-ui';
 import { logger } from '../../../../utilities/logger.js';
+import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscardDialog/index.js';
 import { DeleteButton } from '../../../components/elements/DeleteButton/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
 import { Field } from '../../../config/types.js';
@@ -27,6 +28,7 @@ import {
   FormValues,
   updateCollection as updateCollectionSchema,
 } from '../../../fields/schemas/collections/updateCollection.js';
+import { useUnsavedPrompt } from '../../../hooks/useUnsavedPrompt.js';
 import { CollectionContextProvider, useCollection } from '../Context/index.js';
 import { CreateField } from './CreateField/index.js';
 import { EditField } from './EditField/index.js';
@@ -54,9 +56,10 @@ const EditContentTypePageImpl: React.FC = () => {
   const [sortableFields, setSortableFields] = useState<Field[]>(fields);
 
   const {
+    reset,
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { isDirty, errors },
   } = useForm<FormValues>({
     defaultValues: {
       hidden: Boolean(metaCollection.hidden),
@@ -68,6 +71,7 @@ const EditContentTypePageImpl: React.FC = () => {
     },
     resolver: yupResolver(updateCollectionSchema()),
   });
+  const { showPrompt, discard, keep } = useUnsavedPrompt(isDirty);
 
   useEffect(() => {
     setSortableFields(fields);
@@ -83,6 +87,7 @@ const EditContentTypePageImpl: React.FC = () => {
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
+      reset(form);
       await trigger(form);
       enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
       navigate('../content-types');
@@ -146,6 +151,7 @@ const EditContentTypePageImpl: React.FC = () => {
 
   return (
     <>
+      <ConfirmDiscardDialog open={showPrompt} onDiscard={discard} onKeepEditing={keep} />
       <CreateField
         collection={metaCollection}
         openState={createFieldOpen}
