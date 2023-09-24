@@ -8,11 +8,13 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { MainCard } from 'superfast-ui';
 import { logger } from '../../../utilities/logger.js';
+import { ConfirmDiscardDialog } from '../../components/elements/ConfirmDiscardDialog/index.js';
 import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.js';
 import {
   FormValues,
   updateProjectSetting as updateProjectSettingSchema,
 } from '../../fields/schemas/projectSettings/updateProjectSetting.js';
+import { useUnsavedPrompt } from '../../hooks/useUnsavedPrompt.js';
 import { ProjectSettingContextProvider, useProjectSetting } from './Context/index.js';
 
 const ProjectImpl: React.FC = () => {
@@ -22,9 +24,10 @@ const ProjectImpl: React.FC = () => {
   const { data: projectSetting } = getProjectSetting();
   const { trigger, isMutating } = updateProjectSetting();
   const {
+    reset,
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { isDirty, errors },
   } = useForm<FormValues>({
     defaultValues: {
       name: projectSetting.name,
@@ -33,9 +36,11 @@ const ProjectImpl: React.FC = () => {
     },
     resolver: yupResolver(updateProjectSettingSchema()),
   });
+  const { showPrompt, discard, keep } = useUnsavedPrompt(isDirty);
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
+      reset(form);
       await trigger(form);
       enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
     } catch (e) {
@@ -45,6 +50,7 @@ const ProjectImpl: React.FC = () => {
 
   return (
     <>
+      <ConfirmDiscardDialog open={showPrompt} onDiscard={discard} onKeepEditing={keep} />
       <Grid container spacing={2.5}>
         <Grid xs={12} lg={8}>
           <MainCard>
