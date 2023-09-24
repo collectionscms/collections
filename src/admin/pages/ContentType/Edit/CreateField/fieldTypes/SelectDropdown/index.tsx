@@ -17,13 +17,15 @@ import React, { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { IconButton } from 'superfast-ui';
-import { Choice } from '../../../../../../config/types.js';
 import { logger } from '../../../../../../../utilities/logger.js';
 import { shallowEqualObject } from '../../../../../../../utilities/shallowEqualObject.js';
+import { ConfirmDiscardDialog } from '../../../../../../components/elements/ConfirmDiscardDialog/index.js';
+import { Choice } from '../../../../../../config/types.js';
 import {
   FormValues,
   createSelectDropdown as schema,
 } from '../../../../../../fields/schemas/collectionFields/selectDropdown/createSelectDropdown.js';
+import { useUnsavedPrompt } from '../../../../../../hooks/useUnsavedPrompt.js';
 import { Accordion } from '../../../Accordion/index.js';
 import { useField } from '../../Context/index.js';
 import { CreateChoice } from '../CreateChoice/index.js';
@@ -42,11 +44,12 @@ export const SelectDropdownType: React.FC<Props> = (props) => {
     handleSubmit,
     reset,
     watch,
-    formState: { errors },
+    formState: { isDirty, errors },
   } = useForm<FormValues>({
     defaultValues,
     resolver: yupResolver(schema(t)),
   });
+  const { showPrompt, discard, keep } = useUnsavedPrompt(isDirty);
 
   useEffect(() => {
     watch((value) => {
@@ -74,6 +77,7 @@ export const SelectDropdownType: React.FC<Props> = (props) => {
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
+      reset(form);
       const field = await trigger({
         collection: collection.collection,
         collection_id: collection.id,
@@ -85,7 +89,6 @@ export const SelectDropdownType: React.FC<Props> = (props) => {
         hidden: false,
         options: { choices: form.choices },
       });
-      reset();
       onSuccess(field!);
     } catch (e) {
       logger.error(e);
@@ -94,6 +97,7 @@ export const SelectDropdownType: React.FC<Props> = (props) => {
 
   return (
     <>
+      <ConfirmDiscardDialog open={showPrompt} onDiscard={discard} onKeepEditing={keep} />
       <CreateChoice
         openState={state}
         onSuccess={(choice) => onCreateChoiceSuccessfully(choice)}
