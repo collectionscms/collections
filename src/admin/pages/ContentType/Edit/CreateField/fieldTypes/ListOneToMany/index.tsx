@@ -24,6 +24,8 @@ import {
 import { Accordion } from '../../../Accordion/index.js';
 import { useField } from '../../Context/index.js';
 import { Props } from '../types.js';
+import { useUnsavedPrompt } from '../../../../../../hooks/useUnsavedPrompt.js';
+import { ConfirmDiscardDialog } from '../../../../../../components/elements/ConfirmDiscardDialog/index.js';
 
 export const ListOneToManyType: React.FC<Props> = (props) => {
   const { collection, expanded, handleChange, onEditing, onSuccess } = props;
@@ -43,11 +45,12 @@ export const ListOneToManyType: React.FC<Props> = (props) => {
     handleSubmit,
     reset,
     watch,
-    formState: { errors },
+    formState: { isDirty, errors },
   } = useForm<FormValues>({
     defaultValues,
     resolver: yupResolver(schema(t)),
   });
+  const { showPrompt, discard, keep } = useUnsavedPrompt(isDirty);
 
   useEffect(() => {
     watch((value) => {
@@ -58,6 +61,7 @@ export const ListOneToManyType: React.FC<Props> = (props) => {
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
+      reset(form);
       const relatedCollection = collections.find(
         (collection) => collection.collection === form.related_collection
       );
@@ -93,7 +97,6 @@ export const ListOneToManyType: React.FC<Props> = (props) => {
           one_field: form.field,
         },
       });
-      reset();
       onSuccess(results![0]);
     } catch (e) {
       logger.error(e);
@@ -101,125 +104,128 @@ export const ListOneToManyType: React.FC<Props> = (props) => {
   };
 
   return (
-    <Accordion
-      expanded={expanded}
-      title={t('field_interface.list_o2m')}
-      description={t('field_interface.list_o2m_caption')}
-      icon={SubnodeOutlined}
-      type="bottom"
-      handleChange={() => handleChange('listOneToMany')}
-    >
-      <Stack component="form" onSubmit={handleSubmit(onSubmit)} rowGap={3}>
-        <Grid container spacing={3} columns={{ xs: 1, sm: 4 }}>
-          <Grid xs={1} sm={2}>
-            <Stack spacing={1}>
-              <InputLabel required>{t('field_name')}</InputLabel>
-              <Controller
-                name="field"
-                control={control}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    type="text"
-                    fullWidth
-                    placeholder={`${t('input_placeholder')} name`}
-                    error={errors.field !== undefined}
-                  />
-                )}
-              />
-              <FormHelperText error>{errors.field?.message}</FormHelperText>
-            </Stack>
+    <>
+      <ConfirmDiscardDialog open={showPrompt} onDiscard={discard} onKeepEditing={keep} />
+      <Accordion
+        expanded={expanded}
+        title={t('field_interface.list_o2m')}
+        description={t('field_interface.list_o2m_caption')}
+        icon={SubnodeOutlined}
+        type="bottom"
+        handleChange={() => handleChange('listOneToMany')}
+      >
+        <Stack component="form" onSubmit={handleSubmit(onSubmit)} rowGap={3}>
+          <Grid container spacing={3} columns={{ xs: 1, sm: 4 }}>
+            <Grid xs={1} sm={2}>
+              <Stack spacing={1}>
+                <InputLabel required>{t('field_name')}</InputLabel>
+                <Controller
+                  name="field"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      type="text"
+                      fullWidth
+                      placeholder={`${t('input_placeholder')} name`}
+                      error={errors.field !== undefined}
+                    />
+                  )}
+                />
+                <FormHelperText error>{errors.field?.message}</FormHelperText>
+              </Stack>
+            </Grid>
+            <Grid xs={1} sm={2}>
+              <Stack spacing={1}>
+                <InputLabel required>{t('label')}</InputLabel>
+                <Controller
+                  name="label"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      type="text"
+                      fullWidth
+                      placeholder={`${t('input_placeholder')} ${t('name')}`}
+                      error={errors.label !== undefined}
+                    />
+                  )}
+                />
+                <FormHelperText error>{errors.label?.message}</FormHelperText>
+              </Stack>
+            </Grid>
+            <Grid xs={1} sm={2}>
+              <Stack spacing={1}>
+                <InputLabel required>{t('related_content')}</InputLabel>
+                <Controller
+                  name="related_collection"
+                  control={control}
+                  defaultValue={''}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      fullWidth
+                      defaultValue={''}
+                      error={errors.related_collection !== undefined}
+                    >
+                      <MenuItem value="">
+                        <em>None</em>
+                      </MenuItem>
+                      {collections &&
+                        collections
+                          .filter((meta) => meta.collection !== collection.collection)
+                          .map((collection) => (
+                            <MenuItem value={collection.collection} key={collection.collection}>
+                              {collection.collection}
+                            </MenuItem>
+                          ))}
+                    </Select>
+                  )}
+                />
+                <FormHelperText error>{errors.related_collection?.message}</FormHelperText>
+              </Stack>
+            </Grid>
+            <Grid xs={1} sm={2}>
+              <Stack spacing={1}>
+                <InputLabel required>{t('foreign_key')}</InputLabel>
+                <Controller
+                  name="foreign_key"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      type="text"
+                      fullWidth
+                      error={errors.foreign_key !== undefined}
+                    />
+                  )}
+                />
+                <FormHelperText error>{errors.foreign_key?.message}</FormHelperText>
+              </Stack>
+            </Grid>
+            <Grid xs={1} sm={2}>
+              <Stack spacing={1}>
+                <InputLabel>{t('required_fields')}</InputLabel>
+                <Controller
+                  name="required"
+                  control={control}
+                  render={({ field }) => (
+                    <FormControlLabel
+                      {...field}
+                      label={t('required_at_creation')}
+                      control={<Checkbox />}
+                    />
+                  )}
+                />
+                <FormHelperText error>{errors.required?.message}</FormHelperText>
+              </Stack>
+            </Grid>
           </Grid>
-          <Grid xs={1} sm={2}>
-            <Stack spacing={1}>
-              <InputLabel required>{t('label')}</InputLabel>
-              <Controller
-                name="label"
-                control={control}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    type="text"
-                    fullWidth
-                    placeholder={`${t('input_placeholder')} ${t('name')}`}
-                    error={errors.label !== undefined}
-                  />
-                )}
-              />
-              <FormHelperText error>{errors.label?.message}</FormHelperText>
-            </Stack>
-          </Grid>
-          <Grid xs={1} sm={2}>
-            <Stack spacing={1}>
-              <InputLabel required>{t('related_content')}</InputLabel>
-              <Controller
-                name="related_collection"
-                control={control}
-                defaultValue={''}
-                render={({ field }) => (
-                  <Select
-                    {...field}
-                    fullWidth
-                    defaultValue={''}
-                    error={errors.related_collection !== undefined}
-                  >
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    {collections &&
-                      collections
-                        .filter((meta) => meta.collection !== collection.collection)
-                        .map((collection) => (
-                          <MenuItem value={collection.collection} key={collection.collection}>
-                            {collection.collection}
-                          </MenuItem>
-                        ))}
-                  </Select>
-                )}
-              />
-              <FormHelperText error>{errors.related_collection?.message}</FormHelperText>
-            </Stack>
-          </Grid>
-          <Grid xs={1} sm={2}>
-            <Stack spacing={1}>
-              <InputLabel required>{t('foreign_key')}</InputLabel>
-              <Controller
-                name="foreign_key"
-                control={control}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    type="text"
-                    fullWidth
-                    error={errors.foreign_key !== undefined}
-                  />
-                )}
-              />
-              <FormHelperText error>{errors.foreign_key?.message}</FormHelperText>
-            </Stack>
-          </Grid>
-          <Grid xs={1} sm={2}>
-            <Stack spacing={1}>
-              <InputLabel>{t('required_fields')}</InputLabel>
-              <Controller
-                name="required"
-                control={control}
-                render={({ field }) => (
-                  <FormControlLabel
-                    {...field}
-                    label={t('required_at_creation')}
-                    control={<Checkbox />}
-                  />
-                )}
-              />
-              <FormHelperText error>{errors.required?.message}</FormHelperText>
-            </Stack>
-          </Grid>
-        </Grid>
-        <Button variant="contained" type="submit" disabled={isMutating} fullWidth>
-          {t('save')}
-        </Button>
-      </Stack>
-    </Accordion>
+          <Button variant="contained" type="submit" disabled={isMutating} fullWidth>
+            {t('save')}
+          </Button>
+        </Stack>
+      </Accordion>
+    </>
   );
 };
