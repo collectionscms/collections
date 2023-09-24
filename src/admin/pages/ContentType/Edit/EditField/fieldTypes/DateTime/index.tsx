@@ -18,8 +18,10 @@ import {
   FormValues,
   updateDateTime as schema,
 } from '../../../../../../fields/schemas/collectionFields/dateTime/updateDateTime.js';
+import { useUnsavedPrompt } from '../../../../../../hooks/useUnsavedPrompt.js';
 import { useField } from '../../Context/index.js';
 import { Props } from '../types.js';
+import { ConfirmDiscardDialog } from '../../../../../../components/elements/ConfirmDiscardDialog/index.js';
 
 export const DateTimeType: React.FC<Props> = (props) => {
   const { field: meta, onEditing, onSuccess } = props;
@@ -38,11 +40,12 @@ export const DateTimeType: React.FC<Props> = (props) => {
     handleSubmit,
     reset,
     watch,
-    formState: { errors },
+    formState: { isDirty, errors },
   } = useForm<FormValues>({
     defaultValues,
     resolver: yupResolver(schema),
   });
+  const { showPrompt, discard, keep } = useUnsavedPrompt(isDirty);
 
   useEffect(() => {
     watch((value) => {
@@ -53,6 +56,7 @@ export const DateTimeType: React.FC<Props> = (props) => {
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
+      reset(form);
       const formData = {
         label: form.label,
         required: form.required,
@@ -60,7 +64,6 @@ export const DateTimeType: React.FC<Props> = (props) => {
         hidden: form.hidden,
       };
       await trigger(formData);
-      reset();
       onSuccess({
         ...meta,
         ...formData,
@@ -72,6 +75,7 @@ export const DateTimeType: React.FC<Props> = (props) => {
 
   return (
     <>
+      <ConfirmDiscardDialog open={showPrompt} onDiscard={discard} onKeepEditing={keep} />
       <Stack component="form" onSubmit={handleSubmit(onSubmit)} rowGap={3}>
         <Grid container spacing={3} columns={{ xs: 1, sm: 4 }}>
           <Grid xs={1} sm={2}>
