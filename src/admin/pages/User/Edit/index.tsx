@@ -29,7 +29,7 @@ import {
   updateUser as updateUserSchema,
 } from '../../../fields/schemas/users/updateUser.js';
 import { UserContextProvider, useUser } from '../Context/index.js';
-import { useUnsavedPrompt } from '../../../hooks/useUnsavedPrompt.js';
+import { useUnsavedChangesPrompt } from '../../../hooks/useUnsavedChangesPrompt.js';
 import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscardDialog/index.js';
 
 const EditUserPageImpl: React.FC = () => {
@@ -60,7 +60,7 @@ const EditUserPageImpl: React.FC = () => {
     },
     resolver: yupResolver(updateUserSchema(t)),
   });
-  const { showPrompt, discard, keep } = useUnsavedPrompt(isDirty);
+  const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
 
   const handleGenerateApiKey = () => {
     setValue('api_key', uuidv4());
@@ -86,7 +86,7 @@ const EditUserPageImpl: React.FC = () => {
 
   return (
     <>
-      <ConfirmDiscardDialog open={showPrompt} onDiscard={discard} onKeepEditing={keep} />
+      <ConfirmDiscardDialog open={showPrompt} onDiscard={proceed} onKeepEditing={stay} />
       <Grid container spacing={2.5}>
         <Grid xs={12} lg={8}>
           <MainCard>

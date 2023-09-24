@@ -32,7 +32,7 @@ import {
   FormValues,
   updateUser as updateUserSchema,
 } from '../../fields/schemas/profile/updateUser.js';
-import { useUnsavedPrompt } from '../../hooks/useUnsavedPrompt.js';
+import { useUnsavedChangesPrompt } from '../../hooks/useUnsavedChangesPrompt.js';
 import { ProfileContextProvider, useProfile } from './Context/index.js';
 
 const ProfilePageImpl: React.FC = () => {
@@ -58,7 +58,7 @@ const ProfilePageImpl: React.FC = () => {
     },
     resolver: yupResolver(updateUserSchema(t)),
   });
-  const { showPrompt, discard, keep } = useUnsavedPrompt(isDirty);
+  const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
 
   const handleChange = (event: SelectChangeEvent) => {
     i18n.changeLanguage(event.target.value);
@@ -84,7 +84,7 @@ const ProfilePageImpl: React.FC = () => {
 
   return (
     <>
-      <ConfirmDiscardDialog open={showPrompt} onDiscard={discard} onKeepEditing={keep} />
+      <ConfirmDiscardDialog open={showPrompt} onDiscard={proceed} onKeepEditing={stay} />
       <Grid container spacing={2.5} sx={{ mb: 1 }}>
         <Grid xs={12} lg={8}>
           <MainCard>

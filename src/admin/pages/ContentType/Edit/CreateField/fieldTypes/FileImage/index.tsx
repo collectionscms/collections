@@ -22,7 +22,7 @@ import {
 import { Accordion } from '../../../Accordion/index.js';
 import { useField } from '../../Context/index.js';
 import { Props } from '../types.js';
-import { useUnsavedPrompt } from '../../../../../../hooks/useUnsavedPrompt.js';
+import { useUnsavedChangesPrompt } from '../../../../../../hooks/useUnsavedChangesPrompt.js';
 import { ConfirmDiscardDialog } from '../../../../../../components/elements/ConfirmDiscardDialog/index.js';
 
 export const FileImageType: React.FC<Props> = (props) => {
@@ -41,7 +41,7 @@ export const FileImageType: React.FC<Props> = (props) => {
     defaultValues,
     resolver: yupResolver(schema(t)),
   });
-  const { showPrompt, discard, keep } = useUnsavedPrompt(isDirty);
+  const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
 
   useEffect(() => {
     watch((value) => {
@@ -71,7 +71,7 @@ export const FileImageType: React.FC<Props> = (props) => {
 
   return (
     <>
-      <ConfirmDiscardDialog open={showPrompt} onDiscard={discard} onKeepEditing={keep} />
+      <ConfirmDiscardDialog open={showPrompt} onDiscard={proceed} onKeepEditing={stay} />
       <Accordion
         expanded={expanded}
         title={t('field_interface.file_image')}

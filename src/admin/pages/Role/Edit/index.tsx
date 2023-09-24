@@ -32,7 +32,7 @@ import {
   FormValues,
   updateRole as updateRoleSchema,
 } from '../../../fields/schemas/roles/updateRole.js';
-import { useUnsavedPrompt } from '../../../hooks/useUnsavedPrompt.js';
+import { useUnsavedChangesPrompt } from '../../../hooks/useUnsavedChangesPrompt.js';
 import { RoleContextProvider, useRole } from '../Context/index.js';
 import { PermissionHeaderCell } from './HeaderCell/index.js';
 import { PermissionToggleButton } from './ToggleButton/index.js';
@@ -62,7 +62,7 @@ const EditRolePageImpl: React.FC = () => {
     },
     resolver: yupResolver(updateRoleSchema()),
   });
-  const { showPrompt, discard, keep } = useUnsavedPrompt(isDirty);
+  const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
   const actions: PermissionsAction[] = ['read', 'create', 'update', 'delete'];
 
   const navigateToList = () => {
@@ -82,7 +82,7 @@ const EditRolePageImpl: React.FC = () => {
 
   return (
     <>
-      <ConfirmDiscardDialog open={showPrompt} onDiscard={discard} onKeepEditing={keep} />
+      <ConfirmDiscardDialog open={showPrompt} onDiscard={proceed} onKeepEditing={stay} />
       <Grid container spacing={2.5} sx={{ mb: 1 }}>
         <Grid xs={12} lg={8}>
           <MainCard content={false} title={t('role_list')} subheader={t('auto_save')}>

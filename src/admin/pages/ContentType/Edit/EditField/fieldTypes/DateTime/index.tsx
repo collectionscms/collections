@@ -18,7 +18,7 @@ import {
   FormValues,
   updateDateTime as schema,
 } from '../../../../../../fields/schemas/collectionFields/dateTime/updateDateTime.js';
-import { useUnsavedPrompt } from '../../../../../../hooks/useUnsavedPrompt.js';
+import { useUnsavedChangesPrompt } from '../../../../../../hooks/useUnsavedChangesPrompt.js';
 import { useField } from '../../Context/index.js';
 import { Props } from '../types.js';
 import { ConfirmDiscardDialog } from '../../../../../../components/elements/ConfirmDiscardDialog/index.js';
@@ -45,7 +45,7 @@ export const DateTimeType: React.FC<Props> = (props) => {
     defaultValues,
     resolver: yupResolver(schema),
   });
-  const { showPrompt, discard, keep } = useUnsavedPrompt(isDirty);
+  const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
 
   useEffect(() => {
     watch((value) => {
@@ -75,7 +75,7 @@ export const DateTimeType: React.FC<Props> = (props) => {
 
   return (
     <>
-      <ConfirmDiscardDialog open={showPrompt} onDiscard={discard} onKeepEditing={keep} />
+      <ConfirmDiscardDialog open={showPrompt} onDiscard={proceed} onKeepEditing={stay} />
       <Stack component="form" onSubmit={handleSubmit(onSubmit)} rowGap={3}>
         <Grid container spacing={3} columns={{ xs: 1, sm: 4 }}>
           <Grid xs={1} sm={2}>

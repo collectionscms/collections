@@ -22,7 +22,7 @@ import {
   FormValues,
   createRole as createRoleSchema,
 } from '../../../fields/schemas/roles/createRole.js';
-import { useUnsavedPrompt } from '../../../hooks/useUnsavedPrompt.js';
+import { useUnsavedChangesPrompt } from '../../../hooks/useUnsavedChangesPrompt.js';
 import { RoleContextProvider, useRole } from '../Context/index.js';
 
 const CreateRolePageImpl: React.FC = () => {
@@ -44,7 +44,7 @@ const CreateRolePageImpl: React.FC = () => {
     },
     resolver: yupResolver(createRoleSchema()),
   });
-  const { showPrompt, discard, keep } = useUnsavedPrompt(isDirty);
+  const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
 
   const navigateToList = () => {
     navigate('../roles');
@@ -63,7 +63,7 @@ const CreateRolePageImpl: React.FC = () => {
 
   return (
     <>
-      <ConfirmDiscardDialog open={showPrompt} onDiscard={discard} onKeepEditing={keep} />
+      <ConfirmDiscardDialog open={showPrompt} onDiscard={proceed} onKeepEditing={stay} />
       <Grid container spacing={2.5}>
         <Grid xs={12} lg={8}>
           <MainCard>

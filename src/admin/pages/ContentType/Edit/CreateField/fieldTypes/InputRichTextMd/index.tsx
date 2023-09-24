@@ -20,7 +20,7 @@ import {
   FormValues,
   createInput as schema,
 } from '../../../../../../fields/schemas/collectionFields/input/createInput.js';
-import { useUnsavedPrompt } from '../../../../../../hooks/useUnsavedPrompt.js';
+import { useUnsavedChangesPrompt } from '../../../../../../hooks/useUnsavedChangesPrompt.js';
 import { Accordion } from '../../../Accordion/index.js';
 import { useField } from '../../Context/index.js';
 import { Props } from '../types.js';
@@ -41,7 +41,7 @@ export const InputRichTextMdType: React.FC<Props> = (props) => {
     defaultValues,
     resolver: yupResolver(schema(t)),
   });
-  const { showPrompt, discard, keep } = useUnsavedPrompt(isDirty);
+  const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
 
   useEffect(() => {
     watch((value) => {
@@ -71,7 +71,7 @@ export const InputRichTextMdType: React.FC<Props> = (props) => {
 
   return (
     <>
-      <ConfirmDiscardDialog open={showPrompt} onDiscard={discard} onKeepEditing={keep} />
+      <ConfirmDiscardDialog open={showPrompt} onDiscard={proceed} onKeepEditing={stay} />
       <Accordion
         expanded={expanded}
         title={t('field_interface.input_rich_text_md')}

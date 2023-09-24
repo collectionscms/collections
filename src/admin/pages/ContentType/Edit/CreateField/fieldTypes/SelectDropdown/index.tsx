@@ -25,7 +25,7 @@ import {
   FormValues,
   createSelectDropdown as schema,
 } from '../../../../../../fields/schemas/collectionFields/selectDropdown/createSelectDropdown.js';
-import { useUnsavedPrompt } from '../../../../../../hooks/useUnsavedPrompt.js';
+import { useUnsavedChangesPrompt } from '../../../../../../hooks/useUnsavedChangesPrompt.js';
 import { Accordion } from '../../../Accordion/index.js';
 import { useField } from '../../Context/index.js';
 import { CreateChoice } from '../CreateChoice/index.js';
@@ -49,7 +49,7 @@ export const SelectDropdownType: React.FC<Props> = (props) => {
     defaultValues,
     resolver: yupResolver(schema(t)),
   });
-  const { showPrompt, discard, keep } = useUnsavedPrompt(isDirty);
+  const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
 
   useEffect(() => {
     watch((value) => {
@@ -97,7 +97,7 @@ export const SelectDropdownType: React.FC<Props> = (props) => {
 
   return (
     <>
-      <ConfirmDiscardDialog open={showPrompt} onDiscard={discard} onKeepEditing={keep} />
+      <ConfirmDiscardDialog open={showPrompt} onDiscard={proceed} onKeepEditing={stay} />
       <CreateChoice
         openState={state}
         onSuccess={(choice) => onCreateChoiceSuccessfully(choice)}

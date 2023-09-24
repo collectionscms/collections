@@ -3,19 +3,19 @@ import { unstable_useBlocker as useBlocker } from 'react-router-dom';
 
 type UnsavedPrompt = {
   showPrompt: boolean;
-  discard: () => void;
-  keep: () => void;
+  proceed: () => void;
+  stay: () => void;
 };
 
-export const useUnsavedPrompt = (shouldBlock: boolean): UnsavedPrompt => {
+export const useUnsavedChangesPrompt = (shouldBlock: boolean): UnsavedPrompt => {
   const blocker = useBlocker(shouldBlock);
   const showPrompt = blocker.state === 'blocked';
 
-  const discard = () => {
+  const proceed = () => {
     blocker.proceed?.();
   };
 
-  const keep = () => {
+  const stay = () => {
     blocker.reset?.();
   };
 
@@ -25,5 +25,5 @@ export const useUnsavedPrompt = (shouldBlock: boolean): UnsavedPrompt => {
     }
   }, [blocker, showPrompt, shouldBlock]);
 
-  return { showPrompt, discard, keep };
+  return { showPrompt, proceed, stay };
 };

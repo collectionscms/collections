@@ -25,7 +25,7 @@ import {
   FormValues,
   updateSelectDropdown as schema,
 } from '../../../../../../fields/schemas/collectionFields/selectDropdown/updateSelectDropdown.js';
-import { useUnsavedPrompt } from '../../../../../../hooks/useUnsavedPrompt.js';
+import { useUnsavedChangesPrompt } from '../../../../../../hooks/useUnsavedChangesPrompt.js';
 import { CreateChoice } from '../../../CreateField/fieldTypes/CreateChoice/index.js';
 import { useField } from '../../Context/index.js';
 import { Props } from '../types.js';
@@ -53,7 +53,7 @@ export const SelectDropdownType: React.FC<Props> = (props) => {
     defaultValues,
     resolver: yupResolver(schema),
   });
-  const { showPrompt, discard, keep } = useUnsavedPrompt(isDirty);
+  const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -103,7 +103,7 @@ export const SelectDropdownType: React.FC<Props> = (props) => {
 
   return (
     <>
-      <ConfirmDiscardDialog open={showPrompt} onDiscard={discard} onKeepEditing={keep} />
+      <ConfirmDiscardDialog open={showPrompt} onDiscard={proceed} onKeepEditing={stay} />
       <CreateChoice
         openState={state}
         onSuccess={(choice) => handleCreateChoiceSuccess(choice)}

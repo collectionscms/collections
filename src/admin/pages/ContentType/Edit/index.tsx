@@ -28,7 +28,7 @@ import {
   FormValues,
   updateCollection as updateCollectionSchema,
 } from '../../../fields/schemas/collections/updateCollection.js';
-import { useUnsavedPrompt } from '../../../hooks/useUnsavedPrompt.js';
+import { useUnsavedChangesPrompt } from '../../../hooks/useUnsavedChangesPrompt.js';
 import { CollectionContextProvider, useCollection } from '../Context/index.js';
 import { CreateField } from './CreateField/index.js';
 import { EditField } from './EditField/index.js';
@@ -71,7 +71,7 @@ const EditContentTypePageImpl: React.FC = () => {
     },
     resolver: yupResolver(updateCollectionSchema()),
   });
-  const { showPrompt, discard, keep } = useUnsavedPrompt(isDirty);
+  const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
 
   useEffect(() => {
     setSortableFields(fields);
@@ -151,7 +151,7 @@ const EditContentTypePageImpl: React.FC = () => {
 
   return (
     <>
-      <ConfirmDiscardDialog open={showPrompt} onDiscard={discard} onKeepEditing={keep} />
+      <ConfirmDiscardDialog open={showPrompt} onDiscard={proceed} onKeepEditing={stay} />
       <CreateField
         collection={metaCollection}
         openState={createFieldOpen}

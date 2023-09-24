@@ -24,7 +24,7 @@ import {
   FormValues,
   createCollection as createCollectionSchema,
 } from '../../../fields/schemas/collections/createCollection.js';
-import { useUnsavedPrompt } from '../../../hooks/useUnsavedPrompt.js';
+import { useUnsavedChangesPrompt } from '../../../hooks/useUnsavedChangesPrompt.js';
 import { CollectionContextProvider, useCollection } from '../Context/index.js';
 
 const CreateContentTypePageImpl: React.FC = () => {
@@ -43,7 +43,7 @@ const CreateContentTypePageImpl: React.FC = () => {
     defaultValues: { collection: '', singleton: false, status: false },
     resolver: yupResolver(createCollectionSchema(t)),
   });
-  const { showPrompt, discard, keep } = useUnsavedPrompt(isDirty);
+  const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
 
   const navigateToList = () => {
     navigate('../content-types');
@@ -69,7 +69,7 @@ const CreateContentTypePageImpl: React.FC = () => {
 
   return (
     <>
-      <ConfirmDiscardDialog open={showPrompt} onDiscard={discard} onKeepEditing={keep} />
+      <ConfirmDiscardDialog open={showPrompt} onDiscard={proceed} onKeepEditing={stay} />
       <Grid container spacing={2.5}>
         <Grid xs={12} lg={8}>
           <MainCard>

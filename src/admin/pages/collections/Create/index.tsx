@@ -11,7 +11,7 @@ import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscar
 import { RenderFields } from '../../../components/forms/RenderFields/index.js';
 import { useAuth } from '../../../components/utilities/Auth/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
-import { useUnsavedPrompt } from '../../../hooks/useUnsavedPrompt.js';
+import { useUnsavedChangesPrompt } from '../../../hooks/useUnsavedChangesPrompt.js';
 import { getCollectionId } from '../../../utilities/getCollectionId.js';
 import { ContentContextProvider, useContent } from '../Context/index.js';
 
@@ -43,7 +43,7 @@ const CreateCollectionPageImpl: React.FC = () => {
     reset,
     formState: { isDirty },
   } = formContext;
-  const { showPrompt, discard, keep } = useUnsavedPrompt(isDirty);
+  const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
 
   const navigateToList = () => {
     navigate(`/admin/collections/${collectionId}/contents`);
@@ -64,7 +64,7 @@ const CreateCollectionPageImpl: React.FC = () => {
 
   return (
     <>
-      <ConfirmDiscardDialog open={showPrompt} onDiscard={discard} onKeepEditing={keep} />
+      <ConfirmDiscardDialog open={showPrompt} onDiscard={proceed} onKeepEditing={stay} />
       <Grid container spacing={2.5}>
         <Grid xs={12} lg={8}>
           <MainCard>
