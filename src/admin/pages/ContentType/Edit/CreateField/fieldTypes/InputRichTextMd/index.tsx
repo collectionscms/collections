@@ -15,10 +15,12 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { logger } from '../../../../../../../utilities/logger.js';
 import { shallowEqualObject } from '../../../../../../../utilities/shallowEqualObject.js';
+import { ConfirmDiscardDialog } from '../../../../../../components/elements/ConfirmDiscardDialog/index.js';
 import {
   FormValues,
   createInput as schema,
 } from '../../../../../../fields/schemas/collectionFields/input/createInput.js';
+import { useUnsavedPrompt } from '../../../../../../hooks/useUnsavedPrompt.js';
 import { Accordion } from '../../../Accordion/index.js';
 import { useField } from '../../Context/index.js';
 import { Props } from '../types.js';
@@ -34,11 +36,12 @@ export const InputRichTextMdType: React.FC<Props> = (props) => {
     handleSubmit,
     reset,
     watch,
-    formState: { errors },
+    formState: { isDirty, errors },
   } = useForm<FormValues>({
     defaultValues,
     resolver: yupResolver(schema(t)),
   });
+  const { showPrompt, discard, keep } = useUnsavedPrompt(isDirty);
 
   useEffect(() => {
     watch((value) => {
@@ -49,6 +52,7 @@ export const InputRichTextMdType: React.FC<Props> = (props) => {
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
+      reset(form);
       const field = await trigger({
         collection: collection.collection,
         collection_id: collection.id,
@@ -59,7 +63,6 @@ export const InputRichTextMdType: React.FC<Props> = (props) => {
         readonly: false,
         hidden: false,
       });
-      reset();
       onSuccess(field!);
     } catch (e) {
       logger.error(e);
@@ -67,76 +70,79 @@ export const InputRichTextMdType: React.FC<Props> = (props) => {
   };
 
   return (
-    <Accordion
-      expanded={expanded}
-      title={t('field_interface.input_rich_text_md')}
-      description={t('field_interface.input_rich_text_md_caption')}
-      icon={FileMarkdownOutlined}
-      type="middle"
-      handleChange={() => handleChange('inputRichTextMd')}
-    >
-      <Stack component="form" onSubmit={handleSubmit(onSubmit)} rowGap={3}>
-        <Grid container spacing={3} columns={{ xs: 1, sm: 4 }}>
-          <Grid xs={1} sm={2}>
-            <Stack spacing={1}>
-              <InputLabel required>{t('field_name')}</InputLabel>
-              <Controller
-                name="field"
-                control={control}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    type="text"
-                    fullWidth
-                    placeholder={`${t('input_placeholder')} name`}
-                    error={errors.field !== undefined}
-                  />
-                )}
-              />
-              <FormHelperText error>{errors.field?.message}</FormHelperText>
-            </Stack>
+    <>
+      <ConfirmDiscardDialog open={showPrompt} onDiscard={discard} onKeepEditing={keep} />
+      <Accordion
+        expanded={expanded}
+        title={t('field_interface.input_rich_text_md')}
+        description={t('field_interface.input_rich_text_md_caption')}
+        icon={FileMarkdownOutlined}
+        type="middle"
+        handleChange={() => handleChange('inputRichTextMd')}
+      >
+        <Stack component="form" onSubmit={handleSubmit(onSubmit)} rowGap={3}>
+          <Grid container spacing={3} columns={{ xs: 1, sm: 4 }}>
+            <Grid xs={1} sm={2}>
+              <Stack spacing={1}>
+                <InputLabel required>{t('field_name')}</InputLabel>
+                <Controller
+                  name="field"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      type="text"
+                      fullWidth
+                      placeholder={`${t('input_placeholder')} name`}
+                      error={errors.field !== undefined}
+                    />
+                  )}
+                />
+                <FormHelperText error>{errors.field?.message}</FormHelperText>
+              </Stack>
+            </Grid>
+            <Grid xs={1} sm={2}>
+              <Stack spacing={1}>
+                <InputLabel required>{t('label')}</InputLabel>
+                <Controller
+                  name="label"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      type="text"
+                      fullWidth
+                      placeholder={`${t('input_placeholder')} ${t('name')}`}
+                      error={errors.label !== undefined}
+                    />
+                  )}
+                />
+                <FormHelperText error>{errors.label?.message}</FormHelperText>
+              </Stack>
+            </Grid>
+            <Grid xs={1} sm={2}>
+              <Stack spacing={1}>
+                <InputLabel>{t('required_fields')}</InputLabel>
+                <Controller
+                  name="required"
+                  control={control}
+                  render={({ field }) => (
+                    <FormControlLabel
+                      {...field}
+                      label={t('required_at_creation')}
+                      control={<Checkbox />}
+                    />
+                  )}
+                />
+                <FormHelperText error>{errors.required?.message}</FormHelperText>
+              </Stack>
+            </Grid>
           </Grid>
-          <Grid xs={1} sm={2}>
-            <Stack spacing={1}>
-              <InputLabel required>{t('label')}</InputLabel>
-              <Controller
-                name="label"
-                control={control}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    type="text"
-                    fullWidth
-                    placeholder={`${t('input_placeholder')} ${t('name')}`}
-                    error={errors.label !== undefined}
-                  />
-                )}
-              />
-              <FormHelperText error>{errors.label?.message}</FormHelperText>
-            </Stack>
-          </Grid>
-          <Grid xs={1} sm={2}>
-            <Stack spacing={1}>
-              <InputLabel>{t('required_fields')}</InputLabel>
-              <Controller
-                name="required"
-                control={control}
-                render={({ field }) => (
-                  <FormControlLabel
-                    {...field}
-                    label={t('required_at_creation')}
-                    control={<Checkbox />}
-                  />
-                )}
-              />
-              <FormHelperText error>{errors.required?.message}</FormHelperText>
-            </Stack>
-          </Grid>
-        </Grid>
-        <Button variant="contained" type="submit" disabled={isMutating} fullWidth>
-          {t('save')}
-        </Button>
-      </Stack>
-    </Accordion>
+          <Button variant="contained" type="submit" disabled={isMutating} fullWidth>
+            {t('save')}
+          </Button>
+        </Stack>
+      </Accordion>
+    </>
   );
 };
