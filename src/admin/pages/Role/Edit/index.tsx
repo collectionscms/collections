@@ -24,6 +24,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { EmptyTable, MainCard } from 'superfast-ui';
 import { logger } from '../../../../utilities/logger.js';
+import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscardDialog/index.js';
 import { DeleteButton } from '../../../components/elements/DeleteButton/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
 import { PermissionsAction } from '../../../config/types.js';
@@ -31,6 +32,7 @@ import {
   FormValues,
   updateRole as updateRoleSchema,
 } from '../../../fields/schemas/roles/updateRole.js';
+import { useUnsavedChangesPrompt } from '../../../hooks/useUnsavedChangesPrompt.js';
 import { RoleContextProvider, useRole } from '../Context/index.js';
 import { PermissionHeaderCell } from './HeaderCell/index.js';
 import { PermissionToggleButton } from './ToggleButton/index.js';
@@ -48,9 +50,10 @@ const EditRolePageImpl: React.FC = () => {
   const { data: permissions, mutate } = getPermissions(id);
   const { trigger: updateRoleTrigger, isMutating: isUpdateRoleMutating } = updateRole(id);
   const {
+    reset,
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { isDirty, errors },
   } = useForm<FormValues>({
     defaultValues: {
       name: role.name,
@@ -59,6 +62,7 @@ const EditRolePageImpl: React.FC = () => {
     },
     resolver: yupResolver(updateRoleSchema()),
   });
+  const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
   const actions: PermissionsAction[] = ['read', 'create', 'update', 'delete'];
 
   const navigateToList = () => {
@@ -67,6 +71,7 @@ const EditRolePageImpl: React.FC = () => {
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
+      reset(form);
       await updateRoleTrigger(form);
       enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
       navigate('../roles');
@@ -77,6 +82,7 @@ const EditRolePageImpl: React.FC = () => {
 
   return (
     <>
+      <ConfirmDiscardDialog open={showPrompt} onDiscard={proceed} onKeepEditing={stay} />
       <Grid container spacing={2.5} sx={{ mb: 1 }}>
         <Grid xs={12} lg={8}>
           <MainCard content={false} title={t('role_list')} subheader={t('auto_save')}>

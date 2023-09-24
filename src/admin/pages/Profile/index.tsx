@@ -23,6 +23,7 @@ import { useTranslation } from 'react-i18next';
 import { IconButton, MainCard } from 'superfast-ui';
 import { v4 as uuidv4 } from 'uuid';
 import { logger } from '../../../utilities/logger.js';
+import { ConfirmDiscardDialog } from '../../components/elements/ConfirmDiscardDialog/index.js';
 import { useAuth } from '../../components/utilities/Auth/index.js';
 import { useColorMode } from '../../components/utilities/ColorMode/index.js';
 import { Mode } from '../../components/utilities/ColorMode/types.js';
@@ -31,6 +32,7 @@ import {
   FormValues,
   updateUser as updateUserSchema,
 } from '../../fields/schemas/profile/updateUser.js';
+import { useUnsavedChangesPrompt } from '../../hooks/useUnsavedChangesPrompt.js';
 import { ProfileContextProvider, useProfile } from './Context/index.js';
 
 const ProfilePageImpl: React.FC = () => {
@@ -42,10 +44,11 @@ const ProfilePageImpl: React.FC = () => {
   const { trigger, isMutating } = updateMe();
 
   const {
+    reset,
     control,
     handleSubmit,
     setValue,
-    formState: { errors },
+    formState: { isDirty, errors },
   } = useForm<FormValues>({
     defaultValues: {
       name: me.user.name,
@@ -55,6 +58,7 @@ const ProfilePageImpl: React.FC = () => {
     },
     resolver: yupResolver(updateUserSchema(t)),
   });
+  const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
 
   const handleChange = (event: SelectChangeEvent) => {
     i18n.changeLanguage(event.target.value);
@@ -69,6 +73,7 @@ const ProfilePageImpl: React.FC = () => {
     if (!form.api_key) delete form.api_key;
 
     try {
+      reset(form);
       await trigger(form);
       enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
       if (form.api_key) updateApiKey(form.api_key);
@@ -79,6 +84,7 @@ const ProfilePageImpl: React.FC = () => {
 
   return (
     <>
+      <ConfirmDiscardDialog open={showPrompt} onDiscard={proceed} onKeepEditing={stay} />
       <Grid container spacing={2.5} sx={{ mb: 1 }}>
         <Grid xs={12} lg={8}>
           <MainCard>

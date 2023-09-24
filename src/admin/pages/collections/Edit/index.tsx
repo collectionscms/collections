@@ -7,10 +7,12 @@ import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { MainCard } from 'superfast-ui';
 import { logger } from '../../../../utilities/logger.js';
+import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscardDialog/index.js';
 import { DeleteButton } from '../../../components/elements/DeleteButton/index.js';
 import { RenderFields } from '../../../components/forms/RenderFields/index.js';
 import { useAuth } from '../../../components/utilities/Auth/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
+import { useUnsavedChangesPrompt } from '../../../hooks/useUnsavedChangesPrompt.js';
 import { getCollectionId } from '../../../utilities/getCollectionId.js';
 import { ContentContextProvider, useContent } from '../Context/index.js';
 
@@ -48,6 +50,12 @@ const EditCollectionPageImpl: React.FC = () => {
     ),
   });
 
+  const {
+    reset,
+    formState: { isDirty },
+  } = formContext;
+  const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
+
   const navigateToList = () => {
     navigate(`/admin/collections/${collectionId}/contents`);
   };
@@ -56,6 +64,7 @@ const EditCollectionPageImpl: React.FC = () => {
 
   const onSubmit = async (data: Record<string, any>) => {
     try {
+      reset(data);
       await updateTrigger(data);
       enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
       navigate(`/admin/collections/${collectionId}/contents`);
@@ -65,48 +74,51 @@ const EditCollectionPageImpl: React.FC = () => {
   };
 
   return (
-    <Grid container spacing={2.5}>
-      <Grid xs={12} lg={8}>
-        <MainCard>
-          <form onSubmit={formContext.handleSubmit(onSubmit)}>
-            <Grid container spacing={3}>
-              <Grid xs={12}>
-                <Stack spacing={1}>
-                  <RenderFields form={formContext} fields={metaFields} />
-                </Stack>
-              </Grid>
-              <Grid xs={12}>
-                <Stack
-                  direction="row"
-                  alignItems="center"
-                  justifyContent="space-between"
-                  sx={{ width: 1 }}
-                >
-                  <DeleteButton
-                    id={id}
-                    slug={`collections/${collectionId}/contents`}
-                    disabled={!hasPermission(collectionId, 'delete')}
-                    onSuccess={navigateToList}
-                  />
-                  <Stack direction="row" spacing={1}>
-                    <Button variant="outlined" color="secondary" onClick={navigateToList}>
-                      {t('cancel')}
-                    </Button>
-                    <Button
-                      variant="contained"
-                      type="submit"
-                      disabled={!hasSavePermission || isUpdateMutating}
-                    >
-                      {t('update')}
-                    </Button>
+    <>
+      <ConfirmDiscardDialog open={showPrompt} onDiscard={proceed} onKeepEditing={stay} />
+      <Grid container spacing={2.5}>
+        <Grid xs={12} lg={8}>
+          <MainCard>
+            <form onSubmit={formContext.handleSubmit(onSubmit)}>
+              <Grid container spacing={3}>
+                <Grid xs={12}>
+                  <Stack spacing={1}>
+                    <RenderFields form={formContext} fields={metaFields} />
                   </Stack>
-                </Stack>
+                </Grid>
+                <Grid xs={12}>
+                  <Stack
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="space-between"
+                    sx={{ width: 1 }}
+                  >
+                    <DeleteButton
+                      id={id}
+                      slug={`collections/${collectionId}/contents`}
+                      disabled={!hasPermission(collectionId, 'delete')}
+                      onSuccess={navigateToList}
+                    />
+                    <Stack direction="row" spacing={1}>
+                      <Button variant="outlined" color="secondary" onClick={navigateToList}>
+                        {t('cancel')}
+                      </Button>
+                      <Button
+                        variant="contained"
+                        type="submit"
+                        disabled={!hasSavePermission || isUpdateMutating}
+                      >
+                        {t('update')}
+                      </Button>
+                    </Stack>
+                  </Stack>
+                </Grid>
               </Grid>
-            </Grid>
-          </form>
-        </MainCard>
+            </form>
+          </MainCard>
+        </Grid>
       </Grid>
-    </Grid>
+    </>
   );
 };
 

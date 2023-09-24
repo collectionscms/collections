@@ -29,6 +29,8 @@ import {
   updateUser as updateUserSchema,
 } from '../../../fields/schemas/users/updateUser.js';
 import { UserContextProvider, useUser } from '../Context/index.js';
+import { useUnsavedChangesPrompt } from '../../../hooks/useUnsavedChangesPrompt.js';
+import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscardDialog/index.js';
 
 const EditUserPageImpl: React.FC = () => {
   const { id } = useParams();
@@ -42,10 +44,11 @@ const EditUserPageImpl: React.FC = () => {
   const { data: roles } = getRoles();
   const { trigger, isMutating } = updateUser(id);
   const {
+    reset,
     control,
     handleSubmit,
     setValue,
-    formState: { errors },
+    formState: { isDirty, errors },
   } = useForm<FormValues>({
     defaultValues: {
       name: user.name,
@@ -57,6 +60,7 @@ const EditUserPageImpl: React.FC = () => {
     },
     resolver: yupResolver(updateUserSchema(t)),
   });
+  const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
 
   const handleGenerateApiKey = () => {
     setValue('api_key', uuidv4());
@@ -71,6 +75,7 @@ const EditUserPageImpl: React.FC = () => {
     if (!form.api_key) delete form.api_key;
 
     try {
+      reset(form);
       await trigger(form);
       enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
       navigate('../users');
@@ -81,6 +86,7 @@ const EditUserPageImpl: React.FC = () => {
 
   return (
     <>
+      <ConfirmDiscardDialog open={showPrompt} onDiscard={proceed} onKeepEditing={stay} />
       <Grid container spacing={2.5}>
         <Grid xs={12} lg={8}>
           <MainCard>

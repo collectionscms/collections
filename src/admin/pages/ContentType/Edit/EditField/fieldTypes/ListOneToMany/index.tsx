@@ -14,10 +14,12 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { logger } from '../../../../../../../utilities/logger.js';
 import { shallowEqualObject } from '../../../../../../../utilities/shallowEqualObject.js';
+import { ConfirmDiscardDialog } from '../../../../../../components/elements/ConfirmDiscardDialog/index.js';
 import {
   FormValues,
   updateInput as schema,
 } from '../../../../../../fields/schemas/collectionFields/input/updateInput.js';
+import { useUnsavedChangesPrompt } from '../../../../../../hooks/useUnsavedChangesPrompt.js';
 import { useField } from '../../Context/index.js';
 import { Props } from '../types.js';
 
@@ -37,11 +39,12 @@ export const ListOneToManyType: React.FC<Props> = (props) => {
     handleSubmit,
     reset,
     watch,
-    formState: { errors },
+    formState: { isDirty, errors },
   } = useForm<FormValues>({
     defaultValues,
     resolver: yupResolver(schema),
   });
+  const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
 
   useEffect(() => {
     watch((value) => {
@@ -52,6 +55,7 @@ export const ListOneToManyType: React.FC<Props> = (props) => {
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
+      reset(form);
       const formData = {
         label: form.label,
         required: form.required,
@@ -59,7 +63,6 @@ export const ListOneToManyType: React.FC<Props> = (props) => {
         hidden: form.hidden,
       };
       await trigger(formData);
-      reset();
       onSuccess({
         ...meta,
         ...formData,
@@ -70,88 +73,91 @@ export const ListOneToManyType: React.FC<Props> = (props) => {
   };
 
   return (
-    <Stack component="form" onSubmit={handleSubmit(onSubmit)} rowGap={3}>
-      <Grid container spacing={3} columns={{ xs: 1, sm: 4 }}>
-        <Grid xs={1} sm={2}>
-          <Stack spacing={1}>
-            <InputLabel required>{t('field_name')}</InputLabel>
-            <TextField type="text" fullWidth disabled defaultValue={meta.field} />
-          </Stack>
+    <>
+      <ConfirmDiscardDialog open={showPrompt} onDiscard={proceed} onKeepEditing={stay} />
+      <Stack component="form" onSubmit={handleSubmit(onSubmit)} rowGap={3}>
+        <Grid container spacing={3} columns={{ xs: 1, sm: 4 }}>
+          <Grid xs={1} sm={2}>
+            <Stack spacing={1}>
+              <InputLabel required>{t('field_name')}</InputLabel>
+              <TextField type="text" fullWidth disabled defaultValue={meta.field} />
+            </Stack>
+          </Grid>
+          <Grid xs={1} sm={2}>
+            <Stack spacing={1}>
+              <InputLabel required>{t('label')}</InputLabel>
+              <Controller
+                name="label"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    type="text"
+                    fullWidth
+                    placeholder={`${t('input_placeholder')} ${t('name')}`}
+                    error={errors.label !== undefined}
+                  />
+                )}
+              />
+              <FormHelperText error>{errors.label?.message}</FormHelperText>
+            </Stack>
+          </Grid>
+          <Grid xs={1} sm={2}>
+            <Stack spacing={1}>
+              <InputLabel>{t('required_fields')}</InputLabel>
+              <Controller
+                name="required"
+                control={control}
+                render={({ field }) => (
+                  <FormControlLabel
+                    {...field}
+                    label={t('required_at_creation')}
+                    control={<Checkbox checked={field.value} />}
+                  />
+                )}
+              />
+              <FormHelperText error>{errors.required?.message}</FormHelperText>
+            </Stack>
+          </Grid>
+          <Grid xs={1} sm={2}>
+            <Stack spacing={1}>
+              <InputLabel>{t('readonly')}</InputLabel>
+              <Controller
+                name="readonly"
+                control={control}
+                render={({ field }) => (
+                  <FormControlLabel
+                    {...field}
+                    label={t('disable_editing_value')}
+                    control={<Checkbox checked={field.value} />}
+                  />
+                )}
+              />
+              <FormHelperText error>{errors.readonly?.message}</FormHelperText>
+            </Stack>
+          </Grid>
+          <Grid xs={1} sm={2}>
+            <Stack spacing={1}>
+              <InputLabel>{t('status')}</InputLabel>
+              <Controller
+                name="hidden"
+                control={control}
+                render={({ field }) => (
+                  <FormControlLabel
+                    {...field}
+                    label={t('hidden_on_detail')}
+                    control={<Checkbox checked={field.value} />}
+                  />
+                )}
+              />
+              <FormHelperText error>{errors.hidden?.message}</FormHelperText>
+            </Stack>
+          </Grid>
         </Grid>
-        <Grid xs={1} sm={2}>
-          <Stack spacing={1}>
-            <InputLabel required>{t('label')}</InputLabel>
-            <Controller
-              name="label"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  type="text"
-                  fullWidth
-                  placeholder={`${t('input_placeholder')} ${t('name')}`}
-                  error={errors.label !== undefined}
-                />
-              )}
-            />
-            <FormHelperText error>{errors.label?.message}</FormHelperText>
-          </Stack>
-        </Grid>
-        <Grid xs={1} sm={2}>
-          <Stack spacing={1}>
-            <InputLabel>{t('required_fields')}</InputLabel>
-            <Controller
-              name="required"
-              control={control}
-              render={({ field }) => (
-                <FormControlLabel
-                  {...field}
-                  label={t('required_at_creation')}
-                  control={<Checkbox checked={field.value} />}
-                />
-              )}
-            />
-            <FormHelperText error>{errors.required?.message}</FormHelperText>
-          </Stack>
-        </Grid>
-        <Grid xs={1} sm={2}>
-          <Stack spacing={1}>
-            <InputLabel>{t('readonly')}</InputLabel>
-            <Controller
-              name="readonly"
-              control={control}
-              render={({ field }) => (
-                <FormControlLabel
-                  {...field}
-                  label={t('disable_editing_value')}
-                  control={<Checkbox checked={field.value} />}
-                />
-              )}
-            />
-            <FormHelperText error>{errors.readonly?.message}</FormHelperText>
-          </Stack>
-        </Grid>
-        <Grid xs={1} sm={2}>
-          <Stack spacing={1}>
-            <InputLabel>{t('status')}</InputLabel>
-            <Controller
-              name="hidden"
-              control={control}
-              render={({ field }) => (
-                <FormControlLabel
-                  {...field}
-                  label={t('hidden_on_detail')}
-                  control={<Checkbox checked={field.value} />}
-                />
-              )}
-            />
-            <FormHelperText error>{errors.hidden?.message}</FormHelperText>
-          </Stack>
-        </Grid>
-      </Grid>
-      <Button variant="contained" type="submit" disabled={isMutating} fullWidth>
-        {t('save')}
-      </Button>
-    </Stack>
+        <Button variant="contained" type="submit" disabled={isMutating} fullWidth>
+          {t('save')}
+        </Button>
+      </Stack>
+    </>
   );
 };

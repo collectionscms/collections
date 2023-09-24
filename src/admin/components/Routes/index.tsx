@@ -1,5 +1,5 @@
 import React from 'react';
-import { useRoutes } from 'react-router-dom';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { Loading } from '../elements/Loading/index.js';
 import { useAuth } from '../utilities/Auth/index.js';
 import { AuthRoutes } from './Auth/index.js';
@@ -10,7 +10,7 @@ import { SettingRoutes } from './Setting/index.js';
 
 export const Routes: React.FC = () => {
   const { user } = useAuth();
-  const routes = useRoutes([
+  const router = createBrowserRouter([
     RootRoutes(),
     CollectionRoutes(),
     SettingRoutes(),
@@ -20,5 +20,5 @@ export const Routes: React.FC = () => {
 
   if (user === undefined) return <Loading />;
 
-  return <>{routes}</>;
+  return <RouterProvider router={router} />;
 };
