@@ -7,9 +7,11 @@ import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { MainCard } from 'superfast-ui';
 import { logger } from '../../../../utilities/logger.js';
+import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscardDialog/index.js';
 import { RenderFields } from '../../../components/forms/RenderFields/index.js';
 import { useAuth } from '../../../components/utilities/Auth/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
+import { useUnsavedPrompt } from '../../../hooks/useUnsavedPrompt.js';
 import { getCollectionId } from '../../../utilities/getCollectionId.js';
 import { ContentContextProvider, useContent } from '../Context/index.js';
 
@@ -37,6 +39,12 @@ const CreateCollectionPageImpl: React.FC = () => {
     ),
   });
 
+  const {
+    reset,
+    formState: { isDirty },
+  } = formContext;
+  const { showPrompt, discard, keep } = useUnsavedPrompt(isDirty);
+
   const navigateToList = () => {
     navigate(`/admin/collections/${collectionId}/contents`);
   };
@@ -45,6 +53,7 @@ const CreateCollectionPageImpl: React.FC = () => {
 
   const onSubmit = async (data: Record<string, any>) => {
     try {
+      reset(data);
       await createTrigger(data);
       enqueueSnackbar(t('toast.created_successfully'), { variant: 'success' });
       navigate(`/admin/collections/${collectionId}/contents`);
@@ -54,37 +63,40 @@ const CreateCollectionPageImpl: React.FC = () => {
   };
 
   return (
-    <Grid container spacing={2.5}>
-      <Grid xs={12} lg={8}>
-        <MainCard>
-          <form onSubmit={formContext.handleSubmit(onSubmit)}>
-            <Grid container spacing={3}>
-              <Grid xs={12}>
-                <Stack spacing={1}>
-                  <RenderFields form={formContext} fields={metaFields} />
-                </Stack>
-              </Grid>
-              <Grid xs={12}>
+    <>
+      <ConfirmDiscardDialog open={showPrompt} onDiscard={discard} onKeepEditing={keep} />
+      <Grid container spacing={2.5}>
+        <Grid xs={12} lg={8}>
+          <MainCard>
+            <form onSubmit={formContext.handleSubmit(onSubmit)}>
+              <Grid container spacing={3}>
                 <Grid xs={12}>
-                  <Stack direction="row" justifyContent="flex-end" spacing={1}>
-                    <Button variant="outlined" color="secondary" onClick={navigateToList}>
-                      {t('cancel')}
-                    </Button>
-                    <Button
-                      variant="contained"
-                      type="submit"
-                      disabled={!hasSavePermission || isCreateMutating}
-                    >
-                      {t('save')}
-                    </Button>
+                  <Stack spacing={1}>
+                    <RenderFields form={formContext} fields={metaFields} />
                   </Stack>
                 </Grid>
+                <Grid xs={12}>
+                  <Grid xs={12}>
+                    <Stack direction="row" justifyContent="flex-end" spacing={1}>
+                      <Button variant="outlined" color="secondary" onClick={navigateToList}>
+                        {t('cancel')}
+                      </Button>
+                      <Button
+                        variant="contained"
+                        type="submit"
+                        disabled={!hasSavePermission || isCreateMutating}
+                      >
+                        {t('save')}
+                      </Button>
+                    </Stack>
+                  </Grid>
+                </Grid>
               </Grid>
-            </Grid>
-          </form>
-        </MainCard>
+            </form>
+          </MainCard>
+        </Grid>
       </Grid>
-    </Grid>
+    </>
   );
 };
 

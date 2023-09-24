@@ -7,9 +7,11 @@ import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 import { MainCard } from 'superfast-ui';
 import { logger } from '../../../../utilities/logger.js';
+import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscardDialog/index.js';
 import { RenderFields } from '../../../components/forms/RenderFields/index.js';
 import { useAuth } from '../../../components/utilities/Auth/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
+import { useUnsavedPrompt } from '../../../hooks/useUnsavedPrompt.js';
 import { getCollectionId } from '../../../utilities/getCollectionId.js';
 import { ApiPreview } from '../ApiPreview/index.js';
 import { ContentContextProvider, useContent } from '../Context/index.js';
@@ -46,10 +48,17 @@ const SingletonPageImpl: React.FC = () => {
     ),
   });
 
-  const onSubmit = async (data: Record<string, any>) => {
-    reset();
+  const {
+    reset: resetForm,
+    formState: { isDirty },
+  } = formContext;
+  const { showPrompt, discard, keep } = useUnsavedPrompt(isDirty);
 
+  const onSubmit = async (data: Record<string, any>) => {
     try {
+      reset();
+      resetForm(data);
+
       if (content?.id) {
         await updateTrigger(data);
         enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
@@ -63,37 +72,42 @@ const SingletonPageImpl: React.FC = () => {
   };
 
   return (
-    <Grid container spacing={2.5}>
-      <Grid xs={12} lg={8}>
-        <MainCard
-          title={<></>}
-          secondary={<ApiPreview collectionId={collectionId} singleton={true} />}
-        >
-          <form onSubmit={formContext.handleSubmit(onSubmit)}>
-            <Grid container spacing={3}>
-              <Grid xs={12}>
-                <Stack spacing={1}>
-                  <RenderFields form={formContext} fields={metaFields} />
-                </Stack>
+    <>
+      <ConfirmDiscardDialog open={showPrompt} onDiscard={discard} onKeepEditing={keep} />
+      <Grid container spacing={2.5}>
+        <Grid xs={12} lg={8}>
+          <MainCard
+            title={<></>}
+            secondary={<ApiPreview collectionId={collectionId} singleton={true} />}
+          >
+            <form onSubmit={formContext.handleSubmit(onSubmit)}>
+              <Grid container spacing={3}>
+                <Grid xs={12}>
+                  <Stack spacing={1}>
+                    <RenderFields form={formContext} fields={metaFields} />
+                  </Stack>
+                </Grid>
+                <Grid xs={12}>
+                  <Stack direction="row" justifyContent="flex-end" spacing={1}>
+                    <Button
+                      variant="contained"
+                      type="submit"
+                      disabled={
+                        !hasPermission(collectionId, 'update') ||
+                        isCreateMutating ||
+                        isUpdateMutating
+                      }
+                    >
+                      {t('update')}
+                    </Button>
+                  </Stack>
+                </Grid>
               </Grid>
-              <Grid xs={12}>
-                <Stack direction="row" justifyContent="flex-end" spacing={1}>
-                  <Button
-                    variant="contained"
-                    type="submit"
-                    disabled={
-                      !hasPermission(collectionId, 'update') || isCreateMutating || isUpdateMutating
-                    }
-                  >
-                    {t('update')}
-                  </Button>
-                </Stack>
-              </Grid>
-            </Grid>
-          </form>
-        </MainCard>
+            </form>
+          </MainCard>
+        </Grid>
       </Grid>
-    </Grid>
+    </>
   );
 };
 
