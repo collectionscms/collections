@@ -24,7 +24,7 @@ const SingletonPageImpl: React.FC = () => {
 
   const collectionId = getCollectionId(useLocation().pathname);
   const { data: metaFields } = getFields(collectionId);
-  const { data: content } = getContents(collectionId);
+  const { data: content, mutate } = getContents(collectionId);
 
   const { trigger: createTrigger, isMutating: isCreateMutating } = createContent(collectionId);
   const {
@@ -66,6 +66,8 @@ const SingletonPageImpl: React.FC = () => {
         await createTrigger(data);
         enqueueSnackbar(t('toast.created_successfully'), { variant: 'success' });
       }
+
+      mutate(data);
     } catch (e) {
       logger.error(e);
     }
