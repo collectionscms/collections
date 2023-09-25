@@ -26,27 +26,27 @@ import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/ind
 import { Field } from '../../../config/types.js';
 import {
   FormValues,
-  updateCollection as updateCollectionSchema,
-} from '../../../fields/schemas/collections/updateCollection.js';
+  updateModel as updateModelSchema,
+} from '../../../fields/schemas/models/updateModel.js';
 import { useUnsavedChangesPrompt } from '../../../hooks/useUnsavedChangesPrompt.js';
-import { CollectionContextProvider, useCollection } from '../Context/index.js';
+import { ModelContextProvider, useModel } from '../Context/index.js';
 import { CreateField } from './CreateField/index.js';
 import { EditField } from './EditField/index.js';
 import { EditMenu } from './Menu/index.js';
 import { SortableFieldList } from './SortableFieldList/index.js';
 
 const EditContentTypePageImpl: React.FC = () => {
-  const { collectionId } = useParams();
-  if (!collectionId) throw new Error('collectionId is not defined');
+  const { modelId } = useParams();
+  if (!modelId) throw new Error('modelId is not defined');
 
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
-  const { getCollection, updateCollection, getFields, updateFields } = useCollection();
-  const { data: metaCollection } = getCollection(collectionId);
-  const { data: fields, mutate } = getFields(collectionId);
-  const { trigger, isMutating } = updateCollection(metaCollection.id.toString());
+  const { getModel, updateModel, getFields, updateFields } = useModel();
+  const { data: metaModel } = getModel(modelId);
+  const { data: fields, mutate } = getFields(modelId);
+  const { trigger, isMutating } = updateModel(metaModel.id.toString());
   const { trigger: updateFieldsTrigger } = updateFields();
 
   const [createFieldOpen, setCreateFieldOpen] = useState(false);
@@ -62,14 +62,14 @@ const EditContentTypePageImpl: React.FC = () => {
     formState: { isDirty, errors },
   } = useForm<FormValues>({
     defaultValues: {
-      hidden: Boolean(metaCollection.hidden),
-      singleton: Boolean(metaCollection.singleton),
-      status_field: metaCollection.status_field || '',
-      draft_value: metaCollection.draft_value || '',
-      publish_value: metaCollection.publish_value || '',
-      archive_value: metaCollection.archive_value || '',
+      hidden: Boolean(metaModel.hidden),
+      singleton: Boolean(metaModel.singleton),
+      status_field: metaModel.status_field || '',
+      draft_value: metaModel.draft_value || '',
+      publish_value: metaModel.publish_value || '',
+      archive_value: metaModel.archive_value || '',
     },
-    resolver: yupResolver(updateCollectionSchema()),
+    resolver: yupResolver(updateModelSchema()),
   });
   const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
 
@@ -153,7 +153,7 @@ const EditContentTypePageImpl: React.FC = () => {
     <>
       <ConfirmDiscardDialog open={showPrompt} onDiscard={proceed} onKeepEditing={stay} />
       <CreateField
-        collection={metaCollection}
+        model={metaModel}
         openState={createFieldOpen}
         onSuccess={(field) => handleCreateFieldSuccess(field)}
         onClose={() => onToggleCreateField(false)}
@@ -168,7 +168,7 @@ const EditContentTypePageImpl: React.FC = () => {
           />
           <EditMenu
             id={selectedField.id.toString()}
-            collectionId={metaCollection.id.toString()}
+            modelId={metaModel.id.toString()}
             menu={menu}
             onEdit={() => handleEditField(true)}
             onSuccess={handleDeleteFieldSuccess}
@@ -345,8 +345,8 @@ const EditContentTypePageImpl: React.FC = () => {
                     sx={{ width: 1 }}
                   >
                     <DeleteButton
-                      id={metaCollection.id.toString()}
-                      slug="collections"
+                      id={metaModel.id.toString()}
+                      slug="models"
                       onSuccess={navigateToList}
                     />
                     <Stack direction="row" spacing={1}>
@@ -368,6 +368,6 @@ const EditContentTypePageImpl: React.FC = () => {
   );
 };
 
-export const EditContentTypePage = ComposeWrapper({ context: CollectionContextProvider })(
+export const EditContentTypePage = ComposeWrapper({ context: ModelContextProvider })(
   EditContentTypePageImpl
 );

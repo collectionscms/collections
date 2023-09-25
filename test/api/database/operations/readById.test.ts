@@ -38,14 +38,14 @@ describe('Read By Id', () => {
       const key = await createOne({
         database: connection,
         schema: overview,
-        collection: tableName,
+        model: tableName,
         data,
       });
 
       const result = await readById({
         database: connection,
         schema: overview,
-        collection: tableName,
+        model: tableName,
         key: key,
       });
 
@@ -63,7 +63,7 @@ describe('Read By Id', () => {
       const result = await readById({
         database: connection,
         schema: overview,
-        collection: tableName,
+        model: tableName,
         key: -1,
       });
 

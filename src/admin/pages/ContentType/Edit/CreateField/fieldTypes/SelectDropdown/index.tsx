@@ -24,7 +24,7 @@ import { Choice } from '../../../../../../config/types.js';
 import {
   FormValues,
   createSelectDropdown as schema,
-} from '../../../../../../fields/schemas/collectionFields/selectDropdown/createSelectDropdown.js';
+} from '../../../../../../fields/schemas/modelFields/selectDropdown/createSelectDropdown.js';
 import { useUnsavedChangesPrompt } from '../../../../../../hooks/useUnsavedChangesPrompt.js';
 import { Accordion } from '../../../Accordion/index.js';
 import { useField } from '../../Context/index.js';
@@ -32,7 +32,7 @@ import { CreateChoice } from '../CreateChoice/index.js';
 import { Props } from '../types.js';
 
 export const SelectDropdownType: React.FC<Props> = (props) => {
-  const { collection, expanded, handleChange, onEditing, onSuccess, onChangeParentViewInvisible } =
+  const { model, expanded, handleChange, onEditing, onSuccess, onChangeParentViewInvisible } =
     props;
   const [state, setState] = useState(false);
   const { t } = useTranslation();
@@ -79,8 +79,8 @@ export const SelectDropdownType: React.FC<Props> = (props) => {
     try {
       reset(form);
       const field = await trigger({
-        collection: collection.collection,
-        collection_id: collection.id,
+        model: model.model,
+        model_id: model.id,
         field: form.field,
         label: form.label,
         interface: 'selectDropdown',

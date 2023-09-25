@@ -1,19 +1,19 @@
 import express, { Request, Response } from 'express';
 import { asyncHandler } from '../middleware/asyncHandler.js';
-import { collectionPermissionsHandler } from '../middleware/permissionsHandler.js';
+import { modelPermissionsHandler } from '../middleware/permissionsHandler.js';
 import { RelationsService } from '../services/relations.js';
 
 const router = express.Router();
 
 router.get(
-  '/relations/:collectionId/:field',
-  collectionPermissionsHandler('read'),
+  '/relations/:modelId/:field',
+  modelPermissionsHandler('read'),
   asyncHandler(async (req: Request, res: Response) => {
-    const collectionId = req.params.collectionId;
+    const modelId = req.params.modelId;
     const field = req.params.field;
 
     const service = new RelationsService({ schema: req.schema });
-    const relations = await service.getRelations(collectionId, field);
+    const relations = await service.getRelations(modelId, field);
 
     res.json({
       relations,

@@ -22,26 +22,26 @@ import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscar
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
 import {
   FormValues,
-  createCollection as createCollectionSchema,
-} from '../../../fields/schemas/collections/createCollection.js';
+  createModel as createModelSchema,
+} from '../../../fields/schemas/models/createModel.js';
 import { useUnsavedChangesPrompt } from '../../../hooks/useUnsavedChangesPrompt.js';
-import { CollectionContextProvider, useCollection } from '../Context/index.js';
+import { ModelContextProvider, useModel } from '../Context/index.js';
 
 const CreateContentTypePageImpl: React.FC = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
   const { enqueueSnackbar } = useSnackbar();
-  const { createCollection } = useCollection();
-  const { trigger, isMutating } = createCollection;
+  const { createModel } = useModel();
+  const { trigger, isMutating } = createModel;
   const {
     reset,
     control,
     handleSubmit,
     formState: { isDirty, errors },
   } = useForm<FormValues>({
-    defaultValues: { collection: '', singleton: false, status: false },
-    resolver: yupResolver(createCollectionSchema(t)),
+    defaultValues: { model: '', singleton: false, status: false },
+    resolver: yupResolver(createModelSchema(t)),
   });
   const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
 
@@ -79,18 +79,18 @@ const CreateContentTypePageImpl: React.FC = () => {
                   <Stack spacing={1}>
                     <InputLabel required>{t('name')}</InputLabel>
                     <Controller
-                      name="collection"
+                      name="model"
                       control={control}
                       render={({ field }) => (
                         <TextField
                           {...field}
                           type="text"
                           fullWidth
-                          error={errors.collection !== undefined}
+                          error={errors.model !== undefined}
                         />
                       )}
                     />
-                    <FormHelperText error>{errors.collection?.message}</FormHelperText>
+                    <FormHelperText error>{errors.model?.message}</FormHelperText>
                   </Stack>
                 </Grid>
                 <Grid xs={12} sm={6}>
@@ -148,6 +148,6 @@ const CreateContentTypePageImpl: React.FC = () => {
   );
 };
 
-export const CreateContentTypePage = ComposeWrapper({ context: CollectionContextProvider })(
+export const CreateContentTypePage = ComposeWrapper({ context: ModelContextProvider })(
   CreateContentTypePageImpl
 );

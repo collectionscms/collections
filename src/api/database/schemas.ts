@@ -6,8 +6,8 @@ export type TypeWithId = {
   updated_at?: Date;
 };
 
-export type Collection = {
-  collection: string;
+export type Model = {
+  model: string;
   singleton: boolean;
   hidden: boolean;
   status_field: string | null;
@@ -17,8 +17,8 @@ export type Collection = {
 } & TypeWithId;
 
 export type Field = {
-  collection: string;
-  collection_id: PrimaryKey;
+  model: string;
+  model_id: PrimaryKey;
   field: string;
   label: string;
   special: string | null;
@@ -48,8 +48,8 @@ export type Role = {
 } & TypeWithId;
 
 export type Permission = {
-  collection: string;
-  collection_id: PrimaryKey;
+  model: string;
+  model_id: PrimaryKey;
   action: string;
   role_id: number | null;
 } & TypeWithId;
@@ -71,11 +71,11 @@ export type File = {
 } & TypeWithId;
 
 export type Relation = {
-  many_collection: string;
-  many_collection_id: PrimaryKey;
+  many_model: string;
+  many_model_id: PrimaryKey;
   many_field: string;
-  one_collection: string;
-  one_collection_id: PrimaryKey;
+  one_model: string;
+  one_model_id: PrimaryKey;
   one_field: string;
 } & TypeWithId;
 

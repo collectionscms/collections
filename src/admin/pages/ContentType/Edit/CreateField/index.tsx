@@ -18,7 +18,7 @@ import { ListOneToManyType } from './fieldTypes/ListOneToMany/index.js';
 import { SelectDropdownType } from './fieldTypes/SelectDropdown/index.js';
 import { Props } from './types.js';
 
-const CreateFieldImpl: React.FC<Props> = ({ collection, openState, onSuccess, onClose }) => {
+const CreateFieldImpl: React.FC<Props> = ({ model, openState, onSuccess, onClose }) => {
   const [fieldInterface, setFieldInterface] = useState<FieldInterface | null>(null);
   const [drawerVisibility, setDrawerVisibility] = useState(false);
   const [editing, setEditing] = useState(false);
@@ -133,28 +133,28 @@ const CreateFieldImpl: React.FC<Props> = ({ collection, openState, onSuccess, on
             </Stack>
           </Box>
           <InputType
-            collection={collection}
+            model={model}
             expanded={fieldInterface === 'input'}
             handleChange={(field) => onSelectedFieldInterface(field)}
             onEditing={handleEditing}
             onSuccess={handleAdditionSuccess}
           />
           <InputMultilineType
-            collection={collection}
+            model={model}
             expanded={fieldInterface === 'inputMultiline'}
             handleChange={(field) => onSelectedFieldInterface(field)}
             onEditing={handleEditing}
             onSuccess={handleAdditionSuccess}
           />
           <InputRichTextMdType
-            collection={collection}
+            model={model}
             expanded={fieldInterface === 'inputRichTextMd'}
             handleChange={(field) => onSelectedFieldInterface(field)}
             onEditing={handleEditing}
             onSuccess={handleAdditionSuccess}
           />
           <SelectDropdownType
-            collection={collection}
+            model={model}
             expanded={fieldInterface === 'selectDropdown'}
             handleChange={(field) => onSelectedFieldInterface(field)}
             onEditing={handleEditing}
@@ -162,28 +162,28 @@ const CreateFieldImpl: React.FC<Props> = ({ collection, openState, onSuccess, on
             onChangeParentViewInvisible={onChangeParentViewInvisible}
           />
           <DateTimeType
-            collection={collection}
+            model={model}
             expanded={fieldInterface === 'dateTime'}
             handleChange={(field) => onSelectedFieldInterface(field)}
             onEditing={handleEditing}
             onSuccess={handleAdditionSuccess}
           />
           <BooleanType
-            collection={collection}
+            model={model}
             expanded={fieldInterface === 'boolean'}
             handleChange={(field) => onSelectedFieldInterface(field)}
             onEditing={handleEditing}
             onSuccess={handleAdditionSuccess}
           />
           <FileImageType
-            collection={collection}
+            model={model}
             expanded={fieldInterface === 'fileImage'}
             handleChange={(field) => onSelectedFieldInterface(field)}
             onEditing={handleEditing}
             onSuccess={handleAdditionSuccess}
           />
           <ListOneToManyType
-            collection={collection}
+            model={model}
             expanded={fieldInterface === 'listOneToMany'}
             handleChange={(field) => onSelectedFieldInterface(field)}
             onEditing={handleEditing}

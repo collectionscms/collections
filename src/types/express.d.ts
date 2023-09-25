@@ -1,4 +1,4 @@
-import { SchemaOverview, CollectionOverview } from '../api/database/overview.js';
+import { SchemaOverview, ModelOverview } from '../api/database/overview.js';
 
 export {};
 
@@ -12,7 +12,7 @@ declare global {
       appAccess?: boolean | null;
       permissions?: Permission[] | null;
       schema: SchemaOverview;
-      collection: CollectionOverview;
+      model: ModelOverview;
     }
   }
 }

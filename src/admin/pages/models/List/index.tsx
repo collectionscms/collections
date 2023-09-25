@@ -8,26 +8,26 @@ import { Cell } from '../../../components/elements/Table/Cell/index.js';
 import { Table } from '../../../components/elements/Table/index.js';
 import { useAuth } from '../../../components/utilities/Auth/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
-import { Collection, GetField } from '../../../config/types.js';
+import { Model, GetField } from '../../../config/types.js';
 import { buildColumns } from '../../../utilities/buildColumns.js';
-import { getCollectionId } from '../../../utilities/getCollectionId.js';
+import { getModelId } from '../../../utilities/getModelId.js';
 import { ApiPreview } from '../ApiPreview/index.js';
 import { ContentContextProvider, useContent } from '../Context/index.js';
 import { buildColumnFields } from './buildColumnFields.js';
 
 const ListPageImpl: React.FC = () => {
   const { hasPermission } = useAuth();
-  const { getContents, getFields, getCollection } = useContent();
+  const { getContents, getFields, getModel } = useContent();
   const theme = useTheme();
   const smDown = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const collectionId = getCollectionId(useLocation().pathname);
-  const { data: collection } = getCollection(collectionId);
-  const { data: metaFields } = getFields(collectionId);
-  const { data: contents } = getContents(collectionId);
+  const modelId = getModelId(useLocation().pathname);
+  const { data: model } = getModel(modelId);
+  const { data: metaFields } = getFields(modelId);
+  const { data: contents } = getContents(modelId);
 
-  const getColumns = (collection: Collection, metaFields: GetField[]) => {
-    const columnFields = buildColumnFields(collection, metaFields);
+  const getColumns = (model: Model, metaFields: GetField[]) => {
+    const columnFields = buildColumnFields(model, metaFields);
 
     const columns = buildColumns(columnFields, (i: number, row: any, data: any) => {
       const cell = <Cell colIndex={i} type={columnFields[i].type} cellData={data} />;
@@ -36,7 +36,7 @@ const ListPageImpl: React.FC = () => {
 
     return columns;
   };
-  const columns = getColumns(collection, metaFields);
+  const columns = getColumns(model, metaFields);
 
   return (
     <MainCard
@@ -44,8 +44,8 @@ const ListPageImpl: React.FC = () => {
       title={<></>}
       secondary={
         <Stack direction={smDown ? 'column' : 'row'} alignItems="center" spacing={2}>
-          <CreateNewButton to="create" disabled={!hasPermission(collectionId, 'create')} />
-          <ApiPreview collectionId={collection.id.toString()} singleton={false} />
+          <CreateNewButton to="create" disabled={!hasPermission(modelId, 'create')} />
+          <ApiPreview modelId={model.id.toString()} singleton={false} />
         </Stack>
       }
     >

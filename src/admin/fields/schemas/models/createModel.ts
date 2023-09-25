@@ -3,14 +3,14 @@ import { ObjectSchema } from 'yup';
 import { yup } from '../../yup.js';
 
 export type FormValues = {
-  collection: string;
+  model: string;
   singleton: boolean;
   status: boolean;
 };
 
-export const createCollection = (t: TFunction): ObjectSchema<FormValues> => {
+export const createModel = (t: TFunction): ObjectSchema<FormValues> => {
   return yup.object().shape({
-    collection: yup
+    model: yup
       .string()
       .matches(/^[_0-9a-zA-Z]+$/, t('yup.custom.alphanumeric_and_underscore'))
       .required()

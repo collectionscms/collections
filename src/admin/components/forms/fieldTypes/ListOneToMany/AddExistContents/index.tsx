@@ -4,12 +4,9 @@ import { t } from 'i18next';
 import React, { useState } from 'react';
 import { IconButton } from 'superfast-ui';
 import { referencedTypes } from '../../../../../../api/database/schemas.js';
-import { GetCollection, GetField } from '../../../../../config/types.js';
-import {
-  ContentContextProvider,
-  useContent,
-} from '../../../../../pages/collections/Context/index.js';
-import { buildColumnFields } from '../../../../../pages/collections/List/buildColumnFields.js';
+import { GetModel, GetField } from '../../../../../config/types.js';
+import { ContentContextProvider, useContent } from '../../../../../pages/models/Context/index.js';
+import { buildColumnFields } from '../../../../../pages/models/List/buildColumnFields.js';
 import { buildColumns } from '../../../../../utilities/buildColumns.js';
 import { ScrollBar } from '../../../../elements/ScrollBar/index.js';
 import { CheckBoxTable } from '../../../../elements/Table/CheckBoxTable/index.js';
@@ -17,7 +14,7 @@ import { ComposeWrapper } from '../../../../utilities/ComposeWrapper/index.js';
 import { Props } from './types.js';
 
 const AddExistContentsImpl: React.FC<Props> = ({
-  collectionId,
+  modelId,
   field,
   excludes,
   openState,
@@ -26,25 +23,25 @@ const AddExistContentsImpl: React.FC<Props> = ({
 }) => {
   const [selectedContentIds, setSelectedContentIds] = useState<number[]>([]);
 
-  const { getRelations, getContents, getFields, getCollection } = useContent();
+  const { getRelations, getContents, getFields, getModel } = useContent();
 
-  const { data: relations } = getRelations(collectionId, field);
+  const { data: relations } = getRelations(modelId, field);
   const relation = relations[0];
 
-  const { data: relatedCollection } = getCollection(relation.many_collection_id.toString());
-  const { data: fields } = getFields(relation.many_collection_id.toString());
-  const { data: content } = getContents(relation.many_collection_id.toString());
+  const { data: relatedModel } = getModel(relation.many_model_id.toString());
+  const { data: fields } = getFields(relation.many_model_id.toString());
+  const { data: content } = getContents(relation.many_model_id.toString());
 
   // Convert to array in case of singleton.
   const contents: any[] = content && !Array.isArray(content) ? [content] : content;
 
-  const getColumns = (relatedCollection: GetCollection, fields: GetField[]) => {
+  const getColumns = (relatedModel: GetModel, fields: GetField[]) => {
     const filtered = fields.filter((field) => !referencedTypes.includes(field.interface));
-    const columnFields = buildColumnFields(relatedCollection, filtered);
+    const columnFields = buildColumnFields(relatedModel, filtered);
     const columns = buildColumns(columnFields);
     return columns;
   };
-  const columns = getColumns(relatedCollection, fields);
+  const columns = getColumns(relatedModel, fields);
 
   const excludedContents = contents
     ? contents.filter((content) => !excludes.some((data) => data.id === content.id))

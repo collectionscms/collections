@@ -24,11 +24,11 @@ import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/ind
 import {
   FormValues,
   apiPreview as apiPreviewSchema,
-} from '../../../fields/schemas/collections/apiPreview.js';
+} from '../../../fields/schemas/models/apiPreview.js';
 import { ContentContextProvider } from '../Context/index.js';
 import { Props } from './types.js';
 
-const ApiPreviewImpl: React.FC<Props> = ({ collectionId }) => {
+const ApiPreviewImpl: React.FC<Props> = ({ modelId }) => {
   const [open, setOpen] = useState(false);
   const [content, setContent] = useState<string | undefined>();
   const [tabIndex] = useState(0);
@@ -42,7 +42,7 @@ const ApiPreviewImpl: React.FC<Props> = ({ collectionId }) => {
     watch,
     formState: { errors },
   } = useForm<FormValues>({
-    defaultValues: { path: `api/collections/${collectionId}/contents` },
+    defaultValues: { path: `api/models/${modelId}/contents` },
     resolver: yupResolver(apiPreviewSchema),
   });
 

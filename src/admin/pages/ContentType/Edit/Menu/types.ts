@@ -1,6 +1,6 @@
 export type Props = {
   id: string;
-  collectionId: string;
+  modelId: string;
   menu: any;
   onEdit: () => void;
   onSuccess: () => void;

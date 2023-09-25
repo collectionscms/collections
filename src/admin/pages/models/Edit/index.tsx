@@ -13,10 +13,10 @@ import { RenderFields } from '../../../components/forms/RenderFields/index.js';
 import { useAuth } from '../../../components/utilities/Auth/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
 import { useUnsavedChangesPrompt } from '../../../hooks/useUnsavedChangesPrompt.js';
-import { getCollectionId } from '../../../utilities/getCollectionId.js';
+import { getModelId } from '../../../utilities/getModelId.js';
 import { ContentContextProvider, useContent } from '../Context/index.js';
 
-const EditCollectionPageImpl: React.FC = () => {
+const EditModelPageImpl: React.FC = () => {
   const { id } = useParams();
   if (!id) throw new Error('id is not defined');
 
@@ -26,12 +26,12 @@ const EditCollectionPageImpl: React.FC = () => {
   const navigate = useNavigate();
   const { getContent, getFields, updateContent } = useContent();
 
-  const collectionId = getCollectionId(useLocation().pathname);
-  const { data: metaFields } = getFields(collectionId);
-  const { data: content } = getContent(collectionId, id);
+  const modelId = getModelId(useLocation().pathname);
+  const { data: metaFields } = getFields(modelId);
+  const { data: content } = getContent(modelId, id);
 
   const { trigger: updateTrigger, isMutating: isUpdateMutating } = updateContent(
-    collectionId,
+    modelId,
     content.id
   );
 
@@ -57,17 +57,17 @@ const EditCollectionPageImpl: React.FC = () => {
   const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
 
   const navigateToList = () => {
-    navigate(`/admin/collections/${collectionId}/contents`);
+    navigate(`/admin/models/${modelId}/contents`);
   };
 
-  const hasSavePermission = hasPermission(collectionId, 'update');
+  const hasSavePermission = hasPermission(modelId, 'update');
 
   const onSubmit = async (data: Record<string, any>) => {
     try {
       reset(data);
       await updateTrigger(data);
       enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
-      navigate(`/admin/collections/${collectionId}/contents`);
+      navigate(`/admin/models/${modelId}/contents`);
     } catch (e) {
       logger.error(e);
     }
@@ -95,8 +95,8 @@ const EditCollectionPageImpl: React.FC = () => {
                   >
                     <DeleteButton
                       id={id}
-                      slug={`collections/${collectionId}/contents`}
-                      disabled={!hasPermission(collectionId, 'delete')}
+                      slug={`models/${modelId}/contents`}
+                      disabled={!hasPermission(modelId, 'delete')}
                       onSuccess={navigateToList}
                     />
                     <Stack direction="row" spacing={1}>
@@ -122,6 +122,4 @@ const EditCollectionPageImpl: React.FC = () => {
   );
 };
 
-export const EditCollectionPage = ComposeWrapper({ context: ContentContextProvider })(
-  EditCollectionPageImpl
-);
+export const EditModelPage = ComposeWrapper({ context: ContentContextProvider })(EditModelPageImpl);

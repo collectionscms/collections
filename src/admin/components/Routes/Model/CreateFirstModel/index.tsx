@@ -6,7 +6,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { ImportFile } from '../../../elements/ImportFileDialog/index.js';
 import { useConfig } from '../../../utilities/Config/index.js';
 
-export const CreateFirstCollection: React.FC = () => {
+export const CreateFirstModel: React.FC = () => {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const config = useConfig();
@@ -18,7 +18,7 @@ export const CreateFirstCollection: React.FC = () => {
   const handleDialog = (success: boolean) => {
     setOpen(!open);
     if (success) {
-      config.revalidateCollections();
+      config.revalidateModels();
     }
   };
 

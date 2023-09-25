@@ -42,7 +42,7 @@ const LoginImpl: React.FC = () => {
 
   useEffect(() => {
     if (user) {
-      navigate('/admin/collections');
+      navigate('/admin/models');
     }
   }, [user]);
 

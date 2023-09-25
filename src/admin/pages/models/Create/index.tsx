@@ -4,7 +4,7 @@ import { useSnackbar } from 'notistack';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { MainCard } from 'superfast-ui';
 import { logger } from '../../../../utilities/logger.js';
 import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscardDialog/index.js';
@@ -12,33 +12,24 @@ import { RenderFields } from '../../../components/forms/RenderFields/index.js';
 import { useAuth } from '../../../components/utilities/Auth/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
 import { useUnsavedChangesPrompt } from '../../../hooks/useUnsavedChangesPrompt.js';
-import { getCollectionId } from '../../../utilities/getCollectionId.js';
-import { ApiPreview } from '../ApiPreview/index.js';
+import { getModelId } from '../../../utilities/getModelId.js';
 import { ContentContextProvider, useContent } from '../Context/index.js';
 
-const SingletonPageImpl: React.FC = () => {
-  const { hasPermission } = useAuth();
+const CreateModelPageImpl: React.FC = () => {
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
-  const { getContents, getFields, createContent, updateContent } = useContent();
+  const { hasPermission } = useAuth();
+  const navigate = useNavigate();
+  const { getFields, createContent } = useContent();
 
-  const collectionId = getCollectionId(useLocation().pathname);
-  const { data: metaFields } = getFields(collectionId);
-  const { data: content, mutate } = getContents(collectionId);
-
-  const { trigger: createTrigger, isMutating: isCreateMutating } = createContent(collectionId);
-  const {
-    trigger: updateTrigger,
-    isMutating: isUpdateMutating,
-    reset,
-  } = updateContent(collectionId, content?.id);
+  const modelId = getModelId(useLocation().pathname);
+  const { data: metaFields } = getFields(modelId);
+  const { trigger: createTrigger, isMutating: isCreateMutating } = createContent(modelId);
 
   const formContext = useForm({
     defaultValues: metaFields.reduce(
       (acc, field) => {
-        if (content[field.field]) {
-          acc[field.field] = content[field.field];
-        } else if (field.fieldOption?.defaultValue) {
+        if (field.fieldOption?.defaultValue) {
           acc[field.field] = field.fieldOption?.defaultValue;
         }
 
@@ -49,25 +40,23 @@ const SingletonPageImpl: React.FC = () => {
   });
 
   const {
-    reset: resetForm,
+    reset,
     formState: { isDirty },
   } = formContext;
   const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
 
+  const navigateToList = () => {
+    navigate(`/admin/models/${modelId}/contents`);
+  };
+
+  const hasSavePermission = hasPermission(modelId, 'create');
+
   const onSubmit = async (data: Record<string, any>) => {
     try {
-      reset();
-      resetForm(data);
-
-      if (content?.id) {
-        await updateTrigger(data);
-        enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
-      } else {
-        await createTrigger(data);
-        enqueueSnackbar(t('toast.created_successfully'), { variant: 'success' });
-      }
-
-      mutate(data);
+      reset(data);
+      await createTrigger(data);
+      enqueueSnackbar(t('toast.created_successfully'), { variant: 'success' });
+      navigate(`/admin/models/${modelId}/contents`);
     } catch (e) {
       logger.error(e);
     }
@@ -78,10 +67,7 @@ const SingletonPageImpl: React.FC = () => {
       <ConfirmDiscardDialog open={showPrompt} onDiscard={proceed} onKeepEditing={stay} />
       <Grid container spacing={2.5}>
         <Grid xs={12} lg={8}>
-          <MainCard
-            title={<></>}
-            secondary={<ApiPreview collectionId={collectionId} singleton={true} />}
-          >
+          <MainCard>
             <form onSubmit={formContext.handleSubmit(onSubmit)}>
               <Grid container spacing={3}>
                 <Grid xs={12}>
@@ -90,19 +76,20 @@ const SingletonPageImpl: React.FC = () => {
                   </Stack>
                 </Grid>
                 <Grid xs={12}>
-                  <Stack direction="row" justifyContent="flex-end" spacing={1}>
-                    <Button
-                      variant="contained"
-                      type="submit"
-                      disabled={
-                        !hasPermission(collectionId, 'update') ||
-                        isCreateMutating ||
-                        isUpdateMutating
-                      }
-                    >
-                      {t('update')}
-                    </Button>
-                  </Stack>
+                  <Grid xs={12}>
+                    <Stack direction="row" justifyContent="flex-end" spacing={1}>
+                      <Button variant="outlined" color="secondary" onClick={navigateToList}>
+                        {t('cancel')}
+                      </Button>
+                      <Button
+                        variant="contained"
+                        type="submit"
+                        disabled={!hasSavePermission || isCreateMutating}
+                      >
+                        {t('save')}
+                      </Button>
+                    </Stack>
+                  </Grid>
                 </Grid>
               </Grid>
             </form>
@@ -113,4 +100,6 @@ const SingletonPageImpl: React.FC = () => {
   );
 };
 
-export const SingletonPage = ComposeWrapper({ context: ContentContextProvider })(SingletonPageImpl);
+export const CreateModelPage = ComposeWrapper({ context: ContentContextProvider })(
+  CreateModelPageImpl
+);

@@ -1,14 +1,14 @@
 import { Knex } from 'knex';
-import { CollectionsService } from '../services/collections.js';
 import { FieldsService } from '../services/fields.js';
+import { ModelsService } from '../services/models.js';
 import { RelationsService } from '../services/relations.js';
 import { getDatabase } from './connection.js';
 import { getSchemaInfo } from './inspector.js';
 import { Field, PrimaryKey } from './schemas.js';
 
-export type CollectionOverview = {
+export type ModelOverview = {
   id: PrimaryKey | null;
-  collection: string;
+  model: string;
   singleton: boolean;
   statusField: string | null;
   draftValue: string | null;
@@ -26,14 +26,14 @@ export type FieldOverview = {
 };
 
 export type Relation = {
-  collection: string;
+  model: string;
   field: string;
   relatedField: string;
-  relatedCollection: string;
+  relatedModel: string;
 };
 
 export type SchemaOverview = {
-  collections: { [name: string]: CollectionOverview };
+  models: { [name: string]: ModelOverview };
   relations: Relation[];
 };
 
@@ -45,33 +45,31 @@ export type SchemaOverview = {
 export const getSchemaOverview = async (options?: { database?: Knex }): Promise<SchemaOverview> => {
   const database = options?.database || getDatabase();
   const schemaInfo = await getSchemaInfo(database);
-  const schema: SchemaOverview = { collections: {}, relations: [] };
+  const schema: SchemaOverview = { models: {}, relations: [] };
 
   // /////////////////////////////////////
-  // Collections
+  // Models
   // /////////////////////////////////////
-  const collectionsService = new CollectionsService({ database, schema });
-  const collections = await collectionsService.readMany();
+  const modelsService = new ModelsService({ database, schema });
+  const models = await modelsService.readMany();
 
   const fieldsService = new FieldsService({ database, schema });
   const fields = await fieldsService.readMany();
 
-  for (const [collection, info] of Object.entries(schemaInfo)) {
-    const metaCollection = collections.find((c) => c.collection === collection);
+  for (const [model, info] of Object.entries(schemaInfo)) {
+    const metaModel = models.find((c) => c.model === model);
 
-    schema.collections[collection] = {
-      id: metaCollection ? metaCollection.id : null,
-      collection: collection,
-      singleton: metaCollection && metaCollection.singleton ? true : false,
-      statusField: metaCollection ? metaCollection.status_field : null,
-      draftValue: metaCollection ? metaCollection.draft_value : null,
-      publishValue: metaCollection ? metaCollection.publish_value : null,
-      archiveValue: metaCollection ? metaCollection.archive_value : null,
+    schema.models[model] = {
+      id: metaModel ? metaModel.id : null,
+      model: model,
+      singleton: metaModel && metaModel.singleton ? true : false,
+      statusField: metaModel ? metaModel.status_field : null,
+      draftValue: metaModel ? metaModel.draft_value : null,
+      publishValue: metaModel ? metaModel.publish_value : null,
+      archiveValue: metaModel ? metaModel.archive_value : null,
       fields: Object.values(info.columns).reduce(
         (acc, column) => {
-          const field = fields.find(
-            (f) => f.collection === collection && f.field === column.column_name
-          );
+          const field = fields.find((f) => f.model === model && f.field === column.column_name);
 
           acc[column.column_name] = {
             field: column.column_name,
@@ -89,10 +87,10 @@ export const getSchemaOverview = async (options?: { database?: Knex }): Promise<
   // Alias fields
   // /////////////////////////////////////
   for (const field of fields) {
-    if (!schema.collections[field.collection]) continue;
-    if (schema.collections[field.collection].fields[field.field]) continue;
+    if (!schema.models[field.model]) continue;
+    if (schema.models[field.model].fields[field.field]) continue;
 
-    schema.collections[field.collection].fields[field.field] = {
+    schema.models[field.model].fields[field.field] = {
       field: field.field,
       special: getSpecialField(field, null),
       alias: true,
@@ -107,10 +105,10 @@ export const getSchemaOverview = async (options?: { database?: Knex }): Promise<
 
   schema.relations = relations.map((relation) => {
     return {
-      collection: relation.one_collection,
+      model: relation.one_model,
       field: relation.one_field,
       relatedField: relation.many_field,
-      relatedCollection: relation.many_collection,
+      relatedModel: relation.many_model,
     };
   });
 

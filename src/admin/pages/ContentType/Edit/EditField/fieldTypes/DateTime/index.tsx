@@ -17,7 +17,7 @@ import { shallowEqualObject } from '../../../../../../../utilities/shallowEqualO
 import {
   FormValues,
   updateDateTime as schema,
-} from '../../../../../../fields/schemas/collectionFields/dateTime/updateDateTime.js';
+} from '../../../../../../fields/schemas/modelFields/dateTime/updateDateTime.js';
 import { useUnsavedChangesPrompt } from '../../../../../../hooks/useUnsavedChangesPrompt.js';
 import { useField } from '../../Context/index.js';
 import { Props } from '../types.js';

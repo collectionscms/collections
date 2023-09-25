@@ -1,11 +1,11 @@
 import { Knex } from 'knex';
 
 export const seed = async (database: Knex): Promise<void> => {
-  const collectionName = 'collection_f1_grand_prix_races';
+  const modelName = 'model_f1_grand_prix_races';
 
-  await database('superfast_collections').insert([
+  await database('superfast_models').insert([
     {
-      collection: collectionName,
+      model: modelName,
       singleton: false,
       hidden: false,
     },
@@ -13,50 +13,50 @@ export const seed = async (database: Knex): Promise<void> => {
 
   await database('superfast_fields').insert([
     {
-      collection: collectionName,
+      model: modelName,
       field: 'id',
       label: 'id',
       interface: 'input',
     },
     {
-      collection: collectionName,
+      model: modelName,
       field: 'round',
       label: 'Round',
       interface: 'input',
     },
     {
-      collection: collectionName,
+      model: modelName,
       field: 'year',
       label: 'Year',
       interface: 'input',
     },
     {
-      collection: collectionName,
+      model: modelName,
       field: 'circuit',
       label: 'Circuit',
       interface: 'input',
     },
     {
-      collection: collectionName,
+      model: modelName,
       field: 'is_shootout',
       label: 'Shootout',
       interface: 'boolean',
     },
     {
-      collection: collectionName,
+      model: modelName,
       field: 'created_at',
       label: 'Created At',
       interface: 'dateTime',
     },
     {
-      collection: collectionName,
+      model: modelName,
       field: 'updated_at',
       label: 'Updated At',
       interface: 'dateTime',
     },
   ]);
 
-  await database.schema.createTable(collectionName, (table) => {
+  await database.schema.createTable(modelName, (table) => {
     table.increments();
     table.timestamps(true, true);
     table.string('year', 255);

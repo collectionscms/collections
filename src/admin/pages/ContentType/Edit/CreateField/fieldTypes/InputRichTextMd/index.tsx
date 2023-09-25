@@ -19,14 +19,14 @@ import { ConfirmDiscardDialog } from '../../../../../../components/elements/Conf
 import {
   FormValues,
   createInput as schema,
-} from '../../../../../../fields/schemas/collectionFields/input/createInput.js';
+} from '../../../../../../fields/schemas/modelFields/input/createInput.js';
 import { useUnsavedChangesPrompt } from '../../../../../../hooks/useUnsavedChangesPrompt.js';
 import { Accordion } from '../../../Accordion/index.js';
 import { useField } from '../../Context/index.js';
 import { Props } from '../types.js';
 
 export const InputRichTextMdType: React.FC<Props> = (props) => {
-  const { collection, expanded, handleChange, onEditing, onSuccess } = props;
+  const { model, expanded, handleChange, onEditing, onSuccess } = props;
   const { t } = useTranslation();
   const { createField } = useField();
   const { trigger, isMutating } = createField();
@@ -54,8 +54,8 @@ export const InputRichTextMdType: React.FC<Props> = (props) => {
     try {
       reset(form);
       const field = await trigger({
-        collection: collection.collection,
-        collection_id: collection.id,
+        model: model.model,
+        model_id: model.id,
         field: form.field,
         label: form.label,
         interface: 'inputRichTextMd',

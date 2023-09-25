@@ -1,19 +1,16 @@
 import express, { Request, Response } from 'express';
 import { asyncHandler } from '../middleware/asyncHandler.js';
-import {
-  collectionPermissionsHandler,
-  permissionsHandler,
-} from '../middleware/permissionsHandler.js';
+import { modelPermissionsHandler, permissionsHandler } from '../middleware/permissionsHandler.js';
 import { FieldsService } from '../services/fields.js';
 
 const router = express.Router();
 
 router.get(
-  '/collections/:collectionId/fields',
-  collectionPermissionsHandler('read'),
+  '/models/:modelId/fields',
+  modelPermissionsHandler('read'),
   asyncHandler(async (req: Request, res: Response) => {
     const service = new FieldsService({ schema: req.schema });
-    const fields = await service.getFields(req.params.collectionId);
+    const fields = await service.getFields(req.params.modelId);
 
     const fieldWithOptions = fields.map((field) => {
       return {
@@ -30,7 +27,7 @@ router.get(
 
 router.post(
   '/fields',
-  permissionsHandler([{ collection: 'superfast_fields', action: 'create' }]),
+  permissionsHandler([{ model: 'superfast_fields', action: 'create' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const service = new FieldsService({ schema: req.schema });
     const field = await service.createField(req.body);
@@ -44,7 +41,7 @@ router.post(
  */
 router.post(
   '/fields/relations',
-  permissionsHandler([{ collection: 'superfast_fields', action: 'create' }]),
+  permissionsHandler([{ model: 'superfast_fields', action: 'create' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const fieldsService = new FieldsService({ schema: req.schema });
     const fields = await fieldsService.createRelationalFields(req.body.relation, req.body.fields);
@@ -55,7 +52,7 @@ router.post(
 
 router.patch(
   '/fields',
-  permissionsHandler([{ collection: 'superfast_fields', action: 'update' }]),
+  permissionsHandler([{ model: 'superfast_fields', action: 'update' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const service = new FieldsService({ schema: req.schema });
 
@@ -72,7 +69,7 @@ router.patch(
 
 router.patch(
   '/fields/:id',
-  permissionsHandler([{ collection: 'superfast_fields', action: 'update' }]),
+  permissionsHandler([{ model: 'superfast_fields', action: 'update' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const id = Number(req.params.id);
 
@@ -88,8 +85,8 @@ router.patch(
  * Execute in order of relation -> entity to avoid DB constraint errors.
  */
 router.delete(
-  '/collections/:collectionId/fields/:id',
-  permissionsHandler([{ collection: 'superfast_fields', action: 'delete' }]),
+  '/models/:modelId/fields/:id',
+  permissionsHandler([{ model: 'superfast_fields', action: 'delete' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const fieldId = Number(req.params.id);
 

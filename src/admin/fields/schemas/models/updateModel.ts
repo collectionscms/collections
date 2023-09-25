@@ -10,7 +10,7 @@ export type FormValues = {
   archive_value?: string | null;
 };
 
-export const updateCollection = (): ObjectSchema<FormValues> => {
+export const updateModel = (): ObjectSchema<FormValues> => {
   return yup.object().shape({
     hidden: yup.boolean().required(),
     singleton: yup.boolean().required(),

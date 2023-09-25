@@ -1,6 +1,6 @@
 import { AuthUser as AuthUserEntity } from '../../api/config/types.js';
 import {
-  Collection as CollectionSchema,
+  Model as ModelSchema,
   Field as FieldSchema,
   File as FileSchema,
   Permission as PermissionSchema,
@@ -74,19 +74,19 @@ export type GetField = {
 } & FieldSchema;
 
 // /////////////////////////////////////
-// DTO: Collection
+// DTO: Model
 // /////////////////////////////////////
 
 // TODO Subdivided
-export type Collection = {} & CollectionSchema;
+export type Model = {} & ModelSchema;
 
-export type PostCollection = {
+export type PostModel = {
   status?: boolean;
-} & CollectionSchema;
+} & ModelSchema;
 
-export type GetCollection = {} & CollectionSchema;
+export type GetModel = {} & ModelSchema;
 
-export type GetCollections = { collections: GetCollection[] };
+export type GetModels = { models: GetModel[] };
 
 // /////////////////////////////////////
 // DTO: User

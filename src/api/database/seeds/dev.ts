@@ -2,7 +2,7 @@
 import { Knex } from 'knex';
 import { v4 as uuidv4 } from 'uuid';
 import { Output } from '../../../utilities/output.js';
-import { CollectionsService } from '../../services/collections.js';
+import { ModelsService } from '../../services/models.js';
 import { ContentsService } from '../../services/contents.js';
 import { FieldsService } from '../../services/fields.js';
 import { PermissionsService } from '../../services/permissions.js';
@@ -19,7 +19,7 @@ export const seedDev = async (): Promise<void> => {
   try {
     await resetAll(database);
     await seedingSystemData(database);
-    await seedingCollectionData(database);
+    await seedingContentData(database);
 
     process.exit(0);
   } catch (e) {
@@ -34,7 +34,7 @@ const resetAll = async (database: Knex): Promise<void> => {
   await database('superfast_roles').delete();
   await database('superfast_users').delete();
   await database('superfast_permissions').delete();
-  await database('superfast_collections').delete();
+  await database('superfast_models').delete();
   await database('superfast_fields').delete();
   await database('superfast_relations').delete();
   await database('superfast_project_settings').delete();
@@ -50,7 +50,7 @@ const seedingSystemData = async (database: Knex): Promise<void> => {
   const rolesService = new RolesService({ database, schema });
   const usersService = new UsersService({ database, schema });
   const fieldsService = new FieldsService({ database, schema });
-  const collectionsService = new CollectionsService({ database, schema });
+  const modelsService = new ModelsService({ database, schema });
 
   // Role
   Output.info('Creating roles...');
@@ -83,11 +83,11 @@ const seedingSystemData = async (database: Knex): Promise<void> => {
     },
   ] as any[]);
 
-  // Collection: Post
-  Output.info('Creating Post collection...');
-  const postId = await collectionsService.createCollection(
+  // Model: Post
+  Output.info('Creating Post model...');
+  const postId = await modelsService.createModel(
     {
-      collection: 'Post',
+      model: 'Post',
       singleton: false,
       hidden: false,
       status_field: null,
@@ -101,8 +101,8 @@ const seedingSystemData = async (database: Knex): Promise<void> => {
   // Fields: Post
   Output.info('Creating Post fields...');
   await fieldsService.createField({
-    collection: 'Post',
-    collection_id: postId,
+    model: 'Post',
+    model_id: postId,
     field: 'title',
     label: 'Title',
     special: null,
@@ -115,8 +115,8 @@ const seedingSystemData = async (database: Knex): Promise<void> => {
   });
 
   await fieldsService.createField({
-    collection: 'Post',
-    collection_id: postId,
+    model: 'Post',
+    model_id: postId,
     field: 'body',
     label: 'Body',
     special: null,
@@ -129,8 +129,8 @@ const seedingSystemData = async (database: Knex): Promise<void> => {
   });
 
   await fieldsService.createField({
-    collection: 'Post',
-    collection_id: postId,
+    model: 'Post',
+    model_id: postId,
     field: 'author',
     label: 'Author',
     special: null,
@@ -142,11 +142,11 @@ const seedingSystemData = async (database: Knex): Promise<void> => {
     sort: 3,
   });
 
-  // Collection: Company
-  Output.info('Creating Company collection...');
-  const companyId = await collectionsService.createCollection(
+  // model: Company
+  Output.info('Creating Company model...');
+  const companyId = await modelsService.createModel(
     {
-      collection: 'Company',
+      model: 'Company',
       singleton: true,
       hidden: false,
       status_field: null,
@@ -160,8 +160,8 @@ const seedingSystemData = async (database: Knex): Promise<void> => {
   // Fields: Company
   Output.info('Creating Company fields...');
   await fieldsService.createField({
-    collection: 'Company',
-    collection_id: companyId,
+    model: 'Company',
+    model_id: companyId,
     field: 'name',
     label: 'Company Name',
     special: null,
@@ -174,8 +174,8 @@ const seedingSystemData = async (database: Knex): Promise<void> => {
   });
 
   await fieldsService.createField({
-    collection: 'Company',
-    collection_id: companyId,
+    model: 'Company',
+    model_id: companyId,
     field: 'email',
     label: 'Mail Address',
     special: null,
@@ -188,8 +188,8 @@ const seedingSystemData = async (database: Knex): Promise<void> => {
   });
 
   await fieldsService.createField({
-    collection: 'Company',
-    collection_id: companyId,
+    model: 'Company',
+    model_id: companyId,
     field: 'address',
     label: 'Address',
     special: null,
@@ -206,38 +206,38 @@ const seedingSystemData = async (database: Knex): Promise<void> => {
   await permissionsService.createMany([
     // Editor
     {
-      collection: 'Post',
-      collection_id: postId,
+      model: 'Post',
+      model_id: postId,
       action: 'read',
       role_id: editorRole.id,
     },
     {
-      collection: 'Post',
-      collection_id: postId,
+      model: 'Post',
+      model_id: postId,
       action: 'create',
       role_id: editorRole.id,
     },
     {
-      collection: 'Post',
-      collection_id: postId,
+      model: 'Post',
+      model_id: postId,
       action: 'update',
       role_id: editorRole.id,
     },
     {
-      collection: 'Company',
-      collection_id: companyId,
+      model: 'Company',
+      model_id: companyId,
       action: 'read',
       role_id: editorRole.id,
     },
     {
-      collection: 'Company',
-      collection_id: companyId,
+      model: 'Company',
+      model_id: companyId,
       action: 'create',
       role_id: editorRole.id,
     },
     {
-      collection: 'Company',
-      collection_id: companyId,
+      model: 'Company',
+      model_id: companyId,
       action: 'update',
       role_id: editorRole.id,
     },
@@ -252,10 +252,10 @@ const seedingSystemData = async (database: Knex): Promise<void> => {
   });
 };
 
-const seedingCollectionData = async (database: Knex): Promise<void> => {
+const seedingContentData = async (database: Knex): Promise<void> => {
   const schema = await getSchemaOverview({ database });
 
-  Output.info('Adding collection data...');
+  Output.info('Adding content data...');
   const postsService = new ContentsService('Post', { database, schema });
   await postsService.createMany([
     {

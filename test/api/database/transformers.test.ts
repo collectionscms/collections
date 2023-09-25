@@ -2,16 +2,16 @@ import dayjs from 'dayjs';
 import knex, { Knex } from 'knex';
 import { describe } from 'node:test';
 import { getHelpers } from '../../../src/api/database/helpers/index.js';
-import { CollectionOverview } from '../../../src/api/database/overview.js';
+import { ModelOverview } from '../../../src/api/database/overview.js';
 import { applyTransformers } from '../../../src/api/database/transformers.js';
 import { config } from '../../config.js';
 import { testDatabases } from '../../utilities/testDatabases.js';
 
 describe('Transformers', () => {
   const databases = new Map<string, Knex>();
-  const overview: CollectionOverview = {
+  const overview: ModelOverview = {
     id: 1,
-    collection: 'mock_collections',
+    model: 'mock_models',
     singleton: false,
     statusField: null,
     draftValue: null,

@@ -30,8 +30,8 @@ export class UsersService extends BaseService<User> {
         role_id: 'r.id',
         admin_access: 'r.admin_access',
       })
-      .from(`${this.collection} AS u`)
-      .join(`${rolesService.collection} AS r`, 'r.id', 'u.role_id')
+      .from(`${this.model} AS u`)
+      .join(`${rolesService.model} AS r`, 'r.id', 'u.role_id')
       .whereRaw('LOWER(??) = ?', ['u.email', email.toLowerCase()])
       .first();
 

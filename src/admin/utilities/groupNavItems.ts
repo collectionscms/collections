@@ -6,15 +6,15 @@ import {
   UnorderedListOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { Collection } from '../config/types.js';
+import { Model } from '../config/types.js';
 import { Group } from '../components/elements/NavGroup/types.js';
 
-export const collectionsGroupNavItems = (collections: Collection[]): Group => {
+export const modelsGroupNavItems = (models: Model[]): Group => {
   return {
     label: 'content_management',
-    items: collections.map((meta) => ({
-      label: `${meta.collection}`,
-      href: `/admin/collections/${meta.id}/contents`,
+    items: models.map((meta) => ({
+      label: `${meta.model}`,
+      href: `/admin/models/${meta.id}/contents`,
       icon: UnorderedListOutlined,
     })),
   };

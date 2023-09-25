@@ -1,12 +1,12 @@
 import { pick } from '../../utilities/pick.js';
-import { CollectionOverview, FieldOverview } from '../database/overview.js';
+import { ModelOverview, FieldOverview } from '../database/overview.js';
 import { PrimaryKey } from '../database/schemas.js';
 import { FieldFilter, Query } from '../database/types.js';
 import { AbstractServiceOptions, BaseService } from './base.js';
 
 export class ContentsService extends BaseService<any> {
-  constructor(collection: string, options: AbstractServiceOptions) {
-    super(collection, options);
+  constructor(model: string, options: AbstractServiceOptions) {
+    super(model, options);
   }
 
   /**
@@ -14,17 +14,13 @@ export class ContentsService extends BaseService<any> {
    * @param query
    * @returns contents
    */
-  async getContents(
-    appAccess: boolean,
-    collection: CollectionOverview,
-    key?: PrimaryKey
-  ): Promise<any[]> {
-    const query = this.makeQuery(appAccess, collection, key);
+  async getContents(appAccess: boolean, model: ModelOverview, key?: PrimaryKey): Promise<any[]> {
+    const query = this.makeQuery(appAccess, model, key);
     const contents = await this.readMany(query);
 
     const children: Record<string, { relatedField: string; data: any }> = {};
 
-    const aliasFields = Object.values(this.schema.collections[this.collection].fields).filter(
+    const aliasFields = Object.values(this.schema.models[this.model].fields).filter(
       (field) => field.alias
     );
 
@@ -33,10 +29,10 @@ export class ContentsService extends BaseService<any> {
     // /////////////////////////////////////
     for (let field of aliasFields) {
       const relation = this.schema.relations.filter(
-        (relation) => relation.collection === this.collection && relation.field === field.field
+        (relation) => relation.model === this.model && relation.field === field.field
       )[0];
 
-      const relatedContentsService = new ContentsService(relation.relatedCollection, {
+      const relatedContentsService = new ContentsService(relation.relatedModel, {
         schema: this.schema,
       });
       const data = await relatedContentsService.readMany({
@@ -49,7 +45,7 @@ export class ContentsService extends BaseService<any> {
     // /////////////////////////////////////
     // Contents
     // /////////////////////////////////////
-    const overview = this.schema.collections[this.collection];
+    const overview = this.schema.models[this.model];
     for (let content of contents) {
       for (let field of aliasFields) {
         const child = children[field.field];
@@ -75,7 +71,7 @@ export class ContentsService extends BaseService<any> {
       // /////////////////////////////////////
       // Save content
       // /////////////////////////////////////
-      const contentsService = new ContentsService(this.collection, {
+      const contentsService = new ContentsService(this.model, {
         database: tx,
         schema: this.schema,
       });
@@ -84,16 +80,14 @@ export class ContentsService extends BaseService<any> {
       // /////////////////////////////////////
       // Update relational foreign key
       // /////////////////////////////////////
-      const relations = this.schema.relations.filter(
-        (relation) => relation.collection === this.collection
-      );
+      const relations = this.schema.relations.filter((relation) => relation.model === this.model);
 
       for (let relation of relations) {
         const postContentData = data[relation.field];
         if (postContentData) {
-          const postContentIds = postContentData.map((manyCollection: any) => manyCollection.id);
+          const postContentIds = postContentData.map((manyModel: any) => manyModel.id);
 
-          const relatedContentsService = new ContentsService(relation.relatedCollection, {
+          const relatedContentsService = new ContentsService(relation.relatedModel, {
             database: tx,
             schema: this.schema,
           });
@@ -127,7 +121,7 @@ export class ContentsService extends BaseService<any> {
       // Update content
       // /////////////////////////////////////
       const relationDeletedBody = pick(data, this.nonAliasFields(fields));
-      const contentsService = new ContentsService(this.collection, {
+      const contentsService = new ContentsService(this.model, {
         database: tx,
         schema: this.schema,
       });
@@ -137,16 +131,14 @@ export class ContentsService extends BaseService<any> {
       // /////////////////////////////////////
       // Update relational foreign key
       // /////////////////////////////////////
-      const relations = this.schema.relations.filter(
-        (relation) => relation.collection === this.collection
-      );
+      const relations = this.schema.relations.filter((relation) => relation.model === this.model);
 
       for (let relation of relations) {
         const postContentData = data[relation.field];
         if (postContentData) {
-          const postContentIds = postContentData.map((manyCollection: any) => manyCollection.id);
+          const postContentIds = postContentData.map((manyModel: any) => manyModel.id);
 
-          const relatedContentsService = new ContentsService(relation.relatedCollection, {
+          const relatedContentsService = new ContentsService(relation.relatedModel, {
             database: tx,
             schema: this.schema,
           });
@@ -162,7 +154,7 @@ export class ContentsService extends BaseService<any> {
    */
   async deleteContent(key: PrimaryKey): Promise<void> {
     await this.database.transaction(async (tx) => {
-      const contentsService = new ContentsService(this.collection, {
+      const contentsService = new ContentsService(this.model, {
         database: tx,
         schema: this.schema,
       });
@@ -170,12 +162,10 @@ export class ContentsService extends BaseService<any> {
       // /////////////////////////////////////
       // Relational foreign key to null
       // /////////////////////////////////////
-      const relations = this.schema.relations.filter(
-        (relation) => relation.collection === this.collection
-      );
+      const relations = this.schema.relations.filter((relation) => relation.model === this.model);
 
       for (let relation of relations) {
-        const relatedContentsService = new ContentsService(relation.relatedCollection, {
+        const relatedContentsService = new ContentsService(relation.relatedModel, {
           database: tx,
           schema: this.schema,
         });
@@ -224,13 +214,13 @@ export class ContentsService extends BaseService<any> {
       }, []);
   }
 
-  private makeQuery(appAccess: Boolean, collection: CollectionOverview, key?: PrimaryKey): Query {
+  private makeQuery(appAccess: Boolean, model: ModelOverview, key?: PrimaryKey): Query {
     const fieldFilters: FieldFilter[] = [];
 
-    if (!appAccess && collection.statusField) {
+    if (!appAccess && model.statusField) {
       // For Non-application, only public data can be accessed.
       fieldFilters.push({
-        [collection.statusField]: { _eq: collection.publishValue || undefined },
+        [model.statusField]: { _eq: model.publishValue || undefined },
       });
     }
 

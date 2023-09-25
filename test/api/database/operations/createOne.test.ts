@@ -37,7 +37,7 @@ describe('Create One', () => {
       const result = await createOne({
         database: connection,
         schema: overview,
-        collection: tableName,
+        model: tableName,
         data,
       });
 

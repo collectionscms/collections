@@ -29,7 +29,7 @@ export const RootRoutes = () => {
     path: '/admin',
     element: <MainLayout group={group} />,
     children: [
-      { path: '', element: <Navigate to="/admin/collections" replace /> },
+      { path: '', element: <Navigate to="/admin/models" replace /> },
       {
         path: 'me',
         element: (

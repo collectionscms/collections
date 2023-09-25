@@ -2,13 +2,13 @@ import { Knex } from 'knex';
 import { PrimaryKey } from '../schemas.js';
 
 export type Arguments = {
-  collection: string;
+  model: string;
   database: Knex;
   key: PrimaryKey;
 };
 
 export const deleteOne = async (args: Arguments): Promise<void> => {
-  let { collection, database, key } = args;
+  let { model, database, key } = args;
 
-  await database(collection).where({ id: key }).del();
+  await database(model).where({ id: key }).del();
 };

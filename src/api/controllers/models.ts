@@ -3,82 +3,82 @@ import { RecordNotFoundException } from '../../exceptions/database/recordNotFoun
 import { asyncHandler } from '../middleware/asyncHandler.js';
 import { multipartHandler } from '../middleware/multipartHandler.js';
 import { permissionsHandler } from '../middleware/permissionsHandler.js';
-import { CollectionsService } from '../services/collections.js';
+import { ModelsService } from '../services/models.js';
 import { FilesService } from '../services/files.js';
 import { ImportDataService } from '../services/importData.js';
 
 const router = express.Router();
 
 router.get(
-  '/collections/:id',
+  '/models/:id',
   permissionsHandler(),
   asyncHandler(async (req: Request, res: Response) => {
-    const service = new CollectionsService({ schema: req.schema });
-    const collection = await service.readOne(Number(req.params.id));
-    if (!collection) throw new RecordNotFoundException('record_not_found');
+    const service = new ModelsService({ schema: req.schema });
+    const model = await service.readOne(Number(req.params.id));
+    if (!model) throw new RecordNotFoundException('record_not_found');
 
     res.json({
-      collection: {
-        ...collection,
+      model: {
+        ...model,
       },
     });
   })
 );
 
 router.get(
-  '/collections',
+  '/models',
   permissionsHandler(),
   asyncHandler(async (req: Request, res: Response) => {
-    const service = new CollectionsService({ schema: req.schema });
-    const collections = await service.readMany({});
+    const service = new ModelsService({ schema: req.schema });
+    const models = await service.readMany({});
 
-    res.json({ collections });
+    res.json({ models });
   })
 );
 
 router.post(
-  '/collections',
-  permissionsHandler([{ collection: 'superfast_collections', action: 'create' }]),
+  '/models',
+  permissionsHandler([{ model: 'superfast_models', action: 'create' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const { ['status']: status, ...data } = req.body;
 
-    const service = new CollectionsService({ schema: req.schema });
-    const collectionId = await service.createCollection(data, status || false);
+    const service = new ModelsService({ schema: req.schema });
+    const modelId = await service.createModel(data, status || false);
 
-    res.json({ id: collectionId });
+    res.json({ id: modelId });
   })
 );
 
 router.patch(
-  '/collections/:id',
-  permissionsHandler([{ collection: 'superfast_collections', action: 'update' }]),
+  '/models/:id',
+  permissionsHandler([{ model: 'superfast_models', action: 'update' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const id = Number(req.params.id);
 
-    const service = new CollectionsService({ schema: req.schema });
-    await service.updateCollection(id, req.body);
+    const service = new ModelsService({ schema: req.schema });
+    await service.updateModel(id, req.body);
 
     res.status(204).end();
   })
 );
 
 router.delete(
-  '/collections/:id',
-  permissionsHandler([{ collection: 'superfast_collections', action: 'delete' }]),
+  '/models/:id',
+  permissionsHandler([{ model: 'superfast_models', action: 'delete' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const id = Number(req.params.id);
 
-    const service = new CollectionsService({ schema: req.schema });
-    await service.deleteCollection(id);
+    const service = new ModelsService({ schema: req.schema });
+    await service.deleteModel(id);
 
     res.status(204).end();
   })
 );
 
 router.post(
-  '/collections/import',
+  '/models/import',
   asyncHandler(multipartHandler),
-  permissionsHandler([{ collection: 'superfast_collections', action: 'create' }]),
+  permissionsHandler([{ model: 'superfast_models', action: 'create' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const keys = res.locals.savedFileKeys;
     const filesService = new FilesService({ schema: req.schema });
@@ -92,4 +92,4 @@ router.post(
   })
 );
 
-export const collections = router;
+export const models = router;

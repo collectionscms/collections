@@ -1,16 +1,16 @@
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import React, { useState } from 'react';
 import { IconButton } from 'superfast-ui';
-import { Collection, PermissionsAction } from '../../../../config/types.js';
+import { Model, PermissionsAction } from '../../../../config/types.js';
 import { useRole } from '../../Context/index.js';
 import { EditRoleMenu } from '../Menu/index.js';
 import { Props } from './types.js';
 
 export const PermissionToggleButton: React.FC<Props> = (props) => {
-  const { roleId, permissions, mutate, collection, action } = props;
+  const { roleId, permissions, mutate, model, action } = props;
   const [menu, setMenu] = useState<EventTarget | null>(null);
   const [selectedPermissionId, setSelectedPermissionId] = useState<number | null>(null);
-  const [selectedCollection, setSelectedCollection] = useState<Collection | null>(null);
+  const [selectedModel, setSelectedModel] = useState<Model | null>(null);
   const [selectedAction, setSelectedAction] = useState<PermissionsAction | null>(null);
 
   const { createPermission, deletePermission } = useRole();
@@ -23,11 +23,11 @@ export const PermissionToggleButton: React.FC<Props> = (props) => {
   const openMenu = (
     currentTarget: EventTarget,
     id: number | null,
-    collection: Collection,
+    model: Model,
     action: PermissionsAction
   ) => {
     setSelectedPermissionId(id);
-    setSelectedCollection(collection);
+    setSelectedModel(model);
     setSelectedAction(action);
     setMenu(currentTarget);
   };
@@ -37,8 +37,8 @@ export const PermissionToggleButton: React.FC<Props> = (props) => {
     closeMenu();
 
     const permissionId = await createPermissionTrigger({
-      collection: selectedCollection!.collection,
-      collection_id: collection.id,
+      model: selectedModel!.model,
+      model_id: model.id,
       action,
     });
 
@@ -46,8 +46,8 @@ export const PermissionToggleButton: React.FC<Props> = (props) => {
       ...permissions,
       {
         id: permissionId,
-        collection: collection.collection,
-        collection_id: collection.id,
+        model: model.model,
+        model_id: model.id,
         role_id: Number(roleId),
         action,
       },
@@ -63,7 +63,7 @@ export const PermissionToggleButton: React.FC<Props> = (props) => {
   };
 
   const permission = permissions.filter(
-    (permission) => permission.collection_id === collection.id && permission.action === action
+    (permission) => permission.model_id === model.id && permission.action === action
   )[0];
 
   return (
@@ -71,7 +71,7 @@ export const PermissionToggleButton: React.FC<Props> = (props) => {
       <EditRoleMenu
         roleId={roleId}
         permissionId={selectedPermissionId?.toString() || null}
-        collection={selectedCollection!}
+        model={selectedModel!}
         action={selectedAction!}
         menu={menu}
         onCreate={() => handleCreate()}
@@ -82,7 +82,7 @@ export const PermissionToggleButton: React.FC<Props> = (props) => {
         <IconButton
           aria-label="delete"
           color="success"
-          onClick={(e) => openMenu(e.currentTarget, permission.id, collection, action)}
+          onClick={(e) => openMenu(e.currentTarget, permission.id, model, action)}
         >
           <CheckOutlined />
         </IconButton>
@@ -90,7 +90,7 @@ export const PermissionToggleButton: React.FC<Props> = (props) => {
         <IconButton
           aria-label="create"
           color="error"
-          onClick={(e) => openMenu(e.currentTarget, null, collection, action)}
+          onClick={(e) => openMenu(e.currentTarget, null, model, action)}
         >
           <CloseOutlined />
         </IconButton>

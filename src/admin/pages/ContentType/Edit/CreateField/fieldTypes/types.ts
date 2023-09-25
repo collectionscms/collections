@@ -1,7 +1,7 @@
-import { Collection, Field, FieldInterface } from '../../../../../config/types.js';
+import { Model, Field, FieldInterface } from '../../../../../config/types.js';
 
 export type Props = {
-  collection: Collection;
+  model: Model;
   expanded: boolean;
   handleChange: (field: FieldInterface) => void;
   onEditing: (unsaved: boolean) => void;

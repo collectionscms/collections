@@ -5,7 +5,7 @@ import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { SyntaxHighlighter } from 'superfast-ui';
 import { logger } from '../../../../../utilities/logger.js';
-import { useContent } from '../../../../pages/collections/Context/index.js';
+import { useContent } from '../../../../pages/models/Context/index.js';
 import { useColorMode } from '../../../utilities/ColorMode/index.js';
 import { Props } from '../types.js';
 import { commands } from './commands.js';

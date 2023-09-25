@@ -24,7 +24,7 @@ import { Choice } from '../../../../../../config/types.js';
 import {
   FormValues,
   updateSelectDropdown as schema,
-} from '../../../../../../fields/schemas/collectionFields/selectDropdown/updateSelectDropdown.js';
+} from '../../../../../../fields/schemas/modelFields/selectDropdown/updateSelectDropdown.js';
 import { useUnsavedChangesPrompt } from '../../../../../../hooks/useUnsavedChangesPrompt.js';
 import { CreateChoice } from '../../../CreateField/fieldTypes/CreateChoice/index.js';
 import { useField } from '../../Context/index.js';

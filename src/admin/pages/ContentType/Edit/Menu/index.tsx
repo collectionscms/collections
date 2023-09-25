@@ -4,14 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { DeleteDocument } from '../../../../components/elements/DeleteDocument/index.js';
 import { Props } from './types.js';
 
-export const EditMenu: React.FC<Props> = ({
-  id,
-  collectionId,
-  menu,
-  onEdit,
-  onSuccess,
-  onClose,
-}) => {
+export const EditMenu: React.FC<Props> = ({ id, modelId, menu, onEdit, onSuccess, onClose }) => {
   const [open, setOpen] = useState(false);
   const { t } = useTranslation();
 
@@ -39,7 +32,7 @@ export const EditMenu: React.FC<Props> = ({
     <>
       <DeleteDocument
         id={id}
-        slug={`collections/${collectionId}/fields`}
+        slug={`models/${modelId}/fields`}
         openState={open}
         onSuccess={handleSuccess}
         onClose={handleClose}

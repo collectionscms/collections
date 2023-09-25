@@ -1,5 +1,5 @@
 export type Props = {
-  collectionId: string;
+  modelId: string;
   field: string;
   openState: boolean;
   onSuccess: (content: Partial<{ id: number }>) => void;

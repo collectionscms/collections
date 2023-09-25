@@ -20,7 +20,7 @@ import { shallowEqualObject } from '../../../../../../../utilities/shallowEqualO
 import {
   FormValues,
   createListOneToMany as schema,
-} from '../../../../../../fields/schemas/collectionFields/listOneToMany/createListOneToMany.js';
+} from '../../../../../../fields/schemas/modelFields/listOneToMany/createListOneToMany.js';
 import { Accordion } from '../../../Accordion/index.js';
 import { useField } from '../../Context/index.js';
 import { Props } from '../types.js';
@@ -28,16 +28,16 @@ import { useUnsavedChangesPrompt } from '../../../../../../hooks/useUnsavedChang
 import { ConfirmDiscardDialog } from '../../../../../../components/elements/ConfirmDiscardDialog/index.js';
 
 export const ListOneToManyType: React.FC<Props> = (props) => {
-  const { collection, expanded, handleChange, onEditing, onSuccess } = props;
+  const { model, expanded, handleChange, onEditing, onSuccess } = props;
   const { t } = useTranslation();
-  const { getCollections, createRelationalFields } = useField();
-  const { data: collections } = getCollections();
+  const { getModels, createRelationalFields } = useField();
+  const { data: models } = getModels();
   const { trigger: createRelationalFieldsTrigger, isMutating } = createRelationalFields();
   const defaultValues = {
     field: '',
     label: '',
     required: false,
-    related_collection: '',
+    related_model: '',
     foreign_key: '',
   };
   const {
@@ -62,14 +62,12 @@ export const ListOneToManyType: React.FC<Props> = (props) => {
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
       reset(form);
-      const relatedCollection = collections.find(
-        (collection) => collection.collection === form.related_collection
-      );
+      const relatedModel = models.find((model) => model.model === form.related_model);
       const results = await createRelationalFieldsTrigger({
         fields: [
           {
-            collection: collection.collection,
-            collection_id: collection.id,
+            model: model.model,
+            model_id: model.id,
             field: form.field,
             label: form.label,
             interface: 'listOneToMany',
@@ -78,10 +76,10 @@ export const ListOneToManyType: React.FC<Props> = (props) => {
             hidden: false,
           },
           {
-            collection: form.related_collection,
-            collection_id: relatedCollection?.id,
+            model: form.related_model,
+            model_id: relatedModel?.id,
             field: form.foreign_key,
-            label: collection.collection,
+            label: model.model,
             interface: 'selectDropdownManyToOne',
             required: false,
             readonly: false,
@@ -89,11 +87,11 @@ export const ListOneToManyType: React.FC<Props> = (props) => {
           },
         ],
         relation: {
-          many_collection: form.related_collection,
-          many_collection_id: relatedCollection?.id.toString(),
+          many_model: form.related_model,
+          many_model_id: relatedModel?.id.toString(),
           many_field: form.foreign_key,
-          one_collection: collection.collection,
-          one_collection_id: collection.id,
+          one_model: model.model,
+          one_model_id: model.id,
           one_field: form.field,
         },
       });
@@ -158,7 +156,7 @@ export const ListOneToManyType: React.FC<Props> = (props) => {
               <Stack spacing={1}>
                 <InputLabel required>{t('related_content')}</InputLabel>
                 <Controller
-                  name="related_collection"
+                  name="related_model"
                   control={control}
                   defaultValue={''}
                   render={({ field }) => (
@@ -166,23 +164,23 @@ export const ListOneToManyType: React.FC<Props> = (props) => {
                       {...field}
                       fullWidth
                       defaultValue={''}
-                      error={errors.related_collection !== undefined}
+                      error={errors.related_model !== undefined}
                     >
                       <MenuItem value="">
                         <em>None</em>
                       </MenuItem>
-                      {collections &&
-                        collections
-                          .filter((meta) => meta.collection !== collection.collection)
-                          .map((collection) => (
-                            <MenuItem value={collection.collection} key={collection.collection}>
-                              {collection.collection}
+                      {models &&
+                        models
+                          .filter((meta) => meta.model !== model.model)
+                          .map((model) => (
+                            <MenuItem value={model.model} key={model.model}>
+                              {model.model}
                             </MenuItem>
                           ))}
                     </Select>
                   )}
                 />
-                <FormHelperText error>{errors.related_collection?.message}</FormHelperText>
+                <FormHelperText error>{errors.related_model?.message}</FormHelperText>
               </Stack>
             </Grid>
             <Grid xs={1} sm={2}>

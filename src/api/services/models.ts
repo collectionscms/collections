@@ -1,25 +1,25 @@
 import { RecordNotUniqueException } from '../../exceptions/database/recordNotUnique.js';
-import { Collection, Field, PrimaryKey } from '../database/schemas.js';
+import { Field, Model, PrimaryKey } from '../database/schemas.js';
 import { AbstractServiceOptions, BaseService } from './base.js';
 import { FieldsService } from './fields.js';
 import { PermissionsService } from './permissions.js';
 import { RelationsService } from './relations.js';
 
-export class CollectionsService extends BaseService<Collection> {
+export class ModelsService extends BaseService<Model> {
   constructor(options: AbstractServiceOptions) {
-    super('superfast_collections', options);
+    super('superfast_models', options);
   }
 
   /**
-   * @description Create collection with system fields
+   * @description Create model with system fields
    * @param data
    * @param status
    * @returns primary key
    */
-  async createCollection(data: Omit<Collection, 'id'>, status: boolean): Promise<PrimaryKey> {
-    await this.checkUniqueCollection(data.collection);
+  async createModel(data: Omit<Model, 'id'>, status: boolean): Promise<PrimaryKey> {
+    await this.checkUniqueModel(data.model);
 
-    const fullData: Omit<Collection, 'id'> = status
+    const fullData: Omit<Model, 'id'> = status
       ? {
           ...data,
           status_field: 'status',
@@ -29,46 +29,43 @@ export class CollectionsService extends BaseService<Collection> {
         }
       : data;
 
-    const collectionId = await this.database.transaction(async (tx) => {
-      const collectionsService = new CollectionsService({ database: tx, schema: this.schema });
-      const collectionId = await collectionsService.createOne(fullData);
+    const modelId = await this.database.transaction(async (tx) => {
+      const modelsService = new ModelsService({ database: tx, schema: this.schema });
+      const modelId = await modelsService.createOne(fullData);
 
-      await tx.schema.createTable(data.collection, (table) => {
+      await tx.schema.createTable(data.model, (table) => {
         table.increments();
         table.timestamps(true, true);
         status && table.string('status').notNullable();
       });
 
       const fieldsService = new FieldsService({ database: tx, schema: this.schema });
-      const fields = this.buildFields(collectionId, data, status || false);
+      const fields = this.buildFields(modelId, data, status || false);
       await fieldsService.createMany(fields);
 
-      return collectionId;
+      return modelId;
     });
 
-    return collectionId;
+    return modelId;
   }
 
   /**
-   * @description Update a collection
+   * @description Update a model
    * @param key
    * @param data
    */
-  async updateCollection(key: PrimaryKey, data: Omit<Collection, 'id'>): Promise<void> {
+  async updateModel(key: PrimaryKey, data: Omit<Model, 'id'>): Promise<void> {
     await this.database.transaction(async (tx) => {
-      const service = new CollectionsService({ database: tx, schema: this.schema });
+      const service = new ModelsService({ database: tx, schema: this.schema });
       await service.updateOne(key, data);
 
       if (data.status_field) {
-        const collection = await service.readOne(key);
+        const model = await service.readOne(key);
 
         const fieldsService = new FieldsService({ database: tx, schema: this.schema });
         const fields = await fieldsService.readMany({
           filter: {
-            _and: [
-              { collection: { _eq: collection.collection } },
-              { field: { _eq: data.status_field } },
-            ],
+            _and: [{ model: { _eq: model.model } }, { field: { _eq: data.status_field } }],
           },
         });
 
@@ -88,22 +85,22 @@ export class CollectionsService extends BaseService<Collection> {
   }
 
   /**
-   * @description Delete a collection
+   * @description Delete a model
    * Execute in order of relation -> entity to avoid DB constraint errors
    * @param key
    */
-  async deleteCollection(key: PrimaryKey): Promise<void> {
+  async deleteModel(key: PrimaryKey): Promise<void> {
     await this.database.transaction(async (tx) => {
       // /////////////////////////////////////
       // Delete Relation
       // /////////////////////////////////////
-      const collectionsService = new CollectionsService({ database: tx, schema: this.schema });
-      const collection = await collectionsService.readOne(key);
+      const modelsService = new ModelsService({ database: tx, schema: this.schema });
+      const model = await modelsService.readOne(key);
 
       const fieldsService = new FieldsService({ database: tx, schema: this.schema });
       const fieldIds = await fieldsService
         .readMany({
-          filter: { collection: { _eq: collection.collection } },
+          filter: { model: { _eq: model.model } },
         })
         .then((fields) => fields.map((field) => field.id));
 
@@ -115,7 +112,7 @@ export class CollectionsService extends BaseService<Collection> {
       });
 
       const permissions = await permissionsService.readMany({
-        filter: { collection: { _eq: collection.collection } },
+        filter: { model: { _eq: model.model } },
       });
       const ids = permissions.map((permission) => permission.id);
       await permissionsService.deleteMany(ids);
@@ -124,20 +121,20 @@ export class CollectionsService extends BaseService<Collection> {
       const relationsService = new RelationsService({ database: tx, schema: this.schema });
 
       const oneRelations = await relationsService.readMany({
-        filter: { one_collection: { _eq: collection.collection } },
+        filter: { one_model: { _eq: model.model } },
       });
 
       for (let relation of oneRelations) {
-        await fieldsService.executeFieldDelete(tx, relation.many_collection, relation.many_field);
+        await fieldsService.executeFieldDelete(tx, relation.many_model, relation.many_field);
       }
 
       // Delete one relation fields
       const manyRelations = await relationsService.readMany({
-        filter: { many_collection: { _eq: collection.collection } },
+        filter: { many_model: { _eq: model.model } },
       });
 
       for (let relation of manyRelations) {
-        await fieldsService.executeFieldDelete(tx, relation.one_collection, relation.one_field);
+        await fieldsService.executeFieldDelete(tx, relation.one_model, relation.one_field);
       }
 
       // Delete relations
@@ -148,29 +145,29 @@ export class CollectionsService extends BaseService<Collection> {
       await relationsService.deleteMany(relationIds);
 
       // /////////////////////////////////////
-      // Delete Collection
+      // Delete Model
       // /////////////////////////////////////
-      await collectionsService.deleteOne(key);
-      await tx.schema.dropTable(collection.collection);
+      await modelsService.deleteOne(key);
+      await tx.schema.dropTable(model.model);
     });
   }
 
   /**
    * @description Build fields array
-   * @param collectionId
+   * @param modelId
    * @param data
    * @param hasStatus
    * @returns fields array
    */
   private buildFields = (
-    collectionId: PrimaryKey,
-    data: Omit<Collection, 'id'>,
+    modelId: PrimaryKey,
+    data: Omit<Model, 'id'>,
     hasStatus: boolean
   ): Omit<Field, 'id'>[] => {
     const fields: Omit<Field, 'id'>[] = [
       {
-        collection: data.collection,
-        collection_id: collectionId,
+        model: data.model,
+        model_id: modelId,
         field: 'id',
         label: 'id',
         interface: 'input',
@@ -182,8 +179,8 @@ export class CollectionsService extends BaseService<Collection> {
         options: null,
       },
       {
-        collection: data.collection,
-        collection_id: collectionId,
+        model: data.model,
+        model_id: modelId,
         field: 'created_at',
         label: 'Created At',
         interface: 'dateTime',
@@ -195,8 +192,8 @@ export class CollectionsService extends BaseService<Collection> {
         options: null,
       },
       {
-        collection: data.collection,
-        collection_id: collectionId,
+        model: data.model,
+        model_id: modelId,
         field: 'updated_at',
         label: 'Updated At',
         interface: 'dateTime',
@@ -211,8 +208,8 @@ export class CollectionsService extends BaseService<Collection> {
 
     if (hasStatus) {
       fields.push({
-        collection: data.collection,
-        collection_id: collectionId,
+        model: data.model,
+        model_id: modelId,
         field: 'status',
         label: 'Status',
         interface: 'selectDropdownStatus',
@@ -234,12 +231,12 @@ export class CollectionsService extends BaseService<Collection> {
     return fields;
   };
 
-  private async checkUniqueCollection(collection: string) {
-    const collections = await this.readMany({
-      filter: { collection: { _eq: collection } },
+  private async checkUniqueModel(model: string) {
+    const models = await this.readMany({
+      filter: { model: { _eq: model } },
     });
 
-    if (collections.length) {
+    if (models.length) {
       throw new RecordNotUniqueException('already_registered_name');
     }
   }

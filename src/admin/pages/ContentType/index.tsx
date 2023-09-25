@@ -11,16 +11,16 @@ import { cells } from '../../components/elements/Table/Cell/types.js';
 import { Table } from '../../components/elements/Table/index.js';
 import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.js';
 import { useConfig } from '../../components/utilities/Config/index.js';
-import { Collection } from '../../config/types.js';
+import { Model } from '../../config/types.js';
 import { buildColumns } from '../../utilities/buildColumns.js';
-import { CollectionContextProvider, useCollection } from './Context/index.js';
+import { ModelContextProvider, useModel } from './Context/index.js';
 
 const ContentTypePageImpl: React.FC = () => {
   const [open, setOpen] = useState(false);
   const { t } = useTranslation();
   const config = useConfig();
-  const { getCollections } = useCollection();
-  const { data } = getCollections();
+  const { getModels } = useModel();
+  const { data } = getModels();
 
   const showDialog = () => {
     setOpen(true);
@@ -29,13 +29,13 @@ const ContentTypePageImpl: React.FC = () => {
   const handleDialog = (success: boolean) => {
     setOpen(!open);
     if (success) {
-      config.revalidateCollections();
+      config.revalidateModels();
     }
   };
 
-  const fields = [{ field: 'collection', label: t('name'), type: cells.text() }];
+  const fields = [{ field: 'model', label: t('name'), type: cells.text() }];
 
-  const columns = buildColumns(fields, (i: number, row: Collection, data: any) => {
+  const columns = buildColumns(fields, (i: number, row: Model, data: any) => {
     const cell = <Cell colIndex={i} type={fields[i].type} cellData={data} />;
     return i === 0 ? <Link href={`${row.id}`}>{cell}</Link> : cell;
   });
@@ -72,6 +72,6 @@ const ContentTypePageImpl: React.FC = () => {
   );
 };
 
-export const ContentTypePage = ComposeWrapper({ context: CollectionContextProvider })(
+export const ContentTypePage = ComposeWrapper({ context: ModelContextProvider })(
   ContentTypePageImpl
 );

@@ -47,7 +47,7 @@ describe('Create Many', () => {
       const result = await createMany({
         database: connection,
         schema: overview,
-        collection: tableName,
+        model: tableName,
         data,
       });
 

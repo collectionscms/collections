@@ -5,7 +5,7 @@ import { PermissionsService } from '../services/permissions.js';
 
 type PermissionsAction = 'create' | 'read' | 'update' | 'delete';
 
-export const collectionPermissionsHandler =
+export const modelPermissionsHandler =
   (action: PermissionsAction) => async (req: Request, res: Response, next: NextFunction) => {
     if (!req.userId) {
       return next(new InvalidCredentialsException('invalid_user_credentials'));
@@ -22,7 +22,7 @@ export const collectionPermissionsHandler =
 
       const hasPermission = userPermissions.some(
         (userPermission) =>
-          userPermission.collection_id.toString() === req.params.collectionId &&
+          userPermission.model_id.toString() === req.params.modelId &&
           userPermission.action === action
       );
 
@@ -35,7 +35,7 @@ export const collectionPermissionsHandler =
   };
 
 export const permissionsHandler =
-  (permissions: { collection: string; action: PermissionsAction }[] = []) =>
+  (permissions: { model: string; action: PermissionsAction }[] = []) =>
   async (req: Request, res: Response, next: NextFunction) => {
     if (!req.userId) {
       return next(new InvalidCredentialsException('invalid_user_credentials'));
@@ -53,8 +53,7 @@ export const permissionsHandler =
       const hasPermission = permissions.every((permission) =>
         userPermissions.some(
           (userPermission) =>
-            userPermission.collection === permission.collection &&
-            userPermission.action === permission.action
+            userPermission.model === permission.model && userPermission.action === permission.action
         )
       );
 

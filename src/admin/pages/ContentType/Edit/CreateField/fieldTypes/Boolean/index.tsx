@@ -18,7 +18,7 @@ import { shallowEqualObject } from '../../../../../../../utilities/shallowEqualO
 import {
   FormValues,
   createBoolean as schema,
-} from '../../../../../../fields/schemas/collectionFields/boolean/createBoolean.js';
+} from '../../../../../../fields/schemas/modelFields/boolean/createBoolean.js';
 import { Accordion } from '../../../Accordion/index.js';
 import { useField } from '../../Context/index.js';
 import { Props } from '../types.js';
@@ -26,7 +26,7 @@ import { useUnsavedChangesPrompt } from '../../../../../../hooks/useUnsavedChang
 import { ConfirmDiscardDialog } from '../../../../../../components/elements/ConfirmDiscardDialog/index.js';
 
 export const BooleanType: React.FC<Props> = (props) => {
-  const { collection, expanded, handleChange, onEditing, onSuccess } = props;
+  const { model, expanded, handleChange, onEditing, onSuccess } = props;
   const { t } = useTranslation();
   const { createField } = useField();
   const { trigger, isMutating } = createField();
@@ -59,8 +59,8 @@ export const BooleanType: React.FC<Props> = (props) => {
     try {
       reset(form);
       const field = await trigger({
-        collection: collection.collection,
-        collection_id: collection.id,
+        model: model.model,
+        model_id: model.id,
         field: form.field,
         label: form.label,
         interface: 'boolean',

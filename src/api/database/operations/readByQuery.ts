@@ -6,7 +6,7 @@ import { applyTransformers } from '../transformers.js';
 import { FieldFilter, Filter, Sort } from '../types.js';
 
 export type Arguments = {
-  collection: string;
+  model: string;
   database: Knex;
   schema: SchemaOverview;
   filter?: Filter | null;
@@ -32,10 +32,10 @@ const applyFilter = (
 };
 
 export const readByQuery = async <T>(args: Arguments): Promise<T[]> => {
-  let { database, collection, schema, filter, sorts } = args;
+  let { database, model, schema, filter, sorts } = args;
   const helpers = getHelpers(args.database);
-  const builder = database(collection);
-  const overview = schema.collections[collection];
+  const builder = database(model);
+  const overview = schema.models[model];
 
   if (filter) {
     for (const [key, value] of Object.entries(filter)) {
@@ -63,7 +63,7 @@ export const readByQuery = async <T>(args: Arguments): Promise<T[]> => {
 
   if (overview) {
     for (const result of results) {
-      await applyTransformers('read', result, schema.collections[collection], helpers);
+      await applyTransformers('read', result, schema.models[model], helpers);
     }
   }
 

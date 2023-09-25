@@ -18,7 +18,7 @@ import { ConfirmDiscardDialog } from '../../../../../../components/elements/Conf
 import {
   FormValues,
   updateInput as schema,
-} from '../../../../../../fields/schemas/collectionFields/input/updateInput.js';
+} from '../../../../../../fields/schemas/modelFields/input/updateInput.js';
 import { useUnsavedChangesPrompt } from '../../../../../../hooks/useUnsavedChangesPrompt.js';
 import { useField } from '../../Context/index.js';
 import { Props } from '../types.js';

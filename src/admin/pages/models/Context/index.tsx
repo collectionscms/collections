@@ -1,45 +1,45 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWR from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
-import { File, GetCollection, GetField, GetRelation } from '../../../config/types.js';
+import { File, GetModel, GetField, GetRelation } from '../../../config/types.js';
 import { api } from '../../../utilities/api.js';
 import { ContentContext } from './types.js';
 
 const Context = createContext({} as ContentContext);
 
 export const ContentContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const getContents = (collectionId: string) =>
+  const getContents = (modelId: string) =>
     useSWR(
-      `/collections/${collectionId}/contents`,
+      `/models/${modelId}/contents`,
       (url) => api.get(url).then((res) => (res.data.data ? res.data.data : {})),
       { suspense: true }
     );
 
-  const getContent = (collectionId: string, id: string) =>
+  const getContent = (modelId: string, id: string) =>
     useSWR(
-      `/collections/${collectionId}/contents/${id}`,
+      `/models/${modelId}/contents/${id}`,
       (url) => api.get<{ data: any }>(url).then((res) => res.data.data),
       { suspense: true }
     );
 
-  const getFields = (collectionId: string) =>
+  const getFields = (modelId: string) =>
     useSWR(
-      `/collections/${collectionId}/fields`,
+      `/models/${modelId}/fields`,
       (url) => api.get<{ fields: GetField[] }>(url).then((res) => res.data.fields),
       { suspense: true }
     );
 
-  const createContent = (collectionId: string) =>
+  const createContent = (modelId: string) =>
     useSWRMutation(
-      `/collections/${collectionId}/contents`,
+      `/models/${modelId}/contents`,
       async (url: string, { arg }: { arg: Record<string, any> }) => {
         return api.post<{ id: number }>(url, arg).then((res) => res.data.id);
       }
     );
 
-  const updateContent = (collectionId: string, id: string) =>
+  const updateContent = (modelId: string, id: string) =>
     useSWRMutation(
-      `/collections/${collectionId}/contents/${id}`,
+      `/models/${modelId}/contents/${id}`,
       async (url: string, { arg }: { arg: Record<string, any> }) => {
         return api.patch(url, arg).then((res) => res.data);
       }
@@ -55,17 +55,17 @@ export const ContentContextProvider: React.FC<{ children: React.ReactNode }> = (
       return api.post<{ file: File; raw: string }>(url, arg).then((res) => res.data);
     });
 
-  const getRelations = (collectionId: string, field: string) =>
+  const getRelations = (modelId: string, field: string) =>
     useSWR(
-      `/relations/${collectionId}/${field}`,
+      `/relations/${modelId}/${field}`,
       (url) => api.get<{ relations: GetRelation[] }>(url).then((res) => res.data.relations),
       { suspense: true }
     );
 
-  const getCollection = (collectionId: string) =>
+  const getModel = (modelId: string) =>
     useSWR(
-      `/collections/${collectionId}`,
-      (url) => api.get<{ collection: GetCollection }>(url).then((res) => res.data.collection),
+      `/models/${modelId}`,
+      (url) => api.get<{ model: GetModel }>(url).then((res) => res.data.model),
       { suspense: true }
     );
 
@@ -79,7 +79,7 @@ export const ContentContextProvider: React.FC<{ children: React.ReactNode }> = (
       getFileImage,
       createFileImage,
       getRelations,
-      getCollection,
+      getModel,
     }),
     [
       getContents,
@@ -90,7 +90,7 @@ export const ContentContextProvider: React.FC<{ children: React.ReactNode }> = (
       getFileImage,
       createFileImage,
       getRelations,
-      getCollection,
+      getModel,
     ]
   );
 

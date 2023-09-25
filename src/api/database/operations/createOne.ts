@@ -5,22 +5,22 @@ import { PrimaryKey } from '../schemas.js';
 import { applyTransformers } from '../transformers.js';
 
 export type Arguments = {
-  collection: string;
+  model: string;
   database: Knex;
   schema: SchemaOverview;
   data: Record<string, unknown>;
 };
 
 export const createOne = async (args: Arguments): Promise<PrimaryKey> => {
-  let { database, collection, schema, data } = args;
+  let { database, model, schema, data } = args;
   const helpers = getHelpers(args.database);
-  const overview = schema.collections[collection];
+  const overview = schema.models[model];
 
   if (overview) {
     await applyTransformers('create', data, overview, helpers);
   }
 
-  const builder = database(collection).insert(data);
+  const builder = database(model).insert(data);
 
   switch (database.client.config.client) {
     case 'sqlite3':

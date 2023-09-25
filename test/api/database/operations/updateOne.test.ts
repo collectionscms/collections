@@ -39,14 +39,14 @@ describe('Update One', () => {
       const key = await createOne({
         database: connection,
         schema: overview,
-        collection: tableName,
+        model: tableName,
         data,
       });
 
       const result = await updateOne({
         database: connection,
         schema: overview,
-        collection: tableName,
+        model: tableName,
         key,
         data: {
           name: 'Daniel Ricciardo',
@@ -57,7 +57,7 @@ describe('Update One', () => {
       const fetchedResult = await readById({
         database: connection,
         schema: overview,
-        collection: tableName,
+        model: tableName,
         key,
       });
 

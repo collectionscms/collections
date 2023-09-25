@@ -4,21 +4,21 @@ import {
   cells,
 } from '../../../../admin/components/elements/Table/Cell/types.js';
 import { ColumnField } from '../../../../admin/components/elements/Table/types.js';
-import { Collection, Field } from '../../../config/types.js';
+import { Model, Field } from '../../../config/types.js';
 
-export const buildColumnFields = (collection: Collection, fields: Field[]): ColumnField[] => {
+export const buildColumnFields = (model: Model, fields: Field[]): ColumnField[] => {
   return fields
     .filter((field) => !field.hidden)
     .map((field) => {
       return {
         field: field.field,
         label: field.label,
-        type: toType(collection, field),
+        type: toType(model, field),
       };
     });
 };
 
-const toType = (collection: Collection, field: Field): CellType => {
+const toType = (model: Model, field: Field): CellType => {
   switch (field.interface) {
     case 'input':
     case 'inputMultiline':
@@ -31,11 +31,11 @@ const toType = (collection: Collection, field: Field): CellType => {
       const choices: StatusChoices = {};
 
       for (const choice of field.fieldOption?.choices || []) {
-        if (choice.value === collection.draft_value) {
+        if (choice.value === model.draft_value) {
           choices[choice.value] = { status: 'draft', choice };
-        } else if (choice.value === collection.publish_value) {
+        } else if (choice.value === model.publish_value) {
           choices[choice.value] = { status: 'published', choice };
-        } else if (choice.value === collection.archive_value) {
+        } else if (choice.value === model.archive_value) {
           choices[choice.value] = { status: 'archived', choice };
         }
       }

@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.get(
   '/roles',
-  permissionsHandler([{ collection: 'superfast_roles', action: 'read' }]),
+  permissionsHandler([{ model: 'superfast_roles', action: 'read' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const rolesService = new RolesService({ schema: req.schema });
     const roles = await rolesService.readMany();
@@ -20,7 +20,7 @@ router.get(
 
 router.get(
   '/roles/:id',
-  permissionsHandler([{ collection: 'superfast_roles', action: 'read' }]),
+  permissionsHandler([{ model: 'superfast_roles', action: 'read' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const id = Number(req.params.id);
 
@@ -35,7 +35,7 @@ router.get(
 
 router.post(
   '/roles',
-  permissionsHandler([{ collection: 'superfast_roles', action: 'create' }]),
+  permissionsHandler([{ model: 'superfast_roles', action: 'create' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const rolesService = new RolesService({ schema: req.schema });
     const roleId = await rolesService.createOne(req.body);
@@ -48,7 +48,7 @@ router.post(
 
 router.patch(
   '/roles/:id',
-  permissionsHandler([{ collection: 'superfast_roles', action: 'update' }]),
+  permissionsHandler([{ model: 'superfast_roles', action: 'update' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const id = Number(req.params.id);
 
@@ -61,7 +61,7 @@ router.patch(
 
 router.delete(
   '/roles/:id',
-  permissionsHandler([{ collection: 'superfast_roles', action: 'delete' }]),
+  permissionsHandler([{ model: 'superfast_roles', action: 'delete' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const id = Number(req.params.id);
 
@@ -89,7 +89,7 @@ router.get(
 
 router.post(
   '/roles/:id/permissions',
-  permissionsHandler([{ collection: 'superfast_permissions', action: 'create' }]),
+  permissionsHandler([{ model: 'superfast_permissions', action: 'create' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const id = Number(req.params.id);
     const data = {
@@ -108,7 +108,7 @@ router.post(
 
 router.delete(
   '/roles/:id/permissions/:permissionId',
-  permissionsHandler([{ collection: 'superfast_permissions', action: 'delete' }]),
+  permissionsHandler([{ model: 'superfast_permissions', action: 'delete' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const permissionId = Number(req.params.permissionId);
 

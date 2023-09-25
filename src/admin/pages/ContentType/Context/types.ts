@@ -1,25 +1,25 @@
 import { SWRResponse } from 'swr';
 import { SWRMutationResponse } from 'swr/mutation';
-import { Collection, GetCollection, GetField, PostCollection } from '../../../config/types.js';
+import { Model, GetModel, GetField, PostModel } from '../../../config/types.js';
 
-export type CollectionContext = {
-  getCollection: (collectionId: string) => SWRResponse<
-    GetCollection,
+export type ModelContext = {
+  getModel: (modelId: string) => SWRResponse<
+    GetModel,
     Error,
     {
       suspense: true;
     }
   >;
-  getCollections: () => SWRResponse<
-    Collection[],
+  getModels: () => SWRResponse<
+    Model[],
     Error,
     {
       suspense: true;
     }
   >;
-  createCollection: SWRMutationResponse<number, any, string, Omit<PostCollection, 'id'>>;
-  updateCollection: (id: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
-  getFields: (collectionId: string) => SWRResponse<
+  createModel: SWRMutationResponse<number, any, string, Omit<PostModel, 'id'>>;
+  updateModel: (id: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
+  getFields: (modelId: string) => SWRResponse<
     GetField[],
     Error,
     {

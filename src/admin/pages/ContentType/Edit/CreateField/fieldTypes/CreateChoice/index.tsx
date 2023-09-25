@@ -20,7 +20,7 @@ import { ScrollBar } from '../../../../../../components/elements/ScrollBar/index
 import {
   FormValues,
   createChoice as schema,
-} from '../../../../../../fields/schemas/collectionFields/choice/createChoice.js';
+} from '../../../../../../fields/schemas/modelFields/choice/createChoice.js';
 import { Props } from './types.js';
 
 export const CreateChoice: React.FC<Props> = ({ openState, onSuccess, onClose }) => {

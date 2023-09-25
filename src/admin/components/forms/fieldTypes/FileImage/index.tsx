@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { logger } from '../../../../../utilities/logger.js';
 import { File } from '../../../../config/types.js';
-import { ContentContextProvider, useContent } from '../../../../pages/collections/Context/index.js';
+import { ContentContextProvider, useContent } from '../../../../pages/models/Context/index.js';
 import { SingleFileUpload } from '../../../elements/SingleFileUpload/index.js';
 import { CustomFile } from '../../../elements/SingleFileUpload/types.js';
 import { ComposeWrapper } from '../../../utilities/ComposeWrapper/index.js';

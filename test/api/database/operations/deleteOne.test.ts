@@ -39,20 +39,20 @@ describe('Delete One', () => {
       const key = await createOne({
         database: connection,
         schema: overview,
-        collection: tableName,
+        model: tableName,
         data,
       });
 
       await deleteOne({
         database: connection,
-        collection: tableName,
+        model: tableName,
         key,
       });
 
       const result = await readById({
         database: connection,
         schema: overview,
-        collection: tableName,
+        model: tableName,
         key,
       });
 

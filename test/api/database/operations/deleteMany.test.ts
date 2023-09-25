@@ -49,20 +49,20 @@ describe('Delete Many', () => {
       const keys = await createMany({
         database: connection,
         schema: overview,
-        collection: tableName,
+        model: tableName,
         data,
       });
 
       await deleteMany({
         database: connection,
-        collection: tableName,
+        model: tableName,
         keys,
       });
 
       const result = await readByQuery({
         database: connection,
         schema: overview,
-        collection: tableName,
+        model: tableName,
         filter: {
           id: { _in: keys },
         },

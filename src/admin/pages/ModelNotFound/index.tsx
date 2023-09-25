@@ -3,7 +3,7 @@ import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-export const CollectionNotFound: React.FC = () => {
+export const ModelNotFound: React.FC = () => {
   const { t } = useTranslation();
 
   return (
@@ -20,7 +20,7 @@ export const CollectionNotFound: React.FC = () => {
         direction="row"
         sx={{ minHeight: '40vh' }}
       >
-        <h2>{t('collection_not_found')}</h2>
+        <h2>{t('model_not_found')}</h2>
       </Grid>
     </Stack>
   );

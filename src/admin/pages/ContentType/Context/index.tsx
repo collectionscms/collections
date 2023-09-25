@@ -1,47 +1,40 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWR, { SWRResponse } from 'swr';
 import useSWRMutation from 'swr/mutation';
-import { Collection, GetCollection, GetField, PostCollection } from '../../../config/types.js';
+import { Model, GetModel, GetField, PostModel } from '../../../config/types.js';
 import { api } from '../../../utilities/api.js';
-import { CollectionContext } from './types.js';
+import { ModelContext } from './types.js';
 
-const Context = createContext({} as CollectionContext);
+const Context = createContext({} as ModelContext);
 
-export const CollectionContextProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
-  const getCollection = (collectionId: string) =>
+export const ModelContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const getModel = (modelId: string) =>
     useSWR(
-      `/collections/${collectionId}`,
-      (url) => api.get<{ collection: GetCollection }>(url).then((res) => res.data.collection),
+      `/models/${modelId}`,
+      (url) => api.get<{ model: GetModel }>(url).then((res) => res.data.model),
       { suspense: true }
     );
 
-  const getCollections = (): SWRResponse =>
-    useSWR(
-      '/collections',
-      (url) => api.get<{ collections: Collection[] }>(url).then((res) => res.data.collections),
-      { suspense: true }
-    );
+  const getModels = (): SWRResponse =>
+    useSWR('/models', (url) => api.get<{ models: Model[] }>(url).then((res) => res.data.models), {
+      suspense: true,
+    });
 
-  const createCollection = useSWRMutation(
-    '/collections',
-    async (url: string, { arg }: { arg: Omit<PostCollection, 'id'> }) => {
+  const createModel = useSWRMutation(
+    '/models',
+    async (url: string, { arg }: { arg: Omit<PostModel, 'id'> }) => {
       return api.post<{ id: number }>(url, arg).then((res) => res.data.id);
     }
   );
 
-  const updateCollection = (id: string) =>
-    useSWRMutation(
-      `/collections/${id}`,
-      async (url: string, { arg }: { arg: Record<string, any> }) => {
-        return api.patch(url, arg).then((res) => res.data);
-      }
-    );
+  const updateModel = (id: string) =>
+    useSWRMutation(`/models/${id}`, async (url: string, { arg }: { arg: Record<string, any> }) => {
+      return api.patch(url, arg).then((res) => res.data);
+    });
 
-  const getFields = (collectionId: string) =>
+  const getFields = (modelId: string) =>
     useSWR(
-      `/collections/${collectionId}/fields`,
+      `/models/${modelId}/fields`,
       (url) => api.get<{ fields: GetField[] }>(url).then((res) => res.data.fields),
       { suspense: true }
     );
@@ -53,17 +46,17 @@ export const CollectionContextProvider: React.FC<{ children: React.ReactNode }> 
 
   const value = useMemo(
     () => ({
-      getCollection,
-      getCollections,
-      createCollection,
-      updateCollection,
+      getModel,
+      getModels,
+      createModel,
+      updateModel,
       getFields,
       updateFields,
     }),
-    [getCollection, getCollections, createCollection, updateCollection, getFields, updateFields]
+    [getModel, getModels, createModel, updateModel, getFields, updateFields]
   );
 
   return <Context.Provider value={value}>{children}</Context.Provider>;
 };
 
-export const useCollection = () => useContext(Context);
+export const useModel = () => useContext(Context);

@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWR, { SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
-import { Collection, Permission, Role } from '../../../config/types.js';
+import { Model, Permission, Role } from '../../../config/types.js';
 import { api } from '../../../utilities/api.js';
 import { RoleContext } from './types.js';
 
@@ -28,12 +28,10 @@ export const RoleContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       return api.patch(url, arg).then((res) => res.data);
     });
 
-  const getCollections = (): SWRResponse =>
-    useSWR(
-      '/collections',
-      (url) => api.get<{ collections: Collection[] }>(url).then((res) => res.data.collections),
-      { suspense: true }
-    );
+  const getModels = (): SWRResponse =>
+    useSWR('/models', (url) => api.get<{ models: Model[] }>(url).then((res) => res.data.models), {
+      suspense: true,
+    });
 
   const getPermissions = (id: string): SWRResponse =>
     useSWR(
@@ -61,7 +59,7 @@ export const RoleContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       getRole,
       createRole,
       updateRole,
-      getCollections,
+      getModels,
       getPermissions,
       createPermission,
       deletePermission,
@@ -71,7 +69,7 @@ export const RoleContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       getRole,
       createRole,
       updateRole,
-      getCollections,
+      getModels,
       getPermissions,
       createPermission,
       deletePermission,

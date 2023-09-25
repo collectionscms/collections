@@ -1,6 +1,6 @@
 export type Props = {
   openState: boolean;
-  collectionId: string;
+  modelId: string;
   field: string;
   excludes: Partial<{ id: number }>[];
   onSuccess: (contents: Partial<{ id: number }>[]) => void;
