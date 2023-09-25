@@ -47,8 +47,8 @@ export const settingsGroupNavItems = (): Group => {
         icon: SettingOutlined,
       },
       {
-        label: 'content_type',
-        href: `${path}/content-types`,
+        label: 'data_model',
+        href: `${path}/models`,
         icon: InsertRowAboveOutlined,
       },
       {

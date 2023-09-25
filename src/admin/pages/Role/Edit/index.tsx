@@ -96,7 +96,7 @@ const EditRolePageImpl: React.FC = () => {
                   <TableHead>
                     <TableRow>
                       <TableCell component="th" scope="row">
-                        {t('content_type')}
+                        {t('data_model')}
                       </TableCell>
                       {actions.map((action) => (
                         <TableCell

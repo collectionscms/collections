@@ -14,14 +14,12 @@ const CreateRole = Loader(
   lazy(() => import('../../../pages/Role/Create/index.js'), 'CreateRolePage')
 );
 const EditRole = Loader(lazy(() => import('../../../pages/Role/Edit/index.js'), 'EditRolePage'));
-const ContentType = Loader(
-  lazy(() => import('../../../pages/ContentType/index.js'), 'ContentTypePage')
+const DataModel = Loader(lazy(() => import('../../../pages/DataModel/index.js'), 'DataModelPage'));
+const CreateDataModel = Loader(
+  lazy(() => import('../../../pages/DataModel/Create/index.js'), 'CreateDataModelPage')
 );
-const CreateContentType = Loader(
-  lazy(() => import('../../../pages/ContentType/Create/index.js'), 'CreateContentTypePage')
-);
-const EditContentType = Loader(
-  lazy(() => import('../../../pages/ContentType/Edit/index.js'), 'EditContentTypePage')
+const EditDataModel = Loader(
+  lazy(() => import('../../../pages/DataModel/Edit/index.js'), 'EditDataModelPage')
 );
 const User = Loader(lazy(() => import('../../../pages/User/index.js'), 'UserPage'));
 const CreateUser = Loader(
@@ -73,26 +71,26 @@ export const SettingRoutes = () => {
       // Content Types
       // /////////////////////////////////////
       {
-        path: 'content-types',
+        path: 'models',
         element: (
-          <MainHeader label={t('content_type')}>
-            <ContentType />
+          <MainHeader label={t('data_model')}>
+            <DataModel />
           </MainHeader>
         ),
       },
       {
-        path: 'content-types/create',
+        path: 'models/create',
         element: (
-          <MainHeader label={t('create.content_type')}>
-            <CreateContentType />
+          <MainHeader label={t('create.data_model')}>
+            <CreateDataModel />
           </MainHeader>
         ),
       },
       {
-        path: 'content-types/:modelId',
+        path: 'models/:modelId',
         element: (
-          <MainHeader label={t('edit.content_type')}>
-            <EditContentType />
+          <MainHeader label={t('edit.data_model')}>
+            <EditDataModel />
           </MainHeader>
         ),
       },

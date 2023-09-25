@@ -35,7 +35,7 @@ import { EditField } from './EditField/index.js';
 import { EditMenu } from './Menu/index.js';
 import { SortableFieldList } from './SortableFieldList/index.js';
 
-const EditContentTypePageImpl: React.FC = () => {
+const EditDataModelPageImpl: React.FC = () => {
   const { modelId } = useParams();
   if (!modelId) throw new Error('modelId is not defined');
 
@@ -82,7 +82,7 @@ const EditContentTypePageImpl: React.FC = () => {
   };
 
   const navigateToList = () => {
-    navigate('../content-types');
+    navigate('../models');
   };
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
@@ -90,7 +90,7 @@ const EditContentTypePageImpl: React.FC = () => {
       reset(form);
       await trigger(form);
       enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
-      navigate('../content-types');
+      navigate('../models');
     } catch (e) {
       logger.error(e);
     }
@@ -368,6 +368,6 @@ const EditContentTypePageImpl: React.FC = () => {
   );
 };
 
-export const EditContentTypePage = ComposeWrapper({ context: ModelContextProvider })(
-  EditContentTypePageImpl
+export const EditDataModelPage = ComposeWrapper({ context: ModelContextProvider })(
+  EditDataModelPageImpl
 );

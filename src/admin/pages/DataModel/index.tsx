@@ -15,7 +15,7 @@ import { Model } from '../../config/types.js';
 import { buildColumns } from '../../utilities/buildColumns.js';
 import { ModelContextProvider, useModel } from './Context/index.js';
 
-const ContentTypePageImpl: React.FC = () => {
+const DataModelPageImpl: React.FC = () => {
   const [open, setOpen] = useState(false);
   const { t } = useTranslation();
   const config = useConfig();
@@ -72,6 +72,4 @@ const ContentTypePageImpl: React.FC = () => {
   );
 };
 
-export const ContentTypePage = ComposeWrapper({ context: ModelContextProvider })(
-  ContentTypePageImpl
-);
+export const DataModelPage = ComposeWrapper({ context: ModelContextProvider })(DataModelPageImpl);

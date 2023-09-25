@@ -38,19 +38,19 @@ export const CreateFirstModel: React.FC = () => {
       >
         <Grid xs={12}>
           <Stack spacing={2} justifyContent="center" alignItems="center">
-            <Typography variant="h2">{t('register_content_type')}</Typography>
+            <Typography variant="h2">{t('register_data_model')}</Typography>
             <Typography
               color="textSecondary"
               align="center"
               sx={{ width: { xs: '73%', sm: '61%' } }}
             >
-              {t('create_first_content_type')}
+              {t('create_first_data_model')}
             </Typography>
             <Stack direction="row" justifyContent="space-around" alignItems="center" gap={3}>
               <Stack spacing={0.5} alignItems="center">
                 <Button
                   component={RouterLink}
-                  to="/admin/settings/content-types/create"
+                  to="/admin/settings/models/create"
                   variant="contained"
                 >
                   {t('go_to_registration')}

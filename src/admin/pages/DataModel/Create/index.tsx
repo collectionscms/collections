@@ -27,7 +27,7 @@ import {
 import { useUnsavedChangesPrompt } from '../../../hooks/useUnsavedChangesPrompt.js';
 import { ModelContextProvider, useModel } from '../Context/index.js';
 
-const CreateContentTypePageImpl: React.FC = () => {
+const CreateDataModelPageImpl: React.FC = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
@@ -46,7 +46,7 @@ const CreateContentTypePageImpl: React.FC = () => {
   const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
 
   const navigateToList = () => {
-    navigate('../content-types');
+    navigate('../models');
   };
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
@@ -61,7 +61,7 @@ const CreateContentTypePageImpl: React.FC = () => {
         archive_value: null,
       });
       enqueueSnackbar(t('toast.created_successfully'), { variant: 'success' });
-      navigate(`../content-types/${id.toString()}`);
+      navigate(`../models/${id.toString()}`);
     } catch (e) {
       logger.error(e);
     }
@@ -148,6 +148,6 @@ const CreateContentTypePageImpl: React.FC = () => {
   );
 };
 
-export const CreateContentTypePage = ComposeWrapper({ context: ModelContextProvider })(
-  CreateContentTypePageImpl
+export const CreateDataModelPage = ComposeWrapper({ context: ModelContextProvider })(
+  CreateDataModelPageImpl
 );
