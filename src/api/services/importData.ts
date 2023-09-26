@@ -1,5 +1,5 @@
 import { Knex } from 'knex';
-import { parseFromFile } from 'plugin-wp-importer';
+import { parseFromFile } from '@collectionscms/plugin-wp-importer';
 import { RecordNotUniqueException } from '../../exceptions/database/recordNotUnique.js';
 import { UnsupportedMediaTypeException } from '../../exceptions/unsupportedMediaType.js';
 import { getDatabase } from '../database/connection.js';
