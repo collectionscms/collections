@@ -8,7 +8,7 @@ import { RelationsService } from './relations.js';
 
 export class FieldsService extends BaseService<Field> {
   constructor(options: AbstractServiceOptions) {
-    super('superfast_fields', options);
+    super('collections_fields', options);
   }
 
   /**
@@ -272,7 +272,7 @@ export class FieldsService extends BaseService<Field> {
           .unsigned()
           .index()
           .references('id')
-          .inTable('superfast_files');
+          .inTable('collections_files');
         break;
       case 'listOneToMany':
         // noop

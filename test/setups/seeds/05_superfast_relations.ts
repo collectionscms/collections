@@ -4,7 +4,7 @@ export const seed = async (database: Knex): Promise<void> => {
   const modelName = 'model_f1_circuit_stats';
   const belongingModelName = 'model_f1_grand_prix_races';
 
-  await database('superfast_models').insert([
+  await database('collections_models').insert([
     {
       model: modelName,
       singleton: false,
@@ -12,7 +12,7 @@ export const seed = async (database: Knex): Promise<void> => {
     },
   ]);
 
-  await database('superfast_fields').insert([
+  await database('collections_fields').insert([
     {
       model: modelName,
       field: 'id',
@@ -52,7 +52,7 @@ export const seed = async (database: Knex): Promise<void> => {
     },
   ]);
 
-  await database('superfast_relations').insert([
+  await database('collections_relations').insert([
     {
       many_model: modelName,
       many_field: 'grand_prix_race_id',

@@ -5,7 +5,7 @@ services:
     command: --default-authentication-plugin=mysql_native_password
     environment:
       MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: superfast
+      MYSQL_DATABASE: collections
     ports:
       - 30100:3306
 
@@ -13,7 +13,7 @@ services:
     image: mariadb:11.0
     environment:
       MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: superfast
+      MYSQL_DATABASE: collections
     ports:
       - 30101:3306
 
@@ -21,6 +21,6 @@ services:
     image: postgres:15.0
     environment:
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: superfast
+      POSTGRES_DB: collections
     ports:
       - 30200:5432

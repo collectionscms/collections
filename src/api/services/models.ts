@@ -7,7 +7,7 @@ import { RelationsService } from './relations.js';
 
 export class ModelsService extends BaseService<Model> {
   constructor(options: AbstractServiceOptions) {
-    super('superfast_models', options);
+    super('collections_models', options);
   }
 
   /**

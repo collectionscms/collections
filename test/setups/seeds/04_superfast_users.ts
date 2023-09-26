@@ -4,10 +4,10 @@ import { getHelpers } from '../../../src/api/database/helpers/index.js';
 export const seed = async (database: Knex): Promise<void> => {
   const helpers = getHelpers(database);
 
-  return await database('superfast_users').insert([
+  return await database('collections_users').insert([
     {
       name: 'Michael Schumacher',
-      email: 'michael@superfastcms.com',
+      email: 'michael@collections.dev',
       password: 'password',
       is_active: true,
       api_key: '1111-2222-3333',

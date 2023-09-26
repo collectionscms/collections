@@ -6,12 +6,12 @@ import { config } from '../../../config.js';
 import { testDatabases } from '../../../utilities/testDatabases.js';
 
 describe('Create Many', () => {
-  const tableName = 'superfast_users';
+  const tableName = 'collections_users';
   const databases = new Map<string, Knex>();
   const data: Omit<User, 'id'>[] = [
     {
       name: 'Charles Leclerc',
-      email: 'charles@superfastcms.com',
+      email: 'charles@collections.dev',
       password: 'password',
       is_active: true,
       api_key: '1111-2222-4444',
@@ -19,7 +19,7 @@ describe('Create Many', () => {
     },
     {
       name: 'Carlos Sainz',
-      email: 'carlos@superfastcms.com',
+      email: 'carlos@collections.dev',
       password: 'password',
       is_active: true,
       api_key: '1111-2222-4444',

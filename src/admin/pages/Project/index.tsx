@@ -68,7 +68,7 @@ const ProjectImpl: React.FC = () => {
                           id="project_name"
                           type="text"
                           fullWidth
-                          placeholder={`${t('input_placeholder')} Superfast`}
+                          placeholder={`${t('input_placeholder')} Collections`}
                           error={errors.name !== undefined}
                         />
                       )}

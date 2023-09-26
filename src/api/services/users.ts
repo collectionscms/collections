@@ -13,7 +13,7 @@ export type Me = {
 
 export class UsersService extends BaseService<User> {
   constructor(options: AbstractServiceOptions) {
-    super('superfast_users', options);
+    super('collections_users', options);
   }
 
   /**

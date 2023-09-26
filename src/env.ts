@@ -146,7 +146,7 @@ export const defaults: Partial<Record<AllowedEnvironmentVariable, any>> = {
   // Cookie
   COOKIE_SECURE: false,
   COOKIE_SAME_SITE: 'lax',
-  COOKIE_PREFIX: 'superfast',
+  COOKIE_PREFIX: 'collections',
 
   // Security
   SECRET: uuidv4(),

@@ -1,7 +1,7 @@
 {
-  "name": "superfastcms",
+  "name": "@collectionscms/collections",
   "version": "1.0.0-beta.2",
-  "description": "Free and Open-source Headless CMS and Application Framework built with TypeScript, Node.js, React.",
+  "description": "Drag and drop to import WordPress contents, Open source Headless CMS built with React, Node.js, RDB.",
   "license": "MIT",
   "type": "module",
   "engines": {
@@ -29,7 +29,7 @@
     "seed:dev": "node --loader ts-node/esm ./src/bin.ts database seed:dev"
   },
   "bin": {
-    "superfastcms": "./src/bin.js"
+    "@collectionscms/collections": "./src/bin.js"
   },
   "author": {
     "email": "hello@rocketa.co.jp",
@@ -38,7 +38,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/superfastcms/superfast"
+    "url": "https://github.com/collectionscms/collections"
   },
   "maintainers": [
     {

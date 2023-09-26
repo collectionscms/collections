@@ -6,11 +6,11 @@ import { testDatabases } from '../../../utilities/testDatabases.js';
 import { User } from '../../../../src/api/database/schemas.js';
 
 describe('Create One', () => {
-  const tableName = 'superfast_users';
+  const tableName = 'collections_users';
   const databases = new Map<string, Knex>();
   const data: Omit<User, 'id'> = {
     name: 'Lewis Hamilton',
-    email: 'lewis@superfastcms.com',
+    email: 'lewis@collections.dev',
     password: 'password',
     is_active: true,
     api_key: '1111-2222-4444',

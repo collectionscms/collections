@@ -27,22 +27,22 @@ describe('Schema Overview', () => {
       expect(Object.keys(overview.models)).toEqual(
         expect.arrayContaining([
           'model_f1_grand_prix_races',
-          'superfast_roles',
-          'superfast_users',
-          'superfast_permissions',
-          'superfast_models',
-          'superfast_fields',
-          'superfast_relations',
-          'superfast_project_settings',
-          'superfast_files',
+          'collections_roles',
+          'collections_users',
+          'collections_permissions',
+          'collections_models',
+          'collections_fields',
+          'collections_relations',
+          'collections_project_settings',
+          'collections_files',
         ])
       );
 
       // check meta model overview
-      const meta = overview.models['superfast_models'];
+      const meta = overview.models['collections_models'];
       expect(meta).toEqual({
-        id: overview.models['superfast_models'].id,
-        model: 'superfast_models',
+        id: overview.models['collections_models'].id,
+        model: 'collections_models',
         singleton: false,
         statusField: null,
         draftValue: null,

@@ -1,7 +1,7 @@
 import React, { createContext, useCallback, useContext, useMemo, useState } from 'react';
 import { Mode, ModeContext } from './types.js';
 
-const localStorageKey = 'superfast-color-mode';
+const localStorageKey = 'collections-color-mode';
 
 const initialContext: ModeContext = {
   mode: 'light',

@@ -28,7 +28,7 @@ describe('Contents', () => {
     const connection = databases.get(database)!;
     const helpers = getHelpers(connection);
 
-    await connection('superfast_models').insert([
+    await connection('collections_models').insert([
       {
         model: tableName,
         singleton: false,
@@ -36,7 +36,7 @@ describe('Contents', () => {
       },
     ]);
 
-    await connection('superfast_fields').insert([
+    await connection('collections_fields').insert([
       {
         model: tableName,
         field: 'id',

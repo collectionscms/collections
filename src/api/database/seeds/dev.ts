@@ -31,13 +31,13 @@ export const seedDev = async (): Promise<void> => {
 };
 
 const resetAll = async (database: Knex): Promise<void> => {
-  await database('superfast_roles').delete();
-  await database('superfast_users').delete();
-  await database('superfast_permissions').delete();
-  await database('superfast_models').delete();
-  await database('superfast_fields').delete();
-  await database('superfast_relations').delete();
-  await database('superfast_project_settings').delete();
+  await database('collections_roles').delete();
+  await database('collections_users').delete();
+  await database('collections_permissions').delete();
+  await database('collections_models').delete();
+  await database('collections_fields').delete();
+  await database('collections_relations').delete();
+  await database('collections_project_settings').delete();
   await database.schema.dropTableIfExists('Post');
   await database.schema.dropTableIfExists('Company');
 };
@@ -246,7 +246,7 @@ const seedingSystemData = async (database: Knex): Promise<void> => {
   // Project Setting
   Output.info('Creating project settings...');
   await projectSettingsService.createOne({
-    name: 'Superfast',
+    name: 'Collections',
     before_login: '',
     after_login: '',
   });
@@ -260,13 +260,13 @@ const seedingContentData = async (database: Knex): Promise<void> => {
   await postsService.createMany([
     {
       title: 'Makes migration from legacy CMS seamless',
-      body: 'Superfast is open source Headless CMS built with React, Node.js, RDB. We are planning an importer to make the transition from a legacy CMS.',
+      body: 'Collections is open source Headless CMS built with React, Node.js, RDB. We are planning an importer to make the transition from a legacy CMS.',
       author: 'admin',
       status: 'published',
     },
     {
       title: 'June 2023- Demo version is now available',
-      body: 'URL: https://demo.superfastcms.com/admin',
+      body: 'URL: https://demo.collections.dev/admin',
       author: 'admin',
       status: 'published',
     },

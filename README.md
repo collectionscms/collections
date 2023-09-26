@@ -1,8 +1,8 @@
-# Superfast CMS
+# Collections
 
-## ⭐ What is Superfast
+## ⭐ What is Collections
 
-Superfast is an open-source Headless CMS that uses React, Node.js, and RDB. It allows for easy modeling in the GUI and seamless data retrieval via API. Content migration from WordPress is also supported.
+Collections is an open-source Headless CMS that uses React, Node.js, and RDB. It allows for easy modeling in the GUI and seamless data retrieval via API. Content migration from WordPress is also supported.
 
 ### Features
 
@@ -16,14 +16,14 @@ Superfast is an open-source Headless CMS that uses React, Node.js, and RDB. It a
 
 Our extended documentation is available on our website.
 
-- [日本語版](https://superfastcms.vercel.app/)
+- [日本語版](https://collectionscms.vercel.app/)
 
 ## 🚀 Installation
 
-The easiest way to get started with Superfast is to use the create-superfast-app package.
+The easiest way to get started with Collections is to use the create-collections-app package.
 
 ```sh
-npx create-superfast-app my-app
+npx create-collections-app my-app
 ```
 
 Open [http://localhost:4000/admin](http://localhost:4000/admin) to view your running app.
@@ -31,7 +31,7 @@ When you're ready for production, run `npm run build` then `npm run start`.
 
 ## 💬 Community
 
-To chat with other community members you can join the [Superfast Discord](https://discord.gg/a6FYDkV3Vk).
+To chat with other community members you can join the [Collections Discord](https://discord.gg/a6FYDkV3Vk).
 
 ## 💚 Tech Stack
 
@@ -44,4 +44,4 @@ Enjoy!!!
 
 ## 🗒️ License
 
-See the [LICENSE](https://github.com/superfastcms/superfast/blob/main/LICENSE) file for licensing information.
+See the [LICENSE](https://github.com/collectionscms/collections/blob/main/LICENSE) file for licensing information.
