@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { EmptyTable, MainCard } from 'superfast-ui';
+import { EmptyTable, MainCard } from '@collectionscms/plugin-ui';
 import { Cell } from '../Cell/index.js';
 import { Props } from './types.js';
 

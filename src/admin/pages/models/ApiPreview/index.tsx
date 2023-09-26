@@ -15,7 +15,7 @@ import axios, { AxiosError } from 'axios';
 import React, { useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { IconButton, MainCard, SyntaxHighlighter } from 'superfast-ui';
+import { IconButton, MainCard, SyntaxHighlighter } from '@collectionscms/plugin-ui';
 import { Link } from '../../../components/elements/Link/index.js';
 import { ScrollBar } from '../../../components/elements/ScrollBar/index.js';
 import { TabPanel } from '../../../components/elements/TabPanel/index.js';

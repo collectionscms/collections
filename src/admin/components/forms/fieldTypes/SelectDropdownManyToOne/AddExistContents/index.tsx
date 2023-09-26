@@ -2,7 +2,7 @@ import { CloseOutlined } from '@ant-design/icons';
 import { Box, Button, Divider, Drawer, Stack, Typography } from '@mui/material';
 import { t } from 'i18next';
 import React, { useState } from 'react';
-import { IconButton } from 'superfast-ui';
+import { IconButton } from '@collectionscms/plugin-ui';
 import { referencedTypes } from '../../../../../../api/database/schemas.js';
 import { GetModel, GetField } from '../../../../../config/types.js';
 import { ContentContextProvider, useContent } from '../../../../../pages/models/Context/index.js';

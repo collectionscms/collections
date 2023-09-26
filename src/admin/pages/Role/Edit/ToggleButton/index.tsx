@@ -1,6 +1,6 @@
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import React, { useState } from 'react';
-import { IconButton } from 'superfast-ui';
+import { IconButton } from '@collectionscms/plugin-ui';
 import { Model, PermissionsAction } from '../../../../config/types.js';
 import { useRole } from '../../Context/index.js';
 import { EditRoleMenu } from '../Menu/index.js';

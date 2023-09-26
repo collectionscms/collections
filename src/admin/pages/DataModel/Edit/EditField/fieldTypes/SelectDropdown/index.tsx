@@ -16,7 +16,7 @@ import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import React, { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { IconButton } from 'superfast-ui';
+import { IconButton } from '@collectionscms/plugin-ui';
 import { logger } from '../../../../../../../utilities/logger.js';
 import { shallowEqualObject } from '../../../../../../../utilities/shallowEqualObject.js';
 import { ConfirmDiscardDialog } from '../../../../../../components/elements/ConfirmDiscardDialog/index.js';

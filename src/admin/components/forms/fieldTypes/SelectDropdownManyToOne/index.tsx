@@ -2,7 +2,7 @@ import { CloseCircleOutlined } from '@ant-design/icons';
 import { Box, Button } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { IconButton } from 'superfast-ui';
+import { IconButton } from '@collectionscms/plugin-ui';
 import { ContentContextProvider } from '../../../../pages/models/Context/index.js';
 import { ComposeWrapper } from '../../../utilities/ComposeWrapper/index.js';
 import { Props } from '../types.js';

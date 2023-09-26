@@ -1,7 +1,7 @@
 import { Stack, useMediaQuery, useTheme } from '@mui/material';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { MainCard } from 'superfast-ui';
+import { MainCard } from '@collectionscms/plugin-ui';
 import { CreateNewButton } from '../../../components/elements/CreateNewButton/index.js';
 import { Link } from '../../../components/elements/Link/index.js';
 import { Cell } from '../../../components/elements/Table/Cell/index.js';

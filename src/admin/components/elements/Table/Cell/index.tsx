@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc.js';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Chip } from 'superfast-ui';
+import { Chip } from '@collectionscms/plugin-ui';
 import { castToBoolean } from '../../../../utilities/castToBoolean.js';
 import { Props } from './types.js';
 

@@ -3,7 +3,7 @@ import MDEditor, { ICommand } from '@uiw/react-md-editor';
 import React, { useRef } from 'react';
 import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { SyntaxHighlighter } from 'superfast-ui';
+import { SyntaxHighlighter } from '@collectionscms/plugin-ui';
 import { logger } from '../../../../../utilities/logger.js';
 import { useContent } from '../../../../pages/models/Context/index.js';
 import { useColorMode } from '../../../utilities/ColorMode/index.js';

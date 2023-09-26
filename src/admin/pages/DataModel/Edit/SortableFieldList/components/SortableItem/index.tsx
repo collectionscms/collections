@@ -6,7 +6,7 @@ import { Card, Tooltip } from '@mui/material';
 import type { CSSProperties, PropsWithChildren } from 'react';
 import React, { createContext, useContext, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { IconButton } from 'superfast-ui';
+import { IconButton } from '@collectionscms/plugin-ui';
 
 type Props = {
   id: UniqueIdentifier;

@@ -15,7 +15,7 @@ import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { t } from 'i18next';
 import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { IconButton } from 'superfast-ui';
+import { IconButton } from '@collectionscms/plugin-ui';
 import { ScrollBar } from '../../../../../../components/elements/ScrollBar/index.js';
 import {
   FormValues,

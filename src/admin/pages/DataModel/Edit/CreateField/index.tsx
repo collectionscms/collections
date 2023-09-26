@@ -2,7 +2,7 @@ import { CloseOutlined } from '@ant-design/icons';
 import { Box, Drawer, Stack, Typography, useTheme } from '@mui/material';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { IconButton } from 'superfast-ui';
+import { IconButton } from '@collectionscms/plugin-ui';
 import { ConfirmDiscardDialog } from '../../../../components/elements/ConfirmDiscardDialog/index.js';
 import { ScrollBar } from '../../../../components/elements/ScrollBar/index.js';
 import { ComposeWrapper } from '../../../../components/utilities/ComposeWrapper/index.js';

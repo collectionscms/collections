@@ -12,7 +12,7 @@ import { SvgIconTypeMap, Tooltip } from '@mui/material';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
 import { ICommand, commands as mdCommands } from '@uiw/react-md-editor';
 import React, { ComponentClass, FunctionComponent } from 'react';
-import { IconButton } from 'superfast-ui';
+import { IconButton } from '@collectionscms/plugin-ui';
 
 type OverrideIcon =
   | (OverridableComponent<SvgIconTypeMap<{}, 'svg'>> & {
