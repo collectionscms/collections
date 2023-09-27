@@ -1,67 +1,67 @@
 import { Knex } from 'knex';
 
 export const seed = async (database: Knex): Promise<void> => {
-  const collectionName = 'collection_f1_circuit_stats';
-  const belongingCollectionName = 'collection_f1_grand_prix_races';
+  const modelName = 'model_f1_circuit_stats';
+  const belongingModelName = 'model_f1_grand_prix_races';
 
-  await database('superfast_collections').insert([
+  await database('collections_models').insert([
     {
-      collection: collectionName,
+      model: modelName,
       singleton: false,
       hidden: false,
     },
   ]);
 
-  await database('superfast_fields').insert([
+  await database('collections_fields').insert([
     {
-      collection: collectionName,
+      model: modelName,
       field: 'id',
       label: 'id',
       interface: 'input',
     },
     {
-      collection: collectionName,
+      model: modelName,
       field: 'name',
       label: 'Name',
       interface: 'input',
     },
     {
-      collection: collectionName,
+      model: modelName,
       field: 'created_at',
       label: 'Created At',
       interface: 'dateTime',
     },
     {
-      collection: collectionName,
+      model: modelName,
       field: 'updated_at',
       label: 'Updated At',
       interface: 'dateTime',
     },
     // one to many fields
     {
-      collection: belongingCollectionName,
+      model: belongingModelName,
       field: 'circuit_stats',
       label: 'Circuit Stats',
       interface: 'listOneToMany',
     },
     {
-      collection: collectionName,
+      model: modelName,
       field: 'grand_prix_race_id',
       label: 'Grand Prix Race',
       interface: 'selectDropdownManyToOne',
     },
   ]);
 
-  await database('superfast_relations').insert([
+  await database('collections_relations').insert([
     {
-      many_collection: collectionName,
+      many_model: modelName,
       many_field: 'grand_prix_race_id',
-      one_collection: belongingCollectionName,
+      one_model: belongingModelName,
       one_field: 'circuit_stats',
     },
   ]);
 
-  await database.schema.createTable(collectionName, (table) => {
+  await database.schema.createTable(modelName, (table) => {
     table.increments();
     table.timestamps(true, true);
     table.string('name', 255);
@@ -70,6 +70,6 @@ export const seed = async (database: Knex): Promise<void> => {
       .unsigned()
       .index()
       .references('id')
-      .inTable(belongingCollectionName);
+      .inTable(belongingModelName);
   });
 };

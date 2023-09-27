@@ -1,13 +1,13 @@
 import knex, { Knex } from 'knex';
 import { SchemaInfo, getSchemaInfo } from '../../../src/api/database/inspector.js';
 import { getSchemaOverview } from '../../../src/api/database/overview.js';
-import { Collection, Field } from '../../../src/api/database/schemas.js';
-import { CollectionsService } from '../../../src/api/services/collections.js';
+import { Model, Field } from '../../../src/api/database/schemas.js';
+import { ModelsService } from '../../../src/api/services/models.js';
 import { FieldsService } from '../../../src/api/services/fields.js';
 import { config } from '../../config.js';
 import { testDatabases } from '../../utilities/testDatabases.js';
 
-describe('Collection', () => {
+describe('Model', () => {
   const databases = new Map<string, Knex>();
 
   const commonData = {
@@ -19,13 +19,13 @@ describe('Collection', () => {
     archive_value: null,
   };
 
-  const data: Omit<Collection, 'id'> = {
-    collection: 'collection_f1_2023_driver_standings',
+  const data: Omit<Model, 'id'> = {
+    model: 'model_f1_2023_driver_standings',
     ...commonData,
   };
 
-  const data1: Omit<Collection, 'id'> = {
-    collection: 'collection_f1_2022_driver_standings',
+  const data1: Omit<Model, 'id'> = {
+    model: 'model_f1_2022_driver_standings',
     ...commonData,
   };
 
@@ -41,18 +41,18 @@ describe('Collection', () => {
     }
   });
 
-  const expectCollectionFields = (collection: string, fields: Field[], schemaInfo: SchemaInfo) => {
+  const expectModelFields = (model: string, fields: Field[], schemaInfo: SchemaInfo) => {
     // meta
     expect(fields).toEqual(
       expect.arrayContaining([
-        expect.objectContaining({ collection: collection, field: 'id' }),
-        expect.objectContaining({ collection: collection, field: 'created_at' }),
-        expect.objectContaining({ collection: collection, field: 'updated_at' }),
+        expect.objectContaining({ model: model, field: 'id' }),
+        expect.objectContaining({ model: model, field: 'created_at' }),
+        expect.objectContaining({ model: model, field: 'updated_at' }),
       ])
     );
 
     // columns
-    const columns = schemaInfo[collection].columns;
+    const columns = schemaInfo[model].columns;
     expect(columns.id).toBeTruthy();
     expect(columns.created_at).toBeTruthy();
     expect(columns.updated_at).toBeTruthy();
@@ -63,53 +63,53 @@ describe('Collection', () => {
       const connection = databases.get(database)!;
       const schema = await getSchemaOverview({ database: connection });
 
-      const collectionsService = new CollectionsService({ database: connection, schema });
+      const modelsService = new ModelsService({ database: connection, schema });
       const fieldsService = new FieldsService({ database: connection, schema });
 
-      const result = await collectionsService.createCollection(data, false);
+      const result = await modelsService.createModel(data, false);
       expect(result).toBeTruthy();
 
-      const meta = await collectionsService.readOne(result);
+      const meta = await modelsService.readOne(result);
       expect(meta.status_field).toBeNull();
 
-      // check collection meta / columns
+      // check model meta / columns
       const fields = await fieldsService.readMany({
-        filter: { collection: { _eq: data.collection } },
+        filter: { model: { _eq: data.model } },
       });
       const schemaInfo = await getSchemaInfo(connection);
-      expectCollectionFields(data.collection, fields, schemaInfo);
+      expectModelFields(data.model, fields, schemaInfo);
     });
 
     it.each(testDatabases)('%s - should create with status', async (database) => {
       const connection = databases.get(database)!;
       const schema = await getSchemaOverview({ database: connection });
 
-      const collectionsService = new CollectionsService({ database: connection, schema });
+      const modelsService = new ModelsService({ database: connection, schema });
       const fieldsService = new FieldsService({ database: connection, schema });
 
-      const result = await collectionsService.createCollection(data1, true);
+      const result = await modelsService.createModel(data1, true);
       expect(result).toBeTruthy();
 
-      const meta = await collectionsService.readOne(result);
+      const meta = await modelsService.readOne(result);
       expect(meta.status_field).toBe('status');
       expect(meta.draft_value).toBe('draft');
       expect(meta.publish_value).toBe('published');
       expect(meta.archive_value).toBe('archived');
 
-      // check collection meta / columns
+      // check model meta / columns
       const fields = await fieldsService.readMany({
-        filter: { collection: { _eq: data1.collection } },
+        filter: { model: { _eq: data1.model } },
       });
       const schemaInfo = await getSchemaInfo(connection);
-      expectCollectionFields(data1.collection, fields, schemaInfo);
+      expectModelFields(data1.model, fields, schemaInfo);
     });
 
     it.each(testDatabases)('%s - should throw not unique errors', async (database) => {
       const connection = databases.get(database)!;
       const schema = await getSchemaOverview({ database: connection });
 
-      const collectionsService = new CollectionsService({ database: connection, schema });
-      const result = collectionsService.createCollection(data, false);
+      const modelsService = new ModelsService({ database: connection, schema });
+      const result = modelsService.createModel(data, false);
 
       expect(result).rejects.toThrow();
     });
@@ -119,16 +119,16 @@ describe('Collection', () => {
     it.each(testDatabases)('%s - should delete', async (database) => {
       const connection = databases.get(database)!;
       const schema = await getSchemaOverview({ database: connection });
-      const service = new CollectionsService({ database: connection, schema });
+      const service = new ModelsService({ database: connection, schema });
 
-      const fetchedCollection = await service
+      const fetchedModel = await service
         .readMany({
-          filter: { collection: { _eq: data1.collection } },
+          filter: { model: { _eq: data1.model } },
         })
         .then((data) => data[0]);
 
-      await service.deleteCollection(fetchedCollection.id);
-      const data = await service.readOne(fetchedCollection.id);
+      await service.deleteModel(fetchedModel.id);
+      const data = await service.readOne(fetchedModel.id);
       expect(data).toBeUndefined();
     });
   });

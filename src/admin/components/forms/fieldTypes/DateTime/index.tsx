@@ -8,7 +8,7 @@ import utc from 'dayjs/plugin/utc.js';
 import React, { useEffect } from 'react';
 import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { IconButton } from 'superfast-ui';
+import { IconButton } from '@collectionscms/plugin-ui';
 import { Props } from '../types.js';
 
 export const DateTimeType: React.FC<Props> = ({

@@ -1,25 +1,24 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWR from 'swr';
-import { AuthUser, Collection, Permission } from '../../../config/types.js';
+import { AuthUser, Model, Permission } from '../../../config/types.js';
 import { api } from '../../../utilities/api.js';
 import { useAuth } from '../Auth/index.js';
 import { ConfigContext, Props } from './types.js';
 
 const Context = createContext({} as ConfigContext);
 
-const filteredCollectionsWithReadPermission = (
+const filteredModelsWithReadPermission = (
   user: AuthUser | null,
   permissions: Permission[] | null,
-  collections: Collection[]
-): Collection[] => {
+  models: Model[]
+): Model[] => {
   if (!user || !permissions) return [];
-  if (user.adminAccess) return collections;
+  if (user.adminAccess) return models;
 
-  return collections.filter(
-    (collection) =>
+  return models.filter(
+    (model) =>
       permissions?.some(
-        (permission) =>
-          permission.collection === collection.collection && permission.action === 'read'
+        (permission) => permission.model === model.model && permission.action === 'read'
       )
   );
 };
@@ -27,31 +26,27 @@ const filteredCollectionsWithReadPermission = (
 export const ConfigProvider: React.FC<Props> = ({ children }) => {
   const { user, permissions } = useAuth();
 
-  const { data: collections, mutate } = useSWR(
-    user ? '/collections' : null,
+  const { data: models, mutate } = useSWR(
+    user ? '/models' : null,
     (url) =>
       api
-        .get<{ collections: Collection[] }>(url)
+        .get<{ models: Model[] }>(url)
         .then((res) =>
-          filteredCollectionsWithReadPermission(
-            user || null,
-            permissions || null,
-            res.data.collections
-          )
+          filteredModelsWithReadPermission(user || null, permissions || null, res.data.models)
         ),
     { suspense: true }
   );
 
-  const revalidateCollections = () => {
+  const revalidateModels = () => {
     mutate();
   };
 
   const value = useMemo(
     () => ({
-      permittedCollections: collections,
-      revalidateCollections,
+      permittedModels: models,
+      revalidateModels,
     }),
-    [collections, revalidateCollections]
+    [models, revalidateModels]
   );
 
   return <Context.Provider value={value}>{children}</Context.Provider>;

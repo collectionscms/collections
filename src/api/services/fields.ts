@@ -3,25 +3,25 @@ import { RecordNotUniqueException } from '../../exceptions/database/recordNotUni
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
 import { Field, PrimaryKey, Relation } from '../database/schemas.js';
 import { AbstractServiceOptions, BaseService } from './base.js';
-import { CollectionsService } from './collections.js';
+import { ModelsService } from './models.js';
 import { RelationsService } from './relations.js';
 
 export class FieldsService extends BaseService<Field> {
   constructor(options: AbstractServiceOptions) {
-    super('superfast_fields', options);
+    super('collections_fields', options);
   }
 
   /**
    * @description Get fields
    * Chaining orderBy is a workaround for the knex bug.
    * see: https://github.com/knex/knex/issues/5135#issuecomment-1160936433
-   * @param collectionId
+   * @param modelId
    * @returns fields
    */
-  async getFields(collectionId: string): Promise<Field[]> {
+  async getFields(modelId: string): Promise<Field[]> {
     const fields = await this.readMany(
       {
-        filter: { collection_id: { _eq: collectionId } },
+        filter: { model_id: { _eq: modelId } },
       },
       [
         { column: 'sort', order: 'asc', nulls: 'last' },
@@ -37,7 +37,7 @@ export class FieldsService extends BaseService<Field> {
    * @returns field
    */
   async createField(data: Omit<Field, 'id'>): Promise<Field> {
-    await this.checkUniqueField(data.collection, data.field);
+    await this.checkUniqueField(data.model, data.field);
 
     const field = this.database.transaction(async (tx) => {
       const service = new FieldsService({ database: tx, schema: this.schema });
@@ -52,7 +52,7 @@ export class FieldsService extends BaseService<Field> {
       const key = await service.createOne(data);
       const field = await service.readOne(key);
 
-      await tx.schema.alterTable(field.collection, (table) => {
+      await tx.schema.alterTable(field.model, (table) => {
         this.addColumnToTable(field, table);
       });
 
@@ -74,7 +74,7 @@ export class FieldsService extends BaseService<Field> {
 
       if (data.options) {
         const field = await service.readOne(key);
-        await tx.schema.alterTable(field.collection, (table: Knex.CreateTableBuilder) => {
+        await tx.schema.alterTable(field.model, (table: Knex.CreateTableBuilder) => {
           this.addColumnToTable(field, table, true);
         });
       }
@@ -105,8 +105,8 @@ export class FieldsService extends BaseService<Field> {
 
         fields.push(field as Field);
 
-        await tx.schema.alterTable(field.collection, (table) => {
-          this.addColumnToTable(field, table)?.references('id').inTable(relation.one_collection);
+        await tx.schema.alterTable(field.model, (table) => {
+          this.addColumnToTable(field, table)?.references('id').inTable(relation.one_model);
         });
       }
 
@@ -123,14 +123,14 @@ export class FieldsService extends BaseService<Field> {
   async deleteField(key: PrimaryKey): Promise<void> {
     const field = await this.readOne(key);
 
-    const collectionsService = new CollectionsService({
+    const modelsService = new ModelsService({
       database: this.database,
       schema: this.schema,
     });
-    const collection = await collectionsService
+    const model = await modelsService
       .readMany({
         filter: {
-          collection: { _eq: field.collection },
+          model: { _eq: field.model },
         },
       })
       .then((data) => data[0]);
@@ -142,38 +142,32 @@ export class FieldsService extends BaseService<Field> {
       const fieldsService = new FieldsService({ database: tx, schema: this.schema });
       await fieldsService.deleteOne(key);
 
-      if (collection.status_field === field.field) {
-        const collectionsService = new CollectionsService({ database: tx, schema: this.schema });
-        await collectionsService.updateOne(collection.id, { status_field: null });
+      if (model.status_field === field.field) {
+        const modelsService = new ModelsService({ database: tx, schema: this.schema });
+        await modelsService.updateOne(model.id, { status_field: null });
       }
 
       // Delete many relation fields
       const relationsService = new RelationsService({ database: tx, schema: this.schema });
       const oneRelations = await relationsService.readMany({
         filter: {
-          _and: [
-            { one_collection: { _eq: field.collection } },
-            { one_field: { _eq: field.field } },
-          ],
+          _and: [{ one_model: { _eq: field.model } }, { one_field: { _eq: field.field } }],
         },
       });
 
       for (let relation of oneRelations) {
-        await this.executeFieldDelete(tx, relation.many_collection, relation.many_field);
+        await this.executeFieldDelete(tx, relation.many_model, relation.many_field);
       }
 
       // Delete one relation fields
       const manyRelations = await relationsService.readMany({
         filter: {
-          _and: [
-            { many_collection: { _eq: field.collection } },
-            { many_field: { _eq: field.field } },
-          ],
+          _and: [{ many_model: { _eq: field.model } }, { many_field: { _eq: field.field } }],
         },
       });
 
       for (let relation of manyRelations) {
-        await this.executeFieldDelete(tx, relation.one_collection, relation.one_field);
+        await this.executeFieldDelete(tx, relation.one_model, relation.one_field);
       }
 
       // Delete relations schema
@@ -186,32 +180,31 @@ export class FieldsService extends BaseService<Field> {
       // /////////////////////////////////////
       // Delete Field
       // /////////////////////////////////////
-      await this.executeFieldDelete(tx, collection.collection, field.field);
+      await this.executeFieldDelete(tx, model.model, field.field);
     });
   }
 
   /**
    * @description Delete meta and entity fields.
    * @param fieldsService
-   * @param collection
+   * @param model
    * @param field
    */
-  async executeFieldDelete(tx: Knex.Transaction, collection: string, field: string) {
+  async executeFieldDelete(tx: Knex.Transaction, model: string, field: string) {
     // /////////////////////////////////////
     // Delete Entity
     // /////////////////////////////////////
-    const hasEntity = !this.schema.collections[collection].fields[field].alias;
+    const hasEntity = !this.schema.models[model].fields[field].alias;
     const existingRelation = this.schema.relations.find(
       (existingRelation) =>
-        (existingRelation.collection === collection && existingRelation.field === field) ||
-        (existingRelation.relatedCollection === collection &&
-          existingRelation.relatedField === field)
+        (existingRelation.model === model && existingRelation.field === field) ||
+        (existingRelation.relatedModel === model && existingRelation.relatedField === field)
     );
 
     const service = new FieldsService({ database: tx, schema: this.schema });
 
     if (hasEntity) {
-      await service.database.schema.table(collection, (table) => {
+      await service.database.schema.table(model, (table) => {
         // If the FK already exists in the DB, drop it first
         if (existingRelation !== undefined) table.dropForeign(field);
         table.dropColumn(field);
@@ -224,7 +217,7 @@ export class FieldsService extends BaseService<Field> {
     const fieldIds = await service
       .readMany({
         filter: {
-          _and: [{ collection: { _eq: collection } }, { field: { _eq: field } }],
+          _and: [{ model: { _eq: model } }, { field: { _eq: field } }],
         },
       })
       .then((fields) => fields.map((field) => field.id));
@@ -234,10 +227,10 @@ export class FieldsService extends BaseService<Field> {
     }
   }
 
-  private async checkUniqueField(collection: string, field: string) {
+  private async checkUniqueField(model: string, field: string) {
     const fields = await this.readMany({
       filter: {
-        _and: [{ collection: { _eq: collection } }, { field: { _eq: field } }],
+        _and: [{ model: { _eq: model } }, { field: { _eq: field } }],
       },
     });
 
@@ -279,7 +272,7 @@ export class FieldsService extends BaseService<Field> {
           .unsigned()
           .index()
           .references('id')
-          .inTable('superfast_files');
+          .inTable('collections_files');
         break;
       case 'listOneToMany':
         // noop

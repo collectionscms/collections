@@ -2,7 +2,7 @@
   "user": "ユーザー",
   "role": "ロール",
   "project_setting": "プロジェクト設定",
-  "content_type": "コンテンツタイプ",
+  "data_model": "データモデル",
   "content_data_type": "データの型",
   "content_management": "コンテンツ管理",
   "setting": "設定",
@@ -58,9 +58,9 @@
   "no_contents": "まだコンテンツはありません",
   "no_roles": "まだロールはありません",
   "back_to_home": "ホームに戻る",
-  "collection_not_found": "登録されたコンテンツはありません",
-  "register_content_type": "コンテンツタイプを登録しよう",
-  "create_first_content_type": "作成するコンテンツの型や長さ、関連を定義しよう！",
+  "model_not_found": "登録されたコンテンツはありません",
+  "register_data_model": "データモデルを登録しよう",
+  "create_first_data_model": "作成するコンテンツの型や長さ、関連を定義しよう！",
   "go_to_registration": "登録に進む",
   "back_to_login": "ログインに戻る",
   "submit": "送信",
@@ -135,13 +135,13 @@
   "create": {
     "user": "ユーザー 新規登録",
     "role": "ロール 新規登録",
-    "content_type": "コンテンツタイプ 新規登録",
+    "data_model": "データモデル 新規登録",
     "custom": "{{page}} 新規登録"
   },
   "edit": {
     "user": "ユーザー 編集",
     "role": "ロール 編集",
-    "content_type": "コンテンツタイプ 編集",
+    "data_model": "データモデル 編集",
     "custom": "{{page}} 編集"
   },
   "field_interface": {

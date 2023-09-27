@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
 import { Helpers } from './helpers/index.js';
-import { CollectionOverview } from './overview.js';
+import { ModelOverview } from './overview.js';
 
 export type Action = 'create' | 'read' | 'update';
 
@@ -71,7 +71,7 @@ const castTransformers: Transformers = {
 };
 
 /**
- * @description Applies transformers to the given data based on the collection overview.
+ * @description Applies transformers to the given data based on the model overview.
  * @param action
  * @param data
  * @param overview
@@ -80,7 +80,7 @@ const castTransformers: Transformers = {
 export const applyTransformers = async (
   action: Action,
   data: Record<string, any>,
-  overview: CollectionOverview,
+  overview: ModelOverview,
   helpers: Helpers
 ) => {
   // /////////////////////////////////////

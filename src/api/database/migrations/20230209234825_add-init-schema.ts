@@ -1,7 +1,7 @@
 import { Knex } from 'knex';
 
 export const up = async (knex: Knex): Promise<void> => {
-  await knex.schema.createTable('superfast_roles', (table) => {
+  await knex.schema.createTable('collections_roles', (table) => {
     table.increments('id').primary().notNullable();
     table.string('name', 255).notNullable();
     table.string('description', 255);
@@ -9,7 +9,7 @@ export const up = async (knex: Knex): Promise<void> => {
     table.timestamps(true, true);
   });
 
-  await knex.schema.createTable('superfast_users', (table) => {
+  await knex.schema.createTable('collections_users', (table) => {
     table.increments('id').primary().notNullable();
     table.string('name', 255).notNullable();
     table.string('email', 255).unique().notNullable();
@@ -18,13 +18,13 @@ export const up = async (knex: Knex): Promise<void> => {
     table.string('reset_password_token', 255);
     table.string('reset_password_expiration', 255);
     table.string('api_key', 255);
-    table.integer('role_id').unsigned().index().references('id').inTable('superfast_roles');
+    table.integer('role_id').unsigned().index().references('id').inTable('collections_roles');
     table.timestamps(true, true);
   });
 
-  await knex.schema.createTable('superfast_collections', (table) => {
+  await knex.schema.createTable('collections_models', (table) => {
     table.increments('id').primary().notNullable();
-    table.string('collection', 64).notNullable();
+    table.string('model', 64).notNullable();
     table.boolean('singleton').notNullable().defaultTo(0);
     table.boolean('hidden').notNullable().defaultTo(0);
     table.string('status_field', 64);
@@ -34,30 +34,20 @@ export const up = async (knex: Knex): Promise<void> => {
     table.timestamps(true, true);
   });
 
-  await knex.schema.createTable('superfast_permissions', (table) => {
+  await knex.schema.createTable('collections_permissions', (table) => {
     table.increments('id').primary().notNullable();
-    table.string('collection', 255).notNullable();
-    table
-      .integer('collection_id')
-      .unsigned()
-      .index()
-      .references('id')
-      .inTable('superfast_collections');
+    table.string('model', 255).notNullable();
+    table.integer('model_id').unsigned().index().references('id').inTable('collections_models');
     table.string('action', 255).notNullable();
-    table.integer('role_id').unsigned().index().references('id').inTable('superfast_roles');
+    table.integer('role_id').unsigned().index().references('id').inTable('collections_roles');
     table.timestamps(true, true);
-    table.unique(['collection', 'action', 'role_id']);
+    table.unique(['model', 'action', 'role_id']);
   });
 
-  await knex.schema.createTable('superfast_fields', (table) => {
+  await knex.schema.createTable('collections_fields', (table) => {
     table.increments('id').primary().notNullable();
-    table.string('collection', 64).notNullable();
-    table
-      .integer('collection_id')
-      .unsigned()
-      .index()
-      .references('id')
-      .inTable('superfast_collections');
+    table.string('model', 64).notNullable();
+    table.integer('model_id').unsigned().index().references('id').inTable('collections_models');
     table.string('field', 64).notNullable();
     table.string('label', 64).notNullable();
     table.string('special', 64);
@@ -70,28 +60,23 @@ export const up = async (knex: Knex): Promise<void> => {
     table.timestamps(true, true);
   });
 
-  await knex.schema.createTable('superfast_relations', (table) => {
+  await knex.schema.createTable('collections_relations', (table) => {
     table.increments('id').primary().notNullable();
-    table.string('many_collection', 64).notNullable();
+    table.string('many_model', 64).notNullable();
     table
-      .integer('many_collection_id')
+      .integer('many_model_id')
       .unsigned()
       .index()
       .references('id')
-      .inTable('superfast_collections');
+      .inTable('collections_models');
     table.string('many_field', 64).notNullable();
-    table.string('one_collection', 64).notNullable();
-    table
-      .integer('one_collection_id')
-      .unsigned()
-      .index()
-      .references('id')
-      .inTable('superfast_collections');
+    table.string('one_model', 64).notNullable();
+    table.integer('one_model_id').unsigned().index().references('id').inTable('collections_models');
     table.string('one_field', 64).notNullable();
     table.timestamps(true, true);
   });
 
-  await knex.schema.createTable('superfast_project_settings', (table) => {
+  await knex.schema.createTable('collections_project_settings', (table) => {
     table.increments('id').primary().notNullable();
     table.string('name', 100).notNullable();
     table.text('before_login');
@@ -99,7 +84,7 @@ export const up = async (knex: Knex): Promise<void> => {
     table.timestamps(true, true);
   });
 
-  await knex.schema.createTable('superfast_files', (table) => {
+  await knex.schema.createTable('collections_files', (table) => {
     table.increments('id').primary().notNullable();
     table.string('storage', 64).notNullable();
     table.string('file_name', 255).notNullable();
@@ -113,31 +98,31 @@ export const up = async (knex: Knex): Promise<void> => {
 };
 
 export const down = async (knex: Knex): Promise<void> => {
-  await knex.schema.table('superfast_permissions', (table) => {
+  await knex.schema.table('collections_permissions', (table) => {
     table.dropForeign(['role_id']);
-    table.dropForeign(['collection_id']);
+    table.dropForeign(['model_id']);
   });
 
-  await knex.schema.table('superfast_fields', (table) => {
-    table.dropForeign('collection_id');
+  await knex.schema.table('collections_fields', (table) => {
+    table.dropForeign('model_id');
   });
 
-  await knex.schema.table('superfast_relations', (table) => {
-    table.dropForeign('many_collection_id');
-    table.dropForeign('one_collection_id');
+  await knex.schema.table('collections_relations', (table) => {
+    table.dropForeign('many_model_id');
+    table.dropForeign('one_model_id');
   });
 
-  await knex.schema.table('superfast_users', (table) => {
+  await knex.schema.table('collections_users', (table) => {
     table.dropForeign('role_id');
   });
 
   await knex.schema
-    .dropTable('superfast_roles')
-    .dropTable('superfast_users')
-    .dropTable('superfast_permissions')
-    .dropTable('superfast_collections')
-    .dropTable('superfast_fields')
-    .dropTable('superfast_relations')
-    .dropTable('superfast_project_settings')
-    .dropTable('superfast_files');
+    .dropTable('collections_roles')
+    .dropTable('collections_users')
+    .dropTable('collections_permissions')
+    .dropTable('collections_models')
+    .dropTable('collections_fields')
+    .dropTable('collections_relations')
+    .dropTable('collections_project_settings')
+    .dropTable('collections_files');
 };

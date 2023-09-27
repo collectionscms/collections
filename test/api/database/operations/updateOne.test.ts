@@ -8,11 +8,11 @@ import { config } from '../../../config.js';
 import { testDatabases } from '../../../utilities/testDatabases.js';
 
 describe('Update One', () => {
-  const tableName = 'superfast_users';
+  const tableName = 'collections_users';
   const databases = new Map<string, Knex>();
   const data: Omit<User, 'id'> = {
     name: 'Daniel Ricciardo',
-    email: 'daniel@superfastcms.com',
+    email: 'daniel@collections.dev',
     password: 'password',
     is_active: true,
     api_key: '1111-2222-4444',
@@ -39,14 +39,14 @@ describe('Update One', () => {
       const key = await createOne({
         database: connection,
         schema: overview,
-        collection: tableName,
+        model: tableName,
         data,
       });
 
       const result = await updateOne({
         database: connection,
         schema: overview,
-        collection: tableName,
+        model: tableName,
         key,
         data: {
           name: 'Daniel Ricciardo',
@@ -57,7 +57,7 @@ describe('Update One', () => {
       const fetchedResult = await readById({
         database: connection,
         schema: overview,
-        collection: tableName,
+        model: tableName,
         key,
       });
 

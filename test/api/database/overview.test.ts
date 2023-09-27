@@ -19,30 +19,30 @@ describe('Schema Overview', () => {
   });
 
   describe('Get', () => {
-    it.each(testDatabases)('%s - should get meta & entity collections', async (database) => {
+    it.each(testDatabases)('%s - should get meta & entity models', async (database) => {
       const connection = databases.get(database)!;
       const overview = await getSchemaOverview({ database: connection });
 
-      // check collections
-      expect(Object.keys(overview.collections)).toEqual(
+      // check models
+      expect(Object.keys(overview.models)).toEqual(
         expect.arrayContaining([
-          'collection_f1_grand_prix_races',
-          'superfast_roles',
-          'superfast_users',
-          'superfast_permissions',
-          'superfast_collections',
-          'superfast_fields',
-          'superfast_relations',
-          'superfast_project_settings',
-          'superfast_files',
+          'model_f1_grand_prix_races',
+          'collections_roles',
+          'collections_users',
+          'collections_permissions',
+          'collections_models',
+          'collections_fields',
+          'collections_relations',
+          'collections_project_settings',
+          'collections_files',
         ])
       );
 
-      // check meta collection overview
-      const meta = overview.collections['superfast_collections'];
+      // check meta model overview
+      const meta = overview.models['collections_models'];
       expect(meta).toEqual({
-        id: overview.collections['superfast_collections'].id,
-        collection: 'superfast_collections',
+        id: overview.models['collections_models'].id,
+        model: 'collections_models',
         singleton: false,
         statusField: null,
         draftValue: null,
@@ -50,7 +50,7 @@ describe('Schema Overview', () => {
         archiveValue: null,
         fields: {
           id: { alias: false, special: null, field: 'id' },
-          collection: { alias: false, special: null, field: 'collection' },
+          model: { alias: false, special: null, field: 'model' },
           singleton: { alias: false, special: 'cast-boolean', field: 'singleton' },
           hidden: { alias: false, special: 'cast-boolean', field: 'hidden' },
           status_field: { alias: false, special: null, field: 'status_field' },
@@ -62,11 +62,11 @@ describe('Schema Overview', () => {
         },
       });
 
-      // check entity collection overview
-      const entity = overview.collections['collection_f1_grand_prix_races'];
+      // check entity model overview
+      const entity = overview.models['model_f1_grand_prix_races'];
       expect(entity).toEqual({
-        id: overview.collections['collection_f1_grand_prix_races'].id,
-        collection: 'collection_f1_grand_prix_races',
+        id: overview.models['model_f1_grand_prix_races'].id,
+        model: 'model_f1_grand_prix_races',
         singleton: false,
         statusField: null,
         draftValue: null,

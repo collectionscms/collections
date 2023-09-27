@@ -10,7 +10,7 @@ describe('Users', () => {
 
   const data: Omit<User, 'id'> = {
     name: 'Max Verstappen',
-    email: 'max@superfastcms.com',
+    email: 'max@collections.dev',
     password: 'password',
     is_active: true,
     api_key: '1111-2222-4444',
@@ -39,12 +39,12 @@ describe('Users', () => {
 
       expect(users).toBeTruthy();
 
-      const user = users.find((user) => user.email === 'michael@superfastcms.com');
+      const user = users.find((user) => user.email === 'michael@collections.dev');
 
       expect(user).toEqual(
         expect.objectContaining({
           name: 'Michael Schumacher',
-          email: 'michael@superfastcms.com',
+          email: 'michael@collections.dev',
           is_active: true,
           role_id: 1,
           role_name: 'Administrator',
@@ -85,7 +85,7 @@ describe('Users', () => {
 
       const service = new UsersService({ database: connection, schema });
       const user = await service
-        .readMany({ filter: { email: { _eq: 'michael@superfastcms.com' } } })
+        .readMany({ filter: { email: { _eq: 'michael@collections.dev' } } })
         .then((users) => users[0]);
 
       const result = await service.updateOne(user.id, { name: 'Schumi' });

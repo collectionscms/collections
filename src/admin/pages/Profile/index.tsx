@@ -20,7 +20,7 @@ import { enqueueSnackbar } from 'notistack';
 import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { IconButton, MainCard } from 'superfast-ui';
+import { IconButton, MainCard } from '@collectionscms/plugin-ui';
 import { v4 as uuidv4 } from 'uuid';
 import { logger } from '../../../utilities/logger.js';
 import { ConfirmDiscardDialog } from '../../components/elements/ConfirmDiscardDialog/index.js';

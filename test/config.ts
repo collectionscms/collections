@@ -44,7 +44,7 @@ export const config: Config = {
     mysql: {
       client: 'mysql',
       connection: {
-        database: 'superfast',
+        database: 'collections',
         user: 'root',
         password: 'password',
         host: 'localhost',
@@ -55,7 +55,7 @@ export const config: Config = {
     maria: {
       client: 'mysql',
       connection: {
-        database: 'superfast',
+        database: 'collections',
         user: 'root',
         password: 'password',
         host: 'localhost',
@@ -66,7 +66,7 @@ export const config: Config = {
     postgres: {
       client: 'pg',
       connection: {
-        database: 'superfast',
+        database: 'collections',
         user: 'postgres',
         password: 'password',
         host: 'localhost',

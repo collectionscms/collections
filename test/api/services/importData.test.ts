@@ -26,10 +26,10 @@ describe('ImportDataService', () => {
   const assertExpectedData = async (
     connection: Knex,
     schema: SchemaOverview,
-    collection: string,
+    model: string,
     expectData: any[]
   ) => {
-    const contentsService = new ContentsService(collection, {
+    const contentsService = new ContentsService(model, {
       database: connection,
       schema,
     });

@@ -19,7 +19,7 @@ export default async function teardown(
     const database = knex(knexConfig);
 
     await database.migrate.rollback(knexConfig.migrations, true);
-    await dropCollections(database);
+    await dropModels(database);
 
     if (testDatabase === 'sqlite3') {
       unlinkSync('test.db');
@@ -29,16 +29,16 @@ export default async function teardown(
   }
 }
 
-async function dropCollections(database: Knex) {
+async function dropModels(database: Knex) {
   const schemaInfo = await getSchemaInfo(database);
   const tableNames = [
-    'collection_f1_constructors',
-    'collection_f1_2023_driver_standings',
-    'collection_f1_2022_driver_standings',
-    'collection_f1_circuit_stats',
-    'collection_f1_grand_prix_races',
-    'collection_f1_ferrari_team_stats',
-    'collection_f1_grand_prix_race_stats',
+    'model_f1_constructors',
+    'model_f1_2023_driver_standings',
+    'model_f1_2022_driver_standings',
+    'model_f1_circuit_stats',
+    'model_f1_grand_prix_races',
+    'model_f1_ferrari_team_stats',
+    'model_f1_grand_prix_race_stats',
     'category',
     'tag',
     'post',

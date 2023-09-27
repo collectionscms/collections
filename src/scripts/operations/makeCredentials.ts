@@ -35,7 +35,7 @@ const database = (): Record<string, string> => ({
   type: 'input',
   name: 'database',
   message: 'Database Name:',
-  default: 'superfast',
+  default: 'collections',
 });
 
 const user = (): Record<string, string> => ({

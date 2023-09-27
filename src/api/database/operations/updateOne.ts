@@ -5,7 +5,7 @@ import { PrimaryKey } from '../schemas.js';
 import { applyTransformers } from '../transformers.js';
 
 export type Arguments = {
-  collection: string;
+  model: string;
   database: Knex;
   key: PrimaryKey;
   schema: SchemaOverview;
@@ -13,13 +13,13 @@ export type Arguments = {
 };
 
 export const updateOne = async (args: Arguments): Promise<PrimaryKey> => {
-  let { database, collection, key, schema, data } = args;
+  let { database, model, key, schema, data } = args;
   const helpers = getHelpers(args.database);
-  const overview = schema.collections[collection];
+  const overview = schema.models[model];
 
   if (overview) {
-    await applyTransformers('update', data, schema.collections[collection], helpers);
+    await applyTransformers('update', data, schema.models[model], helpers);
   }
 
-  return database(collection).where({ id: key }).update(data);
+  return database(model).where({ id: key }).update(data);
 };

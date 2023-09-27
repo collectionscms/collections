@@ -1,17 +1,17 @@
 import knex, { Knex } from 'knex';
 import { getSchemaOverview } from '../../../src/api/database/overview.js';
-import { Collection, Field } from '../../../src/api/database/schemas.js';
-import { CollectionsService } from '../../../src/api/services/collections.js';
+import { Model, Field } from '../../../src/api/database/schemas.js';
+import { ModelsService } from '../../../src/api/services/models.js';
 import { FieldsService } from '../../../src/api/services/fields.js';
 import { config } from '../../config.js';
 import { testDatabases } from '../../utilities/testDatabases.js';
 
 describe('Field', () => {
-  const collectionName = 'collection_f1_ferrari_team_stats';
+  const modelName = 'model_f1_ferrari_team_stats';
   const databases = new Map<string, Knex>();
 
-  const collectionData: Omit<Collection, 'id'> = {
-    collection: collectionName,
+  const modelData: Omit<Model, 'id'> = {
+    model: modelName,
     singleton: false,
     hidden: false,
     status_field: null,
@@ -21,7 +21,7 @@ describe('Field', () => {
   };
 
   const fieldData = {
-    collection: collectionName,
+    model: modelName,
     interface: 'input',
     required: false,
     readonly: false,
@@ -37,16 +37,16 @@ describe('Field', () => {
     for (const database of testDatabases) {
       databases.set(database, knex(config.knexConfig[database]!));
 
-      await createCollection(database);
+      await createModel(database);
     }
   });
 
-  const createCollection = async (database: string) => {
+  const createModel = async (database: string) => {
     const connection = databases.get(database)!;
     const schema = await getSchemaOverview({ database: connection });
 
-    const service = new CollectionsService({ database: connection, schema });
-    await service.createCollection(collectionData, false);
+    const service = new ModelsService({ database: connection, schema });
+    await service.createModel(modelData, false);
   };
 
   afterAll(async () => {
@@ -63,7 +63,7 @@ describe('Field', () => {
 
       const field = {
         ...fieldData,
-        collection_id: schema.collections[collectionName].id,
+        model_id: schema.models[modelName].id,
         field: 'team_name',
         label: 'Team Name',
       } as Omit<Field, 'id'>;
@@ -79,7 +79,7 @@ describe('Field', () => {
 
       const field = {
         ...fieldData,
-        collection_id: schema.collections[collectionName].id,
+        model_id: schema.models[modelName].id,
         field: 'point',
         label: 'Point',
       } as Omit<Field, 'id'>;
@@ -93,7 +93,7 @@ describe('Field', () => {
       // meta data should not be created
       const fetchFields = await service.readMany({
         filter: {
-          _and: [{ collection: { _eq: collectionName } }, { field: { _eq: 'point' } }],
+          _and: [{ model: { _eq: modelName } }, { field: { _eq: 'point' } }],
         },
       });
 
@@ -109,7 +109,7 @@ describe('Field', () => {
 
         const field = {
           ...fieldData,
-          collection_id: schema.collections[collectionName].id,
+          model_id: schema.models[modelName].id,
           field: 'id',
           label: 'id',
         } as Omit<Field, 'id'>;
@@ -120,7 +120,7 @@ describe('Field', () => {
         // meta data should not be duplicated.
         const fetchFields = await service.readMany({
           filter: {
-            _and: [{ collection: { _eq: collectionName } }, { field: { _eq: 'id' } }],
+            _and: [{ model: { _eq: modelName } }, { field: { _eq: 'id' } }],
           },
         });
 

@@ -82,7 +82,7 @@ const ForgotPasswordImpl: React.FC = () => {
         <Grid xs={12}>
           <Button
             component={RouterLink}
-            to="/admin/collections"
+            to="/admin/models"
             disableElevation
             fullWidth
             size="large"

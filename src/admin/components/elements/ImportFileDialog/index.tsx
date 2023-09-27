@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogTitle, Grid, Stack } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { IconButton } from 'superfast-ui';
+import { IconButton } from '@collectionscms/plugin-ui';
 import { logger } from '../../../../utilities/logger.js';
 import { ComposeWrapper } from '../../utilities/ComposeWrapper/index.js';
 import { SingleFileUpload } from '../SingleFileUpload/index.js';

@@ -2,7 +2,7 @@
   "user": "User",
   "role": "Role",
   "project_setting": "Project Settings",
-  "content_type": "Content Type",
+  "data_model": "Data Model",
   "content_data_type": "Data Type",
   "content_management": "Content Management",
   "setting": "Setting",
@@ -58,10 +58,10 @@
   "no_contents": "There are no contents yet.",
   "no_roles": "There are no roles yet.",
   "back_to_home": "Back to Home",
-  "collection_not_found": "Collection Not Found",
-  "register_content_type": "Register Content Type",
-  "create_first_content_type": "Define the type, length, and relationship of the content to be created!",
-  "go_to_registration": "Go to Content Type",
+  "model_not_found": "Model Not Found",
+  "register_data_model": "Register Data Model",
+  "create_first_data_model": "Define the type, length, and relationship of the content to be created!",
+  "go_to_registration": "Go to Data Model",
   "back_to_login": "Back to Login",
   "submit": "Submit",
   "email_sent": "Email Sent",
@@ -135,13 +135,13 @@
   "create": {
     "user": "Create User",
     "role": "Create Role",
-    "content_type": "Create Content Type",
+    "data_model": "Create Data Model",
     "custom": "Create {{page}}"
   },
   "edit": {
     "user": "Edit User",
     "role": "Edit Role",
-    "content_type": "Edit Content Type",
+    "data_model": "Edit Data Model",
     "custom": "Edit {{page}}"
   },
   "field_interface": {

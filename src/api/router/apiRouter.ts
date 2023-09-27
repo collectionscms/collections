@@ -3,7 +3,7 @@ import express from 'express';
 import { env } from '../../env.js';
 import { expressLogger } from '../../utilities/expressLogger.js';
 import { authentications } from '../controllers/authentications.js';
-import { collections } from '../controllers/collections.js';
+import { models } from '../controllers/models.js';
 import { contents } from '../controllers/contents.js';
 import { fields } from '../controllers/fields.js';
 import { files } from '../controllers/files.js';
@@ -34,7 +34,7 @@ router.get('/health', (_req, res) => res.send('ok'));
 
 router.use(users);
 router.use(roles);
-router.use(collections);
+router.use(models);
 router.use(fields);
 router.use(contents);
 router.use(projectSettings);

@@ -1,6 +1,6 @@
-# Getting started with Superfast 🚀
+# Getting started with Collections 🚀
 
-Welcome to Superfast!
+Welcome to Collections!
 
 Run
 

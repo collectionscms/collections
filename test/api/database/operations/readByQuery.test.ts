@@ -6,9 +6,9 @@ import { config } from '../../../config.js';
 import { testDatabases } from '../../../utilities/testDatabases.js';
 
 describe('Read By Query', () => {
-  const tableName = 'collection_f1_grand_prix_races';
+  const tableName = 'model_f1_grand_prix_races';
   const databases = new Map<string, Knex>();
-  type CollectionType = {
+  type ModelType = {
     year: string;
     round: string;
     circuit: string;
@@ -67,7 +67,7 @@ describe('Read By Query', () => {
       const results = await readByQuery({
         database: connection,
         schema: overview,
-        collection: tableName,
+        model: tableName,
       });
 
       expect(results).toHaveLength(records.length);
@@ -78,10 +78,10 @@ describe('Read By Query', () => {
       const connection = databases.get(database)!;
       const overview = await getSchemaOverview({ database: connection });
 
-      const results = await readByQuery<CollectionType>({
+      const results = await readByQuery<ModelType>({
         database: connection,
         schema: overview,
-        collection: tableName,
+        model: tableName,
         filter: { circuit: { _eq: 'Bahrain' } },
       });
 
@@ -104,9 +104,9 @@ describe('Read By Query', () => {
         const connection = databases.get(database)!;
         const overview = await getSchemaOverview({ database: connection });
 
-        const results = await readByQuery<CollectionType>({
+        const results = await readByQuery<ModelType>({
           database: connection,
-          collection: tableName,
+          model: tableName,
           schema: overview,
           filter: {
             _and: [{ circuit: { _eq: 'Bahrain' } }, { year: { _gt: '2021' } }],
@@ -134,9 +134,9 @@ describe('Read By Query', () => {
         const connection = databases.get(database)!;
         const overview = await getSchemaOverview({ database: connection });
 
-        const results = await readByQuery<CollectionType>({
+        const results = await readByQuery<ModelType>({
           database: connection,
-          collection: tableName,
+          model: tableName,
           schema: overview,
           filter: {
             _or: [{ circuit: { _eq: 'Bahrain' } }, { circuit: { _eq: 'Saudi Arabia' } }],
@@ -166,9 +166,9 @@ describe('Read By Query', () => {
         const connection = databases.get(database)!;
         const overview = await getSchemaOverview({ database: connection });
 
-        const results = await readByQuery<CollectionType>({
+        const results = await readByQuery<ModelType>({
           database: connection,
-          collection: tableName,
+          model: tableName,
           schema: overview,
           filter: { circuit: { _in: ['Bahrain', 'Saudi Arabia'] } },
         });
@@ -196,9 +196,9 @@ describe('Read By Query', () => {
         const connection = databases.get(database)!;
         const overview = await getSchemaOverview({ database: connection });
 
-        const results = await readByQuery<CollectionType>({
+        const results = await readByQuery<ModelType>({
           database: connection,
-          collection: tableName,
+          model: tableName,
           schema: overview,
           filter: {
             _and: [{ year: { _eq: '2023' } }, { circuit: { _in: ['Bahrain', 'Saudi Arabia'] } }],
@@ -223,30 +223,30 @@ describe('Read By Query', () => {
       const connection = databases.get(database)!;
       const overview = await getSchemaOverview({ database: connection });
 
-      const results = readByQuery<CollectionType>({
+      const results = readByQuery<ModelType>({
         database: connection,
-        collection: tableName,
+        model: tableName,
         schema: overview,
         filter: { circuit: { _eq: undefined } },
       });
 
-      const results1 = readByQuery<CollectionType>({
+      const results1 = readByQuery<ModelType>({
         database: connection,
-        collection: tableName,
+        model: tableName,
         schema: overview,
         filter: { circuit: '' as any },
       });
 
-      const results2 = readByQuery<CollectionType>({
+      const results2 = readByQuery<ModelType>({
         database: connection,
-        collection: tableName,
+        model: tableName,
         schema: overview,
         filter: { _and: [{ circuit: { _eq: 'Bahrain' } }, { circuit: { _eq: undefined } }] },
       });
 
-      const results3 = readByQuery<CollectionType>({
+      const results3 = readByQuery<ModelType>({
         database: connection,
-        collection: tableName,
+        model: tableName,
         schema: overview,
         filter: { _or: [{ circuit: { _gt: undefined } }, { circuit: { _eq: 'Bahrain' } }] },
       });
@@ -264,9 +264,9 @@ describe('Read By Query', () => {
       const connection = databases.get(database)!;
       const overview = await getSchemaOverview({ database: connection });
 
-      const results = await readByQuery<CollectionType>({
+      const results = await readByQuery<ModelType>({
         database: connection,
-        collection: tableName,
+        model: tableName,
         schema: overview,
         filter: { year: { _eq: '2023' } },
         sorts: [{ column: 'round', order: 'asc', nulls: 'last' }],
@@ -286,9 +286,9 @@ describe('Read By Query', () => {
       const connection = databases.get(database)!;
       const overview = await getSchemaOverview({ database: connection });
 
-      const results = await readByQuery<CollectionType>({
+      const results = await readByQuery<ModelType>({
         database: connection,
-        collection: tableName,
+        model: tableName,
         schema: overview,
         filter: { year: { _eq: '2023' } },
         sorts: [{ column: 'round', order: 'desc', nulls: 'first' }],

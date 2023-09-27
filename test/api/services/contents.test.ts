@@ -13,56 +13,56 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 describe('Contents', () => {
-  const tableName = 'collection_f1_grand_prix_race_stats';
+  const tableName = 'model_f1_grand_prix_race_stats';
   const databases = new Map<string, Knex>();
 
   beforeAll(async () => {
     for (const database of testDatabases) {
       const connection = knex(config.knexConfig[database]!);
       databases.set(database, connection);
-      await createCollection(database);
+      await createModel(database);
     }
   });
 
-  const createCollection = async (database: string) => {
+  const createModel = async (database: string) => {
     const connection = databases.get(database)!;
     const helpers = getHelpers(connection);
 
-    await connection('superfast_collections').insert([
+    await connection('collections_models').insert([
       {
-        collection: tableName,
+        model: tableName,
         singleton: false,
         hidden: false,
       },
     ]);
 
-    await connection('superfast_fields').insert([
+    await connection('collections_fields').insert([
       {
-        collection: tableName,
+        model: tableName,
         field: 'id',
         label: 'id',
         interface: 'input',
       },
       {
-        collection: tableName,
+        model: tableName,
         field: 'year',
         label: 'Year',
         interface: 'input',
       },
       {
-        collection: tableName,
+        model: tableName,
         field: 'circuit',
         label: 'Circuit',
         interface: 'input',
       },
       {
-        collection: tableName,
+        model: tableName,
         field: 'is_shootout',
         label: 'Shootout',
         interface: 'boolean',
       },
       {
-        collection: tableName,
+        model: tableName,
         field: 'start_date',
         label: 'Start Date',
         interface: 'dateTime',
@@ -105,7 +105,7 @@ describe('Contents', () => {
 
       const data = await service.createContent(
         { year: '2023', circuit: 'Monaco', is_shootout: false },
-        Object.values(schema.collections[tableName].fields)
+        Object.values(schema.models[tableName].fields)
       );
 
       expect(data).toBeTruthy();
@@ -181,7 +181,7 @@ describe('Contents', () => {
           circuit: 'Monaco',
           start_date: localTime,
         },
-        Object.values(schema.collections[tableName].fields)
+        Object.values(schema.models[tableName].fields)
       );
       const result = await service.readOne(id);
       const startDate = dayjs(result.start_date);

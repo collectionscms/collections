@@ -32,13 +32,13 @@ export class BaseTransaction {
 }
 
 export class BaseService<T extends TypeWithId = any> implements AbstractService<T> {
-  collection: string;
+  model: string;
   database: Knex;
   schema: SchemaOverview;
   helpers: Helpers;
 
-  constructor(collection: string, options: AbstractServiceOptions) {
-    this.collection = collection;
+  constructor(model: string, options: AbstractServiceOptions) {
+    this.model = model;
     this.schema = options.schema;
     this.database = options.database || getDatabase();
     this.helpers = getHelpers(this.database);
@@ -58,7 +58,7 @@ export class BaseService<T extends TypeWithId = any> implements AbstractService<
    */
   async readOne(key: PrimaryKey): Promise<T> {
     return await readById<T>({
-      collection: this.collection,
+      model: this.model,
       database: this.database,
       schema: this.schema,
       key,
@@ -72,7 +72,7 @@ export class BaseService<T extends TypeWithId = any> implements AbstractService<
    */
   async readMany(query: Query = {}, sorts?: Sort[]): Promise<T[]> {
     return await readByQuery<T>({
-      collection: this.collection,
+      model: this.model,
       database: this.database,
       schema: this.schema,
       filter: query.filter,
@@ -88,7 +88,7 @@ export class BaseService<T extends TypeWithId = any> implements AbstractService<
   async createOne(data: Partial<T>): Promise<PrimaryKey> {
     return await createOne({
       database: this.database,
-      collection: this.collection,
+      model: this.model,
       data,
       schema: this.schema,
     });
@@ -103,7 +103,7 @@ export class BaseService<T extends TypeWithId = any> implements AbstractService<
   async updateOne(key: PrimaryKey, data: Partial<T>): Promise<PrimaryKey> {
     return await updateOne({
       database: this.database,
-      collection: this.collection,
+      model: this.model,
       key,
       schema: this.schema,
       data,
@@ -118,7 +118,7 @@ export class BaseService<T extends TypeWithId = any> implements AbstractService<
   async createMany(data: Partial<T>[]): Promise<PrimaryKey[]> {
     return await createMany({
       database: this.database,
-      collection: this.collection,
+      model: this.model,
       data,
       schema: this.schema,
     });
@@ -129,7 +129,7 @@ export class BaseService<T extends TypeWithId = any> implements AbstractService<
    * @param key
    */
   async deleteOne(key: PrimaryKey): Promise<void> {
-    await deleteOne({ database: this.database, collection: this.collection, key });
+    await deleteOne({ database: this.database, model: this.model, key });
   }
 
   /**
@@ -137,6 +137,6 @@ export class BaseService<T extends TypeWithId = any> implements AbstractService<
    * @param keys
    */
   async deleteMany(keys: PrimaryKey[]): Promise<void> {
-    await deleteMany({ database: this.database, collection: this.collection, keys });
+    await deleteMany({ database: this.database, model: this.model, keys });
   }
 }

@@ -1,9 +1,9 @@
-import { Collection, PermissionsAction } from '../../../../config/types.js';
+import { Model, PermissionsAction } from '../../../../config/types.js';
 
 export type Props = {
   roleId: string;
   permissionId: string | null;
-  collection: Collection;
+  model: Model;
   action: PermissionsAction;
   menu: any;
   onCreate: () => void;

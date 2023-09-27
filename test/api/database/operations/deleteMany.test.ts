@@ -8,12 +8,12 @@ import { config } from '../../../config.js';
 import { testDatabases } from '../../../utilities/testDatabases.js';
 
 describe('Delete Many', () => {
-  const tableName = 'superfast_users';
+  const tableName = 'collections_users';
   const databases = new Map<string, Knex>();
   const data: Omit<User, 'id'>[] = [
     {
       name: 'Lando Norris',
-      email: 'lando@superfastcms.com',
+      email: 'lando@collections.dev',
       password: 'password',
       is_active: true,
       api_key: '1111-2222-4444',
@@ -21,7 +21,7 @@ describe('Delete Many', () => {
     },
     {
       name: 'Esteban Ocon',
-      email: 'esteban@superfastcms.com',
+      email: 'esteban@collections.dev',
       password: 'password',
       is_active: true,
       api_key: '1111-2222-4444',
@@ -49,20 +49,20 @@ describe('Delete Many', () => {
       const keys = await createMany({
         database: connection,
         schema: overview,
-        collection: tableName,
+        model: tableName,
         data,
       });
 
       await deleteMany({
         database: connection,
-        collection: tableName,
+        model: tableName,
         keys,
       });
 
       const result = await readByQuery({
         database: connection,
         schema: overview,
-        collection: tableName,
+        model: tableName,
         filter: {
           id: { _in: keys },
         },

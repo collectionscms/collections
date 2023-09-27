@@ -2,8 +2,8 @@ import { CloseCircleOutlined } from '@ant-design/icons';
 import { Box, Button } from '@mui/material';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { IconButton } from 'superfast-ui';
-import { ContentContextProvider } from '../../../../pages/collections/Context/index.js';
+import { IconButton } from '@collectionscms/plugin-ui';
+import { ContentContextProvider } from '../../../../pages/models/Context/index.js';
 import { ComposeWrapper } from '../../../utilities/ComposeWrapper/index.js';
 import { Props } from '../types.js';
 import { AddExistContents } from './AddExistContents/index.js';
@@ -37,7 +37,7 @@ export const ListOneToManyTypeImpl: React.FC<Props> = ({
   return (
     <>
       <AddExistContents
-        collectionId={meta.collection_id.toString()}
+        modelId={meta.model_id.toString()}
         field={meta.field}
         excludes={watch(meta.field) || []}
         openState={addRelationsOpen}

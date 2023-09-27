@@ -22,7 +22,7 @@ import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
-import { EmptyTable, MainCard } from 'superfast-ui';
+import { EmptyTable, MainCard } from '@collectionscms/plugin-ui';
 import { logger } from '../../../../utilities/logger.js';
 import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscardDialog/index.js';
 import { DeleteButton } from '../../../components/elements/DeleteButton/index.js';
@@ -44,9 +44,9 @@ const EditRolePageImpl: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
-  const { getRole, getCollections, getPermissions, updateRole } = useRole();
+  const { getRole, getModels, getPermissions, updateRole } = useRole();
   const { data: role } = getRole(id);
-  const { data: collections } = getCollections();
+  const { data: models } = getModels();
   const { data: permissions, mutate } = getPermissions(id);
   const { trigger: updateRoleTrigger, isMutating: isUpdateRoleMutating } = updateRole(id);
   const {
@@ -96,7 +96,7 @@ const EditRolePageImpl: React.FC = () => {
                   <TableHead>
                     <TableRow>
                       <TableCell component="th" scope="row">
-                        {t('content_type')}
+                        {t('data_model')}
                       </TableCell>
                       {actions.map((action) => (
                         <TableCell
@@ -112,13 +112,13 @@ const EditRolePageImpl: React.FC = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {collections.length > 0 ? (
+                    {models.length > 0 ? (
                       <>
-                        {collections.map((collection) => {
+                        {models.map((model) => {
                           return (
                             <TableRow
                               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                              key={collection.id}
+                              key={model.id}
                             >
                               <TableCell component="td" scope="row" sx={{ py: 0 }}>
                                 <Box
@@ -126,7 +126,7 @@ const EditRolePageImpl: React.FC = () => {
                                   justifyContent="space-between"
                                   alignItems="center"
                                 >
-                                  <p>{collection.collection}</p>
+                                  <p>{model.model}</p>
                                 </Box>
                               </TableCell>
                               {actions.map((action) => (
@@ -135,7 +135,7 @@ const EditRolePageImpl: React.FC = () => {
                                     roleId={id}
                                     permissions={permissions}
                                     mutate={mutate}
-                                    collection={collection}
+                                    model={model}
                                     action={action}
                                   />
                                 </TableCell>

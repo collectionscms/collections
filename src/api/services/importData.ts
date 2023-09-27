@@ -1,14 +1,14 @@
 import { Knex } from 'knex';
-import { parseFromFile } from 'plugin-wp-importer';
+import { parseFromFile } from '@collectionscms/plugin-wp-importer';
 import { RecordNotUniqueException } from '../../exceptions/database/recordNotUnique.js';
 import { UnsupportedMediaTypeException } from '../../exceptions/unsupportedMediaType.js';
 import { getDatabase } from '../database/connection.js';
 import { SchemaOverview, getSchemaOverview } from '../database/overview.js';
 import { Field, PrimaryKey } from '../database/schemas.js';
 import { AbstractServiceOptions } from './base.js';
-import { CollectionsService } from './collections.js';
 import { ContentsService } from './contents.js';
 import { FieldsService } from './fields.js';
+import { ModelsService } from './models.js';
 
 export class ImportDataService {
   database: Knex;
@@ -36,18 +36,18 @@ export class ImportDataService {
 
   private async importXml(buffer: Buffer): Promise<void> {
     // TODO: case insensitive
-    const service = new CollectionsService({ database: this.database, schema: this.schema });
-    const collections = await service.readMany({
+    const service = new ModelsService({ database: this.database, schema: this.schema });
+    const models = await service.readMany({
       filter: {
         _or: [
-          { collection: { _eq: 'posts' } },
-          { collection: { _eq: 'categories' } },
-          { collection: { _eq: 'tags' } },
+          { model: { _eq: 'posts' } },
+          { model: { _eq: 'categories' } },
+          { model: { _eq: 'tags' } },
         ],
       },
     });
 
-    if (collections.length > 0) {
+    if (models.length > 0) {
       throw new RecordNotUniqueException('already_registered_name');
     }
 
@@ -56,8 +56,8 @@ export class ImportDataService {
       // Create fixed data
       // /////////////////////////////////////
 
-      const collectionKeys = await this.createCollections(tx);
-      await this.createFields(tx, collectionKeys);
+      const modelKeys = await this.createModels(tx);
+      await this.createFields(tx, modelKeys);
 
       // /////////////////////////////////////
       // Create contents from file
@@ -72,20 +72,20 @@ export class ImportDataService {
     });
   }
 
-  private async createCollections(tx: Knex.Transaction): Promise<Record<string, PrimaryKey>> {
-    const collections = [
-      { collection: 'category', hasStatus: false },
-      { collection: 'tag', hasStatus: false },
-      { collection: 'post', hasStatus: true },
+  private async createModels(tx: Knex.Transaction): Promise<Record<string, PrimaryKey>> {
+    const models = [
+      { model: 'category', hasStatus: false },
+      { model: 'tag', hasStatus: false },
+      { model: 'post', hasStatus: true },
     ];
 
     const result: Record<string, PrimaryKey> = {};
 
-    const collectionsService = new CollectionsService({ database: tx, schema: this.schema });
-    for (const { collection, hasStatus } of collections) {
-      const collectionId = await collectionsService.createCollection(
+    const modelsService = new ModelsService({ database: tx, schema: this.schema });
+    for (const { model, hasStatus } of models) {
+      const modelId = await modelsService.createModel(
         {
-          collection,
+          model: model,
           singleton: false,
           hidden: false,
           status_field: null,
@@ -96,7 +96,7 @@ export class ImportDataService {
         hasStatus
       );
 
-      result[collection] = collectionId;
+      result[model] = modelId;
     }
 
     return result;
@@ -104,12 +104,12 @@ export class ImportDataService {
 
   private async createFields(
     tx: Knex.Transaction,
-    collectionKeys: Record<string, PrimaryKey>
+    modelKeys: Record<string, PrimaryKey>
   ): Promise<void> {
     const categoryFields: Omit<Field, 'id'>[] = [
       {
-        collection: 'category',
-        collection_id: collectionKeys['category'],
+        model: 'category',
+        model_id: modelKeys['category'],
         field: 'name',
         label: 'Name',
         interface: 'input',
@@ -121,8 +121,8 @@ export class ImportDataService {
         sort: 0,
       },
       {
-        collection: 'category',
-        collection_id: collectionKeys['category'],
+        model: 'category',
+        model_id: modelKeys['category'],
         field: 'slug',
         label: 'Slug',
         interface: 'input',
@@ -137,8 +137,8 @@ export class ImportDataService {
 
     const tagFields: Omit<Field, 'id'>[] = [
       {
-        collection: 'tag',
-        collection_id: collectionKeys['tag'],
+        model: 'tag',
+        model_id: modelKeys['tag'],
         field: 'name',
         label: 'Name',
         interface: 'input',
@@ -150,8 +150,8 @@ export class ImportDataService {
         sort: 0,
       },
       {
-        collection: 'tag',
-        collection_id: collectionKeys['tag'],
+        model: 'tag',
+        model_id: modelKeys['tag'],
         field: 'slug',
         label: 'Slug',
         interface: 'input',
@@ -166,8 +166,8 @@ export class ImportDataService {
 
     const postFields: Omit<Field, 'id'>[] = [
       {
-        collection: 'post',
-        collection_id: collectionKeys['post'],
+        model: 'post',
+        model_id: modelKeys['post'],
         field: 'title',
         label: 'Title',
         interface: 'input',
@@ -179,8 +179,8 @@ export class ImportDataService {
         sort: 0,
       },
       {
-        collection: 'post',
-        collection_id: collectionKeys['post'],
+        model: 'post',
+        model_id: modelKeys['post'],
         field: 'content',
         label: 'Content',
         interface: 'inputRichTextMd', // TODO: Change to 'inputRichTextHtml'
@@ -192,8 +192,8 @@ export class ImportDataService {
         sort: 1,
       },
       {
-        collection: 'post',
-        collection_id: collectionKeys['post'],
+        model: 'post',
+        model_id: modelKeys['post'],
         field: 'slug',
         label: 'Slug',
         interface: 'input',
@@ -205,8 +205,8 @@ export class ImportDataService {
         sort: 2,
       },
       {
-        collection: 'post',
-        collection_id: collectionKeys['post'],
+        model: 'post',
+        model_id: modelKeys['post'],
         field: 'published_date',
         label: 'publishedDate',
         interface: 'dateTime',
@@ -218,8 +218,8 @@ export class ImportDataService {
         sort: 3,
       },
       {
-        collection: 'post',
-        collection_id: collectionKeys['post'],
+        model: 'post',
+        model_id: modelKeys['post'],
         field: 'is_page',
         label: 'isPage',
         interface: 'boolean',
@@ -248,17 +248,17 @@ export class ImportDataService {
 
     await fieldsService.createRelationalFields(
       {
-        many_collection: 'category',
-        many_collection_id: collectionKeys['category'],
+        many_model: 'category',
+        many_model_id: modelKeys['category'],
         many_field: 'post_id',
-        one_collection: 'post',
-        one_collection_id: collectionKeys['post'],
+        one_model: 'post',
+        one_model_id: modelKeys['post'],
         one_field: 'categories',
       },
       [
         {
-          collection: 'post',
-          collection_id: collectionKeys['post'],
+          model: 'post',
+          model_id: modelKeys['post'],
           field: 'categories',
           label: 'Categories',
           interface: 'listOneToMany',
@@ -270,8 +270,8 @@ export class ImportDataService {
           sort: 10,
         },
         {
-          collection: 'category',
-          collection_id: collectionKeys['category'],
+          model: 'category',
+          model_id: modelKeys['category'],
           field: 'post_id',
           label: 'Post Id',
           interface: 'selectDropdownManyToOne',
@@ -291,17 +291,17 @@ export class ImportDataService {
 
     await fieldsService.createRelationalFields(
       {
-        many_collection: 'tag',
-        many_collection_id: collectionKeys['tag'],
+        many_model: 'tag',
+        many_model_id: modelKeys['tag'],
         many_field: 'post_id',
-        one_collection: 'post',
-        one_collection_id: collectionKeys['post'],
+        one_model: 'post',
+        one_model_id: modelKeys['post'],
         one_field: 'tags',
       },
       [
         {
-          collection: 'post',
-          collection_id: collectionKeys['post'],
+          model: 'post',
+          model_id: modelKeys['post'],
           field: 'tags',
           label: 'Tags',
           interface: 'listOneToMany',
@@ -313,8 +313,8 @@ export class ImportDataService {
           sort: 10,
         },
         {
-          collection: 'tag',
-          collection_id: collectionKeys['tag'],
+          model: 'tag',
+          model_id: modelKeys['tag'],
           field: 'post_id',
           label: 'Post Id',
           interface: 'selectDropdownManyToOne',
@@ -330,13 +330,13 @@ export class ImportDataService {
   }
 
   private async createContents(
-    collection: string,
+    model: string,
     tx: Knex.Transaction,
     schema: SchemaOverview,
     items: Record<string, any>[]
   ): Promise<void> {
-    const filesOverview = schema.collections[collection].fields;
-    const service = new ContentsService(collection, { database: tx, schema: schema });
+    const filesOverview = schema.models[model].fields;
+    const service = new ContentsService(model, { database: tx, schema: schema });
     for (const item of items) {
       await service.createContent(item, Object.values(filesOverview));
     }

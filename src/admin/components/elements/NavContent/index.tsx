@@ -1,7 +1,7 @@
 import { Box, Divider, useTheme } from '@mui/material';
 import React, { useMemo } from 'react';
 import {
-  collectionsGroupNavItems,
+  modelsGroupNavItems,
   profileNavItems,
   settingsGroupNavItems,
 } from '../../../utilities/groupNavItems.js';
@@ -15,14 +15,14 @@ import { BottomContent } from './BottomContent/index.js';
 export const NavContent: React.FC = () => {
   const { user } = useAuth();
   const theme = useTheme();
-  const { permittedCollections } = useConfig();
+  const { permittedModels } = useConfig();
 
   const navHeader = useMemo(() => <NavHeader />, []);
   const bottomContent = useMemo(() => <BottomContent />, []);
 
   const navGroupItems = user?.adminAccess
-    ? [collectionsGroupNavItems(permittedCollections), settingsGroupNavItems(), profileNavItems()]
-    : [collectionsGroupNavItems(permittedCollections), profileNavItems()];
+    ? [modelsGroupNavItems(permittedModels), settingsGroupNavItems(), profileNavItems()]
+    : [modelsGroupNavItems(permittedModels), profileNavItems()];
   const navGroups = navGroupItems.map((group) => {
     return <NavGroup key={group.label} group={group} />;
   });

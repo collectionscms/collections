@@ -5,18 +5,18 @@ import { PrimaryKey } from '../schemas.js';
 import { applyTransformers } from '../transformers.js';
 
 export type Arguments = {
-  collection: string;
+  model: string;
   database: Knex;
   schema: SchemaOverview;
   key: PrimaryKey;
 };
 
 export const readById = async <T>(args: Arguments): Promise<T> => {
-  let { database, collection, schema, key } = args;
+  let { database, model, schema, key } = args;
   const helpers = getHelpers(args.database);
-  const overview = schema.collections[collection];
+  const overview = schema.models[model];
 
-  const result = await database(collection)
+  const result = await database(model)
     .where({ id: key })
     .select()
     .then((results) => results[0]);

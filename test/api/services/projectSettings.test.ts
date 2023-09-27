@@ -27,7 +27,7 @@ describe('Project Settings', () => {
       const service = new ProjectSettingsService({ database: connection, schema });
       const data = await service.readMany({});
 
-      expect(data[0].name).toBe('superfast');
+      expect(data[0].name).toBe('collections');
       expect(data[0].before_login).toBe('Support Hours 9:00 - 18:00');
       expect(data[0].after_login).toBe('<a href="#">Contact us</a>');
     });
@@ -42,7 +42,7 @@ describe('Project Settings', () => {
       const data = await service.readMany({});
       const id = data[0].id;
       const newData = {
-        name: 'superfast2',
+        name: 'collections2',
         before_login: 'Support Hours 10:00 - 19:00',
         after_login: '<a href="#">support desk</a>',
       };
@@ -68,7 +68,7 @@ describe('Project Settings', () => {
       const nonExistPrimaryKey = -1;
 
       const service = new ProjectSettingsService({ database: connection, schema });
-      const result = await service.updateOne(nonExistPrimaryKey, { name: 'superfast2' });
+      const result = await service.updateOne(nonExistPrimaryKey, { name: 'collections2' });
       expect(result).toBeFalsy();
     });
   });

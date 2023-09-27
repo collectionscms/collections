@@ -1,19 +1,19 @@
 {
-  "name": "my-superfast-project",
+  "name": "my-collections-project",
   "version": "1.0.0",
   "description": "",
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "dev": "superfastcms dev",
-    "build": "superfastcms build",
+    "dev": "@collectionscms/collections dev",
+    "build": "@collectionscms/collections build",
     "start": "node dist/build/main.js",
-    "migrate:latest": "superfastcms database migrate:latest",
-    "seed": "superfastcms database seed:production"
+    "migrate:latest": "@collectionscms/collections database migrate:latest",
+    "seed": "@collectionscms/collections database seed:production"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "superfastcms": "latest"
+    "@collectionscms/collections": "latest"
   }
 }

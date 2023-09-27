@@ -3,6 +3,6 @@ import { AbstractServiceOptions, BaseService } from './base.js';
 
 export class PermissionsService extends BaseService<Permission> {
   constructor(options: AbstractServiceOptions) {
-    super('superfast_permissions', options);
+    super('collections_permissions', options);
   }
 }

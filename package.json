@@ -1,7 +1,7 @@
 {
-  "name": "superfastcms",
+  "name": "@collectionscms/collections",
   "version": "1.0.0-beta.2",
-  "description": "Free and Open-source Headless CMS and Application Framework built with TypeScript, Node.js, React.",
+  "description": "Drag and drop to import WordPress contents, Open source Headless CMS built with React, Node.js, RDB.",
   "license": "MIT",
   "type": "module",
   "engines": {
@@ -29,7 +29,7 @@
     "seed:dev": "node --loader ts-node/esm ./src/bin.ts database seed:dev"
   },
   "bin": {
-    "superfastcms": "./src/bin.js"
+    "@collectionscms/collections": "./src/bin.js"
   },
   "author": {
     "email": "hello@rocketa.co.jp",
@@ -38,7 +38,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/superfastcms/superfast"
+    "url": "https://github.com/collectionscms/collections"
   },
   "maintainers": [
     {
@@ -50,6 +50,8 @@
   "dependencies": {
     "@ant-design/icons": "^5.1.4",
     "@aws-sdk/client-s3": "^3.347.1",
+    "@collectionscms/plugin-ui": "^1.0.0-beta.1",
+    "@collectionscms/plugin-wp-importer": "^1.0.0-beta.1",
     "@dnd-kit/core": "^6.0.8",
     "@dnd-kit/sortable": "^7.0.2",
     "@emotion/react": "^11.10.8",
@@ -95,7 +97,6 @@
     "pino": "^8.11.0",
     "pino-http": "^8.4.0",
     "pino-pretty": "^10.0.0",
-    "plugin-wp-importer": "^0.1.2",
     "react": "^18.2.0",
     "react-device-detect": "^2.2.3",
     "react-dom": "^18.2.0",
@@ -107,7 +108,6 @@
     "simplebar-react": "^3.2.4",
     "sqlite3": "^5.1.6",
     "style-loader": "^3.3.2",
-    "superfast-ui": "^0.1.8",
     "swr": "^2.1.5",
     "uuid": "^9.0.0",
     "webpack": "^5.81.0",
