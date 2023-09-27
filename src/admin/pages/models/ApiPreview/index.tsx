@@ -1,4 +1,5 @@
 import { ArrowRightOutlined, SendOutlined } from '@ant-design/icons';
+import { IconButton, MainCard, SyntaxHighlighter } from '@collectionscms/plugin-ui';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Box,
@@ -12,10 +13,9 @@ import {
   Typography,
 } from '@mui/material';
 import axios, { AxiosError } from 'axios';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { IconButton, MainCard, SyntaxHighlighter } from '@collectionscms/plugin-ui';
 import { Link } from '../../../components/elements/Link/index.js';
 import { ScrollBar } from '../../../components/elements/ScrollBar/index.js';
 import { TabPanel } from '../../../components/elements/TabPanel/index.js';
@@ -34,17 +34,21 @@ const ApiPreviewImpl: React.FC<Props> = ({ modelId }) => {
   const [tabIndex] = useState(0);
 
   const { t } = useTranslation();
-  const { user, apiKey } = useAuth();
+  const { apiKey } = useAuth();
 
   const {
     control,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors },
   } = useForm<FormValues>({
-    defaultValues: { path: `api/models/${modelId}/contents` },
     resolver: yupResolver(apiPreviewSchema),
   });
+
+  useEffect(() => {
+    setValue('path', `api/models/${modelId}/contents`);
+  }, [modelId]);
 
   const host = `${process.env.PUBLIC_SERVER_URL}/`;
   const curlCodeString = `curl "${host}${watch('path')}" -H "Authorization: Bearer ${apiKey}"`;
