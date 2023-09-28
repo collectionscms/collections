@@ -48,6 +48,7 @@ describe('Schema Overview', () => {
         draftValue: null,
         publishValue: null,
         archiveValue: null,
+        source: null,
         fields: {
           id: { alias: false, special: null, field: 'id' },
           model: { alias: false, special: null, field: 'model' },
@@ -57,6 +58,7 @@ describe('Schema Overview', () => {
           draft_value: { alias: false, special: null, field: 'draft_value' },
           publish_value: { alias: false, special: null, field: 'publish_value' },
           archive_value: { alias: false, special: null, field: 'archive_value' },
+          source: { alias: false, special: null, field: 'source' },
           created_at: { alias: false, special: null, field: 'created_at' },
           updated_at: { alias: false, special: null, field: 'updated_at' },
         },
@@ -72,6 +74,7 @@ describe('Schema Overview', () => {
         draftValue: null,
         publishValue: null,
         archiveValue: null,
+        source: null,
         fields: {
           id: { alias: false, special: null, field: 'id' },
           circuit: { alias: false, special: null, field: 'circuit' },

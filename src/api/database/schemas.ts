@@ -14,6 +14,7 @@ export type Model = {
   draft_value: string | null;
   publish_value: string | null;
   archive_value: string | null;
+  source?: string | null;
 } & TypeWithId;
 
 export type Field = {
