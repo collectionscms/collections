@@ -92,6 +92,7 @@ export class ImportDataService {
           draft_value: null,
           publish_value: null,
           archive_value: null,
+          source: 'wordpress',
         },
         hasStatus
       );
