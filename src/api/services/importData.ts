@@ -66,17 +66,17 @@ export class ImportDataService {
       const result = await parseFromFile(buffer.toString());
       const schema = await getSchemaOverview({ database: tx });
 
-      await this.createContents('category', tx, schema, result.categories);
-      await this.createContents('tag', tx, schema, result.tags);
-      await this.createContents('post', tx, schema, result.posts);
+      await this.createContents('categories', tx, schema, result.categories);
+      await this.createContents('tags', tx, schema, result.tags);
+      await this.createContents('posts', tx, schema, result.posts);
     });
   }
 
   private async createModels(tx: Knex.Transaction): Promise<Record<string, PrimaryKey>> {
     const models = [
-      { model: 'category', hasStatus: false },
-      { model: 'tag', hasStatus: false },
-      { model: 'post', hasStatus: true },
+      { model: 'categories', hasStatus: false },
+      { model: 'tags', hasStatus: false },
+      { model: 'posts', hasStatus: true },
     ];
 
     const result: Record<string, PrimaryKey> = {};
@@ -109,8 +109,8 @@ export class ImportDataService {
   ): Promise<void> {
     const categoryFields: Omit<Field, 'id'>[] = [
       {
-        model: 'category',
-        model_id: modelKeys['category'],
+        model: 'categories',
+        model_id: modelKeys['categories'],
         field: 'name',
         label: 'Name',
         interface: 'input',
@@ -122,8 +122,8 @@ export class ImportDataService {
         sort: 0,
       },
       {
-        model: 'category',
-        model_id: modelKeys['category'],
+        model: 'categories',
+        model_id: modelKeys['categories'],
         field: 'slug',
         label: 'Slug',
         interface: 'input',
@@ -138,8 +138,8 @@ export class ImportDataService {
 
     const tagFields: Omit<Field, 'id'>[] = [
       {
-        model: 'tag',
-        model_id: modelKeys['tag'],
+        model: 'tags',
+        model_id: modelKeys['tags'],
         field: 'name',
         label: 'Name',
         interface: 'input',
@@ -151,8 +151,8 @@ export class ImportDataService {
         sort: 0,
       },
       {
-        model: 'tag',
-        model_id: modelKeys['tag'],
+        model: 'tags',
+        model_id: modelKeys['tags'],
         field: 'slug',
         label: 'Slug',
         interface: 'input',
@@ -167,8 +167,8 @@ export class ImportDataService {
 
     const postFields: Omit<Field, 'id'>[] = [
       {
-        model: 'post',
-        model_id: modelKeys['post'],
+        model: 'posts',
+        model_id: modelKeys['posts'],
         field: 'title',
         label: 'Title',
         interface: 'input',
@@ -180,8 +180,8 @@ export class ImportDataService {
         sort: 0,
       },
       {
-        model: 'post',
-        model_id: modelKeys['post'],
+        model: 'posts',
+        model_id: modelKeys['posts'],
         field: 'content',
         label: 'Content',
         interface: 'inputRichTextMd', // TODO: Change to 'inputRichTextHtml'
@@ -193,8 +193,8 @@ export class ImportDataService {
         sort: 1,
       },
       {
-        model: 'post',
-        model_id: modelKeys['post'],
+        model: 'posts',
+        model_id: modelKeys['posts'],
         field: 'slug',
         label: 'Slug',
         interface: 'input',
@@ -206,8 +206,8 @@ export class ImportDataService {
         sort: 2,
       },
       {
-        model: 'post',
-        model_id: modelKeys['post'],
+        model: 'posts',
+        model_id: modelKeys['posts'],
         field: 'published_date',
         label: 'publishedDate',
         interface: 'dateTime',
@@ -219,8 +219,8 @@ export class ImportDataService {
         sort: 3,
       },
       {
-        model: 'post',
-        model_id: modelKeys['post'],
+        model: 'posts',
+        model_id: modelKeys['posts'],
         field: 'is_page',
         label: 'isPage',
         interface: 'boolean',
@@ -249,17 +249,17 @@ export class ImportDataService {
 
     await fieldsService.createRelationalFields(
       {
-        many_model: 'category',
-        many_model_id: modelKeys['category'],
+        many_model: 'categories',
+        many_model_id: modelKeys['categories'],
         many_field: 'post_id',
-        one_model: 'post',
-        one_model_id: modelKeys['post'],
+        one_model: 'posts',
+        one_model_id: modelKeys['posts'],
         one_field: 'categories',
       },
       [
         {
-          model: 'post',
-          model_id: modelKeys['post'],
+          model: 'posts',
+          model_id: modelKeys['posts'],
           field: 'categories',
           label: 'Categories',
           interface: 'listOneToMany',
@@ -271,8 +271,8 @@ export class ImportDataService {
           sort: 10,
         },
         {
-          model: 'category',
-          model_id: modelKeys['category'],
+          model: 'categories',
+          model_id: modelKeys['categories'],
           field: 'post_id',
           label: 'Post Id',
           interface: 'selectDropdownManyToOne',
@@ -292,17 +292,17 @@ export class ImportDataService {
 
     await fieldsService.createRelationalFields(
       {
-        many_model: 'tag',
-        many_model_id: modelKeys['tag'],
+        many_model: 'tags',
+        many_model_id: modelKeys['tags'],
         many_field: 'post_id',
-        one_model: 'post',
-        one_model_id: modelKeys['post'],
+        one_model: 'posts',
+        one_model_id: modelKeys['posts'],
         one_field: 'tags',
       },
       [
         {
-          model: 'post',
-          model_id: modelKeys['post'],
+          model: 'posts',
+          model_id: modelKeys['posts'],
           field: 'tags',
           label: 'Tags',
           interface: 'listOneToMany',
@@ -314,8 +314,8 @@ export class ImportDataService {
           sort: 10,
         },
         {
-          model: 'tag',
-          model_id: modelKeys['tag'],
+          model: 'tags',
+          model_id: modelKeys['tags'],
           field: 'post_id',
           label: 'Post Id',
           interface: 'selectDropdownManyToOne',

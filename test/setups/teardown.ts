@@ -39,9 +39,9 @@ async function dropModels(database: Knex) {
     'model_f1_grand_prix_races',
     'model_f1_ferrari_team_stats',
     'model_f1_grand_prix_race_stats',
-    'category',
-    'tag',
-    'post',
+    'categories',
+    'tags',
+    'posts',
   ];
 
   for (const tableName of tableNames) {

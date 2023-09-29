@@ -67,8 +67,8 @@ describe('ImportDataService', () => {
 
         schema = await getSchemaOverview({ database: connection });
 
-        // category
-        await assertExpectedData(connection, schema, 'category', [
+        // categories
+        await assertExpectedData(connection, schema, 'categories', [
           expect.objectContaining({
             name: 'Uncategorized',
             slug: 'uncategorized',
@@ -79,16 +79,16 @@ describe('ImportDataService', () => {
           }),
         ]);
 
-        // tag
-        await assertExpectedData(connection, schema, 'tag', [
+        // tags
+        await assertExpectedData(connection, schema, 'tags', [
           expect.objectContaining({
             name: 'post',
             slug: 'post',
           }),
         ]);
 
-        // post
-        await assertExpectedData(connection, schema, 'post', [
+        // posts
+        await assertExpectedData(connection, schema, 'posts', [
           expect.objectContaining({
             title: 'Hello world!',
             status: 'published',
