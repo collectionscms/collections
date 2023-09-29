@@ -48,7 +48,7 @@ export class ImportDataService {
     });
 
     if (models.length > 0) {
-      throw new RecordNotUniqueException('already_registered_name');
+      throw new RecordNotUniqueException('already_registered_model');
     }
 
     await service.database.transaction(async (tx) => {

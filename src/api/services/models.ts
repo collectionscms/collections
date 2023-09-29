@@ -237,7 +237,7 @@ export class ModelsService extends BaseService<Model> {
     });
 
     if (models.length) {
-      throw new RecordNotUniqueException('already_registered_name');
+      throw new RecordNotUniqueException('already_registered_model');
     }
   }
 }
