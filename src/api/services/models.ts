@@ -232,9 +232,11 @@ export class ModelsService extends BaseService<Model> {
   };
 
   private async checkUniqueModel(model: string) {
-    const models = await this.readMany({
-      filter: { model: { _eq: model } },
-    });
+    // TODO add to applyFilter
+    const models = await this.database
+      .select('id')
+      .from('collections_models')
+      .whereRaw('LOWER(??) = ?', ['model', model.toLowerCase()]);
 
     if (models.length) {
       throw new RecordNotUniqueException('already_registered_model');
