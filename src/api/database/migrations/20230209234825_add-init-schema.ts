@@ -31,6 +31,7 @@ export const up = async (knex: Knex): Promise<void> => {
     table.string('draft_value', 64);
     table.string('publish_value', 64);
     table.string('archive_value', 64);
+    table.string('source', 64);
     table.timestamps(true, true);
   });
 

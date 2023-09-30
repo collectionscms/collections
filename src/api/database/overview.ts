@@ -14,6 +14,7 @@ export type ModelOverview = {
   draftValue: string | null;
   publishValue: string | null;
   archiveValue: string | null;
+  source?: string | null;
   fields: {
     [name: string]: FieldOverview;
   };
@@ -67,6 +68,7 @@ export const getSchemaOverview = async (options?: { database?: Knex }): Promise<
       draftValue: metaModel ? metaModel.draft_value : null,
       publishValue: metaModel ? metaModel.publish_value : null,
       archiveValue: metaModel ? metaModel.archive_value : null,
+      source: metaModel ? metaModel.source : null,
       fields: Object.values(info.columns).reduce(
         (acc, column) => {
           const field = fields.find((f) => f.model === model && f.field === column.column_name);

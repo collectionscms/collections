@@ -38,8 +38,8 @@ const resetAll = async (database: Knex): Promise<void> => {
   await database('collections_fields').delete();
   await database('collections_relations').delete();
   await database('collections_project_settings').delete();
-  await database.schema.dropTableIfExists('Post');
-  await database.schema.dropTableIfExists('Company');
+  await database.schema.dropTableIfExists('articles');
+  await database.schema.dropTableIfExists('companies');
 };
 
 const seedingSystemData = async (database: Knex): Promise<void> => {
@@ -83,26 +83,27 @@ const seedingSystemData = async (database: Knex): Promise<void> => {
     },
   ] as any[]);
 
-  // Model: Post
-  Output.info('Creating Post model...');
-  const postId = await modelsService.createModel(
+  // Model: Article
+  Output.info('Creating article model...');
+  const articleId = await modelsService.createModel(
     {
-      model: 'Post',
+      model: 'articles',
       singleton: false,
       hidden: false,
       status_field: null,
       draft_value: null,
       publish_value: null,
       archive_value: null,
+      source: null,
     },
     true
   );
 
-  // Fields: Post
-  Output.info('Creating Post fields...');
+  // Fields: Article
+  Output.info('Creating Article fields...');
   await fieldsService.createField({
-    model: 'Post',
-    model_id: postId,
+    model: 'articles',
+    model_id: articleId,
     field: 'title',
     label: 'Title',
     special: null,
@@ -115,8 +116,8 @@ const seedingSystemData = async (database: Knex): Promise<void> => {
   });
 
   await fieldsService.createField({
-    model: 'Post',
-    model_id: postId,
+    model: 'articles',
+    model_id: articleId,
     field: 'body',
     label: 'Body',
     special: null,
@@ -129,8 +130,8 @@ const seedingSystemData = async (database: Knex): Promise<void> => {
   });
 
   await fieldsService.createField({
-    model: 'Post',
-    model_id: postId,
+    model: 'articles',
+    model_id: articleId,
     field: 'author',
     label: 'Author',
     special: null,
@@ -146,13 +147,14 @@ const seedingSystemData = async (database: Knex): Promise<void> => {
   Output.info('Creating Company model...');
   const companyId = await modelsService.createModel(
     {
-      model: 'Company',
+      model: 'companies',
       singleton: true,
       hidden: false,
       status_field: null,
       draft_value: null,
       publish_value: null,
       archive_value: null,
+      source: null,
     },
     false
   );
@@ -160,7 +162,7 @@ const seedingSystemData = async (database: Knex): Promise<void> => {
   // Fields: Company
   Output.info('Creating Company fields...');
   await fieldsService.createField({
-    model: 'Company',
+    model: 'companies',
     model_id: companyId,
     field: 'name',
     label: 'Company Name',
@@ -174,7 +176,7 @@ const seedingSystemData = async (database: Knex): Promise<void> => {
   });
 
   await fieldsService.createField({
-    model: 'Company',
+    model: 'companies',
     model_id: companyId,
     field: 'email',
     label: 'Mail Address',
@@ -188,7 +190,7 @@ const seedingSystemData = async (database: Knex): Promise<void> => {
   });
 
   await fieldsService.createField({
-    model: 'Company',
+    model: 'companies',
     model_id: companyId,
     field: 'address',
     label: 'Address',
@@ -206,37 +208,37 @@ const seedingSystemData = async (database: Knex): Promise<void> => {
   await permissionsService.createMany([
     // Editor
     {
-      model: 'Post',
-      model_id: postId,
+      model: 'articles',
+      model_id: articleId,
       action: 'read',
       role_id: editorRole.id,
     },
     {
-      model: 'Post',
-      model_id: postId,
+      model: 'articles',
+      model_id: articleId,
       action: 'create',
       role_id: editorRole.id,
     },
     {
-      model: 'Post',
-      model_id: postId,
+      model: 'articles',
+      model_id: articleId,
       action: 'update',
       role_id: editorRole.id,
     },
     {
-      model: 'Company',
+      model: 'companies',
       model_id: companyId,
       action: 'read',
       role_id: editorRole.id,
     },
     {
-      model: 'Company',
+      model: 'companies',
       model_id: companyId,
       action: 'create',
       role_id: editorRole.id,
     },
     {
-      model: 'Company',
+      model: 'companies',
       model_id: companyId,
       action: 'update',
       role_id: editorRole.id,
@@ -256,8 +258,8 @@ const seedingContentData = async (database: Knex): Promise<void> => {
   const schema = await getSchemaOverview({ database });
 
   Output.info('Adding content data...');
-  const postsService = new ContentsService('Post', { database, schema });
-  await postsService.createMany([
+  const articlesService = new ContentsService('articles', { database, schema });
+  await articlesService.createMany([
     {
       title: 'Makes migration from legacy CMS seamless',
       body: 'Collections is open source Headless CMS built with React, Node.js, RDB. We are planning an importer to make the transition from a legacy CMS.',
@@ -290,7 +292,7 @@ const seedingContentData = async (database: Knex): Promise<void> => {
     },
   ]);
 
-  const companiesService = new ContentsService('Company', { database, schema });
+  const companiesService = new ContentsService('companies', { database, schema });
   await companiesService.createMany([
     {
       name: 'Rocketa Inc.',

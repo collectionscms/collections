@@ -2,7 +2,6 @@ import knex, { Knex } from 'knex';
 import { SchemaOverview, getSchemaOverview } from '../../../src/api/database/overview.js';
 import { ContentsService } from '../../../src/api/services/contents.js';
 import { ImportDataService } from '../../../src/api/services/importData.js';
-import { RecordNotUniqueException } from '../../../src/exceptions/database/recordNotUnique.js';
 import { UnsupportedMediaTypeException } from '../../../src/exceptions/unsupportedMediaType.js';
 import { config } from '../../config.js';
 import { wordPressXml } from '../../utilities/factories.js';
@@ -40,6 +39,61 @@ describe('ImportDataService', () => {
   };
 
   describe('Import', () => {
+    afterEach(async () => {
+      for (const [_, connection] of databases) {
+        if (await connection.schema.hasTable('categories')) {
+          await connection.delete().from('categories');
+        }
+
+        if (await connection.schema.hasTable('tags')) {
+          await connection.delete().from('tags');
+        }
+
+        if (await connection.schema.hasTable('posts')) {
+          await connection.delete().from('posts');
+        }
+      }
+    });
+
+    const expectedCategoryData = [
+      expect.objectContaining({
+        name: 'Uncategorized',
+        slug: 'uncategorized',
+      }),
+      expect.objectContaining({
+        name: 'blog',
+        slug: 'blog',
+      }),
+    ];
+
+    const expectedTagData = [
+      expect.objectContaining({
+        name: 'post',
+        slug: 'post',
+      }),
+    ];
+
+    const expectedPostData = [
+      expect.objectContaining({
+        title: 'Hello world!',
+        status: 'published',
+        slug: 'hello-world',
+        is_page: false,
+      }),
+      expect.objectContaining({
+        title: 'Sample Page',
+        status: 'published',
+        slug: 'sample-page',
+        is_page: true,
+      }),
+      expect.objectContaining({
+        title: 'Privacy Policy',
+        status: 'draft',
+        slug: 'privacy-policy',
+        is_page: true,
+      }),
+    ];
+
     it.each(testDatabases)('%s - should throw UnsupportedMediaTypeException', async (database) => {
       const connection = databases.get(database)!;
       const schema = await getSchemaOverview({ database: connection });
@@ -67,60 +121,44 @@ describe('ImportDataService', () => {
 
         schema = await getSchemaOverview({ database: connection });
 
-        // category
-        await assertExpectedData(connection, schema, 'category', [
-          expect.objectContaining({
-            name: 'Uncategorized',
-            slug: 'uncategorized',
-          }),
-          expect.objectContaining({
-            name: 'blog',
-            slug: 'blog',
-          }),
-        ]);
-
-        // tag
-        await assertExpectedData(connection, schema, 'tag', [
-          expect.objectContaining({
-            name: 'post',
-            slug: 'post',
-          }),
-        ]);
-
-        // post
-        await assertExpectedData(connection, schema, 'post', [
-          expect.objectContaining({
-            title: 'Hello world!',
-            status: 'published',
-            slug: 'hello-world',
-            is_page: false,
-          }),
-          expect.objectContaining({
-            title: 'Sample Page',
-            status: 'published',
-            slug: 'sample-page',
-            is_page: true,
-          }),
-          expect.objectContaining({
-            title: 'Privacy Policy',
-            status: 'draft',
-            slug: 'privacy-policy',
-            is_page: true,
-          }),
-        ]);
+        await assertExpectedData(connection, schema, 'categories', expectedCategoryData);
+        await assertExpectedData(connection, schema, 'tags', expectedTagData);
+        await assertExpectedData(connection, schema, 'posts', expectedPostData);
       },
       20_000
     );
 
-    it.each(testDatabases)('%s - should throw RecordNotUniqueException', async (database) => {
-      const connection = databases.get(database)!;
-      const schema = await getSchemaOverview({ database: connection });
-      const service = new ImportDataService({ database: connection, schema });
+    it.each(testDatabases)(
+      '%s - should be possible to import twice',
+      async (database) => {
+        const connection = databases.get(database)!;
+        let schema = await getSchemaOverview({ database: connection });
 
-      const buffer = Buffer.from(wordPressXml);
-      const mimetype = 'text/xml';
+        const buffer = Buffer.from(wordPressXml);
+        const mimetype = 'text/xml';
 
-      await expect(service.importData(mimetype, buffer)).rejects.toThrow(RecordNotUniqueException);
-    });
+        const service = new ImportDataService({ database: connection, schema });
+        // first times
+        await service.importData(mimetype, buffer);
+        // second times
+        await service.importData(mimetype, buffer);
+
+        schema = await getSchemaOverview({ database: connection });
+
+        await assertExpectedData(connection, schema, 'categories', [
+          ...expectedCategoryData,
+          ...expectedCategoryData,
+        ]);
+        await assertExpectedData(connection, schema, 'tags', [
+          ...expectedTagData,
+          ...expectedTagData,
+        ]);
+        await assertExpectedData(connection, schema, 'posts', [
+          ...expectedPostData,
+          ...expectedPostData,
+        ]);
+      },
+      20_000
+    );
   });
 });

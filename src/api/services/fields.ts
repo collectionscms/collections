@@ -228,11 +228,12 @@ export class FieldsService extends BaseService<Field> {
   }
 
   private async checkUniqueField(model: string, field: string) {
-    const fields = await this.readMany({
-      filter: {
-        _and: [{ model: { _eq: model } }, { field: { _eq: field } }],
-      },
-    });
+    // TODO add to applyFilter
+    const fields = await this.database
+      .select('id')
+      .from('collections_fields')
+      .where('model', model)
+      .whereRaw('LOWER(??) = ?', ['field', field.toLowerCase()]);
 
     if (fields.length) {
       throw new RecordNotUniqueException('already_registered_name');
