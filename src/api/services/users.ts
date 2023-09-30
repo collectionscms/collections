@@ -1,9 +1,9 @@
-import argon2 from 'argon2';
 import { RecordNotUniqueException } from '../../exceptions/database/recordNotUnique.js';
 import { InvalidCredentialsException } from '../../exceptions/invalidCredentials.js';
 import { AuthUser } from '../config/types.js';
 import { PrimaryKey, User } from '../database/schemas.js';
 import { AbstractServiceOptions, BaseService } from './base.js';
+import { comparePasswords } from '../utilities/comparePasswords.js';
 import { RolesService } from './roles.js';
 
 export type Me = {
@@ -35,7 +35,7 @@ export class UsersService extends BaseService<User> {
       .whereRaw('LOWER(??) = ?', ['u.email', email.toLowerCase()])
       .first();
 
-    if (!user || !(await argon2.verify(user.password, password))) {
+    if (!user || !comparePasswords(user.password, password)) {
       throw new InvalidCredentialsException('incorrect_email_or_password');
     }
 
