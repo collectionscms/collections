@@ -29,7 +29,7 @@
     "seed:dev": "node --loader ts-node/esm ./src/bin.ts database seed:dev"
   },
   "bin": {
-    "@collectionscms/collections": "./src/bin.js"
+    "collections": "./src/bin.js"
   },
   "author": {
     "email": "hello@rocketa.co.jp",
