@@ -48,6 +48,7 @@ const ApiPreviewImpl: React.FC<Props> = ({ modelId }) => {
 
   useEffect(() => {
     setValue('path', `api/models/${modelId}/contents`);
+    setContent(undefined);
   }, [modelId]);
 
   const host = `${process.env.PUBLIC_SERVER_URL}/`;
