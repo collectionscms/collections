@@ -1,5 +1,8 @@
 import express, { Request, Response } from 'express';
+import { Readable } from 'stream';
 import { FileNotFoundException } from '../../exceptions/storage/fileNotFound.js';
+import { UnknownException } from '../../exceptions/storage/unknown.js';
+import { logger } from '../../utilities/logger.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
 import { FilesService } from '../services/files.js';
 import { getStorage } from '../storages/storage.js';
@@ -31,10 +34,37 @@ router.get(
 
     const data = await storage.getBuffer(key);
 
-    res.type(file.type);
+    res.attachment(file.file_name);
+    res.setHeader('Content-Type', file.type);
     res.setHeader('Content-Length', data.length);
-    res.setHeader('Content-Disposition', 'attachment; filename=' + file.file_name);
-    res.send(data);
+    res.setHeader('Accept-Ranges', 'bytes');
+
+    let isDataSent = false;
+    const stream = new Readable({
+      read() {
+        this.push(data);
+        this.push(null);
+      },
+    });
+
+    stream.on('data', (chunk) => {
+      isDataSent = true;
+      res.write(chunk);
+    });
+
+    stream.on('end', () => {
+      res.end();
+    });
+
+    stream.on('error', (e) => {
+      logger.error(e, `Couldn't stream file ${req.params.fileName} to the client`);
+
+      if (!isDataSent) {
+        res.removeHeader('Content-Type');
+        res.removeHeader('Content-Disposition');
+        throw new UnknownException('internal_server_error');
+      }
+    });
   })
 );
 
