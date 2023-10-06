@@ -9,6 +9,7 @@
     "start": "next start -p 8000"
   },
   "dependencies": {
+    "@react-aria/ssr": "^3.8.0",
     "next": "13.5.4",
     "nextra": "latest",
     "nextra-theme-docs": "latest",
