@@ -14,9 +14,7 @@ Collections is an open-source Headless CMS that uses React, Node.js, and RDB. It
 
 ## 📚 Usage & Documentation
 
-Our extended documentation is available on our website.
-
-- [日本語版](https://collectionscms.vercel.app/)
+Our extended documentation is available on [our website](https://docs.collections.dev/).
 
 ## 🚀 Installation
 

@@ -13,6 +13,10 @@ const config: DocsThemeConfig = {
   footer: {
     text: 'Collections',
   },
+  i18n: [
+    { locale: 'en', text: 'English' },
+    { locale: 'ja', text: '日本語' },
+  ],
 };
 
 export default config;
