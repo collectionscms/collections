@@ -1,17 +1,16 @@
 {
-  "*": {
+  "index": "Home",
+  "get-started": "Get Started",
+  "roadmap": "ロードマップ",
+  "app-guides": "アプリガイド",
+  "about": {
+    "title": "私たちについて",
     "type": "page"
   },
-  "index": {
-    "display": "hidden",
-    "theme": {
-      "layout": "raw",
-      "sidebar": false,
-      "toc": true
-    }
-  },
-  "docs": {
-    "title": "Docs",
-    "display": "children"
+  "contact": {
+    "title": "連絡先 ↗",
+    "type": "page",
+    "href": "https://github.com/kazaneshimizu",
+    "newWindow": true
   }
 }
