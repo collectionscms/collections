@@ -9,6 +9,7 @@
     "start": "next start -p 8000"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.2.6",
     "next": "^13.0.6",
     "nextra": "latest",
     "nextra-theme-docs": "latest",
