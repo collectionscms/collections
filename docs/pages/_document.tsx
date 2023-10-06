@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  default as Head,
-  default as Html,
-  default as Main,
-  default as NextScript,
-} from 'next/document';
+import { Head, Html, Main, NextScript } from 'next/document';
 
 export default function Document() {
   return (
