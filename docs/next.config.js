@@ -3,4 +3,8 @@ const withNextra = require('nextra')({
   themeConfig: './theme.config.tsx',
 });
 
-module.exports = withNextra();
+const nextConfig = withNextra({
+  reactStrictMode: true,
+});
+
+module.exports = nextConfig;
