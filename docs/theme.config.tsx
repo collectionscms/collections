@@ -3,6 +3,14 @@ import { DocsThemeConfig } from 'nextra-theme-docs';
 
 const config: DocsThemeConfig = {
   logo: <span>Collections</span>,
+  useNextSeoProps: function SEO() {
+    const defaultTitle = 'Collections';
+
+    return {
+      defaultTitle,
+      titleTemplate: `%s – ${defaultTitle}`,
+    };
+  },
   project: {
     link: 'https://github.com/collectionscms/collections',
   },
