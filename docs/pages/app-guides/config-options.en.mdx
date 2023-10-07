@@ -1,12 +1,12 @@
 # Config Options
 
-## 設定ファイル
+## Config Files
 
-環境変数は、Collections プロジェクト内のすべての設定に使用されます。
+Environment Variables are used for all settings within the Collections project.
 
 ### .env
 
-Collections は、環境変数として.env ファイル設定を読み込もうとします。これは次のような構造になっています。
+Collections attempts to read the `.env` file setting as an environment Variable. It has the following structure.
 
 ```
 DB_CLIENT="sqlite3"
@@ -16,106 +16,106 @@ MIGRATE_EXTENSIONS=".js"
 
 ## General
 
-| 変数名            | 説明                    | 初期値                  |
-| :---------------- | :---------------------- | :---------------------- |
-| PUBLIC_SERVER_URL | Express サーバー URL    | `http://localhost:4000` |
-| SERVER_HOST       | Express サーバー ホスト | `http://localhost`      |
-| SERVER_PORT       | App Server ポート       | `4000`                  |
-| ADMIN_PORT        | App Admin ポート        | `4001`                  |
+| Variable          | Description         | Default Value           |
+| :---------------- | :------------------ | :---------------------- |
+| PUBLIC_SERVER_URL | Express Server URL  | `http://localhost:4000` |
+| SERVER_HOST       | Express Server Host | `http://localhost`      |
+| SERVER_PORT       | App Server Port     | `4000`                  |
+| ADMIN_PORT        | App Admin Port      | `4001`                  |
 
 ## Storage
 
-| 変数名             | 説明                                              | 初期値    |
-| :----------------- | :------------------------------------------------ | :-------- |
-| STORAGE_DRIVER     | 保存先ストレージのドライバ名（`local`, `aws-s3`） | `local`   |
-| STORAGE_LOCAL_ROOT | ローカルストレージの保存先ディレクトリ            | `uploads` |
-| STORAGE_KEY        | クラウドストレージのアクセスキー                  | --        |
-| STORAGE_SECRET     | クラウドストレージのシークレット                  | --        |
-| STORAGE_BUCKET     | クラウドストレージのバケット                      | --        |
-| STORAGE_REGION     | クラウドストレージのリージョン                    | --        |
+| Variable           | Description                                           | Default Value |
+| :----------------- | :---------------------------------------------------- | :------------ |
+| STORAGE_DRIVER     | Driver name of destination storage(`local`, `aws-s3`) | `local`       |
+| STORAGE_LOCAL_ROOT | Local storage destination directory                   | `uploads`     |
+| STORAGE_KEY        | Cloud Storage Access Key                              | --            |
+| STORAGE_SECRET     | Cloud Storage Secrets                                 | --            |
+| STORAGE_BUCKET     | Cloud Storage Bucket                                  | --            |
+| STORAGE_REGION     | Cloud Storage Region                                  | --            |
 
 ## Database
 
-| 変数名             | 説明                                       | 初期値           |
-| :----------------- | :----------------------------------------- | :--------------- |
-| DB_CLIENT          | Database クライアント                      | --               |
-| DB_FILENAME        | Database ファイルへのパス(SQLite)          | --               |
-| DB_USER            | Database ユーザー情報                      | --               |
-| DB_PASSWORD        | Database パスワード                        | --               |
-| DB_DATABASE        | Database データベース名                    | --               |
-| DB_HOST            | Database ホスト                            | --               |
-| DB_PORT            | Database ポート                            | --               |
-| DB_SSL             | Database SSL(PostgreSQL / `true`, `false`) | --               |
-| MIGRATE_EXTENSIONS | migrations として扱うファイル拡張子        | `.js` (変更不可) |
+| Variable           | Description                                | Default Value        |
+| :----------------- | :----------------------------------------- | :------------------- |
+| DB_CLIENT          | Database Client                            | --                   |
+| DB_FILENAME        | Path to Database file(SQLite)              | --                   |
+| DB_USER            | Database Database User Information         | --                   |
+| DB_PASSWORD        | Database Password                          | --                   |
+| DB_DATABASE        | Database Database name                     | --                   |
+| DB_HOST            | Database Host                              | --                   |
+| DB_PORT            | Database POrt                              | --                   |
+| DB_SSL             | Database SSL(PostgreSQL / `true`, `false`) | --                   |
+| MIGRATE_EXTENSIONS | File extensions to treat as migrations     | `.js` (unchangeable) |
 
 ## Express
 
-| 変数名    | 説明                         | 初期値 |
-| :-------- | :--------------------------- | :----- |
-| REQ_LIMIT | リクエストボディの最大サイズ | `4mb`  |
+| Variable  | Description                  | Default Value |
+| :-------- | :--------------------------- | :------------ |
+| REQ_LIMIT | Maximum size of request body | `4mb`         |
 
-## ハッシュ
+## Hash
 
-| 変数名               | 説明                                                                                                         | 初期値              |
-| :------------------- | :----------------------------------------------------------------------------------------------------------- | :------------------ |
-| HASH_MEMORY_COST     | ハッシュを生成する際に使用するメモリ量を KiB 単位で指定します。                                              | `4096` (4 MiB)      |
-| HASH_HASH_LENGTH     | ハッシュ関数出力の長さをバイト数で指定します。                                                               | `32`                |
-| HASH_TIME_COST       | ハッシュ関数が使用するパス数(反復回数)。計算に必要な時間を犠牲にして、ハッシュ強度を高めることができます。   | `3`                 |
-| HASH_PARALLELISM     | ハッシュを計算するスレッドの数。各スレッドは `HASH_MEMORY_COST` サイズのメモリプールを持つ。                 | `1` (single thread) |
-| HASH_TYPE            | ハッシュ関数の種類 (0: argon2d, 1: argon2i, または 2: argon2id).                                             | `2` (argon2id)      |
-| HASH_ASSOCIATED_DATA | 追加オプションの非機密値。この値は、ダイジェストのパラメータ部分に Base64 でエンコードされた形で含まれます。 | --                  |
+| Variable             | Description                                                                                                                                              | Default Value       |
+| :------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------ |
+| HASH_MEMORY_COST     | Specifies the amount of memory used to generate the hash in KiB.                                                                                         | `4096` (4 MiB)      |
+| HASH_HASH_LENGTH     | Specifies the length of the hash function output in bytes.                                                                                               | `32`                |
+| HASH_TIME_COST       | The number of passes (iterations) used by the hash function. The hash strength can be increased at the expense of the time required for the computation. | `3`                 |
+| HASH_PARALLELISM     | Number of threads to compute hashes. Each thread has a memory pool of size `HASH_MEMORY_COST`.                                                           | `1` (single thread) |
+| HASH_TYPE            | Type of hash function (0: argon2d, 1: argon2i, or 2: argon2id).                                                                                          | `2` (argon2id)      |
+| HASH_ASSOCIATED_DATA | Additional optional non-confidential value. This value is included in the parameter portion of the digest in Base64 encoded form.                        | --                  |
 
-## セッション
+## Session
 
-| 変数名            | 説明                                                                            | 初期値 |
-| :---------------- | :------------------------------------------------------------------------------ | :----- |
-| ACCESS_TOKEN_TTL  | アクセストークンの有効期間。                                                    | `15m`  |
-| REFRESH_TOKEN_TTL | リフレッシュトークンの有効期間。ACCESS_TOKEN_TTL より長い期間の指定が必要です。 | `24h`  |
+| Variable          | Description                                                          | Default Value |
+| :---------------- | :------------------------------------------------------------------- | :------------ |
+| ACCESS_TOKEN_TTL  | The validity period of the access token.                             | `15m`         |
+| REFRESH_TOKEN_TTL | Refresh token validity period; must be longer than ACCESS_TOKEN_TTL. | `24h`         |
 
 ## Cookie
 
-| 変数名           | 説明                                                                                      | 初期値        |
-| :--------------- | :---------------------------------------------------------------------------------------- | :------------ |
-| COOKIE_SECURE    | Cookie 送信の属性値。true の場合は、HTTPS のリクエスト時のみ送信されます。                | `false`       |
-| COOKIE_SAME_SITE | サイト間リクエスト時に Cookie の送信を制御することができます。（`lax`, `strict`, `none`） | `lax`         |
-| COOKIE_DOMAIN    | Cookie を受信することができるホストを指定します。                                         | --            |
-| COOKIE_PREFIX    | Cookie 名のプレフィックスを指定します。                                                   | `collections` |
+| Variable         | Description                                                                                     | Default Value |
+| :--------------- | :---------------------------------------------------------------------------------------------- | :------------ |
+| COOKIE_SECURE    | Attribute value for sending cookies; if true, they are sent only when an HTTPS request is made. | `false`       |
+| COOKIE_SAME_SITE | You can control the sending of cookies during site-to-site requests. (`lax`, `strict`, `none`)  | `lax`         |
+| COOKIE_DOMAIN    | Specify hosts that can receive cookies.                                                         | --            |
+| COOKIE_PREFIX    | Specifies the cookie name prefix.                                                               | `collections` |
 
-## セキュリティ
+## Security
 
-| 変数名 | 説明                       | 初期値   |
-| :----- | :------------------------- | :------- |
-| SECRET | JWT トークン生成時の秘密鍵 | ランダム |
+| Variable | Description                          | Default Value |
+| :------- | :----------------------------------- | :------------ |
+| SECRET   | Private key for JWT token generation | random        |
 
 ## CORS
 
-| 変数名               | 説明                                                                                                                              | 初期値                       |
-| :------------------- | :-------------------------------------------------------------------------------------------------------------------------------- | :--------------------------- |
-| CORS_ENABLED         | CORS 設定全体を有効化するには `true` を設定します。                                                                               | `false`                      |
-| CORS_ORIGIN          | Access-Control-Allow-Origin 文字列または正規表現で指定可能。`false` を指定して CORS を無効化できます。                            | `false`                      |
-| CORS_METHODS         | Access-Control-Allow-Methods 許可するメソッドをカンマ区切りの文字列で渡します。                                                   | `GET,POST,PATCH,DELETE`      |
-| CORS_ALLOWED_HEADERS | Access-Control-Allow-Headers 指定がない場合は、リクエストの Access-Control-Request-Headers ヘッダで指定されたヘッダを反映します。 | `Content-Type,Authorization` |
-| CORS_EXPOSED_HEADERS | Access-Control-Expose-Headers 指定しない場合は、カスタムヘッダーは公開されません。                                                | `Content-Range`              |
-| CORS_CREDENTIALS     | Access-Control-Allow-Credentials 有効化する場合は `true` を設定します。                                                           | `true`                       |
-| CORS_MAX_AGE         | Access-Control-Max-Age ヘッダを渡す場合は整数値を指定します。                                                                     | `1800`                       |
+| Variable             | Description                                                                                                                                | Default Value                |
+| :------------------- | :----------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------- |
+| CORS_ENABLED         | Set to `true` to enable the entire CORS configuration.                                                                                     | `false`                      |
+| CORS_ORIGIN          | Access-Control-Allow-Origin Can be specified as a string or regular expression. You can specify `false` to disable CORS.                   | `false`                      |
+| CORS_METHODS         | Access-Control-Allow-Methods Pass a comma-separated string of methods to allow.                                                            | `GET,POST,PATCH,DELETE`      |
+| CORS_ALLOWED_HEADERS | Access-Control-Allow-Headers If not specified, reflects the headers specified in the Access-Control-Request-Headers header of the request. | `Content-Type,Authorization` |
+| CORS_EXPOSED_HEADERS | Access-Control-Expose-Headers If not specified, custom headers are not exposed.                                                            | `Content-Range`              |
+| CORS_CREDENTIALS     | Access-Control-Allow-Credentials Set to `true` to enable.                                                                                  | `true`                       |
+| CORS_MAX_AGE         | Specify an integer value when passing the Access-Control-Max-Age header.                                                                   | `1800`                       |
 
 ## Log
 
-| 変数名                 | 説明                                                                             | 初期値 |
-| :--------------------- | :------------------------------------------------------------------------------- | :----- |
-| PUBLIC_LOG_LEVEL       | ログの出力レベル（`fatal`, `error`, `warn`, `info`, `debug`, `trace`, `silent`） | `info` |
-| PUBLIC_LOG_HIDE_OBJECT | pino が出力するリクエスト/レスポンスの詳細情報を表示しない                       | `true` |
+| Variable               | Description                                                                     | Default Value |
+| :--------------------- | :------------------------------------------------------------------------------ | :------------ |
+| PUBLIC_LOG_LEVEL       | Log output level (`fatal`, `error`, `warn`, `info`, `debug`, `trace`, `silent`) | `info`        |
+| PUBLIC_LOG_HIDE_OBJECT | Don't display detailed request/response information output by pino              | `true`        |
 
 ## Email
 
-| 変数名                 | 説明                         | 初期値     |
-| :--------------------- | :--------------------------- | :--------- |
-| EMAIL_TRANSPORT        | email の送信プロバイダ       | `sendgrid` |
-| EMAIL_FROM             | email の送信元メールアドレス | --         |
-| EMAIL_SENDGRID_API_KEY | sendgrid の API キー         | --         |
+| Variable               | Description                | Default Value |
+| :--------------------- | :------------------------- | :------------ |
+| EMAIL_TRANSPORT        | Email Sending Provider     | `sendgrid`    |
+| EMAIL_FROM             | Email Source Email Address | --            |
+| EMAIL_SENDGRID_API_KEY | API key for sendgrid       | --            |
 
 ## Analytics
 
-| 変数名                  | 説明                          | 初期値 |
-| :---------------------- | :---------------------------- | :----- |
-| WEBPACK_BUNDLE_ANALYZER | Webpack Bundle Analyzerの起動 | --     |
+| Variable                | Description                    | Default Value |
+| :---------------------- | :----------------------------- | :------------ |
+| WEBPACK_BUNDLE_ANALYZER | Launch Webpack Bundle Analyzer | --            |
