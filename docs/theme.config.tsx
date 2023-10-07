@@ -17,10 +17,14 @@ const config: DocsThemeConfig = {
   chat: {
     link: 'https://discord.gg/a6FYDkV3Vk',
   },
+  search: {
+    placeholder: 'Search',
+  },
   docsRepositoryBase: 'https://github.com/collectionscms/collections',
   footer: {
     text: 'Collections',
   },
+  gitTimestamp: '',
   i18n: [
     { locale: 'en', text: 'English' },
     { locale: 'ja', text: '日本語' },

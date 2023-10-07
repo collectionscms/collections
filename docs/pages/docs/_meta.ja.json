@@ -1,0 +1,16 @@
+{
+  "home": "Home",
+  "get-started": "Get Started",
+  "roadmap": "ロードマップ",
+  "resources": "リソース",
+  "--1": {
+    "type": "separator",
+    "title": ""
+  },
+  "app-guides": "アプリガイド",
+  "--2": {
+    "type": "separator",
+    "title": ""
+  },
+  "fields": "フィールド"
+}

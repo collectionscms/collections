@@ -1,14 +1,15 @@
 {
-  "index": "Home",
-  "get-started": "Get Started",
-  "roadmap": "Roadmap",
-  "resources": "Resources",
-  "--- separator1": {
-    "type": "separator"
+  "index": {
+    "title": "top",
+    "type": "page",
+    "display": "hidden"
   },
-  "app-guides": "App guides",
-  "--- separator2": {
-    "type": "separator"
+  "docs": {
+    "title": "Docs",
+    "type": "page"
   },
-  "fields": "Fields"
+  "reference": {
+    "title": "API",
+    "type": "page"
+  }
 }
