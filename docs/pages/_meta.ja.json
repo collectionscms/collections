@@ -3,6 +3,12 @@
   "get-started": "Get Started",
   "roadmap": "ロードマップ",
   "resources": "リソース",
+  "--- separator1": {
+    "type": "separator"
+  },
   "app-guides": "アプリガイド",
+  "--- separator2": {
+    "type": "separator"
+  },
   "fields": "フィールド"
 }

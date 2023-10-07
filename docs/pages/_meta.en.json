@@ -3,6 +3,12 @@
   "get-started": "Get Started",
   "roadmap": "Roadmap",
   "resources": "Resources",
+  "--- separator1": {
+    "type": "separator"
+  },
   "app-guides": "App guides",
+  "--- separator2": {
+    "type": "separator"
+  },
   "fields": "Fields"
 }
