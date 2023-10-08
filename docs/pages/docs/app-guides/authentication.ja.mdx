@@ -1,3 +1,5 @@
+import { Callout } from 'nextra/components';
+
 # 認証
 
 > プラットフォーム内のデータは、デフォルトではすべて非公開です。APIにアクセストークンを渡すことで、非公開のデータにアクセスすることができます。
@@ -28,3 +30,19 @@ Collections の認証に使用できるトークンは2種類あります。
 ```
 Authorization: Bearer <token>
 ```
+
+<Callout type="info">
+  <p>関連する API</p>
+  <ul>
+    <li>
+      <a href="/reference/api#operation/login" style={{ textDecoration: 'underline' }}>
+        ログイン
+      </a>
+    </li>
+    <li>
+      <a href="/reference/api#operation/refresh" style={{ textDecoration: 'underline' }}>
+        リフレッシュトークン
+      </a>
+    </li>
+  </ul>
+</Callout>

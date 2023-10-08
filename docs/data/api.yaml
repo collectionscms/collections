@@ -1,0 +1,742 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Collections API
+  description: Collections API
+paths:
+  ## #####################################
+  ## Authentications
+  ## #####################################
+  /api/authentications/login:
+    post:
+      summary: Login
+      description: Login to the platform.
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/loginRequest'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/loginResponse'
+  /api/authentications/refresh:
+    post:
+      summary: Refresh token
+      description: Refresh access token.
+      operationId: refresh
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/refreshResponse'
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
+
+  ## #####################################
+  ## Users
+  ## #####################################
+  /api/users/reset-password:
+    post:
+      summary: Reset password
+      description: Reset password.
+      operationId: resetPassword
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/resetPasswordRequest'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'success'
+  /api/users/forgot-password:
+    post:
+      summary: Forgot password
+      description: Forgot password.
+      operationId: forgotPassword
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/forgotPasswordRequest'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'success'
+
+  ## #####################################
+  ## Project Settings
+  ## #####################################
+  /api/project-settings:
+    get:
+      summary: Get project settings
+      description: Return project settings.
+      operationId: getProjectSettings
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  projectSetting:
+                    $ref: '#/components/schemas/projectSettingsResponse'
+
+  ## #####################################
+  ## Me
+  ## #####################################
+  /api/me:
+    get:
+      summary: Get me
+      description: Return me information.
+      operationId: getMe
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/meResponse'
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
+    patch:
+      summary: Update me
+      description: Update me information.
+      operationId: updateMe
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/meRequest'
+      responses:
+        '204':
+          description: ''
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
+
+  ## #####################################
+  ## Files
+  ## #####################################
+  /api/files/{id}:
+    get:
+      summary: Get file
+      description: Return file.
+      operationId: getFile
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fileResponse'
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
+    post:
+      summary: Create file
+      description: Create file.
+      operationId: createFile
+      requestBody:
+        content:
+          image/png:
+            schema:
+              type: string
+              format: binary
+          image/jpg:
+            schema:
+              type: string
+              format: binary
+          image/gif:
+            schema:
+              type: string
+              format: binary
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fileResponse'
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
+
+  ## #####################################
+  ## Models
+  ## #####################################
+  /api/models:
+    get:
+      summary: Get models
+      description: Return models.
+      operationId: getModels
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  models:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/modelResponse'
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
+  /api/models/{id}:
+    get:
+      summary: Get model
+      description: Return model.
+      operationId: getModel
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  model:
+                    $ref: '#/components/schemas/modelResponse'
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
+
+  ## #####################################
+  ## Relations
+  ## #####################################
+  /api/relations/{modelId}/{field}:
+    get:
+      summary: Get relations
+      description: Return relations.
+      operationId: getRelations
+      parameters:
+        - $ref: '#/components/parameters/modelId'
+        - $ref: '#/components/parameters/field'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  relations:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/relationResponse'
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
+
+  ## #####################################
+  ## Fields
+  ## #####################################
+  /api/models/{modelId}/fields:
+    get:
+      summary: Get fields
+      description: Returns fields defined in the model in addition to id and timestamp.
+      operationId: getFields
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  fields:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/fieldResponse'
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
+
+  ## #####################################
+  ## Contents
+  ## #####################################
+  /api/models/{modelId}/contents:
+    get:
+      summary: Get contents
+      description: Return contents. Returns fields defined in the model in addition to id and timestamp.
+      operationId: getContents
+      parameters:
+        - $ref: '#/components/parameters/modelId'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/contentResponse'
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
+  /api/models/{modelId}/contents/{id}:
+    get:
+      summary: Get content
+      description: Return content. Returns fields defined in the model in addition to id and timestamp.
+      operationId: getContent
+      parameters:
+        - $ref: '#/components/parameters/modelId'
+        - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/contentResponse'
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
+    patch:
+      summary: Update content
+      description: Update content. Post fields defined in the model.
+      operationId: updateContent
+      parameters:
+        - $ref: '#/components/parameters/modelId'
+        - $ref: '#/components/parameters/id'
+      responses:
+        '204':
+          description: ''
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
+    delete:
+      summary: Delete content
+      description: Delete content.
+      operationId: deleteContent
+      parameters:
+        - $ref: '#/components/parameters/modelId'
+        - $ref: '#/components/parameters/id'
+      responses:
+        '204':
+          description: ''
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
+  /api/models/{modelId}/contents/:
+    post:
+      summary: Create content
+      description: Create content. Post fields defined in the model.
+      operationId: createContent
+      parameters:
+        - $ref: '#/components/parameters/modelId'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    $ref: '#/components/schemas/id'
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
+
+  ## #####################################
+  ## Permissions
+  ## #####################################
+  /api/roles/{id}/permissions:
+    get:
+      summary: Get permissions
+      description: Return permissions.
+      operationId: getPermissions
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  permissions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/permissionResponse'
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: access_token
+
+  parameters:
+    id:
+      name: id
+      in: path
+      description: Primary Key
+      required: true
+      schema:
+        $ref: '#/components/schemas/id'
+    modelId:
+      name: modelId
+      in: path
+      description: Primary key for model
+      required: true
+      schema:
+        $ref: '#/components/schemas/id'
+    field:
+      name: field
+      in: path
+      description: Field name
+      required: true
+      schema:
+        type: string
+        example: 'animals'
+
+  schemas:
+    ## #####################################
+    ## Common
+    ## #####################################
+    id:
+      description: Primary Key
+      example: 1
+      type: integer
+    createdAt:
+      description: Created At
+      example: '2023-09-29T00:53:20.604Z'
+      type: string
+    updatedAt:
+      description: Updated At
+      example: '2023-09-29T00:53:20.604Z'
+      type: string
+    token:
+      description: Access Token
+      example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
+      type: string
+    apiKey:
+      description: Api Key
+      example: '14f7d522-b9d5-4f21-b9b6-187e8ca57e86'
+      type: string
+    email:
+      type: string
+      format: email
+      example: 'example@collections.dev'
+    password:
+      type: string
+      format: password
+      example: 'password'
+    user:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/id'
+        roleId:
+          $ref: '#/components/schemas/id'
+        adminAccess:
+          type: boolean
+          example: true
+        appAccess:
+          type: boolean
+          example: true
+    model:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/id'
+        model:
+          type: string
+          example: 'posts'
+        singleton:
+          type: boolean
+          example: false
+        status_field:
+          type: string
+          example: 'status'
+        draft_value:
+          type: string
+          example: 'draft'
+        publish_value:
+          type: string
+          example: 'published'
+        archive_value:
+          type: string
+          example: 'archived'
+        source:
+          type: string
+          example: null
+        created_at:
+          $ref: '#/components/schemas/createdAt'
+        updated_at:
+          $ref: '#/components/schemas/updatedAt'
+
+    ## #####################################
+    ## Authentications
+    ## #####################################
+    loginRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          $ref: '#/components/schemas/email'
+        password:
+          $ref: '#/components/schemas/password'
+
+    loginResponse:
+      type: object
+      properties:
+        token:
+          $ref: '#/components/schemas/token'
+        user:
+          $ref: '#/components/schemas/user'
+    refreshResponse:
+      type: object
+      properties:
+        token:
+          $ref: '#/components/schemas/token'
+
+    ## #####################################
+    ## Users
+    ## #####################################
+    resetPasswordRequest:
+      type: object
+      required:
+        - token
+        - password
+      properties:
+        token:
+          $ref: '#/components/schemas/token'
+        password:
+          $ref: '#/components/schemas/password'
+    forgotPasswordRequest:
+      type: object
+      required:
+        - email
+      properties:
+        email:
+          $ref: '#/components/schemas/email'
+
+    ## #####################################
+    ## Project Settings
+    ## #####################################
+    projectSettingsResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/id'
+        name:
+          type: string
+          example: 'Collections'
+        before_login:
+          type: string
+          example: ''
+        after_login:
+          type: string
+          example: ''
+        created_at:
+          $ref: '#/components/schemas/createdAt'
+        updated_at:
+          $ref: '#/components/schemas/updatedAt'
+
+    ## #####################################
+    ## Me
+    ## #####################################
+    meResponse:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/user'
+        email:
+          $ref: '#/components/schemas/email'
+        apiKey:
+          $ref: '#/components/schemas/apiKey'
+        token:
+          $ref: '#/components/schemas/token'
+    meRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: 'Schumi'
+        email:
+          $ref: '#/components/schemas/email'
+        password:
+          type: string
+          format: password
+          example: 'password'
+        is_active:
+          type: boolean
+          example: true
+        api_key:
+          $ref: '#/components/schemas/apiKey'
+        role_id:
+          $ref: '#/components/schemas/id'
+
+    ## #####################################
+    ## Files
+    ## #####################################
+    fileResponse:
+      type: object
+      properties:
+        file:
+          type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/id'
+            storage:
+              type: string
+              example: 'aws-s3'
+            file_name:
+              type: string
+              example: 'LF_hHDmG_400x400.jpg'
+            file_name_disk:
+              type: string
+              example: '221e5436-55f1-4665-806d-6a2d2055c69b.jpeg'
+            type:
+              type: string
+              example: 'image/jpeg'
+            file_size:
+              type: integer
+              example: 12345
+            width:
+              type: integer
+              example: 400
+            height:
+              type: integer
+              example: 400
+            url:
+              type: string
+              example: 'http://localhost:4000/assets/221e5436-55f1-4665-806d-6a2d2055c69b.jpeg'
+            created_at:
+              $ref: '#/components/schemas/createdAt'
+            updated_at:
+              $ref: '#/components/schemas/updatedAt'
+
+    ## #####################################
+    ## Models
+    ## #####################################
+    modelResponse:
+      $ref: '#/components/schemas/model'
+
+    ## #####################################
+    ## Relations
+    ## #####################################
+    relationResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/id'
+        many_model:
+          type: string
+          example: 'animal'
+        many_model_id:
+          $ref: '#/components/schemas/id'
+        many_field:
+          type: string
+          example: 'zoo_id'
+        one_model:
+          type: string
+          example: 'zoo'
+        one_model_id:
+          description: Primary Key
+          example: 2
+          type: integer
+        one_field:
+          type: string
+          example: 'animals'
+        created_at:
+          $ref: '#/components/schemas/createdAt'
+        updated_at:
+          $ref: '#/components/schemas/updatedAt'
+
+    ## #####################################
+    ## Fields
+    ## #####################################
+    fieldResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/id'
+        created_at:
+          $ref: '#/components/schemas/createdAt'
+        updated_at:
+          $ref: '#/components/schemas/updatedAt'
+
+    ## #####################################
+    ## Contents
+    ## #####################################
+    contentResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/id'
+        created_at:
+          $ref: '#/components/schemas/createdAt'
+        updated_at:
+          $ref: '#/components/schemas/updatedAt'
+
+    ## #####################################
+    ## Permissions
+    ## #####################################
+    permissionResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/id'
+        model:
+          type: string
+          example: 'zoo'
+        model_id:
+          $ref: '#/components/schemas/id'
+        action:
+          type: string
+          example: 'read'
+        role_id:
+          $ref: '#/components/schemas/id'
+        created_at:
+          $ref: '#/components/schemas/createdAt'
+        updated_at:
+          $ref: '#/components/schemas/updatedAt'

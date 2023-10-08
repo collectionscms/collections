@@ -1,3 +1,5 @@
+import { Callout } from 'nextra/components';
+
 # Authentication
 
 > All data in the platform is private by default; you can access private data by passing an access token to the API.
@@ -29,3 +31,19 @@ Once you have your access token, there are two ways to pass it to the API, via t
 ```
 Authorization: Bearer <token>
 ```
+
+<Callout type="info">
+  <p>Related APIs</p>
+  <ul>
+    <li>
+      <a href="/reference/api#operation/login" style={{ textDecoration: 'underline' }}>
+        Login
+      </a>
+    </li>
+    <li>
+      <a href="/reference/api#operation/refresh" style={{ textDecoration: 'underline' }}>
+        Refresh Token
+      </a>
+    </li>
+  </ul>
+</Callout>

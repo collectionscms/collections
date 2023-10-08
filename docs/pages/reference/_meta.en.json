@@ -1,6 +1,9 @@
 {
   "api": {
     "title": "API",
-    "type": "page"
+    "type": "page",
+    "theme": {
+      "layout": "full"
+    }
   }
 }
