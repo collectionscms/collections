@@ -1,0 +1,121 @@
+# Config Options
+
+## Config Files
+
+Environment Variables are used for all settings within the Collections project.
+
+### .env
+
+Collections attempts to read the `.env` file setting as an environment Variable. It has the following structure.
+
+```
+DB_CLIENT="sqlite3"
+DB_FILENAME="./data.db"
+MIGRATE_EXTENSIONS=".js"
+```
+
+## General
+
+| Variable          | Description         | Default Value           |
+| :---------------- | :------------------ | :---------------------- |
+| PUBLIC_SERVER_URL | Express Server URL  | `http://localhost:4000` |
+| SERVER_HOST       | Express Server Host | `http://localhost`      |
+| SERVER_PORT       | App Server Port     | `4000`                  |
+| ADMIN_PORT        | App Admin Port      | `4001`                  |
+
+## Storage
+
+| Variable           | Description                                           | Default Value |
+| :----------------- | :---------------------------------------------------- | :------------ |
+| STORAGE_DRIVER     | Driver name of destination storage(`local`, `aws-s3`) | `local`       |
+| STORAGE_LOCAL_ROOT | Local storage destination directory                   | `uploads`     |
+| STORAGE_KEY        | Cloud Storage Access Key                              | --            |
+| STORAGE_SECRET     | Cloud Storage Secrets                                 | --            |
+| STORAGE_BUCKET     | Cloud Storage Bucket                                  | --            |
+| STORAGE_REGION     | Cloud Storage Region                                  | --            |
+
+## Database
+
+| Variable           | Description                                | Default Value        |
+| :----------------- | :----------------------------------------- | :------------------- |
+| DB_CLIENT          | Database Client                            | --                   |
+| DB_FILENAME        | Path to Database file(SQLite)              | --                   |
+| DB_USER            | Database Database User Information         | --                   |
+| DB_PASSWORD        | Database Password                          | --                   |
+| DB_DATABASE        | Database Database name                     | --                   |
+| DB_HOST            | Database Host                              | --                   |
+| DB_PORT            | Database POrt                              | --                   |
+| DB_SSL             | Database SSL(PostgreSQL / `true`, `false`) | --                   |
+| MIGRATE_EXTENSIONS | File extensions to treat as migrations     | `.js` (unchangeable) |
+
+## Express
+
+| Variable  | Description                  | Default Value |
+| :-------- | :--------------------------- | :------------ |
+| REQ_LIMIT | Maximum size of request body | `4mb`         |
+
+## Hash
+
+| Variable             | Description                                                                                                                                              | Default Value       |
+| :------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------ |
+| HASH_MEMORY_COST     | Specifies the amount of memory used to generate the hash in KiB.                                                                                         | `4096` (4 MiB)      |
+| HASH_HASH_LENGTH     | Specifies the length of the hash function output in bytes.                                                                                               | `32`                |
+| HASH_TIME_COST       | The number of passes (iterations) used by the hash function. The hash strength can be increased at the expense of the time required for the computation. | `3`                 |
+| HASH_PARALLELISM     | Number of threads to compute hashes. Each thread has a memory pool of size `HASH_MEMORY_COST`.                                                           | `1` (single thread) |
+| HASH_TYPE            | Type of hash function (0: argon2d, 1: argon2i, or 2: argon2id).                                                                                          | `2` (argon2id)      |
+| HASH_ASSOCIATED_DATA | Additional optional non-confidential value. This value is included in the parameter portion of the digest in Base64 encoded form.                        | --                  |
+
+## Session
+
+| Variable          | Description                                                          | Default Value |
+| :---------------- | :------------------------------------------------------------------- | :------------ |
+| ACCESS_TOKEN_TTL  | The validity period of the access token.                             | `15m`         |
+| REFRESH_TOKEN_TTL | Refresh token validity period; must be longer than ACCESS_TOKEN_TTL. | `24h`         |
+
+## Cookie
+
+| Variable         | Description                                                                                     | Default Value |
+| :--------------- | :---------------------------------------------------------------------------------------------- | :------------ |
+| COOKIE_SECURE    | Attribute value for sending cookies; if true, they are sent only when an HTTPS request is made. | `false`       |
+| COOKIE_SAME_SITE | You can control the sending of cookies during site-to-site requests. (`lax`, `strict`, `none`)  | `lax`         |
+| COOKIE_DOMAIN    | Specify hosts that can receive cookies.                                                         | --            |
+| COOKIE_PREFIX    | Specifies the cookie name prefix.                                                               | `collections` |
+
+## Security
+
+| Variable | Description                          | Default Value |
+| :------- | :----------------------------------- | :------------ |
+| SECRET   | Private key for JWT token generation | random        |
+
+## CORS
+
+| Variable             | Description                                                                                                                                | Default Value                |
+| :------------------- | :----------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------- |
+| CORS_ENABLED         | Set to `true` to enable the entire CORS configuration.                                                                                     | `false`                      |
+| CORS_ORIGIN          | Access-Control-Allow-Origin Can be specified as a string or regular expression. You can specify `false` to disable CORS.                   | `false`                      |
+| CORS_METHODS         | Access-Control-Allow-Methods Pass a comma-separated string of methods to allow.                                                            | `GET,POST,PATCH,DELETE`      |
+| CORS_ALLOWED_HEADERS | Access-Control-Allow-Headers If not specified, reflects the headers specified in the Access-Control-Request-Headers header of the request. | `Content-Type,Authorization` |
+| CORS_EXPOSED_HEADERS | Access-Control-Expose-Headers If not specified, custom headers are not exposed.                                                            | `Content-Range`              |
+| CORS_CREDENTIALS     | Access-Control-Allow-Credentials Set to `true` to enable.                                                                                  | `true`                       |
+| CORS_MAX_AGE         | Specify an integer value when passing the Access-Control-Max-Age header.                                                                   | `1800`                       |
+
+## Log
+
+| Variable               | Description                                                                     | Default Value |
+| :--------------------- | :------------------------------------------------------------------------------ | :------------ |
+| PUBLIC_LOG_LEVEL       | Log output level (`fatal`, `error`, `warn`, `info`, `debug`, `trace`, `silent`) | `info`        |
+| PUBLIC_LOG_HIDE_OBJECT | Don't display detailed request/response information output by pino              | `true`        |
+
+## Email
+
+| Variable               | Description                | Default Value |
+| :--------------------- | :------------------------- | :------------ |
+| EMAIL_TRANSPORT        | Email Sending Provider     | `sendgrid`    |
+| EMAIL_FROM             | Email Source Email Address | --            |
+| EMAIL_SENDGRID_API_KEY | API key for sendgrid       | --            |
+
+## Analytics
+
+| Variable                | Description                    | Default Value |
+| :---------------------- | :----------------------------- | :------------ |
+| WEBPACK_BUNDLE_ANALYZER | Launch Webpack Bundle Analyzer | --            |

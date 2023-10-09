@@ -1,6 +1,21 @@
 {
-  "index": "Home",
-  "get-started": "Get Started",
-  "roadmap": "ロードマップ",
-  "app-guides": "アプリガイド"
+  "index": {
+    "title": "top",
+    "type": "page",
+    "display": "hidden"
+  },
+  "docs": {
+    "title": "Docs",
+    "type": "page"
+  },
+  "reference": {
+    "title": "API",
+    "type": "page"
+  },
+  "demo": {
+    "title": "Demo ↗",
+    "type": "page",
+    "href": "https://demo.superfastcms.com/admin",
+    "newWindow": true
+  }
 }

@@ -1,5 +1,11 @@
 # Collections
 
+<hr/>
+<h4>
+<a target="_blank" href="https://demo.superfastcms.com/admin/" rel="dofollow"><strong>Try Live Demo</strong></a>
+</h4>
+<hr/>
+
 ## ⭐ What is Collections
 
 Collections is an open-source Headless CMS that uses React, Node.js, and RDB. It allows for easy modeling in the GUI and seamless data retrieval via API. Content migration from WordPress is also supported.
@@ -14,7 +20,10 @@ Collections is an open-source Headless CMS that uses React, Node.js, and RDB. It
 
 ## 📚 Usage & Documentation
 
-Our extended documentation is available on [our website](https://docs.collections.dev/).
+Extended documentation is available on our website.
+
+- [English](https://collections.dev)
+- [日本語](https://collections.dev/ja)
 
 ## 🚀 Installation
 
