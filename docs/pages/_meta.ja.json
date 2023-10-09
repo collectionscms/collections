@@ -11,5 +11,11 @@
   "reference": {
     "title": "API",
     "type": "page"
+  },
+  "demo": {
+    "title": "Demo ↗",
+    "type": "page",
+    "href": "https://demo.superfastcms.com/admin",
+    "newWindow": true
   }
 }
