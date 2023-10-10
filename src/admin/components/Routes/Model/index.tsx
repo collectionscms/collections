@@ -47,7 +47,7 @@ export const ModelRoutes = () => {
     };
   }
 
-  const emptyPage = user.adminAccess ? <CreateFirstModel /> : <ModelNotFound />;
+  const emptyPage = user.admin_access ? <CreateFirstModel /> : <ModelNotFound />;
 
   return {
     path: '/admin/models',

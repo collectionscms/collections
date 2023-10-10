@@ -43,7 +43,7 @@ export const SettingRoutes = () => {
     };
   }
 
-  if (!user.adminAccess) {
+  if (!user.admin_access) {
     return {
       path: '/admin/settings',
       children: [
