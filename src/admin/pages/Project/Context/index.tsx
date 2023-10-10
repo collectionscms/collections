@@ -14,7 +14,7 @@ export const ProjectSettingContextProvider: React.FC<{ children: React.ReactNode
     useSWR(
       '/project-settings',
       (url) =>
-        api.get<{ projectSetting: ProjectSetting }>(url).then((res) => res.data.projectSetting),
+        api.get<{ project_setting: ProjectSetting }>(url).then((res) => res.data.project_setting),
       { suspense: true }
     );
 
