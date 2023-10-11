@@ -472,14 +472,17 @@ components:
       properties:
         id:
           $ref: '#/components/schemas/id'
-        roleId:
+        role_id:
           $ref: '#/components/schemas/id'
-        adminAccess:
+        name:
+          type: string
+          example: 'Schumi'
+        admin_access:
           type: boolean
           example: true
-        appAccess:
+        app_access:
           type: boolean
-          example: true
+          example: false
     model:
       type: object
       properties:
@@ -489,6 +492,9 @@ components:
           type: string
           example: 'posts'
         singleton:
+          type: boolean
+          example: false
+        hidden:
           type: boolean
           example: false
         status_field:
@@ -510,6 +516,12 @@ components:
           $ref: '#/components/schemas/createdAt'
         updated_at:
           $ref: '#/components/schemas/updatedAt'
+    field_option:
+      type: object
+      properties:
+        default_value:
+          type: boolean
+          example: true
 
     ## #####################################
     ## Authentications
@@ -591,7 +603,7 @@ components:
           $ref: '#/components/schemas/user'
         email:
           $ref: '#/components/schemas/email'
-        apiKey:
+        api_key:
           $ref: '#/components/schemas/apiKey'
         token:
           $ref: '#/components/schemas/token'
@@ -700,6 +712,40 @@ components:
       properties:
         id:
           $ref: '#/components/schemas/id'
+        model:
+          type: string
+          example: 'zoo'
+        model_id:
+          $ref: '#/components/schemas/id'
+        field:
+          type: string
+          example: 'name'
+        label:
+          type: string
+          example: 'Name'
+        special:
+          type: string
+          example: null
+        interface:
+          type: string
+          example: 'input'
+        options:
+          type: string
+          example: null
+        readonly:
+          type: boolean
+          example: false
+        required:
+          type: boolean
+          example: true
+        hidden:
+          type: boolean
+          example: false
+        sort:
+          type: integer
+          example: 1
+        field_option:
+          $ref: '#/components/schemas/field_option'
         created_at:
           $ref: '#/components/schemas/createdAt'
         updated_at:
