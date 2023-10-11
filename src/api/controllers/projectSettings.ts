@@ -13,7 +13,7 @@ router.get(
     });
     const data = await service.readMany();
 
-    res.json({ projectSetting: data[0] });
+    res.json({ project_setting: data[0] });
   })
 );
 

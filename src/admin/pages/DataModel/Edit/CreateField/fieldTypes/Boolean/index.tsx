@@ -67,7 +67,7 @@ export const BooleanType: React.FC<Props> = (props) => {
         required: form.required,
         readonly: false,
         hidden: false,
-        options: { defaultValue: form.default_value },
+        options: { default_value: form.default_value },
       });
       onSuccess(field!);
     } catch (e) {

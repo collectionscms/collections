@@ -30,7 +30,7 @@ export const BooleanType: React.FC<Props> = (props) => {
   const { trigger, isMutating } = updateField(meta.id);
   const defaultValues = {
     label: meta.label,
-    default_value: meta?.fieldOption?.defaultValue,
+    default_value: meta?.field_option?.default_value,
     required: Boolean(meta.required),
     readonly: Boolean(meta.readonly),
     hidden: Boolean(meta.hidden),
@@ -60,7 +60,7 @@ export const BooleanType: React.FC<Props> = (props) => {
       reset(form);
       const formData = {
         label: form.label,
-        options: JSON.stringify({ defaultValue: form.default_value }),
+        options: JSON.stringify({ default_value: form.default_value }),
         required: form.required,
         readonly: form.readonly,
         hidden: form.hidden,

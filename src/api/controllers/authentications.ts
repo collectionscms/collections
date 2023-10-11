@@ -15,7 +15,7 @@ router.post(
   asyncHandler(async (req: Request, res: Response) => {
     const service = new UsersService({ schema: req.schema });
     const user = await service.login(req.body.email, req.body.password);
-    user.appAccess = true;
+    user.app_access = true;
 
     const accessToken = sign(user, env.ACCESS_TOKEN_TTL);
     const refreshToken = sign(user, env.REFRESH_TOKEN_TTL);

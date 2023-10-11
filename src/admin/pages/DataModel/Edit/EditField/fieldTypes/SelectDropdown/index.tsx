@@ -41,7 +41,7 @@ export const SelectDropdownType: React.FC<Props> = (props) => {
     required: Boolean(meta.required),
     readonly: Boolean(meta.readonly),
     hidden: Boolean(meta.hidden),
-    choices: meta.fieldOption?.choices,
+    choices: meta.field_option?.choices,
   };
   const {
     control,

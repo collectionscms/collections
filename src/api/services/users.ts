@@ -120,10 +120,10 @@ export class UsersService extends BaseService<User> {
   ): AuthUser {
     return {
       id: userId,
-      roleId: roleId,
+      role_id: roleId,
       name: name,
-      adminAccess: adminAccess,
-      appAccess: null,
+      admin_access: adminAccess,
+      app_access: null,
     };
   }
 }

@@ -29,8 +29,8 @@ const CreateModelPageImpl: React.FC = () => {
   const formContext = useForm({
     defaultValues: metaFields.reduce(
       (acc, field) => {
-        if (field.fieldOption?.defaultValue) {
-          acc[field.field] = field.fieldOption?.defaultValue;
+        if (field.field_option?.default_value) {
+          acc[field.field] = field.field_option?.default_value;
         }
 
         return acc;

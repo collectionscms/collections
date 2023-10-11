@@ -20,7 +20,7 @@ export const NavContent: React.FC = () => {
   const navHeader = useMemo(() => <NavHeader />, []);
   const bottomContent = useMemo(() => <BottomContent />, []);
 
-  const navGroupItems = user?.adminAccess
+  const navGroupItems = user?.admin_access
     ? [modelsGroupNavItems(permittedModels), settingsGroupNavItems(), profileNavItems()]
     : [modelsGroupNavItems(permittedModels), profileNavItems()];
   const navGroups = navGroupItems.map((group) => {

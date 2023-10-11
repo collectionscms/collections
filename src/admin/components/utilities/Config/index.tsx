@@ -13,7 +13,7 @@ const filteredModelsWithReadPermission = (
   models: Model[]
 ): Model[] => {
   if (!user || !permissions) return [];
-  if (user.adminAccess) return models;
+  if (user.admin_access) return models;
 
   return models.filter(
     (model) =>

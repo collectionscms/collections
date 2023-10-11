@@ -261,7 +261,7 @@ export class FieldsService extends BaseService<Field> {
         break;
       case 'boolean': {
         const value = field.options ? JSON.parse(field.options) : null;
-        column = table.boolean(field.field).defaultTo(value?.defaultValue || false);
+        column = table.boolean(field.field).defaultTo(value?.default_value || false);
         break;
       }
       case 'dateTime':

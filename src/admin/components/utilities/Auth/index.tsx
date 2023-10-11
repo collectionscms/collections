@@ -43,7 +43,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (data.token) {
           setAuthorization(data.token);
           setTokenInMemory(data.token);
-          setApiKey(data.apiKey);
+          setApiKey(data.api_key);
         }
         return data;
       })
@@ -58,7 +58,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   );
 
   const { data: permissions } = useSWR(
-    me?.user ? `/roles/${me.user.roleId}/permissions` : null,
+    me?.user ? `/roles/${me.user.role_id}/permissions` : null,
     (url) =>
       api
         .get<{ permissions: Permission[] }>(url)
@@ -75,7 +75,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (!me?.user || !permissions) return false;
 
       return (
-        me.user.adminAccess ||
+        me.user.admin_access ||
         permissions.some(
           (permission) => permission.model_id.toString() === modelId && permission.action === action
         )
