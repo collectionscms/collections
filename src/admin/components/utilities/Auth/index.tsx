@@ -43,7 +43,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (data.token) {
           setAuthorization(data.token);
           setTokenInMemory(data.token);
-          setApiKey(data.apiKey);
+          setApiKey(data.api_key);
         }
         return data;
       })

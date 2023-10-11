@@ -194,7 +194,9 @@ const ProfilePageImpl: React.FC = () => {
                           id="api_key"
                           type="text"
                           placeholder={
-                            me.apiKey ? t('hidden_for_security') : t('generate_api_key_placeholder')
+                            me.api_key
+                              ? t('hidden_for_security')
+                              : t('generate_api_key_placeholder')
                           }
                           fullWidth
                           InputProps={{
