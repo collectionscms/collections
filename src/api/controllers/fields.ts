@@ -15,7 +15,7 @@ router.get(
     const fieldWithOptions = fields.map((field) => {
       return {
         ...field,
-        fieldOption: field.options ? JSON.parse(field.options) : null,
+        field_option: field.options ? JSON.parse(field.options) : null,
       };
     });
 
