@@ -3,21 +3,33 @@ import { loginSchema } from '../../../../../src/admin/fields/schemas/authenticat
 describe('Login Validations', () => {
   it('success', async () => {
     expect(
-      await loginSchema.isValid({ email: 'admin@example.com', password: '************' })
+      await loginSchema.isValid({
+        email: 'admin@example.com',
+        password: '************',
+        app_access: true,
+      })
     ).toEqual(true);
   });
 
   it('failure (email not entered)', async () => {
-    expect(await loginSchema.isValid({ email: '', password: '************' })).toEqual(false);
+    expect(
+      await loginSchema.isValid({ email: '', password: '************', app_access: true })
+    ).toEqual(false);
   });
 
   it('failure (password not entered)', async () => {
-    expect(await loginSchema.isValid({ email: 'admin@example.com', password: '' })).toEqual(false);
+    expect(
+      await loginSchema.isValid({ email: 'admin@example.com', password: '', app_access: true })
+    ).toEqual(false);
   });
 
   it('failure (different email format)', async () => {
     expect(
-      await loginSchema.isValid({ email: 'admin/example.com', password: '************' })
+      await loginSchema.isValid({
+        email: 'admin/example.com',
+        password: '************',
+        app_access: true,
+      })
     ).toEqual(false);
   });
 });

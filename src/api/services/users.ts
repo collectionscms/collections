@@ -1,9 +1,10 @@
+import { castToBoolean } from '../../admin/utilities/castToBoolean.js';
 import { RecordNotUniqueException } from '../../exceptions/database/recordNotUnique.js';
 import { InvalidCredentialsException } from '../../exceptions/invalidCredentials.js';
 import { AuthUser } from '../config/types.js';
 import { PrimaryKey, User } from '../database/schemas.js';
-import { AbstractServiceOptions, BaseService } from './base.js';
 import { comparePasswords } from '../utilities/comparePasswords.js';
+import { AbstractServiceOptions, BaseService } from './base.js';
 import { RolesService } from './roles.js';
 
 export type Me = {
@@ -20,9 +21,10 @@ export class UsersService extends BaseService<User> {
    * @description Login a user
    * @param email
    * @param password
+   * @param appAccess
    * @returns auth user
    */
-  async login(email: string, password: string): Promise<AuthUser> {
+  async login(email: string, password: string, appAccess: boolean): Promise<AuthUser> {
     const rolesService = new RolesService({ schema: this.schema });
 
     const user = await this.database
@@ -41,7 +43,13 @@ export class UsersService extends BaseService<User> {
 
     const role = await rolesService.readOne(user.role_id);
 
-    return this.toAuthUser(user.id, role.id, user.name, Boolean(role.admin_access));
+    return this.toAuthUser(
+      user.id,
+      role.id,
+      user.name,
+      castToBoolean(role.admin_access),
+      castToBoolean(appAccess)
+    );
   }
 
   /**
@@ -63,7 +71,7 @@ export class UsersService extends BaseService<User> {
     const role = await rolesService.readOne(user.role_id);
 
     return {
-      auth: this.toAuthUser(user.id, role.id, user.name, Boolean(role.admin_access)),
+      auth: this.toAuthUser(user.id, role.id, user.name, castToBoolean(role.admin_access)),
       user: user,
     };
   }
@@ -116,14 +124,15 @@ export class UsersService extends BaseService<User> {
     userId: PrimaryKey,
     roleId: PrimaryKey,
     name: string,
-    adminAccess: boolean
+    adminAccess: boolean,
+    appAccess: boolean = false
   ): AuthUser {
     return {
       id: userId,
       role_id: roleId,
       name: name,
       admin_access: adminAccess,
-      app_access: null,
+      app_access: appAccess,
     };
   }
 }

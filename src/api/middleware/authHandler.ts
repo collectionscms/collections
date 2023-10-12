@@ -14,7 +14,7 @@ export const authHandler: RequestHandler = asyncHandler(
         req.userId = auth.id;
         req.adminAccess = auth.admin_access;
         req.roleId = auth.role_id;
-        req.appAccess = auth.admin_access ?? false;
+        req.appAccess = auth.app_access ?? false;
       }
     }
 
