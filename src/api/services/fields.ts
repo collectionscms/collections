@@ -106,7 +106,7 @@ export class FieldsService extends BaseService<Field> {
         fields.push(field as Field);
 
         await tx.schema.alterTable(field.model, (table) => {
-          this.addColumnToTable(field, table)?.references('id').inTable(relation.one_model);
+          this.addColumnToTable(field, table)?.references('id').inTable(relation.oneModel);
         });
       }
 
@@ -142,9 +142,9 @@ export class FieldsService extends BaseService<Field> {
       const fieldsService = new FieldsService({ database: tx, schema: this.schema });
       await fieldsService.deleteOne(key);
 
-      if (model.status_field === field.field) {
+      if (model.statusField === field.field) {
         const modelsService = new ModelsService({ database: tx, schema: this.schema });
-        await modelsService.updateOne(model.id, { status_field: null });
+        await modelsService.updateOne(model.id, { statusField: null });
       }
 
       // Delete many relation fields
@@ -156,7 +156,7 @@ export class FieldsService extends BaseService<Field> {
       });
 
       for (let relation of oneRelations) {
-        await this.executeFieldDelete(tx, relation.many_model, relation.many_field);
+        await this.executeFieldDelete(tx, relation.manyModel, relation.manyField);
       }
 
       // Delete one relation fields
@@ -167,7 +167,7 @@ export class FieldsService extends BaseService<Field> {
       });
 
       for (let relation of manyRelations) {
-        await this.executeFieldDelete(tx, relation.one_model, relation.one_field);
+        await this.executeFieldDelete(tx, relation.oneModel, relation.oneField);
       }
 
       // Delete relations schema

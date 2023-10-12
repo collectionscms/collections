@@ -30,11 +30,11 @@ router.get(
     if (!file) throw new FileNotFoundException('file_does_not_exist');
 
     const storage = getStorage(file.storage);
-    const key = storage.key(file.file_name_disk);
+    const key = storage.key(file.fileNameDisk);
 
     const data = await storage.getBuffer(key);
 
-    res.attachment(file.file_name);
+    res.attachment(file.fileName);
     res.setHeader('Content-Type', file.type);
     res.setHeader('Content-Length', data.length);
     res.setHeader('Accept-Ranges', 'bytes');

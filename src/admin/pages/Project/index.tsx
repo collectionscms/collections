@@ -31,8 +31,8 @@ const ProjectImpl: React.FC = () => {
   } = useForm<FormValues>({
     defaultValues: {
       name: projectSetting.name,
-      before_login: projectSetting.before_login,
-      after_login: projectSetting.after_login,
+      before_login: projectSetting.beforeLogin,
+      after_login: projectSetting.afterLogin,
     },
     resolver: yupResolver(updateProjectSettingSchema()),
   });

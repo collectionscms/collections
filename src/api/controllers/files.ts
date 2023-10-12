@@ -17,7 +17,7 @@ router.post(
     const service = new FilesService({ schema: req.schema });
     const file = await service.readOne(keys[0]);
 
-    const url = assetPath(file.file_name_disk);
+    const url = assetPath(file.fileNameDisk);
 
     res.json({ file: { ...file, url } });
   })
@@ -32,7 +32,7 @@ router.get(
     const service = new FilesService({ schema: req.schema });
     const file = await service.readOne(id);
 
-    const url = assetPath(file.file_name_disk);
+    const url = assetPath(file.fileNameDisk);
 
     res.json({ file: { ...file, url } });
   })

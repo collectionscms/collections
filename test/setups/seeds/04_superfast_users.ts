@@ -9,11 +9,11 @@ export const seed = async (database: Knex): Promise<void> => {
       name: 'Michael Schumacher',
       email: 'michael@collections.dev',
       password: 'password',
-      is_active: true,
-      api_key: '1111-2222-3333',
-      role_id: 1,
-      created_at: helpers.date.writeTimestamp(new Date().toISOString()),
-      updated_at: helpers.date.writeTimestamp(new Date().toISOString()),
+      isActive: true,
+      apiKey: '1111-2222-3333',
+      roleId: 1,
+      createdAt: helpers.date.writeTimestamp(new Date().toISOString()),
+      updatedAt: helpers.date.writeTimestamp(new Date().toISOString()),
     },
   ]);
 };

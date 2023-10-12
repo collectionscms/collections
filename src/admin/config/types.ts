@@ -138,6 +138,6 @@ export type GetRelation = {} & RelationSchema;
 export type Me = {
   user: AuthUser;
   email: string;
-  api_key: string | null;
+  apiKey: string | null;
   token: string;
 };

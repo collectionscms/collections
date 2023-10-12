@@ -13,7 +13,7 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 describe('Contents', () => {
-  const tableName = 'model_f1_grand_prix_race_stats';
+  const tableName = 'ModelF1GrandPrixRaceStats';
   const databases = new Map<string, Knex>();
 
   beforeAll(async () => {
@@ -72,7 +72,7 @@ describe('Contents', () => {
 
     await connection.schema.createTable(tableName, (table) => {
       table.increments();
-      table.timestamps(true, true);
+      table.timestamps(true, true, true);
       table.string('year', 255);
       table.string('circuit', 255);
       table.boolean('is_shootout');
@@ -84,8 +84,8 @@ describe('Contents', () => {
         year: '2022',
         circuit: 'Monaco',
         is_shootout: false,
-        created_at: helpers.date.writeTimestamp('2022-01-01 00:00:00'),
-        updated_at: helpers.date.writeTimestamp('2022-01-01 00:00:00'),
+        createdAt: helpers.date.writeTimestamp('2022-01-01 00:00:00'),
+        updatedAt: helpers.date.writeTimestamp('2022-01-01 00:00:00'),
       },
     ]);
   };
@@ -134,12 +134,12 @@ describe('Contents', () => {
       expect(result).toBeTruthy();
       expect(updatedContent.circuit).toBe('Monaco in Monte Carlo');
 
-      const before = dayjs(fetchedContent.updated_at);
-      const after = dayjs(updatedContent.updated_at);
+      const before = dayjs(fetchedContent.updatedAt);
+      const after = dayjs(updatedContent.updatedAt);
       expect(after.diff(before)).toBeGreaterThan(0);
     });
 
-    // TODO cases without updated_at
+    // TODO cases without updatedAt
   });
 
   describe('Get', () => {

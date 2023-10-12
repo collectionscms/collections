@@ -22,7 +22,7 @@ export const modelPermissionsHandler =
 
       const hasPermission = userPermissions.some(
         (userPermission) =>
-          userPermission.model_id.toString() === req.params.modelId &&
+          userPermission.modelId.toString() === req.params.modelId &&
           userPermission.action === action
       );
 

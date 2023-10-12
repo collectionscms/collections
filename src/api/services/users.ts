@@ -28,9 +28,9 @@ export class UsersService extends BaseService<User> {
     const rolesService = new RolesService({ schema: this.schema });
 
     const user = await this.database
-      .select('u.id', 'u.name', 'u.password', 'u.email', 'u.api_key', {
+      .select('u.id', 'u.name', 'u.password', 'u.email', 'u.apiKey', {
         role_id: 'r.id',
-        admin_access: 'r.admin_access',
+        adminAccess: 'r.adminAccess',
       })
       .from(`${this.model} AS u`)
       .join(`${rolesService.model} AS r`, 'r.id', 'u.role_id')
@@ -47,7 +47,7 @@ export class UsersService extends BaseService<User> {
       user.id,
       role.id,
       user.name,
-      castToBoolean(role.admin_access),
+      castToBoolean(role.adminAccess),
       castToBoolean(appAccess)
     );
   }
@@ -62,16 +62,16 @@ export class UsersService extends BaseService<User> {
     if (!primaryKey && !apiKey) return null;
 
     const user = await this.readMany({
-      filter: primaryKey ? { id: { _eq: primaryKey } } : { api_key: { _eq: apiKey } },
+      filter: primaryKey ? { id: { _eq: primaryKey } } : { apiKey: { _eq: apiKey } },
     }).then((users) => (users.length > 0 ? users[0] : null));
 
-    if (!user || !user.role_id) return null;
+    if (!user || !user.roleId) return null;
 
     const rolesService = new RolesService({ schema: this.schema });
-    const role = await rolesService.readOne(user.role_id);
+    const role = await rolesService.readOne(user.roleId);
 
     return {
-      auth: this.toAuthUser(user.id, role.id, user.name, castToBoolean(role.admin_access)),
+      auth: this.toAuthUser(user.id, role.id, user.name, castToBoolean(role.adminAccess)),
       user: user,
     };
   }
@@ -89,13 +89,13 @@ export class UsersService extends BaseService<User> {
     const users = await this.readMany(filter);
 
     return users.map((user) => {
-      const role = roles.find((role) => role.id === user.role_id);
+      const role = roles.find((role) => role.id === user.roleId);
       return {
         ...user,
-        role_id: role?.id,
-        role_name: role?.name,
-        role_description: role?.description,
-        role_admin_access: role?.admin_access,
+        roleId: role?.id,
+        roleName: role?.name,
+        roleDescription: role?.description,
+        roleAdminAccess: role?.adminAccess,
       };
     });
   }
@@ -129,10 +129,10 @@ export class UsersService extends BaseService<User> {
   ): AuthUser {
     return {
       id: userId,
-      role_id: roleId,
+      roleId: roleId,
       name: name,
-      admin_access: adminAccess,
-      app_access: appAccess,
+      adminAccess: adminAccess,
+      appAccess: appAccess,
     };
   }
 }

@@ -6,9 +6,9 @@ export type FormValues = {
   name: string;
   email: string;
   password: string;
-  is_active: boolean;
-  api_key?: string | null;
-  role_id: string;
+  isActive: boolean;
+  apiKey?: string | null;
+  roleId: string;
 };
 
 export const createUser = (t: TFunction): ObjectSchema<FormValues> => {
@@ -21,8 +21,8 @@ export const createUser = (t: TFunction): ObjectSchema<FormValues> => {
       .required()
       .min(4)
       .max(250),
-    api_key: yup.string().notRequired().max(250),
-    is_active: yup.boolean().required(),
-    role_id: yup.string().required(),
+    apiKey: yup.string().notRequired().max(250),
+    isActive: yup.boolean().required(),
+    roleId: yup.string().required(),
   });
 };

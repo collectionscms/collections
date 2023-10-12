@@ -49,16 +49,16 @@ const CreateUserPageImpl: React.FC = () => {
       name: '',
       email: '',
       password: '',
-      api_key: '',
-      is_active: true,
-      role_id: roles ? roles[0]?.id.toString() : '',
+      apiKey: '',
+      isActive: true,
+      roleId: roles ? roles[0]?.id.toString() : '',
     },
     resolver: yupResolver(createUserSchema(t)),
   });
   const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
 
   const onGenerateApiKey = () => {
-    setValue('api_key', uuidv4());
+    setValue('apiKey', uuidv4());
   };
 
   const navigateToList = () => {
@@ -140,14 +140,14 @@ const CreateUserPageImpl: React.FC = () => {
                 </Grid>
                 <Grid xs={12} sm={6}>
                   <Stack spacing={1}>
-                    <InputLabel htmlFor="api_key">{t('api_key')}</InputLabel>
+                    <InputLabel htmlFor="apiKey">{t('api_key')}</InputLabel>
                     <Controller
-                      name="api_key"
+                      name="apiKey"
                       control={control}
                       render={({ field }) => (
                         <TextField
                           {...field}
-                          id="api_key"
+                          id="apiKey"
                           type="text"
                           placeholder={t('generate_api_key_placeholder')}
                           fullWidth
@@ -167,18 +167,18 @@ const CreateUserPageImpl: React.FC = () => {
                               </InputAdornment>
                             ),
                           }}
-                          error={errors.api_key !== undefined}
+                          error={errors.apiKey !== undefined}
                         />
                       )}
                     />
-                    <FormHelperText error>{errors.api_key?.message}</FormHelperText>
+                    <FormHelperText error>{errors.apiKey?.message}</FormHelperText>
                   </Stack>
                 </Grid>
                 <Grid xs={12} sm={6}>
                   <Stack spacing={1}>
                     <InputLabel>{t('role')}</InputLabel>
                     <Controller
-                      name="role_id"
+                      name="roleId"
                       control={control}
                       render={({ field }) => (
                         <Select {...field} fullWidth>
@@ -197,7 +197,7 @@ const CreateUserPageImpl: React.FC = () => {
                   <Stack spacing={1}>
                     <InputLabel>{t('status')}</InputLabel>
                     <Controller
-                      name="is_active"
+                      name="isActive"
                       control={control}
                       render={({ field }) => (
                         <FormControlLabel
@@ -207,7 +207,7 @@ const CreateUserPageImpl: React.FC = () => {
                         />
                       )}
                     />
-                    <FormHelperText error>{errors.is_active?.message}</FormHelperText>
+                    <FormHelperText error>{errors.isActive?.message}</FormHelperText>
                   </Stack>
                 </Grid>
                 <Grid xs={12}>

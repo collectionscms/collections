@@ -28,8 +28,8 @@ describe('Project Settings', () => {
       const data = await service.readMany({});
 
       expect(data[0].name).toBe('collections');
-      expect(data[0].before_login).toBe('Support Hours 9:00 - 18:00');
-      expect(data[0].after_login).toBe('<a href="#">Contact us</a>');
+      expect(data[0].beforeLogin).toBe('Support Hours 9:00 - 18:00');
+      expect(data[0].afterLogin).toBe('<a href="#">Contact us</a>');
     });
   });
 
@@ -52,11 +52,11 @@ describe('Project Settings', () => {
 
       expect(result).toBeTruthy();
       expect(projectSetting.name).toBe(newData.name);
-      expect(projectSetting.before_login).toBe(newData.before_login);
-      expect(projectSetting.after_login).toBe(newData.after_login);
+      expect(projectSetting.beforeLogin).toBe(newData.before_login);
+      expect(projectSetting.afterLogin).toBe(newData.after_login);
 
-      const before = new Date(data[0].updated_at!).getTime();
-      const after = new Date(projectSetting.updated_at!).getTime();
+      const before = new Date(data[0].updatedAt!).getTime();
+      const after = new Date(projectSetting.updatedAt!).getTime();
 
       expect(after).toBeGreaterThan(before);
     });

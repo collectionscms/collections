@@ -64,10 +64,10 @@ const EditDataModelPageImpl: React.FC = () => {
     defaultValues: {
       hidden: Boolean(metaModel.hidden),
       singleton: Boolean(metaModel.singleton),
-      status_field: metaModel.status_field || '',
-      draft_value: metaModel.draft_value || '',
-      publish_value: metaModel.publish_value || '',
-      archive_value: metaModel.archive_value || '',
+      status_field: metaModel.statusField || '',
+      draft_value: metaModel.draftValue || '',
+      publish_value: metaModel.publishValue || '',
+      archive_value: metaModel.archiveValue || '',
     },
     resolver: yupResolver(updateModelSchema()),
   });

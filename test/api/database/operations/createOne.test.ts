@@ -12,9 +12,9 @@ describe('Create One', () => {
     name: 'Lewis Hamilton',
     email: 'lewis@collections.dev',
     password: 'password',
-    is_active: true,
-    api_key: '1111-2222-4444',
-    role_id: 1,
+    isActive: true,
+    apiKey: '1111-2222-4444',
+    roleId: 1,
   };
 
   beforeAll(async () => {

@@ -6,7 +6,7 @@ import { config } from '../../../config.js';
 import { testDatabases } from '../../../utilities/testDatabases.js';
 
 describe('Read By Query', () => {
-  const tableName = 'model_f1_grand_prix_races';
+  const tableName = 'ModelF1GrandPrixRaces';
   const databases = new Map<string, Knex>();
   type ModelType = {
     year: string;

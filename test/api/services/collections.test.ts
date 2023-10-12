@@ -1,9 +1,9 @@
 import knex, { Knex } from 'knex';
 import { SchemaInfo, getSchemaInfo } from '../../../src/api/database/inspector.js';
 import { getSchemaOverview } from '../../../src/api/database/overview.js';
-import { Model, Field } from '../../../src/api/database/schemas.js';
-import { ModelsService } from '../../../src/api/services/models.js';
+import { Field, Model } from '../../../src/api/database/schemas.js';
 import { FieldsService } from '../../../src/api/services/fields.js';
+import { ModelsService } from '../../../src/api/services/models.js';
 import { config } from '../../config.js';
 import { testDatabases } from '../../utilities/testDatabases.js';
 
@@ -13,19 +13,19 @@ describe('Model', () => {
   const commonData = {
     singleton: false,
     hidden: false,
-    status_field: null,
-    draft_value: null,
-    publish_value: null,
-    archive_value: null,
+    statusField: null,
+    draftValue: null,
+    publishValue: null,
+    archiveValue: null,
   };
 
   const data: Omit<Model, 'id'> = {
-    model: 'model_f1_2023_driver_standings',
+    model: 'ModelF12023DriverStandings',
     ...commonData,
   };
 
   const data1: Omit<Model, 'id'> = {
-    model: 'model_f1_2022_driver_standings',
+    model: 'ModelF12022DriverStandings',
     ...commonData,
   };
 
@@ -46,16 +46,16 @@ describe('Model', () => {
     expect(fields).toEqual(
       expect.arrayContaining([
         expect.objectContaining({ model: model, field: 'id' }),
-        expect.objectContaining({ model: model, field: 'created_at' }),
-        expect.objectContaining({ model: model, field: 'updated_at' }),
+        expect.objectContaining({ model: model, field: 'createdAt' }),
+        expect.objectContaining({ model: model, field: 'updatedAt' }),
       ])
     );
 
     // columns
     const columns = schemaInfo[model].columns;
     expect(columns.id).toBeTruthy();
-    expect(columns.created_at).toBeTruthy();
-    expect(columns.updated_at).toBeTruthy();
+    expect(columns.createdAt).toBeTruthy();
+    expect(columns.updatedAt).toBeTruthy();
   };
 
   describe('Create', () => {
@@ -70,7 +70,7 @@ describe('Model', () => {
       expect(result).toBeTruthy();
 
       const meta = await modelsService.readOne(result);
-      expect(meta.status_field).toBeNull();
+      expect(meta.statusField).toBeNull();
 
       // check model meta / columns
       const fields = await fieldsService.readMany({
@@ -91,10 +91,10 @@ describe('Model', () => {
       expect(result).toBeTruthy();
 
       const meta = await modelsService.readOne(result);
-      expect(meta.status_field).toBe('status');
-      expect(meta.draft_value).toBe('draft');
-      expect(meta.publish_value).toBe('published');
-      expect(meta.archive_value).toBe('archived');
+      expect(meta.statusField).toBe('status');
+      expect(meta.draftValue).toBe('draft');
+      expect(meta.publishValue).toBe('published');
+      expect(meta.archiveValue).toBe('archived');
 
       // check model meta / columns
       const fields = await fieldsService.readMany({

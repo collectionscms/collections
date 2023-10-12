@@ -81,7 +81,7 @@ const FileImageTypeImpl: React.FC<Props> = ({
       <Stack spacing={1.5} alignItems="center">
         <SingleFileUpload
           accept={{ 'image/*': [] }}
-          files={file ? [{ name: file.file_name, preview: file.url }] : null}
+          files={file ? [{ name: file.fileName, preview: file.url }] : null}
           onSetFiles={handleSetFiles}
         />
       </Stack>

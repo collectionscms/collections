@@ -21,9 +21,9 @@ export class RolesService extends BaseService<Role> {
     }
 
     const role = await this.readOne(key);
-    if (role.admin_access) {
+    if (role.adminAccess) {
       const roles = await this.readMany({
-        filter: { admin_access: { _eq: true } },
+        filter: { adminAccess: { _eq: true } },
       });
       if (roles.length === 1) {
         throw new UnprocessableEntityException('can_not_delete_last_admin_role');

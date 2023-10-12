@@ -12,9 +12,9 @@ export const authHandler: RequestHandler = asyncHandler(
 
       if (auth) {
         req.userId = auth.id;
-        req.adminAccess = auth.admin_access;
-        req.roleId = auth.role_id;
-        req.appAccess = auth.app_access ?? false;
+        req.adminAccess = auth.adminAccess;
+        req.roleId = auth.roleId;
+        req.appAccess = auth.appAccess ?? false;
       }
     }
 

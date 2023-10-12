@@ -55,10 +55,10 @@ const CreateDataModelPageImpl: React.FC = () => {
       const id = await trigger({
         ...form,
         hidden: false,
-        status_field: null,
-        draft_value: null,
-        publish_value: null,
-        archive_value: null,
+        statusField: null,
+        draftValue: null,
+        publishValue: null,
+        archiveValue: null,
       });
       enqueueSnackbar(t('toast.created_successfully'), { variant: 'success' });
       navigate(`../models/${id.toString()}`);

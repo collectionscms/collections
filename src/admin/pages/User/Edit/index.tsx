@@ -54,16 +54,16 @@ const EditUserPageImpl: React.FC = () => {
       name: user.name,
       email: user.email,
       password: '',
-      api_key: '',
-      is_active: Boolean(user.is_active),
-      role_id: user.role!.id.toString(),
+      apiKey: '',
+      isActive: Boolean(user.isActive),
+      roleId: user.role!.id.toString(),
     },
     resolver: yupResolver(updateUserSchema(t)),
   });
   const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
 
   const handleGenerateApiKey = () => {
-    setValue('api_key', uuidv4());
+    setValue('apiKey', uuidv4());
   };
 
   const navigateToList = () => {
@@ -72,7 +72,7 @@ const EditUserPageImpl: React.FC = () => {
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     if (!form.password) delete form.password;
-    if (!form.api_key) delete form.api_key;
+    if (!form.apiKey) delete form.apiKey;
 
     try {
       reset(form);
@@ -149,17 +149,17 @@ const EditUserPageImpl: React.FC = () => {
                 </Grid>
                 <Grid xs={12} sm={6}>
                   <Stack spacing={1}>
-                    <InputLabel htmlFor="api_key">{t('api_key')}</InputLabel>
+                    <InputLabel htmlFor="apiKey">{t('api_key')}</InputLabel>
                     <Controller
-                      name="api_key"
+                      name="apiKey"
                       control={control}
                       render={({ field }) => (
                         <TextField
                           {...field}
-                          id="api_key"
+                          id="apiKey"
                           type="text"
                           placeholder={
-                            user.api_key
+                            user.apiKey
                               ? t('hidden_for_security')
                               : t('generate_api_key_placeholder')
                           }
@@ -180,18 +180,18 @@ const EditUserPageImpl: React.FC = () => {
                               </InputAdornment>
                             ),
                           }}
-                          error={errors.api_key !== undefined}
+                          error={errors.apiKey !== undefined}
                         />
                       )}
                     />
-                    <FormHelperText error>{errors.api_key?.message}</FormHelperText>
+                    <FormHelperText error>{errors.apiKey?.message}</FormHelperText>
                   </Stack>
                 </Grid>
                 <Grid xs={12} sm={6}>
                   <Stack spacing={1}>
                     <InputLabel>{t('role')}</InputLabel>
                     <Controller
-                      name="role_id"
+                      name="roleId"
                       control={control}
                       render={({ field }) => (
                         <Select {...field} fullWidth>
@@ -209,7 +209,7 @@ const EditUserPageImpl: React.FC = () => {
                   <Stack spacing={1}>
                     <InputLabel>{t('status')}</InputLabel>
                     <Controller
-                      name="is_active"
+                      name="isActive"
                       control={control}
                       render={({ field }) => (
                         <FormControlLabel
@@ -219,7 +219,7 @@ const EditUserPageImpl: React.FC = () => {
                         />
                       )}
                     />
-                    <FormHelperText error>{errors.is_active?.message}</FormHelperText>
+                    <FormHelperText error>{errors.isActive?.message}</FormHelperText>
                   </Stack>
                 </Grid>
                 <Grid xs={12}>

@@ -19,8 +19,8 @@ describe('Transformers', () => {
     archiveValue: null,
     fields: {
       id: { alias: false, special: null, field: 'id' },
-      created_at: { alias: false, special: null, field: 'created_at' },
-      updated_at: { alias: false, special: null, field: 'updated_at' },
+      createdAt: { alias: false, special: null, field: 'createdAt' },
+      updatedAt: { alias: false, special: null, field: 'updatedAt' },
       date: { alias: false, special: 'cast-timestamp', field: 'date' },
     },
   };
@@ -47,15 +47,15 @@ describe('Transformers', () => {
         const timestamp = '2022-01-01T00:00:00.000Z';
         const date = dayjs(timestamp).toISOString();
         const data = {
-          created_at: null,
-          updated_at: null,
+          createdAt: null,
+          updatedAt: null,
           date,
         };
 
         await applyTransformers('create', data, overview, helper);
 
-        expect(data.created_at).not.toBeNull();
-        expect(data.updated_at).not.toBeNull();
+        expect(data.createdAt).not.toBeNull();
+        expect(data.updatedAt).not.toBeNull();
         expect(data.date).toBe(helper.date.writeTimestamp(date));
       }
     );
@@ -69,15 +69,15 @@ describe('Transformers', () => {
         const timestamp = '2022-01-01T00:00:00.000Z';
         const date = dayjs(timestamp).toISOString();
         const data = {
-          created_at: date,
-          updated_at: date,
+          createdAt: date,
+          updatedAt: date,
           date,
         };
 
         await applyTransformers('update', data, overview, helper);
         const formattedDate = helper.date.writeTimestamp(date);
-        expect(data.created_at).toBe(formattedDate);
-        expect(data.updated_at).not.toBe(formattedDate);
+        expect(data.createdAt).toBe(formattedDate);
+        expect(data.updatedAt).not.toBe(formattedDate);
         expect(data.date).toBe(formattedDate);
       }
     );
@@ -91,15 +91,15 @@ describe('Transformers', () => {
         const timestamp = '2022-01-01T00:00:00.000Z';
         const date = dayjs(timestamp).toISOString();
         const data = {
-          created_at: date,
-          updated_at: date,
+          createdAt: date,
+          updatedAt: date,
           date,
         };
 
         await applyTransformers('read', data, overview, helper);
 
-        expect(data.created_at).toBe(timestamp);
-        expect(data.updated_at).toBe(timestamp);
+        expect(data.createdAt).toBe(timestamp);
+        expect(data.updatedAt).toBe(timestamp);
         expect(data.date).toBe(timestamp);
       }
     );

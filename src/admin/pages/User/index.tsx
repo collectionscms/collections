@@ -19,17 +19,17 @@ const UserPageImpl: React.FC = () => {
   const fields = [
     { field: 'name', label: t('name'), type: cells.text() },
     { field: 'email', label: t('email'), type: cells.text() },
-    { field: 'api_key', label: t('api_key'), type: cells.text() },
+    { field: 'apiKey', label: t('api_key'), type: cells.text() },
     { field: 'role', label: t('role'), type: cells.text() },
-    { field: 'updated_at', label: t('updated_at'), type: cells.date() },
+    { field: 'updatedAt', label: t('updated_at'), type: cells.date() },
   ];
 
   const columns = buildColumns(fields, (i: number, row: User, data: any) => {
     const defaultCell = <Cell colIndex={i} type={fields[i].type} cellData={data} />;
 
     switch (fields[i].field) {
-      case 'api_key':
-        return <Cell colIndex={i} type={fields[i].type} cellData={row.api_key && t('valid')} />;
+      case 'apiKey':
+        return <Cell colIndex={i} type={fields[i].type} cellData={row.apiKey && t('valid')} />;
       case 'role':
         return <Cell colIndex={i} type={fields[i].type} cellData={row.role?.name} />;
       case 'name':

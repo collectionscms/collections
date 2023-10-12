@@ -64,10 +64,10 @@ export const getSchemaOverview = async (options?: { database?: Knex }): Promise<
       id: metaModel ? metaModel.id : null,
       model: model,
       singleton: metaModel && metaModel.singleton ? true : false,
-      statusField: metaModel ? metaModel.status_field : null,
-      draftValue: metaModel ? metaModel.draft_value : null,
-      publishValue: metaModel ? metaModel.publish_value : null,
-      archiveValue: metaModel ? metaModel.archive_value : null,
+      statusField: metaModel ? metaModel.statusField : null,
+      draftValue: metaModel ? metaModel.draftValue : null,
+      publishValue: metaModel ? metaModel.publishValue : null,
+      archiveValue: metaModel ? metaModel.archiveValue : null,
       source: metaModel ? metaModel.source : null,
       fields: Object.values(info.columns).reduce(
         (acc, column) => {
@@ -107,10 +107,10 @@ export const getSchemaOverview = async (options?: { database?: Knex }): Promise<
 
   schema.relations = relations.map((relation) => {
     return {
-      model: relation.one_model,
-      field: relation.one_field,
-      relatedField: relation.many_field,
-      relatedModel: relation.many_model,
+      model: relation.oneModel,
+      field: relation.oneField,
+      relatedField: relation.manyField,
+      relatedModel: relation.manyModel,
     };
   });
 

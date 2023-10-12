@@ -7,17 +7,17 @@ import { config } from '../../config.js';
 import { testDatabases } from '../../utilities/testDatabases.js';
 
 describe('Field', () => {
-  const modelName = 'model_f1_ferrari_team_stats';
+  const modelName = 'ModelF1FerrariTeamStats';
   const databases = new Map<string, Knex>();
 
   const modelData: Omit<Model, 'id'> = {
     model: modelName,
     singleton: false,
     hidden: false,
-    status_field: null,
-    draft_value: null,
-    publish_value: null,
-    archive_value: null,
+    statusField: null,
+    draftValue: null,
+    publishValue: null,
+    archiveValue: null,
   };
 
   const fieldData = {
@@ -63,7 +63,7 @@ describe('Field', () => {
 
       const field = {
         ...fieldData,
-        model_id: schema.models[modelName].id,
+        modelId: schema.models[modelName].id,
         field: 'team_name',
         label: 'Team Name',
       } as Omit<Field, 'id'>;
@@ -79,7 +79,7 @@ describe('Field', () => {
 
       const field = {
         ...fieldData,
-        model_id: schema.models[modelName].id,
+        modelId: schema.models[modelName].id,
         field: 'point',
         label: 'Point',
       } as Omit<Field, 'id'>;
@@ -109,7 +109,7 @@ describe('Field', () => {
 
         const field = {
           ...fieldData,
-          model_id: schema.models[modelName].id,
+          modelId: schema.models[modelName].id,
           field: 'id',
           label: 'id',
         } as Omit<Field, 'id'>;

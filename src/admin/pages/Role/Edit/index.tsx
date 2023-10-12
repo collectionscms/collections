@@ -58,7 +58,7 @@ const EditRolePageImpl: React.FC = () => {
     defaultValues: {
       name: role.name,
       description: role.description,
-      admin_access: Boolean(role.admin_access),
+      adminAccess: Boolean(role.adminAccess),
     },
     resolver: yupResolver(updateRoleSchema()),
   });
@@ -86,7 +86,7 @@ const EditRolePageImpl: React.FC = () => {
       <Grid container spacing={2.5} sx={{ mb: 1 }}>
         <Grid xs={12} lg={8}>
           <MainCard content={false} title={t('role_list')} subheader={t('auto_save')}>
-            {role.admin_access ? (
+            {role.adminAccess ? (
               <Typography align="center" color="secondary" sx={{ p: 2 }}>
                 {t('admin_has_all_permissions')}
               </Typography>
@@ -181,7 +181,7 @@ const EditRolePageImpl: React.FC = () => {
                   <Stack spacing={1}>
                     <InputLabel>{t('admin_access')}</InputLabel>
                     <Controller
-                      name="admin_access"
+                      name="adminAccess"
                       control={control}
                       render={({ field }) => (
                         <FormControlLabel
@@ -191,7 +191,7 @@ const EditRolePageImpl: React.FC = () => {
                         />
                       )}
                     />
-                    <FormHelperText error>{errors.admin_access?.message}</FormHelperText>
+                    <FormHelperText error>{errors.adminAccess?.message}</FormHelperText>
                   </Stack>
                 </Grid>
                 <Grid xs={12}>

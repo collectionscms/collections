@@ -26,7 +26,7 @@ describe('Schema Overview', () => {
       // check models
       expect(Object.keys(overview.models)).toEqual(
         expect.arrayContaining([
-          'model_f1_grand_prix_races',
+          'ModelF1GrandPrixRaces',
           'CollectionsRoles',
           'CollectionsUsers',
           'CollectionsPermissions',
@@ -54,21 +54,21 @@ describe('Schema Overview', () => {
           model: { alias: false, special: null, field: 'model' },
           singleton: { alias: false, special: 'cast-boolean', field: 'singleton' },
           hidden: { alias: false, special: 'cast-boolean', field: 'hidden' },
-          status_field: { alias: false, special: null, field: 'status_field' },
-          draft_value: { alias: false, special: null, field: 'draft_value' },
-          publish_value: { alias: false, special: null, field: 'publish_value' },
-          archive_value: { alias: false, special: null, field: 'archive_value' },
+          statusField: { alias: false, special: null, field: 'statusField' },
+          draftValue: { alias: false, special: null, field: 'draftValue' },
+          publishValue: { alias: false, special: null, field: 'publishValue' },
+          archiveValue: { alias: false, special: null, field: 'archiveValue' },
           source: { alias: false, special: null, field: 'source' },
-          created_at: { alias: false, special: null, field: 'created_at' },
-          updated_at: { alias: false, special: null, field: 'updated_at' },
+          createdAt: { alias: false, special: null, field: 'createdAt' },
+          updatedAt: { alias: false, special: null, field: 'updatedAt' },
         },
       });
 
       // check entity model overview
-      const entity = overview.models['model_f1_grand_prix_races'];
+      const entity = overview.models['ModelF1GrandPrixRaces'];
       expect(entity).toEqual({
-        id: overview.models['model_f1_grand_prix_races'].id,
-        model: 'model_f1_grand_prix_races',
+        id: overview.models['ModelF1GrandPrixRaces'].id,
+        model: 'ModelF1GrandPrixRaces',
         singleton: false,
         statusField: null,
         draftValue: null,
@@ -80,10 +80,10 @@ describe('Schema Overview', () => {
           circuit: { alias: false, special: null, field: 'circuit' },
           round: { alias: false, special: null, field: 'round' },
           year: { alias: false, special: null, field: 'year' },
-          is_shootout: { alias: false, special: 'cast-boolean', field: 'is_shootout' },
-          circuit_stats: { alias: true, special: null, field: 'circuit_stats' },
-          created_at: { alias: false, special: null, field: 'created_at' },
-          updated_at: { alias: false, special: null, field: 'updated_at' },
+          isShootout: { alias: false, special: 'cast-boolean', field: 'isShootout' },
+          circuitStats: { alias: true, special: null, field: 'circuitStats' },
+          createdAt: { alias: false, special: null, field: 'createdAt' },
+          updatedAt: { alias: false, special: null, field: 'updatedAt' },
         },
       });
     });

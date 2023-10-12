@@ -1,8 +1,8 @@
 import { Knex } from 'knex';
 
 export const seed = async (database: Knex): Promise<void> => {
-  const modelName = 'model_f1_circuit_stats';
-  const belongingModelName = 'model_f1_grand_prix_races';
+  const modelName = 'ModelF1CircuitStats';
+  const belongingModelName = 'ModelF1GrandPrixRaces';
 
   await database('CollectionsModels').insert([
     {
@@ -27,26 +27,26 @@ export const seed = async (database: Knex): Promise<void> => {
     },
     {
       model: modelName,
-      field: 'created_at',
+      field: 'createdAt',
       label: 'Created At',
       interface: 'dateTime',
     },
     {
       model: modelName,
-      field: 'updated_at',
+      field: 'updatedAt',
       label: 'Updated At',
       interface: 'dateTime',
     },
     // one to many fields
     {
       model: belongingModelName,
-      field: 'circuit_stats',
+      field: 'circuitStats',
       label: 'Circuit Stats',
       interface: 'listOneToMany',
     },
     {
       model: modelName,
-      field: 'grand_prix_race_id',
+      field: 'grandPrixRaceId',
       label: 'Grand Prix Race',
       interface: 'selectDropdownManyToOne',
     },
@@ -55,7 +55,7 @@ export const seed = async (database: Knex): Promise<void> => {
   await database('CollectionsRelations').insert([
     {
       many_model: modelName,
-      many_field: 'grand_prix_race_id',
+      many_field: 'grandPrixRaceId',
       one_model: belongingModelName,
       one_field: 'circuit_stats',
     },
@@ -63,10 +63,10 @@ export const seed = async (database: Knex): Promise<void> => {
 
   await database.schema.createTable(modelName, (table) => {
     table.increments();
-    table.timestamps(true, true);
+    table.timestamps(true, true, true);
     table.string('name', 255);
     table
-      .integer('grand_prix_race_id')
+      .integer('grandPrixRaceId')
       .unsigned()
       .index()
       .references('id')

@@ -93,10 +93,10 @@ export class ImportDataService {
             model: model,
             singleton: false,
             hidden: false,
-            status_field: null,
-            draft_value: null,
-            publish_value: null,
-            archive_value: null,
+            statusField: null,
+            draftValue: null,
+            publishValue: null,
+            archiveValue: null,
             source: 'wordpress',
           },
           hasStatus
@@ -193,17 +193,17 @@ export class ImportDataService {
   ) {
     await service.createRelationalFields(
       {
-        many_model: manyModel,
-        many_model_id: modelKeys[manyModel],
-        many_field: 'post_id',
-        one_model: 'posts',
-        one_model_id: modelKeys['posts'],
-        one_field: manyModel,
+        manyModel: manyModel,
+        manyModelId: modelKeys[manyModel],
+        manyField: 'post_id',
+        oneModel: 'posts',
+        oneModelId: modelKeys['posts'],
+        oneField: manyModel,
       },
       [
         {
           model: 'posts',
-          model_id: modelKeys['posts'],
+          modelId: modelKeys['posts'],
           field: manyModel,
           label: manyModel,
           interface: 'listOneToMany',
@@ -216,7 +216,7 @@ export class ImportDataService {
         },
         {
           model: manyModel,
-          model_id: modelKeys[manyModel],
+          modelId: modelKeys[manyModel],
           field: 'post_id',
           label: 'Post Id',
           interface: 'selectDropdownManyToOne',
