@@ -36,7 +36,7 @@ const LoginImpl: React.FC = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<FormValues>({
-    defaultValues: { email: '', password: '' },
+    defaultValues: { email: '', password: '', app_access: true },
     resolver: yupResolver(loginSchema),
   });
 
