@@ -46,12 +46,12 @@ router.get(
       return res.json({
         user: me.auth,
         email: me.user.email,
-        apiKey: me.user.api_key,
+        api_key: me.user.api_key,
         token: token,
       });
     }
 
-    res.json({ user: null, apiKey: null, token: null });
+    res.json({ user: null, api_key: null, token: null });
   })
 );
 
