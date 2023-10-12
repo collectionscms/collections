@@ -49,10 +49,10 @@ async function dropModels(database: Knex) {
     const columns = schemaInfo[tableName]?.columns;
     if (columns) {
       for (const [_, value] of Object.entries(columns)) {
-        if (value.foreign_key_column) {
+        if (value.foreignKeyColumn) {
           await database.schema.table(tableName, function (t) {
-            t.dropForeign(value.column_name);
-            t.dropColumn(value.column_name);
+            t.dropForeign(value.columnName);
+            t.dropColumn(value.columnName);
           });
         }
       }

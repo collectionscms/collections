@@ -121,7 +121,7 @@ export class ModelsService extends BaseService<Model> {
       const relationsService = new RelationsService({ database: tx, schema: this.schema });
 
       const oneRelations = await relationsService.readMany({
-        filter: { one_model: { _eq: model.model } },
+        filter: { oneModel: { _eq: model.model } },
       });
 
       for (let relation of oneRelations) {
@@ -130,7 +130,7 @@ export class ModelsService extends BaseService<Model> {
 
       // Delete one relation fields
       const manyRelations = await relationsService.readMany({
-        filter: { many_model: { _eq: model.model } },
+        filter: { manyModel: { _eq: model.model } },
       });
 
       for (let relation of manyRelations) {

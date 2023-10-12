@@ -54,10 +54,10 @@ export const seed = async (database: Knex): Promise<void> => {
 
   await database('CollectionsRelations').insert([
     {
-      many_model: modelName,
-      many_field: 'grandPrixRaceId',
-      one_model: belongingModelName,
-      one_field: 'circuit_stats',
+      manyModel: modelName,
+      manyField: 'grandPrixRaceId',
+      oneModel: belongingModelName,
+      oneField: 'circuitStats',
     },
   ]);
 

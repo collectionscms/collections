@@ -38,7 +38,7 @@ export const PermissionToggleButton: React.FC<Props> = (props) => {
 
     const permissionId = await createPermissionTrigger({
       model: selectedModel!.model,
-      model_id: model.id,
+      modelId: model.id,
       action,
     });
 

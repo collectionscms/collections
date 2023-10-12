@@ -78,19 +78,19 @@ describe('ImportDataService', () => {
         title: 'Hello world!',
         status: 'published',
         slug: 'hello-world',
-        is_page: false,
+        isPage: false,
       }),
       expect.objectContaining({
         title: 'Sample Page',
         status: 'published',
         slug: 'sample-page',
-        is_page: true,
+        isPage: true,
       }),
       expect.objectContaining({
         title: 'Privacy Policy',
         status: 'draft',
         slug: 'privacy-policy',
-        is_page: true,
+        isPage: true,
       }),
     ];
 

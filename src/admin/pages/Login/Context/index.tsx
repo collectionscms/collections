@@ -11,7 +11,7 @@ export const LoginContextProvider: React.FC<{ children: React.ReactNode }> = ({ 
     useSWR(
       '/project-settings',
       (url) =>
-        api.get<{ project_setting: ProjectSetting }>(url).then((res) => res.data.project_setting),
+        api.get<{ projectSetting: ProjectSetting }>(url).then((res) => res.data.projectSetting),
       { suspense: true }
     );
 

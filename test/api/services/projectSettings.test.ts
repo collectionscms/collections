@@ -43,8 +43,8 @@ describe('Project Settings', () => {
       const id = data[0].id;
       const newData = {
         name: 'collections2',
-        before_login: 'Support Hours 10:00 - 19:00',
-        after_login: '<a href="#">support desk</a>',
+        beforeLogin: 'Support Hours 10:00 - 19:00',
+        afterLogin: '<a href="#">support desk</a>',
       };
 
       const result = await service.updateOne(id, newData);
@@ -52,8 +52,8 @@ describe('Project Settings', () => {
 
       expect(result).toBeTruthy();
       expect(projectSetting.name).toBe(newData.name);
-      expect(projectSetting.beforeLogin).toBe(newData.before_login);
-      expect(projectSetting.afterLogin).toBe(newData.after_login);
+      expect(projectSetting.beforeLogin).toBe(newData.beforeLogin);
+      expect(projectSetting.afterLogin).toBe(newData.afterLogin);
 
       const before = new Date(data[0].updatedAt!).getTime();
       const after = new Date(projectSetting.updatedAt!).getTime();

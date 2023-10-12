@@ -11,16 +11,16 @@ export type SchemaInfo = {
 };
 
 type ColumnInfo = {
-  table_name: string;
-  column_name: string;
-  default_value: string | null;
-  is_nullable: boolean;
-  is_generated: boolean;
-  data_type: string;
-  numeric_precision?: number | null;
-  numeric_scale?: number | null;
-  max_length: number | null;
-  foreign_key_column: string | null;
+  tableName: string;
+  columnName: string;
+  defaultValue: string | null;
+  isNullable: boolean;
+  isGenerated: boolean;
+  dataType: string;
+  numericPrecision?: number | null;
+  numericScale?: number | null;
+  maxLength: number | null;
+  foreignKeyColumn: string | null;
 };
 
 export const getSchemaInfo = async (database: Knex): Promise<SchemaInfo> => {
@@ -35,16 +35,16 @@ export const getSchemaInfo = async (database: Knex): Promise<SchemaInfo> => {
     const tableColumns = columns.reduce(
       (acc, column) => {
         acc[column.name] = {
-          table_name: column.table,
-          column_name: column.name,
-          default_value: column.default_value,
-          is_nullable: column.is_nullable,
-          is_generated: column.is_generated,
-          data_type: column.data_type,
-          numeric_precision: column.numeric_precision,
-          numeric_scale: column.numeric_scale,
-          max_length: column.max_length,
-          foreign_key_column: column.foreign_key_column,
+          tableName: column.table,
+          columnName: column.name,
+          defaultValue: column.default_value,
+          isNullable: column.is_nullable,
+          isGenerated: column.is_generated,
+          dataType: column.data_type,
+          numericPrecision: column.numeric_precision,
+          numericScale: column.numeric_scale,
+          maxLength: column.max_length,
+          foreignKeyColumn: column.foreign_key_column,
         };
         return acc;
       },

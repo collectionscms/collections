@@ -71,12 +71,12 @@ export const getSchemaOverview = async (options?: { database?: Knex }): Promise<
       source: metaModel ? metaModel.source : null,
       fields: Object.values(info.columns).reduce(
         (acc, column) => {
-          const field = fields.find((f) => f.model === model && f.field === column.column_name);
+          const field = fields.find((f) => f.model === model && f.field === column.columnName);
 
-          acc[column.column_name] = {
-            field: column.column_name,
-            special: getSpecialField(field || null, column.data_type),
-            alias: info.columns[column.column_name] === undefined,
+          acc[column.columnName] = {
+            field: column.columnName,
+            special: getSpecialField(field || null, column.dataType),
+            alias: info.columns[column.columnName] === undefined,
           };
           return acc;
         },

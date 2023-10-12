@@ -155,8 +155,8 @@ export class ImportDataService {
         { field: 'title', label: 'Title', interface: 'input' },
         { field: 'content', label: 'Content', interface: 'inputRichTextMd' },
         { field: 'slug', label: 'Slug', interface: 'input' },
-        { field: 'published_date', label: 'publishedDate', interface: 'dateTime' },
-        { field: 'is_page', label: 'isPage', interface: 'boolean' },
+        { field: 'publishedDate', label: 'publishedDate', interface: 'dateTime' },
+        { field: 'isPage', label: 'isPage', interface: 'boolean' },
       ]);
     }
   }
@@ -171,7 +171,7 @@ export class ImportDataService {
     for (const field of fields) {
       const newField = {
         model,
-        model_id: modelKeys[model],
+        modelId: modelKeys[model],
         ...field,
         readonly: false,
         required: false,
@@ -195,7 +195,7 @@ export class ImportDataService {
       {
         manyModel: manyModel,
         manyModelId: modelKeys[manyModel],
-        manyField: 'post_id',
+        manyField: 'postId',
         oneModel: 'posts',
         oneModelId: modelKeys['posts'],
         oneField: manyModel,
@@ -217,7 +217,7 @@ export class ImportDataService {
         {
           model: manyModel,
           modelId: modelKeys[manyModel],
-          field: 'post_id',
+          field: 'postId',
           label: 'Post Id',
           interface: 'selectDropdownManyToOne',
           readonly: false,

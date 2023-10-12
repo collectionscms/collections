@@ -80,7 +80,7 @@ export const SelectDropdownType: React.FC<Props> = (props) => {
       reset(form);
       const field = await trigger({
         model: model.model,
-        model_id: model.id,
+        modelId: model.id,
         field: form.field,
         label: form.label,
         interface: 'selectDropdown',

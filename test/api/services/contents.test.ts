@@ -57,13 +57,13 @@ describe('Contents', () => {
       },
       {
         model: tableName,
-        field: 'is_shootout',
+        field: 'isShootout',
         label: 'Shootout',
         interface: 'boolean',
       },
       {
         model: tableName,
-        field: 'start_date',
+        field: 'startDate',
         label: 'Start Date',
         interface: 'dateTime',
         special: 'cast-timestamp',
@@ -75,15 +75,15 @@ describe('Contents', () => {
       table.timestamps(true, true, true);
       table.string('year', 255);
       table.string('circuit', 255);
-      table.boolean('is_shootout');
-      table.timestamp('start_date');
+      table.boolean('isShootout');
+      table.timestamp('startDate');
     });
 
     await connection(tableName).insert([
       {
         year: '2022',
         circuit: 'Monaco',
-        is_shootout: false,
+        isShootout: false,
         createdAt: helpers.date.writeTimestamp('2022-01-01 00:00:00'),
         updatedAt: helpers.date.writeTimestamp('2022-01-01 00:00:00'),
       },
@@ -104,7 +104,7 @@ describe('Contents', () => {
       const service = new ContentsService(tableName, { database: connection, schema });
 
       const data = await service.createContent(
-        { year: '2023', circuit: 'Monaco', is_shootout: false },
+        { year: '2023', circuit: 'Monaco', isShootout: false },
         Object.values(schema.models[tableName].fields)
       );
 
@@ -163,7 +163,7 @@ describe('Contents', () => {
         expect.objectContaining({
           year: '2023',
           circuit: 'Monaco',
-          is_shootout: false,
+          isShootout: false,
         })
       );
     });
@@ -179,12 +179,12 @@ describe('Contents', () => {
         {
           year: '2023',
           circuit: 'Monaco',
-          start_date: localTime,
+          startDate: localTime,
         },
         Object.values(schema.models[tableName].fields)
       );
       const result = await service.readOne(id);
-      const startDate = dayjs(result.start_date);
+      const startDate = dayjs(result.startDate);
 
       expect(startDate.format('YYYY-MM-DD HH:mm')).toBe(
         localTime.local().format('YYYY-MM-DD HH:mm')

@@ -23,7 +23,7 @@ router.get(
 
     const file = await service
       .readMany({
-        filter: { file_name_disk: { _eq: req.params.fileName } },
+        filter: { fileNameDisk: { _eq: req.params.fileName } },
       })
       .then((data) => data[0]);
 

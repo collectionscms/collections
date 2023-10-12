@@ -80,7 +80,7 @@ router.get(
 
     const permissionsService = new PermissionsService({ schema: req.schema });
     const permissions = await permissionsService.readMany({
-      filter: { role_id: { _eq: id } },
+      filter: { roleId: { _eq: id } },
     });
 
     res.json({ permissions });
@@ -94,7 +94,7 @@ router.post(
     const id = Number(req.params.id);
     const data = {
       ...req.body,
-      role_id: id,
+      roleId: id,
     };
 
     const permissionsService = new PermissionsService({ schema: req.schema });

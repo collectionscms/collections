@@ -6,8 +6,8 @@ describe('Project Settings Update', () => {
     expect(
       await updateProjectSetting().isValid({
         name: 'example',
-        before_login: 'Support Hours 9:00 - 18:00',
-        after_login: '<a href="#">Contact us</a>',
+        beforeLogin: 'Support Hours 9:00 - 18:00',
+        afterLogin: '<a href="#">Contact us</a>',
       })
     ).toEqual(true);
   });

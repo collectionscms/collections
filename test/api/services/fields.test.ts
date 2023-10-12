@@ -64,7 +64,7 @@ describe('Field', () => {
       const field = {
         ...fieldData,
         modelId: schema.models[modelName].id,
-        field: 'team_name',
+        field: 'teamName',
         label: 'Team Name',
       } as Omit<Field, 'id'>;
 
@@ -137,7 +137,7 @@ describe('Field', () => {
 
       const field = await service
         .readMany({
-          filter: { field: { _eq: 'team_name' } },
+          filter: { field: { _eq: 'teamName' } },
         })
         .then((data) => data[0]);
 

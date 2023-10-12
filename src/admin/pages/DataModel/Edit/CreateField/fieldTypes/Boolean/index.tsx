@@ -34,7 +34,7 @@ export const BooleanType: React.FC<Props> = (props) => {
     field: '',
     label: '',
     required: false,
-    default_value: false,
+    defaultValue: false,
   };
   const {
     control,
@@ -60,14 +60,14 @@ export const BooleanType: React.FC<Props> = (props) => {
       reset(form);
       const field = await trigger({
         model: model.model,
-        model_id: model.id,
+        modelId: model.id,
         field: form.field,
         label: form.label,
         interface: 'boolean',
         required: form.required,
         readonly: false,
         hidden: false,
-        options: { default_value: form.default_value },
+        options: { defaultValue: form.defaultValue },
       });
       onSuccess(field!);
     } catch (e) {
@@ -130,13 +130,13 @@ export const BooleanType: React.FC<Props> = (props) => {
               <Stack spacing={1}>
                 <InputLabel>{t('default_value')}</InputLabel>
                 <Controller
-                  name="default_value"
+                  name="defaultValue"
                   control={control}
                   render={({ field }) => (
                     <FormControlLabel {...field} label={t('enabled')} control={<Checkbox />} />
                   )}
                 />
-                <FormHelperText error>{errors.default_value?.message}</FormHelperText>
+                <FormHelperText error>{errors.defaultValue?.message}</FormHelperText>
               </Stack>
             </Grid>
             <Grid xs={1} sm={2}>

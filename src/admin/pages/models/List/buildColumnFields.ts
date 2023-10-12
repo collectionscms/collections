@@ -30,7 +30,7 @@ const toType = (model: Model, field: Field): CellType => {
     case 'selectDropdownStatus':
       const choices: StatusChoices = {};
 
-      for (const choice of field.field_option?.choices || []) {
+      for (const choice of field.fieldOption?.choices || []) {
         if (choice.value === model.draftValue) {
           choices[choice.value] = { status: 'draft', choice };
         } else if (choice.value === model.publishValue) {

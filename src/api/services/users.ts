@@ -29,11 +29,11 @@ export class UsersService extends BaseService<User> {
 
     const user = await this.database
       .select('u.id', 'u.name', 'u.password', 'u.email', 'u.apiKey', {
-        role_id: 'r.id',
+        roleId: 'r.id',
         adminAccess: 'r.adminAccess',
       })
       .from(`${this.model} AS u`)
-      .join(`${rolesService.model} AS r`, 'r.id', 'u.role_id')
+      .join(`${rolesService.model} AS r`, 'r.id', 'u.roleId')
       .whereRaw('LOWER(??) = ?', ['u.email', email.toLowerCase()])
       .first();
 
@@ -41,7 +41,7 @@ export class UsersService extends BaseService<User> {
       throw new InvalidCredentialsException('incorrect_email_or_password');
     }
 
-    const role = await rolesService.readOne(user.role_id);
+    const role = await rolesService.readOne(user.roleId);
 
     return this.toAuthUser(
       user.id,

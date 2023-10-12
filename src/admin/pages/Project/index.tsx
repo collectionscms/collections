@@ -31,8 +31,8 @@ const ProjectImpl: React.FC = () => {
   } = useForm<FormValues>({
     defaultValues: {
       name: projectSetting.name,
-      before_login: projectSetting.beforeLogin,
-      after_login: projectSetting.afterLogin,
+      beforeLogin: projectSetting.beforeLogin,
+      afterLogin: projectSetting.afterLogin,
     },
     resolver: yupResolver(updateProjectSettingSchema()),
   });
@@ -58,14 +58,14 @@ const ProjectImpl: React.FC = () => {
               <Grid container spacing={3}>
                 <Grid xs={12} sm={6}>
                   <Stack spacing={1}>
-                    <InputLabel htmlFor="project_name">{t('project_name')}</InputLabel>
+                    <InputLabel htmlFor="projectName">{t('project_name')}</InputLabel>
                     <Controller
                       name="name"
                       control={control}
                       render={({ field }) => (
                         <TextField
                           {...field}
-                          id="project_name"
+                          id="projectName"
                           type="text"
                           fullWidth
                           placeholder={`${t('input_placeholder')} Collections`}
@@ -78,36 +78,36 @@ const ProjectImpl: React.FC = () => {
                 </Grid>
                 <Grid xs={12}>
                   <Stack spacing={1}>
-                    <InputLabel htmlFor="before_login">{t('login_top_label')}</InputLabel>
+                    <InputLabel htmlFor="beforeLogin">{t('login_top_label')}</InputLabel>
                     <Controller
-                      name="before_login"
+                      name="beforeLogin"
                       control={control}
                       render={({ field }) => (
                         <TextField
                           {...field}
-                          id="before_login"
+                          id="beforeLogin"
                           type="text"
                           multiline
                           rows={2}
                           fullWidth
                           placeholder={`${t('input_placeholder')} Support Hours 9:00 - 18:00`}
-                          error={errors.before_login !== undefined}
+                          error={errors.beforeLogin !== undefined}
                         />
                       )}
                     />
-                    <FormHelperText error>{errors.before_login?.message}</FormHelperText>
+                    <FormHelperText error>{errors.beforeLogin?.message}</FormHelperText>
                   </Stack>
                 </Grid>
                 <Grid xs={12}>
                   <Stack spacing={1}>
-                    <InputLabel htmlFor="after_login">{t('login_bottom_label')}</InputLabel>
+                    <InputLabel htmlFor="afterLogin">{t('login_bottom_label')}</InputLabel>
                     <Controller
-                      name="after_login"
+                      name="afterLogin"
                       control={control}
                       render={({ field }) => (
                         <TextField
                           {...field}
-                          id="after_login"
+                          id="afterLogin"
                           type="text"
                           multiline
                           rows={2}
@@ -115,11 +115,11 @@ const ProjectImpl: React.FC = () => {
                           placeholder={`${t(
                             'input_placeholder'
                           )} Copyright © ${dayjs().year()} Your Company.`}
-                          error={errors.after_login !== undefined}
+                          error={errors.afterLogin !== undefined}
                         />
                       )}
                     />
-                    <FormHelperText error>{errors.after_login?.message}</FormHelperText>
+                    <FormHelperText error>{errors.afterLogin?.message}</FormHelperText>
                   </Stack>
                 </Grid>
                 <Grid xs={12}>

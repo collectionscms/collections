@@ -36,7 +36,7 @@ export const seedProduction = async (email: string, password: string): Promise<v
     // Project
     Output.info('Creating project settings...');
     await database('CollectionsProjectSettings').insert([
-      { name: 'Collections', before_login: '', after_login: '' },
+      { name: 'Collections', beforeLogin: '', afterLogin: '' },
     ]);
 
     process.exit(0);
