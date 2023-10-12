@@ -6,7 +6,7 @@ import { testDatabases } from '../../../utilities/testDatabases.js';
 import { User } from '../../../../src/api/database/schemas.js';
 
 describe('Create One', () => {
-  const tableName = 'collections_users';
+  const tableName = 'CollectionsUsers';
   const databases = new Map<string, Knex>();
   const data: Omit<User, 'id'> = {
     name: 'Lewis Hamilton',

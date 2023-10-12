@@ -5,7 +5,7 @@ import { AbstractServiceOptions, BaseService } from './base.js';
 
 export class FilesService extends BaseService<File> {
   constructor(options: AbstractServiceOptions) {
-    super('collections_files', options);
+    super('CollectionsFiles', options);
   }
 
   /**

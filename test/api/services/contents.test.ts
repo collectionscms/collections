@@ -28,7 +28,7 @@ describe('Contents', () => {
     const connection = databases.get(database)!;
     const helpers = getHelpers(connection);
 
-    await connection('collections_models').insert([
+    await connection('CollectionsModels').insert([
       {
         model: tableName,
         singleton: false,
@@ -36,7 +36,7 @@ describe('Contents', () => {
       },
     ]);
 
-    await connection('collections_fields').insert([
+    await connection('CollectionsFields').insert([
       {
         model: tableName,
         field: 'id',

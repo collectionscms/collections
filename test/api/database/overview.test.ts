@@ -27,22 +27,22 @@ describe('Schema Overview', () => {
       expect(Object.keys(overview.models)).toEqual(
         expect.arrayContaining([
           'model_f1_grand_prix_races',
-          'collections_roles',
-          'collections_users',
-          'collections_permissions',
-          'collections_models',
-          'collections_fields',
-          'collections_relations',
-          'collections_project_settings',
-          'collections_files',
+          'CollectionsRoles',
+          'CollectionsUsers',
+          'CollectionsPermissions',
+          'CollectionsModels',
+          'CollectionsFields',
+          'CollectionsRelations',
+          'CollectionsProjectSettings',
+          'CollectionsFiles',
         ])
       );
 
       // check meta model overview
-      const meta = overview.models['collections_models'];
+      const meta = overview.models['CollectionsModels'];
       expect(meta).toEqual({
-        id: overview.models['collections_models'].id,
-        model: 'collections_models',
+        id: overview.models['CollectionsModels'].id,
+        model: 'CollectionsModels',
         singleton: false,
         statusField: null,
         draftValue: null,

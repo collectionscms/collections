@@ -8,7 +8,7 @@ import { RelationsService } from './relations.js';
 
 export class FieldsService extends BaseService<Field> {
   constructor(options: AbstractServiceOptions) {
-    super('collections_fields', options);
+    super('CollectionsFields', options);
   }
 
   /**
@@ -231,7 +231,7 @@ export class FieldsService extends BaseService<Field> {
     // TODO add to applyFilter
     const fields = await this.database
       .select('id')
-      .from('collections_fields')
+      .from('CollectionsFields')
       .where('model', model)
       .whereRaw('LOWER(??) = ?', ['field', field.toLowerCase()]);
 
@@ -273,7 +273,7 @@ export class FieldsService extends BaseService<Field> {
           .unsigned()
           .index()
           .references('id')
-          .inTable('collections_files');
+          .inTable('CollectionsFiles');
         break;
       case 'listOneToMany':
         // noop

@@ -7,7 +7,7 @@ import { config } from '../../../config.js';
 import { testDatabases } from '../../../utilities/testDatabases.js';
 
 describe('Read By Id', () => {
-  const tableName = 'collections_users';
+  const tableName = 'CollectionsUsers';
   const databases = new Map<string, Knex>();
   const data: Omit<User, 'id'> = {
     name: 'Fernando Alonso',

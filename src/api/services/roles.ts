@@ -6,7 +6,7 @@ import { UsersService } from './users.js';
 
 export class RolesService extends BaseService<Role> {
   constructor(options: AbstractServiceOptions) {
-    super('collections_roles', options);
+    super('CollectionsRoles', options);
   }
 
   /**

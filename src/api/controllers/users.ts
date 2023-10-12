@@ -15,7 +15,7 @@ const router = express.Router();
 
 router.get(
   '/users',
-  permissionsHandler([{ model: 'collections_users', action: 'read' }]),
+  permissionsHandler([{ model: 'CollectionsUsers', action: 'read' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const service = new UsersService({ schema: req.schema });
     const users = await service.readWithRole();
@@ -28,7 +28,7 @@ router.get(
 
 router.get(
   '/users/:id',
-  permissionsHandler([{ model: 'collections_users', action: 'read' }]),
+  permissionsHandler([{ model: 'CollectionsUsers', action: 'read' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const id = Number(req.params.id);
 
@@ -45,7 +45,7 @@ router.get(
 
 router.post(
   '/users',
-  permissionsHandler([{ model: 'collections_users', action: 'create' }]),
+  permissionsHandler([{ model: 'CollectionsUsers', action: 'create' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const service = new UsersService({ schema: req.schema });
     await service.checkUniqueEmail(req.body.email);
@@ -64,7 +64,7 @@ router.post(
 
 router.patch(
   '/users/:id',
-  permissionsHandler([{ model: 'collections_users', action: 'update' }]),
+  permissionsHandler([{ model: 'CollectionsUsers', action: 'update' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const id = Number(req.params.id);
 
@@ -83,7 +83,7 @@ router.patch(
 
 router.delete(
   '/users/:id',
-  permissionsHandler([{ model: 'collections_users', action: 'delete' }]),
+  permissionsHandler([{ model: 'CollectionsUsers', action: 'delete' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const id = Number(req.params.id);
     if (req.userId === id) {

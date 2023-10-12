@@ -4,7 +4,7 @@ import { getHelpers } from '../../../src/api/database/helpers/index.js';
 export const seed = async (database: Knex): Promise<void> => {
   const helpers = getHelpers(database);
 
-  return await database('collections_users').insert([
+  return await database('CollectionsUsers').insert([
     {
       name: 'Michael Schumacher',
       email: 'michael@collections.dev',

@@ -3,7 +3,7 @@ import { Knex } from 'knex';
 export const seed = async (database: Knex): Promise<void> => {
   const modelName = 'model_f1_grand_prix_races';
 
-  await database('collections_models').insert([
+  await database('CollectionsModels').insert([
     {
       model: modelName,
       singleton: false,
@@ -11,7 +11,7 @@ export const seed = async (database: Knex): Promise<void> => {
     },
   ]);
 
-  await database('collections_fields').insert([
+  await database('CollectionsFields').insert([
     {
       model: modelName,
       field: 'id',

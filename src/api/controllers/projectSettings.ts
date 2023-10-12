@@ -19,7 +19,7 @@ router.get(
 
 router.patch(
   '/project-settings',
-  permissionsHandler([{ model: 'collections_project_settings', action: 'update' }]),
+  permissionsHandler([{ model: 'CollectionsProjectSettings', action: 'update' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const service = new ProjectSettingsService({
       schema: req.schema,

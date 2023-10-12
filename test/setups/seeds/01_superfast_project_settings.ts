@@ -4,7 +4,7 @@ import { getHelpers } from '../../../src/api/database/helpers/index.js';
 export const seed = async (database: Knex): Promise<void> => {
   const helpers = getHelpers(database);
 
-  return await database('collections_project_settings').insert([
+  return await database('CollectionsProjectSettings').insert([
     {
       name: 'collections',
       before_login: 'Support Hours 9:00 - 18:00',

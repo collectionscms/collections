@@ -1,7 +1,7 @@
 import { Knex } from 'knex';
 
 export const up = async (knex: Knex): Promise<void> => {
-  await knex.schema.createTable('collections_roles', (table) => {
+  await knex.schema.createTable('CollectionsRoles', (table) => {
     table.increments('id').primary().notNullable();
     table.string('name', 255).notNullable();
     table.string('description', 255);
@@ -9,7 +9,7 @@ export const up = async (knex: Knex): Promise<void> => {
     table.timestamps(true, true);
   });
 
-  await knex.schema.createTable('collections_users', (table) => {
+  await knex.schema.createTable('CollectionsUsers', (table) => {
     table.increments('id').primary().notNullable();
     table.string('name', 255).notNullable();
     table.string('email', 255).unique().notNullable();
@@ -18,11 +18,11 @@ export const up = async (knex: Knex): Promise<void> => {
     table.string('reset_password_token', 255);
     table.string('reset_password_expiration', 255);
     table.string('api_key', 255);
-    table.integer('role_id').unsigned().index().references('id').inTable('collections_roles');
+    table.integer('role_id').unsigned().index().references('id').inTable('CollectionsRoles');
     table.timestamps(true, true);
   });
 
-  await knex.schema.createTable('collections_models', (table) => {
+  await knex.schema.createTable('CollectionsModels', (table) => {
     table.increments('id').primary().notNullable();
     table.string('model', 64).notNullable();
     table.boolean('singleton').notNullable().defaultTo(0);
@@ -35,20 +35,20 @@ export const up = async (knex: Knex): Promise<void> => {
     table.timestamps(true, true);
   });
 
-  await knex.schema.createTable('collections_permissions', (table) => {
+  await knex.schema.createTable('CollectionsPermissions', (table) => {
     table.increments('id').primary().notNullable();
     table.string('model', 255).notNullable();
-    table.integer('model_id').unsigned().index().references('id').inTable('collections_models');
+    table.integer('model_id').unsigned().index().references('id').inTable('CollectionsModels');
     table.string('action', 255).notNullable();
-    table.integer('role_id').unsigned().index().references('id').inTable('collections_roles');
+    table.integer('role_id').unsigned().index().references('id').inTable('CollectionsRoles');
     table.timestamps(true, true);
     table.unique(['model', 'action', 'role_id']);
   });
 
-  await knex.schema.createTable('collections_fields', (table) => {
+  await knex.schema.createTable('CollectionsFields', (table) => {
     table.increments('id').primary().notNullable();
     table.string('model', 64).notNullable();
-    table.integer('model_id').unsigned().index().references('id').inTable('collections_models');
+    table.integer('model_id').unsigned().index().references('id').inTable('CollectionsModels');
     table.string('field', 64).notNullable();
     table.string('label', 64).notNullable();
     table.string('special', 64);
@@ -61,23 +61,18 @@ export const up = async (knex: Knex): Promise<void> => {
     table.timestamps(true, true);
   });
 
-  await knex.schema.createTable('collections_relations', (table) => {
+  await knex.schema.createTable('CollectionsRelations', (table) => {
     table.increments('id').primary().notNullable();
     table.string('many_model', 64).notNullable();
-    table
-      .integer('many_model_id')
-      .unsigned()
-      .index()
-      .references('id')
-      .inTable('collections_models');
+    table.integer('many_model_id').unsigned().index().references('id').inTable('CollectionsModels');
     table.string('many_field', 64).notNullable();
     table.string('one_model', 64).notNullable();
-    table.integer('one_model_id').unsigned().index().references('id').inTable('collections_models');
+    table.integer('one_model_id').unsigned().index().references('id').inTable('CollectionsModels');
     table.string('one_field', 64).notNullable();
     table.timestamps(true, true);
   });
 
-  await knex.schema.createTable('collections_project_settings', (table) => {
+  await knex.schema.createTable('CollectionsProjectSettings', (table) => {
     table.increments('id').primary().notNullable();
     table.string('name', 100).notNullable();
     table.text('before_login');
@@ -85,7 +80,7 @@ export const up = async (knex: Knex): Promise<void> => {
     table.timestamps(true, true);
   });
 
-  await knex.schema.createTable('collections_files', (table) => {
+  await knex.schema.createTable('CollectionsFiles', (table) => {
     table.increments('id').primary().notNullable();
     table.string('storage', 64).notNullable();
     table.string('file_name', 255).notNullable();
@@ -99,31 +94,31 @@ export const up = async (knex: Knex): Promise<void> => {
 };
 
 export const down = async (knex: Knex): Promise<void> => {
-  await knex.schema.table('collections_permissions', (table) => {
+  await knex.schema.table('CollectionsPermissions', (table) => {
     table.dropForeign(['role_id']);
     table.dropForeign(['model_id']);
   });
 
-  await knex.schema.table('collections_fields', (table) => {
+  await knex.schema.table('CollectionsFields', (table) => {
     table.dropForeign('model_id');
   });
 
-  await knex.schema.table('collections_relations', (table) => {
+  await knex.schema.table('CollectionsRelations', (table) => {
     table.dropForeign('many_model_id');
     table.dropForeign('one_model_id');
   });
 
-  await knex.schema.table('collections_users', (table) => {
+  await knex.schema.table('CollectionsUsers', (table) => {
     table.dropForeign('role_id');
   });
 
   await knex.schema
-    .dropTable('collections_roles')
-    .dropTable('collections_users')
-    .dropTable('collections_permissions')
-    .dropTable('collections_models')
-    .dropTable('collections_fields')
-    .dropTable('collections_relations')
-    .dropTable('collections_project_settings')
-    .dropTable('collections_files');
+    .dropTable('CollectionsRoles')
+    .dropTable('CollectionsUsers')
+    .dropTable('CollectionsPermissions')
+    .dropTable('CollectionsModels')
+    .dropTable('CollectionsFields')
+    .dropTable('CollectionsRelations')
+    .dropTable('CollectionsProjectSettings')
+    .dropTable('CollectionsFiles');
 };

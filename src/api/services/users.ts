@@ -14,7 +14,7 @@ export type Me = {
 
 export class UsersService extends BaseService<User> {
   constructor(options: AbstractServiceOptions) {
-    super('collections_users', options);
+    super('CollectionsUsers', options);
   }
 
   /**

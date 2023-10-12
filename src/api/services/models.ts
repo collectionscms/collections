@@ -7,7 +7,7 @@ import { RelationsService } from './relations.js';
 
 export class ModelsService extends BaseService<Model> {
   constructor(options: AbstractServiceOptions) {
-    super('collections_models', options);
+    super('CollectionsModels', options);
   }
 
   /**
@@ -235,7 +235,7 @@ export class ModelsService extends BaseService<Model> {
     // TODO add to applyFilter
     const models = await this.database
       .select('id')
-      .from('collections_models')
+      .from('CollectionsModels')
       .whereRaw('LOWER(??) = ?', ['model', model.toLowerCase()]);
 
     if (models.length) {

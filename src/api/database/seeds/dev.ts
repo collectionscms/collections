@@ -31,13 +31,13 @@ export const seedDev = async (): Promise<void> => {
 };
 
 const resetAll = async (database: Knex): Promise<void> => {
-  await database('collections_roles').delete();
-  await database('collections_users').delete();
-  await database('collections_permissions').delete();
-  await database('collections_models').delete();
-  await database('collections_fields').delete();
-  await database('collections_relations').delete();
-  await database('collections_project_settings').delete();
+  await database('CollectionsRoles').delete();
+  await database('CollectionsUsers').delete();
+  await database('CollectionsPermissions').delete();
+  await database('CollectionsModels').delete();
+  await database('CollectionsFields').delete();
+  await database('CollectionsRelations').delete();
+  await database('CollectionsProjectSettings').delete();
   await database.schema.dropTableIfExists('articles');
   await database.schema.dropTableIfExists('companies');
 };
@@ -100,7 +100,7 @@ const seedingSystemData = async (database: Knex): Promise<void> => {
   );
 
   // Fields: Article
-  Output.info('Creating Article fields...');
+  Output.info('Creating article fields...');
   await fieldsService.createField({
     model: 'articles',
     model_id: articleId,
@@ -144,7 +144,7 @@ const seedingSystemData = async (database: Knex): Promise<void> => {
   });
 
   // model: Company
-  Output.info('Creating Company model...');
+  Output.info('Creating company model...');
   const companyId = await modelsService.createModel(
     {
       model: 'companies',
@@ -160,7 +160,7 @@ const seedingSystemData = async (database: Knex): Promise<void> => {
   );
 
   // Fields: Company
-  Output.info('Creating Company fields...');
+  Output.info('Creating company fields...');
   await fieldsService.createField({
     model: 'companies',
     model_id: companyId,

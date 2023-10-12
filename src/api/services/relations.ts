@@ -3,7 +3,7 @@ import { AbstractServiceOptions, BaseService } from './base.js';
 
 export class RelationsService extends BaseService<Relation> {
   constructor(options: AbstractServiceOptions) {
-    super('collections_relations', options);
+    super('CollectionsRelations', options);
   }
 
   /**
