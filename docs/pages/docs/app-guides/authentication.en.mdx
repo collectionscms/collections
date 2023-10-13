@@ -12,8 +12,8 @@ Collections provides a REST API to manage data in the database; the API relies o
 
 There are two types of tokens that can be used to authenticate Collections.
 
-**Temporary Token (JWT)** are returned by the login endpoint. These tokens have a relatively short expiration date and are the safest to use.
-The token is returned with the `refresh_token`. This `refresh_token` can be used by the refresh endpoint to obtain a new access token.
+**Temporary Token (JWT)** are returned by the login endpoint as `token`. These tokens have a relatively short expiration date and are the safest to use.
+A `refreshToken` is returned with the `token` and can be used by the refresh endpoint to obtain a new token.
 
 **API key** can be set per platform user and do not expire. Although insecure, it is very useful for server-to-server communication.
 API keys are stored in plain text in `CollectionsUsers.apiKey`.
