@@ -1,8 +1,24 @@
 import { RedocStandalone } from 'redoc';
+import { useData } from 'nextra/data';
+
+export const getStaticProps = ({ params }) => {
+  return fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/openapi`)
+    .then((res) => res.json())
+    .then((repo) => ({
+      props: {
+        ssg: repo,
+      },
+    }));
+};
+
+export const Redoc = () => {
+  const data = useData();
+  return <RedocStandalone spec={data} />;
+};
 
 # API
 
 > API reference available to general users. Administrators have access to all APIs provided by the platform.
 
 <br />
-<RedocStandalone specUrl="/api/openapi" />
+<Redoc />
