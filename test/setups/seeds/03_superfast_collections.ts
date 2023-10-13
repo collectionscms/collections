@@ -1,9 +1,9 @@
 import { Knex } from 'knex';
 
 export const seed = async (database: Knex): Promise<void> => {
-  const modelName = 'model_f1_grand_prix_races';
+  const modelName = 'ModelF1GrandPrixRaces';
 
-  await database('collections_models').insert([
+  await database('CollectionsModels').insert([
     {
       model: modelName,
       singleton: false,
@@ -11,7 +11,7 @@ export const seed = async (database: Knex): Promise<void> => {
     },
   ]);
 
-  await database('collections_fields').insert([
+  await database('CollectionsFields').insert([
     {
       model: modelName,
       field: 'id',
@@ -38,19 +38,19 @@ export const seed = async (database: Knex): Promise<void> => {
     },
     {
       model: modelName,
-      field: 'is_shootout',
+      field: 'isShootout',
       label: 'Shootout',
       interface: 'boolean',
     },
     {
       model: modelName,
-      field: 'created_at',
+      field: 'createdAt',
       label: 'Created At',
       interface: 'dateTime',
     },
     {
       model: modelName,
-      field: 'updated_at',
+      field: 'updatedAt',
       label: 'Updated At',
       interface: 'dateTime',
     },
@@ -58,10 +58,10 @@ export const seed = async (database: Knex): Promise<void> => {
 
   await database.schema.createTable(modelName, (table) => {
     table.increments();
-    table.timestamps(true, true);
+    table.timestamps(true, true, true);
     table.string('year', 255);
     table.string('round', 255);
     table.string('circuit', 255);
-    table.boolean('is_shootout');
+    table.boolean('isShootout');
   });
 };

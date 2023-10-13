@@ -38,7 +38,7 @@ router.get(
 
 router.post(
   '/models',
-  permissionsHandler([{ model: 'collections_models', action: 'create' }]),
+  permissionsHandler([{ model: 'CollectionsModels', action: 'create' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const { ['status']: status, ...data } = req.body;
 
@@ -51,7 +51,7 @@ router.post(
 
 router.patch(
   '/models/:id',
-  permissionsHandler([{ model: 'collections_models', action: 'update' }]),
+  permissionsHandler([{ model: 'CollectionsModels', action: 'update' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const id = Number(req.params.id);
 
@@ -64,7 +64,7 @@ router.patch(
 
 router.delete(
   '/models/:id',
-  permissionsHandler([{ model: 'collections_models', action: 'delete' }]),
+  permissionsHandler([{ model: 'CollectionsModels', action: 'delete' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const id = Number(req.params.id);
 
@@ -78,7 +78,7 @@ router.delete(
 router.post(
   '/models/import',
   asyncHandler(multipartHandler),
-  permissionsHandler([{ model: 'collections_models', action: 'create' }]),
+  permissionsHandler([{ model: 'CollectionsModels', action: 'create' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const keys = res.locals.savedFileKeys;
     const filesService = new FilesService({ schema: req.schema });

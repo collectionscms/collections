@@ -10,7 +10,7 @@ type Transformers = {
 };
 
 const transformers: Transformers = {
-  async created_at({ action, value, helpers }) {
+  async createdAt({ action, value, helpers }) {
     switch (action) {
       case 'create':
         return helpers.date.writeTimestamp(new Date().toISOString());
@@ -23,7 +23,7 @@ const transformers: Transformers = {
         return value;
     }
   },
-  async updated_at({ action, value, helpers }) {
+  async updatedAt({ action, value, helpers }) {
     switch (action) {
       case 'create':
       case 'update':

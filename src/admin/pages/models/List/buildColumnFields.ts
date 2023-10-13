@@ -30,12 +30,12 @@ const toType = (model: Model, field: Field): CellType => {
     case 'selectDropdownStatus':
       const choices: StatusChoices = {};
 
-      for (const choice of field.field_option?.choices || []) {
-        if (choice.value === model.draft_value) {
+      for (const choice of field.fieldOption?.choices || []) {
+        if (choice.value === model.draftValue) {
           choices[choice.value] = { status: 'draft', choice };
-        } else if (choice.value === model.publish_value) {
+        } else if (choice.value === model.publishValue) {
           choices[choice.value] = { status: 'published', choice };
-        } else if (choice.value === model.archive_value) {
+        } else if (choice.value === model.archiveValue) {
           choices[choice.value] = { status: 'archived', choice };
         }
       }

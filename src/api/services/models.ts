@@ -7,7 +7,7 @@ import { RelationsService } from './relations.js';
 
 export class ModelsService extends BaseService<Model> {
   constructor(options: AbstractServiceOptions) {
-    super('collections_models', options);
+    super('CollectionsModels', options);
   }
 
   /**
@@ -22,10 +22,10 @@ export class ModelsService extends BaseService<Model> {
     const fullData: Omit<Model, 'id'> = status
       ? {
           ...data,
-          status_field: 'status',
-          draft_value: 'draft',
-          publish_value: 'published',
-          archive_value: 'archived',
+          statusField: 'status',
+          draftValue: 'draft',
+          publishValue: 'published',
+          archiveValue: 'archived',
         }
       : data;
 
@@ -35,7 +35,7 @@ export class ModelsService extends BaseService<Model> {
 
       await tx.schema.createTable(data.model, (table) => {
         table.increments();
-        table.timestamps(true, true);
+        table.timestamps(true, true, true);
         status && table.string('status').notNullable();
       });
 
@@ -59,13 +59,13 @@ export class ModelsService extends BaseService<Model> {
       const service = new ModelsService({ database: tx, schema: this.schema });
       await service.updateOne(key, data);
 
-      if (data.status_field) {
+      if (data.statusField) {
         const model = await service.readOne(key);
 
         const fieldsService = new FieldsService({ database: tx, schema: this.schema });
         const fields = await fieldsService.readMany({
           filter: {
-            _and: [{ model: { _eq: model.model } }, { field: { _eq: data.status_field } }],
+            _and: [{ model: { _eq: model.model } }, { field: { _eq: data.statusField } }],
           },
         });
 
@@ -74,9 +74,9 @@ export class ModelsService extends BaseService<Model> {
           required: true,
           options: JSON.stringify({
             choices: [
-              { label: data.draft_value, value: data.draft_value },
-              { label: data.publish_value, value: data.publish_value },
-              { label: data.archive_value, value: data.archive_value },
+              { label: data.draftValue, value: data.draftValue },
+              { label: data.publishValue, value: data.publishValue },
+              { label: data.archiveValue, value: data.archiveValue },
             ],
           }),
         });
@@ -121,20 +121,20 @@ export class ModelsService extends BaseService<Model> {
       const relationsService = new RelationsService({ database: tx, schema: this.schema });
 
       const oneRelations = await relationsService.readMany({
-        filter: { one_model: { _eq: model.model } },
+        filter: { oneModel: { _eq: model.model } },
       });
 
       for (let relation of oneRelations) {
-        await fieldsService.executeFieldDelete(tx, relation.many_model, relation.many_field);
+        await fieldsService.executeFieldDelete(tx, relation.manyModel, relation.manyField);
       }
 
       // Delete one relation fields
       const manyRelations = await relationsService.readMany({
-        filter: { many_model: { _eq: model.model } },
+        filter: { manyModel: { _eq: model.model } },
       });
 
       for (let relation of manyRelations) {
-        await fieldsService.executeFieldDelete(tx, relation.one_model, relation.one_field);
+        await fieldsService.executeFieldDelete(tx, relation.oneModel, relation.oneField);
       }
 
       // Delete relations
@@ -167,7 +167,7 @@ export class ModelsService extends BaseService<Model> {
     const fields: Omit<Field, 'id'>[] = [
       {
         model: data.model,
-        model_id: modelId,
+        modelId: modelId,
         field: 'id',
         label: 'id',
         interface: 'input',
@@ -180,8 +180,8 @@ export class ModelsService extends BaseService<Model> {
       },
       {
         model: data.model,
-        model_id: modelId,
-        field: 'created_at',
+        modelId: modelId,
+        field: 'createdAt',
         label: 'Created At',
         interface: 'dateTime',
         required: true,
@@ -193,8 +193,8 @@ export class ModelsService extends BaseService<Model> {
       },
       {
         model: data.model,
-        model_id: modelId,
-        field: 'updated_at',
+        modelId: modelId,
+        field: 'updatedAt',
         label: 'Updated At',
         interface: 'dateTime',
         required: true,
@@ -209,7 +209,7 @@ export class ModelsService extends BaseService<Model> {
     if (hasStatus) {
       fields.push({
         model: data.model,
-        model_id: modelId,
+        modelId: modelId,
         field: 'status',
         label: 'Status',
         interface: 'selectDropdownStatus',
@@ -235,7 +235,7 @@ export class ModelsService extends BaseService<Model> {
     // TODO add to applyFilter
     const models = await this.database
       .select('id')
-      .from('collections_models')
+      .from('CollectionsModels')
       .whereRaw('LOWER(??) = ?', ['model', model.toLowerCase()]);
 
     if (models.length) {

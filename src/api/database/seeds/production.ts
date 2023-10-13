@@ -15,7 +15,7 @@ export const seedProduction = async (email: string, password: string): Promise<v
     // Role
     Output.info('Creating roles...');
     await rolesService.createMany([
-      { name: 'Administrator', description: 'Administrator', admin_access: true },
+      { name: 'Administrator', description: 'Administrator', adminAccess: true },
     ] as any[]);
 
     // User
@@ -28,15 +28,15 @@ export const seedProduction = async (email: string, password: string): Promise<v
         name: 'admin',
         email,
         password: hashed,
-        is_active: true,
-        role_id: adminRole!.id,
+        isActive: true,
+        roleId: adminRole!.id,
       },
     ] as any[]);
 
     // Project
     Output.info('Creating project settings...');
-    await database('collections_project_settings').insert([
-      { name: 'Collections', before_login: '', after_login: '' },
+    await database('CollectionsProjectSettings').insert([
+      { name: 'Collections', beforeLogin: '', afterLogin: '' },
     ]);
 
     process.exit(0);

@@ -64,19 +64,19 @@ export const getSchemaOverview = async (options?: { database?: Knex }): Promise<
       id: metaModel ? metaModel.id : null,
       model: model,
       singleton: metaModel && metaModel.singleton ? true : false,
-      statusField: metaModel ? metaModel.status_field : null,
-      draftValue: metaModel ? metaModel.draft_value : null,
-      publishValue: metaModel ? metaModel.publish_value : null,
-      archiveValue: metaModel ? metaModel.archive_value : null,
+      statusField: metaModel ? metaModel.statusField : null,
+      draftValue: metaModel ? metaModel.draftValue : null,
+      publishValue: metaModel ? metaModel.publishValue : null,
+      archiveValue: metaModel ? metaModel.archiveValue : null,
       source: metaModel ? metaModel.source : null,
       fields: Object.values(info.columns).reduce(
         (acc, column) => {
-          const field = fields.find((f) => f.model === model && f.field === column.column_name);
+          const field = fields.find((f) => f.model === model && f.field === column.columnName);
 
-          acc[column.column_name] = {
-            field: column.column_name,
-            special: getSpecialField(field || null, column.data_type),
-            alias: info.columns[column.column_name] === undefined,
+          acc[column.columnName] = {
+            field: column.columnName,
+            special: getSpecialField(field || null, column.dataType),
+            alias: info.columns[column.columnName] === undefined,
           };
           return acc;
         },
@@ -107,10 +107,10 @@ export const getSchemaOverview = async (options?: { database?: Knex }): Promise<
 
   schema.relations = relations.map((relation) => {
     return {
-      model: relation.one_model,
-      field: relation.one_field,
-      relatedField: relation.many_field,
-      relatedModel: relation.many_model,
+      model: relation.oneModel,
+      field: relation.oneField,
+      relatedField: relation.manyField,
+      relatedModel: relation.manyModel,
     };
   });
 

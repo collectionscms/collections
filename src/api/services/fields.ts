@@ -8,7 +8,7 @@ import { RelationsService } from './relations.js';
 
 export class FieldsService extends BaseService<Field> {
   constructor(options: AbstractServiceOptions) {
-    super('collections_fields', options);
+    super('CollectionsFields', options);
   }
 
   /**
@@ -21,7 +21,7 @@ export class FieldsService extends BaseService<Field> {
   async getFields(modelId: string): Promise<Field[]> {
     const fields = await this.readMany(
       {
-        filter: { model_id: { _eq: modelId } },
+        filter: { modelId: { _eq: modelId } },
       },
       [
         { column: 'sort', order: 'asc', nulls: 'last' },
@@ -106,7 +106,7 @@ export class FieldsService extends BaseService<Field> {
         fields.push(field as Field);
 
         await tx.schema.alterTable(field.model, (table) => {
-          this.addColumnToTable(field, table)?.references('id').inTable(relation.one_model);
+          this.addColumnToTable(field, table)?.references('id').inTable(relation.oneModel);
         });
       }
 
@@ -142,32 +142,32 @@ export class FieldsService extends BaseService<Field> {
       const fieldsService = new FieldsService({ database: tx, schema: this.schema });
       await fieldsService.deleteOne(key);
 
-      if (model.status_field === field.field) {
+      if (model.statusField === field.field) {
         const modelsService = new ModelsService({ database: tx, schema: this.schema });
-        await modelsService.updateOne(model.id, { status_field: null });
+        await modelsService.updateOne(model.id, { statusField: null });
       }
 
       // Delete many relation fields
       const relationsService = new RelationsService({ database: tx, schema: this.schema });
       const oneRelations = await relationsService.readMany({
         filter: {
-          _and: [{ one_model: { _eq: field.model } }, { one_field: { _eq: field.field } }],
+          _and: [{ oneModel: { _eq: field.model } }, { oneField: { _eq: field.field } }],
         },
       });
 
       for (let relation of oneRelations) {
-        await this.executeFieldDelete(tx, relation.many_model, relation.many_field);
+        await this.executeFieldDelete(tx, relation.manyModel, relation.manyField);
       }
 
       // Delete one relation fields
       const manyRelations = await relationsService.readMany({
         filter: {
-          _and: [{ many_model: { _eq: field.model } }, { many_field: { _eq: field.field } }],
+          _and: [{ manyModel: { _eq: field.model } }, { manyField: { _eq: field.field } }],
         },
       });
 
       for (let relation of manyRelations) {
-        await this.executeFieldDelete(tx, relation.one_model, relation.one_field);
+        await this.executeFieldDelete(tx, relation.oneModel, relation.oneField);
       }
 
       // Delete relations schema
@@ -231,7 +231,7 @@ export class FieldsService extends BaseService<Field> {
     // TODO add to applyFilter
     const fields = await this.database
       .select('id')
-      .from('collections_fields')
+      .from('CollectionsFields')
       .where('model', model)
       .whereRaw('LOWER(??) = ?', ['field', field.toLowerCase()]);
 
@@ -261,7 +261,7 @@ export class FieldsService extends BaseService<Field> {
         break;
       case 'boolean': {
         const value = field.options ? JSON.parse(field.options) : null;
-        column = table.boolean(field.field).defaultTo(value?.default_value || false);
+        column = table.boolean(field.field).defaultTo(value?.defaultValue || false);
         break;
       }
       case 'dateTime':
@@ -273,7 +273,7 @@ export class FieldsService extends BaseService<Field> {
           .unsigned()
           .index()
           .references('id')
-          .inTable('collections_files');
+          .inTable('CollectionsFiles');
         break;
       case 'listOneToMany':
         // noop

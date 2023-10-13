@@ -37,7 +37,7 @@ export const ListOneToManyTypeImpl: React.FC<Props> = ({
   return (
     <>
       <AddExistContents
-        modelId={meta.model_id.toString()}
+        modelId={meta.modelId.toString()}
         field={meta.field}
         excludes={watch(meta.field) || []}
         openState={addRelationsOpen}

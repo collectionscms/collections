@@ -54,7 +54,7 @@ const ProfilePageImpl: React.FC = () => {
       name: me.user.name,
       email: me.email,
       password: '',
-      api_key: '',
+      apiKey: '',
     },
     resolver: yupResolver(updateUserSchema(t)),
   });
@@ -65,18 +65,18 @@ const ProfilePageImpl: React.FC = () => {
   };
 
   const handleGenerateApiKey = () => {
-    setValue('api_key', uuidv4());
+    setValue('apiKey', uuidv4());
   };
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     if (!form.password) delete form.password;
-    if (!form.api_key) delete form.api_key;
+    if (!form.apiKey) delete form.apiKey;
 
     try {
       reset(form);
       await trigger(form);
       enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
-      if (form.api_key) updateApiKey(form.api_key);
+      if (form.apiKey) updateApiKey(form.apiKey);
     } catch (e) {
       logger.error(e);
     }
@@ -184,19 +184,17 @@ const ProfilePageImpl: React.FC = () => {
                 </Grid>
                 <Grid xs={12} sm={6}>
                   <Stack spacing={1}>
-                    <InputLabel htmlFor="api_key">{t('api_key')}</InputLabel>
+                    <InputLabel htmlFor="apiKey">{t('api_key')}</InputLabel>
                     <Controller
-                      name="api_key"
+                      name="apiKey"
                       control={control}
                       render={({ field }) => (
                         <TextField
                           {...field}
-                          id="api_key"
+                          id="apiKey"
                           type="text"
                           placeholder={
-                            me.api_key
-                              ? t('hidden_for_security')
-                              : t('generate_api_key_placeholder')
+                            me.apiKey ? t('hidden_for_security') : t('generate_api_key_placeholder')
                           }
                           fullWidth
                           InputProps={{
@@ -215,11 +213,11 @@ const ProfilePageImpl: React.FC = () => {
                               </InputAdornment>
                             ),
                           }}
-                          error={errors.api_key !== undefined}
+                          error={errors.apiKey !== undefined}
                         />
                       )}
                     />
-                    <FormHelperText error>{errors.api_key?.message}</FormHelperText>
+                    <FormHelperText error>{errors.apiKey?.message}</FormHelperText>
                   </Stack>
                 </Grid>
                 <Grid xs={12}>

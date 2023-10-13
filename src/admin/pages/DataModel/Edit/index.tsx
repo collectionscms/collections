@@ -64,10 +64,10 @@ const EditDataModelPageImpl: React.FC = () => {
     defaultValues: {
       hidden: Boolean(metaModel.hidden),
       singleton: Boolean(metaModel.singleton),
-      status_field: metaModel.status_field || '',
-      draft_value: metaModel.draft_value || '',
-      publish_value: metaModel.publish_value || '',
-      archive_value: metaModel.archive_value || '',
+      statusField: metaModel.statusField || '',
+      draftValue: metaModel.draftValue || '',
+      publishValue: metaModel.publishValue || '',
+      archiveValue: metaModel.archiveValue || '',
     },
     resolver: yupResolver(updateModelSchema()),
   });
@@ -257,7 +257,7 @@ const EditDataModelPageImpl: React.FC = () => {
                   <Stack spacing={1}>
                     <InputLabel>{t('public_status_field')}</InputLabel>
                     <Controller
-                      name="status_field"
+                      name="statusField"
                       control={control}
                       defaultValue={''}
                       render={({ field }) => (
@@ -265,7 +265,7 @@ const EditDataModelPageImpl: React.FC = () => {
                           {...field}
                           fullWidth
                           defaultValue={''}
-                          error={errors.status_field !== undefined}
+                          error={errors.statusField !== undefined}
                         >
                           <MenuItem value="">
                             <em>None</em>
@@ -280,61 +280,61 @@ const EditDataModelPageImpl: React.FC = () => {
                         </Select>
                       )}
                     />
-                    <FormHelperText error>{errors.status_field?.message}</FormHelperText>
+                    <FormHelperText error>{errors.statusField?.message}</FormHelperText>
                   </Stack>
                 </Grid>
                 <Grid xs={12} sm={6}>
                   <Stack spacing={1}>
                     <InputLabel>{t('draft')}</InputLabel>
                     <Controller
-                      name="draft_value"
+                      name="draftValue"
                       control={control}
                       render={({ field }) => (
                         <TextField
                           {...field}
                           type="text"
                           fullWidth
-                          error={errors.draft_value !== undefined}
+                          error={errors.draftValue !== undefined}
                         />
                       )}
                     />
-                    <FormHelperText error>{errors.draft_value?.message}</FormHelperText>
+                    <FormHelperText error>{errors.draftValue?.message}</FormHelperText>
                   </Stack>
                 </Grid>
                 <Grid xs={12} sm={6}>
                   <Stack spacing={1}>
                     <InputLabel>{t('published')}</InputLabel>
                     <Controller
-                      name="publish_value"
+                      name="publishValue"
                       control={control}
                       render={({ field }) => (
                         <TextField
                           {...field}
                           type="text"
                           fullWidth
-                          error={errors.publish_value !== undefined}
+                          error={errors.publishValue !== undefined}
                         />
                       )}
                     />
-                    <FormHelperText error>{errors.publish_value?.message}</FormHelperText>
+                    <FormHelperText error>{errors.publishValue?.message}</FormHelperText>
                   </Stack>
                 </Grid>
                 <Grid xs={12} sm={6}>
                   <Stack spacing={1}>
                     <InputLabel>{t('archived')}</InputLabel>
                     <Controller
-                      name="archive_value"
+                      name="archiveValue"
                       control={control}
                       render={({ field }) => (
                         <TextField
                           {...field}
                           type="text"
                           fullWidth
-                          error={errors.archive_value !== undefined}
+                          error={errors.archiveValue !== undefined}
                         />
                       )}
                     />
-                    <FormHelperText error>{errors.archive_value?.message}</FormHelperText>
+                    <FormHelperText error>{errors.archiveValue?.message}</FormHelperText>
                   </Stack>
                 </Grid>
                 <Grid xs={12}>

@@ -28,9 +28,9 @@ const AddExistContentsImpl: React.FC<Props> = ({
   const { data: relations } = getRelations(modelId, field);
   const relation = relations[0];
 
-  const { data: relatedModel } = getModel(relation.many_model_id.toString());
-  const { data: fields } = getFields(relation.many_model_id.toString());
-  const { data: content } = getContents(relation.many_model_id.toString());
+  const { data: relatedModel } = getModel(relation.manyModelId.toString());
+  const { data: fields } = getFields(relation.manyModelId.toString());
+  const { data: content } = getContents(relation.manyModelId.toString());
 
   // Convert to array in case of singleton.
   const contents: any[] = content && !Array.isArray(content) ? [content] : content;

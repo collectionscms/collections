@@ -12,9 +12,9 @@ describe('Users', () => {
     name: 'Max Verstappen',
     email: 'max@collections.dev',
     password: 'password',
-    is_active: true,
-    api_key: '1111-2222-4444',
-    role_id: 1,
+    isActive: true,
+    apiKey: '1111-2222-4444',
+    roleId: 1,
   };
 
   beforeAll(async () => {
@@ -45,10 +45,10 @@ describe('Users', () => {
         expect.objectContaining({
           name: 'Michael Schumacher',
           email: 'michael@collections.dev',
-          is_active: true,
-          role_id: 1,
-          role_name: 'Administrator',
-          role_admin_access: true,
+          isActive: true,
+          roleId: 1,
+          roleName: 'Administrator',
+          roleAdminAccess: true,
         })
       );
     });
@@ -71,7 +71,7 @@ describe('Users', () => {
       const unexpectedId = -1;
 
       const service = new UsersService({ database: connection, schema });
-      data.role_id = unexpectedId;
+      data.roleId = unexpectedId;
       const result = service.createOne(data);
 
       expect(result).rejects.toThrow();
@@ -94,8 +94,8 @@ describe('Users', () => {
       expect(result).toBeTruthy();
       expect(updatedUser.name).toBe('Schumi');
 
-      const before = new Date(user.updated_at!).getTime();
-      const after = new Date(updatedUser.updated_at!).getTime();
+      const before = new Date(user.updatedAt!).getTime();
+      const after = new Date(updatedUser.updatedAt!).getTime();
 
       expect(after).toBeGreaterThan(before);
     });

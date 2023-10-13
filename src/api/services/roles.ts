@@ -6,7 +6,7 @@ import { UsersService } from './users.js';
 
 export class RolesService extends BaseService<Role> {
   constructor(options: AbstractServiceOptions) {
-    super('collections_roles', options);
+    super('CollectionsRoles', options);
   }
 
   /**
@@ -15,15 +15,15 @@ export class RolesService extends BaseService<Role> {
    */
   async deleteWithPermissions(key: PrimaryKey): Promise<void> {
     const usersService = new UsersService({ schema: this.schema });
-    const users = await usersService.readMany({ filter: { role_id: { _eq: key } } });
+    const users = await usersService.readMany({ filter: { roleId: { _eq: key } } });
     if (users.length > 0) {
       throw new UnprocessableEntityException('can_not_delete_role_in_use');
     }
 
     const role = await this.readOne(key);
-    if (role.admin_access) {
+    if (role.adminAccess) {
       const roles = await this.readMany({
-        filter: { admin_access: { _eq: true } },
+        filter: { adminAccess: { _eq: true } },
       });
       if (roles.length === 1) {
         throw new UnprocessableEntityException('can_not_delete_last_admin_role');
@@ -40,7 +40,7 @@ export class RolesService extends BaseService<Role> {
       });
 
       const permissions = await permissionsService.readMany({
-        filter: { role_id: { _eq: key } },
+        filter: { roleId: { _eq: key } },
       });
 
       const keys = permissions.map((permission) => permission.id);

@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.get(
   '/roles',
-  permissionsHandler([{ model: 'collections_roles', action: 'read' }]),
+  permissionsHandler([{ model: 'CollectionsRoles', action: 'read' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const rolesService = new RolesService({ schema: req.schema });
     const roles = await rolesService.readMany();
@@ -20,7 +20,7 @@ router.get(
 
 router.get(
   '/roles/:id',
-  permissionsHandler([{ model: 'collections_roles', action: 'read' }]),
+  permissionsHandler([{ model: 'CollectionsRoles', action: 'read' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const id = Number(req.params.id);
 
@@ -35,7 +35,7 @@ router.get(
 
 router.post(
   '/roles',
-  permissionsHandler([{ model: 'collections_roles', action: 'create' }]),
+  permissionsHandler([{ model: 'CollectionsRoles', action: 'create' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const rolesService = new RolesService({ schema: req.schema });
     const roleId = await rolesService.createOne(req.body);
@@ -48,7 +48,7 @@ router.post(
 
 router.patch(
   '/roles/:id',
-  permissionsHandler([{ model: 'collections_roles', action: 'update' }]),
+  permissionsHandler([{ model: 'CollectionsRoles', action: 'update' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const id = Number(req.params.id);
 
@@ -61,7 +61,7 @@ router.patch(
 
 router.delete(
   '/roles/:id',
-  permissionsHandler([{ model: 'collections_roles', action: 'delete' }]),
+  permissionsHandler([{ model: 'CollectionsRoles', action: 'delete' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const id = Number(req.params.id);
 
@@ -80,7 +80,7 @@ router.get(
 
     const permissionsService = new PermissionsService({ schema: req.schema });
     const permissions = await permissionsService.readMany({
-      filter: { role_id: { _eq: id } },
+      filter: { roleId: { _eq: id } },
     });
 
     res.json({ permissions });
@@ -89,12 +89,12 @@ router.get(
 
 router.post(
   '/roles/:id/permissions',
-  permissionsHandler([{ model: 'collections_permissions', action: 'create' }]),
+  permissionsHandler([{ model: 'CollectionsPermissions', action: 'create' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const id = Number(req.params.id);
     const data = {
       ...req.body,
-      role_id: id,
+      roleId: id,
     };
 
     const permissionsService = new PermissionsService({ schema: req.schema });
@@ -108,7 +108,7 @@ router.post(
 
 router.delete(
   '/roles/:id/permissions/:permissionId',
-  permissionsHandler([{ model: 'collections_permissions', action: 'delete' }]),
+  permissionsHandler([{ model: 'CollectionsPermissions', action: 'delete' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const permissionId = Number(req.params.permissionId);
 

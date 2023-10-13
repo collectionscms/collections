@@ -1,10 +1,10 @@
 import { Knex } from 'knex';
 
 export const seed = async (database: Knex): Promise<void> => {
-  const modelName = 'model_f1_circuit_stats';
-  const belongingModelName = 'model_f1_grand_prix_races';
+  const modelName = 'ModelF1CircuitStats';
+  const belongingModelName = 'ModelF1GrandPrixRaces';
 
-  await database('collections_models').insert([
+  await database('CollectionsModels').insert([
     {
       model: modelName,
       singleton: false,
@@ -12,7 +12,7 @@ export const seed = async (database: Knex): Promise<void> => {
     },
   ]);
 
-  await database('collections_fields').insert([
+  await database('CollectionsFields').insert([
     {
       model: modelName,
       field: 'id',
@@ -27,46 +27,46 @@ export const seed = async (database: Knex): Promise<void> => {
     },
     {
       model: modelName,
-      field: 'created_at',
+      field: 'createdAt',
       label: 'Created At',
       interface: 'dateTime',
     },
     {
       model: modelName,
-      field: 'updated_at',
+      field: 'updatedAt',
       label: 'Updated At',
       interface: 'dateTime',
     },
     // one to many fields
     {
       model: belongingModelName,
-      field: 'circuit_stats',
+      field: 'circuitStats',
       label: 'Circuit Stats',
       interface: 'listOneToMany',
     },
     {
       model: modelName,
-      field: 'grand_prix_race_id',
+      field: 'grandPrixRaceId',
       label: 'Grand Prix Race',
       interface: 'selectDropdownManyToOne',
     },
   ]);
 
-  await database('collections_relations').insert([
+  await database('CollectionsRelations').insert([
     {
-      many_model: modelName,
-      many_field: 'grand_prix_race_id',
-      one_model: belongingModelName,
-      one_field: 'circuit_stats',
+      manyModel: modelName,
+      manyField: 'grandPrixRaceId',
+      oneModel: belongingModelName,
+      oneField: 'circuitStats',
     },
   ]);
 
   await database.schema.createTable(modelName, (table) => {
     table.increments();
-    table.timestamps(true, true);
+    table.timestamps(true, true, true);
     table.string('name', 255);
     table
-      .integer('grand_prix_race_id')
+      .integer('grandPrixRaceId')
       .unsigned()
       .index()
       .references('id')

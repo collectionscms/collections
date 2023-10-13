@@ -5,7 +5,7 @@ import { AbstractServiceOptions, BaseService } from './base.js';
 
 export class FilesService extends BaseService<File> {
   constructor(options: AbstractServiceOptions) {
-    super('collections_files', options);
+    super('CollectionsFiles', options);
   }
 
   /**
@@ -16,7 +16,7 @@ export class FilesService extends BaseService<File> {
    */
   async upload(buffer: Buffer, file: Omit<File, 'id'>): Promise<PrimaryKey> {
     const storage = getStorage(env.STORAGE_DRIVER);
-    await storage.put(file.file_name_disk, buffer);
+    await storage.put(file.fileNameDisk, buffer);
 
     const fileId = await this.createOne(file);
     return fileId;

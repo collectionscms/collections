@@ -472,15 +472,15 @@ components:
       properties:
         id:
           $ref: '#/components/schemas/id'
-        role_id:
+        roleId:
           $ref: '#/components/schemas/id'
         name:
           type: string
           example: 'Schumi'
-        admin_access:
+        adminAccess:
           type: boolean
           example: true
-        app_access:
+        appAccess:
           type: boolean
           example: false
     model:
@@ -497,29 +497,29 @@ components:
         hidden:
           type: boolean
           example: false
-        status_field:
+        statusField:
           type: string
           example: 'status'
-        draft_value:
+        draftValue:
           type: string
           example: 'draft'
-        publish_value:
+        publishValue:
           type: string
           example: 'published'
-        archive_value:
+        archiveValue:
           type: string
           example: 'archived'
         source:
           type: string
           example: null
-        created_at:
+        createdAt:
           $ref: '#/components/schemas/createdAt'
-        updated_at:
+        updatedAt:
           $ref: '#/components/schemas/updatedAt'
-    field_option:
+    fieldOption:
       type: object
       properties:
-        default_value:
+        defaultValue:
           type: boolean
           example: true
 
@@ -582,15 +582,15 @@ components:
         name:
           type: string
           example: 'Collections'
-        before_login:
+        beforeLogin:
           type: string
           example: ''
-        after_login:
+        afterLogin:
           type: string
           example: ''
-        created_at:
+        createdAt:
           $ref: '#/components/schemas/createdAt'
-        updated_at:
+        updatedAt:
           $ref: '#/components/schemas/updatedAt'
 
     ## #####################################
@@ -603,7 +603,7 @@ components:
           $ref: '#/components/schemas/user'
         email:
           $ref: '#/components/schemas/email'
-        api_key:
+        apiKey:
           $ref: '#/components/schemas/apiKey'
         token:
           $ref: '#/components/schemas/token'
@@ -619,12 +619,12 @@ components:
           type: string
           format: password
           example: 'password'
-        is_active:
+        isActive:
           type: boolean
           example: true
-        api_key:
+        apiKey:
           $ref: '#/components/schemas/apiKey'
-        role_id:
+        roleId:
           $ref: '#/components/schemas/id'
 
     ## #####################################
@@ -641,16 +641,16 @@ components:
             storage:
               type: string
               example: 'aws-s3'
-            file_name:
+            fileName:
               type: string
               example: 'LF_hHDmG_400x400.jpg'
-            file_name_disk:
+            fileNameDisk:
               type: string
               example: '221e5436-55f1-4665-806d-6a2d2055c69b.jpeg'
             type:
               type: string
               example: 'image/jpeg'
-            file_size:
+            fileSize:
               type: integer
               example: 12345
             width:
@@ -662,9 +662,9 @@ components:
             url:
               type: string
               example: 'http://localhost:4000/assets/221e5436-55f1-4665-806d-6a2d2055c69b.jpeg'
-            created_at:
+            createdAt:
               $ref: '#/components/schemas/createdAt'
-            updated_at:
+            updatedAt:
               $ref: '#/components/schemas/updatedAt'
 
     ## #####################################
@@ -681,27 +681,27 @@ components:
       properties:
         id:
           $ref: '#/components/schemas/id'
-        many_model:
+        manyModel:
           type: string
           example: 'animal'
-        many_model_id:
+        manyModelId:
           $ref: '#/components/schemas/id'
-        many_field:
+        manyField:
           type: string
           example: 'zoo_id'
-        one_model:
+        oneModel:
           type: string
           example: 'zoo'
-        one_model_id:
+        oneModelId:
           description: Primary Key
           example: 2
           type: integer
-        one_field:
+        oneField:
           type: string
           example: 'animals'
-        created_at:
+        createdAt:
           $ref: '#/components/schemas/createdAt'
-        updated_at:
+        updatedAt:
           $ref: '#/components/schemas/updatedAt'
 
     ## #####################################
@@ -715,7 +715,7 @@ components:
         model:
           type: string
           example: 'zoo'
-        model_id:
+        modelId:
           $ref: '#/components/schemas/id'
         field:
           type: string
@@ -744,11 +744,11 @@ components:
         sort:
           type: integer
           example: 1
-        field_option:
-          $ref: '#/components/schemas/field_option'
-        created_at:
+        fieldOption:
+          $ref: '#/components/schemas/fieldOption'
+        createdAt:
           $ref: '#/components/schemas/createdAt'
-        updated_at:
+        updatedAt:
           $ref: '#/components/schemas/updatedAt'
 
     ## #####################################
@@ -759,9 +759,9 @@ components:
       properties:
         id:
           $ref: '#/components/schemas/id'
-        created_at:
+        createdAt:
           $ref: '#/components/schemas/createdAt'
-        updated_at:
+        updatedAt:
           $ref: '#/components/schemas/updatedAt'
 
     ## #####################################
@@ -775,14 +775,14 @@ components:
         model:
           type: string
           example: 'zoo'
-        model_id:
+        modelId:
           $ref: '#/components/schemas/id'
         action:
           type: string
           example: 'read'
-        role_id:
+        roleId:
           $ref: '#/components/schemas/id'
-        created_at:
+        createdAt:
           $ref: '#/components/schemas/createdAt'
-        updated_at:
+        updatedAt:
           $ref: '#/components/schemas/updatedAt'

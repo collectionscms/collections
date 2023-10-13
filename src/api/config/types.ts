@@ -4,8 +4,8 @@
 
 export type AuthUser = {
   id: number;
-  role_id: number;
+  roleId: number;
   name: string;
-  admin_access: boolean;
-  app_access: boolean; // access from applications.
+  adminAccess: boolean;
+  appAccess: boolean; // access from applications.
 };

@@ -13,7 +13,7 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 describe('Contents', () => {
-  const tableName = 'model_f1_grand_prix_race_stats';
+  const tableName = 'ModelF1GrandPrixRaceStats';
   const databases = new Map<string, Knex>();
 
   beforeAll(async () => {
@@ -28,7 +28,7 @@ describe('Contents', () => {
     const connection = databases.get(database)!;
     const helpers = getHelpers(connection);
 
-    await connection('collections_models').insert([
+    await connection('CollectionsModels').insert([
       {
         model: tableName,
         singleton: false,
@@ -36,7 +36,7 @@ describe('Contents', () => {
       },
     ]);
 
-    await connection('collections_fields').insert([
+    await connection('CollectionsFields').insert([
       {
         model: tableName,
         field: 'id',
@@ -57,13 +57,13 @@ describe('Contents', () => {
       },
       {
         model: tableName,
-        field: 'is_shootout',
+        field: 'isShootout',
         label: 'Shootout',
         interface: 'boolean',
       },
       {
         model: tableName,
-        field: 'start_date',
+        field: 'startDate',
         label: 'Start Date',
         interface: 'dateTime',
         special: 'cast-timestamp',
@@ -72,20 +72,20 @@ describe('Contents', () => {
 
     await connection.schema.createTable(tableName, (table) => {
       table.increments();
-      table.timestamps(true, true);
+      table.timestamps(true, true, true);
       table.string('year', 255);
       table.string('circuit', 255);
-      table.boolean('is_shootout');
-      table.timestamp('start_date');
+      table.boolean('isShootout');
+      table.timestamp('startDate');
     });
 
     await connection(tableName).insert([
       {
         year: '2022',
         circuit: 'Monaco',
-        is_shootout: false,
-        created_at: helpers.date.writeTimestamp('2022-01-01 00:00:00'),
-        updated_at: helpers.date.writeTimestamp('2022-01-01 00:00:00'),
+        isShootout: false,
+        createdAt: helpers.date.writeTimestamp('2022-01-01 00:00:00'),
+        updatedAt: helpers.date.writeTimestamp('2022-01-01 00:00:00'),
       },
     ]);
   };
@@ -104,7 +104,7 @@ describe('Contents', () => {
       const service = new ContentsService(tableName, { database: connection, schema });
 
       const data = await service.createContent(
-        { year: '2023', circuit: 'Monaco', is_shootout: false },
+        { year: '2023', circuit: 'Monaco', isShootout: false },
         Object.values(schema.models[tableName].fields)
       );
 
@@ -134,12 +134,12 @@ describe('Contents', () => {
       expect(result).toBeTruthy();
       expect(updatedContent.circuit).toBe('Monaco in Monte Carlo');
 
-      const before = dayjs(fetchedContent.updated_at);
-      const after = dayjs(updatedContent.updated_at);
+      const before = dayjs(fetchedContent.updatedAt);
+      const after = dayjs(updatedContent.updatedAt);
       expect(after.diff(before)).toBeGreaterThan(0);
     });
 
-    // TODO cases without updated_at
+    // TODO cases without updatedAt
   });
 
   describe('Get', () => {
@@ -163,7 +163,7 @@ describe('Contents', () => {
         expect.objectContaining({
           year: '2023',
           circuit: 'Monaco',
-          is_shootout: false,
+          isShootout: false,
         })
       );
     });
@@ -179,12 +179,12 @@ describe('Contents', () => {
         {
           year: '2023',
           circuit: 'Monaco',
-          start_date: localTime,
+          startDate: localTime,
         },
         Object.values(schema.models[tableName].fields)
       );
       const result = await service.readOne(id);
-      const startDate = dayjs(result.start_date);
+      const startDate = dayjs(result.startDate);
 
       expect(startDate.format('YYYY-MM-DD HH:mm')).toBe(
         localTime.local().format('YYYY-MM-DD HH:mm')

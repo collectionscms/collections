@@ -40,8 +40,8 @@ const EditModelPageImpl: React.FC = () => {
       (acc, field) => {
         if (content[field.field]) {
           acc[field.field] = content[field.field];
-        } else if (field.field_option?.default_value) {
-          acc[field.field] = field.field_option?.default_value;
+        } else if (field.fieldOption?.defaultValue) {
+          acc[field.field] = field.fieldOption?.defaultValue;
         }
 
         return acc;

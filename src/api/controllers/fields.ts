@@ -15,7 +15,7 @@ router.get(
     const fieldWithOptions = fields.map((field) => {
       return {
         ...field,
-        field_option: field.options ? JSON.parse(field.options) : null,
+        fieldOption: field.options ? JSON.parse(field.options) : null,
       };
     });
 
@@ -27,7 +27,7 @@ router.get(
 
 router.post(
   '/fields',
-  permissionsHandler([{ model: 'collections_fields', action: 'create' }]),
+  permissionsHandler([{ model: 'CollectionsFields', action: 'create' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const service = new FieldsService({ schema: req.schema });
     const field = await service.createField(req.body);
@@ -41,7 +41,7 @@ router.post(
  */
 router.post(
   '/fields/relations',
-  permissionsHandler([{ model: 'collections_fields', action: 'create' }]),
+  permissionsHandler([{ model: 'CollectionsFields', action: 'create' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const fieldsService = new FieldsService({ schema: req.schema });
     const fields = await fieldsService.createRelationalFields(req.body.relation, req.body.fields);
@@ -52,7 +52,7 @@ router.post(
 
 router.patch(
   '/fields',
-  permissionsHandler([{ model: 'collections_fields', action: 'update' }]),
+  permissionsHandler([{ model: 'CollectionsFields', action: 'update' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const service = new FieldsService({ schema: req.schema });
 
@@ -69,7 +69,7 @@ router.patch(
 
 router.patch(
   '/fields/:id',
-  permissionsHandler([{ model: 'collections_fields', action: 'update' }]),
+  permissionsHandler([{ model: 'CollectionsFields', action: 'update' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const id = Number(req.params.id);
 
@@ -86,7 +86,7 @@ router.patch(
  */
 router.delete(
   '/models/:modelId/fields/:id',
-  permissionsHandler([{ model: 'collections_fields', action: 'delete' }]),
+  permissionsHandler([{ model: 'CollectionsFields', action: 'delete' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const fieldId = Number(req.params.id);
 

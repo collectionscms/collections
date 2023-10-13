@@ -54,9 +54,9 @@ export const multipartHandler: RequestHandler = (req, res, next) => {
 
       const meta: Omit<File, 'id'> = {
         storage: env.STORAGE_DRIVER,
-        file_name: fileName,
-        file_name_disk: `${uuidv4()}.${extension(type)}`,
-        file_size: fileData.byteLength,
+        fileName: fileName,
+        fileNameDisk: `${uuidv4()}.${extension(type)}`,
+        fileSize: fileData.byteLength,
         type: type,
         width,
         height,

@@ -3,7 +3,7 @@ import { AbstractServiceOptions, BaseService } from './base.js';
 
 export class RelationsService extends BaseService<Relation> {
   constructor(options: AbstractServiceOptions) {
-    super('collections_relations', options);
+    super('CollectionsRelations', options);
   }
 
   /**
@@ -14,7 +14,7 @@ export class RelationsService extends BaseService<Relation> {
    */
   getRelations(modelId: string, field: string): Promise<Relation[]> {
     return this.database(this.model)
-      .where({ one_model_id: modelId, one_field: field })
-      .orWhere({ many_model_id: modelId, many_field: field });
+      .where({ oneModelId: modelId, oneField: field })
+      .orWhere({ manyModelId: modelId, manyField: field });
   }
 }

@@ -93,10 +93,10 @@ export class ImportDataService {
             model: model,
             singleton: false,
             hidden: false,
-            status_field: null,
-            draft_value: null,
-            publish_value: null,
-            archive_value: null,
+            statusField: null,
+            draftValue: null,
+            publishValue: null,
+            archiveValue: null,
             source: 'wordpress',
           },
           hasStatus
@@ -155,8 +155,8 @@ export class ImportDataService {
         { field: 'title', label: 'Title', interface: 'input' },
         { field: 'content', label: 'Content', interface: 'inputRichTextMd' },
         { field: 'slug', label: 'Slug', interface: 'input' },
-        { field: 'published_date', label: 'publishedDate', interface: 'dateTime' },
-        { field: 'is_page', label: 'isPage', interface: 'boolean' },
+        { field: 'publishedDate', label: 'publishedDate', interface: 'dateTime' },
+        { field: 'isPage', label: 'isPage', interface: 'boolean' },
       ]);
     }
   }
@@ -171,7 +171,7 @@ export class ImportDataService {
     for (const field of fields) {
       const newField = {
         model,
-        model_id: modelKeys[model],
+        modelId: modelKeys[model],
         ...field,
         readonly: false,
         required: false,
@@ -193,17 +193,17 @@ export class ImportDataService {
   ) {
     await service.createRelationalFields(
       {
-        many_model: manyModel,
-        many_model_id: modelKeys[manyModel],
-        many_field: 'post_id',
-        one_model: 'posts',
-        one_model_id: modelKeys['posts'],
-        one_field: manyModel,
+        manyModel: manyModel,
+        manyModelId: modelKeys[manyModel],
+        manyField: 'postId',
+        oneModel: 'posts',
+        oneModelId: modelKeys['posts'],
+        oneField: manyModel,
       },
       [
         {
           model: 'posts',
-          model_id: modelKeys['posts'],
+          modelId: modelKeys['posts'],
           field: manyModel,
           label: manyModel,
           interface: 'listOneToMany',
@@ -216,8 +216,8 @@ export class ImportDataService {
         },
         {
           model: manyModel,
-          model_id: modelKeys[manyModel],
-          field: 'post_id',
+          modelId: modelKeys[manyModel],
+          field: 'postId',
           label: 'Post Id',
           interface: 'selectDropdownManyToOne',
           readonly: false,

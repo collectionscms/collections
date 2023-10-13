@@ -15,7 +15,7 @@ const router = express.Router();
 
 router.get(
   '/users',
-  permissionsHandler([{ model: 'collections_users', action: 'read' }]),
+  permissionsHandler([{ model: 'CollectionsUsers', action: 'read' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const service = new UsersService({ schema: req.schema });
     const users = await service.readWithRole();
@@ -28,7 +28,7 @@ router.get(
 
 router.get(
   '/users/:id',
-  permissionsHandler([{ model: 'collections_users', action: 'read' }]),
+  permissionsHandler([{ model: 'CollectionsUsers', action: 'read' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const id = Number(req.params.id);
 
@@ -45,7 +45,7 @@ router.get(
 
 router.post(
   '/users',
-  permissionsHandler([{ model: 'collections_users', action: 'create' }]),
+  permissionsHandler([{ model: 'CollectionsUsers', action: 'create' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const service = new UsersService({ schema: req.schema });
     await service.checkUniqueEmail(req.body.email);
@@ -64,7 +64,7 @@ router.post(
 
 router.patch(
   '/users/:id',
-  permissionsHandler([{ model: 'collections_users', action: 'update' }]),
+  permissionsHandler([{ model: 'CollectionsUsers', action: 'update' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const id = Number(req.params.id);
 
@@ -83,7 +83,7 @@ router.patch(
 
 router.delete(
   '/users/:id',
-  permissionsHandler([{ model: 'collections_users', action: 'delete' }]),
+  permissionsHandler([{ model: 'CollectionsUsers', action: 'delete' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const id = Number(req.params.id);
     if (req.userId === id) {
@@ -106,10 +106,7 @@ router.post(
     const service = new UsersService({ schema: req.schema });
     const users = await service.readMany({
       filter: {
-        _and: [
-          { reset_password_token: { _eq: token } },
-          { reset_password_expiration: { _gt: Date.now() } },
-        ],
+        _and: [{ resetPasswordToken: { _eq: token } }, { resetPasswordToken: { _gt: Date.now() } }],
       },
     });
 
@@ -119,7 +116,7 @@ router.post(
 
     await service.updateOne(users[0].id, {
       password: await oneWayHash(password),
-      reset_password_expiration: Date.now(),
+      resetPasswordExpiration: Date.now(),
     });
 
     res.json({
@@ -145,8 +142,8 @@ router.post(
     let token: string | Buffer = crypto.randomBytes(20);
     token = token.toString('hex');
 
-    user.reset_password_token = token;
-    user.reset_password_expiration = Date.now() + 3600000; // 1 hour
+    user.resetPasswordToken = token;
+    user.resetPasswordExpiration = Date.now() + 3600000; // 1 hour
 
     await service.updateOne(user.id, user);
 
@@ -158,7 +155,7 @@ router.post(
     mail.sendEmail(projectName, {
       to: user.email,
       subject: 'Reset Password',
-      html: `${env.PUBLIC_SERVER_URL}/admin/auth/reset-password/${user.reset_password_token}`,
+      html: `${env.PUBLIC_SERVER_URL}/admin/auth/reset-password/${user.resetPasswordToken}`,
     });
 
     res.json({
@@ -172,14 +169,14 @@ const payload = (user: any) => {
     id: user.id,
     name: user.name,
     email: user.email,
-    is_active: user.is_active,
-    api_key: user.api_key ? '********' : null,
-    updated_at: user.updated_at,
+    isActive: user.isActive,
+    apiKey: user.apiKey ? '********' : null,
+    updatedAt: user.updatedAt,
     role: {
-      id: user.role_id,
-      name: user.role_name,
-      description: user.role_description,
-      admin_access: user.role_admin_access,
+      id: user.roleId,
+      name: user.roleName,
+      description: user.roleDescription,
+      adminAccess: user.roleAdminAccess,
     },
   };
 };

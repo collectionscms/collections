@@ -54,7 +54,7 @@ export type FieldInterface =
 
 export type FieldOption = {
   choices?: Choice[];
-  default_value?: any;
+  defaultValue?: any;
 };
 
 export type Choice = {
@@ -65,12 +65,12 @@ export type Choice = {
 // TODO Subdivided
 export type Field = {
   interface: FieldInterface;
-  field_option?: FieldOption | null;
+  fieldOption?: FieldOption | null;
 } & FieldSchema;
 
 export type GetField = {
   interface: FieldInterface;
-  field_option?: FieldOption | null;
+  fieldOption?: FieldOption | null;
 } & FieldSchema;
 
 // /////////////////////////////////////
@@ -138,6 +138,6 @@ export type GetRelation = {} & RelationSchema;
 export type Me = {
   user: AuthUser;
   email: string;
-  api_key: string | null;
+  apiKey: string | null;
   token: string;
 };

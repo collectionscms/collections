@@ -40,7 +40,7 @@ const CreateRolePageImpl: React.FC = () => {
     defaultValues: {
       name: '',
       description: '',
-      admin_access: false,
+      adminAccess: false,
     },
     resolver: yupResolver(createRoleSchema()),
   });
@@ -91,7 +91,7 @@ const CreateRolePageImpl: React.FC = () => {
                   <Stack spacing={1}>
                     <InputLabel>{t('admin_access')}</InputLabel>
                     <Controller
-                      name="admin_access"
+                      name="adminAccess"
                       control={control}
                       render={({ field }) => (
                         <FormControlLabel
@@ -101,7 +101,7 @@ const CreateRolePageImpl: React.FC = () => {
                         />
                       )}
                     />
-                    <FormHelperText error>{errors.admin_access?.message}</FormHelperText>
+                    <FormHelperText error>{errors.adminAccess?.message}</FormHelperText>
                   </Stack>
                 </Grid>
                 <Grid xs={12}>

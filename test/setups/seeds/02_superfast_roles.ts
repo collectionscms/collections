@@ -4,13 +4,13 @@ import { getHelpers } from '../../../src/api/database/helpers/index.js';
 export const seed = async (database: Knex): Promise<void> => {
   const helpers = getHelpers(database);
 
-  return await database('collections_roles').insert([
+  return await database('CollectionsRoles').insert([
     {
       name: 'Administrator',
       description: 'Administrator',
-      admin_access: true,
-      created_at: helpers.date.writeTimestamp(new Date().toISOString()),
-      updated_at: helpers.date.writeTimestamp(new Date().toISOString()),
+      adminAccess: true,
+      createdAt: helpers.date.writeTimestamp(new Date().toISOString()),
+      updatedAt: helpers.date.writeTimestamp(new Date().toISOString()),
     },
   ]);
 };

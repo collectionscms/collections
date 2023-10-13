@@ -37,8 +37,8 @@ export const ListOneToManyType: React.FC<Props> = (props) => {
     field: '',
     label: '',
     required: false,
-    related_model: '',
-    foreign_key: '',
+    relatedModel: '',
+    foreignKey: '',
   };
   const {
     control,
@@ -62,12 +62,12 @@ export const ListOneToManyType: React.FC<Props> = (props) => {
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
       reset(form);
-      const relatedModel = models.find((model) => model.model === form.related_model);
+      const relatedModel = models.find((model) => model.model === form.relatedModel);
       const results = await createRelationalFieldsTrigger({
         fields: [
           {
             model: model.model,
-            model_id: model.id,
+            modelId: model.id,
             field: form.field,
             label: form.label,
             interface: 'listOneToMany',
@@ -76,9 +76,9 @@ export const ListOneToManyType: React.FC<Props> = (props) => {
             hidden: false,
           },
           {
-            model: form.related_model,
-            model_id: relatedModel?.id,
-            field: form.foreign_key,
+            model: form.relatedModel,
+            modelId: relatedModel?.id,
+            field: form.foreignKey,
             label: model.model,
             interface: 'selectDropdownManyToOne',
             required: false,
@@ -87,12 +87,12 @@ export const ListOneToManyType: React.FC<Props> = (props) => {
           },
         ],
         relation: {
-          many_model: form.related_model,
-          many_model_id: relatedModel?.id.toString(),
-          many_field: form.foreign_key,
-          one_model: model.model,
-          one_model_id: model.id,
-          one_field: form.field,
+          manyModel: form.relatedModel,
+          manyModelId: relatedModel?.id.toString(),
+          manyField: form.foreignKey,
+          oneModel: model.model,
+          oneModelId: model.id,
+          oneField: form.field,
         },
       });
       onSuccess(results![0]);
@@ -156,7 +156,7 @@ export const ListOneToManyType: React.FC<Props> = (props) => {
               <Stack spacing={1}>
                 <InputLabel required>{t('related_content')}</InputLabel>
                 <Controller
-                  name="related_model"
+                  name="relatedModel"
                   control={control}
                   defaultValue={''}
                   render={({ field }) => (
@@ -164,7 +164,7 @@ export const ListOneToManyType: React.FC<Props> = (props) => {
                       {...field}
                       fullWidth
                       defaultValue={''}
-                      error={errors.related_model !== undefined}
+                      error={errors.relatedModel !== undefined}
                     >
                       <MenuItem value="">
                         <em>None</em>
@@ -180,25 +180,25 @@ export const ListOneToManyType: React.FC<Props> = (props) => {
                     </Select>
                   )}
                 />
-                <FormHelperText error>{errors.related_model?.message}</FormHelperText>
+                <FormHelperText error>{errors.relatedModel?.message}</FormHelperText>
               </Stack>
             </Grid>
             <Grid xs={1} sm={2}>
               <Stack spacing={1}>
                 <InputLabel required>{t('foreign_key')}</InputLabel>
                 <Controller
-                  name="foreign_key"
+                  name="foreignKey"
                   control={control}
                   render={({ field }) => (
                     <TextField
                       {...field}
                       type="text"
                       fullWidth
-                      error={errors.foreign_key !== undefined}
+                      error={errors.foreignKey !== undefined}
                     />
                   )}
                 />
-                <FormHelperText error>{errors.foreign_key?.message}</FormHelperText>
+                <FormHelperText error>{errors.foreignKey?.message}</FormHelperText>
               </Stack>
             </Grid>
             <Grid xs={1} sm={2}>

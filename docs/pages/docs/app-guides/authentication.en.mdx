@@ -16,7 +16,7 @@ There are two types of tokens that can be used to authenticate Collections.
 The token is returned with the `refresh_token`. This `refresh_token` can be used by the refresh endpoint to obtain a new access token.
 
 **API key** can be set per platform user and do not expire. Although insecure, it is very useful for server-to-server communication.
-API keys are stored in plain text in `collections_users.api_key`.
+API keys are stored in plain text in `CollectionsUsers.apiKey`.
 
 Once you have your access token, there are two ways to pass it to the API, via the `access_token` query parameter, or in the request's Authorization Header.
 

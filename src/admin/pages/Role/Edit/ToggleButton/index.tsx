@@ -38,7 +38,7 @@ export const PermissionToggleButton: React.FC<Props> = (props) => {
 
     const permissionId = await createPermissionTrigger({
       model: selectedModel!.model,
-      model_id: model.id,
+      modelId: model.id,
       action,
     });
 
@@ -47,8 +47,8 @@ export const PermissionToggleButton: React.FC<Props> = (props) => {
       {
         id: permissionId,
         model: model.model,
-        model_id: model.id,
-        role_id: Number(roleId),
+        modelId: model.id,
+        roleId: Number(roleId),
         action,
       },
     ]);
@@ -63,7 +63,7 @@ export const PermissionToggleButton: React.FC<Props> = (props) => {
   };
 
   const permission = permissions.filter(
-    (permission) => permission.model_id === model.id && permission.action === action
+    (permission) => permission.modelId === model.id && permission.action === action
   )[0];
 
   return (

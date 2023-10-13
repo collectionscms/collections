@@ -8,24 +8,24 @@ import { config } from '../../../config.js';
 import { testDatabases } from '../../../utilities/testDatabases.js';
 
 describe('Delete Many', () => {
-  const tableName = 'collections_users';
+  const tableName = 'CollectionsUsers';
   const databases = new Map<string, Knex>();
   const data: Omit<User, 'id'>[] = [
     {
       name: 'Lando Norris',
       email: 'lando@collections.dev',
       password: 'password',
-      is_active: true,
-      api_key: '1111-2222-4444',
-      role_id: 1,
+      isActive: true,
+      apiKey: '1111-2222-4444',
+      roleId: 1,
     },
     {
       name: 'Esteban Ocon',
       email: 'esteban@collections.dev',
       password: 'password',
-      is_active: true,
-      api_key: '1111-2222-4444',
-      role_id: 1,
+      isActive: true,
+      apiKey: '1111-2222-4444',
+      roleId: 1,
     },
   ];
 

@@ -6,8 +6,8 @@ export type FormValues = {
   field: string;
   label: string;
   required: boolean;
-  related_model: string;
-  foreign_key: string;
+  relatedModel: string;
+  foreignKey: string;
 };
 
 export const createListOneToMany = (t: TFunction): ObjectSchema<FormValues> => {
@@ -19,8 +19,8 @@ export const createListOneToMany = (t: TFunction): ObjectSchema<FormValues> => {
       .max(60),
     label: yup.string().required().max(60),
     required: yup.boolean().required(),
-    related_model: yup.string().required(),
-    foreign_key: yup
+    relatedModel: yup.string().required(),
+    foreignKey: yup
       .string()
       .matches(/^[_0-9a-zA-Z]+$/, t('yup.custom.alphanumeric_and_underscore'))
       .required()

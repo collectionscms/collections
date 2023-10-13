@@ -6,20 +6,20 @@ describe('Login Validations', () => {
       await loginSchema.isValid({
         email: 'admin@example.com',
         password: '************',
-        app_access: true,
+        appAccess: true,
       })
     ).toEqual(true);
   });
 
   it('failure (email not entered)', async () => {
     expect(
-      await loginSchema.isValid({ email: '', password: '************', app_access: true })
+      await loginSchema.isValid({ email: '', password: '************', appAccess: true })
     ).toEqual(false);
   });
 
   it('failure (password not entered)', async () => {
     expect(
-      await loginSchema.isValid({ email: 'admin@example.com', password: '', app_access: true })
+      await loginSchema.isValid({ email: 'admin@example.com', password: '', appAccess: true })
     ).toEqual(false);
   });
 
@@ -28,7 +28,7 @@ describe('Login Validations', () => {
       await loginSchema.isValid({
         email: 'admin/example.com',
         password: '************',
-        app_access: true,
+        appAccess: true,
       })
     ).toEqual(false);
   });

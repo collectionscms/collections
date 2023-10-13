@@ -32,13 +32,13 @@ export default async function teardown(
 async function dropModels(database: Knex) {
   const schemaInfo = await getSchemaInfo(database);
   const tableNames = [
-    'model_f1_constructors',
-    'model_f1_2023_driver_standings',
-    'model_f1_2022_driver_standings',
-    'model_f1_circuit_stats',
-    'model_f1_grand_prix_races',
-    'model_f1_ferrari_team_stats',
-    'model_f1_grand_prix_race_stats',
+    'ModelF1Constructors',
+    'ModelF12023DriverStandings',
+    'ModelF12022DriverStandings',
+    'ModelF1CircuitStats',
+    'ModelF1GrandPrixRaces',
+    'ModelF1FerrariTeamStats',
+    'ModelF1GrandPrixRaceStats',
     'categories',
     'tags',
     'posts',
@@ -49,10 +49,10 @@ async function dropModels(database: Knex) {
     const columns = schemaInfo[tableName]?.columns;
     if (columns) {
       for (const [_, value] of Object.entries(columns)) {
-        if (value.foreign_key_column) {
+        if (value.foreignKeyColumn) {
           await database.schema.table(tableName, function (t) {
-            t.dropForeign(value.column_name);
-            t.dropColumn(value.column_name);
+            t.dropForeign(value.columnName);
+            t.dropColumn(value.columnName);
           });
         }
       }

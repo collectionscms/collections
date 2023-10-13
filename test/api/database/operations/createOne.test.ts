@@ -6,15 +6,15 @@ import { testDatabases } from '../../../utilities/testDatabases.js';
 import { User } from '../../../../src/api/database/schemas.js';
 
 describe('Create One', () => {
-  const tableName = 'collections_users';
+  const tableName = 'CollectionsUsers';
   const databases = new Map<string, Knex>();
   const data: Omit<User, 'id'> = {
     name: 'Lewis Hamilton',
     email: 'lewis@collections.dev',
     password: 'password',
-    is_active: true,
-    api_key: '1111-2222-4444',
-    role_id: 1,
+    isActive: true,
+    apiKey: '1111-2222-4444',
+    roleId: 1,
   };
 
   beforeAll(async () => {

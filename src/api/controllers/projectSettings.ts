@@ -13,13 +13,13 @@ router.get(
     });
     const data = await service.readMany();
 
-    res.json({ project_setting: data[0] });
+    res.json({ projectSetting: data[0] });
   })
 );
 
 router.patch(
   '/project-settings',
-  permissionsHandler([{ model: 'collections_project_settings', action: 'update' }]),
+  permissionsHandler([{ model: 'CollectionsProjectSettings', action: 'update' }]),
   asyncHandler(async (req: Request, res: Response) => {
     const service = new ProjectSettingsService({
       schema: req.schema,
