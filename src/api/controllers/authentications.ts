@@ -23,6 +23,7 @@ router.post(
 
     res.json({
       token: accessToken,
+      refreshToken,
       user,
     });
   })
@@ -39,7 +40,7 @@ router.post(
 router.post(
   '/authentications/refresh',
   asyncHandler(async (req: Request, res: Response) => {
-    const token = getExtractJwt(req);
+    const token = req.body.refreshToken || getExtractJwt(req);
     if (!token) throw new InvalidTokenException();
 
     try {
@@ -54,6 +55,7 @@ router.post(
 
       return res.json({
         token: accessToken,
+        refreshToken,
       });
     } catch (e) {
       throw new InvalidTokenException();

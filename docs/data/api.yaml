@@ -455,6 +455,10 @@ components:
       description: Access Token
       example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
       type: string
+    refreshToken:
+      description: Refresh Token
+      example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
+      type: string
     apiKey:
       description: Api Key
       example: '14f7d522-b9d5-4f21-b9b6-187e8ca57e86'
@@ -542,6 +546,8 @@ components:
       properties:
         token:
           $ref: '#/components/schemas/token'
+        refreshToken:
+          $ref: '#/components/schemas/refreshToken'
         user:
           $ref: '#/components/schemas/user'
     refreshResponse:
@@ -549,6 +555,8 @@ components:
       properties:
         token:
           $ref: '#/components/schemas/token'
+        refreshToken:
+          $ref: '#/components/schemas/refreshToken'
 
     ## #####################################
     ## Users
