@@ -890,10 +890,10 @@
     react-dom "^18.2.0"
     react-syntax-highlighter "^15.5.0"
 
-"@collectionscms/plugin-wp-importer@^1.0.0-beta.1":
-  version "1.0.0-beta.1"
-  resolved "https://registry.yarnpkg.com/@collectionscms/plugin-wp-importer/-/plugin-wp-importer-1.0.0-beta.1.tgz#ceacc8d782df6a833d700c468fcec628d12907da"
-  integrity sha512-cs0AylFFgdlIBT9l7kKdh014++o7aTT424jfxbfiaoBr1XB2ryw0LR41P3HSjtnoeNlKULUProThxGc3Pu9BKw==
+"@collectionscms/plugin-wp-importer@^1.0.0-beta.2":
+  version "1.0.0-beta.2"
+  resolved "https://registry.yarnpkg.com/@collectionscms/plugin-wp-importer/-/plugin-wp-importer-1.0.0-beta.2.tgz#1193dcf7d9ef8e699b445af043eb952085be00ef"
+  integrity sha512-4i+1qB12sBFJr4dGeIYI9Y1upYqW5UYVUh/2oy/FJoGWrGuVDqfR+Uo0EVbmCWyp5P9o6v/c7TDpeA/f+bb1iw==
   dependencies:
     "@types/node" "^20.5.7"
     dayjs "^1.11.9"
@@ -2631,7 +2631,7 @@
   resolved "https://registry.npmjs.org/@types/ms/-/ms-0.7.31.tgz"
   integrity sha512-iiUgKzV9AuaEkZqkOLDIvlQiL6ltuZd9tGcW3gwpnX8JbuiuhFlEGmmFXEXkN50Cvq7Os88IY2v0dkDqXYWVgA==
 
-"@types/node@*", "@types/node@^20.1.0", "@types/node@^20.5.7":
+"@types/node@*", "@types/node@^20.1.0":
   version "20.5.9"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-20.5.9.tgz#a70ec9d8fa0180a314c3ede0e20ea56ff71aed9a"
   integrity sha512-PcGNd//40kHAS3sTlzKB9C9XL4K0sTup8nbG5lC14kzEteTNuAFh9u5nA0o5TWnSG2r/JNPRXFVcHJIIeRlmqQ==
