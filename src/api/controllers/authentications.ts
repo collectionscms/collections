@@ -23,6 +23,7 @@ router.post(
 
     res.json({
       token: accessToken,
+      refreshToken,
       user,
     });
   })
@@ -54,6 +55,7 @@ router.post(
 
       return res.json({
         token: accessToken,
+        refreshToken,
       });
     } catch (e) {
       throw new InvalidTokenException();
