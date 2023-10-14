@@ -95,6 +95,7 @@ export const InputRichTextMdType: React.FC<Props> = ({
               commands.orderedList(t('ordered_list')),
               commands.link(t('link')),
               commands.image(t('image'), uploadImageRef, handleSelectedFile),
+              commands.help(t('writing')),
             ]}
             extraCommands={[commands.fullScreen(t('full_screen'))]}
           />
