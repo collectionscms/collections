@@ -1,8 +1,24 @@
 import { RedocStandalone } from 'redoc';
+import { useData } from 'nextra/data';
+
+export const getStaticProps = ({ params }) => {
+  return fetch(`https://collections.dev/api/openapi`)
+    .then((res) => res.json())
+    .then((repo) => ({
+      props: {
+        ssg: repo,
+      },
+    }));
+};
+
+export const Redoc = () => {
+  const data = useData();
+  return <RedocStandalone spec={data} />;
+};
 
 # API
 
 > 一般ユーザーが利用可能な API リファレンスです。管理者は、プラットフォームが提供する全ての API にアクセスすることができます。
 
 <br />
-<RedocStandalone specUrl="/api/openapi" />
+<Redoc />
