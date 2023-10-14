@@ -1,9 +1,9 @@
+import { SyntaxHighlighter } from '@collectionscms/plugin-ui';
 import { Box } from '@mui/material';
 import MDEditor, { ICommand } from '@uiw/react-md-editor';
 import React, { useRef } from 'react';
 import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { SyntaxHighlighter } from '@collectionscms/plugin-ui';
 import { logger } from '../../../../../utilities/logger.js';
 import { useContent } from '../../../../pages/models/Context/index.js';
 import { useColorMode } from '../../../utilities/ColorMode/index.js';
@@ -76,7 +76,7 @@ export const InputRichTextMdType: React.FC<Props> = ({
             {...register(meta.field, { ...required })}
             previewOptions={{
               components: {
-                code: ({ children, className }) => (
+                pre: ({ children, className }) => (
                   <SyntaxHighlighter
                     language={getLanguage(className)}
                     codeString={getCode(children)}
@@ -95,6 +95,7 @@ export const InputRichTextMdType: React.FC<Props> = ({
               commands.orderedList(t('ordered_list')),
               commands.link(t('link')),
               commands.image(t('image'), uploadImageRef, handleSelectedFile),
+              commands.help(t('writing')),
             ]}
             extraCommands={[commands.fullScreen(t('full_screen'))]}
           />

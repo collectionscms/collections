@@ -5,14 +5,15 @@ import {
   LinkOutlined,
   OrderedListOutlined,
   PictureOutlined,
+  QuestionCircleOutlined,
   StrikethroughOutlined,
   UnorderedListOutlined,
 } from '@ant-design/icons';
+import { IconButton } from '@collectionscms/plugin-ui';
 import { SvgIconTypeMap, Tooltip } from '@mui/material';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
 import { ICommand, commands as mdCommands } from '@uiw/react-md-editor';
 import React, { ComponentClass, FunctionComponent } from 'react';
-import { IconButton } from '@collectionscms/plugin-ui';
 
 type OverrideIcon =
   | (OverridableComponent<SvgIconTypeMap<{}, 'svg'>> & {
@@ -139,6 +140,18 @@ const image = (
   },
 });
 
+const help = (title: string): ICommand => ({
+  name: 'help',
+  keyCommand: 'help',
+  render: (_command, _, _executeCommand) => (
+    <CommandButton
+      title={title}
+      icon={QuestionCircleOutlined}
+      onClick={() => window.open('https://collections.dev/docs/fields/markdown', '_blank')}
+    />
+  ),
+});
+
 const fullScreen = (title: string): ICommand => ({
   ...mdCommands.fullscreen,
   render: (command, _, executeCommand) => (
@@ -167,6 +180,7 @@ export type CommandTypes = {
     ) => void
   ): ICommand;
   fullScreen(title: string): ICommand;
+  help(title: string): ICommand;
 };
 
 export const commands: CommandTypes = {
@@ -178,4 +192,5 @@ export const commands: CommandTypes = {
   link,
   image,
   fullScreen,
+  help,
 };
