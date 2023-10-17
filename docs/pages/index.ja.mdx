@@ -1,14 +1,51 @@
-<h1 style={{ textAlign: 'center', fontSize: '60px', marginTop: '100px', fontWeight: 'bold' }}>
-  DnD to make Headless CMS
-</h1>
+<div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8 md:mt-20">
+  <div className="cols-span-1 lg:col-span-2">
+    <div className="block md:hidden mb-8">
+      <h1 className="text-4xl font-black leading-narrow">
+        <span>ドラッグ＆ドロップでWordPress記事を</span>
+        <span className="nx-text-primary-600">API化</span>
+      </h1>
+    </div>
+    <div className="hidden md:block mb-12">
+      <h1 className="text-7xxl font-black leading-narrow">ドラッグ＆ドロップでWordPress記事を</h1>
+      <h1 className="text-7xxl font-black nx-text-primary-600 leading-narrow">API化</h1>
+    </div>
+    <h2 className="text-lg leading-relaxed">
+      導入も移行も、ワンアクションで完結するオープンソースのヘッドレスCMS。
+    </h2>
+    <h2 className="text-lg mt-1 leading-relaxed">
+      使い始めるのに、もう昔の記事をコピペする必要はありません。
+    </h2>
 
-<h2
-  style={{
-    textAlign: 'center',
-    color: '#888',
-    fontSize: '24px',
-    marginTop: '60px',
-  }}
->
-  <span>Collectionsは、WordPress からドラッグ＆ドロップで作成するヘッドレス CMS です。</span>
-</h2>
+  </div>
+  <div className="mt-4">
+    <hr />
+    <a target="_blank" href="https://demo.superfastcms.com/admin/" rel="dofollow" className="hover:nx-text-primary-600 hover:underline">
+      <div className="flex py-5">
+        <div className="flex-auto">Demo を試す</div>
+        <div className="flex-none">↗</div>
+      </div>
+    </a>
+    <hr />
+    <a href="docs/home" className="hover:nx-text-primary-600 hover:underline">
+      <div className="flex py-5">
+        <div className="flex-auto">ドキュメント を読む</div>
+        <div className="flex-none">↗</div>
+      </div>
+    </a>
+    <hr />
+    <a href="reference/api" className="hover:nx-text-primary-600 hover:underline">
+      <div className="flex py-5">
+        <div className="flex-auto">API を読む</div>
+        <div className="flex-none">↗</div>
+      </div>
+    </a>
+
+    <div className="text-center mt-8 create-collections-app nx-text-primary-600">
+    ```json
+    npx create-collections-app my-app
+    ```
+    </div>
+
+  </div>
+</div>

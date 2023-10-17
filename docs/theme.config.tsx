@@ -29,6 +29,14 @@ const config: DocsThemeConfig = {
     { locale: 'en', text: 'English' },
     { locale: 'ja', text: '日本語' },
   ],
+  primaryHue: {
+    dark: 192,
+    light: 199,
+  },
+  primarySaturation: {
+    dark: 83,
+    light: 89,
+  },
 };
 
 export default config;
