@@ -1,8 +1,16 @@
-import React from 'react';
 import { DocsThemeConfig } from 'nextra-theme-docs';
+import React from 'react';
 
 const config: DocsThemeConfig = {
   logo: <span>Collections</span>,
+  head: (
+    <>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap"
+        rel="stylesheet"
+      />
+    </>
+  ),
   useNextSeoProps: function SEO() {
     const defaultTitle = 'Collections';
 
