@@ -4,6 +4,7 @@ module.exports = {
   theme: {
     extend: {
       lineHeight: {
+        compact: '1.15',
         narrow: '1.3',
       },
       fontSize: {

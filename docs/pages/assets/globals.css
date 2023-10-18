@@ -4,7 +4,7 @@
 
 html,
 body {
-  font-family: 'system-ui', 'Noto Sans JP', 'sans-serif', '-apple-system', 'Roboto', 'Helvetica',
+  font-family: 'Noto Sans JP', '-apple-system', 'system-ui', 'sans-serif', 'Roboto', 'Helvetica',
     'Meiryo';
 }
 
