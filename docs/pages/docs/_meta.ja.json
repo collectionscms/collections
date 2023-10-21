@@ -13,7 +13,7 @@
     "type": "separator",
     "title": ""
   },
-  "deployment": "デプロイメント",
+  "deployments": "デプロイメント",
   "--3": {
     "type": "separator",
     "title": ""

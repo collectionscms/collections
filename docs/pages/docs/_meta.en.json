@@ -13,7 +13,7 @@
     "type": "separator",
     "title": ""
   },
-  "deployment": "Deployment",
+  "deployments": "Deployments",
   "--3": {
     "type": "separator",
     "title": ""
