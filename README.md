@@ -2,7 +2,7 @@
 
 <hr/>
 <h4>
-<a target="_blank" href="https://demo.superfastcms.com/admin/" rel="dofollow"><strong>Try Live Demo</strong></a>
+<a target="_blank" href="https://demo.collections.dev/admin/" rel="dofollow"><strong>Try Live Demo</strong></a>
 </h4>
 <hr/>
 
