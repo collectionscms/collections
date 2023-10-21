@@ -13,10 +13,11 @@
     "type": "separator",
     "title": ""
   },
-  "data-models": "データモデル",
+  "deployment": "デプロイメント",
   "--3": {
     "type": "separator",
     "title": ""
   },
+  "data-models": "データモデル",
   "fields": "フィールド"
 }

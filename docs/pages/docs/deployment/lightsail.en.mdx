@@ -1,0 +1,137 @@
+import { Callout, Steps } from 'nextra/components';
+
+# Amazon Lightsail
+
+> This is a guide to deploying Collections projects on AWS Lightsail. This guide uses Let's Encrypt certificates to optimize costs.
+
+Amazon Lightsail Installation Requirements
+
+- You must have an [Amazon AWS](https://aws.amazon.com/free) account before performing the following steps.
+
+<Steps>
+### Create a Lightsail instance
+
+Log in to [Amazon Lightsail](https://lightsail.aws.amazon.com/ls/?pg=ln&cp=bn) and create an instance of the following environment
+
+- Linux/Unix + Nginx
+- 2 GM RAM
+
+<Callout type="warning">
+  Collections requires at least 2GB of RAM to build and deploy the management interface.
+</Callout>
+
+<p class="nx-mt-6 nx-leading-7 first:nx-mt-0">
+  <img
+    src="https://cdn.collections.dev/docs/region.png"
+    style={{ boxShadow: '0 0 6px #17294033', borderRadius: '4px' }}
+  />
+</p>
+
+### Attach a static IP address
+
+The IP address attached to a Lightsail instance is dynamic and changes each time the instance is restarted. Refer to the [official AWS documentation](https://lightsail.aws.amazon.com/ls/docs/ja_jp/articles/lightsail-create-static-ip) to attach a static IP address.
+After attaching, also make sure that the welcome page is displayed by accessing the static IP address.
+
+### Routing your own domain
+
+Once the static IP address is attached, refer to the [official AWS documentation](https://lightsail.aws.amazon.com/ls/docs/ja_jp/articles/lightsail-how-to-create-dns-entry) to find the ` example.com` or other domain name to route to your Amazon Lightsail instance.
+
+Alternatively, if your domain is already hosted on Route53, create an A record and specify a static IP address.
+
+<p class="nx-mt-6 nx-leading-7 first:nx-mt-0">
+  <img
+    src="https://cdn.collections.dev/docs/route53.png"
+    style={{ boxShadow: '0 0 6px #17294033', borderRadius: '4px' }}
+  />
+</p>
+
+### SSL certificates are issued and integrated into the instance
+
+Enhance the security of your website and applications with SSL/TLS. Refer to [official AWS documentation](https://lightsail.aws.amazon.com/ls/docs/ja_jp/articles/lightsail-how-to-create-dns-entry) to issue a Let's Encrypt certificate and integrate it into your instance, Integrate it into your instance.
+
+### Install Node.js
+
+Access Lightsail via console and install Node.js.
+
+```bash
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.0/install.sh | bash
+source ~/.nvm/nvm.sh
+nvm install --lts
+```
+
+### Install Collections
+
+Now it is time to install the application. First, go to the Nginx root directory, then run Collections installation.
+
+```bash
+cd /home/bitnami/stack/nginx/html
+npx create-collections-app collections
+```
+
+### Configure Nginx
+
+Edit the Nginx configuration file and set Collections to the root directory. Here the domain name is `collections.dev`.
+
+```
+server {
+    root /home/bitnami/stack/nginx/html/collections;
+    include "/opt/bitnami/nginx/conf/bitnami/*.conf";
+
+    server_name collections.dev demo.collections.dev;
+
+    location / {
+            proxy_pass http://localhost:4000;
+    }
+
+    listen [::]:443 ssl ipv6only=on; # managed by Certbot
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/collections.dev/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/collections.dev/privkey.pem;
+
+    location /status {
+        stub_status on;
+        access_log off;
+        allow 127.0.0.1;
+        deny all;
+    }
+}
+
+server {
+    listen 80;
+    listen [::]:80;
+
+    return 301 https://$host$request_uri;
+}
+```
+
+### Build the application
+
+```
+cd /home/bitnami/stack/nginx/html/collections
+npm run build
+```
+
+### Running Applications on PM2
+
+PM2 can keep Node.js processes running at all times and reload them without downtime.
+Run the following command to install PM2 globally.
+
+```
+npm install pm2@latest -g
+```
+
+Then, start PM2.
+
+```
+pm2 start /home/bitnami/stack/nginx/html/collections/dist/build/main.js --name collections
+```
+
+### Restart
+
+Finally, restart the basic service to reflect the changes.
+
+```
+sudo /opt/bitnami/ctlscript.sh restart
+```
+
+</Steps>

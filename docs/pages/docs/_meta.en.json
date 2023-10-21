@@ -13,10 +13,11 @@
     "type": "separator",
     "title": ""
   },
-  "data-models": "Data Model",
+  "deployment": "Deployment",
   "--3": {
     "type": "separator",
     "title": ""
   },
+  "data-models": "Data Model",
   "fields": "Fields"
 }

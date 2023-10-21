@@ -1,0 +1,138 @@
+import { Callout, Steps } from 'nextra/components';
+
+# Amazon Lightsail
+
+> AWS Lightsail に Collections プロジェクトをデプロイするためのガイドです。このガイドでは、コストを最適化するために Let's Encrypt 証明書を使用しています。
+
+Amazon Lightsail のインストール要件
+
+- 以下の手順を実行する前に、[Amazon AWS](https://aws.amazon.com/free) アカウントを持っている必要があります。
+
+<Steps>
+### Lightsail インスタンスを作成する
+
+[Amazon Lightsail](https://lightsail.aws.amazon.com/ls/?pg=ln&cp=bn) にログインし、以下環境のインスタンスを作成します。
+
+- Linux/Unix + Nginx
+- 2 GM RAM
+
+<Callout type="warning">
+  Collections は、管理インターフェイスを構築してデプロイするために、少なくとも 2GB の RAM
+  を必要とします。
+</Callout>
+
+<p class="nx-mt-6 nx-leading-7 first:nx-mt-0">
+  <img
+    src="https://cdn.collections.dev/docs/region.png"
+    style={{ boxShadow: '0 0 6px #17294033', borderRadius: '4px' }}
+  />
+</p>
+
+### 静的 IP アドレスをアタッチする
+
+Lightsail のインスタンスにアタッチされる IP アドレスは動的で、インスタンスが再起動されるごとに変わります。[公式の AWS ドキュメント](https://lightsail.aws.amazon.com/ls/docs/ja_jp/articles/lightsail-create-static-ip)を参考に静的 IP アドレスをアタッチします。
+アタッチ後は、静的 IP アドレスにアクセスしてウェルカムページが表示されることも確認しておきましょう。
+
+### 独自ドメインをルーティングする
+
+静的 IP アドレスがアタッチされたら、[公式の AWS ドキュメント](https://lightsail.aws.amazon.com/ls/docs/ja_jp/articles/lightsail-how-to-create-dns-entry)を参考に、`example.com` などのドメイン名から Amazon Lightsail インスタンスにルーティングさせます。
+
+または、すでに Route53 でドメインをホストされている場合は、Aレコードを作成して静的 IP アドレスを指定します。
+
+<p class="nx-mt-6 nx-leading-7 first:nx-mt-0">
+  <img
+    src="https://cdn.collections.dev/docs/route53.png"
+    style={{ boxShadow: '0 0 6px #17294033', borderRadius: '4px' }}
+  />
+</p>
+
+### SSL 証明書を発行しインスタンスに統合する
+
+SSL/TLS でウェブサイトとアプリケーションのセキュリティを強化します。[公式の AWS ドキュメント](https://lightsail.aws.amazon.com/ls/docs/ja_jp/articles/lightsail-how-to-create-dns-entry)を参考に、Let's Encrypt 証明書を発行し、インスタンスに統合します。
+
+### Node.jsを インストール
+
+Lightsail にコンソールでアクセスし、Node.js をインストールします。
+
+```bash
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.0/install.sh | bash
+source ~/.nvm/nvm.sh
+nvm install --lts
+```
+
+### Collections をインストール
+
+いよいよアプリケーションのインストールです。まずは、Nginx のルートディレクトリに移動し、次に Collections のインストールを実行します。
+
+```bash
+cd /home/bitnami/stack/nginx/html
+npx create-collections-app collections
+```
+
+### Nginx を設定する
+
+Nginx の設定ファイルを編集し、Collections をルートディレクトリに設定します。ここではドメイン名は、`collections.dev` としています。
+
+```
+server {
+    root /home/bitnami/stack/nginx/html/collections;
+    include "/opt/bitnami/nginx/conf/bitnami/*.conf";
+
+    server_name collections.dev demo.collections.dev;
+
+    location / {
+            proxy_pass http://localhost:4000;
+    }
+
+    listen [::]:443 ssl ipv6only=on; # managed by Certbot
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/collections.dev/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/collections.dev/privkey.pem;
+
+    location /status {
+        stub_status on;
+        access_log off;
+        allow 127.0.0.1;
+        deny all;
+    }
+}
+
+server {
+    listen 80;
+    listen [::]:80;
+
+    return 301 https://$host$request_uri;
+}
+```
+
+### アプリケーションをビルドする
+
+```
+cd /home/bitnami/stack/nginx/html/collections
+npm run build
+```
+
+### PM2 でアプリケーションを実行する
+
+PM2 は、Node.js プロセスを常時起動させておくことができ、ダウンタイムなしにリロードすることが可能です。
+以下のコマンドを実行して、PM2 をグローバルにインストールしてください。
+
+```
+npm install pm2@latest -g
+```
+
+続いて、PM2 を起動します。
+
+```
+pm2 start /home/bitnami/stack/nginx/html/collections/dist/build/main.js --name collections
+```
+
+### 再起動する
+
+最後に、基本サービスを再起動して変更を反映します。
+
+```
+sudo /opt/bitnami/ctlscript.sh restart
+```
+
+</Steps>
