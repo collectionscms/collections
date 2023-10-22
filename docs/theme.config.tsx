@@ -16,11 +16,10 @@ const config: DocsThemeConfig = {
     </>
   ),
   useNextSeoProps: function SEO() {
-    const { asPath } = useRouter();
+    const { asPath, locale } = useRouter();
     const { frontMatter } = useConfig();
     const titleTemplate = asPath !== '/' ? `%s – ${defaultTitle}` : defaultTitle;
-    const defaultDescription =
-      'Collections is an open-source headless CMS that turns WordPress posts into APIs with drag and drop.';
+    const defaultDescription = getDefaultDescription(locale);
 
     return {
       defaultTitle: frontMatter.title || titleTemplate,
@@ -28,7 +27,7 @@ const config: DocsThemeConfig = {
       titleTemplate,
       openGraph: {
         type: 'website',
-        title: titleTemplate,
+        title: frontMatter.title ? `${frontMatter.title} - ${defaultTitle}` : defaultTitle,
         description: frontMatter.description || defaultDescription,
         url: 'https://collections.dev',
         siteName: defaultTitle,
@@ -86,6 +85,15 @@ const config: DocsThemeConfig = {
     dark: 83,
     light: 89,
   },
+};
+
+const getDefaultDescription = (locale: string) => {
+  switch (locale) {
+    case 'ja':
+      return 'あなたのWordPressをAPIに変えるヘッドレスCMS。使い始めるのに、もう昔の記事をコピペする必要はありません。';
+    default:
+      return 'A headless CMS that transforms your WordPress into an API. No need to copy and paste old posts anymore.';
+  }
 };
 
 export default config;
