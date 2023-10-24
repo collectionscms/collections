@@ -41,16 +41,16 @@ describe('ImportDataService', () => {
   describe('Import', () => {
     afterEach(async () => {
       for (const [_, connection] of databases) {
-        if (await connection.schema.hasTable('categories')) {
-          await connection.delete().from('categories');
+        if (await connection.schema.hasTable('Categories')) {
+          await connection.delete().from('Categories');
         }
 
-        if (await connection.schema.hasTable('tags')) {
-          await connection.delete().from('tags');
+        if (await connection.schema.hasTable('Tags')) {
+          await connection.delete().from('Tags');
         }
 
-        if (await connection.schema.hasTable('posts')) {
-          await connection.delete().from('posts');
+        if (await connection.schema.hasTable('Posts')) {
+          await connection.delete().from('Posts');
         }
       }
     });
@@ -121,9 +121,9 @@ describe('ImportDataService', () => {
 
         schema = await getSchemaOverview({ database: connection });
 
-        await assertExpectedData(connection, schema, 'categories', expectedCategoryData);
-        await assertExpectedData(connection, schema, 'tags', expectedTagData);
-        await assertExpectedData(connection, schema, 'posts', expectedPostData);
+        await assertExpectedData(connection, schema, 'Categories', expectedCategoryData);
+        await assertExpectedData(connection, schema, 'Tags', expectedTagData);
+        await assertExpectedData(connection, schema, 'Posts', expectedPostData);
       },
       20_000
     );
@@ -145,15 +145,15 @@ describe('ImportDataService', () => {
 
         schema = await getSchemaOverview({ database: connection });
 
-        await assertExpectedData(connection, schema, 'categories', [
+        await assertExpectedData(connection, schema, 'Categories', [
           ...expectedCategoryData,
           ...expectedCategoryData,
         ]);
-        await assertExpectedData(connection, schema, 'tags', [
+        await assertExpectedData(connection, schema, 'Tags', [
           ...expectedTagData,
           ...expectedTagData,
         ]);
-        await assertExpectedData(connection, schema, 'posts', [
+        await assertExpectedData(connection, schema, 'Posts', [
           ...expectedPostData,
           ...expectedPostData,
         ]);
