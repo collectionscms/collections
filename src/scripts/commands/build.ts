@@ -1,4 +1,4 @@
-import chalk from 'chalk';
+import ora from 'ora';
 import { rimraf } from 'rimraf';
 import webpack from 'webpack';
 import { logger } from '../../utilities/logger.js';
@@ -20,13 +20,17 @@ export const scriptBuild = async () => {
     mode: 'production',
   });
 
+  const spinner = ora('Building...').start();
+
   try {
     await compilerRun(apiCompiler);
     await compilerRun(adminCompiler);
-
-    console.log(chalk.green('✅ Built Successfully'));
+    spinner.succeed('Built Successfully');
   } catch (e) {
+    spinner.fail();
     logger.error(e);
+  } finally {
+    spinner.stop();
   }
 };
 
