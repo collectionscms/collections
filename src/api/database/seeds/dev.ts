@@ -87,7 +87,7 @@ const seedingSystemData = async (database: Knex): Promise<void> => {
   Output.info('Creating article model...');
   const articleId = await modelsService.createModel(
     {
-      model: 'articles',
+      model: 'Articles',
       singleton: false,
       hidden: false,
       statusField: null,
@@ -102,7 +102,7 @@ const seedingSystemData = async (database: Knex): Promise<void> => {
   // Fields: Article
   Output.info('Creating article fields...');
   await fieldsService.createField({
-    model: 'articles',
+    model: 'Articles',
     modelId: articleId,
     field: 'title',
     label: 'Title',
@@ -116,7 +116,7 @@ const seedingSystemData = async (database: Knex): Promise<void> => {
   });
 
   await fieldsService.createField({
-    model: 'articles',
+    model: 'Articles',
     modelId: articleId,
     field: 'body',
     label: 'Body',
@@ -130,7 +130,7 @@ const seedingSystemData = async (database: Knex): Promise<void> => {
   });
 
   await fieldsService.createField({
-    model: 'articles',
+    model: 'Articles',
     modelId: articleId,
     field: 'author',
     label: 'Author',
@@ -147,7 +147,7 @@ const seedingSystemData = async (database: Knex): Promise<void> => {
   Output.info('Creating company model...');
   const companyId = await modelsService.createModel(
     {
-      model: 'companies',
+      model: 'Companies',
       singleton: true,
       hidden: false,
       statusField: null,
@@ -162,7 +162,7 @@ const seedingSystemData = async (database: Knex): Promise<void> => {
   // Fields: Company
   Output.info('Creating company fields...');
   await fieldsService.createField({
-    model: 'companies',
+    model: 'Companies',
     modelId: companyId,
     field: 'name',
     label: 'Company Name',
@@ -176,7 +176,7 @@ const seedingSystemData = async (database: Knex): Promise<void> => {
   });
 
   await fieldsService.createField({
-    model: 'companies',
+    model: 'Companies',
     modelId: companyId,
     field: 'email',
     label: 'Mail Address',
@@ -190,7 +190,7 @@ const seedingSystemData = async (database: Knex): Promise<void> => {
   });
 
   await fieldsService.createField({
-    model: 'companies',
+    model: 'Companies',
     modelId: companyId,
     field: 'address',
     label: 'Address',
@@ -208,37 +208,37 @@ const seedingSystemData = async (database: Knex): Promise<void> => {
   await permissionsService.createMany([
     // Editor
     {
-      model: 'articles',
+      model: 'Articles',
       modelId: articleId,
       action: 'read',
       roleId: editorRole.id,
     },
     {
-      model: 'articles',
+      model: 'Articles',
       modelId: articleId,
       action: 'create',
       roleId: editorRole.id,
     },
     {
-      model: 'articles',
+      model: 'Articles',
       modelId: articleId,
       action: 'update',
       roleId: editorRole.id,
     },
     {
-      model: 'companies',
+      model: 'Companies',
       modelId: companyId,
       action: 'read',
       roleId: editorRole.id,
     },
     {
-      model: 'companies',
+      model: 'Companies',
       modelId: companyId,
       action: 'create',
       roleId: editorRole.id,
     },
     {
-      model: 'companies',
+      model: 'Companies',
       modelId: companyId,
       action: 'update',
       roleId: editorRole.id,
@@ -292,7 +292,7 @@ const seedingContentData = async (database: Knex): Promise<void> => {
     },
   ]);
 
-  const companiesService = new ContentsService('companies', { database, schema });
+  const companiesService = new ContentsService('Companies', { database, schema });
   await companiesService.createMany([
     {
       name: 'Rocketa Inc.',

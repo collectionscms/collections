@@ -38,7 +38,7 @@ export class ImportDataService {
     const models = await service.readMany({
       filter: {
         _and: [
-          { model: { _in: ['posts', 'categories', 'tags'] } },
+          { model: { _in: ['Posts', 'Categories', 'Tags'] } },
           { source: { _eq: 'wordpress' } },
         ],
       },
@@ -66,9 +66,9 @@ export class ImportDataService {
     await service.database.transaction(async (tx) => {
       const result = await parseFromFile(buffer.toString());
       const schema = await getSchemaOverview({ database: tx });
-      await this.createContents('categories', tx, schema, result.categories);
-      await this.createContents('tags', tx, schema, result.tags);
-      await this.createContents('posts', tx, schema, result.posts);
+      await this.createContents('Categories', tx, schema, result.categories);
+      await this.createContents('Tags', tx, schema, result.tags);
+      await this.createContents('Posts', tx, schema, result.posts);
     });
   }
 
@@ -76,9 +76,9 @@ export class ImportDataService {
     registeredModelIds: Record<string, number>
   ): Promise<Record<string, PrimaryKey>> {
     const models = [
-      { model: 'categories', hasStatus: false },
-      { model: 'tags', hasStatus: false },
-      { model: 'posts', hasStatus: true },
+      { model: 'Categories', hasStatus: false },
+      { model: 'Tags', hasStatus: false },
+      { model: 'Posts', hasStatus: true },
     ];
 
     const result: Record<string, PrimaryKey> = {};
@@ -119,39 +119,39 @@ export class ImportDataService {
     // Categories
     // /////////////////////////////////////
 
-    if (!registeredModels['categories']) {
+    if (!registeredModels['Categories']) {
       // field
-      await this.createFieldsForModel(fieldsService, 'categories', modelKeys, [
+      await this.createFieldsForModel(fieldsService, 'Categories', modelKeys, [
         { field: 'name', label: 'Name', interface: 'input' },
         { field: 'slug', label: 'Slug', interface: 'input' },
       ]);
 
       // relational fields
-      await this.createRelationalFieldsForModel(fieldsService, 'categories', modelKeys);
+      await this.createRelationalFieldsForModel(fieldsService, 'Categories', modelKeys);
     }
 
     // /////////////////////////////////////
     // Tags
     // /////////////////////////////////////
 
-    if (!registeredModels['tags']) {
+    if (!registeredModels['Tags']) {
       // fields
-      await this.createFieldsForModel(fieldsService, 'tags', modelKeys, [
+      await this.createFieldsForModel(fieldsService, 'Tags', modelKeys, [
         { field: 'name', label: 'Name', interface: 'input' },
         { field: 'slug', label: 'Slug', interface: 'input' },
       ]);
 
       // relational fields
-      await this.createRelationalFieldsForModel(fieldsService, 'tags', modelKeys);
+      await this.createRelationalFieldsForModel(fieldsService, 'Tags', modelKeys);
     }
 
     // /////////////////////////////////////
     // Posts
     // /////////////////////////////////////
 
-    if (!registeredModels['posts']) {
+    if (!registeredModels['Posts']) {
       // fields
-      await this.createFieldsForModel(fieldsService, 'posts', modelKeys, [
+      await this.createFieldsForModel(fieldsService, 'Posts', modelKeys, [
         { field: 'title', label: 'Title', interface: 'input' },
         { field: 'content', label: 'Content', interface: 'inputRichTextMd' },
         { field: 'slug', label: 'Slug', interface: 'input' },
@@ -191,20 +191,22 @@ export class ImportDataService {
     manyModel: string,
     modelKeys: Record<string, PrimaryKey>
   ) {
+    const field = manyModel.toLowerCase();
+
     await service.createRelationalFields(
       {
         manyModel: manyModel,
         manyModelId: modelKeys[manyModel],
         manyField: 'postId',
-        oneModel: 'posts',
-        oneModelId: modelKeys['posts'],
-        oneField: manyModel,
+        oneModel: 'Posts',
+        oneModelId: modelKeys['Posts'],
+        oneField: field,
       },
       [
         {
-          model: 'posts',
-          modelId: modelKeys['posts'],
-          field: manyModel,
+          model: 'Posts',
+          modelId: modelKeys['Posts'],
+          field: field,
           label: manyModel,
           interface: 'listOneToMany',
           readonly: false,
