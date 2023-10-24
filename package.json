@@ -21,9 +21,9 @@
     "clean": "rimraf dist",
     "test:int": "node --loader ts-node/esm --experimental-vm-modules node_modules/jest/bin/jest.js --config=jest.integrations.config.mjs",
     "test:components": "node --loader ts-node/esm --experimental-vm-modules node_modules/jest/bin/jest.js --config=jest.components.config.mjs",
-    "dev": "node --loader ts-node/esm ./src/bin.ts dev",
-    "build": "node --loader ts-node/esm ./src/bin.ts build",
-    "start": "node --loader ts-node/esm ./src/bin.ts start",
+    "dev": "node --loader ts-node/esm --no-warnings ./src/bin.ts dev",
+    "build": "node --loader ts-node/esm --no-warnings ./src/bin.ts build",
+    "start": "node --loader ts-node/esm --no-warnings ./src/bin.ts start",
     "migrate:latest": "node --loader ts-node/esm ./src/bin.ts database migrate:latest",
     "migrate:down": "node --loader ts-node/esm ./src/bin.ts database migrate:down",
     "seed:dev": "node --loader ts-node/esm ./src/bin.ts database seed:dev"
