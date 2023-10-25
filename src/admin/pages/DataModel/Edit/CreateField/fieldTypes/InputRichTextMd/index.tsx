@@ -62,6 +62,7 @@ export const InputRichTextMdType: React.FC<Props> = (props) => {
         required: form.required,
         readonly: false,
         hidden: false,
+        options: { defaultValue: '' },
       });
       onSuccess(field!);
     } catch (e) {
