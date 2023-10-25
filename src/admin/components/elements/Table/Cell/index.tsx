@@ -1,8 +1,8 @@
+import { Chip } from '@collectionscms/plugin-ui';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc.js';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Chip } from '@collectionscms/plugin-ui';
 import { castToBoolean } from '../../../../utilities/castToBoolean.js';
 import { Props } from './types.js';
 
@@ -23,9 +23,9 @@ export const Cell: React.FC<Props> = (props) => {
 
     switch (type.fieldType) {
       case 'text' || 'number':
-        return truncate(String(cellData));
+        return cellData && truncate(String(cellData));
       case 'date':
-        return dayjs(String(cellData)).local().format('YYYY-MM-DD HH:mm');
+        return cellData && dayjs(String(cellData)).local().format('YYYY-MM-DD HH:mm');
       case 'status':
         const statusChoice = type.options?.choices?.[cellData as string];
         if (statusChoice) {
