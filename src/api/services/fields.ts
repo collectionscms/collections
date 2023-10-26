@@ -91,6 +91,10 @@ export class FieldsService extends BaseService<Field> {
     relationalData: Omit<Relation, 'id'>,
     fieldData: Omit<Field, 'id'>[]
   ): Promise<Field[]> {
+    for (const data of fieldData) {
+      await this.checkUniqueField(data.model, data.field);
+    }
+
     const fields = await this.database.transaction(async (tx) => {
       const relationsService = new RelationsService({ database: tx, schema: this.schema });
       const relationId = await relationsService.createOne(relationalData);
