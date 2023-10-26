@@ -37,6 +37,7 @@ async function dropModels(database: Knex) {
     'ModelF12022DriverStandings',
     'ModelF1CircuitStats',
     'ModelF1GrandPrixRaces',
+    'ModelF1FerrariDrivers',
     'ModelF1FerrariTeamStats',
     'ModelF1GrandPrixRaceStats',
     'Categories',
