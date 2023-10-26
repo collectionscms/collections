@@ -65,7 +65,7 @@ const LoginImpl: React.FC = () => {
   return (
     <>
       <Stack spacing={3.5}>
-        <Stack direction="row" justifyContent="left" alignItems="center" spacing={2}>
+        <Stack direction="row" justifyContent="left" alignItems="center" spacing={1}>
           <Box sx={{ width: '40px', height: '40px' }}>
             <Logo />
           </Box>
