@@ -33,7 +33,7 @@ const config: DocsThemeConfig = {
         siteName: defaultTitle,
         images: [
           {
-            url: 'https://cdn.collections.dev/docs/og-image.png',
+            url: 'https://cdn.collections.dev/og-image.png',
             width: 1200,
             height: 630,
             alt: 'collections og image',
@@ -49,11 +49,11 @@ const config: DocsThemeConfig = {
       additionalLinkTags: [
         {
           rel: 'icon',
-          href: '/images/favicon.svg',
+          href: 'https://cdn.collections.dev/favicon.svg',
         },
         {
           rel: 'apple-touch-icon',
-          href: '/images/apple-icon.png',
+          href: 'https://cdn.collections.dev/apple-icon.png',
           sizes: '180x180',
         },
       ],
