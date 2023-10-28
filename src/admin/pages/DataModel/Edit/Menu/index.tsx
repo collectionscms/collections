@@ -4,7 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { DeleteDocument } from '../../../../components/elements/DeleteDocument/index.js';
 import { Props } from './types.js';
 
-export const EditMenu: React.FC<Props> = ({ id, modelId, menu, onEdit, onSuccess, onClose }) => {
+export const EditMenu: React.FC<Props> = (props) => {
+  const { id, modelId, menu, deletable, onEdit, onSuccess, onClose } = props;
   const [open, setOpen] = useState(false);
   const { t } = useTranslation();
 
@@ -52,7 +53,9 @@ export const EditMenu: React.FC<Props> = ({ id, modelId, menu, onEdit, onSuccess
       >
         <MenuItem onClick={onEditField}>{t('edit_field')}</MenuItem>
         <Divider />
-        <MenuItem onClick={onDelete}>{t('delete_field')}</MenuItem>
+        <MenuItem onClick={onDelete} disabled={!deletable}>
+          {t('delete_field')}
+        </MenuItem>
       </Menu>
     </>
   );

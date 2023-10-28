@@ -146,6 +146,18 @@
     "data_model": "Edit Data Model",
     "custom": "Edit {{page}}"
   },
+  "interface": {
+    "input": "Text Field",
+    "inputMultiline": "Textarea",
+    "inputRichTextMd": "Markdown",
+    "selectDropdown": "Select Dropdown",
+    "dateTime": "Date Time",
+    "boolean": "Boolean",
+    "fileImage": "Image",
+    "listOneToMany": "Content References(One to Many)",
+    "selectDropdownManyToOne": "Content Referenced(Many to One)",
+    "selectDropdownStatus": "Public Status"
+  },
   "field_interface": {
     "input_one_line": "Text Field",
     "input_one_line_caption": "Text type field. Enter one line of values.",

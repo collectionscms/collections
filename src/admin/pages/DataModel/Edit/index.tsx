@@ -1,8 +1,10 @@
+import { MainCard } from '@collectionscms/plugin-ui';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Box,
   Button,
   Checkbox,
+  Fade,
   FormControlLabel,
   FormHelperText,
   FormLabel,
@@ -11,6 +13,8 @@ import {
   Select,
   Stack,
   TextField,
+  Tooltip,
+  Typography,
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { useSnackbar } from 'notistack';
@@ -18,7 +22,6 @@ import React, { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
-import { MainCard } from '@collectionscms/plugin-ui';
 import { logger } from '../../../../utilities/logger.js';
 import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscardDialog/index.js';
 import { DeleteButton } from '../../../components/elements/DeleteButton/index.js';
@@ -149,6 +152,11 @@ const EditDataModelPageImpl: React.FC = () => {
     onCloseMenu();
   };
 
+  const handleClickItem = (field: Field) => {
+    setSelectedField(field);
+    setEditFieldOpen(true);
+  };
+
   return (
     <>
       <ConfirmDiscardDialog open={showPrompt} onDiscard={proceed} onKeepEditing={stay} />
@@ -170,6 +178,7 @@ const EditDataModelPageImpl: React.FC = () => {
             id={selectedField.id.toString()}
             modelId={metaModel.id.toString()}
             menu={menu}
+            deletable={selectedField.field !== 'id'}
             onEdit={() => handleEditField(true)}
             onSuccess={handleDeleteFieldSuccess}
             onClose={onCloseMenu}
@@ -187,15 +196,33 @@ const EditDataModelPageImpl: React.FC = () => {
                     onChange={handleChangeSortableItems}
                     renderItem={(item) => (
                       <SortableFieldList.Item id={item.id}>
-                        <Box display="flex" justifyContent="space-between" alignItems="center">
-                          <SortableFieldList.DragHandle />
-                          <Box sx={{ flexGrow: 1, paddingLeft: 1 }}>{item.field}</Box>
-                          {item.field !== 'id' && (
+                        <Tooltip
+                          title={`${item.label} - ${t(
+                            `interface.${item.interface}` as unknown as TemplateStringsArray
+                          )}`}
+                          TransitionComponent={Fade}
+                          arrow
+                          placement="top"
+                        >
+                          <Box
+                            display="flex"
+                            justifyContent="space-between"
+                            alignItems="center"
+                            sx={{ height: '100%' }}
+                          >
+                            <SortableFieldList.DragHandle />
+                            <Box
+                              display="flex"
+                              onClick={() => handleClickItem(item)}
+                              sx={{ flexGrow: 1, height: '100%', alignItems: 'center' }}
+                            >
+                              <Typography sx={{ paddingLeft: 1 }}>{item.field}</Typography>
+                            </Box>
                             <SortableFieldList.ItemMenu
                               onClickItem={(e) => onOpenMenu(e.currentTarget, item)}
                             />
-                          )}
-                        </Box>
+                          </Box>
+                        </Tooltip>
                       </SortableFieldList.Item>
                     )}
                   />
