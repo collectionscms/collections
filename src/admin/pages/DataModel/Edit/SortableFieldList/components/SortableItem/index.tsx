@@ -1,12 +1,12 @@
 import { HolderOutlined, MoreOutlined } from '@ant-design/icons';
+import { IconButton } from '@collectionscms/plugin-ui';
 import type { DraggableSyntheticListeners, UniqueIdentifier } from '@dnd-kit/core';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { Card, Tooltip } from '@mui/material';
+import { Card, Tooltip, useTheme } from '@mui/material';
 import type { CSSProperties, PropsWithChildren } from 'react';
-import React, { createContext, useContext, useMemo } from 'react';
+import React, { createContext, useContext, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { IconButton } from '@collectionscms/plugin-ui';
 
 type Props = {
   id: UniqueIdentifier;
@@ -25,6 +25,8 @@ const SortableItemContext = createContext<Context>({
 });
 
 export const SortableItem: React.FC<PropsWithChildren<Props>> = ({ children, id }) => {
+  const theme = useTheme();
+
   const {
     attributes,
     isDragging,
@@ -42,16 +44,30 @@ export const SortableItem: React.FC<PropsWithChildren<Props>> = ({ children, id 
     }),
     [attributes, listeners, setActivatorNodeRef]
   );
-  const style: CSSProperties = {
+
+  const defaultStyle: CSSProperties = {
     opacity: isDragging ? 0.4 : undefined,
     transform: CSS.Translate.toString(transform),
     transition,
     padding: '0.2rem',
+    cursor: 'pointer',
+    height: '44px',
   };
+  const [style, setStyle] = useState<CSSProperties>(defaultStyle);
 
   return (
     <SortableItemContext.Provider value={context}>
-      <Card ref={setNodeRef} style={style} variant="outlined">
+      <Card
+        ref={setNodeRef}
+        style={style}
+        variant="outlined"
+        onMouseEnter={() => {
+          setStyle({ ...style, border: `1px solid ${theme.palette.primary.main}` });
+        }}
+        onMouseLeave={() => {
+          setStyle(defaultStyle);
+        }}
+      >
         {children}
       </Card>
     </SortableItemContext.Provider>
