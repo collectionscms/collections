@@ -3,6 +3,7 @@
 import { useRouter } from 'next/router';
 import { DocsThemeConfig, useConfig } from 'nextra-theme-docs';
 import React from 'react';
+import { Footer } from './components/Footer';
 
 const defaultTitle = 'Collections';
 const logo = (
@@ -165,11 +166,7 @@ const config: DocsThemeConfig = {
   },
   docsRepositoryBase: 'https://github.com/collectionscms/collections',
   footer: {
-    text: (
-      <p style={{ fontSize: 13 }}>
-        &copy; {new Date().getFullYear()} Rocketa, Inc. All rights reserved.
-      </p>
-    ),
+    text: <Footer />,
   },
   gitTimestamp: '',
   i18n: [
