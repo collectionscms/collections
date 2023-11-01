@@ -1,8 +1,8 @@
 import { AuthUser as AuthUserEntity } from '../../api/config/types.js';
 import {
-  Model as ModelSchema,
   Field as FieldSchema,
   File as FileSchema,
+  Model as ModelSchema,
   Permission as PermissionSchema,
   ProjectSetting as ProjectSettingSchema,
   Relation as RelationSchema,
@@ -136,7 +136,7 @@ export type GetRelation = {} & RelationSchema;
 // /////////////////////////////////////
 
 export type Me = {
-  user: AuthUser;
+  user: AuthUser | null;
   email: string;
   apiKey: string | null;
   token: string;

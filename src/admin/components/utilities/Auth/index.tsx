@@ -19,7 +19,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return api.post<{ token: string; user: AuthUser }>(url, arg).then((res) => {
           setAuthorization(res.data.token);
           setTokenInMemory(res.data.token);
-          mutate({ ...res.data, apiKey: null });
+          mutate({ ...res.data, email: '', apiKey: null });
           return res.data;
         });
       }
@@ -29,7 +29,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     useSWRMutation(`/authentications/logout`, async (url: string) => {
       return api.post(url).then((res) => {
         removeAuthorization();
-        mutate({ token: null, user: null, apiKey: null }, false);
+        mutate({ user: null, apiKey: null, email: '', token: '' }, false);
         setTokenInMemory(undefined);
         return res;
       });
@@ -51,7 +51,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         logger.error(e);
         if (e.response?.status !== 401) {
           removeAuthorization();
-          mutate({ token: null, apiKey: null, user: null }, false);
+          mutate({ user: null, apiKey: null, email: '', token: '' }, false);
         }
         return null;
       })
