@@ -875,10 +875,10 @@
   resolved "https://registry.npmjs.org/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@collectionscms/plugin-ui@^1.0.0-beta.1":
-  version "1.0.0-beta.1"
-  resolved "https://registry.yarnpkg.com/@collectionscms/plugin-ui/-/plugin-ui-1.0.0-beta.1.tgz#ec0363b9a4242bb6351ae0023cac794ed831bd62"
-  integrity sha512-rJyjb41Gau5cSvI95Ioo0u1YS9uu46CgUAH5xxcezkBhq+UjkBXpn2xoRfgluVawpQUC70tm02RYFDrydZ1pfw==
+"@collectionscms/plugin-ui@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@collectionscms/plugin-ui/-/plugin-ui-1.0.0.tgz#cf5aec6487c6fedf0c84d147b16e29fd0f0653ad"
+  integrity sha512-pxxKEah4WH6fCwBFs4W/3xe+7bIgZ2pr9jTxQN1YDYTJyZ4U9PWGb92hIjakLwEbwbPvQlYI9Tmwl5j61I7+wA==
   dependencies:
     "@ant-design/colors" "^7.0.0"
     "@ant-design/icons" "^5.1.4"
@@ -889,10 +889,10 @@
     react-dom "^18.2.0"
     react-syntax-highlighter "^15.5.0"
 
-"@collectionscms/plugin-wp-importer@^1.0.0-beta.2":
-  version "1.0.0-beta.2"
-  resolved "https://registry.yarnpkg.com/@collectionscms/plugin-wp-importer/-/plugin-wp-importer-1.0.0-beta.2.tgz#1193dcf7d9ef8e699b445af043eb952085be00ef"
-  integrity sha512-4i+1qB12sBFJr4dGeIYI9Y1upYqW5UYVUh/2oy/FJoGWrGuVDqfR+Uo0EVbmCWyp5P9o6v/c7TDpeA/f+bb1iw==
+"@collectionscms/plugin-wp-importer@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@collectionscms/plugin-wp-importer/-/plugin-wp-importer-1.0.0.tgz#5436e714ebfe2e53a28af1ad4f3b7443148ce8ee"
+  integrity sha512-2HMWj1OSlGVXWezdBLD8hmApbrg2wh1G6Y5zZ+7kjG8g8Q7jCmJGQ1hlkWoZzaAIXajVOGJccLn9EaBJJ5TkeQ==
   dependencies:
     "@types/node" "^20.5.7"
     dayjs "^1.11.9"
