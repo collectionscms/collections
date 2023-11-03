@@ -1,7 +1,6 @@
-import { CloseCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined } from '@ant-design/icons';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
-  Box,
   Button,
   Checkbox,
   Divider,
@@ -16,7 +15,6 @@ import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import React, { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { IconButton } from '@collectionscms/plugin-ui';
 import { logger } from '../../../../../../../utilities/logger.js';
 import { shallowEqualObject } from '../../../../../../../utilities/shallowEqualObject.js';
 import { ConfirmDiscardDialog } from '../../../../../../components/elements/ConfirmDiscardDialog/index.js';
@@ -26,13 +24,15 @@ import {
   updateSelectDropdown as schema,
 } from '../../../../../../fields/schemas/modelFields/selectDropdown/updateSelectDropdown.js';
 import { useUnsavedChangesPrompt } from '../../../../../../hooks/useUnsavedChangesPrompt.js';
-import { CreateChoice } from '../../../CreateField/fieldTypes/CreateChoice/index.js';
+import { ChoiceField } from '../../../ChoiceField/index.js';
 import { useField } from '../../Context/index.js';
 import { Props } from '../types.js';
+import { DropdownChoice } from './DropdownChoice/index.js';
 
 export const SelectDropdownType: React.FC<Props> = (props) => {
   const { field: meta, onEditing, onSuccess, onChangeParentViewInvisible } = props;
   const [state, setState] = useState(false);
+  const [choiceValue, setChoiceValue] = useState<{ id: string; label: string; value: string }>();
   const { t } = useTranslation();
   const { updateField } = useField();
   const { trigger, isMutating } = updateField(meta.id);
@@ -55,7 +55,7 @@ export const SelectDropdownType: React.FC<Props> = (props) => {
   });
   const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
 
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, remove, update } = useFieldArray({
     control,
     name: 'choices',
   });
@@ -71,14 +71,43 @@ export const SelectDropdownType: React.FC<Props> = (props) => {
     });
   }, [watch]);
 
-  const onToggleCreateChoice = (state: boolean) => {
+  const toggleChoiceField = (state: boolean) => {
     setState(state);
     onChangeParentViewInvisible?.(state);
   };
 
-  const handleCreateChoiceSuccess = (choice: Choice) => {
-    append(choice);
-    onToggleCreateChoice(false);
+  // /////////////////////////////////////
+  // Operation to drawer
+  // /////////////////////////////////////
+
+  const onToggleCreateChoice = () => {
+    setChoiceValue({ id: '', label: '', value: '' });
+    toggleChoiceField(true);
+  };
+
+  const onToggleUpdateChoice = (field: { id: string; label: string; value: string }) => {
+    setChoiceValue(field);
+    toggleChoiceField(true);
+  };
+
+  // /////////////////////////////////////
+  // Operation to choices
+  // /////////////////////////////////////
+
+  const handleDeleteChoice = (id: string) => {
+    const index = fields.findIndex((field) => field.id === id);
+    remove(index);
+  };
+
+  const handleSaveChoice = (id: string | null, choice: Choice) => {
+    if (id) {
+      const index = fields.findIndex((field) => field.id === id);
+      update(index, choice);
+    } else {
+      append(choice);
+    }
+
+    toggleChoiceField(false);
   };
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
@@ -104,10 +133,11 @@ export const SelectDropdownType: React.FC<Props> = (props) => {
   return (
     <>
       <ConfirmDiscardDialog open={showPrompt} onDiscard={proceed} onKeepEditing={stay} />
-      <CreateChoice
+      <ChoiceField
         openState={state}
-        onSuccess={(choice) => handleCreateChoiceSuccess(choice)}
-        onClose={() => onToggleCreateChoice(false)}
+        values={choiceValue}
+        onSave={(id, choice) => handleSaveChoice(id, choice)}
+        onClose={() => toggleChoiceField(false)}
       />
       <Stack component="form" onSubmit={handleSubmit(onSubmit)} rowGap={3}>
         <Grid container spacing={3} columns={{ xs: 1, sm: 4 }}>
@@ -192,15 +222,17 @@ export const SelectDropdownType: React.FC<Props> = (props) => {
         <Typography>{t('choices')}</Typography>
         <Stack rowGap={1}>
           {fields.length > 0 ? (
-            fields.map((field, index) => (
-              <Stack direction="row" columnGap={1} key={field.id}>
-                <Box display="flex" alignItems="center">
-                  <Typography>{field.label}</Typography>
-                </Box>
-                <IconButton color="secondary" onClick={() => remove(index)}>
-                  <CloseCircleOutlined />
-                </IconButton>
-              </Stack>
+            fields.map((field) => (
+              <DropdownChoice
+                key={field.id}
+                field={{
+                  id: field.id,
+                  label: field.label,
+                  value: field.value,
+                }}
+                onEdit={(field) => onToggleUpdateChoice(field)}
+                onDelete={(id) => handleDeleteChoice(id)}
+              />
             ))
           ) : (
             <Typography variant="caption">{t('no_choice')}</Typography>
@@ -209,7 +241,7 @@ export const SelectDropdownType: React.FC<Props> = (props) => {
         <Button
           variant="outlined"
           startIcon={<PlusOutlined style={{ fontSize: '10px' }} />}
-          onClick={() => onToggleCreateChoice(true)}
+          onClick={onToggleCreateChoice}
         >
           {t('add_new_choice')}
         </Button>
