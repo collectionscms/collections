@@ -26,7 +26,6 @@ const SortableItemContext = createContext<Context>({
 
 export const SortableItem: React.FC<PropsWithChildren<Props>> = ({ children, id }) => {
   const theme = useTheme();
-
   const {
     attributes,
     isDragging,
@@ -49,9 +48,6 @@ export const SortableItem: React.FC<PropsWithChildren<Props>> = ({ children, id 
     opacity: isDragging ? 0.4 : undefined,
     transform: CSS.Translate.toString(transform),
     transition,
-    padding: '0.2rem',
-    cursor: 'pointer',
-    height: '44px',
   };
   const [style, setStyle] = useState<CSSProperties>(defaultStyle);
 
@@ -62,10 +58,18 @@ export const SortableItem: React.FC<PropsWithChildren<Props>> = ({ children, id 
         style={style}
         variant="outlined"
         onMouseEnter={() => {
-          setStyle({ ...style, border: `1px solid ${theme.palette.primary.main}` });
+          setStyle({ ...style });
         }}
         onMouseLeave={() => {
           setStyle(defaultStyle);
+        }}
+        sx={{
+          '&:hover': {
+            bgcolor: theme.palette.mode === 'dark' ? 'divider' : 'primary.lighter',
+          },
+          padding: '0.2rem',
+          cursor: 'pointer',
+          height: '44px',
         }}
       >
         {children}

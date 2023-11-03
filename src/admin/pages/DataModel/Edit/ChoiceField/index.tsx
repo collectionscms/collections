@@ -1,4 +1,5 @@
 import { CloseOutlined } from '@ant-design/icons';
+import { IconButton } from '@collectionscms/plugin-ui';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Box,
@@ -13,26 +14,32 @@ import {
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { t } from 'i18next';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { IconButton } from '@collectionscms/plugin-ui';
-import { ScrollBar } from '../../../../../../components/elements/ScrollBar/index.js';
+import { ScrollBar } from '../../../../components/elements/ScrollBar/index.js';
 import {
   FormValues,
   createChoice as schema,
-} from '../../../../../../fields/schemas/modelFields/choice/createChoice.js';
+} from '../../../../fields/schemas/modelFields/choice/createChoice.js';
 import { Props } from './types.js';
 
-export const CreateChoice: React.FC<Props> = ({ openState, onSuccess, onClose }) => {
+export const ChoiceField: React.FC<Props> = ({ openState, values, onSave, onClose }) => {
   const {
     control,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: { label: '', value: '' },
     resolver: yupResolver(schema),
   });
+
+  useEffect(() => {
+    if (!values) return;
+    setValue('label', values.label);
+    setValue('value', values.value);
+  }, [values]);
 
   const onToggle = () => (event: React.KeyboardEvent | React.MouseEvent) => {
     if (
@@ -46,7 +53,7 @@ export const CreateChoice: React.FC<Props> = ({ openState, onSuccess, onClose })
   };
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
-    onSuccess({ label: form.label, value: form.value });
+    onSave(values?.id ?? null, { label: form.label, value: form.value });
     reset();
   };
 
@@ -71,7 +78,7 @@ export const CreateChoice: React.FC<Props> = ({ openState, onSuccess, onClose })
       >
         <Box sx={{ p: 3 }}>
           <Stack direction="row" alignItems="center" justifyContent="space-between">
-            <Typography variant="h4">{t('add_new_choice')}</Typography>
+            <Typography variant="h4">{t('choices')}</Typography>
             <IconButton
               color="secondary"
               size="small"
@@ -126,7 +133,7 @@ export const CreateChoice: React.FC<Props> = ({ openState, onSuccess, onClose })
               </Grid>
             </Grid>
             <Button variant="contained" type="submit" fullWidth>
-              {t('add')}
+              {values?.id ? t('update') : t('add')}
             </Button>
           </Stack>
         </Stack>

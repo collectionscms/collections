@@ -1,7 +1,6 @@
-import { CloseCircleOutlined, PlusOutlined, UnorderedListOutlined } from '@ant-design/icons';
+import { PlusOutlined, UnorderedListOutlined } from '@ant-design/icons';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
-  Box,
   Button,
   Checkbox,
   Divider,
@@ -16,7 +15,6 @@ import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import React, { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { IconButton } from '@collectionscms/plugin-ui';
 import { logger } from '../../../../../../../utilities/logger.js';
 import { shallowEqualObject } from '../../../../../../../utilities/shallowEqualObject.js';
 import { ConfirmDiscardDialog } from '../../../../../../components/elements/ConfirmDiscardDialog/index.js';
@@ -27,14 +25,16 @@ import {
 } from '../../../../../../fields/schemas/modelFields/selectDropdown/createSelectDropdown.js';
 import { useUnsavedChangesPrompt } from '../../../../../../hooks/useUnsavedChangesPrompt.js';
 import { Accordion } from '../../../Accordion/index.js';
+import { ChoiceField } from '../../../ChoiceField/index.js';
+import { DropdownChoice } from '../../../EditField/fieldTypes/SelectDropdown/DropdownChoice/index.js';
 import { useField } from '../../Context/index.js';
-import { CreateChoice } from '../CreateChoice/index.js';
 import { Props } from '../types.js';
 
 export const SelectDropdownType: React.FC<Props> = (props) => {
   const { model, expanded, handleChange, onEditing, onSuccess, onChangeParentViewInvisible } =
     props;
   const [state, setState] = useState(false);
+  const [choiceValue, setChoiceValue] = useState<{ id: string; label: string; value: string }>();
   const { t } = useTranslation();
   const { createField } = useField();
   const { trigger, isMutating } = createField();
@@ -60,19 +60,48 @@ export const SelectDropdownType: React.FC<Props> = (props) => {
     });
   }, [watch]);
 
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, update, remove } = useFieldArray({
     control,
     name: 'choices',
   });
 
-  const onToggleCreateChoice = (state: boolean) => {
+  const toggleChoiceField = (state: boolean) => {
     setState(state);
     onChangeParentViewInvisible?.(state);
   };
 
-  const onCreateChoiceSuccessfully = (choice: Choice) => {
-    append(choice);
-    onToggleCreateChoice(false);
+  // /////////////////////////////////////
+  // Operation to drawer
+  // /////////////////////////////////////
+
+  const onToggleCreateChoice = () => {
+    setChoiceValue({ id: '', label: '', value: '' });
+    toggleChoiceField(true);
+  };
+
+  const onToggleUpdateChoice = (field: { id: string; label: string; value: string }) => {
+    setChoiceValue(field);
+    toggleChoiceField(true);
+  };
+
+  // /////////////////////////////////////
+  // Operation to choices
+  // /////////////////////////////////////
+
+  const handleDeleteChoice = (id: string) => {
+    const index = fields.findIndex((field) => field.id === id);
+    remove(index);
+  };
+
+  const handleSaveChoice = (id: string | null, choice: Choice) => {
+    if (id) {
+      const index = fields.findIndex((field) => field.id === id);
+      update(index, choice);
+    } else {
+      append(choice);
+    }
+
+    toggleChoiceField(false);
   };
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
@@ -98,10 +127,11 @@ export const SelectDropdownType: React.FC<Props> = (props) => {
   return (
     <>
       <ConfirmDiscardDialog open={showPrompt} onDiscard={proceed} onKeepEditing={stay} />
-      <CreateChoice
+      <ChoiceField
         openState={state}
-        onSuccess={(choice) => onCreateChoiceSuccessfully(choice)}
-        onClose={() => onToggleCreateChoice(false)}
+        values={choiceValue}
+        onSave={(id, choice) => handleSaveChoice(id, choice)}
+        onClose={() => toggleChoiceField(false)}
       />
       <Accordion
         expanded={expanded}
@@ -173,15 +203,17 @@ export const SelectDropdownType: React.FC<Props> = (props) => {
           <Typography>{t('choices')}</Typography>
           <Stack rowGap={1}>
             {fields.length > 0 ? (
-              fields.map((field, index) => (
-                <Stack direction="row" columnGap={1} key={field.id}>
-                  <Box display="flex" alignItems="center">
-                    <Typography>{field.label}</Typography>
-                  </Box>
-                  <IconButton color="secondary" onClick={() => remove(index)}>
-                    <CloseCircleOutlined />
-                  </IconButton>
-                </Stack>
+              fields.map((field) => (
+                <DropdownChoice
+                  key={field.id}
+                  field={{
+                    id: field.id,
+                    label: field.label,
+                    value: field.value,
+                  }}
+                  onEdit={(field) => onToggleUpdateChoice(field)}
+                  onDelete={(id) => handleDeleteChoice(id)}
+                />
               ))
             ) : (
               <Typography variant="caption">{t('no_choice')}</Typography>
@@ -190,7 +222,7 @@ export const SelectDropdownType: React.FC<Props> = (props) => {
           <Button
             variant="outlined"
             startIcon={<PlusOutlined style={{ fontSize: '10px' }} />}
-            onClick={() => onToggleCreateChoice(true)}
+            onClick={onToggleCreateChoice}
           >
             {t('add_new_choice')}
           </Button>
