@@ -20,12 +20,48 @@ npx create-collections-app my-app
 Collections supports multiple databases. Each database has different configuration options, but don't worry. Simply answer the installer's questions to complete the setup.
 
 ```js
-// Select your database client
-? Choose your database client (Use arrow keys)
-MySQL / MariaDB
+// Choose your database client
+? Which one? SQLite is the simplest. (Use arrow keys)
+❯ SQLite
+  MySQL / MariaDB
   PostgreSQL
-  SQLite
+```
 
+---
+
+In SQLite
+
+```js
+// Enter the path to the database file
+? Database File Path: (/my-app/data.db)
+```
+
+---
+
+In MySQL / MariaDB
+
+```js
+// Enter your database host
+? Database Host: (127.0.0.1)
+
+// Please enter the database port
+? Port: (3306)
+
+// Enter the database name
+? Database Name: (collections)
+
+// Enter the database user
+? Database User:
+
+// Enter the database password
+? Enter the database password:
+```
+
+---
+
+In PostgreSQL
+
+```js
 // Enter your database host
 ? Database Host: (127.0.0.1)
 
@@ -41,9 +77,11 @@ MySQL / MariaDB
 // Enter the database password
 ? Enter the database password:
 
-// Enable SSL (Postgres only)
-? Enable SSL: Yes
+// Enable SSL
+? Enable SSL: (y/N)
 ```
+
+---
 
 Next, create the administrator user.
 

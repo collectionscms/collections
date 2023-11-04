@@ -3,9 +3,9 @@ import { DBClient } from '../../api/database/connection.js';
 import { Output } from '../../utilities/output.js';
 
 const drivers: Record<DBClient, string> = {
+  sqlite3: 'SQLite',
   mysql: 'MySQL / MariaDB',
   pg: 'PostgreSQL',
-  sqlite3: 'SQLite',
 };
 
 const getDriverForClient = (client: string): keyof typeof drivers | null => {
@@ -17,13 +17,13 @@ const getDriverForClient = (client: string): keyof typeof drivers | null => {
 };
 
 export const chooseDatabase = async (): Promise<DBClient> => {
-  Output.info('Choose your database client');
+  Output.info('Choose your database client. see: https://collections.dev/docs/get-started');
 
   const { client } = await inquirer.prompt([
     {
       type: 'list',
       name: 'client',
-      message: 'Choose your database client',
+      message: 'Which one? SQLite is the simplest.',
       choices: Object.values(drivers),
     },
   ]);
