@@ -21,11 +21,47 @@ Collections は、複数のデータベースに対応しています。それ�
 
 ```js
 // データベースクライアントを選択してください
-? Choose your database client (Use arrow keys)
-❯ MySQL / MariaDB
+? Which one? SQLite is the simplest. (Use arrow keys)
+❯ SQLite
+  MySQL / MariaDB
   PostgreSQL
-  SQLite
+```
 
+---
+
+SQLite の場合
+
+```js
+// データベースファイルのパスを入力してください
+? Database File Path: (/my-app/data.db)
+```
+
+---
+
+MySQL / MariaDB の場合
+
+```js
+// データベースのホストを入力してください
+? Database Host: (127.0.0.1)
+
+// データベースのポートを入力してください
+? Port: (3306)
+
+// データベースの名前を入力してください
+? Database Name: (collections)
+
+// データベースのユーザーを入力してください
+? Database User:
+
+// データベースのパスワードを入力してください
+? Database Password:
+```
+
+---
+
+PostgreSQL の場合
+
+```js
 // データベースのホストを入力してください
 ? Database Host: (127.0.0.1)
 
@@ -41,9 +77,11 @@ Collections は、複数のデータベースに対応しています。それ�
 // データベースのパスワードを入力してください
 ? Database Password:
 
-// SSLを有効にしますか（Postgresのみ）
-? Enable SSL: Yes
+// SSLを有効にしますか
+? Enable SSL: (y/N)
 ```
+
+---
 
 続いて、管理者のユーザーを作成します。
 
