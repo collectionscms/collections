@@ -29,13 +29,7 @@ export const CreateFirstModel: React.FC = () => {
         onSuccess={() => handleDialog(true)}
         onClose={() => handleDialog(false)}
       />
-      <Grid
-        container
-        direction="column"
-        alignItems="center"
-        justifyContent="center"
-        sx={{ minHeight: '100vh', overflow: 'hidden' }}
-      >
+      <Grid container alignItems="center" justifyContent="center" direction="row" sx={{ flex: 1 }}>
         <Grid xs={12}>
           <Stack spacing={2} justifyContent="center" alignItems="center">
             <Typography variant="h2">{t('register_data_model')}</Typography>
