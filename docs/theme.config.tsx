@@ -159,7 +159,28 @@ const config: DocsThemeConfig = {
     link: 'https://github.com/collectionscms/collections',
   },
   chat: {
-    link: 'https://discord.gg/a6FYDkV3Vk',
+    link: 'https://x.com/collectionscms',
+    icon: (
+      <svg
+        width="25"
+        height="24"
+        viewBox="0 0 25 24"
+        version="1.1"
+        style={{
+          fillRule: 'evenodd',
+          clipRule: 'evenodd',
+          strokeLinejoin: 'round',
+          strokeMiterlimit: 2,
+        }}
+      >
+        <g transform="matrix(0.0207347,0,0,0.01957,0,0)">
+          <path
+            d="M714.163,519.284L1160.89,0L1055.03,0L667.137,450.887L357.328,0L0,0L468.492,681.821L0,1226.37L105.866,1226.37L515.491,750.218L842.672,1226.37L1200,1226.37L714.137,519.284L714.163,519.284ZM569.165,687.828L521.697,619.934L144.011,79.694L306.615,79.694L611.412,515.685L658.88,583.579L1055.08,1150.3L892.476,1150.3L569.165,687.854L569.165,687.828Z"
+            style={{ fill: 'currentColor', fillRule: 'nonzero' }}
+          />
+        </g>
+      </svg>
+    ),
   },
   search: {
     placeholder: 'Search',
