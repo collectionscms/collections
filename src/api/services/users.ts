@@ -1,10 +1,14 @@
+import crypto from 'crypto';
 import { castToBoolean } from '../../admin/utilities/castToBoolean.js';
+import { env } from '../../env.js';
 import { RecordNotUniqueException } from '../../exceptions/database/recordNotUnique.js';
 import { InvalidCredentialsException } from '../../exceptions/invalidCredentials.js';
 import { AuthUser } from '../config/types.js';
 import { PrimaryKey, User } from '../database/schemas.js';
 import { comparePasswords } from '../utilities/comparePasswords.js';
 import { AbstractServiceOptions, BaseService } from './base.js';
+import { MailService } from './mail.js';
+import { ProjectSettingsService } from './projectSettings.js';
 import { RolesService } from './roles.js';
 
 export type Me = {
@@ -118,6 +122,49 @@ export class UsersService extends BaseService<User> {
     if (users.length > 0 && users[0].id !== key) {
       throw new RecordNotUniqueException('already_registered_email');
     }
+  }
+
+  /**
+   * @description Set reset password token
+   * @param email
+   * @returns token
+   */
+  async setResetPasswordToken(email: string): Promise<string> {
+    const user = await this.readMany({
+      filter: { email: { _eq: email } },
+    }).then((users) => users[0]);
+
+    if (!user) {
+      throw new InvalidCredentialsException('unregistered_email_address');
+    }
+
+    let token: string | Buffer = crypto.randomBytes(20);
+    token = token.toString('hex');
+
+    user.resetPasswordToken = token;
+    user.resetPasswordExpiration = Date.now() + 3600000; // 1 hour
+
+    await this.updateOne(user.id, user);
+
+    return token;
+  }
+
+  /**
+   * @description Send reset password email
+   * @param email
+   * @param token
+   */
+  async sendResetPassword(email: string, token: string) {
+    const projectSettingsService = new ProjectSettingsService({ schema: this.schema });
+    const projectSettings = await projectSettingsService.readMany();
+    const projectName = projectSettings[0].name;
+
+    const mail = new MailService();
+    mail.sendEmail(projectName, {
+      to: email,
+      subject: 'Reset Password',
+      html: `${env.PUBLIC_SERVER_URL}/admin/auth/reset-password/${token}`,
+    });
   }
 
   private toAuthUser(
