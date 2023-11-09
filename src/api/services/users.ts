@@ -158,12 +158,18 @@ export class UsersService extends BaseService<User> {
     const projectSettingsService = new ProjectSettingsService({ schema: this.schema });
     const projectSettings = await projectSettingsService.readMany();
     const projectName = projectSettings[0].name;
+    const html = `You are receiving this message because you have requested a password reset for your account.<br/>
+    Please click the following link and enter your new password.<br/><br/>
+    <a href="${env.PUBLIC_SERVER_URL}/admin/auth/reset-password/${token}">
+      ${env.PUBLIC_SERVER_URL}/admin/auth/reset-password/${token}
+    </a><br/><br/>
+    If you did not request this, please ignore this email and your password will remain unchanged.`;
 
     const mail = new MailService();
     mail.sendEmail(projectName, {
       to: email,
-      subject: 'Reset Password',
-      html: `${env.PUBLIC_SERVER_URL}/admin/auth/reset-password/${token}`,
+      subject: 'Password Reset Request',
+      html,
     });
   }
 
