@@ -100,4 +100,28 @@ describe('Users', () => {
       expect(after).toBeGreaterThan(before);
     });
   });
+
+  describe('Reset password', () => {
+    it.each(testDatabases)('%s - should update reset password token', async (database) => {
+      const connection = databases.get(database)!;
+      const schema = await getSchemaOverview({ database: connection });
+
+      const service = new UsersService({ database: connection, schema });
+      const user = await service
+        .readMany({ filter: { email: { _eq: 'michael@collections.dev' } } })
+        .then((users) => users[0]);
+
+      expect(user.resetPasswordToken).toBeNull();
+      expect(user.resetPasswordExpiration).toBeNull();
+
+      const token = await service.setResetPasswordToken(user.email);
+
+      const updatedUser = await service
+        .readMany({ filter: { email: { _eq: 'michael@collections.dev' } } })
+        .then((users) => users[0]);
+
+      expect(updatedUser.resetPasswordToken).toEqual(token);
+      expect(updatedUser.resetPasswordExpiration).not.toBeNull();
+    });
+  });
 });

@@ -1,13 +1,9 @@
-import crypto from 'crypto';
 import express, { Request, Response } from 'express';
-import { env } from '../../env.js';
 import { RecordNotFoundException } from '../../exceptions/database/recordNotFound.js';
 import { InvalidCredentialsException } from '../../exceptions/invalidCredentials.js';
 import { UnprocessableEntityException } from '../../exceptions/unprocessableEntity.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
 import { permissionsHandler } from '../middleware/permissionsHandler.js';
-import { MailService } from '../services/mail.js';
-import { ProjectSettingsService } from '../services/projectSettings.js';
 import { UsersService } from '../services/users.js';
 import { oneWayHash } from '../utilities/oneWayHash.js';
 
@@ -129,34 +125,9 @@ router.post(
   '/users/forgot-password',
   asyncHandler(async (req: Request, res: Response) => {
     const service = new UsersService({ schema: req.schema });
-    const user = await service
-      .readMany({
-        filter: { email: { _eq: req.body.email } },
-      })
-      .then((users) => users[0]);
+    const resetPasswordToken = await service.setResetPasswordToken(req.body.email);
 
-    if (!user) {
-      throw new InvalidCredentialsException('unregistered_email_address');
-    }
-
-    let token: string | Buffer = crypto.randomBytes(20);
-    token = token.toString('hex');
-
-    user.resetPasswordToken = token;
-    user.resetPasswordExpiration = Date.now() + 3600000; // 1 hour
-
-    await service.updateOne(user.id, user);
-
-    const projectSettingsService = new ProjectSettingsService({ schema: req.schema });
-    const projectSettings = await projectSettingsService.readMany();
-    const projectName = projectSettings[0].name;
-
-    const mail = new MailService();
-    mail.sendEmail(projectName, {
-      to: user.email,
-      subject: 'Reset Password',
-      html: `${env.PUBLIC_SERVER_URL}/admin/auth/reset-password/${user.resetPasswordToken}`,
-    });
+    service.sendResetPassword(req.body.email, resetPasswordToken);
 
     res.json({
       message: 'success',
