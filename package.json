@@ -120,7 +120,7 @@
   },
   "devDependencies": {
     "@commitlint/cli": "^17.6.6",
-    "@commitlint/config-conventional": "^17.6.6",
+    "@commitlint/config-conventional": "^18.4.0",
     "@types/busboy": "^1.5.0",
     "@types/cookie-parser": "^1.4.3",
     "@types/cors": "^2.8.13",
