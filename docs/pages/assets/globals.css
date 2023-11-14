@@ -8,6 +8,12 @@ body {
     'Meiryo';
 }
 
-.create-collections-app .line:before {
-  content: '$ ';
+.copyTextarea {
+  position: absolute;
+  opacity: 0;
+  border: none;
+  pointer-events: none;
+  user-select: none;
+  width: 0;
+  height: 1px;
 }
