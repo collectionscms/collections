@@ -31,11 +31,11 @@ export const CopyToClipboard: React.FC<CopyToClipboardProps> = ({ value }) => {
   }, [copied]);
 
   return (
-    <button onClick={copy} className="pl-3">
+    <button onClick={copy} className="flex items-center">
       {copied ? (
-        <CheckOutlined className="text-green-400 align-middle" />
+        <CheckOutlined className="text-green-400" />
       ) : (
-        <CopyOutlined className="text-gray-400 align-middle" />
+        <CopyOutlined className="text-gray-400" />
       )}
       <textarea className="opacity-0 w-1 h-1 absolute" tabIndex={-1} readOnly ref={ref} />
     </button>
