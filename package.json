@@ -40,6 +40,7 @@
     "type": "git",
     "url": "https://github.com/collectionscms/collections"
   },
+  "homepage": "https://collections.dev",
   "maintainers": [
     {
       "name": "Rocketa Inc.",
