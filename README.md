@@ -1,4 +1,4 @@
-![promotion](https://cdn.collections.dev/pv-en.gif)
+![promotion](https://github.com/collectionscms/collections/assets/59549200/1ebe8a23-13fd-40fe-900e-885fe39fd5f5)
 
 <hr/>
 <h4>
