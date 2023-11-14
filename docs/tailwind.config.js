@@ -10,6 +10,9 @@ module.exports = {
       fontSize: {
         '7xxl': '4.9rem',
       },
+      textColor: {
+        'dark-code': '#54b8d1',
+      },
     },
   },
   plugins: [],
