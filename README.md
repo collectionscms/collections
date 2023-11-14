@@ -1,4 +1,4 @@
-![banner](https://cdn.collections.dev/banner-light.png)
+![promotion](https://cdn.collections.dev/pv-en.gif)
 
 <hr/>
 <h4>
