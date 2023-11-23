@@ -1,5 +1,5 @@
 import { BugOutlined, LogoutOutlined } from '@ant-design/icons';
-import { Box, Stack, Tooltip } from '@mui/material';
+import { Box, Divider, Stack, Tooltip } from '@mui/material';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -31,7 +31,7 @@ export const BottomContent: React.FC = () => {
         confirm={{ label: t('logout'), action: handleLogout }}
         cancel={{ label: t('cancel'), action: () => setLogoutDialogOpen(false) }}
       />
-      <Stack direction="row" spacing={2}>
+      <Stack direction="row" divider={<Divider orientation="vertical" flexItem />} spacing={2}>
         <Tooltip title={t('report_bug')} arrow>
           <Box sx={{ flexShrink: 0 }}>
             <IconButton
