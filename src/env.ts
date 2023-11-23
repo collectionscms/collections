@@ -111,9 +111,10 @@ type AllowedEnvironmentVariable =
   | 'EMAIL_SENDGRID_API_KEY'
 
   // /////////////////////////////////////
-  // Analytics
+  // Other
   // /////////////////////////////////////
-  | 'WEBPACK_BUNDLE_ANALYZER';
+  | 'WEBPACK_BUNDLE_ANALYZER'
+  | 'PUBLIC_SHOW_NAVIGATION_CARD';
 
 export const defaults: Partial<Record<AllowedEnvironmentVariable, any>> = {
   // General
@@ -167,6 +168,9 @@ export const defaults: Partial<Record<AllowedEnvironmentVariable, any>> = {
   // Email
   EMAIL_TRANSPORT: 'sendgrid',
   EMAIL_FROM: 'no-reply@example.com',
+
+  // Other
+  PUBLIC_SHOW_NAVIGATION_CARD: true,
 };
 
 export let env: Record<string, any> = {
