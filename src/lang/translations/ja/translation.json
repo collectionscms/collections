@@ -120,6 +120,9 @@
   "january": "1月",
   "report_bug": "バグを報告",
   "writing": "書き方",
+  "how_was_it": "体験はいかがですか？",
+  "leaving_feedback": "フィードバックする",
+  "feedback_google_form": "https://docs.google.com/forms/d/e/1FAIpQLSfn-ubYtGufApDMPMCzYyNKj4rLoJD79qJ-1OWpqERVB9oikA/viewform?usp=sf_link",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",
