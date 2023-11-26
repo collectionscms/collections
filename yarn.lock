@@ -2469,9 +2469,9 @@
     "@types/node" "*"
 
 "@types/busboy@^1.5.0":
-  version "1.5.2"
-  resolved "https://registry.yarnpkg.com/@types/busboy/-/busboy-1.5.2.tgz#ba9e4f21f1687e25def6c0fe044c7ea5b47dd2ef"
-  integrity sha512-OYkRy+dkQWwoGch3oyQ9UE08PO1jSte7aBtPemLXAP9evwh7fNAfikWdB2VMeP8syY3H/XvGq+pB38dDvTe06g==
+  version "1.5.3"
+  resolved "https://registry.yarnpkg.com/@types/busboy/-/busboy-1.5.3.tgz#016c68692c767f0cf9d23c90a85a9c322f92cbc5"
+  integrity sha512-YMBLFN/xBD8bnqywIlGyYqsNFXu6bsiY7h3Ae0kO17qEuTjsqeyYMRPSUDacIKIquws2Y6KjmxAyNx8xB3xQbw==
   dependencies:
     "@types/node" "*"
 
