@@ -8,7 +8,7 @@ import { ContentsService } from '../services/contents.js';
 const router = express.Router();
 
 router.get(
-  '/models/:modelId/contents',
+  '/models/:identifier/contents',
   modelExists,
   modelPermissionsHandler('read'),
   asyncHandler(async (req: Request, res: Response) => {
@@ -26,7 +26,7 @@ router.get(
 );
 
 router.get(
-  '/models/:modelId/contents/:id',
+  '/models/:identifier/contents/:id',
   modelExists,
   modelPermissionsHandler('read'),
   asyncHandler(async (req: Request, res: Response) => {
@@ -47,7 +47,7 @@ router.get(
 );
 
 router.post(
-  '/models/:modelId/contents',
+  '/models/:identifier/contents',
   modelExists,
   modelPermissionsHandler('create'),
   asyncHandler(async (req: Request, res: Response) => {
@@ -66,7 +66,7 @@ router.post(
 );
 
 router.patch(
-  '/models/:modelId/contents/:id',
+  '/models/:identifier/contents/:id',
   modelExists,
   modelPermissionsHandler('update'),
   asyncHandler(async (req: Request, res: Response) => {
@@ -81,7 +81,7 @@ router.patch(
 );
 
 router.delete(
-  '/models/:modelId/contents/:id',
+  '/models/:identifier/contents/:id',
   modelExists,
   modelPermissionsHandler('delete'),
   asyncHandler(async (req: Request, res: Response) => {
