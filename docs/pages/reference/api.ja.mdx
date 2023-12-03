@@ -7,7 +7,7 @@ import { RedocStandalone } from 'redoc';
 import { useData } from 'nextra/data';
 
 export const getStaticProps = ({ params }) => {
-  return fetch(`https://collections.dev/api/openapi`)
+  return fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/openapi`)
     .then((res) => res.json())
     .then((repo) => ({
       props: {
