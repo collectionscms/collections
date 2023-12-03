@@ -284,13 +284,13 @@ paths:
   ## #####################################
   ## Contents
   ## #####################################
-  /api/models/{modelId}/contents:
+  /api/models/{identifier}/contents:
     get:
       summary: Get contents
       description: Return contents. Returns fields defined in the model in addition to id and timestamp.
       operationId: getContents
       parameters:
-        - $ref: '#/components/parameters/modelId'
+        - $ref: '#/components/parameters/identifier'
       responses:
         '200':
           description: ''
@@ -306,13 +306,13 @@ paths:
       security:
         - bearerAuth: []
         - apiKeyAuth: []
-  /api/models/{modelId}/contents/{id}:
+  /api/models/{identifier}/contents/{id}:
     get:
       summary: Get content
       description: Return content. Returns fields defined in the model in addition to id and timestamp.
       operationId: getContent
       parameters:
-        - $ref: '#/components/parameters/modelId'
+        - $ref: '#/components/parameters/identifier'
         - $ref: '#/components/parameters/id'
       responses:
         '200':
@@ -332,7 +332,7 @@ paths:
       description: Update content. Post fields defined in the model.
       operationId: updateContent
       parameters:
-        - $ref: '#/components/parameters/modelId'
+        - $ref: '#/components/parameters/identifier'
         - $ref: '#/components/parameters/id'
       responses:
         '204':
@@ -345,7 +345,7 @@ paths:
       description: Delete content.
       operationId: deleteContent
       parameters:
-        - $ref: '#/components/parameters/modelId'
+        - $ref: '#/components/parameters/identifier'
         - $ref: '#/components/parameters/id'
       responses:
         '204':
@@ -353,13 +353,13 @@ paths:
       security:
         - bearerAuth: []
         - apiKeyAuth: []
-  /api/models/{modelId}/contents/:
+  /api/models/{identifier}/contents/:
     post:
       summary: Create content
       description: Create content. Post fields defined in the model.
       operationId: createContent
       parameters:
-        - $ref: '#/components/parameters/modelId'
+        - $ref: '#/components/parameters/identifier'
       responses:
         '200':
           description: ''
@@ -426,6 +426,13 @@ components:
       required: true
       schema:
         $ref: '#/components/schemas/id'
+    identifier:
+      name: identifier
+      in: path
+      description: Primary key or name for model
+      required: true
+      schema:
+        $ref: '#/components/schemas/identifier'
     field:
       name: field
       in: path
@@ -443,6 +450,12 @@ components:
       description: Primary Key
       example: 1
       type: integer
+    identifier:
+      description: Primary key or name for model
+      example:
+        - 1
+        - 'zoo'
+      type: string
     createdAt:
       description: Created At
       example: '2023-09-29T00:53:20.604Z'
