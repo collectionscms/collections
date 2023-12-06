@@ -102,7 +102,9 @@ const EditDataModelPageImpl: React.FC = () => {
   // The user changes the order of the sortable items.
   const handleChangeSortableItems = async (items: Field[]) => {
     setSortableFields(items);
+  };
 
+  const handleStoreSortableItems = async (items: Field[]) => {
     const sortOrders = items.map((item, i) => ({
       id: item.id,
       sort: i,
@@ -194,6 +196,7 @@ const EditDataModelPageImpl: React.FC = () => {
                   <SortableFieldList
                     items={sortableFields}
                     onChange={handleChangeSortableItems}
+                    onStore={handleStoreSortableItems}
                     renderItem={(item) => (
                       <SortableFieldList.Item id={item.id}>
                         <Tooltip

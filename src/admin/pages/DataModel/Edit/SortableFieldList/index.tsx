@@ -1,5 +1,12 @@
-import type { Active } from '@dnd-kit/core';
-import { DndContext, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import type { Active, Over } from '@dnd-kit/core';
+import {
+  DndContext,
+  KeyboardSensor,
+  PointerSensor,
+  closestCorners,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core';
 import { SortableContext, arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
 import React, { useMemo, useState } from 'react';
 import { DragHandle, SortableItem, SortableItemMenu } from './components/SortableItem/index.js';
@@ -9,6 +16,7 @@ import { BaseItem, Props } from './types.js';
 export const SortableFieldList = <T extends BaseItem>({
   items,
   onChange,
+  onStore,
   renderItem,
 }: Props<T>) => {
   const [active, setActive] = useState<Active | null>(null);
@@ -20,19 +28,27 @@ export const SortableFieldList = <T extends BaseItem>({
     })
   );
 
+  const changeItemOrder = (active: Active, over: Over | null) => {
+    if (over && active.id !== over?.id) {
+      const activeIndex = items.findIndex(({ id }) => id === active.id);
+      const overIndex = items.findIndex(({ id }) => id === over.id);
+      onChange(arrayMove(items, activeIndex, overIndex));
+    }
+  };
+
   return (
     <DndContext
       sensors={sensors}
+      collisionDetection={closestCorners}
       onDragStart={({ active }) => {
         setActive(active);
       }}
+      onDragOver={({ active, over }) => {
+        changeItemOrder(active, over);
+      }}
       onDragEnd={({ active, over }) => {
-        if (over && active.id !== over?.id) {
-          const activeIndex = items.findIndex(({ id }) => id === active.id);
-          const overIndex = items.findIndex(({ id }) => id === over.id);
-
-          onChange(arrayMove(items, activeIndex, overIndex));
-        }
+        changeItemOrder(active, over);
+        onStore(items);
         setActive(null);
       }}
       onDragCancel={() => {
