@@ -3,7 +3,7 @@ import { IconButton } from '@collectionscms/plugin-ui';
 import type { DraggableSyntheticListeners, UniqueIdentifier } from '@dnd-kit/core';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { Card, Tooltip, useTheme } from '@mui/material';
+import { Card, useTheme } from '@mui/material';
 import type { CSSProperties, PropsWithChildren } from 'react';
 import React, { createContext, useContext, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -93,10 +93,8 @@ export const DragHandle: React.FC = () => {
   const { t } = useTranslation();
 
   return (
-    <Tooltip title={t('drag_to_move')} arrow placement="top">
-      <IconButton {...attributes} {...listeners} ref={ref}>
-        <HolderOutlined style={{ fontSize: '1.15rem' }} />
-      </IconButton>
-    </Tooltip>
+    <IconButton {...attributes} {...listeners} ref={ref}>
+      <HolderOutlined style={{ fontSize: '1.15rem' }} />
+    </IconButton>
   );
 };
