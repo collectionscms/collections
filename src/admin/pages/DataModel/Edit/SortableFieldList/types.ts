@@ -8,5 +8,6 @@ export type BaseItem = {
 export type Props<T extends BaseItem> = {
   items: T[];
   onChange(items: T[]): void;
+  onStore(items: T[]): void;
   renderItem(item: T): ReactNode;
 };
