@@ -202,6 +202,18 @@ const config: DocsThemeConfig = {
     dark: 83,
     light: 89,
   },
+  banner: {
+    key: 'launch-to-product-hunt',
+    text: (
+      <a
+        href="https://www.producthunt.com/products/collections-dev"
+        target="_blank"
+        rel="noreferrer"
+      >
+        Launching soon on Product Hunt. Follow me!😻
+      </a>
+    ),
+  },
 };
 
 const getDefaultDescription = (locale: string) => {
