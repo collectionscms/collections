@@ -38,8 +38,8 @@ const resetAll = async (database: Knex): Promise<void> => {
   await database('CollectionsFields').delete();
   await database('CollectionsRelations').delete();
   await database('CollectionsProjectSettings').delete();
-  await database.schema.dropTableIfExists('articles');
-  await database.schema.dropTableIfExists('companies');
+  await database.schema.dropTableIfExists('Articles');
+  await database.schema.dropTableIfExists('Companies');
 };
 
 const seedingSystemData = async (database: Knex): Promise<void> => {
@@ -258,7 +258,7 @@ const seedingContentData = async (database: Knex): Promise<void> => {
   const schema = await getSchemaOverview({ database });
 
   Output.info('Adding content data...');
-  const articlesService = new ContentsService('articles', { database, schema });
+  const articlesService = new ContentsService('Articles', { database, schema });
   await articlesService.createMany([
     {
       title: 'Makes migration from legacy CMS seamless',
