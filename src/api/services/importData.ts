@@ -49,7 +49,7 @@ export class ImportDataService {
         acc[model.model] = model.id;
         return acc;
       },
-      {} as Record<string, number>
+      {} as Record<string, PrimaryKey>
     );
 
     // /////////////////////////////////////
@@ -73,7 +73,7 @@ export class ImportDataService {
   }
 
   private async createModels(
-    registeredModelIds: Record<string, number>
+    registeredModelIds: Record<string, PrimaryKey>
   ): Promise<Record<string, PrimaryKey>> {
     const models = [
       { model: 'Categories', hasStatus: false },
@@ -111,7 +111,7 @@ export class ImportDataService {
 
   private async createFields(
     modelKeys: Record<string, PrimaryKey>,
-    registeredModels: Record<string, number>
+    registeredModels: Record<string, PrimaryKey>
   ): Promise<void> {
     const fieldsService = new FieldsService({ database: this.database, schema: this.schema });
 

@@ -1,4 +1,4 @@
-export type PrimaryKey = number; // | string;
+export type PrimaryKey = number | string;
 
 export type TypeWithId = {
   id: PrimaryKey;
@@ -39,7 +39,7 @@ export type User = {
   resetPasswordToken?: string | null;
   resetPasswordExpiration?: number | null;
   apiKey?: string | null;
-  roleId?: number | null;
+  roleId?: PrimaryKey | null;
 } & TypeWithId;
 
 export type Role = {
@@ -52,7 +52,7 @@ export type Permission = {
   model: string;
   modelId: PrimaryKey;
   action: string;
-  roleId: number | null;
+  roleId: PrimaryKey | null;
 } & TypeWithId;
 
 export type ProjectSetting = {

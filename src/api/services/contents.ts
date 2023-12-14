@@ -186,7 +186,7 @@ export class ContentsService extends BaseService<any> {
   }
 
   private async saveOneToMany(
-    contentId: number,
+    contentId: PrimaryKey,
     relatedField: string,
     postRelatedContentIds: number[]
   ) {

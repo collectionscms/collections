@@ -9,7 +9,7 @@ import { Props } from './types.js';
 export const PermissionToggleButton: React.FC<Props> = (props) => {
   const { roleId, permissions, mutate, model, action } = props;
   const [menu, setMenu] = useState<EventTarget | null>(null);
-  const [selectedPermissionId, setSelectedPermissionId] = useState<number | null>(null);
+  const [selectedPermissionId, setSelectedPermissionId] = useState<number | string | null>(null);
   const [selectedModel, setSelectedModel] = useState<Model | null>(null);
   const [selectedAction, setSelectedAction] = useState<PermissionsAction | null>(null);
 
@@ -22,7 +22,7 @@ export const PermissionToggleButton: React.FC<Props> = (props) => {
 
   const openMenu = (
     currentTarget: EventTarget,
-    id: number | null,
+    id: number | string | null,
     model: Model,
     action: PermissionsAction
   ) => {
