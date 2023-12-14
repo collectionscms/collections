@@ -32,5 +32,6 @@ export const createOne = async (args: Arguments): Promise<PrimaryKey> => {
   const result = await builder.then((result) => result[0]);
   const key = typeof result === 'object' ? result['id'] : result;
 
-  return key;
+  // if primary key is uuid, don't use returning value
+  return data['id'] ? (data['id'] as PrimaryKey) : key;
 };

@@ -27,7 +27,7 @@ router.get(
   '/files/:id',
   permissionsHandler(),
   asyncHandler(async (req: Request, res: Response) => {
-    const id = Number(req.params.id);
+    const id = req.params.id;
 
     const service = new FilesService({ schema: req.schema });
     const file = await service.readOne(id);

@@ -273,7 +273,7 @@ export class FieldsService extends BaseService<Field> {
         break;
       case 'fileImage':
         column = table
-          .integer(field.field)
+          .uuid(field.field)
           .unsigned()
           .index()
           .references('id')

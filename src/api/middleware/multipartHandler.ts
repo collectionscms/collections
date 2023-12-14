@@ -3,7 +3,7 @@ import { RequestHandler } from 'express';
 import sizeOf from 'image-size';
 import { extension } from 'mime-types';
 import { v4 as uuidv4 } from 'uuid';
-import { File } from '../../api/database/schemas.js';
+import { File, PrimaryKey } from '../../api/database/schemas.js';
 import { env } from '../../env.js';
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
 import { logger } from '../../utilities/logger.js';
@@ -17,7 +17,7 @@ export const multipartHandler: RequestHandler = (req, res, next) => {
   let type = '';
   let fileData: Buffer | null = null;
   let fileCount = 0;
-  let savedFileKeys: number[] = [];
+  let savedFileKeys: PrimaryKey[] = [];
 
   busboy.on('file', async (_name, stream, info) => {
     const { filename, mimeType } = info;
@@ -43,6 +43,7 @@ export const multipartHandler: RequestHandler = (req, res, next) => {
     if (fileData) {
       let width = null;
       let height = null;
+      const id = uuidv4();
 
       try {
         const dimensions = sizeOf(fileData);
@@ -52,10 +53,11 @@ export const multipartHandler: RequestHandler = (req, res, next) => {
         logger.info(err, `Couldn't get dimensions of file "${fileName}"`);
       }
 
-      const meta: Omit<File, 'id'> = {
+      const meta: File = {
+        id,
         storage: env.STORAGE_DRIVER,
         fileName: fileName,
-        fileNameDisk: `${uuidv4()}.${extension(type)}`,
+        fileNameDisk: `${id}.${extension(type)}`,
         fileSize: fileData.byteLength,
         type: type,
         width,
