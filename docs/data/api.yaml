@@ -148,7 +148,7 @@ paths:
       description: Return file.
       operationId: getFile
       parameters:
-        - $ref: '#/components/parameters/id'
+        - $ref: '#/components/parameters/uuid'
       responses:
         '200':
           description: ''
@@ -419,6 +419,13 @@ components:
       required: true
       schema:
         $ref: '#/components/schemas/id'
+    uuid:
+      name: id
+      in: path
+      description: Primary Key
+      required: true
+      schema:
+        $ref: '#/components/schemas/uuid'
     modelId:
       name: modelId
       in: path
@@ -450,6 +457,10 @@ components:
       description: Primary Key
       example: 1
       type: integer
+    uuid:
+      description: Primary Key
+      example: '087a255b-da96-44c0-99e1-c40c0e8d807a'
+      type: string
     identifier:
       description: Primary key or name for model
       example:
@@ -484,6 +495,12 @@ components:
       type: string
       format: password
       example: 'password'
+    image:
+      type: string
+      example: 'a8c4891c-6bc0-4f58-81c6-5e89bb572d4c'
+    imageUrl:
+      type: string
+      example: 'http://localhost:4000/assets/a8c4891c-6bc0-4f58-81c6-5e89bb572d4c'
     user:
       type: object
       properties:
@@ -658,7 +675,7 @@ components:
           type: object
           properties:
             id:
-              $ref: '#/components/schemas/id'
+              $ref: '#/components/schemas/uuid'
             storage:
               type: string
               example: 'aws-s3'
@@ -682,7 +699,7 @@ components:
               example: 400
             url:
               type: string
-              example: 'http://localhost:4000/assets/221e5436-55f1-4665-806d-6a2d2055c69b.jpeg'
+              example: 'http://localhost:4000/assets/221e5436-55f1-4665-806d-6a2d2055c69b'
             createdAt:
               $ref: '#/components/schemas/createdAt'
             updatedAt:
@@ -780,6 +797,10 @@ components:
       properties:
         id:
           $ref: '#/components/schemas/id'
+        image:
+          $ref: '#/components/schemas/image'
+        imageUrl:
+          $ref: '#/components/schemas/imageUrl'
         createdAt:
           $ref: '#/components/schemas/createdAt'
         updatedAt:

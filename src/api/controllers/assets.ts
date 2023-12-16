@@ -17,13 +17,13 @@ router.get(
 );
 
 router.get(
-  '/assets/:fileName',
+  '/assets/:id',
   asyncHandler(async (req: Request, res: Response) => {
     const service = new FilesService({ schema: req.schema });
 
     const file = await service
       .readMany({
-        filter: { fileNameDisk: { _eq: req.params.fileName } },
+        filter: { id: { _eq: req.params.id } },
       })
       .then((data) => data[0]);
 

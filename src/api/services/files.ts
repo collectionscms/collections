@@ -14,7 +14,7 @@ export class FilesService extends BaseService<File> {
    * @param file
    * @returns primary key
    */
-  async upload(buffer: Buffer, file: Omit<File, 'id'>): Promise<PrimaryKey> {
+  async upload(buffer: Buffer, file: File): Promise<PrimaryKey> {
     const storage = getStorage(env.STORAGE_DRIVER);
     await storage.put(file.fileNameDisk, buffer);
 

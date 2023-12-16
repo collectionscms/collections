@@ -272,12 +272,7 @@ export class FieldsService extends BaseService<Field> {
         column = table.timestamp(field.field);
         break;
       case 'fileImage':
-        column = table
-          .integer(field.field)
-          .unsigned()
-          .index()
-          .references('id')
-          .inTable('CollectionsFiles');
+        column = table.uuid(field.field).index().references('id').inTable('CollectionsFiles');
         break;
       case 'listOneToMany':
         // noop
