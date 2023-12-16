@@ -22,6 +22,7 @@ export type ModelOverview = {
 
 export type FieldOverview = {
   field: string;
+  interface: string | null;
   special: string | null;
   alias: boolean;
 };
@@ -75,6 +76,7 @@ export const getSchemaOverview = async (options?: { database?: Knex }): Promise<
 
           acc[column.columnName] = {
             field: column.columnName,
+            interface: field?.interface ?? null,
             special: getSpecialField(field || null, column.dataType),
             alias: info.columns[column.columnName] === undefined,
           };
@@ -94,6 +96,7 @@ export const getSchemaOverview = async (options?: { database?: Knex }): Promise<
 
     schema.models[field.model].fields[field.field] = {
       field: field.field,
+      interface: field.interface,
       special: getSpecialField(field, null),
       alias: true,
     };
