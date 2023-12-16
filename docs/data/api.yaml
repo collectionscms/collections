@@ -682,7 +682,7 @@ components:
               example: 400
             url:
               type: string
-              example: 'http://localhost:4000/assets/221e5436-55f1-4665-806d-6a2d2055c69b.jpeg'
+              example: 'http://localhost:4000/assets/221e5436-55f1-4665-806d-6a2d2055c69b'
             createdAt:
               $ref: '#/components/schemas/createdAt'
             updatedAt:
