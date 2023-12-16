@@ -1,5 +1,6 @@
+import { env } from '../../env.js';
 import { pick } from '../../utilities/pick.js';
-import { ModelOverview, FieldOverview } from '../database/overview.js';
+import { FieldOverview, ModelOverview } from '../database/overview.js';
 import { PrimaryKey } from '../database/schemas.js';
 import { FieldFilter, Query } from '../database/types.js';
 import { AbstractServiceOptions, BaseService } from './base.js';
@@ -20,14 +21,16 @@ export class ContentsService extends BaseService<any> {
 
     const children: Record<string, { relatedField: string; data: any }> = {};
 
-    const aliasFields = Object.values(this.schema.models[this.model].fields).filter(
-      (field) => field.alias
+    const overview = this.schema.models[this.model];
+    const aliasFields = Object.values(overview.fields).filter((field) => field.alias);
+    const imageFields = Object.values(overview.fields).filter(
+      (field) => field.interface === 'fileImage'
     );
 
     // /////////////////////////////////////
     // Alias fields
     // /////////////////////////////////////
-    for (let field of aliasFields) {
+    for (const field of aliasFields) {
       const relation = this.schema.relations.filter(
         (relation) => relation.model === this.model && relation.field === field.field
       )[0];
@@ -45,9 +48,14 @@ export class ContentsService extends BaseService<any> {
     // /////////////////////////////////////
     // Contents
     // /////////////////////////////////////
-    const overview = this.schema.models[this.model];
-    for (let content of contents) {
-      for (let field of aliasFields) {
+    for (const content of contents) {
+      for (const field of imageFields) {
+        content[`${field.field}Url`] = content[field.field]
+          ? `${env.SERVER_HOST}/assets/${content[field.field]}`
+          : null;
+      }
+
+      for (const field of aliasFields) {
         const child = children[field.field];
         content[field.field] = child.data.filter(
           (data: any) => data[child.relatedField] === content.id
