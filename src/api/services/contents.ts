@@ -51,7 +51,7 @@ export class ContentsService extends BaseService<any> {
     for (const content of contents) {
       for (const field of imageFields) {
         content[`${field.field}Url`] = content[field.field]
-          ? `${env.SERVER_HOST}/assets/${content[field.field]}`
+          ? `${env.PUBLIC_SERVER_URL}/assets/${content[field.field]}`
           : null;
       }
 
