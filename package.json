@@ -62,7 +62,7 @@
     "@mui/x-date-pickers": "^6.3.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
     "@types/ms": "^0.7.31",
-    "@uiw/react-md-editor": "^3.23.3",
+    "@uiw/react-md-editor": "^4.0.2",
     "argon2": "^0.31.0",
     "axios": "1.4.0",
     "axios-retry": "^3.5.0",
