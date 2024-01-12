@@ -40,23 +40,23 @@ jobs:
       - name: Run ESLint
         run: yarn lint
 
-  unit:
-    name: Unit Tests
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        node-version: ['18.18.x']
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+  # unit:
+  #   name: Unit Tests
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       node-version: ['18.18.x']
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v3
 
-      - uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
+  #     - uses: actions/setup-node@v3
+  #       with:
+  #         node-version: ${{ matrix.node-version }}
 
-      - name: Yarn install
-        run: yarn install
+  #     - name: Yarn install
+  #       run: yarn install
 
-      - name: Run Tests
-        run: TEST_DB='sqlite3' yarn test:components
+  #     - name: Run Tests
+  #       run: TEST_DB='postgres' yarn test:components

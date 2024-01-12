@@ -21,10 +21,6 @@ export default async function teardown(
     await database.migrate.rollback(knexConfig.migrations, true);
     await dropModels(database);
 
-    if (testDatabase === 'sqlite3') {
-      unlinkSync('test.db');
-    }
-
     await database.destroy();
   }
 }

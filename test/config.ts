@@ -26,43 +26,6 @@ const knexConfig = {
 
 export const config: Config = {
   knexConfig: {
-    sqlite3: {
-      client: 'sqlite3',
-      connection: {
-        filename: './test.db',
-      },
-      useNullAsDefault: true,
-      pool: {
-        afterCreate: async (conn: any, done: any) => {
-          const run = promisify(conn.run.bind(conn));
-          await run('PRAGMA foreign_keys = ON');
-          done(null, conn);
-        },
-      },
-      ...knexConfig,
-    },
-    mysql: {
-      client: 'mysql',
-      connection: {
-        database: 'collections',
-        user: 'root',
-        password: 'password',
-        host: 'localhost',
-        port: 30100,
-      },
-      ...knexConfig,
-    },
-    maria: {
-      client: 'mysql',
-      connection: {
-        database: 'collections',
-        user: 'root',
-        password: 'password',
-        host: 'localhost',
-        port: 30101,
-      },
-      ...knexConfig,
-    },
     postgres: {
       client: 'pg',
       connection: {
