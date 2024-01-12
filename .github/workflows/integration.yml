@@ -1,21 +1,9 @@
 name: Integration Tests
 
 on:
-  push:
-    branches:
-      - main
   pull_request:
     branches:
       - main
-    paths:
-      - src/api/**
-      - test/api/**
-      - package.json
-      - .github/workflows/integration-full.yml
-
-concurrency:
-  group: integration-main
-  cancel-in-progress: true
 
 jobs:
   integration:
@@ -39,7 +27,6 @@ jobs:
         run: yarn install
 
       - name: Start Services
-        if: matrix.database != 'sqlite3'
         run: docker compose -f test/docker-compose.yml up ${{ matrix.database }} -d --quiet-pull --wait
 
       - name: Run Tests
