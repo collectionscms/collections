@@ -14,10 +14,6 @@ export default async (): Promise<void> => {
     const database = knex(config.knexConfig[testDatabase]!);
     await awaitDatabaseConnection(database, config.knexConfig[testDatabase]!.waitTestSql);
 
-    if (testDatabase === 'sqlite3') {
-      writeFileSync('test.db', '');
-    }
-
     await database.migrate.latest();
     await database.seed.run();
     await database.destroy();

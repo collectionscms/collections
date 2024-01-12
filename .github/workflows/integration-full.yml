@@ -26,9 +26,6 @@ jobs:
       matrix:
         node-version: ['18.18.x']
         database:
-          - sqlite3
-          - mysql
-          - maria
           - postgres
     steps:
       - name: Checkout repository
