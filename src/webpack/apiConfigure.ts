@@ -12,6 +12,7 @@ export const apiConfigure: webpack.Configuration = {
     argon2: 'argon2',
     knex: 'knex',
     pino: 'pino',
+    '@prisma/client': '@prisma/client',
   },
   output: {
     path: pathList.build(),
