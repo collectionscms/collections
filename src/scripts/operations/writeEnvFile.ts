@@ -1,16 +1,12 @@
 import fse from 'fs-extra';
 import { defaults } from '../../env.js';
-import { Credentials, DBClient } from '../../api/database/connection.js';
 import { Output } from '../../utilities/output.js';
+import { Credentials } from './makeCredentials.js';
 
-export const writeEnvFile = async (
-  projectDir: string,
-  dbClient: DBClient,
-  credentials: Credentials
-): Promise<void> => {
+export const writeEnvFile = async (projectDir: string, credentials: Credentials): Promise<void> => {
   Output.info('Create .env file.');
 
-  const variables: Record<string, any> = { ...defaults, DB_CLIENT: dbClient };
+  const variables: Record<string, any> = { ...defaults, DB_CLIENT: 'pg' };
 
   for (const [key, value] of Object.entries(credentials)) {
     variables[`DB_${key.toUpperCase()}`] = value;
