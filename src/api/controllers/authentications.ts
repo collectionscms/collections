@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import { cookieOptions } from '../../constants.js';
 import { env } from '../../env.js';
 import { InvalidTokenException } from '../../exceptions/invalidToken.js';
+import { prisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
 import { UsersService } from '../services/users.js';
 import { getExtractJwt } from '../utilities/getExtractJwt.js';
@@ -13,7 +14,7 @@ const router = express.Router();
 router.post(
   '/authentications/login',
   asyncHandler(async (req: Request, res: Response) => {
-    const service = new UsersService({ schema: req.schema });
+    const service = new UsersService(prisma);
     const user = await service.login(req.body.email, req.body.password, req.body.appAccess);
 
     const accessToken = sign(user, env.ACCESS_TOKEN_TTL);
