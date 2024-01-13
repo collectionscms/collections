@@ -52,7 +52,7 @@ export class UsersService {
   }
 
   async findUser(id: string): Promise<Omit<User, 'password'>> {
-    const user = await prisma.user.findFirst({
+    const user = await prisma.user.findUniqueOrThrow({
       where: {
         id,
       },
@@ -60,7 +60,6 @@ export class UsersService {
         role: true,
       },
     });
-    if (!user) throw new RecordNotFoundException('record_not_found');
 
     return this.exclude(user, ['password']);
   }
@@ -175,7 +174,7 @@ export class UsersService {
 
     const user = await prisma.user.findFirst({
       where: {
-        email: email,
+        email,
       },
     });
 
@@ -187,7 +186,7 @@ export class UsersService {
   async setResetPasswordToken(email: string): Promise<string> {
     const user = await prisma.user.findFirst({
       where: {
-        email: email,
+        email,
       },
     });
 
