@@ -64,12 +64,8 @@ router.delete(
 router.get(
   '/roles/:id/permissions',
   asyncHandler(async (req: Request, res: Response) => {
-    const id = Number(req.params.id);
-
-    const permissionsService = new PermissionsService({ schema: req.schema });
-    const permissions = await permissionsService.readMany({
-      filter: { roleId: { _eq: id } },
-    });
+    const service = new PermissionsService(prisma);
+    const permissions = await service.findRolePermissions(req.params.id);
 
     res.json({ permissions });
   })
@@ -78,28 +74,30 @@ router.get(
 router.post(
   '/roles/:id/permissions',
   asyncHandler(async (req: Request, res: Response) => {
-    const id = Number(req.params.id);
-    const data = {
-      ...req.body,
-      roleId: id,
-    };
+    // const id = Number(req.params.id);
+    // const data = {
+    //   ...req.body,
+    //   roleId: id,
+    // };
 
-    const permissionsService = new PermissionsService({ schema: req.schema });
-    const permissionId = await permissionsService.createOne(data);
+    // const service = new PermissionsService(prisma);
+    // const permissionId = await permissionsService.createOne(data);
 
-    res.json({
-      id: permissionId,
-    });
+    // res.json({
+    //   id: permissionId,
+    // });
+
+    res.status(204).end();
   })
 );
 
 router.delete(
   '/roles/:id/permissions/:permissionId',
   asyncHandler(async (req: Request, res: Response) => {
-    const permissionId = Number(req.params.permissionId);
+    // const permissionId = Number(req.params.permissionId);
 
-    const permissionsService = new PermissionsService({ schema: req.schema });
-    await permissionsService.deleteOne(permissionId);
+    // const service = new PermissionsService(prisma);
+    // await permissionsService.deleteOne(permissionId);
 
     res.status(204).end();
   })
