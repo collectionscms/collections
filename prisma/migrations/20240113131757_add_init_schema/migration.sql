@@ -61,6 +61,20 @@ CREATE TABLE "RolePermission" (
     CONSTRAINT "RolePermission_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "File" (
+    "id" UUID NOT NULL,
+    "storage" VARCHAR(255) NOT NULL,
+    "fileName" VARCHAR(255) NOT NULL,
+    "fileNameDisk" VARCHAR(255) NOT NULL,
+    "type" VARCHAR(255) NOT NULL,
+    "fileSize" INTEGER,
+    "width" INTEGER,
+    "height" INTEGER,
+
+    CONSTRAINT "File_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
