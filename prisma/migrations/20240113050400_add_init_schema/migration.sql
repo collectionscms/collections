@@ -18,7 +18,7 @@ CREATE TABLE "User" (
     "password" VARCHAR(255) NOT NULL,
     "isActive" BOOLEAN NOT NULL DEFAULT false,
     "resetPasswordToken" VARCHAR(255),
-    "resetPasswordExpiration" VARCHAR(255),
+    "resetPasswordExpiration" INTEGER,
     "apiKey" VARCHAR(255),
     "createdAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMPTZ(6) NOT NULL,

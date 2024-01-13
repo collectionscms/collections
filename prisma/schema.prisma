@@ -26,7 +26,7 @@ model User {
   password                String   @db.VarChar(255)
   isActive                Boolean  @default(false)
   resetPasswordToken      String?  @db.VarChar(255)
-  resetPasswordExpiration String?  @db.VarChar(255)
+  resetPasswordExpiration Int?
   apiKey                  String?  @db.VarChar(255)
   createdAt               DateTime @default(now()) @db.Timestamptz(6)
   updatedAt               DateTime @updatedAt @db.Timestamptz(6)
