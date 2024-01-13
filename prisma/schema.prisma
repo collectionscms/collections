@@ -24,7 +24,7 @@ model User {
   name                    String   @db.VarChar(255)
   email                   String   @unique
   password                String   @db.VarChar(255)
-  isActive                Boolean  @default(false)
+  isActive                Boolean  @default(true)
   resetPasswordToken      String?  @db.VarChar(255)
   resetPasswordExpiration Int?
   apiKey                  String?  @db.VarChar(255)

@@ -16,7 +16,7 @@ CREATE TABLE "User" (
     "name" VARCHAR(255) NOT NULL,
     "email" TEXT NOT NULL,
     "password" VARCHAR(255) NOT NULL,
-    "isActive" BOOLEAN NOT NULL DEFAULT false,
+    "isActive" BOOLEAN NOT NULL DEFAULT true,
     "resetPasswordToken" VARCHAR(255),
     "resetPasswordExpiration" INTEGER,
     "apiKey" VARCHAR(255),
