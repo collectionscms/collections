@@ -174,8 +174,8 @@ export class UsersService extends BaseService<User> {
   }
 
   private toAuthUser(
-    userId: PrimaryKey,
-    roleId: PrimaryKey,
+    userId: any,
+    roleId: any,
     name: string,
     adminAccess: boolean,
     appAccess: boolean = false
