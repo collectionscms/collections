@@ -2,11 +2,9 @@
 // Authentication
 // /////////////////////////////////////
 
-import { PrimaryKey } from '../database/schemas.js';
-
 export type AuthUser = {
-  id: PrimaryKey;
-  roleId: PrimaryKey;
+  id: string;
+  roleId: string;
   name: string;
   adminAccess: boolean;
   appAccess: boolean; // access from applications.

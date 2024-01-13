@@ -1,9 +1,27 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWR, { SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
-import { Model, Permission, Role } from '../../../config/types.js';
+import { Role } from '../../../config/types.js';
 import { api } from '../../../utilities/api.js';
-import { RoleContext } from './types.js';
+
+type RoleContext = {
+  getRoles: () => SWRResponse<
+    Role[],
+    Error,
+    {
+      suspense: true;
+    }
+  >;
+  getRole: (id: string) => SWRResponse<
+    Role,
+    Error,
+    {
+      suspense: true;
+    }
+  >;
+  createRole: () => SWRMutationResponse<number, any, string, Record<string, any>>;
+  updateRole: (id: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
+};
 
 const Context = createContext({} as RoleContext);
 
@@ -28,52 +46,14 @@ export const RoleContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       return api.patch(url, arg).then((res) => res.data);
     });
 
-  const getModels = (): SWRResponse =>
-    useSWR('/models', (url) => api.get<{ models: Model[] }>(url).then((res) => res.data.models), {
-      suspense: true,
-    });
-
-  const getPermissions = (id: string): SWRResponse =>
-    useSWR(
-      `/roles/${id}/permissions`,
-      (url) => api.get<{ permissions: Permission[] }>(url).then((res) => res.data.permissions),
-      { suspense: true }
-    );
-
-  const createPermission = (id: string) =>
-    useSWRMutation(
-      `/roles/${id}/permissions`,
-      async (url: string, { arg }: { arg: Record<string, any> }) => {
-        return api.post<{ id: number }>(url, arg).then((res) => res.data.id);
-      }
-    );
-
-  const deletePermission = (id: string, permissionId: string): SWRMutationResponse =>
-    useSWRMutation(`/roles/${id}/permissions/${permissionId}`, async (url: string, { arg }) => {
-      return api.delete(url, arg).then((res) => res.data);
-    });
-
   const value = useMemo(
     () => ({
       getRoles,
       getRole,
       createRole,
       updateRole,
-      getModels,
-      getPermissions,
-      createPermission,
-      deletePermission,
     }),
-    [
-      getRoles,
-      getRole,
-      createRole,
-      updateRole,
-      getModels,
-      getPermissions,
-      createPermission,
-      deletePermission,
-    ]
+    [getRoles, getRole, createRole, updateRole]
   );
 
   return <Context.Provider value={value}>{children}</Context.Provider>;

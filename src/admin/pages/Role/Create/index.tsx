@@ -1,3 +1,4 @@
+import { MainCard } from '@collectionscms/plugin-ui';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Button,
@@ -14,7 +15,6 @@ import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { MainCard } from '@collectionscms/plugin-ui';
 import { logger } from '../../../../utilities/logger.js';
 import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscardDialog/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
@@ -53,9 +53,9 @@ const CreateRolePageImpl: React.FC = () => {
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
       reset(form);
-      const roleId = await trigger(form);
+      await trigger(form);
       enqueueSnackbar(t('toast.created_successfully'), { variant: 'success' });
-      navigate(`../roles/${roleId}`);
+      navigate(`../roles`);
     } catch (error) {
       logger.error(error);
     }

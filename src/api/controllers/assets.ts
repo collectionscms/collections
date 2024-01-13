@@ -1,8 +1,8 @@
 import express, { Request, Response } from 'express';
 import { Readable } from 'stream';
-import { FileNotFoundException } from '../../exceptions/storage/fileNotFound.js';
 import { UnknownException } from '../../exceptions/storage/unknown.js';
 import { logger } from '../../utilities/logger.js';
+import { prisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
 import { FilesService } from '../services/files.js';
 import { getStorage } from '../storages/storage.js';
@@ -19,15 +19,8 @@ router.get(
 router.get(
   '/assets/:id',
   asyncHandler(async (req: Request, res: Response) => {
-    const service = new FilesService({ schema: req.schema });
-
-    const file = await service
-      .readMany({
-        filter: { id: { _eq: req.params.id } },
-      })
-      .then((data) => data[0]);
-
-    if (!file) throw new FileNotFoundException('file_does_not_exist');
+    const service = new FilesService(prisma);
+    const file = await service.findFile(req.params.id);
 
     const storage = getStorage(file.storage);
     const key = storage.key(file.fileNameDisk);

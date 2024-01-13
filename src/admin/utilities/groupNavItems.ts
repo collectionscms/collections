@@ -47,11 +47,6 @@ export const settingsGroupNavItems = (): Group => {
         icon: SettingOutlined,
       },
       {
-        label: 'data_model',
-        href: `${path}/models`,
-        icon: InsertRowAboveOutlined,
-      },
-      {
         label: 'role',
         href: `${path}/roles`,
         icon: SafetyOutlined,

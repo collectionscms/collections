@@ -3,6 +3,7 @@ import { cookieOptions } from '../../constants.js';
 import { env } from '../../env.js';
 import { RecordNotFoundException } from '../../exceptions/database/recordNotFound.js';
 import { InvalidCredentialsException } from '../../exceptions/invalidCredentials.js';
+import { prisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
 import { UsersService } from '../services/users.js';
 import { getExtractJwt } from '../utilities/getExtractJwt.js';
@@ -15,11 +16,11 @@ const router = express.Router();
 router.get(
   '/me',
   asyncHandler(async (req: Request, res: Response) => {
-    const service = new UsersService({ schema: req.schema });
+    const service = new UsersService(prisma);
 
     // Get access token from request parameter.
     if (req.userId) {
-      const me = await service.readMe({ primaryKey: Number(req.userId) });
+      const me = await service.findMe({ id: req.userId.toString() });
       if (!me?.auth) throw new RecordNotFoundException('record_not_found');
       me.auth.appAccess = req.appAccess || false;
 
@@ -30,8 +31,8 @@ router.get(
 
       return res.json({
         user: me.auth,
-        email: me.user.email,
-        apiKey: me.user.apiKey,
+        email: me.email,
+        apiKey: me.apiKey,
         token: accessToken,
       });
     }
@@ -40,13 +41,13 @@ router.get(
     const token = getExtractJwt(req);
     if (token) {
       const verified = verifyJwt(token);
-      const me = await service.readMe({ primaryKey: verified.id });
+      const me = await service.findMe({ id: verified.id });
       if (!me) throw new RecordNotFoundException('record_not_found');
 
       return res.json({
         user: me.auth,
-        email: me.user.email,
-        apiKey: me.user.apiKey,
+        email: me.email,
+        apiKey: me.apiKey,
         token: token,
       });
     }
@@ -58,18 +59,19 @@ router.get(
 router.patch(
   '/me',
   asyncHandler(async (req: Request, res: Response) => {
-    if (!req.userId) {
+    const id = req.userId?.toString();
+    if (!id) {
       throw new InvalidCredentialsException('invalid_user_credentials');
     }
 
-    const service = new UsersService({ schema: req.schema });
-    await service.checkUniqueEmail(req.body.email, req.userId);
+    const service = new UsersService(prisma);
+    await service.checkUniqueEmail(req.body.email, id);
 
     const data = req.body.password
       ? { ...req.body, password: await oneWayHash(req.body.password) }
       : req.body;
 
-    await service.updateOne(req.userId, data);
+    await service.update(id, data);
 
     res.status(204).end();
   })

@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import { RecordNotFoundException } from '../../exceptions/database/recordNotFound.js';
+import { prisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
-import { permissionsHandler } from '../middleware/permissionsHandler.js';
 import { PermissionsService } from '../services/permissions.js';
 import { RolesService } from '../services/roles.js';
 
@@ -9,10 +9,9 @@ const router = express.Router();
 
 router.get(
   '/roles',
-  permissionsHandler([{ model: 'CollectionsRoles', action: 'read' }]),
   asyncHandler(async (req: Request, res: Response) => {
-    const rolesService = new RolesService({ schema: req.schema });
-    const roles = await rolesService.readMany();
+    const service = new RolesService(prisma);
+    const roles = await service.findRoles();
 
     res.json({ roles });
   })
@@ -20,12 +19,9 @@ router.get(
 
 router.get(
   '/roles/:id',
-  permissionsHandler([{ model: 'CollectionsRoles', action: 'read' }]),
   asyncHandler(async (req: Request, res: Response) => {
-    const id = Number(req.params.id);
-
-    const rolesService = new RolesService({ schema: req.schema });
-    const role = await rolesService.readOne(id);
+    const service = new RolesService(prisma);
+    const role = await service.findRole(req.params.id);
 
     if (!role) throw new RecordNotFoundException('record_not_found');
 
@@ -35,25 +31,21 @@ router.get(
 
 router.post(
   '/roles',
-  permissionsHandler([{ model: 'CollectionsRoles', action: 'create' }]),
   asyncHandler(async (req: Request, res: Response) => {
-    const rolesService = new RolesService({ schema: req.schema });
-    const roleId = await rolesService.createOne(req.body);
+    const service = new RolesService(prisma);
+    const role = await service.create(req.body);
 
     res.json({
-      id: roleId,
+      id: role.id,
     });
   })
 );
 
 router.patch(
   '/roles/:id',
-  permissionsHandler([{ model: 'CollectionsRoles', action: 'update' }]),
   asyncHandler(async (req: Request, res: Response) => {
-    const id = Number(req.params.id);
-
-    const rolesService = new RolesService({ schema: req.schema });
-    await rolesService.updateOne(id, req.body);
+    const service = new RolesService(prisma);
+    await service.update(req.params.id, req.body);
 
     res.status(204).end();
   })
@@ -61,12 +53,9 @@ router.patch(
 
 router.delete(
   '/roles/:id',
-  permissionsHandler([{ model: 'CollectionsRoles', action: 'delete' }]),
   asyncHandler(async (req: Request, res: Response) => {
-    const id = Number(req.params.id);
-
-    const rolesService = new RolesService({ schema: req.schema });
-    await rolesService.deleteWithPermissions(id);
+    const service = new RolesService(prisma);
+    await service.delete(req.params.id);
 
     res.status(204).end();
   })
@@ -74,48 +63,11 @@ router.delete(
 
 router.get(
   '/roles/:id/permissions',
-  permissionsHandler(),
   asyncHandler(async (req: Request, res: Response) => {
-    const id = Number(req.params.id);
-
-    const permissionsService = new PermissionsService({ schema: req.schema });
-    const permissions = await permissionsService.readMany({
-      filter: { roleId: { _eq: id } },
-    });
+    const service = new PermissionsService(prisma);
+    const permissions = await service.findRolePermissions(req.params.id);
 
     res.json({ permissions });
-  })
-);
-
-router.post(
-  '/roles/:id/permissions',
-  permissionsHandler([{ model: 'CollectionsPermissions', action: 'create' }]),
-  asyncHandler(async (req: Request, res: Response) => {
-    const id = Number(req.params.id);
-    const data = {
-      ...req.body,
-      roleId: id,
-    };
-
-    const permissionsService = new PermissionsService({ schema: req.schema });
-    const permissionId = await permissionsService.createOne(data);
-
-    res.json({
-      id: permissionId,
-    });
-  })
-);
-
-router.delete(
-  '/roles/:id/permissions/:permissionId',
-  permissionsHandler([{ model: 'CollectionsPermissions', action: 'delete' }]),
-  asyncHandler(async (req: Request, res: Response) => {
-    const permissionId = Number(req.params.permissionId);
-
-    const permissionsService = new PermissionsService({ schema: req.schema });
-    await permissionsService.deleteOne(permissionId);
-
-    res.status(204).end();
   })
 );
 
