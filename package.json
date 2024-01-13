@@ -5,7 +5,7 @@
   "license": "MIT",
   "type": "module",
   "engines": {
-    "node": ">=16.0.0",
+    "node": ">=18.18.0",
     "npm": ">=8.19.0"
   },
   "main": "index.js",
@@ -24,9 +24,9 @@
     "dev": "node --loader ts-node/esm --no-warnings ./src/bin.ts dev",
     "build": "node --loader ts-node/esm --no-warnings ./src/bin.ts build",
     "start": "node --loader ts-node/esm --no-warnings ./src/bin.ts start",
-    "migrate:latest": "node --loader ts-node/esm ./src/bin.ts database migrate:latest",
-    "migrate:down": "node --loader ts-node/esm ./src/bin.ts database migrate:down",
-    "seed:dev": "node --loader ts-node/esm ./src/bin.ts database seed:dev"
+    "seed:dev": "node --loader ts-node/esm ./src/bin.ts database seed:dev",
+    "db:reset": "prisma migrate reset -f",
+    "db:refresh": "yarn db:reset && yarn seed:dev"
   },
   "bin": {
     "collections": "./src/bin.js"
