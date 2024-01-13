@@ -1,23 +1,24 @@
+import { File } from '@prisma/client';
 import Busboy from 'busboy';
 import { RequestHandler } from 'express';
 import sizeOf from 'image-size';
 import { extension } from 'mime-types';
 import { v4 as uuidv4 } from 'uuid';
-import { File, PrimaryKey } from '../../api/database/schemas.js';
 import { env } from '../../env.js';
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
 import { logger } from '../../utilities/logger.js';
+import { prisma } from '../database/prisma/client.js';
 import { FilesService } from '../services/files.js';
 
 export const multipartHandler: RequestHandler = (req, res, next) => {
   const busboy = Busboy({ headers: req.headers });
-  const service = new FilesService({ schema: req.schema });
+  const service = new FilesService(prisma);
 
   let fileName = '';
   let type = '';
   let fileData: Buffer | null = null;
   let fileCount = 0;
-  let savedFileKeys: PrimaryKey[] = [];
+  let savedFileKeys: string[] = [];
 
   busboy.on('file', async (_name, stream, info) => {
     const { filename, mimeType } = info;
@@ -64,8 +65,8 @@ export const multipartHandler: RequestHandler = (req, res, next) => {
         height,
       };
 
-      const key = await service.upload(fileData, meta);
-      savedFileKeys.push(key);
+      const file = await service.upload(fileData, meta);
+      savedFileKeys.push(file.id);
       tryDone();
     }
   });

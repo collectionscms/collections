@@ -1,24 +1,36 @@
+import { File, PrismaClient } from '@prisma/client';
 import { env } from '../../env.js';
-import { File, PrimaryKey } from '../database/schemas.js';
 import { getStorage } from '../storages/storage.js';
-import { AbstractServiceOptions, BaseService } from './base.js';
 
-export class FilesService extends BaseService<File> {
-  constructor(options: AbstractServiceOptions) {
-    super('CollectionsFiles', options);
+export class FilesService {
+  prisma: PrismaClient;
+
+  constructor(prisma: PrismaClient) {
+    this.prisma = prisma;
+  }
+
+  async findFile(id: string) {
+    return this.prisma.file.findUniqueOrThrow({
+      where: {
+        id,
+      },
+    });
   }
 
   /**
    * @description Upload file to storage
    * @param buffer
    * @param file
-   * @returns primary key
+   * @returns file
    */
-  async upload(buffer: Buffer, file: File): Promise<PrimaryKey> {
+  async upload(buffer: Buffer, file: File): Promise<File> {
     const storage = getStorage(env.STORAGE_DRIVER);
     await storage.put(file.fileNameDisk, buffer);
 
-    const fileId = await this.createOne(file);
-    return fileId;
+    const uploadedFile = await this.prisma.file.create({
+      data: file,
+    });
+
+    return uploadedFile;
   }
 }
