@@ -1,59 +1,65 @@
+import { PrismaClient } from '@prisma/client';
+import { RecordNotFoundException } from '../../exceptions/database/recordNotFound.js';
 import { UnprocessableEntityException } from '../../exceptions/unprocessableEntity.js';
-import { PrimaryKey, Role } from '../database/schemas.js';
-import { AbstractServiceOptions, BaseService } from './base.js';
-import { PermissionsService } from './permissions.js';
 import { UsersService } from './users.js';
 
-export class RolesService extends BaseService<Role> {
-  constructor(options: AbstractServiceOptions) {
-    super('CollectionsRoles', options);
+export class RolesService {
+  prisma: PrismaClient;
+
+  constructor(prisma: PrismaClient) {
+    this.prisma = prisma;
   }
 
-  /**
-   * @description Delete a role with its permissions
-   * @param key
-   */
-  async deleteWithPermissions(key: PrimaryKey): Promise<void> {
-    const usersService = new UsersService({ schema: this.schema });
-    const users = await usersService.readMany({ filter: { roleId: { _eq: key } } });
-    if (users.length > 0) {
+  async findRoles() {
+    return await this.prisma.role.findMany();
+  }
+
+  async findRole(id: string) {
+    return await this.prisma.role.findFirst({
+      where: {
+        id: id,
+      },
+    });
+  }
+
+  async create(data: { name: string; description?: string; adminAccess: boolean }) {
+    return await this.prisma.role.create({
+      data,
+    });
+  }
+
+  async update(id: string, data: { name: string; description?: string; adminAccess: boolean }) {
+    return await this.prisma.role.update({
+      where: {
+        id: id,
+      },
+      data,
+    });
+  }
+
+  async delete(id: string) {
+    const service = new UsersService(this.prisma);
+    const users = await service.findUsers();
+    const userWithRoles = users.filter((user) => user.roleId === id);
+    if (userWithRoles.length > 0) {
       throw new UnprocessableEntityException('can_not_delete_role_in_use');
     }
 
-    const role = await this.readOne(key);
+    const role = await this.findRole(id);
+    if (!role) throw new RecordNotFoundException('record_not_found');
+
     if (role.adminAccess) {
-      const roles = await this.readMany({
-        filter: { adminAccess: { _eq: true } },
-      });
-      if (roles.length === 1) {
+      const roles = await this.findRoles();
+      const adminRoles = roles.filter((role) => role.adminAccess === true);
+      if (adminRoles.length === 1) {
         throw new UnprocessableEntityException('can_not_delete_last_admin_role');
       }
     }
 
-    await this.transaction(async (tx) => {
-      // /////////////////////////////////////
-      // Delete permissions
-      // /////////////////////////////////////
-      const permissionsService = new PermissionsService({
-        database: tx.transaction,
-        schema: this.schema,
-      });
-
-      const permissions = await permissionsService.readMany({
-        filter: { roleId: { _eq: key } },
-      });
-
-      const keys = permissions.map((permission) => permission.id);
-      await permissionsService.deleteMany(keys);
-
-      // /////////////////////////////////////
-      // Delete Role
-      // /////////////////////////////////////
-      const rolesWithTransactingService = new RolesService({
-        database: tx.transaction,
-        schema: this.schema,
-      });
-      await rolesWithTransactingService.deleteOne(key);
+    return await this.prisma.role.delete({
+      where: {
+        id,
+      },
     });
   }
 }
