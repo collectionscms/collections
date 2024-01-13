@@ -3,13 +3,9 @@ import express from 'express';
 import { env } from '../../env.js';
 import { expressLogger } from '../../utilities/expressLogger.js';
 import { authentications } from '../controllers/authentications.js';
-import { models } from '../controllers/models.js';
-import { contents } from '../controllers/contents.js';
-import { fields } from '../controllers/fields.js';
 import { files } from '../controllers/files.js';
 import { me } from '../controllers/me.js';
 import { projectSetting } from '../controllers/projectSetting.js';
-import { relations } from '../controllers/relations.js';
 import { roles } from '../controllers/roles.js';
 import { users } from '../controllers/users.js';
 import { authHandler } from '../middleware/authHandler.js';
@@ -34,13 +30,9 @@ router.get('/health', (_req, res) => res.send('ok'));
 
 router.use(users);
 router.use(roles);
-router.use(models);
-router.use(fields);
-router.use(contents);
 router.use(projectSetting);
 router.use(authentications);
 router.use(me);
 router.use(files);
-router.use(relations);
 
 export const apiRouter = router;
