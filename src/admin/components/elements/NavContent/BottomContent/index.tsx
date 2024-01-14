@@ -3,7 +3,7 @@ import { Box, Divider, Stack, Tooltip } from '@mui/material';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { IconButton } from '@collectionscms/plugin-ui';
+import { IconButton } from '../../../../@extended/components/IconButton/index.js';
 import { BaseDialog } from '../../BaseDialog/index.js';
 
 export const BottomContent: React.FC = () => {

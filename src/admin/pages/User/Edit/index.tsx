@@ -1,11 +1,11 @@
 import { SyncOutlined } from '@ant-design/icons';
-import { IconButton, MainCard } from '@collectionscms/plugin-ui';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Button,
   Checkbox,
   FormControlLabel,
   FormHelperText,
+  IconButton,
   InputAdornment,
   InputLabel,
   MenuItem,
@@ -22,6 +22,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { logger } from '../../../../utilities/logger.js';
+import { MainCard } from '../../../@extended/components/MainCard/index.js';
 import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscardDialog/index.js';
 import { DeleteButton } from '../../../components/elements/DeleteButton/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';

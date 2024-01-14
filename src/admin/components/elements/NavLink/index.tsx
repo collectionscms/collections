@@ -12,7 +12,7 @@ export const NavLink = React.forwardRef<HTMLAnchorElement, RouterLinkProps>((pro
       {...props}
       role={undefined}
       className={({ isActive }) => (isActive ? `${props.className} Mui-selected` : props.className)}
-      style={{ color: theme.palette.primary.main }}
+      style={{ color: theme.palette.text.primary }}
       end
     />
   );

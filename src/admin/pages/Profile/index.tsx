@@ -1,5 +1,4 @@
 import { SyncOutlined } from '@ant-design/icons';
-import { IconButton, MainCard } from '@collectionscms/plugin-ui';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Button,
@@ -23,6 +22,8 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { v4 as uuidv4 } from 'uuid';
 import { logger } from '../../../utilities/logger.js';
+import { IconButton } from '../../@extended/components/IconButton/index.js';
+import { MainCard } from '../../@extended/components/MainCard/index.js';
 import { ConfirmDiscardDialog } from '../../components/elements/ConfirmDiscardDialog/index.js';
 import { useAuth } from '../../components/utilities/Auth/index.js';
 import { useColorMode } from '../../components/utilities/ColorMode/index.js';

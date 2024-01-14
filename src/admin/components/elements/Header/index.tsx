@@ -1,7 +1,7 @@
 import { MenuOutlined } from '@ant-design/icons';
 import { AppBar, AppBarProps, Toolbar, useMediaQuery, useTheme } from '@mui/material';
 import React, { ReactNode } from 'react';
-import { IconButton } from '@collectionscms/plugin-ui';
+import { IconButton } from '../../../@extended/components/IconButton/index.js';
 import { config } from '../../../config/ui.js';
 import { AppBarStyled } from './styled.js';
 import { Props } from './types.js';

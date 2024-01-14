@@ -1,4 +1,3 @@
-import { MainCard } from '@collectionscms/plugin-ui';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Button,
@@ -16,6 +15,7 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { logger } from '../../../../utilities/logger.js';
+import { MainCard } from '../../../@extended/components/MainCard/index.js';
 import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscardDialog/index.js';
 import { DeleteButton } from '../../../components/elements/DeleteButton/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
