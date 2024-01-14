@@ -17,7 +17,7 @@ CREATE TABLE "User" (
     "email" TEXT NOT NULL,
     "password" VARCHAR(255) NOT NULL,
     "isActive" BOOLEAN NOT NULL DEFAULT true,
-    "avatar" VARCHAR(255),
+    "avatarId" UUID,
     "resetPasswordToken" VARCHAR(255),
     "resetPasswordExpiration" INTEGER,
     "apiKey" VARCHAR(255),
@@ -84,6 +84,9 @@ CREATE UNIQUE INDEX "RolePermission_roleId_permissionId_key" ON "RolePermission"
 
 -- AddForeignKey
 ALTER TABLE "User" ADD CONSTRAINT "User_roleId_fkey" FOREIGN KEY ("roleId") REFERENCES "Role"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "User" ADD CONSTRAINT "User_avatarId_fkey" FOREIGN KEY ("avatarId") REFERENCES "File"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "RolePermission" ADD CONSTRAINT "RolePermission_roleId_fkey" FOREIGN KEY ("roleId") REFERENCES "Role"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
