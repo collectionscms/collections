@@ -1,62 +1,82 @@
-import { BugOutlined, LogoutOutlined } from '@ant-design/icons';
-import { Box, Divider, Stack, Tooltip } from '@mui/material';
-import React, { useState } from 'react';
+import { LogoutOutlined, UserOutlined } from '@ant-design/icons';
+import {
+  Button,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  Popover,
+  Stack,
+} from '@mui/material';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { IconButton } from '../../../../@extended/components/IconButton/index.js';
-import { BaseDialog } from '../../BaseDialog/index.js';
+import { Avatar } from '../../../../@extended/components/Avatar/index.js';
+import { useAuth } from '../../../utilities/Auth/index.js';
 
 export const BottomContent: React.FC = () => {
-  const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const { user } = useAuth();
 
-  // Logout
-  const handleLogout = () => {
-    setLogoutDialogOpen(false);
-    navigate('/admin/auth/logout');
+  // Menu
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const open = Boolean(anchorEl);
+
+  const handleMenuOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
   };
 
-  // Bug report
-  const handleBugReport = () => {
-    window.open('https://github.com/collectionscms/collections/issues/new?template=bug_report.yml');
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  // Menu width
+  const [clientWidth, setClientWidth] = useState(0);
+  useEffect(() => {
+    if (anchorEl) {
+      setClientWidth(anchorEl.clientWidth);
+    }
+  }, [anchorEl]);
+
+  const handleLogout = () => {
+    navigate('/admin/auth/logout');
   };
 
   return (
     <>
-      <BaseDialog
-        open={logoutDialogOpen}
-        title={t('logout')}
-        body={t('confirm_logout')}
-        confirm={{ label: t('logout'), action: handleLogout }}
-        cancel={{ label: t('cancel'), action: () => setLogoutDialogOpen(false) }}
-      />
-      <Stack direction="row" divider={<Divider orientation="vertical" flexItem />} spacing={2}>
-        <Tooltip title={t('report_bug')} arrow>
-          <Box sx={{ flexShrink: 0 }}>
-            <IconButton
-              color="secondary"
-              variant="light"
-              sx={{ color: 'text.primary' }}
-              onClick={handleBugReport}
-            >
-              <BugOutlined />
-            </IconButton>
-          </Box>
-        </Tooltip>
-        <Tooltip title={t('logout')} arrow>
-          <Box sx={{ flexShrink: 0 }}>
-            <IconButton
-              color="secondary"
-              variant="light"
-              sx={{ color: 'text.primary' }}
-              onClick={() => setLogoutDialogOpen(true)}
-            >
-              <LogoutOutlined />
-            </IconButton>
-          </Box>
-        </Tooltip>
-      </Stack>
+      <Button fullWidth variant="text" color="inherit" onClick={handleMenuOpen}>
+        <Stack direction="row" gap={1} sx={{ alignItems: 'center', width: '100%' }}>
+          <Avatar size="sm" color="secondary" type="combined">
+            <UserOutlined />
+          </Avatar>
+          {user?.name}
+        </Stack>
+      </Button>
+      <Popover
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleMenuClose}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 60,
+          horizontal: 'center',
+        }}
+      >
+        <List sx={{ width: clientWidth }}>
+          <ListItem disablePadding>
+            <ListItemButton onClick={handleLogout}>
+              <ListItemIcon>
+                <LogoutOutlined />
+              </ListItemIcon>
+              {t('logout')}
+            </ListItemButton>
+          </ListItem>
+        </List>
+      </Popover>
     </>
   );
 };
