@@ -43,8 +43,7 @@ export const NavContent: React.FC = () => {
           bottom: '0px',
           width: '100%',
           py: '16px',
-          pr: '16px',
-          pl: '24px',
+          px: '12px',
           backgroundColor: theme.palette.background.paper,
         }}
       >
