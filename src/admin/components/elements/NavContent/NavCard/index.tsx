@@ -1,7 +1,7 @@
-import { MainCard } from '@collectionscms/plugin-ui';
 import { Link, Stack, Typography } from '@mui/material';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { MainCard } from '../../../../@extended/components/MainCard/index.js';
 
 export const NavCard = () => {
   const { t } = useTranslation();

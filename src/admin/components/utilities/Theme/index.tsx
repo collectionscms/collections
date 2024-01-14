@@ -1,6 +1,6 @@
 import { CssBaseline, StyledEngineProvider, ThemeProvider } from '@mui/material';
 import React, { useMemo } from 'react';
-import { createCustomTheme } from '@collectionscms/plugin-ui';
+import { createCustomTheme } from '../../../@extended/themes/createCustomTheme.js';
 import { useColorMode } from '../ColorMode/index.js';
 
 export const ThemeCustomization: React.FC<{ children: React.ReactNode }> = ({ children }) => {

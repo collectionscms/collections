@@ -1,7 +1,7 @@
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import { AuthCard } from '@collectionscms/plugin-ui';
+import { AuthCard } from '../../../@extended/components/AuthCard/index.js';
 
 export const MinimalLayout: React.FC = () => {
   return (
