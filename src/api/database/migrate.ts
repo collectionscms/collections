@@ -1,4 +1,3 @@
-// import { Migrate } from '@prisma/migrate';
 import pkg from '@prisma/migrate';
 const { Migrate } = pkg;
 import { Output } from '../../utilities/output.js';

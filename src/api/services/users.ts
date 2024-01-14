@@ -1,16 +1,15 @@
 import { PrismaClient, User } from '@prisma/client';
 import crypto from 'crypto';
-import { castToBoolean } from '../../admin/utilities/castToBoolean.js';
 import { env } from '../../env.js';
 import { RecordNotFoundException } from '../../exceptions/database/recordNotFound.js';
 import { RecordNotUniqueException } from '../../exceptions/database/recordNotUnique.js';
 import { InvalidCredentialsException } from '../../exceptions/invalidCredentials.js';
-import { AuthUser } from '../config/types.js';
 import { prisma } from '../database/prisma/client.js';
 import { comparePasswords } from '../utilities/comparePasswords.js';
 import { oneWayHash } from '../utilities/oneWayHash.js';
 import { MailService } from './mail.js';
 import { ProjectSettingsService } from './projectSettings.js';
+import { AuthUser } from '../../configs/types.js';
 
 export class UsersService {
   prisma: PrismaClient;
@@ -42,13 +41,7 @@ export class UsersService {
       throw new InvalidCredentialsException('incorrect_email_or_password');
     }
 
-    return this.toAuthUser(
-      user.id,
-      user.role.id,
-      user.name,
-      castToBoolean(user.role.adminAccess),
-      appAccess
-    );
+    return this.toAuthUser(user.id, user.role.id, user.name, user.role.adminAccess, appAccess);
   }
 
   async findUser(id: string): Promise<Omit<User, 'password'>> {
@@ -97,7 +90,7 @@ export class UsersService {
     if (!user) return null;
 
     return {
-      auth: this.toAuthUser(user.id, user.role.id, user.name, castToBoolean(user.role.adminAccess)),
+      auth: this.toAuthUser(user.id, user.role.id, user.name, user.role.adminAccess),
       email: user.email,
       apiKey: user.apiKey,
     };

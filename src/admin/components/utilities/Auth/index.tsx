@@ -1,8 +1,9 @@
-import React, { createContext, useCallback, useContext, useMemo, useState } from 'react';
+import { Permission } from '@prisma/client';
+import React, { createContext, useContext, useMemo, useState } from 'react';
 import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
+import { AuthUser, Me } from '../../../../configs/types.js';
 import { logger } from '../../../../utilities/logger.js';
-import { AuthUser, Me, Permission, PermissionsAction } from '../../../config/types.js';
 import { api, removeAuthorization, setAuthorization } from '../../../utilities/api.js';
 import { AuthContext } from './types.js';
 
@@ -70,20 +71,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     { suspense: true }
   );
 
-  const hasPermission = useCallback(
-    (modelId: string, action: PermissionsAction) => {
-      if (!me?.user || !permissions) return false;
-
-      return (
-        me.user.adminAccess ||
-        permissions.some(
-          (permission) => permission.modelId.toString() === modelId && permission.action === action
-        )
-      );
-    },
-    [me]
-  );
-
   const updateApiKey = (key: string) => {
     setApiKey(key);
   };
@@ -92,14 +79,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     () => ({
       user: me?.user,
       permissions,
-      hasPermission,
       login,
       logout,
       token: tokenInMemory,
       apiKey,
       updateApiKey,
     }),
-    [me, permissions, hasPermission, login, logout]
+    [me, permissions, login, logout]
   );
 
   return <Context.Provider value={value}>{children}</Context.Provider>;
