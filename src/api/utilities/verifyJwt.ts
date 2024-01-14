@@ -1,10 +1,10 @@
 import jwt, { JsonWebTokenError, TokenExpiredError } from 'jsonwebtoken';
+import { AuthUser } from '../../configs/types.js';
 import { env } from '../../env.js';
 import { InvalidTokenException } from '../../exceptions/invalidToken.js';
 import { UnknownException } from '../../exceptions/storage/unknown.js';
 import { TokenExpiredException } from '../../exceptions/tokenExpired.js';
 import { logger } from '../../utilities/logger.js';
-import { AuthUser } from '../config/types.js';
 
 type DecodedType = AuthUser & { exp?: number; iat?: number };
 

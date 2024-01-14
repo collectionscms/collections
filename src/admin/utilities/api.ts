@@ -1,7 +1,7 @@
 import axios, { AxiosError } from 'axios';
 import axiosRetry from 'axios-retry';
+import { ApiError } from '../../configs/types.js';
 import { logger } from '../../utilities/logger.js';
-import { ApiError } from '../config/types.js';
 
 export const api = axios.create({
   baseURL: '/api',

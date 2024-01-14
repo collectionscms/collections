@@ -1,7 +1,7 @@
+import { Role } from '@prisma/client';
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWR, { SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
-import { Role } from '../../../config/types.js';
 import { api } from '../../../utilities/api.js';
 
 type RoleContext = {

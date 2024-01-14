@@ -1,12 +1,12 @@
+import { Permission } from '@prisma/client';
 import { SWRMutationResponse } from 'swr/mutation';
-import { AuthUser, Permission, PermissionsAction } from '../../../config/types.js';
+import { AuthUser } from '../../../../configs/types.js';
 
 export type AuthContext<T = AuthUser> = {
   user: T | null | undefined;
   apiKey?: string | null;
   token?: string;
   permissions: Permission[] | null;
-  hasPermission: (modelId: string, action: PermissionsAction) => boolean;
   login: () => SWRMutationResponse<
     { token: string; user: AuthUser },
     any,

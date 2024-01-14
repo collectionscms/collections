@@ -1,6 +1,6 @@
+import { ProjectSetting } from '@prisma/client';
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWR from 'swr';
-import { ProjectSetting } from '../../../config/types.js';
 import { api } from '../../../utilities/api.js';
 import { LoginContext } from './types.js';
 

@@ -1,24 +1,5 @@
-import {
-  InsertRowAboveOutlined,
-  SafetyOutlined,
-  SettingOutlined,
-  TeamOutlined,
-  UnorderedListOutlined,
-  UserOutlined,
-} from '@ant-design/icons';
-import { Model } from '../config/types.js';
+import { SafetyOutlined, SettingOutlined, TeamOutlined, UserOutlined } from '@ant-design/icons';
 import { Group } from '../components/elements/NavGroup/types.js';
-
-export const modelsGroupNavItems = (models: Model[]): Group => {
-  return {
-    label: 'content_management',
-    items: models.map((meta) => ({
-      label: `${meta.model}`,
-      href: `/admin/models/${meta.id}/contents`,
-      icon: UnorderedListOutlined,
-    })),
-  };
-};
 
 export const profileNavItems = (): Group => {
   const path = '/admin';

@@ -1,6 +1,6 @@
 import { SWRResponse } from 'swr';
 import { SWRMutationResponse } from 'swr/mutation';
-import { Me } from '../../../config/types.js';
+import { Me } from '../../../../configs/types.js';
 
 export type ProfileContext = {
   getMe: () => SWRResponse<

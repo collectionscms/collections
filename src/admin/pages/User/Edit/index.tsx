@@ -1,4 +1,5 @@
 import { SyncOutlined } from '@ant-design/icons';
+import { IconButton, MainCard } from '@collectionscms/plugin-ui';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Button,
@@ -19,18 +20,17 @@ import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
-import { IconButton, MainCard } from '@collectionscms/plugin-ui';
 import { v4 as uuidv4 } from 'uuid';
 import { logger } from '../../../../utilities/logger.js';
+import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscardDialog/index.js';
 import { DeleteButton } from '../../../components/elements/DeleteButton/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
 import {
   FormValues,
   updateUser as updateUserSchema,
 } from '../../../fields/schemas/users/updateUser.js';
-import { UserContextProvider, useUser } from '../Context/index.js';
 import { useUnsavedChangesPrompt } from '../../../hooks/useUnsavedChangesPrompt.js';
-import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscardDialog/index.js';
+import { UserContextProvider, useUser } from '../Context/index.js';
 
 const EditUserPageImpl: React.FC = () => {
   const { id } = useParams();
@@ -56,7 +56,7 @@ const EditUserPageImpl: React.FC = () => {
       password: '',
       apiKey: '',
       isActive: Boolean(user.isActive),
-      roleId: user.role!.id.toString(),
+      roleId: user.roleId,
     },
     resolver: yupResolver(updateUserSchema(t)),
   });

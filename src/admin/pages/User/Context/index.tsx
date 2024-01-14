@@ -1,7 +1,7 @@
+import { Role, User } from '@prisma/client';
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
-import { Role, User } from '../../../config/types.js';
 import { api } from '../../../utilities/api.js';
 import { UserContext } from './types.js';
 
@@ -9,14 +9,22 @@ const Context = createContext({} as UserContext);
 
 export const UserContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const getUsers = () =>
-    useSWR('/users', (url) => api.get<{ users: User[] }>(url).then((res) => res.data.users), {
-      suspense: true,
-    });
+    useSWR(
+      '/users',
+      (url) => api.get<{ users: User & { role: Role }[] }>(url).then((res) => res.data.users),
+      {
+        suspense: true,
+      }
+    );
 
   const getUser = (id: string) =>
-    useSWR(`/users/${id}`, (url) => api.get<{ user: User }>(url).then((res) => res.data.user), {
-      suspense: true,
-    });
+    useSWR(
+      `/users/${id}`,
+      (url) => api.get<{ user: User & { role: Role } }>(url).then((res) => res.data.user),
+      {
+        suspense: true,
+      }
+    );
 
   const createUser = () =>
     useSWRMutation(`/users`, async (url: string, { arg }: { arg: Record<string, any> }) => {

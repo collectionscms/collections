@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
-import { Me } from '../../../config/types.js';
+import { Me } from '../../../../configs/types.js';
 import { api } from '../../../utilities/api.js';
 import { ProfileContext } from './types.js';
 
