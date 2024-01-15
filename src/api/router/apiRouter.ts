@@ -5,7 +5,7 @@ import { expressLogger } from '../../utilities/expressLogger.js';
 import { authentications } from '../controllers/authentications.js';
 import { files } from '../controllers/files.js';
 import { me } from '../controllers/me.js';
-import { projectSetting } from '../controllers/projectSetting.js';
+import { project } from '../controllers/projects.js';
 import { roles } from '../controllers/roles.js';
 import { users } from '../controllers/users.js';
 import { authHandler } from '../middleware/authHandler.js';
@@ -30,7 +30,7 @@ router.get('/health', (_req, res) => res.send('ok'));
 
 router.use(users);
 router.use(roles);
-router.use(projectSetting);
+router.use(project);
 router.use(authentications);
 router.use(me);
 router.use(files);

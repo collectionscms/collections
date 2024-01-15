@@ -1,7 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, FormHelperText, InputLabel, Stack, TextField } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
-import dayjs from 'dayjs';
 import { useSnackbar } from 'notistack';
 import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
@@ -12,17 +11,17 @@ import { ConfirmDiscardDialog } from '../../components/elements/ConfirmDiscardDi
 import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.js';
 import {
   FormValues,
-  updateProjectSetting as updateProjectSettingSchema,
-} from '../../fields/schemas/projectSettings/updateProjectSetting.js';
+  updateProject as updateProjectSchema,
+} from '../../fields/schemas/projects/updateProject.js';
 import { useUnsavedChangesPrompt } from '../../hooks/useUnsavedChangesPrompt.js';
-import { ProjectSettingContextProvider, useProjectSetting } from './Context/index.js';
+import { ProjectContextProvider, useProject } from './Context/index.js';
 
 const ProjectImpl: React.FC = () => {
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
-  const { getProjectSetting, updateProjectSetting } = useProjectSetting();
-  const { data: projectSetting } = getProjectSetting();
-  const { trigger, isMutating } = updateProjectSetting();
+  const { getProject, updateProject } = useProject();
+  const { data: project } = getProject();
+  const { trigger, isMutating } = updateProject();
   const {
     reset,
     control,
@@ -30,11 +29,9 @@ const ProjectImpl: React.FC = () => {
     formState: { isDirty, errors },
   } = useForm<FormValues>({
     defaultValues: {
-      name: projectSetting.name,
-      beforeLogin: projectSetting.beforeLogin,
-      afterLogin: projectSetting.afterLogin,
+      name: project.name,
     },
-    resolver: yupResolver(updateProjectSettingSchema()),
+    resolver: yupResolver(updateProjectSchema()),
   });
   const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
 
@@ -77,52 +74,6 @@ const ProjectImpl: React.FC = () => {
                   </Stack>
                 </Grid>
                 <Grid xs={12}>
-                  <Stack spacing={1}>
-                    <InputLabel htmlFor="beforeLogin">{t('login_top_label')}</InputLabel>
-                    <Controller
-                      name="beforeLogin"
-                      control={control}
-                      render={({ field }) => (
-                        <TextField
-                          {...field}
-                          id="beforeLogin"
-                          type="text"
-                          multiline
-                          rows={2}
-                          fullWidth
-                          placeholder={`${t('input_placeholder')} Support Hours 9:00 - 18:00`}
-                          error={errors.beforeLogin !== undefined}
-                        />
-                      )}
-                    />
-                    <FormHelperText error>{errors.beforeLogin?.message}</FormHelperText>
-                  </Stack>
-                </Grid>
-                <Grid xs={12}>
-                  <Stack spacing={1}>
-                    <InputLabel htmlFor="afterLogin">{t('login_bottom_label')}</InputLabel>
-                    <Controller
-                      name="afterLogin"
-                      control={control}
-                      render={({ field }) => (
-                        <TextField
-                          {...field}
-                          id="afterLogin"
-                          type="text"
-                          multiline
-                          rows={2}
-                          fullWidth
-                          placeholder={`${t(
-                            'input_placeholder'
-                          )} Copyright © ${dayjs().year()} Your Company.`}
-                          error={errors.afterLogin !== undefined}
-                        />
-                      )}
-                    />
-                    <FormHelperText error>{errors.afterLogin?.message}</FormHelperText>
-                  </Stack>
-                </Grid>
-                <Grid xs={12}>
                   <Stack direction="row" justifyContent="flex-end">
                     <Button variant="contained" type="submit" disabled={isMutating}>
                       {t('update')}
@@ -138,4 +89,4 @@ const ProjectImpl: React.FC = () => {
   );
 };
 
-export const Project = ComposeWrapper({ context: ProjectSettingContextProvider })(ProjectImpl);
+export const Project = ComposeWrapper({ context: ProjectContextProvider })(ProjectImpl);

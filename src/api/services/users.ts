@@ -1,5 +1,6 @@
 import { PrismaClient, User } from '@prisma/client';
 import crypto from 'crypto';
+import { AuthUser } from '../../configs/types.js';
 import { env } from '../../env.js';
 import { RecordNotFoundException } from '../../exceptions/database/recordNotFound.js';
 import { RecordNotUniqueException } from '../../exceptions/database/recordNotUnique.js';
@@ -8,8 +9,7 @@ import { prisma } from '../database/prisma/client.js';
 import { comparePasswords } from '../utilities/comparePasswords.js';
 import { oneWayHash } from '../utilities/oneWayHash.js';
 import { MailService } from './mail.js';
-import { ProjectSettingsService } from './projectSettings.js';
-import { AuthUser } from '../../configs/types.js';
+import { ProjectsService } from './projects.js';
 
 export class UsersService {
   prisma: PrismaClient;
@@ -200,11 +200,11 @@ export class UsersService {
   }
 
   async sendResetPassword(email: string, token: string) {
-    const projectSettings = new ProjectSettingsService(this.prisma);
-    const projectSetting = await projectSettings.findProjectSetting();
-    if (!projectSetting) throw new RecordNotFoundException('record_not_found');
+    const service = new ProjectsService(this.prisma);
+    const project = await service.findProject();
+    if (!project) throw new RecordNotFoundException('record_not_found');
 
-    const projectName = projectSetting.name;
+    const projectName = project.name;
     const html = `You are receiving this message because you have requested a password reset for your account.<br/>
       Please click the following link and enter your new password.<br/><br/>
       <a href="${env.PUBLIC_SERVER_URL}/admin/auth/reset-password/${token}">
