@@ -97,18 +97,14 @@ export class UsersService {
   }
 
   async create(data: {
+    projectId: string;
     name: string;
     email: string;
     password: string;
     roleId: string;
   }): Promise<User> {
     const user = await prisma.user.create({
-      data: {
-        name: data.name,
-        email: data.email,
-        password: data.password,
-        roleId: data.roleId,
-      },
+      data,
     });
 
     return user;
