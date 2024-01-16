@@ -10,7 +10,6 @@ import {
   Typography,
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
-import DOMPurify from 'dompurify';
 import React, { useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -19,17 +18,13 @@ import { logger } from '../../../utilities/logger.js';
 import { Loading } from '../../components/elements/Loading/index.js';
 import { Logo } from '../../components/elements/Logo/index.js';
 import { useAuth } from '../../components/utilities/Auth/index.js';
-import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.js';
 import { FormValues, loginSchema } from '../../fields/schemas/authentications/login.js';
-import { LoginContextProvider, useLogin } from './Context/index.js';
 
-const LoginImpl: React.FC = () => {
+export const Login: React.FC = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { user, login } = useAuth();
   const { trigger, isMutating } = login();
-  const { getProjectSetting } = useLogin();
-  const { data: projectSetting } = getProjectSetting();
 
   const {
     control,
@@ -45,10 +40,6 @@ const LoginImpl: React.FC = () => {
       navigate('/admin/models');
     }
   }, [user]);
-
-  const sanitizedHtml = (source: string) => {
-    return <Typography dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(source) }} />;
-  };
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
@@ -69,9 +60,8 @@ const LoginImpl: React.FC = () => {
           <Box sx={{ width: '40px', height: '40px' }}>
             <Logo />
           </Box>
-          <Typography variant="h3">{projectSetting.name}</Typography>
+          <Typography variant="h3">Collections</Typography>
         </Stack>
-        {projectSetting.beforeLogin && sanitizedHtml(projectSetting.beforeLogin)}
         <Stack component="form" onSubmit={handleSubmit(onSubmit)}>
           <Grid container spacing={3}>
             <Grid xs={12}>
@@ -129,10 +119,7 @@ const LoginImpl: React.FC = () => {
             </Grid>
           </Grid>
         </Stack>
-        {projectSetting.afterLogin && sanitizedHtml(projectSetting.afterLogin)}
       </Stack>
     </>
   );
 };
-
-export const Login = ComposeWrapper({ context: LoginContextProvider })(LoginImpl);

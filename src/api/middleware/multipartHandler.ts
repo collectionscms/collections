@@ -56,6 +56,8 @@ export const multipartHandler: RequestHandler = (req, res, next) => {
 
       const meta: File = {
         id,
+        // todo
+        projectId: '',
         storage: env.STORAGE_DRIVER,
         fileName: fileName,
         fileNameDisk: `${id}.${extension(type)}`,
