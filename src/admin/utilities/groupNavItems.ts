@@ -1,5 +1,26 @@
-import { SafetyOutlined, SettingOutlined, TeamOutlined, UserOutlined } from '@ant-design/icons';
+import {
+  EditOutlined,
+  SafetyOutlined,
+  SettingOutlined,
+  TeamOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
 import { Group } from '../components/elements/NavGroup/types.js';
+
+export const postNavItems = (): Group => {
+  const path = '/admin';
+
+  return {
+    label: 'posts',
+    items: [
+      {
+        label: 'posts',
+        href: `${path}/posts`,
+        icon: EditOutlined,
+      },
+    ],
+  };
+};
 
 export const profileNavItems = (): Group => {
   const path = '/admin';
