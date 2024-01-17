@@ -62,7 +62,7 @@ const ResetPasswordImpl: React.FC = () => {
         <Grid xs={12}>
           <Button
             component={RouterLink}
-            to="/admin/models"
+            to="/admin/posts"
             disableElevation
             fullWidth
             size="large"
