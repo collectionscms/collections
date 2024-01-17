@@ -165,6 +165,9 @@
     "typescript": "^5.0.4",
     "worker-plugin": "^5.0.1"
   },
+  "resolutions": {
+    "wrap-ansi": "7.0.0"
+  },
   "keywords": [
     "cms",
     "headless",
