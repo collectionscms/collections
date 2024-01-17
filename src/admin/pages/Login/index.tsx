@@ -37,7 +37,7 @@ export const Login: React.FC = () => {
 
   useEffect(() => {
     if (user) {
-      navigate('/admin/models');
+      navigate('/admin/posts');
     }
   }, [user]);
 

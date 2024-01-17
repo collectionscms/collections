@@ -1,6 +1,10 @@
 import { Box, Divider, useTheme } from '@mui/material';
 import React, { useMemo } from 'react';
-import { profileNavItems, settingsGroupNavItems } from '../../../utilities/groupNavItems.js';
+import {
+  postNavItems,
+  profileNavItems,
+  settingsGroupNavItems,
+} from '../../../utilities/groupNavItems.js';
 import { useAuth } from '../../utilities/Auth/index.js';
 import { NavGroup } from '../NavGroup/index.js';
 import { NavHeader } from '../NavHeader/index.js';
@@ -16,8 +20,8 @@ export const NavContent: React.FC = () => {
   const bottomContent = useMemo(() => <BottomContent />, []);
 
   const navGroupItems = user?.adminAccess
-    ? [settingsGroupNavItems(), profileNavItems()]
-    : [profileNavItems()];
+    ? [postNavItems(), settingsGroupNavItems(), profileNavItems()]
+    : [postNavItems(), profileNavItems()];
   const navGroups = navGroupItems.map((group) => {
     return <NavGroup key={group.label} group={group} />;
   });
