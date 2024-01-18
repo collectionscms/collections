@@ -50,6 +50,7 @@
   ],
   "dependencies": {
     "@ant-design/icons": "5.2.6",
+    "@auth/express": "0.2.0",
     "@aws-sdk/client-s3": "3.454.0",
     "@emotion/react": "11.11.1",
     "@emotion/styled": "11.11.0",
