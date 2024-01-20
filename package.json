@@ -5,8 +5,8 @@
   "license": "MIT",
   "type": "module",
   "engines": {
-    "node": ">=18.18.0",
-    "npm": ">=8.19.0"
+    "node": ">=20.0.0",
+    "npm": ">10.2.0"
   },
   "main": "index.js",
   "scripts": {
