@@ -1,96 +1,66 @@
-import { Permission } from '@prisma/client';
-import React, { createContext, useContext, useMemo, useState } from 'react';
-import useSWR from 'swr';
-import useSWRMutation from 'swr/mutation';
-import { AuthUser, Me } from '../../../../configs/types.js';
+import React, { createContext, useContext, useMemo } from 'react';
+import useSWR, { SWRResponse } from 'swr';
+import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
+import { Me } from '../../../../configs/types.js';
 import { logger } from '../../../../utilities/logger.js';
-import { api, removeAuthorization, setAuthorization } from '../../../utilities/api.js';
-import { AuthContext } from './types.js';
+import { api } from '../../../utilities/api.js';
+
+type AuthContext = {
+  me: Me | null | undefined;
+  getCsrfToken: () => SWRResponse<string, Error>;
+  login: () => SWRMutationResponse<void, Error, string, Record<string, any>>;
+  logout: () => SWRMutationResponse<void, Error, string, Record<string, any>>;
+};
 
 const Context = createContext({} as AuthContext);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [tokenInMemory, setTokenInMemory] = useState<string>();
-  const [apiKey, setApiKey] = useState<string | null>();
+  const getCsrfToken = () =>
+    useSWR('/auth/csrf', (url) =>
+      api.get<{ csrfToken: string }>(url).then((res) => res.data.csrfToken)
+    );
 
   const login = () =>
     useSWRMutation(
-      `/authentications/login`,
+      '/auth/callback/credentials',
       async (url: string, { arg }: { arg: Record<string, any> }) => {
-        return api.post<{ token: string; user: AuthUser }>(url, arg).then((res) => {
-          setAuthorization(res.data.token);
-          setTokenInMemory(res.data.token);
-          mutate({ ...res.data, email: '', apiKey: null });
-          return res.data;
+        return api.post<Me>(url, arg).then((res) => {
+          mutate(res.data);
         });
       }
     );
 
   const logout = () =>
-    useSWRMutation(`/authentications/logout`, async (url: string) => {
-      return api.post(url).then((res) => {
-        removeAuthorization();
-        mutate({ user: null, apiKey: null, email: '', token: '' }, false);
-        setTokenInMemory(undefined);
-        return res;
+    useSWRMutation('/auth/signout', async (url: string, { arg }: { arg: Record<string, any> }) => {
+      return api.post(url, arg).then(() => {
+        mutate(null, false);
       });
     });
 
-  // On mount, get user
+  // On mount, get me
   const { data: me, mutate } = useSWR('/me', (url) =>
     api
-      .get<Me>(url)
+      .get<{ me: Me }>(url)
       .then(({ data }) => {
-        if (data.token) {
-          setAuthorization(data.token);
-          setTokenInMemory(data.token);
-          setApiKey(data.apiKey);
-        }
-        return data;
+        return data.me;
       })
       .catch((e) => {
         logger.error(e);
-        if (e.response?.status !== 401) {
-          removeAuthorization();
-          mutate({ user: null, apiKey: null, email: '', token: '' }, false);
-        }
         return null;
       })
   );
 
-  const { data: permissions } = useSWR(
-    me?.user ? `/roles/${me.user.roleId}/permissions` : null,
-    (url) =>
-      api
-        .get<{ permissions: Permission[] }>(url)
-        .then((res) => res.data.permissions)
-        .catch((e) => {
-          logger.error(e);
-          return null;
-        }),
-    { suspense: true }
-  );
-
-  const updateApiKey = (key: string) => {
-    setApiKey(key);
-  };
-
   const value = useMemo(
     () => ({
-      user: me?.user,
-      permissions,
+      me,
+      getCsrfToken,
       login,
       logout,
-      token: tokenInMemory,
-      apiKey,
-      updateApiKey,
     }),
-    [me, permissions, login, logout]
+    [me, getCsrfToken, login, logout]
   );
 
   return <Context.Provider value={value}>{children}</Context.Provider>;
 };
 
-type UseAuth<T = AuthUser> = () => AuthContext<T>;
-
-export const useAuth: UseAuth = () => useContext(Context);
+export const useAuth = () => useContext(Context);

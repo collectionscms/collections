@@ -4,7 +4,6 @@ import express from 'express';
 import { env } from '../../env.js';
 import { expressLogger } from '../../utilities/expressLogger.js';
 import { authConfig } from '../configs/auth.js';
-import { authentications } from '../controllers/authentications.js';
 import { files } from '../controllers/files.js';
 import { me } from '../controllers/me.js';
 import { project } from '../controllers/projects.js';
@@ -33,7 +32,6 @@ router.get('/health', (_req, res) => res.send('ok'));
 router.use(users);
 router.use(roles);
 router.use(project);
-router.use(authentications);
 router.use(me);
 router.use(files);
 
