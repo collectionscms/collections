@@ -8,13 +8,16 @@ import { useAuth } from '../../components/utilities/Auth/index.js';
 
 export const LogoutInactivity: React.FC = () => {
   const { t } = useTranslation();
-  const { logout } = useAuth();
+  const { getCsrfToken, logout } = useAuth();
+  const { data: csrfToken } = getCsrfToken();
   const { trigger } = logout();
 
   useEffect(() => {
     const logout = async () => {
       try {
-        await trigger();
+        await trigger({
+          csrfToken: csrfToken,
+        });
       } catch (e) {
         logger.error(e);
       }
@@ -36,7 +39,7 @@ export const LogoutInactivity: React.FC = () => {
       <Grid xs={12}>
         <Button
           component={RouterLink}
-          to="admin/auth/login"
+          to="/admin/auth/login"
           disableElevation
           fullWidth
           size="large"
