@@ -1,58 +1,22 @@
+import { getSession } from '@auth/express';
 import express, { Request, Response } from 'express';
-import { cookieOptions } from '../../constants.js';
-import { env } from '../../env.js';
-import { RecordNotFoundException } from '../../exceptions/database/recordNotFound.js';
 import { InvalidCredentialsException } from '../../exceptions/invalidCredentials.js';
+import { authConfig } from '../configs/auth.js';
 import { prisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
 import { UsersService } from '../services/users.js';
-import { getExtractJwt } from '../utilities/getExtractJwt.js';
 import { oneWayHash } from '../utilities/oneWayHash.js';
-import { sign } from '../utilities/sign.js';
-import { verifyJwt } from '../utilities/verifyJwt.js';
 
 const router = express.Router();
 
 router.get(
   '/me',
   asyncHandler(async (req: Request, res: Response) => {
-    const service = new UsersService(prisma);
+    const session = res.locals.session ?? (await getSession(req, authConfig));
 
-    // Get access token from request parameter.
-    if (req.userId) {
-      const me = await service.findMe({ id: req.userId.toString() });
-      if (!me?.auth) throw new RecordNotFoundException('record_not_found');
-      me.auth.appAccess = req.appAccess || false;
-
-      const accessToken = sign(me.auth, env.ACCESS_TOKEN_TTL);
-      const refreshToken = sign(me.auth, env.REFRESH_TOKEN_TTL);
-
-      res.cookie(`${env.COOKIE_PREFIX}-refresh-token`, refreshToken, cookieOptions);
-
-      return res.json({
-        user: me.auth,
-        email: me.email,
-        apiKey: me.apiKey,
-        token: accessToken,
-      });
-    }
-
-    // Get refresh token from cookie.
-    const token = getExtractJwt(req);
-    if (token) {
-      const verified = verifyJwt(token);
-      const me = await service.findMe({ id: verified.id });
-      if (!me) throw new RecordNotFoundException('record_not_found');
-
-      return res.json({
-        user: me.auth,
-        email: me.email,
-        apiKey: me.apiKey,
-        token: token,
-      });
-    }
-
-    res.json({ user: null, apiKey: null, token: null });
+    return res.json({
+      me: session?.user || null,
+    });
   })
 );
 
