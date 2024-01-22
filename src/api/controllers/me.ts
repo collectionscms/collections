@@ -1,9 +1,9 @@
 import { getSession } from '@auth/express';
 import express, { Request, Response } from 'express';
-import { InvalidCredentialsException } from '../../exceptions/invalidCredentials.js';
 import { authConfig } from '../configs/auth.js';
 import { prisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
+import { authenticatedUser } from '../middleware/auth.js';
 import { UsersService } from '../services/users.js';
 import { oneWayHash } from '../utilities/oneWayHash.js';
 
@@ -22,11 +22,9 @@ router.get(
 
 router.patch(
   '/me',
+  authenticatedUser,
   asyncHandler(async (req: Request, res: Response) => {
-    const id = req.userId?.toString();
-    if (!id) {
-      throw new InvalidCredentialsException('invalid_user_credentials');
-    }
+    const id = res.locals.session.user.id;
 
     const service = new UsersService(prisma);
     await service.checkUniqueEmail(req.body.email, id);
