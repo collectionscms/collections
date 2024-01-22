@@ -1,16 +1,21 @@
-export type AuthUser = {
+import { Permission, Project, Role } from '@prisma/client';
+
+export type UserProfile = {
   id: string;
-  roleId: string;
+  email: string;
   name: string;
-  adminAccess: boolean;
-  appAccess: boolean; // access from applications.
+  isActive: boolean;
+  role: Role;
 };
 
 export type Me = {
-  user: AuthUser | null;
+  id: string;
   email: string;
+  name: string;
   apiKey: string | null;
-  token: string;
+  isAdmin: boolean;
+  projects: Project[];
+  roles: (Role & { permissions: Permission[] })[];
 };
 
 export type ApiError = {

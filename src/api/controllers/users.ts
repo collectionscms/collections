@@ -12,7 +12,7 @@ router.get(
   '/users',
   asyncHandler(async (req: Request, res: Response) => {
     const service = new UsersService(prisma);
-    const users = await service.findUsers({ includeRole: true });
+    const users = await service.findUsers();
 
     res.json({
       users,

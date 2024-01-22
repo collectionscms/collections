@@ -1,6 +1,7 @@
 import { PrismaClient, User } from '@prisma/client';
 import crypto from 'crypto';
-import { AuthUser } from '../../configs/types.js';
+import dayjs from 'dayjs';
+import { Me } from '../../configs/types.js';
 import { env } from '../../env.js';
 import { RecordNotFoundException } from '../../exceptions/database/recordNotFound.js';
 import { RecordNotUniqueException } from '../../exceptions/database/recordNotUnique.js';
@@ -26,14 +27,24 @@ export class UsersService {
     ) as Omit<User, Key>;
   }
 
-  async login(email: string, password: string, appAccess: boolean): Promise<AuthUser> {
+  async login(email: string, password: string): Promise<Me> {
     const user = await prisma.user.findFirst({
       where: {
-        // todo: lowerにする
-        email: email.toLowerCase(),
+        email: {
+          contains: email,
+        },
       },
       include: {
-        role: true,
+        userProjects: {
+          include: {
+            project: true,
+            role: {
+              include: {
+                permissions: true,
+              },
+            },
+          },
+        },
       },
     });
 
@@ -41,7 +52,16 @@ export class UsersService {
       throw new InvalidCredentialsException('incorrect_email_or_password');
     }
 
-    return this.toAuthUser(user.id, user.role.id, user.name, user.role.adminAccess, appAccess);
+    return {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      apiKey: user.apiKey,
+      // todo support multiple projects
+      isAdmin: user.userProjects[0].isAdmin,
+      projects: user.userProjects.map((userProject) => userProject.project),
+      roles: user.userProjects.map((userProject) => userProject.role),
+    };
   }
 
   async findUser(id: string): Promise<Omit<User, 'password'>> {
@@ -50,50 +70,40 @@ export class UsersService {
         id,
       },
       include: {
-        role: true,
+        userProjects: {
+          select: {
+            project: true,
+            role: {
+              include: {
+                permissions: true,
+              },
+            },
+          },
+        },
       },
     });
 
     return this.exclude(user, ['password']);
   }
 
-  async findUsers(options?: { includeRole: boolean }): Promise<Omit<User, 'password'>[]> {
+  async findUsers(): Promise<Omit<User, 'password'>[]> {
     const users = await this.prisma.user.findMany({
       include: {
-        role: options?.includeRole,
+        userProjects: {
+          select: {
+            role: {
+              include: {
+                permissions: true,
+              },
+            },
+          },
+        },
       },
     });
 
     return users.map((user) => {
       return this.exclude(user, ['password']);
     });
-  }
-
-  async findMe(params: { id?: string; apiKey?: string }): Promise<{
-    auth: AuthUser;
-    email: string;
-    apiKey: string | null;
-  } | null> {
-    const { id, apiKey } = params;
-    if (!id && !apiKey) return null;
-
-    const user = await prisma.user.findFirst({
-      where: {
-        id: id,
-        apiKey: apiKey,
-      },
-      include: {
-        role: true,
-      },
-    });
-
-    if (!user) return null;
-
-    return {
-      auth: this.toAuthUser(user.id, user.role.id, user.name, user.role.adminAccess),
-      email: user.email,
-      apiKey: user.apiKey,
-    };
   }
 
   async create(data: {
@@ -117,7 +127,7 @@ export class UsersService {
       email?: string;
       password?: string;
       roleId?: string;
-      resetPasswordExpiration?: number;
+      resetPasswordExpiration?: Date;
     }
   ): Promise<User> {
     const user = await prisma.user.update({
@@ -126,6 +136,8 @@ export class UsersService {
       },
       data,
     });
+
+    // todo update role
 
     return user;
   }
@@ -143,7 +155,7 @@ export class UsersService {
       where: {
         resetPasswordToken: token,
         resetPasswordExpiration: {
-          gt: Date.now(),
+          gt: new Date(),
         },
       },
     });
@@ -152,7 +164,7 @@ export class UsersService {
 
     await this.update(user.id, {
       password: await oneWayHash(password),
-      resetPasswordExpiration: Date.now(),
+      resetPasswordExpiration: new Date(),
     });
 
     return user;
@@ -192,7 +204,7 @@ export class UsersService {
       },
       data: {
         resetPasswordToken: token,
-        resetPasswordExpiration: Date.now() + 3600000, // 1 hour
+        resetPasswordExpiration: dayjs().add(1, 'hour').toDate(),
       },
     });
 
@@ -218,21 +230,5 @@ export class UsersService {
       subject: 'Password Reset Request',
       html,
     });
-  }
-
-  private toAuthUser(
-    userId: string,
-    roleId: string,
-    name: string,
-    adminAccess: boolean,
-    appAccess: boolean = false
-  ): AuthUser {
-    return {
-      id: userId,
-      roleId: roleId,
-      name: name,
-      adminAccess: adminAccess,
-      appAccess: appAccess,
-    };
   }
 }
