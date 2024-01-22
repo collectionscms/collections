@@ -11,7 +11,6 @@ import { roles } from '../controllers/roles.js';
 import { users } from '../controllers/users.js';
 import { currentSession } from '../middleware/auth.js';
 import { corsMiddleware } from '../middleware/cors.js';
-import { extractTokenHandler } from '../middleware/extractTokenHandler.js';
 
 const router = express.Router();
 
@@ -25,7 +24,6 @@ router.use(express.urlencoded({ limit: env.REQ_LIMIT, extended: true }));
 router.use(expressLogger);
 router.use(currentSession);
 router.use('/auth/*', ExpressAuth(authConfig));
-router.use(extractTokenHandler);
 
 router.get('/health', (_req, res) => res.send('ok'));
 
