@@ -23,7 +23,9 @@ export const Logout: React.FC = () => {
       }
     };
 
-    logout();
+    if (csrfToken) {
+      logout();
+    }
   }, [csrfToken]);
 
   return (
