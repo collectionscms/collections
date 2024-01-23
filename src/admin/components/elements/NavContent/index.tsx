@@ -10,16 +10,16 @@ import { NavGroup } from '../NavGroup/index.js';
 import { NavHeader } from '../NavHeader/index.js';
 import { ScrollBar } from '../ScrollBar/index.js';
 import { BottomContent } from './BottomContent/index.js';
-import { NavCard } from './NavCard/index.js';
 
 export const NavContent: React.FC = () => {
-  const { user } = useAuth();
+  const { me } = useAuth();
   const theme = useTheme();
 
   const navHeader = useMemo(() => <NavHeader />, []);
   const bottomContent = useMemo(() => <BottomContent />, []);
 
-  const navGroupItems = user?.adminAccess
+  // todo
+  const navGroupItems = me?.isAdmin
     ? [postNavItems(), settingsGroupNavItems(), profileNavItems()]
     : [postNavItems(), profileNavItems()];
   const navGroups = navGroupItems.map((group) => {
@@ -38,7 +38,6 @@ export const NavContent: React.FC = () => {
       >
         {navHeader}
         {navGroups}
-        {process.env.PUBLIC_SHOW_NAVIGATION_CARD === 'true' && <NavCard />}
       </ScrollBar>
       <Divider sx={{ mx: 1 }} />
       <Box

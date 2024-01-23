@@ -24,7 +24,7 @@ import {
 import { ResetPasswordContextProvider, useResetPassword } from './Context/index.js';
 
 const ResetPasswordImpl: React.FC = () => {
-  const { user } = useAuth();
+  const { me } = useAuth();
   const { token } = useParams();
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -51,7 +51,7 @@ const ResetPasswordImpl: React.FC = () => {
     }
   };
 
-  if (user) {
+  if (me) {
     return (
       <Grid container spacing={3}>
         <Grid xs={12}>

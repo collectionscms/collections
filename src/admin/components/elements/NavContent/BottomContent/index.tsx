@@ -17,7 +17,7 @@ import { useAuth } from '../../../utilities/Auth/index.js';
 export const BottomContent: React.FC = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { user } = useAuth();
+  const { me } = useAuth();
 
   // Menu
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
@@ -50,7 +50,7 @@ export const BottomContent: React.FC = () => {
           <Avatar size="sm" color="secondary" type="combined">
             <UserOutlined />
           </Avatar>
-          {user?.name}
+          {me?.name}
         </Stack>
       </Button>
       <Popover

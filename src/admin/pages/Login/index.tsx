@@ -15,31 +15,41 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { logger } from '../../../utilities/logger.js';
-import { Loading } from '../../components/elements/Loading/index.js';
+import { Loader } from '../../components/elements/Loader/index.js';
 import { Logo } from '../../components/elements/Logo/index.js';
 import { useAuth } from '../../components/utilities/Auth/index.js';
 import { FormValues, loginSchema } from '../../fields/schemas/authentications/login.js';
+import lazy from '../../utilities/lazy.js';
+
+const Loading = Loader(lazy(() => import('../../components/elements/Loading/index.js'), 'Loading'));
 
 export const Login: React.FC = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { user, login } = useAuth();
+  const { me, getCsrfToken, login } = useAuth();
   const { trigger, isMutating } = login();
-
+  const { data: csrfToken } = getCsrfToken();
   const {
     control,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<FormValues>({
-    defaultValues: { email: '', password: '', appAccess: true },
+    defaultValues: { email: '', password: '', csrfToken: '' },
     resolver: yupResolver(loginSchema),
   });
 
   useEffect(() => {
-    if (user) {
+    if (csrfToken) {
+      setValue('csrfToken', csrfToken);
+    }
+  }, [csrfToken]);
+
+  useEffect(() => {
+    if (me) {
       navigate('/admin/posts');
     }
-  }, [user]);
+  }, [me]);
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
@@ -49,9 +59,7 @@ export const Login: React.FC = () => {
     }
   };
 
-  if (user) {
-    return <Loading />;
-  }
+  if (me) return <Loading />;
 
   return (
     <>

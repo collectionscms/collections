@@ -8,12 +8,9 @@ export class PermissionsService {
   }
 
   async findRolePermissions(roleId: string) {
-    return await this.prisma.rolePermission.findMany({
+    return await this.prisma.permission.findMany({
       where: {
         roleId,
-      },
-      include: {
-        permission: true,
       },
     });
   }

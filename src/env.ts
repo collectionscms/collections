@@ -2,7 +2,6 @@ import 'dotenv/config';
 import path from 'path';
 import process from 'process';
 import { fileURLToPath } from 'url';
-import { v4 as uuidv4 } from 'uuid';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -32,7 +31,6 @@ type AllowedEnvironmentVariable =
   // Database
   // /////////////////////////////////////
   | 'DB_CLIENT'
-  | 'DB_FILENAME'
   | 'DB_USER'
   | 'DB_PASSWORD'
   | 'DB_DATABASE'
@@ -40,6 +38,7 @@ type AllowedEnvironmentVariable =
   | 'DB_PORT'
   | 'DB_SSL'
   | 'MIGRATE_EXTENSIONS'
+  | 'DATABASE_URL'
 
   // /////////////////////////////////////
   // Express
@@ -64,25 +63,10 @@ type AllowedEnvironmentVariable =
   | 'HASH_ASSOCIATED_DATA'
 
   // /////////////////////////////////////
-  // Session
-  // /////////////////////////////////////
-  // The expiresIn should be a number of seconds or string representing a time span (60, 1d, 20h) [8h]
-  | 'ACCESS_TOKEN_TTL'
-  | 'REFRESH_TOKEN_TTL'
-
-  // /////////////////////////////////////
-  // Cookie
-  // /////////////////////////////////////
-  | 'COOKIE_SECURE'
-  | 'COOKIE_SAME_SITE'
-  | 'COOKIE_DOMAIN'
-  | 'COOKIE_PREFIX'
-
-  // /////////////////////////////////////
   // Security
   // /////////////////////////////////////
   // Secret string for the project
-  | 'SECRET'
+  | 'AUTH_SECRET'
 
   // /////////////////////////////////////
   // CORS
@@ -113,8 +97,7 @@ type AllowedEnvironmentVariable =
   // /////////////////////////////////////
   // Other
   // /////////////////////////////////////
-  | 'WEBPACK_BUNDLE_ANALYZER'
-  | 'PUBLIC_SHOW_NAVIGATION_CARD';
+  | 'WEBPACK_BUNDLE_ANALYZER';
 
 export const defaults: Partial<Record<AllowedEnvironmentVariable, any>> = {
   // General
@@ -140,18 +123,6 @@ export const defaults: Partial<Record<AllowedEnvironmentVariable, any>> = {
   HASH_PARALLELISM: 1,
   HASH_TYPE: 2,
 
-  // Session
-  ACCESS_TOKEN_TTL: '15min',
-  REFRESH_TOKEN_TTL: '24h',
-
-  // Cookie
-  COOKIE_SECURE: false,
-  COOKIE_SAME_SITE: 'lax',
-  COOKIE_PREFIX: 'collections',
-
-  // Security
-  SECRET: uuidv4(),
-
   // CORS
   CORS_ENABLED: false,
   CORS_ORIGIN: false,
@@ -168,9 +139,6 @@ export const defaults: Partial<Record<AllowedEnvironmentVariable, any>> = {
   // Email
   EMAIL_TRANSPORT: 'sendgrid',
   EMAIL_FROM: 'no-reply@example.com',
-
-  // Other
-  PUBLIC_SHOW_NAVIGATION_CARD: true,
 };
 
 export let env: Record<string, any> = {

@@ -3,6 +3,7 @@ import { RecordNotFoundException } from '../../exceptions/database/recordNotFoun
 import { UnprocessableEntityException } from '../../exceptions/unprocessableEntity.js';
 import { prisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
+import { authenticatedUser } from '../middleware/auth.js';
 import { UsersService } from '../services/users.js';
 import { oneWayHash } from '../utilities/oneWayHash.js';
 
@@ -10,9 +11,10 @@ const router = express.Router();
 
 router.get(
   '/users',
-  asyncHandler(async (req: Request, res: Response) => {
+  authenticatedUser,
+  asyncHandler(async (_req: Request, res: Response) => {
     const service = new UsersService(prisma);
-    const users = await service.findUsers({ includeRole: true });
+    const users = await service.findUsers();
 
     res.json({
       users,
@@ -22,6 +24,7 @@ router.get(
 
 router.get(
   '/users/:id',
+  authenticatedUser,
   asyncHandler(async (req: Request, res: Response) => {
     const service = new UsersService(prisma);
     const user = await service.findUser(req.params.id);
@@ -36,6 +39,7 @@ router.get(
 
 router.post(
   '/users',
+  authenticatedUser,
   asyncHandler(async (req: Request, res: Response) => {
     const service = new UsersService(prisma);
     await service.checkUniqueEmail(req.body.email);
@@ -51,6 +55,7 @@ router.post(
 
 router.patch(
   '/users/:id',
+  authenticatedUser,
   asyncHandler(async (req: Request, res: Response) => {
     const id = req.params.id;
 
@@ -69,9 +74,11 @@ router.patch(
 
 router.delete(
   '/users/:id',
+  authenticatedUser,
   asyncHandler(async (req: Request, res: Response) => {
+    const userId = res.locals.session.user.id;
     const id = req.params.id;
-    if (req.userId === id) {
+    if (userId === id) {
       throw new UnprocessableEntityException('can_not_delete_itself');
     }
 
@@ -84,6 +91,7 @@ router.delete(
 
 router.post(
   '/users/reset-password',
+  authenticatedUser,
   asyncHandler(async (req: Request, res: Response) => {
     const token = req.body.token;
     const password = req.body.password;
@@ -97,6 +105,7 @@ router.post(
 
 router.post(
   '/users/forgot-password',
+  authenticatedUser,
   asyncHandler(async (req: Request, res: Response) => {
     const service = new UsersService(prisma);
     const resetPasswordToken = await service.setResetPasswordToken(req.body.email);

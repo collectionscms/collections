@@ -13,10 +13,10 @@ const PostPage = Loader(lazy(() => import('../../../pages/Post/index.js'), 'Post
 const group = profileNavItems();
 
 export const RootRoutes = () => {
-  const { user } = useAuth();
+  const { me } = useAuth();
   const { t } = useTranslation();
 
-  if (!user) {
+  if (!me) {
     return {
       path: '/admin',
       children: [

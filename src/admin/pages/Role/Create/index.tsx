@@ -40,7 +40,6 @@ const CreateRolePageImpl: React.FC = () => {
     defaultValues: {
       name: '',
       description: '',
-      adminAccess: false,
     },
     resolver: yupResolver(createRoleSchema()),
   });
@@ -85,23 +84,6 @@ const CreateRolePageImpl: React.FC = () => {
                       )}
                     />
                     <FormHelperText error>{errors.name?.message}</FormHelperText>
-                  </Stack>
-                </Grid>
-                <Grid xs={12} sm={6}>
-                  <Stack spacing={1}>
-                    <InputLabel>{t('admin_access')}</InputLabel>
-                    <Controller
-                      name="adminAccess"
-                      control={control}
-                      render={({ field }) => (
-                        <FormControlLabel
-                          {...field}
-                          label={t('is_active')}
-                          control={<Checkbox checked={field.value} />}
-                        />
-                      )}
-                    />
-                    <FormHelperText error>{errors.adminAccess?.message}</FormHelperText>
                   </Stack>
                 </Grid>
                 <Grid xs={12}>

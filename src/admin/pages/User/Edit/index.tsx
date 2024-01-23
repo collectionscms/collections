@@ -57,7 +57,7 @@ const EditUserPageImpl: React.FC = () => {
       password: '',
       apiKey: '',
       isActive: Boolean(user.isActive),
-      roleId: user.roleId,
+      roleId: user.role.id,
     },
     resolver: yupResolver(updateUserSchema(t)),
   });
@@ -148,7 +148,7 @@ const EditUserPageImpl: React.FC = () => {
                     <FormHelperText error>{errors.password?.message}</FormHelperText>
                   </Stack>
                 </Grid>
-                <Grid xs={12} sm={6}>
+                {/* <Grid xs={12} sm={6}>
                   <Stack spacing={1}>
                     <InputLabel htmlFor="apiKey">{t('api_key')}</InputLabel>
                     <Controller
@@ -187,7 +187,7 @@ const EditUserPageImpl: React.FC = () => {
                     />
                     <FormHelperText error>{errors.apiKey?.message}</FormHelperText>
                   </Stack>
-                </Grid>
+                </Grid> */}
                 <Grid xs={12} sm={6}>
                   <Stack spacing={1}>
                     <InputLabel>{t('role')}</InputLabel>
