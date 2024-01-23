@@ -24,8 +24,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     useSWRMutation(
       '/auth/callback/credentials',
       async (url: string, { arg }: { arg: Record<string, any> }) => {
-        return api.post<Me>(url, arg).then((res) => {
-          mutate(res.data);
+        return api.post<Me>(url, arg).then(() => {
+          mutate();
         });
       }
     );

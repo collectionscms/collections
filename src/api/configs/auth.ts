@@ -8,7 +8,7 @@ export const authConfig = {
     async jwt(params: any) {
       const { token, user } = params;
       if (user) {
-        token.userId = user.id;
+        token.user = user;
       }
 
       return token;
