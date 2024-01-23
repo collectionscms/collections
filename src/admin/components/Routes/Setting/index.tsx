@@ -23,10 +23,10 @@ const NotFound = Loader(lazy(() => import('../../../pages/NotFound/index.js'), '
 const group = settingsGroupNavItems();
 
 export const SettingRoutes = () => {
-  const { user } = useAuth();
+  const { me } = useAuth();
   const { t } = useTranslation();
 
-  if (!user) {
+  if (!me) {
     return {
       path: '/admin/settings',
       children: [
@@ -36,7 +36,7 @@ export const SettingRoutes = () => {
     };
   }
 
-  if (!user.adminAccess) {
+  if (!me.isAdmin) {
     return {
       path: '/admin/settings',
       children: [

@@ -8,10 +8,10 @@ import { RootRoutes } from './Root/index.js';
 import { SettingRoutes } from './Setting/index.js';
 
 export const Routes: React.FC = () => {
-  const { user } = useAuth();
+  const { me } = useAuth();
   const router = createBrowserRouter([RootRoutes(), SettingRoutes(), AuthRoutes, NoRoutes()]);
 
-  if (user === undefined) return <Loading />;
+  if (me === undefined) return <Loading />;
 
   return <RouterProvider router={router} />;
 };

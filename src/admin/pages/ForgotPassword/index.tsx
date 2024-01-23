@@ -24,7 +24,7 @@ import {
 import { ForgotPasswordContextProvider, useForgotPassword } from './Context/index.js';
 
 const ForgotPasswordImpl: React.FC = () => {
-  const { user } = useAuth();
+  const { me } = useAuth();
   const { forgotPassword } = useForgotPassword();
   const { data: message, trigger, isMutating } = forgotPassword();
 
@@ -71,7 +71,7 @@ const ForgotPasswordImpl: React.FC = () => {
     );
   }
 
-  if (user) {
+  if (me) {
     return (
       <Grid container spacing={3}>
         <Grid xs={12}>

@@ -13,13 +13,14 @@ import { BottomContent } from './BottomContent/index.js';
 import { NavCard } from './NavCard/index.js';
 
 export const NavContent: React.FC = () => {
-  const { user } = useAuth();
+  const { me } = useAuth();
   const theme = useTheme();
 
   const navHeader = useMemo(() => <NavHeader />, []);
   const bottomContent = useMemo(() => <BottomContent />, []);
 
-  const navGroupItems = user?.adminAccess
+  // todo
+  const navGroupItems = me?.isAdmin
     ? [postNavItems(), settingsGroupNavItems(), profileNavItems()]
     : [postNavItems(), profileNavItems()];
   const navGroups = navGroupItems.map((group) => {
