@@ -24,18 +24,13 @@ export class RolesService {
     });
   }
 
-  async create(data: {
-    projectId: string;
-    name: string;
-    description?: string;
-    adminAccess: boolean;
-  }) {
+  async create(data: { projectId: string; name: string; description?: string }) {
     return await this.prisma.role.create({
       data,
     });
   }
 
-  async update(id: string, data: { name: string; description?: string; adminAccess: boolean }) {
+  async update(id: string, data: { name: string; description?: string }) {
     return await this.prisma.role.update({
       where: {
         id: id,

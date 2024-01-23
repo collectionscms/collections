@@ -1,13 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import {
-  Button,
-  Checkbox,
-  FormControlLabel,
-  FormHelperText,
-  InputLabel,
-  Stack,
-  TextField,
-} from '@mui/material';
+import { Button, FormHelperText, InputLabel, Stack, TextField } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { useSnackbar } from 'notistack';
 import React from 'react';
@@ -45,7 +37,6 @@ const EditRolePageImpl: React.FC = () => {
     defaultValues: {
       name: role.name,
       description: role.description,
-      adminAccess: Boolean(role.adminAccess),
     },
     resolver: yupResolver(updateRoleSchema()),
   });
@@ -90,23 +81,6 @@ const EditRolePageImpl: React.FC = () => {
                       )}
                     />
                     <FormHelperText error>{errors.name?.message}</FormHelperText>
-                  </Stack>
-                </Grid>
-                <Grid xs={12} sm={6}>
-                  <Stack spacing={1}>
-                    <InputLabel>{t('admin_access')}</InputLabel>
-                    <Controller
-                      name="adminAccess"
-                      control={control}
-                      render={({ field }) => (
-                        <FormControlLabel
-                          {...field}
-                          label={t('is_active')}
-                          control={<Checkbox checked={field.value} />}
-                        />
-                      )}
-                    />
-                    <FormHelperText error>{errors.adminAccess?.message}</FormHelperText>
                   </Stack>
                 </Grid>
                 <Grid xs={12}>

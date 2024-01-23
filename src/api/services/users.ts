@@ -1,7 +1,7 @@
 import { PrismaClient, User } from '@prisma/client';
 import crypto from 'crypto';
 import dayjs from 'dayjs';
-import { Me } from '../../configs/types.js';
+import { Me, UserProfile } from '../../configs/types.js';
 import { env } from '../../env.js';
 import { RecordNotFoundException } from '../../exceptions/database/recordNotFound.js';
 import { RecordNotUniqueException } from '../../exceptions/database/recordNotUnique.js';
@@ -17,14 +17,6 @@ export class UsersService {
 
   constructor(prisma: PrismaClient) {
     this.prisma = prisma;
-  }
-
-  // Exclude keys from user
-  // https://www.prisma.io/docs/orm/prisma-client/queries/excluding-fields
-  exclude<User, Key extends keyof User>(user: User, keys: Key[]): Omit<User, Key> {
-    return Object.fromEntries(
-      Object.entries(user as any).filter(([key]) => !keys.includes(key as any))
-    ) as Omit<User, Key>;
   }
 
   async login(email: string, password: string): Promise<Me> {
@@ -64,7 +56,7 @@ export class UsersService {
     };
   }
 
-  async findUser(id: string): Promise<Omit<User, 'password'>> {
+  async findUser(id: string): Promise<UserProfile> {
     const user = await prisma.user.findUniqueOrThrow({
       where: {
         id,
@@ -83,10 +75,16 @@ export class UsersService {
       },
     });
 
-    return this.exclude(user, ['password']);
+    return {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      isActive: user.isActive,
+      role: user.userProjects[0].role,
+    };
   }
 
-  async findUsers(): Promise<Omit<User, 'password'>[]> {
+  async findUsers(): Promise<UserProfile[]> {
     const users = await this.prisma.user.findMany({
       include: {
         userProjects: {
@@ -102,7 +100,13 @@ export class UsersService {
     });
 
     return users.map((user) => {
-      return this.exclude(user, ['password']);
+      return {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        isActive: user.isActive,
+        role: user.userProjects[0].role,
+      };
     });
   }
 

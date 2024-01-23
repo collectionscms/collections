@@ -1,9 +1,35 @@
-import { Role, User } from '@prisma/client';
+import { Role } from '@prisma/client';
 import React, { createContext, useContext, useMemo } from 'react';
-import useSWR from 'swr';
-import useSWRMutation from 'swr/mutation';
+import useSWR, { SWRResponse } from 'swr';
+import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
+import { UserProfile } from '../../../../configs/types.js';
 import { api } from '../../../utilities/api.js';
-import { UserContext } from './types.js';
+
+type UserContext = {
+  getUsers: () => SWRResponse<
+    UserProfile[],
+    Error,
+    {
+      suspense: true;
+    }
+  >;
+  getUser: (id: string) => SWRResponse<
+    UserProfile,
+    Error,
+    {
+      suspense: true;
+    }
+  >;
+  getRoles: () => SWRResponse<
+    Role[],
+    Error,
+    {
+      suspense: true;
+    }
+  >;
+  createUser: () => SWRMutationResponse<number, any, string, Record<string, any>>;
+  updateUser: (id: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
+};
 
 const Context = createContext({} as UserContext);
 
@@ -11,7 +37,7 @@ export const UserContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
   const getUsers = () =>
     useSWR(
       '/users',
-      (url) => api.get<{ users: User & { role: Role }[] }>(url).then((res) => res.data.users),
+      (url) => api.get<{ users: UserProfile[] }>(url).then((res) => res.data.users),
       {
         suspense: true,
       }
@@ -20,7 +46,7 @@ export const UserContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
   const getUser = (id: string) =>
     useSWR(
       `/users/${id}`,
-      (url) => api.get<{ user: User & { role: Role } }>(url).then((res) => res.data.user),
+      (url) => api.get<{ user: UserProfile }>(url).then((res) => res.data.user),
       {
         suspense: true,
       }
