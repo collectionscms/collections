@@ -1,5 +1,4 @@
 import { ExpressAuth } from '@auth/express';
-import cookieParser from 'cookie-parser';
 import express from 'express';
 import { env } from '../../env.js';
 import { expressLogger } from '../../utilities/expressLogger.js';
@@ -18,7 +17,6 @@ if (Boolean(env.CORS_ENABLED) === true) {
   router.use(corsMiddleware);
 }
 
-router.use(cookieParser());
 router.use(express.json({ limit: env.REQ_LIMIT }));
 router.use(express.urlencoded({ limit: env.REQ_LIMIT, extended: true }));
 router.use(expressLogger);
