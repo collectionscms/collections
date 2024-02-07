@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { RecordNotFoundException } from '../../exceptions/database/recordNotFound.js';
 
-export class ProjectsService {
+export class ProjectService {
   prisma: PrismaClient;
 
   constructor(prisma: PrismaClient) {

@@ -4,7 +4,7 @@ import { prisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
 import { authenticatedUser } from '../middleware/auth.js';
 import { multipartHandler } from '../middleware/multipartHandler.js';
-import { FilesService } from '../services/files.js';
+import { FileService } from '../services/file.js';
 
 const router = express.Router();
 
@@ -15,7 +15,7 @@ router.post(
   asyncHandler(async (req: Request, res: Response) => {
     const keys = res.locals.savedFileKeys;
 
-    const service = new FilesService(prisma);
+    const service = new FileService(prisma);
     const file = await service.findFile(keys[0]);
     const url = assetPath(file.id);
 
@@ -29,7 +29,7 @@ router.get(
   asyncHandler(async (req: Request, res: Response) => {
     const id = req.params.id;
 
-    const service = new FilesService(prisma);
+    const service = new FileService(prisma);
     const file = await service.findFile(id);
     const url = assetPath(file.id);
 

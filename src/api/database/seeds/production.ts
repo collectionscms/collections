@@ -1,7 +1,7 @@
 import process from 'process';
 import { Output } from '../../../utilities/output.js';
-import { RolesService } from '../../services/roles.js';
-import { UsersService } from '../../services/users.js';
+import { RoleService } from '../../services/role.js';
+import { UserService } from '../../services/user.js';
 import { oneWayHash } from '../../utilities/oneWayHash.js';
 import { prisma } from '../prisma/client.js';
 // import { createProjectSetting } from './createProjectSetting.js';

@@ -4,7 +4,7 @@ import { authConfig } from '../configs/auth.js';
 import { prisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
 import { authenticatedUser } from '../middleware/auth.js';
-import { UsersService } from '../services/users.js';
+import { UserService } from '../services/user.js';
 import { oneWayHash } from '../utilities/oneWayHash.js';
 
 const router = express.Router();
@@ -26,7 +26,7 @@ router.patch(
   asyncHandler(async (req: Request, res: Response) => {
     const id = res.locals.session.user.id;
 
-    const service = new UsersService(prisma);
+    const service = new UserService(prisma);
     await service.checkUniqueEmail(req.body.email, id);
 
     const data = req.body.password

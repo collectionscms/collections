@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 
-export class PermissionsService {
+export class PermissionService {
   prisma: PrismaClient;
 
   constructor(prisma: PrismaClient) {
