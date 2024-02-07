@@ -1,7 +1,7 @@
 import CredentialsProvider from '@auth/express/providers/credentials';
 import { logger } from '../../utilities/logger.js';
 import { prisma } from '../database/prisma/client.js';
-import { UsersService } from '../services/users.js';
+import { UserService } from '../services/user.js';
 
 export const authConfig = {
   callbacks: {
@@ -33,7 +33,7 @@ export const authConfig = {
         const { email, password } = credentials;
 
         try {
-          const service = new UsersService(prisma);
+          const service = new UserService(prisma);
           const user = await service.login(String(email), String(password));
           return user;
         } catch (e) {

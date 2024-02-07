@@ -2,7 +2,7 @@ import { File, PrismaClient } from '@prisma/client';
 import { env } from '../../env.js';
 import { getStorage } from '../storages/storage.js';
 
-export class FilesService {
+export class FileService {
   prisma: PrismaClient;
 
   constructor(prisma: PrismaClient) {

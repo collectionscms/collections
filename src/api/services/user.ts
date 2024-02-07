@@ -10,9 +10,9 @@ import { prisma } from '../database/prisma/client.js';
 import { comparePasswords } from '../utilities/comparePasswords.js';
 import { oneWayHash } from '../utilities/oneWayHash.js';
 import { MailService } from './mail.js';
-import { ProjectsService } from './projects.js';
+import { ProjectService } from './project.js';
 
-export class UsersService {
+export class UserService {
   prisma: PrismaClient;
 
   constructor(prisma: PrismaClient) {
@@ -216,7 +216,7 @@ export class UsersService {
   }
 
   async sendResetPassword(email: string, token: string) {
-    const service = new ProjectsService(this.prisma);
+    const service = new ProjectService(this.prisma);
     const project = await service.findProject();
     if (!project) throw new RecordNotFoundException('record_not_found');
 

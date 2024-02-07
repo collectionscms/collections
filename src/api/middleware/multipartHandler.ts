@@ -8,11 +8,11 @@ import { env } from '../../env.js';
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
 import { logger } from '../../utilities/logger.js';
 import { prisma } from '../database/prisma/client.js';
-import { FilesService } from '../services/files.js';
+import { FileService } from '../services/file.js';
 
 export const multipartHandler: RequestHandler = (req, res, next) => {
   const busboy = Busboy({ headers: req.headers });
-  const service = new FilesService(prisma);
+  const service = new FileService(prisma);
 
   let fileName = '';
   let type = '';

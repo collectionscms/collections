@@ -4,7 +4,7 @@ import { UnknownException } from '../../exceptions/storage/unknown.js';
 import { logger } from '../../utilities/logger.js';
 import { prisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
-import { FilesService } from '../services/files.js';
+import { FileService } from '../services/file.js';
 import { getStorage } from '../storages/storage.js';
 
 const router = express.Router();
@@ -19,7 +19,7 @@ router.get(
 router.get(
   '/assets/:id',
   asyncHandler(async (req: Request, res: Response) => {
-    const service = new FilesService(prisma);
+    const service = new FileService(prisma);
     const file = await service.findFile(req.params.id);
 
     const storage = getStorage(file.storage);
@@ -61,4 +61,4 @@ router.get(
   })
 );
 
-export const assets = router;
+export const asset = router;

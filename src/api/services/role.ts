@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import { RecordNotFoundException } from '../../exceptions/database/recordNotFound.js';
 import { UnprocessableEntityException } from '../../exceptions/unprocessableEntity.js';
 
-export class RolesService {
+export class RoleService {
   prisma: PrismaClient;
 
   constructor(prisma: PrismaClient) {
