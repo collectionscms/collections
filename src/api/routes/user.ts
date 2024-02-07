@@ -118,4 +118,4 @@ router.post(
   })
 );
 
-export const users = router;
+export const user = router;

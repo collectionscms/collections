@@ -78,4 +78,4 @@ router.get(
   })
 );
 
-export const roles = router;
+export const role = router;

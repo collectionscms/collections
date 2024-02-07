@@ -61,4 +61,4 @@ router.get(
   })
 );
 
-export const assets = router;
+export const asset = router;

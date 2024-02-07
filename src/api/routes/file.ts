@@ -39,4 +39,4 @@ router.get(
 
 const assetPath = (id: string) => `${env.PUBLIC_SERVER_URL}/assets/${id}`;
 
-export const files = router;
+export const file = router;
