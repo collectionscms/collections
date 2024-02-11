@@ -1,7 +1,7 @@
 import { User } from '@prisma/client';
 import crypto from 'crypto';
 import dayjs from 'dayjs';
-import { Me, UserProfile } from '../../../configs/types.js';
+import { Me, UserProfile } from '../../../types/index.js';
 import { RecordNotUniqueException } from '../../../exceptions/database/recordNotUnique.js';
 import { InvalidCredentialsException } from '../../../exceptions/invalidCredentials.js';
 import { PrismaType } from '../../database/prisma/client.js';
