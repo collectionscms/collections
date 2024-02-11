@@ -1,9 +1,5 @@
 import process from 'process';
 import { Output } from '../../../utilities/output.js';
-import { RoleService } from '../../services/role.js';
-import { UserService } from '../../services/user.js';
-import { oneWayHash } from '../../utilities/oneWayHash.js';
-import { prisma } from '../prisma/client.js';
 // import { createProjectSetting } from './createProjectSetting.js';
 
 export const seedProduction = async (email: string, password: string): Promise<void> => {
