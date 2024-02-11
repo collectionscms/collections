@@ -1,8 +1,8 @@
 import { Permission } from '@prisma/client';
-import { prismaType } from '../../database/prisma/client.js';
+import { PrismaType } from '../../database/prisma/client.js';
 
 export class PermissionRepository {
-  async findPermissions(prisma: prismaType, roleId: string): Promise<Permission[]> {
+  async findPermissions(prisma: PrismaType, roleId: string): Promise<Permission[]> {
     return await prisma.permission.findMany({
       where: {
         roleId,

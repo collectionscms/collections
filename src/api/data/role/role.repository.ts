@@ -1,15 +1,15 @@
 import { Role, UserProject } from '@prisma/client';
 import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
 import { UnprocessableEntityException } from '../../../exceptions/unprocessableEntity.js';
-import { prismaType } from '../../database/prisma/client';
+import { PrismaType } from '../../database/prisma/client';
 import { RoleEntity } from './role.entity.js';
 
 export class RoleRepository {
-  async findRoles(prisma: prismaType): Promise<Role[]> {
+  async findRoles(prisma: PrismaType): Promise<Role[]> {
     return await prisma.role.findMany();
   }
 
-  async findRole(prisma: prismaType, id: string): Promise<Role & { userProjects: UserProject[] }> {
+  async findRole(prisma: PrismaType, id: string): Promise<Role & { userProjects: UserProject[] }> {
     return await prisma.role.findUniqueOrThrow({
       where: {
         id,
@@ -20,14 +20,14 @@ export class RoleRepository {
     });
   }
 
-  async create(prisma: prismaType, entity: RoleEntity): Promise<RoleEntity> {
+  async create(prisma: PrismaType, entity: RoleEntity): Promise<RoleEntity> {
     const record = await prisma.role.create({
       data: entity.toPersistence(),
     });
     return RoleEntity.Reconstruct(record);
   }
 
-  async update(prisma: prismaType, id: string, entity: RoleEntity): Promise<RoleEntity> {
+  async update(prisma: PrismaType, id: string, entity: RoleEntity): Promise<RoleEntity> {
     const record = entity.toPersistence();
     const result = await prisma.role.update({
       where: {
@@ -41,7 +41,7 @@ export class RoleRepository {
     return RoleEntity.Reconstruct(result);
   }
 
-  async delete(prisma: prismaType, id: string): Promise<void> {
+  async delete(prisma: PrismaType, id: string): Promise<void> {
     const role = await this.findRole(prisma, id);
     if (!role) throw new RecordNotFoundException('record_not_found');
     if (role.userProjects) new UnprocessableEntityException('can_not_delete_role_in_use');
