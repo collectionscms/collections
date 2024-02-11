@@ -12,7 +12,7 @@ router.post(
   '/files',
   authenticatedUser,
   asyncHandler(multipartHandler),
-  asyncHandler(async (req: Request, res: Response) => {
+  asyncHandler(async (_req: Request, res: Response) => {
     const keys = res.locals.savedFileKeys;
 
     const service = new FileService(prisma);

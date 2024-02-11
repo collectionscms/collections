@@ -38,7 +38,7 @@ router.post(
   authenticatedUser,
   asyncHandler(async (req: Request, res: Response) => {
     const entity = RoleEntity.Construct({
-      projectId: res.locals.session.user.projects[0].id,
+      projectId: res.user.projects[0].id,
       name: req.body.name,
       description: req.body.description,
     });

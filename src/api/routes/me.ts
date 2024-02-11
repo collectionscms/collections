@@ -13,10 +13,10 @@ const router = express.Router();
 router.get(
   '/me',
   asyncHandler(async (req: Request, res: Response) => {
-    const session = res.locals.session ?? (await getSession(req, authConfig));
+    const user = res.user ?? (await getSession(req, authConfig));
 
     return res.json({
-      me: session?.user || null,
+      me: user || null,
     });
   })
 );
@@ -25,7 +25,7 @@ router.patch(
   '/me',
   authenticatedUser,
   asyncHandler(async (req: Request, res: Response) => {
-    const id = res.locals.session.user.id;
+    const id = res.user.id;
 
     const repository = new UserRepository();
     await repository.checkUniqueEmail(prisma, id, req.body.email);
