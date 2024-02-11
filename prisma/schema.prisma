@@ -23,7 +23,7 @@ model Project {
   organizationId String        @db.Uuid
   name           String        @db.VarChar(255)
   description    String?       @db.VarChar(255)
-  slug           String        @unique
+  slug           String        @unique @db.VarChar(255)
   createdAt      DateTime      @default(now()) @db.Timestamptz(6)
   updatedAt      DateTime      @updatedAt @db.Timestamptz(6)
   userProjects   UserProject[]
