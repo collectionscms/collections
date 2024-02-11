@@ -1,23 +1,26 @@
-import { PrismaClient, User } from '@prisma/client';
+import { User } from '@prisma/client';
 import crypto from 'crypto';
 import dayjs from 'dayjs';
-import { Me, UserProfile } from '../../configs/types.js';
-import { env } from '../../env.js';
-import { RecordNotUniqueException } from '../../exceptions/database/recordNotUnique.js';
-import { InvalidCredentialsException } from '../../exceptions/invalidCredentials.js';
-import { prisma } from '../database/prisma/client.js';
-import { comparePasswords } from '../utilities/comparePasswords.js';
-import { oneWayHash } from '../utilities/oneWayHash.js';
-import { MailService } from './mail.js';
+import { Me, UserProfile } from '../../../configs/types.js';
+import { RecordNotUniqueException } from '../../../exceptions/database/recordNotUnique.js';
+import { InvalidCredentialsException } from '../../../exceptions/invalidCredentials.js';
+import { PrismaType } from '../../database/prisma/client.js';
+import { comparePasswords } from '../../utilities/comparePasswords.js';
+import { oneWayHash } from '../../utilities/oneWayHash.js';
+import { UserEntity } from './user.entity.js';
 
-export class UserService {
-  prisma: PrismaClient;
+export class UserRepository {
+  async findUser(prisma: PrismaType, id: string): Promise<User> {
+    const user = await prisma.user.findUniqueOrThrow({
+      where: {
+        id,
+      },
+    });
 
-  constructor(prisma: PrismaClient) {
-    this.prisma = prisma;
+    return user;
   }
 
-  async login(email: string, password: string): Promise<Me> {
+  async login(prisma: PrismaType, email: string, password: string): Promise<Me> {
     const user = await prisma.user.findFirst({
       where: {
         email: {
@@ -54,7 +57,7 @@ export class UserService {
     };
   }
 
-  async findUser(id: string): Promise<UserProfile> {
+  async findUserProfile(prisma: PrismaType, id: string): Promise<UserProfile> {
     const user = await prisma.user.findUniqueOrThrow({
       where: {
         id,
@@ -82,8 +85,8 @@ export class UserService {
     };
   }
 
-  async findUsers(): Promise<UserProfile[]> {
-    const users = await this.prisma.user.findMany({
+  async findUserProfiles(prisma: PrismaType): Promise<UserProfile[]> {
+    const users = await prisma.user.findMany({
       include: {
         userProjects: {
           select: {
@@ -108,43 +111,76 @@ export class UserService {
     });
   }
 
-  async create(data: {
-    projectId: string;
-    name: string;
-    email: string;
-    password: string;
-    roleId: string;
-  }): Promise<User> {
+  async create(
+    prisma: PrismaType,
+    entity: UserEntity,
+    projectId: string,
+    roleId: string
+  ): Promise<UserEntity> {
     const user = await prisma.user.create({
-      data,
+      data: {
+        ...entity.toPersistence(),
+        userProjects: {
+          create: {
+            role: {
+              connect: {
+                id: roleId,
+              },
+            },
+            project: {
+              connect: {
+                id: projectId,
+              },
+            },
+          },
+        },
+      },
     });
 
-    return user;
+    return UserEntity.Reconstruct(user);
   }
 
   async update(
-    id: string,
-    data: {
-      name?: string;
-      email?: string;
-      password?: string;
-      roleId?: string;
-      resetPasswordExpiration?: Date;
-    }
-  ): Promise<User> {
+    prisma: PrismaType,
+    userId: string,
+    entity: UserEntity,
+    projectId: string,
+    roleId: string
+  ): Promise<UserEntity> {
+    const record = entity.toPersistence();
     const user = await prisma.user.update({
       where: {
-        id,
+        id: userId,
       },
-      data,
+      data: {
+        name: record.name,
+        email: record.email,
+        password: record.password,
+        isActive: record.isActive,
+        userProjects: {
+          update: {
+            where: {
+              userId_projectId: {
+                userId,
+                projectId,
+              },
+            },
+            data: {
+              role: {
+                connect: {
+                  id: roleId,
+                },
+              },
+            },
+          },
+        },
+      },
     });
 
-    // todo update role
-
-    return user;
+    return UserEntity.Reconstruct(user);
   }
 
-  async delete(id: string): Promise<void> {
+  async delete(prisma: PrismaType, id: string): Promise<void> {
     await prisma.user.delete({
       where: {
         id,
@@ -152,29 +188,7 @@ export class UserService {
     });
   }
 
-  async resetPassword(token: string, password: string): Promise<User> {
-    const user = await prisma.user.findFirst({
-      where: {
-        resetPasswordToken: token,
-        resetPasswordExpiration: {
-          gt: new Date(),
-        },
-      },
-    });
-
-    if (!user) throw new InvalidCredentialsException('token_invalid_or_expired');
-
-    await this.update(user.id, {
-      password: await oneWayHash(password),
-      resetPasswordExpiration: new Date(),
-    });
-
-    return user;
-  }
-
-  async checkUniqueEmail(email?: string, id?: string) {
-    if (!email) return;
-
+  async checkUniqueEmail(prisma: PrismaType, id: string, email: string) {
     const user = await prisma.user.findFirst({
       where: {
         email,
@@ -186,7 +200,31 @@ export class UserService {
     }
   }
 
-  async setResetPasswordToken(email: string): Promise<string> {
+  async resetPassword(prisma: PrismaType, token: string, password: string): Promise<UserEntity> {
+    const user = await prisma.user.findFirst({
+      where: {
+        resetPasswordToken: token,
+        resetPasswordExpiration: {
+          gt: new Date(),
+        },
+      },
+    });
+
+    if (!user) throw new InvalidCredentialsException('token_invalid_or_expired');
+
+    const entity = UserEntity.Reconstruct({
+      ...user,
+      password: await oneWayHash(password),
+      resetPasswordExpiration: new Date(),
+    });
+
+    // todo
+    // await this.update(prisma, user.id, entity);
+
+    return entity;
+  }
+
+  async setResetPasswordToken(prisma: PrismaType, email: string): Promise<string> {
     const user = await prisma.user.findFirst({
       where: {
         email,
@@ -211,21 +249,5 @@ export class UserService {
     });
 
     return token;
-  }
-
-  async sendResetPassword(email: string, token: string) {
-    const html = `You are receiving this message because you have requested a password reset for your account.<br/>
-      Please click the following link and enter your new password.<br/><br/>
-      <a href="${env.PUBLIC_SERVER_URL}/admin/auth/reset-password/${token}">
-        ${env.PUBLIC_SERVER_URL}/admin/auth/reset-password/${token}
-      </a><br/><br/>
-      If you did not request this, please ignore this email and your password will remain unchanged.`;
-
-    const mail = new MailService();
-    mail.sendEmail('Collections', {
-      to: email,
-      subject: 'Password Reset Request',
-      html,
-    });
   }
 }

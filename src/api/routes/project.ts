@@ -11,7 +11,7 @@ router.get(
   '/projects',
   authenticatedUser,
   asyncHandler(async (_req: Request, res: Response) => {
-    const id = res.locals.session.user.projects[0].id;
+    const id = res.user.projects[0].id;
 
     const repository = new ProjectRepository();
     const project = await repository.findProject(prisma, id);
@@ -24,7 +24,7 @@ router.patch(
   '/projects',
   authenticatedUser,
   asyncHandler(async (req: Request, res: Response) => {
-    const id = res.locals.session.user.projects[0].id;
+    const id = res.user.projects[0].id;
 
     const repository = new ProjectRepository();
     const project = await repository.findProject(prisma, id);
