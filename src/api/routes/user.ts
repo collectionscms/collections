@@ -75,7 +75,7 @@ router.patch(
       email: req.body.email,
     });
 
-    await repository.update(prisma, id, entity, projectId, req.body.roleId);
+    await repository.updateWithRole(prisma, id, entity, projectId, req.body.roleId);
 
     res.status(204).end();
   })

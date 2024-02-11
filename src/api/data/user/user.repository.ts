@@ -1,9 +1,9 @@
 import { User } from '@prisma/client';
 import crypto from 'crypto';
 import dayjs from 'dayjs';
-import { Me, UserProfile } from '../../../types/index.js';
 import { RecordNotUniqueException } from '../../../exceptions/database/recordNotUnique.js';
 import { InvalidCredentialsException } from '../../../exceptions/invalidCredentials.js';
+import { Me, UserProfile } from '../../../types/index.js';
 import { PrismaType } from '../../database/prisma/client.js';
 import { comparePasswords } from '../../utilities/comparePasswords.js';
 import { oneWayHash } from '../../utilities/oneWayHash.js';
@@ -140,7 +140,24 @@ export class UserRepository {
     return UserEntity.Reconstruct(user);
   }
 
-  async update(
+  async update(prisma: PrismaType, userId: string, entity: UserEntity): Promise<UserEntity> {
+    const record = entity.toPersistence();
+    const user = await prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        name: record.name,
+        email: record.email,
+        password: record.password,
+        isActive: record.isActive,
+      },
+    });
+
+    return UserEntity.Reconstruct(user);
+  }
+
+  async updateWithRole(
     prisma: PrismaType,
     userId: string,
     entity: UserEntity,
