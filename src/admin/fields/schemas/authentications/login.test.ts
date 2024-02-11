@@ -1,4 +1,4 @@
-import { loginSchema } from '../../../../../src/admin/fields/schemas/authentications/login.js';
+import { loginSchema } from './login.js';
 
 describe('Login Validations', () => {
   it('success', async () => {
@@ -6,20 +6,24 @@ describe('Login Validations', () => {
       await loginSchema.isValid({
         email: 'admin@example.com',
         password: '************',
-        appAccess: true,
+        csrfToken: '************',
       })
     ).toEqual(true);
   });
 
   it('failure (email not entered)', async () => {
     expect(
-      await loginSchema.isValid({ email: '', password: '************', appAccess: true })
+      await loginSchema.isValid({ email: '', password: '************', csrfToken: '************' })
     ).toEqual(false);
   });
 
   it('failure (password not entered)', async () => {
     expect(
-      await loginSchema.isValid({ email: 'admin@example.com', password: '', appAccess: true })
+      await loginSchema.isValid({
+        email: 'admin@example.com',
+        password: '',
+        csrfToken: '************',
+      })
     ).toEqual(false);
   });
 
@@ -28,7 +32,7 @@ describe('Login Validations', () => {
       await loginSchema.isValid({
         email: 'admin/example.com',
         password: '************',
-        appAccess: true,
+        csrfToken: '************',
       })
     ).toEqual(false);
   });
