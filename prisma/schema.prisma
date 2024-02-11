@@ -56,7 +56,7 @@ model UserProject {
   isAdmin   Boolean  @default(false)
   createdAt DateTime @default(now()) @db.Timestamptz(6)
   updatedAt DateTime @updatedAt @db.Timestamptz(6)
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   project   Project  @relation(fields: [projectId], references: [id])
   role      Role     @relation(fields: [roleId], references: [id])
 
