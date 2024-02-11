@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWR, { SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
-import { Me } from '../../../../configs/types.js';
+import { Me } from '../../../../types/index.js';
 import { logger } from '../../../../utilities/logger.js';
 import { api } from '../../../utilities/api.js';
 
