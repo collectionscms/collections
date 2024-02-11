@@ -140,21 +140,42 @@ export class UserRepository {
     return UserEntity.Reconstruct(user);
   }
 
-  async update(prisma: PrismaType, id: string, entity: UserEntity): Promise<UserEntity> {
+  async update(
+    prisma: PrismaType,
+    userId: string,
+    entity: UserEntity,
+    projectId: string,
+    roleId: string
+  ): Promise<UserEntity> {
     const record = entity.toPersistence();
     const user = await prisma.user.update({
       where: {
-        id,
+        id: userId,
       },
       data: {
         name: record.name,
         email: record.email,
         password: record.password,
         isActive: record.isActive,
+        userProjects: {
+          update: {
+            where: {
+              userId_projectId: {
+                userId,
+                projectId,
+              },
+            },
+            data: {
+              role: {
+                connect: {
+                  id: roleId,
+                },
+              },
+            },
+          },
+        },
       },
     });
-
-    // todo update role
 
     return UserEntity.Reconstruct(user);
   }
@@ -197,7 +218,8 @@ export class UserRepository {
       resetPasswordExpiration: new Date(),
     });
 
-    await this.update(prisma, user.id, entity);
+    // todo
+    // await this.update(prisma, user.id, entity);
 
     return entity;
   }

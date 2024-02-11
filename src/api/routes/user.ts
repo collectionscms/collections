@@ -60,6 +60,7 @@ router.patch(
   authenticatedUser,
   asyncHandler(async (req: Request, res: Response) => {
     const id = req.params.id;
+    const projectId = res.user.projects[0].id;
 
     const repository = new UserRepository();
     await repository.checkUniqueEmail(prisma, id, req.body.email);
@@ -74,7 +75,7 @@ router.patch(
       email: req.body.email,
     });
 
-    await repository.update(prisma, id, entity);
+    await repository.update(prisma, id, entity, projectId, req.body.roleId);
 
     res.status(204).end();
   })
