@@ -14,7 +14,7 @@ CREATE TABLE "Project" (
     "organizationId" UUID NOT NULL,
     "name" VARCHAR(255) NOT NULL,
     "description" VARCHAR(255),
-    "slug" TEXT NOT NULL,
+    "slug" VARCHAR(255) NOT NULL,
     "createdAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMPTZ(6) NOT NULL,
 

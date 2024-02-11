@@ -3,14 +3,12 @@ import crypto from 'crypto';
 import dayjs from 'dayjs';
 import { Me, UserProfile } from '../../configs/types.js';
 import { env } from '../../env.js';
-import { RecordNotFoundException } from '../../exceptions/database/recordNotFound.js';
 import { RecordNotUniqueException } from '../../exceptions/database/recordNotUnique.js';
 import { InvalidCredentialsException } from '../../exceptions/invalidCredentials.js';
 import { prisma } from '../database/prisma/client.js';
 import { comparePasswords } from '../utilities/comparePasswords.js';
 import { oneWayHash } from '../utilities/oneWayHash.js';
 import { MailService } from './mail.js';
-import { ProjectService } from './project.js';
 
 export class UserService {
   prisma: PrismaClient;
@@ -216,11 +214,6 @@ export class UserService {
   }
 
   async sendResetPassword(email: string, token: string) {
-    const service = new ProjectService(this.prisma);
-    const project = await service.findProject();
-    if (!project) throw new RecordNotFoundException('record_not_found');
-
-    const projectName = project.name;
     const html = `You are receiving this message because you have requested a password reset for your account.<br/>
       Please click the following link and enter your new password.<br/><br/>
       <a href="${env.PUBLIC_SERVER_URL}/admin/auth/reset-password/${token}">
@@ -229,7 +222,7 @@ export class UserService {
       If you did not request this, please ignore this email and your password will remain unchanged.`;
 
     const mail = new MailService();
-    mail.sendEmail(projectName, {
+    mail.sendEmail('Collections', {
       to: email,
       subject: 'Password Reset Request',
       html,
