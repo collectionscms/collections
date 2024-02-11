@@ -111,9 +111,30 @@ export class UserRepository {
     });
   }
 
-  async create(prisma: PrismaType, entity: UserEntity): Promise<UserEntity> {
+  async create(
+    prisma: PrismaType,
+    entity: UserEntity,
+    projectId: string,
+    roleId: string
+  ): Promise<UserEntity> {
     const user = await prisma.user.create({
-      data: entity.toPersistence(),
+      data: {
+        ...entity.toPersistence(),
+        userProjects: {
+          create: {
+            role: {
+              connect: {
+                id: roleId,
+              },
+            },
+            project: {
+              connect: {
+                id: projectId,
+              },
+            },
+          },
+        },
+      },
     });
 
     return UserEntity.Reconstruct(user);
@@ -129,6 +150,7 @@ export class UserRepository {
         name: record.name,
         email: record.email,
         password: record.password,
+        isActive: record.isActive,
       },
     });
 

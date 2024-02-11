@@ -31,7 +31,9 @@ router.get(
     const repository = new UserRepository();
     const user = await repository.findUserProfile(prisma, req.params.id);
 
-    res.json(user);
+    res.json({
+      user,
+    });
   })
 );
 
@@ -39,15 +41,15 @@ router.post(
   '/users',
   authenticatedUser,
   asyncHandler(async (req: Request, res: Response) => {
-    const userId = res.locals.session.user.id;
+    const projectId = res.user.projects[0].id;
 
     const repository = new UserRepository();
-    await repository.checkUniqueEmail(prisma, userId, req.body.email);
+    await repository.checkUniqueEmail(prisma, res.user.id, req.body.email);
 
     const hashed = await oneWayHash(req.body.password);
 
     const entity = UserEntity.Construct({ ...req.body, password: hashed });
-    const user = await repository.create(prisma, entity);
+    const user = await repository.create(prisma, entity, projectId, req.body.roleId);
 
     res.json(user);
   })
@@ -82,7 +84,7 @@ router.delete(
   '/users/:id',
   authenticatedUser,
   asyncHandler(async (req: Request, res: Response) => {
-    const userId = res.locals.session.user.id;
+    const userId = res.user.id;
     const id = req.params.id;
     if (userId === id) {
       throw new UnprocessableEntityException('can_not_delete_itself');
