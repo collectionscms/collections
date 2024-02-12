@@ -3,13 +3,14 @@ import express from 'express';
 import { env } from '../../env.js';
 import { expressLogger } from '../../utilities/expressLogger.js';
 import { authConfig } from '../configs/auth.js';
+import { currentSession } from '../middleware/auth.js';
+import { corsMiddleware } from '../middleware/cors.js';
 import { file } from './file.js';
 import { me } from './me.js';
+import { post } from './post.js';
 import { project } from './project.js';
 import { role } from './role.js';
 import { user } from './user.js';
-import { currentSession } from '../middleware/auth.js';
-import { corsMiddleware } from '../middleware/cors.js';
 
 export const router = express.Router();
 
@@ -30,3 +31,4 @@ router.use(role);
 router.use(project);
 router.use(me);
 router.use(file);
+router.use(post);
