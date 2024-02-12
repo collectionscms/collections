@@ -6,7 +6,6 @@ import { Routes } from './components/Routes/index.js';
 import { Loader } from './components/elements/Loader/index.js';
 import { AuthProvider } from './components/utilities/Auth/index.js';
 import { ColorModeProvider } from './components/utilities/ColorMode/index.js';
-import { ConfigProvider } from './components/utilities/Config/index.js';
 import { SWRConfigure } from './components/utilities/SWRConfigure/index.js';
 import { Snackbar } from './components/utilities/Snackbar/index.js';
 import { ThemeCustomization } from './components/utilities/Theme/index.js';
@@ -21,9 +20,7 @@ const Index = () => (
         <Snackbar>
           <SWRConfigure>
             <AuthProvider>
-              <ConfigProvider>
-                <Routes />
-              </ConfigProvider>
+              <Routes />
             </AuthProvider>
           </SWRConfigure>
         </Snackbar>

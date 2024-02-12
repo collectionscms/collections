@@ -1,14 +1,20 @@
+## V2
+
+We've started the V2 project with a new concept.
+
+https://github.com/collectionscms/collections/pull/1173
+
+## ⭐ What is Collections
+
 ![promotion](https://github.com/collectionscms/collections/assets/59549200/1ebe8a23-13fd-40fe-900e-885fe39fd5f5)
+
+Collections is an open-source Headless CMS that uses React, Node.js, and RDB. It allows for easy modeling in the GUI and seamless data retrieval via API. Content migration from WordPress is also supported.
 
 <hr/>
 <h4>
 <a target="_blank" href="https://demo.collections.dev/admin/" rel="dofollow"><strong>Try Live Demo</strong></a>
 </h4>
 <hr/>
-
-## ⭐ What is Collections
-
-Collections is an open-source Headless CMS that uses React, Node.js, and RDB. It allows for easy modeling in the GUI and seamless data retrieval via API. Content migration from WordPress is also supported.
 
 ### Features
 

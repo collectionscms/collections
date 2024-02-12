@@ -14,13 +14,6 @@ const CreateRole = Loader(
   lazy(() => import('../../../pages/Role/Create/index.js'), 'CreateRolePage')
 );
 const EditRole = Loader(lazy(() => import('../../../pages/Role/Edit/index.js'), 'EditRolePage'));
-const DataModel = Loader(lazy(() => import('../../../pages/DataModel/index.js'), 'DataModelPage'));
-const CreateDataModel = Loader(
-  lazy(() => import('../../../pages/DataModel/Create/index.js'), 'CreateDataModelPage')
-);
-const EditDataModel = Loader(
-  lazy(() => import('../../../pages/DataModel/Edit/index.js'), 'EditDataModelPage')
-);
 const User = Loader(lazy(() => import('../../../pages/User/index.js'), 'UserPage'));
 const CreateUser = Loader(
   lazy(() => import('../../../pages/User/Create/index.js'), 'CreateUserPage')
@@ -30,10 +23,10 @@ const NotFound = Loader(lazy(() => import('../../../pages/NotFound/index.js'), '
 const group = settingsGroupNavItems();
 
 export const SettingRoutes = () => {
-  const { user } = useAuth();
+  const { me } = useAuth();
   const { t } = useTranslation();
 
-  if (!user) {
+  if (!me) {
     return {
       path: '/admin/settings',
       children: [
@@ -43,7 +36,7 @@ export const SettingRoutes = () => {
     };
   }
 
-  if (!user.adminAccess) {
+  if (!me.isAdmin) {
     return {
       path: '/admin/settings',
       children: [
@@ -63,34 +56,6 @@ export const SettingRoutes = () => {
         element: (
           <MainHeader label={t('project_setting')}>
             <Project />
-          </MainHeader>
-        ),
-      },
-
-      // /////////////////////////////////////
-      // Content Types
-      // /////////////////////////////////////
-      {
-        path: 'models',
-        element: (
-          <MainHeader label={t('data_model')}>
-            <DataModel />
-          </MainHeader>
-        ),
-      },
-      {
-        path: 'models/create',
-        element: (
-          <MainHeader label={t('create.data_model')}>
-            <CreateDataModel />
-          </MainHeader>
-        ),
-      },
-      {
-        path: 'models/:modelId',
-        element: (
-          <MainHeader label={t('edit.data_model')}>
-            <EditDataModel />
           </MainHeader>
         ),
       },

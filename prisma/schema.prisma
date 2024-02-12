@@ -1,0 +1,101 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Organization {
+  id        String    @id @default(uuid()) @db.Uuid
+  name      String    @db.VarChar(255)
+  createdAt DateTime  @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime  @updatedAt @db.Timestamptz(6)
+  projects  Project[]
+}
+
+model Project {
+  id             String        @id @default(uuid()) @db.Uuid
+  organizationId String        @db.Uuid
+  name           String        @db.VarChar(255)
+  description    String?       @db.VarChar(255)
+  slug           String        @unique @db.VarChar(255)
+  createdAt      DateTime      @default(now()) @db.Timestamptz(6)
+  updatedAt      DateTime      @updatedAt @db.Timestamptz(6)
+  userProjects   UserProject[]
+  files          File[]
+  roles          Role[]
+  permissions    Permission[]
+  organization   Organization  @relation(fields: [organizationId], references: [id])
+}
+
+model User {
+  id                      String        @id @default(uuid()) @db.Uuid
+  name                    String        @db.VarChar(255)
+  email                   String        @unique
+  password                String        @db.VarChar(255)
+  isActive                Boolean       @default(true)
+  avatarUrl               String?       @db.VarChar(255)
+  resetPasswordToken      String?       @db.VarChar(255)
+  resetPasswordExpiration DateTime?
+  apiKey                  String?       @db.VarChar(255)
+  createdAt               DateTime      @default(now()) @db.Timestamptz(6)
+  updatedAt               DateTime      @updatedAt @db.Timestamptz(6)
+  userProjects            UserProject[]
+}
+
+model UserProject {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid
+  projectId String   @db.Uuid
+  roleId    String   @db.Uuid
+  isAdmin   Boolean  @default(false)
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime @updatedAt @db.Timestamptz(6)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  project   Project  @relation(fields: [projectId], references: [id])
+  role      Role     @relation(fields: [roleId], references: [id])
+
+  @@unique([userId, projectId])
+}
+
+model Role {
+  id           String        @id @default(uuid()) @db.Uuid
+  projectId    String        @db.Uuid
+  name         String        @db.VarChar(255)
+  description  String?       @db.VarChar(255)
+  createdAt    DateTime      @default(now()) @db.Timestamptz(6)
+  updatedAt    DateTime      @updatedAt @db.Timestamptz(6)
+  permissions  Permission[]
+  project      Project       @relation(fields: [projectId], references: [id])
+  userProjects UserProject[]
+}
+
+model Permission {
+  id          String   @id @default(uuid()) @db.Uuid
+  roleId      String   @db.Uuid
+  projectId   String   @db.Uuid
+  name        String   @db.VarChar(255)
+  description String?  @db.VarChar(255)
+  createdAt   DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt   DateTime @updatedAt @db.Timestamptz(6)
+  role        Role     @relation(fields: [roleId], references: [id])
+  project     Project  @relation(fields: [projectId], references: [id])
+}
+
+model File {
+  id           String  @id @default(uuid()) @db.Uuid
+  projectId    String  @db.Uuid
+  storage      String  @db.VarChar(255)
+  fileName     String  @db.VarChar(255)
+  fileNameDisk String  @db.VarChar(255)
+  type         String  @db.VarChar(255)
+  fileSize     Int?
+  width        Int?
+  height       Int?
+  project      Project @relation(fields: [projectId], references: [id])
+}

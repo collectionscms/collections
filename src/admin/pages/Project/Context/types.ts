@@ -1,14 +1,14 @@
+import { Project } from '@prisma/client';
 import { SWRResponse } from 'swr';
 import { SWRMutationResponse } from 'swr/mutation';
-import { ProjectSetting } from '../../../config/types.js';
 
-export type ProjectSettingContext = {
-  getProjectSetting: () => SWRResponse<
-    ProjectSetting,
+export type ProjectContext = {
+  getProject: () => SWRResponse<
+    Project,
     Error,
     {
       suspense: true;
     }
   >;
-  updateProjectSetting: () => SWRMutationResponse<void, any, string, Record<string, any>>;
+  updateProject: () => SWRMutationResponse<void, any, string, Record<string, any>>;
 };

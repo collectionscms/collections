@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { EmptyTable } from '@collectionscms/plugin-ui';
+import { EmptyTable } from '../../../@extended/components/EmptyTable/index.js';
 import { Cell } from './Cell/index.js';
 import { Props } from './types.js';
 

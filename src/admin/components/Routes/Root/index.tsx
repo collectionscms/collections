@@ -9,13 +9,14 @@ import { MainLayout } from '../../layouts/Main/index.js';
 import { useAuth } from '../../utilities/Auth/index.js';
 
 const ProfilePage = Loader(lazy(() => import('../../../pages/Profile/index.js'), 'ProfilePage'));
+const PostPage = Loader(lazy(() => import('../../../pages/Post/index.js'), 'PostPage'));
 const group = profileNavItems();
 
 export const RootRoutes = () => {
-  const { user } = useAuth();
+  const { me } = useAuth();
   const { t } = useTranslation();
 
-  if (!user) {
+  if (!me) {
     return {
       path: '/admin',
       children: [
@@ -29,12 +30,20 @@ export const RootRoutes = () => {
     path: '/admin',
     element: <MainLayout group={group} />,
     children: [
-      { path: '', element: <Navigate to="/admin/models" replace /> },
+      { path: '', element: <Navigate to="/admin/posts" replace /> },
       {
         path: 'me',
         element: (
           <MainHeader label={t('profile')}>
             <ProfilePage />
+          </MainHeader>
+        ),
+      },
+      {
+        path: 'posts',
+        element: (
+          <MainHeader label={t('posts')}>
+            <PostPage />
           </MainHeader>
         ),
       },

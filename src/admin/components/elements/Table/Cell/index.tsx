@@ -1,4 +1,3 @@
-import { Chip } from '@collectionscms/plugin-ui';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc.js';
 import React from 'react';
@@ -26,21 +25,6 @@ export const Cell: React.FC<Props> = (props) => {
         return cellData && truncate(String(cellData));
       case 'date':
         return cellData && dayjs(String(cellData)).local().format('YYYY-MM-DD HH:mm');
-      case 'status':
-        const statusChoice = type.options?.choices?.[cellData as string];
-        if (statusChoice) {
-          const { status, choice } = statusChoice;
-          switch (status) {
-            case 'draft':
-              return <Chip color="secondary" label={choice.label} size="small" variant="light" />;
-            case 'published':
-              return <Chip color="success" label={choice.label} size="small" variant="light" />;
-            case 'archived':
-              return <Chip color="error" label={choice.label} size="small" variant="light" />;
-          }
-        }
-
-        return cellData;
       case 'boolean':
         return castToBoolean(cellData) ? t('enabled') : t('disabled');
       case 'object':

@@ -8,7 +8,7 @@
     "dev": "collections dev",
     "build": "collections build",
     "start": "node dist/build/main.js",
-    "migrate:latest": "collections database migrate:latest",
+    "db:migrate": "collections database db:migrate",
     "seed": "collections database seed:production"
   },
   "author": "",
