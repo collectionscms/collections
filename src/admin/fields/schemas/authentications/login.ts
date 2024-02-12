@@ -4,11 +4,11 @@ import { yup } from '../../yup.js';
 export type FormValues = {
   email: string;
   password: string;
-  appAccess: boolean;
+  csrfToken: string;
 };
 
 export const loginSchema: ObjectSchema<FormValues> = yup.object().shape({
   email: yup.string().email().required(),
   password: yup.string().required(),
-  appAccess: yup.boolean().required(),
+  csrfToken: yup.string().required(),
 });

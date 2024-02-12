@@ -1,41 +1,22 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import {
-  Box,
-  Button,
-  Checkbox,
-  FormControlLabel,
-  FormHelperText,
-  InputLabel,
-  Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Button, FormHelperText, InputLabel, Stack, TextField } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { useSnackbar } from 'notistack';
 import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
-import { EmptyTable, MainCard } from '@collectionscms/plugin-ui';
 import { logger } from '../../../../utilities/logger.js';
+import { MainCard } from '../../../@extended/components/MainCard/index.js';
 import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscardDialog/index.js';
 import { DeleteButton } from '../../../components/elements/DeleteButton/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
-import { PermissionsAction } from '../../../config/types.js';
 import {
   FormValues,
   updateRole as updateRoleSchema,
 } from '../../../fields/schemas/roles/updateRole.js';
 import { useUnsavedChangesPrompt } from '../../../hooks/useUnsavedChangesPrompt.js';
 import { RoleContextProvider, useRole } from '../Context/index.js';
-import { PermissionHeaderCell } from './HeaderCell/index.js';
-import { PermissionToggleButton } from './ToggleButton/index.js';
 
 const EditRolePageImpl: React.FC = () => {
   const { id } = useParams();
@@ -44,10 +25,8 @@ const EditRolePageImpl: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
-  const { getRole, getModels, getPermissions, updateRole } = useRole();
+  const { getRole, updateRole } = useRole();
   const { data: role } = getRole(id);
-  const { data: models } = getModels();
-  const { data: permissions, mutate } = getPermissions(id);
   const { trigger: updateRoleTrigger, isMutating: isUpdateRoleMutating } = updateRole(id);
   const {
     reset,
@@ -58,12 +37,10 @@ const EditRolePageImpl: React.FC = () => {
     defaultValues: {
       name: role.name,
       description: role.description,
-      adminAccess: Boolean(role.adminAccess),
     },
     resolver: yupResolver(updateRoleSchema()),
   });
   const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
-  const actions: PermissionsAction[] = ['read', 'create', 'update', 'delete'];
 
   const navigateToList = () => {
     navigate('../roles');
@@ -83,77 +60,6 @@ const EditRolePageImpl: React.FC = () => {
   return (
     <>
       <ConfirmDiscardDialog open={showPrompt} onDiscard={proceed} onKeepEditing={stay} />
-      <Grid container spacing={2.5} sx={{ mb: 1 }}>
-        <Grid xs={12} lg={8}>
-          <MainCard content={false} title={t('role_list')} subheader={t('auto_save')}>
-            {role.adminAccess ? (
-              <Typography align="center" color="secondary" sx={{ p: 2 }}>
-                {t('admin_has_all_permissions')}
-              </Typography>
-            ) : (
-              <TableContainer>
-                <Table aria-label="simple table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell component="th" scope="row">
-                        {t('data_model')}
-                      </TableCell>
-                      {actions.map((action) => (
-                        <TableCell
-                          component="th"
-                          scope="row"
-                          align="center"
-                          key={action}
-                          sx={{ width: 40, fontSize: '1rem' }}
-                        >
-                          <PermissionHeaderCell action={action} />
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {models.length > 0 ? (
-                      <>
-                        {models.map((model) => {
-                          return (
-                            <TableRow
-                              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                              key={model.id}
-                            >
-                              <TableCell component="td" scope="row" sx={{ py: 0 }}>
-                                <Box
-                                  display="flex"
-                                  justifyContent="space-between"
-                                  alignItems="center"
-                                >
-                                  <p>{model.model}</p>
-                                </Box>
-                              </TableCell>
-                              {actions.map((action) => (
-                                <TableCell component="td" scope="row" key={action} sx={{ py: 0 }}>
-                                  <PermissionToggleButton
-                                    roleId={id}
-                                    permissions={permissions}
-                                    mutate={mutate}
-                                    model={model}
-                                    action={action}
-                                  />
-                                </TableCell>
-                              ))}
-                            </TableRow>
-                          );
-                        })}
-                      </>
-                    ) : (
-                      <EmptyTable msg={t('no_roles')} colSpan={12} />
-                    )}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            )}
-          </MainCard>
-        </Grid>
-      </Grid>
       <Grid container spacing={2.5}>
         <Grid xs={12} lg={8}>
           <MainCard>
@@ -175,23 +81,6 @@ const EditRolePageImpl: React.FC = () => {
                       )}
                     />
                     <FormHelperText error>{errors.name?.message}</FormHelperText>
-                  </Stack>
-                </Grid>
-                <Grid xs={12} sm={6}>
-                  <Stack spacing={1}>
-                    <InputLabel>{t('admin_access')}</InputLabel>
-                    <Controller
-                      name="adminAccess"
-                      control={control}
-                      render={({ field }) => (
-                        <FormControlLabel
-                          {...field}
-                          label={t('is_active')}
-                          control={<Checkbox checked={field.value} />}
-                        />
-                      )}
-                    />
-                    <FormHelperText error>{errors.adminAccess?.message}</FormHelperText>
                   </Stack>
                 </Grid>
                 <Grid xs={12}>

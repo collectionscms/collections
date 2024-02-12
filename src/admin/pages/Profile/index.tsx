@@ -1,5 +1,4 @@
 import { SyncOutlined } from '@ant-design/icons';
-import { IconButton, MainCard } from '@collectionscms/plugin-ui';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Button,
@@ -23,7 +22,10 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { v4 as uuidv4 } from 'uuid';
 import { logger } from '../../../utilities/logger.js';
+import { IconButton } from '../../@extended/components/IconButton/index.js';
+import { MainCard } from '../../@extended/components/MainCard/index.js';
 import { ConfirmDiscardDialog } from '../../components/elements/ConfirmDiscardDialog/index.js';
+import { Loader } from '../../components/elements/Loader/index.js';
 import { useAuth } from '../../components/utilities/Auth/index.js';
 import { useColorMode } from '../../components/utilities/ColorMode/index.js';
 import { Mode } from '../../components/utilities/ColorMode/types.js';
@@ -33,14 +35,16 @@ import {
   updateUser as updateUserSchema,
 } from '../../fields/schemas/profile/updateUser.js';
 import { useUnsavedChangesPrompt } from '../../hooks/useUnsavedChangesPrompt.js';
+import lazy from '../../utilities/lazy.js';
 import { ProfileContextProvider, useProfile } from './Context/index.js';
+
+const Loading = Loader(lazy(() => import('../../components/elements/Loading/index.js'), 'Loading'));
 
 const ProfilePageImpl: React.FC = () => {
   const { t, i18n } = useTranslation();
   const { mode, setMode, autoMode } = useColorMode();
-  const { updateApiKey } = useAuth();
-  const { getMe, updateMe } = useProfile();
-  const { data: me } = getMe();
+  const { me } = useAuth();
+  const { updateMe } = useProfile();
   const { trigger, isMutating } = updateMe();
 
   const {
@@ -51,8 +55,8 @@ const ProfilePageImpl: React.FC = () => {
     formState: { isDirty, errors },
   } = useForm<FormValues>({
     defaultValues: {
-      name: me.user?.name,
-      email: me.email,
+      name: me?.name,
+      email: me?.email,
       password: '',
       apiKey: '',
     },
@@ -76,11 +80,13 @@ const ProfilePageImpl: React.FC = () => {
       reset(form);
       await trigger(form);
       enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
-      if (form.apiKey) updateApiKey(form.apiKey);
+      // if (form.apiKey) updateApiKey(form.apiKey);
     } catch (e) {
       logger.error(e);
     }
   };
+
+  if (!me) return <Loading />;
 
   return (
     <>

@@ -1,14 +1,13 @@
 import inquirer from 'inquirer';
-import { Credentials } from 'nodemailer/lib/smtp-connection';
-import path from 'path';
-import { DBClient } from '../../api/database/connection.js';
 
-const filename = ({ filepath }: { filepath: string }): Record<string, string> => ({
-  type: 'input',
-  name: 'filename',
-  message: 'Database File Path:',
-  default: path.join(filepath, 'data.db'),
-});
+export type Credentials = {
+  host: string;
+  port: number;
+  database: string;
+  user: string;
+  password: string;
+  ssl: boolean;
+};
 
 const host = (): Record<string, string> => ({
   type: 'input',
@@ -58,19 +57,12 @@ const ssl = (): Record<string, string | boolean> => ({
   default: false,
 });
 
-const questions = {
-  sqlite3: [filename],
-  mysql: [host, port, database, user, password],
-  pg: [host, port, database, user, password, ssl],
-};
+const questions = [host, port, database, user, password, ssl];
 
-export const makeCredentials = async (
-  dbClient: DBClient,
-  projectDir: string
-): Promise<Credentials> => {
+export const makeCredentials = async (projectDir: string): Promise<Credentials> => {
   const credentials: Credentials = await inquirer.prompt(
-    (questions[dbClient] as any[]).map((question: ({ client, filepath }: any) => any) =>
-      question({ client: dbClient, filepath: projectDir })
+    questions.map((question: ({ client, filepath }: any) => any) =>
+      question({ client: 'pg', filepath: projectDir })
     )
   );
 

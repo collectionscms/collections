@@ -11,7 +11,7 @@ export const NavItem: React.FC<Props> = ({ item }) => {
   const Icon = icon;
 
   const textColor = theme.palette.mode === 'dark' ? 'grey.400' : 'text.primary';
-  const iconSelectedColor = theme.palette.mode === 'dark' ? 'text.primary' : 'primary.main';
+  const iconSelectedColor = theme.palette.mode === 'dark' ? 'text.primary' : 'secondary.main';
 
   return (
     <ListItemButton
@@ -21,15 +21,15 @@ export const NavItem: React.FC<Props> = ({ item }) => {
         minWidth: 28,
         pl: 3,
         '&:hover': {
-          bgcolor: theme.palette.mode === 'dark' ? 'divider' : 'primary.lighter',
+          bgcolor: theme.palette.mode === 'dark' ? 'divider' : 'secondary.lighter',
         },
         '&.Mui-selected': {
-          bgcolor: theme.palette.mode === 'dark' ? 'divider' : 'primary.lighter',
-          borderRight: `2px solid ${theme.palette.primary.main}`,
+          bgcolor: theme.palette.mode === 'dark' ? 'divider' : 'secondary.lighter',
+          borderRight: `2px solid ${theme.palette.text.primary}`,
           color: iconSelectedColor,
           '&:hover': {
             color: iconSelectedColor,
-            bgcolor: theme.palette.mode === 'dark' ? 'divider' : 'primary.lighter',
+            bgcolor: theme.palette.mode === 'dark' ? 'divider' : 'secondary.lighter',
           },
         },
         '&:not(.Mui-selected)': {

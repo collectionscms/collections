@@ -14,8 +14,8 @@ import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { MainCard } from '@collectionscms/plugin-ui';
 import { logger } from '../../../../utilities/logger.js';
+import { MainCard } from '../../../@extended/components/MainCard/index.js';
 import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscardDialog/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
 import {
@@ -40,7 +40,6 @@ const CreateRolePageImpl: React.FC = () => {
     defaultValues: {
       name: '',
       description: '',
-      adminAccess: false,
     },
     resolver: yupResolver(createRoleSchema()),
   });
@@ -53,9 +52,9 @@ const CreateRolePageImpl: React.FC = () => {
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
       reset(form);
-      const roleId = await trigger(form);
+      await trigger(form);
       enqueueSnackbar(t('toast.created_successfully'), { variant: 'success' });
-      navigate(`../roles/${roleId}`);
+      navigate(`../roles`);
     } catch (error) {
       logger.error(error);
     }
@@ -85,23 +84,6 @@ const CreateRolePageImpl: React.FC = () => {
                       )}
                     />
                     <FormHelperText error>{errors.name?.message}</FormHelperText>
-                  </Stack>
-                </Grid>
-                <Grid xs={12} sm={6}>
-                  <Stack spacing={1}>
-                    <InputLabel>{t('admin_access')}</InputLabel>
-                    <Controller
-                      name="adminAccess"
-                      control={control}
-                      render={({ field }) => (
-                        <FormControlLabel
-                          {...field}
-                          label={t('is_active')}
-                          control={<Checkbox checked={field.value} />}
-                        />
-                      )}
-                    />
-                    <FormHelperText error>{errors.adminAccess?.message}</FormHelperText>
                   </Stack>
                 </Grid>
                 <Grid xs={12}>

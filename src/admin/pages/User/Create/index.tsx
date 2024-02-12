@@ -19,17 +19,18 @@ import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { IconButton, MainCard } from '@collectionscms/plugin-ui';
 import { v4 as uuidv4 } from 'uuid';
 import { logger } from '../../../../utilities/logger.js';
+import { IconButton } from '../../../@extended/components/IconButton/index.js';
+import { MainCard } from '../../../@extended/components/MainCard/index.js';
+import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscardDialog/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
 import {
   FormValues,
   createUser as createUserSchema,
 } from '../../../fields/schemas/users/createUser.js';
-import { UserContextProvider, useUser } from '../Context/index.js';
 import { useUnsavedChangesPrompt } from '../../../hooks/useUnsavedChangesPrompt.js';
-import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscardDialog/index.js';
+import { UserContextProvider, useUser } from '../Context/index.js';
 
 const CreateUserPageImpl: React.FC = () => {
   const { t } = useTranslation();
