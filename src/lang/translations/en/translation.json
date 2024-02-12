@@ -121,6 +121,9 @@
   "leaving_feedback": "Leaving Feedback",
   "feedback_google_form": "https://docs.google.com/forms/d/e/1FAIpQLSf_-GobuuYmEiUvtED93RqVEb_nempT4x3f2ueO3C77f3mluQ/viewform?usp=sf_link",
   "posts": "Posts",
+  "title": "Title",
+  "published_at": "Published At",
+  "author": "Author",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion.",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",

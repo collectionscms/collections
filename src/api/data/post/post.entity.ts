@@ -1,5 +1,6 @@
 import { Content, Post } from '@prisma/client';
 import { ContentEntity } from '../content/content.entity.js';
+import { UserEntity } from '../user/user.entity.js';
 
 export class PostEntity {
   private readonly post: Post;
@@ -23,9 +24,10 @@ export class PostEntity {
     return this.copyProps();
   }
 
-  toLocalize(
+  toResponse(
     locale: string,
-    contents: ContentEntity[]
+    contents: ContentEntity[],
+    createdBy: UserEntity
   ): {
     id: string;
     slug: string;
@@ -37,10 +39,12 @@ export class PostEntity {
     body: string;
     bodyJson: string;
     bodyHtml: string;
-    locale: string;
+    locales: string[];
+    authorName: string;
     contents: Content[];
   } {
     const localizedContent = contents.find((content) => content.isSameLocaleContent(locale));
+    const locales = contents.map((content) => content.locale());
 
     return {
       id: this.post.id,
@@ -53,7 +57,8 @@ export class PostEntity {
       body: localizedContent?.body() ?? '',
       bodyJson: localizedContent?.bodyJson() ?? '',
       bodyHtml: localizedContent?.bodyHtml() ?? '',
-      locale: localizedContent?.locale() ?? '',
+      locales,
+      authorName: createdBy.name(),
       contents: contents.map((content) => content.toPersistence()),
     };
   }

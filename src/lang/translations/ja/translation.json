@@ -121,6 +121,9 @@
   "leaving_feedback": "フィードバックする",
   "feedback_google_form": "https://docs.google.com/forms/d/e/1FAIpQLSfn-ubYtGufApDMPMCzYyNKj4rLoJD79qJ-1OWpqERVB9oikA/viewform?usp=sf_link",
   "posts": "記事",
+  "title": "タイトル",
+  "published_at": "公開日時",
+  "author": "作成者",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",

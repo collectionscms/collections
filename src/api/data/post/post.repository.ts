@@ -1,15 +1,14 @@
-import { LocalizedPost } from '../../../types/index.js';
 import { PrismaType } from '../../database/prisma/client.js';
 import { ContentEntity } from '../content/content.entity.js';
+import { UserEntity } from '../user/user.entity.js';
 import { PostEntity } from './post.entity.js';
 
 export class PostRepository {
-  async findLocalizedPosts(
+  async findManyByProjectId(
     prisma: PrismaType,
-    projectId: string,
-    locale: string
-  ): Promise<LocalizedPost[]> {
-    const posts = await prisma.post.findMany({
+    projectId: string
+  ): Promise<{ post: PostEntity; contents: ContentEntity[]; createdBy: UserEntity }[]> {
+    const records = await prisma.post.findMany({
       where: {
         projectId,
       },
@@ -26,13 +25,15 @@ export class PostRepository {
       },
     });
 
-    return posts.map((post) => {
-      const postEntity = PostEntity.Reconstruct(post);
-      const contentEntities = post.contents.map((content) => ContentEntity.Reconstruct(content));
+    return records.map((record) => {
+      const post = PostEntity.Reconstruct(record);
+      const contents = record.contents.map((content) => ContentEntity.Reconstruct(content));
+      const createdBy = UserEntity.Reconstruct(record.createdBy);
 
       return {
-        ...postEntity.toLocalize(locale, contentEntities),
-        authorName: post.createdBy.name,
+        post,
+        contents,
+        createdBy,
       };
     });
   }

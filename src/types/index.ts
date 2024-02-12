@@ -37,7 +37,7 @@ export type LocalizedPost = {
   body: string;
   bodyJson: string;
   bodyHtml: string;
-  locale: string;
+  locales: string[];
   authorName: string;
   contents: Content[];
 };
