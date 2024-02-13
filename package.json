@@ -143,6 +143,7 @@
     "eslint-plugin-import": "2.29.1",
     "eslint-plugin-jest": "27.6.0",
     "eslint-plugin-react": "7.33.2",
+    "faker": "^6.6.6",
     "husky": "8.0.3",
     "jest": "29.7.0",
     "prettier": "3.0.2",
