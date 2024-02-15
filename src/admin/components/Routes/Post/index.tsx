@@ -7,7 +7,7 @@ const EditPost = Loader(lazy(() => import('../../../pages/Post/Edit/index.js'), 
 
 export const PostRoutes = () => {
   return {
-    path: '/admin/posts/:slug',
+    path: '/admin/posts/:id',
     element: <EditorLayout />,
     children: [
       {

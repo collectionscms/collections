@@ -31,7 +31,7 @@ export const PostPageImpl: React.FC = () => {
 
     switch (fields[i].field) {
       case 'title':
-        return <Link href={`${row.slug}`}>{defaultCell}</Link>;
+        return <Link href={`${row.id}`}>{defaultCell}</Link>;
       default:
         return defaultCell;
     }
