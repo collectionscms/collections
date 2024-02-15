@@ -37,4 +37,36 @@ export class PostRepository {
       };
     });
   }
+
+  async findOneById(
+    prisma: PrismaType,
+    id: string
+  ): Promise<{ post: PostEntity; contents: ContentEntity[]; createdBy: UserEntity }> {
+    const record = await prisma.post.findFirstOrThrow({
+      where: {
+        id,
+      },
+      include: {
+        contents: {
+          orderBy: {
+            publishedAt: 'desc',
+          },
+        },
+        createdBy: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+    const post = PostEntity.Reconstruct(record);
+    const contents = record.contents.map((content) => ContentEntity.Reconstruct(content));
+    const createdBy = UserEntity.Reconstruct(record.createdBy);
+
+    return {
+      post,
+      contents,
+      createdBy,
+    };
+  }
 }

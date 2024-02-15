@@ -25,4 +25,21 @@ router.get(
   })
 );
 
+router.get(
+  '/posts/:id',
+  authenticatedUser,
+  asyncHandler(async (req: Request, res: Response) => {
+    const locale = req.headers['accept-language'] || env.DEFAULT_LOCALE;
+    const id = req.params.id;
+
+    const repository = new PostRepository();
+    const record = await repository.findOneById(prisma, id);
+    const post = record.post.toResponse(locale, record.contents, record.createdBy);
+
+    res.json({
+      post,
+    });
+  })
+);
+
 export const post = router;
