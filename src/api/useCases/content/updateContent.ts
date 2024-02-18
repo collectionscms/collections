@@ -30,6 +30,7 @@ export class UpdateContentUseCase {
       if (post.status() === 'init') {
         await this.postRepository.update(
           tx,
+          projectId,
           PostEntity.Reconstruct({ ...post.toPersistence(), status: 'draft' })
         );
         await this.postHistoryRepository.create(

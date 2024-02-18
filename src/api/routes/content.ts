@@ -15,7 +15,6 @@ router.patch(
   '/contents/:id',
   authenticatedUser,
   asyncHandler(async (req: Request, res: Response) => {
-    const locale = req.headers['accept-language'] || env.DEFAULT_LOCALE;
     const id = req.params.id;
     const projectId = req.res?.user.projects[0].id;
 

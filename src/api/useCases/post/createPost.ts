@@ -26,7 +26,7 @@ export class CreatePostUseCase {
     userId: string,
     locale: string
   ): Promise<CreatePostUseCaseResponse> {
-    let record = await this.postRepository.findInit(this.prisma, projectId, userId);
+    let record = await this.postRepository.findInitByUserId(this.prisma, projectId, userId);
     if (!record) {
       const { post, content } = PostEntity.Construct({
         projectId,

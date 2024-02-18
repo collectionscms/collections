@@ -56,7 +56,7 @@ export class PostRepository {
     const record = await prisma.post.findFirstOrThrow({
       where: {
         id,
-        projectId: projectId,
+        projectId,
       },
       include: {
         contents: true,
@@ -78,7 +78,7 @@ export class PostRepository {
     };
   }
 
-  async findInit(
+  async findInitByUserId(
     prisma: PrismaType,
     projectId: string,
     userId: string
@@ -125,10 +125,11 @@ export class PostRepository {
     };
   }
 
-  async update(prisma: PrismaType, postEntity: PostEntity): Promise<PostEntity> {
+  async update(prisma: PrismaType, projectId: string, postEntity: PostEntity): Promise<PostEntity> {
     const record = await prisma.post.update({
       where: {
         id: postEntity.id(),
+        projectId,
       },
       data: postEntity.toPersistence(),
     });

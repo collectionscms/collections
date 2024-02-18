@@ -22,7 +22,7 @@ export class UpdatePostUseCase {
     });
 
     const result = await this.prisma.$transaction(async (tx) => {
-      const result = await this.postRepository.update(tx, entity);
+      const result = await this.postRepository.update(tx, projectId, entity);
       await this.postHistoryRepository.create(
         tx,
         PostHistoryEntity.Construct({
