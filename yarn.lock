@@ -38,10 +38,10 @@
     classnames "^2.2.6"
     rc-util "^5.31.1"
 
-"@auth/core@0.21.0":
-  version "0.21.0"
-  resolved "https://registry.yarnpkg.com/@auth/core/-/core-0.21.0.tgz#c1877afc9ffe1058b013216f02dde910b6921076"
-  integrity sha512-jUWYs8gjy2GvtP9dd/4S9KcwZ660Cm/IkybiAq96/2Ooku9SKk5SUG+UTEwkyLuaQ38ZgfwggfpDOgzsXEcufA==
+"@auth/core@0.25.0":
+  version "0.25.0"
+  resolved "https://registry.yarnpkg.com/@auth/core/-/core-0.25.0.tgz#8bdccebdce669fc49d200fc27ba6d4cbe3c52232"
+  integrity sha512-UxENsD+WNlY1NOFsr3Ygc7F1Ypbia8VCd9NU8cbAhSJ0Z8dtyZ0xmssRo1G3ZW50QnW0AaAMuYzY5oumnPMQzA==
   dependencies:
     "@panva/hkdf" "^1.1.1"
     "@types/cookie" "0.6.0"
@@ -51,12 +51,12 @@
     preact "10.11.3"
     preact-render-to-string "5.2.3"
 
-"@auth/express@0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@auth/express/-/express-0.2.0.tgz#d1667556f9d52d7fa8e9709ea1c8ed172521853b"
-  integrity sha512-zKzrhRvmjDYkiwzyayPGWP1WQCO+7i8las3SnDaH7OpI3oAm523enpzHOBWvkze1t+tfqmdHwb2rrqn/LunzvA==
+"@auth/express@0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@auth/express/-/express-0.5.0.tgz#00b124584e7c68cf02dd476111fe41d4ef377d79"
+  integrity sha512-zNE5fkhkO6HgYCZC/rhLT1kEiis3EzN/nEcagbeWx836UA7O6eDPQJFlr08P32mzNHDkunzIRdFn6e/IFlVV0g==
   dependencies:
-    "@auth/core" "0.21.0"
+    "@auth/core" "0.25.0"
 
 "@aws-crypto/crc32@3.0.0":
   version "3.0.0"
