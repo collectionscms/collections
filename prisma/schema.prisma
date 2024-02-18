@@ -125,7 +125,7 @@ model PostHistory {
   id          String   @id @default(uuid()) @db.Uuid
   postId      String   @db.Uuid
   createdById String   @db.Uuid
-  action      String   @db.VarChar(255)
+  status      String   @db.VarChar(255)
   version     Int      @default(0)
   createdAt   DateTime @default(now()) @db.Timestamptz(6)
   post        Post     @relation(fields: [postId], references: [id], onDelete: Cascade)

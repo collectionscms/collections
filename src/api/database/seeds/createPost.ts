@@ -48,7 +48,7 @@ export const createPost = async (options?: {
         create: {
           id: v4(),
           createdById: options?.createdById ?? adminUser,
-          action: 'created',
+          status: options?.status ?? 'published',
           version: options?.version ?? 0,
           createdAt: currentTime,
         },

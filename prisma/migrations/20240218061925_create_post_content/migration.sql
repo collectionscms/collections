@@ -19,7 +19,7 @@ CREATE TABLE "PostHistory" (
     "id" UUID NOT NULL,
     "postId" UUID NOT NULL,
     "createdById" UUID NOT NULL,
-    "action" VARCHAR(255) NOT NULL,
+    "status" VARCHAR(255) NOT NULL,
     "version" INTEGER NOT NULL DEFAULT 0,
     "createdAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
