@@ -63,7 +63,8 @@ router.post(
     }
 
     const useCase = new CreatePostUseCase(prisma, new PostRepository(), new ContentRepository());
-    const post = await useCase.execute(projectId, userId, locale);
+    const result = await useCase.execute(projectId, userId, locale);
+    const post = result.post.toResponse(locale, result.contents, result.createdBy);
 
     res.json({
       post,

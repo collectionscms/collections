@@ -1,8 +1,15 @@
 import { PrismaClient } from '@prisma/client';
-import { LocalizedPost } from '../../../types/index.js';
+import { ContentEntity } from '../../data/content/content.entity.js';
 import { ContentRepository } from '../../data/content/content.repository.js';
 import { PostEntity } from '../../data/post/post.entity.js';
 import { PostRepository } from '../../data/post/post.repository.js';
+import { UserEntity } from '../../data/user/user.entity.js';
+
+type CreatePostUseCaseResponse = {
+  post: PostEntity;
+  contents: ContentEntity[];
+  createdBy: UserEntity;
+};
 
 export class CreatePostUseCase {
   constructor(
@@ -11,7 +18,11 @@ export class CreatePostUseCase {
     private readonly contentRepository: ContentRepository
   ) {}
 
-  async execute(projectId: string, userId: string, locale: string): Promise<LocalizedPost> {
+  async execute(
+    projectId: string,
+    userId: string,
+    locale: string
+  ): Promise<CreatePostUseCaseResponse> {
     let record = await this.postRepository.findInit(this.prisma, projectId, userId);
     if (!record) {
       const { post, content } = PostEntity.Construct({
@@ -32,6 +43,6 @@ export class CreatePostUseCase {
       });
     }
 
-    return record.post.toResponse(locale, record.contents, record.createdBy);
+    return record;
   }
 }
