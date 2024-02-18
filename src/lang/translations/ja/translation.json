@@ -121,6 +121,20 @@
   "leaving_feedback": "フィードバックする",
   "feedback_google_form": "https://docs.google.com/forms/d/e/1FAIpQLSfn-ubYtGufApDMPMCzYyNKj4rLoJD79qJ-1OWpqERVB9oikA/viewform?usp=sf_link",
   "posts": "記事",
+  "title": "タイトル",
+  "published_at": "公開日時",
+  "author": "作成者",
+  "publish_settings": "公開設定",
+  "temporary_save": "一時保存",
+  "draft_save": "下書き保存",
+  "publish": "公開",
+  "review": "レビュー",
+  "publishing": "公開する",
+  "updating": "更新する",
+  "publish_for_review": "レビューにだす",
+  "write_the_text": "本文を書く",
+  "characters": "文字",
+  "saved": "保存しました",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",
@@ -208,9 +222,9 @@
     "file_does_not_exist": "ファイルが存在しません。",
     "token_expired": "トークンの有効期限が切れました。",
     "invalid_token": "無効なトークンです。",
-    "invalid_query": "無効なクエリーです。",
     "invalid_date_format": "無効な日付フォーマットです",
-    "unsupported_media_type": "サポートされていないメディア形式です。"
+    "unsupported_media_type": "サポートされていないメディア形式です。",
+    "bad_request": "リクエストの内容が正しくありません。"
   },
   "yup": {
     "mixed": {

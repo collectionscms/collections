@@ -30,9 +30,9 @@ export const Cell: React.FC<Props> = (props) => {
       case 'object':
         return truncate(JSON.stringify(cellData));
       case 'array':
-        const data = cellData as Partial<{ id: number }>[];
-        const ids = data.map((item) => item.id).join(', ');
-        return ids ? '[' + ids + ']' : '';
+        const data = cellData as Partial<{ id: string }>[];
+        const ids = data.map((item) => item).join(', ');
+        return ids;
       default:
         return '';
     }

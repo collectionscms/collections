@@ -121,6 +121,20 @@
   "leaving_feedback": "Leaving Feedback",
   "feedback_google_form": "https://docs.google.com/forms/d/e/1FAIpQLSf_-GobuuYmEiUvtED93RqVEb_nempT4x3f2ueO3C77f3mluQ/viewform?usp=sf_link",
   "posts": "Posts",
+  "title": "Title",
+  "published_at": "Published At",
+  "author": "Author",
+  "publish_settings": "Publish Settings",
+  "temporary_save": "Temporary Save",
+  "draft_save": "Draft Save",
+  "publish": "Publish",
+  "review": "Review",
+  "publishing": "Publish",
+  "updating": "Update",
+  "publish_for_review": "Publish for Review",
+  "write_the_text": "Write the text",
+  "characters": "characters",
+  "saved": "Saved",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion.",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",
@@ -208,9 +222,9 @@
     "file_does_not_exist": "File does not exist.",
     "token_expired": "Token expired.",
     "invalid_token": "Invalid token.",
-    "invalid_query": "Invalid query.",
     "invalid_date_format": "Invalid date format.",
-    "unsupported_media_type": "Unsupported media type."
+    "unsupported_media_type": "Unsupported media type.",
+    "bad_request": "Request is incorrect."
   },
   "yup": {
     "mixed": {

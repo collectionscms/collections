@@ -1,6 +1,7 @@
 import { Role } from '@prisma/client';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { MainCard } from '../../@extended/components/MainCard/index.js';
 import { CreateNewButton } from '../../components/elements/CreateNewButton/index.js';
 import { Link } from '../../components/elements/Link/index.js';
@@ -13,6 +14,7 @@ import { RoleContextProvider, useRole } from './Context/index.js';
 
 const RolePageImpl: React.FC = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const { getRoles } = useRole();
   const { data } = getRoles();
 
@@ -28,7 +30,11 @@ const RolePageImpl: React.FC = () => {
   });
 
   return (
-    <MainCard content={false} title={<></>} secondary={<CreateNewButton to="create" />}>
+    <MainCard
+      content={false}
+      title={<></>}
+      secondary={<CreateNewButton onClick={() => navigate('create')} />}
+    >
       <Table columns={columns} rows={data} />
     </MainCard>
   );
