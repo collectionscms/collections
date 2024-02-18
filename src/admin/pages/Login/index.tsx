@@ -35,7 +35,7 @@ export const Login: React.FC = () => {
     setValue,
     formState: { errors },
   } = useForm<FormValues>({
-    defaultValues: { email: '', password: '', csrfToken: '' },
+    defaultValues: { email: 'admin@collections.dev', password: 'password', csrfToken: '' },
     resolver: yupResolver(loginSchema),
   });
 
