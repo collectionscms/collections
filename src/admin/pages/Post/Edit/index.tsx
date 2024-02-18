@@ -1,0 +1,187 @@
+import { Box, Container, Stack, TextField, Toolbar, Typography } from '@mui/material';
+import { Extension } from '@tiptap/core';
+import CharacterCount from '@tiptap/extension-character-count';
+import Placeholder from '@tiptap/extension-placeholder';
+import { Underline } from '@tiptap/extension-underline';
+import { useEditor } from '@tiptap/react';
+import { StarterKit } from '@tiptap/starter-kit';
+import { t } from 'i18next';
+import { enqueueSnackbar } from 'notistack';
+import React, { useState } from 'react';
+import { useHotkeys } from 'react-hotkeys-hook';
+import { useParams } from 'react-router-dom';
+import { logger } from '../../../../utilities/logger.js';
+import { EditorHeader } from '../../../components/elements/EditorHeader/index.js';
+import { WYSIWYG } from '../../../components/elements/WYSIWYG/index.js';
+import { useColorMode } from '../../../components/utilities/ColorMode/index.js';
+import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
+import { PostContextProvider, usePost } from '../Context/index.js';
+import { PublishSetting } from '../PublishSetting/index.js';
+
+export const EditPostPageImpl: React.FC = () => {
+  const { id } = useParams();
+  if (!id) throw new Error('id is not defined');
+
+  useHotkeys('Meta+s', async () => ref.current?.click(), [], {
+    preventDefault: true,
+    enableOnFormTags: ['INPUT'],
+  });
+
+  const ref = React.useRef<HTMLButtonElement>(null);
+
+  const { mode } = useColorMode();
+  let bg = '';
+  if (mode === 'light') {
+    bg = '#fff';
+  } else {
+    bg = '#1e1e1e';
+  }
+
+  const { getPost, updateContent } = usePost();
+  const { data: post, mutate } = getPost(id);
+  const { trigger } = updateContent(post.contents[0].id);
+
+  const [openSettings, setOpenSettings] = useState(false);
+  const handleOpenSettings = async () => {
+    try {
+      await handleSaveContent(false);
+      mutate();
+      setOpenSettings(true);
+    } catch (error) {
+      logger.error(error);
+    }
+  };
+
+  const handleSaveContent = async (showSnackbar: boolean = true) => {
+    try {
+      const body = editor?.getText();
+      const bodyJson = editor?.getJSON();
+      const bodyHtml = editor?.getHTML();
+
+      await trigger({
+        title: title,
+        body,
+        bodyJson: JSON.stringify(bodyJson),
+        bodyHtml,
+      });
+      mutate();
+
+      if (showSnackbar) {
+        enqueueSnackbar(t('saved'), { variant: 'success' });
+      }
+    } catch (error) {
+      logger.error(error);
+    }
+  };
+
+  const toJson = (value?: string | null) => {
+    return value ? JSON.parse(value) : '';
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.nativeEvent.isComposing || e.key !== 'Enter') return;
+    e.preventDefault();
+    editor?.commands.focus();
+  };
+
+  // /////////////////////////////////////
+  // Editor
+  // /////////////////////////////////////
+  const [title, setTitle] = useState(post.title);
+
+  const extensions = [
+    StarterKit.configure({
+      heading: {
+        levels: [2, 3],
+        HTMLAttributes: {
+          class: 'heading',
+        },
+      },
+    }),
+    Underline,
+    CharacterCount,
+    Placeholder.configure({ placeholder: t('write_the_text') }),
+    Extension.create({
+      addKeyboardShortcuts() {
+        return {
+          'Mod-s': () => {
+            ref.current?.click();
+            return true;
+          },
+        };
+      },
+    }),
+  ];
+
+  const editor = useEditor({
+    extensions,
+    content: toJson(post.bodyJson),
+  });
+
+  return (
+    <>
+      <EditorHeader
+        post={post}
+        buttonRef={ref}
+        onOpenSettings={handleOpenSettings}
+        onDraftSave={handleSaveContent}
+      />
+      <Box component="main" sx={{ minHeight: '100vh', backgroundColor: bg }}>
+        <Toolbar sx={{ mt: 0 }} />
+        <Container maxWidth="sm">
+          <Box sx={{ p: 10 }}>
+            <Stack spacing={1} sx={{ mb: 8 }}>
+              <TextField
+                type="text"
+                fullWidth
+                placeholder={t('title')}
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                sx={{
+                  '.MuiOutlinedInput-notchedOutline': {
+                    border: 'none !important',
+                  },
+                  '.Mui-focused': {
+                    boxShadow: 'none !important',
+                  },
+                  '& fieldset': { border: 'none' },
+                  p: 0,
+                }}
+                inputProps={{
+                  style: {
+                    padding: 0,
+                    fontSize: '20px',
+                  },
+                }}
+                onKeyDown={handleKeyDown}
+              />
+            </Stack>
+            <WYSIWYG editor={editor} />
+          </Box>
+        </Container>
+        <Box
+          display="flex"
+          justifyContent="flex-end"
+          alignItems="center"
+          sx={{
+            width: '100%',
+            position: 'fixed',
+            bottom: 0,
+            p: 4,
+          }}
+        >
+          <Typography color="secondary">
+            {editor && (
+              <>
+                {editor.storage.characterCount.characters()} {t('characters')}
+              </>
+            )}
+          </Typography>
+        </Box>
+      </Box>
+      <PublishSetting open={openSettings} post={post} onClose={() => setOpenSettings(false)} />
+    </>
+  );
+};
+
+export const EditPostPage = ComposeWrapper({ context: PostContextProvider })(EditPostPageImpl);

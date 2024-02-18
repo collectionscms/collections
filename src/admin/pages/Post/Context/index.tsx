@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWR, { SWRResponse } from 'swr';
+import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
 import { LocalizedPost } from '../../../../types/index.js';
 import { api } from '../../../utilities/api.js';
 
@@ -11,6 +12,16 @@ type PostContext = {
       suspense: true;
     }
   >;
+  getPost: (id: string) => SWRResponse<
+    LocalizedPost,
+    Error,
+    {
+      suspense: true;
+    }
+  >;
+  createPost: () => SWRMutationResponse<LocalizedPost, any, string>;
+  updatePost: (id: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
+  updateContent: (id: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
 };
 
 const Context = createContext({} as PostContext);
@@ -25,11 +36,42 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       }
     );
 
+  const getPost = (id: string) =>
+    useSWR(
+      `/posts/${id}`,
+      (url) => api.get<{ post: LocalizedPost }>(url).then((res) => res.data.post),
+      {
+        suspense: true,
+      }
+    );
+
+  const createPost = () =>
+    useSWRMutation('/posts', async (url: string) => {
+      return api.post<{ post: LocalizedPost }>(url).then((res) => res.data.post);
+    });
+
+  const updatePost = (id: string) =>
+    useSWRMutation(`/posts/${id}`, async (url: string, { arg }: { arg: Record<string, any> }) => {
+      return api.patch(url, arg).then((res) => res.data);
+    });
+
+  const updateContent = (id: string) =>
+    useSWRMutation(
+      `/contents/${id}`,
+      async (url: string, { arg }: { arg: Record<string, any> }) => {
+        return api.patch(url, arg).then((res) => res.data);
+      }
+    );
+
   const value = useMemo(
     () => ({
       getPosts,
+      getPost,
+      createPost,
+      updatePost,
+      updateContent,
     }),
-    [getPosts]
+    [getPosts, getPost, createPost, updatePost, updateContent]
   );
 
   return <Context.Provider value={value}>{children}</Context.Provider>;
