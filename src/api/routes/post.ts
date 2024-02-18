@@ -8,6 +8,7 @@ import { prisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
 import { authenticatedUser } from '../middleware/auth.js';
 import { CreatePostUseCase } from '../useCases/post/createPost.js';
+import { DeletePostUseCase } from '../useCases/post/deletePost.js';
 import { UpdatePostUseCase } from '../useCases/post/updatePost.js';
 
 const router = express.Router();
@@ -96,6 +97,24 @@ router.patch(
       new PostHistoryRepository()
     );
     await useCase.execute(projectId, id, req.body);
+
+    res.status(204).send();
+  })
+);
+
+router.delete(
+  '/posts/:id',
+  authenticatedUser,
+  asyncHandler(async (req: Request, res: Response) => {
+    const projectId = req.res?.user.projects[0].id;
+    const id = req.params.id;
+
+    if (!projectId || !id) {
+      throw new InvalidQueryException();
+    }
+
+    const useCase = new DeletePostUseCase(prisma, new PostRepository());
+    await useCase.execute(projectId, id);
 
     res.status(204).send();
   })

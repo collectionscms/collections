@@ -126,13 +126,22 @@ export class PostRepository {
   }
 
   async update(prisma: PrismaType, postEntity: PostEntity): Promise<PostEntity> {
-    console.log('更新する', postEntity.toPersistence());
-
     const record = await prisma.post.update({
       where: {
         id: postEntity.id(),
       },
       data: postEntity.toPersistence(),
+    });
+
+    return PostEntity.Reconstruct(record);
+  }
+
+  async delete(prisma: PrismaType, projectId: string, id: string): Promise<PostEntity> {
+    const record = await prisma.post.delete({
+      where: {
+        id,
+        projectId,
+      },
     });
 
     return PostEntity.Reconstruct(record);
