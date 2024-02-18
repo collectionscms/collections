@@ -222,9 +222,9 @@
     "file_does_not_exist": "File does not exist.",
     "token_expired": "Token expired.",
     "invalid_token": "Invalid token.",
-    "invalid_query": "Invalid query.",
     "invalid_date_format": "Invalid date format.",
-    "unsupported_media_type": "Unsupported media type."
+    "unsupported_media_type": "Unsupported media type.",
+    "bad_request": "Request is incorrect."
   },
   "yup": {
     "mixed": {

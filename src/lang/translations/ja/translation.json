@@ -222,9 +222,9 @@
     "file_does_not_exist": "ファイルが存在しません。",
     "token_expired": "トークンの有効期限が切れました。",
     "invalid_token": "無効なトークンです。",
-    "invalid_query": "無効なクエリーです。",
     "invalid_date_format": "無効な日付フォーマットです",
-    "unsupported_media_type": "サポートされていないメディア形式です。"
+    "unsupported_media_type": "サポートされていないメディア形式です。",
+    "bad_request": "リクエストの内容が正しくありません。"
   },
   "yup": {
     "mixed": {

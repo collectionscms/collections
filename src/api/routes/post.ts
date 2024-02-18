@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import { env } from '../../env.js';
-import { InvalidQueryException } from '../../exceptions/invalidQuery.js';
+import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
 import { ContentRepository } from '../data/content/content.repository.js';
 import { PostRepository } from '../data/post/post.repository.js';
 import { PostHistoryRepository } from '../data/postHistory/postHistory.repository.js';
@@ -10,6 +10,7 @@ import { authenticatedUser } from '../middleware/auth.js';
 import { CreatePostUseCase } from '../useCases/post/createPost.js';
 import { DeletePostUseCase } from '../useCases/post/deletePost.js';
 import { UpdatePostUseCase } from '../useCases/post/updatePost.js';
+import { updatePostUseCaseSchema } from '../useCases/post/updatePost.schema.js';
 
 const router = express.Router();
 
@@ -40,7 +41,7 @@ router.get(
     const projectId = req.res?.user.projects[0].id;
 
     if (!projectId || !id) {
-      throw new InvalidQueryException();
+      throw new InvalidPayloadException('bad_request');
     }
 
     const repository = new PostRepository();
@@ -62,7 +63,7 @@ router.post(
     const userId = req.res?.user.id;
 
     if (!projectId || !userId) {
-      throw new InvalidQueryException();
+      throw new InvalidPayloadException('bad_request');
     }
 
     const useCase = new CreatePostUseCase(
@@ -87,16 +88,19 @@ router.patch(
     const projectId = req.res?.user.projects[0].id;
     const id = req.params.id;
 
-    if (!projectId || !id) {
-      throw new InvalidQueryException();
-    }
+    const validated = updatePostUseCaseSchema.safeParse({
+      id,
+      projectId,
+      ...req.body,
+    });
+    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
     const useCase = new UpdatePostUseCase(
       prisma,
       new PostRepository(),
       new PostHistoryRepository()
     );
-    await useCase.execute(projectId, id, req.body);
+    await useCase.execute(validated.data.projectId, validated.data.id, req.body);
 
     res.status(204).send();
   })
@@ -110,7 +114,7 @@ router.delete(
     const id = req.params.id;
 
     if (!projectId || !id) {
-      throw new InvalidQueryException();
+      throw new InvalidPayloadException('bad_request');
     }
 
     const useCase = new DeletePostUseCase(prisma, new PostRepository());

@@ -17,7 +17,7 @@ export class UpdateContentUseCase {
   async execute(
     id: string,
     projectId: string,
-    params: { title: string; body: string; bodyJson: string; bodyHtml: string; locale: string }
+    params: { title: string; body: string; bodyJson: string; bodyHtml: string }
   ): Promise<ContentEntity> {
     const record = await this.contentRepository.findOneById(this.prisma, id, projectId);
     const post = await this.postRepository.findOneById(
