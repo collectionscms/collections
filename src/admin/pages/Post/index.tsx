@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { LocalizedPost } from '../../../types/index.js';
 import { MainCard } from '../../@extended/components/MainCard/index.js';
 import { CreateNewButton } from '../../components/elements/CreateNewButton/index.js';
@@ -13,8 +14,15 @@ import { PostContextProvider, usePost } from './Context/index.js';
 
 export const PostPageImpl: React.FC = () => {
   const { t } = useTranslation();
-  const { getPosts } = usePost();
+  const navigate = useNavigate();
+  const { getPosts, createPost } = usePost();
   const { data: posts } = getPosts();
+  const { trigger } = createPost();
+
+  const handleCreatePost = async () => {
+    const post = await trigger();
+    navigate(`${post.id}`);
+  };
 
   const fields = [
     { field: 'title', label: t('title'), type: cells.text() },
@@ -39,7 +47,11 @@ export const PostPageImpl: React.FC = () => {
 
   return (
     <>
-      <MainCard content={false} title={<></>} secondary={<CreateNewButton to="create" />}>
+      <MainCard
+        content={false}
+        title={<></>}
+        secondary={<CreateNewButton onClick={handleCreatePost} />}
+      >
         <Table columns={columns} rows={posts} />
       </MainCard>
     </>
