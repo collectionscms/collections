@@ -38,6 +38,10 @@ export class UserEntity {
     return new UserEntity(user);
   }
 
+  name(): string {
+    return this.user.name;
+  }
+
   private copyProps(): User {
     const copy = {
       ...this.user,

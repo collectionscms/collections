@@ -1,4 +1,4 @@
-import { Permission, Project, Role } from '@prisma/client';
+import { Content, Permission, Project, Role } from '@prisma/client';
 
 export type UserProfile = {
   id: string;
@@ -24,4 +24,20 @@ export type ApiError = {
   extensions?: {
     message?: string;
   };
+};
+
+export type LocalizedPost = {
+  id: string;
+  slug: string;
+  status: string;
+  updatedAt: Date;
+  publishedAt?: Date | null;
+  defaultLocale: string;
+  title: string;
+  body: string;
+  bodyJson: string;
+  bodyHtml: string;
+  locales: string[];
+  authorName: string;
+  contents: Content[];
 };
