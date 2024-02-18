@@ -150,7 +150,7 @@
     "eslint": "8.48.0",
     "eslint-config-prettier": "9.1.0",
     "eslint-plugin-import": "2.29.1",
-    "eslint-plugin-jest": "27.8.0",
+    "eslint-plugin-jest": "27.9.0",
     "eslint-plugin-react": "7.33.2",
     "faker": "6.6.6",
     "husky": "8.0.3",
