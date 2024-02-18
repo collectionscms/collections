@@ -40,11 +40,13 @@ export class PostRepository {
 
   async findOneById(
     prisma: PrismaType,
+    projectId: string,
     id: string
   ): Promise<{ post: PostEntity; contents: ContentEntity[]; createdBy: UserEntity }> {
     const record = await prisma.post.findFirstOrThrow({
       where: {
         id,
+        projectId: projectId,
       },
       include: {
         contents: {
@@ -67,6 +69,53 @@ export class PostRepository {
       post,
       contents,
       createdBy,
+    };
+  }
+
+  async findInit(
+    prisma: PrismaType,
+    projectId: string,
+    userId: string
+  ): Promise<{ post: PostEntity; contents: ContentEntity[]; createdBy: UserEntity } | null> {
+    const record = await prisma.post.findFirst({
+      where: {
+        projectId,
+        createdById: userId,
+        status: 'init',
+      },
+      include: {
+        contents: true,
+        createdBy: true,
+      },
+    });
+
+    if (!record) return null;
+
+    const post = PostEntity.Reconstruct(record);
+    const contents = record.contents.map((content) => ContentEntity.Reconstruct(content));
+    const createdBy = UserEntity.Reconstruct(record.createdBy);
+
+    return {
+      post,
+      contents,
+      createdBy,
+    };
+  }
+
+  async create(
+    prisma: PrismaType,
+    postEntity: PostEntity
+  ): Promise<{ post: PostEntity; createdBy: UserEntity }> {
+    const record = await prisma.post.create({
+      data: postEntity.toPersistence(),
+      include: {
+        createdBy: true,
+      },
+    });
+
+    return {
+      post: postEntity,
+      createdBy: UserEntity.Reconstruct(record.createdBy),
     };
   }
 }

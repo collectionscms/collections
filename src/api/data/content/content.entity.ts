@@ -1,10 +1,26 @@
 import { Content } from '@prisma/client';
+import { v4 } from 'uuid';
 
 export class ContentEntity {
   private readonly content: Content;
 
   constructor(content: Content) {
     this.content = content;
+  }
+
+  static Construct({ postId, locale }: { postId: string; locale: string }): ContentEntity {
+    return new ContentEntity({
+      id: v4(),
+      postId,
+      title: null,
+      body: null,
+      bodyJson: null,
+      bodyHtml: null,
+      locale,
+      publishedAt: null,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
   }
 
   static Reconstruct(content: Content): ContentEntity {

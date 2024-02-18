@@ -1,4 +1,6 @@
-import { Content, Post } from '@prisma/client';
+import { Post } from '@prisma/client';
+import { v4 } from 'uuid';
+import { LocalizedPost } from '../../../types/index.js';
 import { ContentEntity } from '../content/content.entity.js';
 import { UserEntity } from '../user/user.entity.js';
 
@@ -9,8 +11,48 @@ export class PostEntity {
     this.post = post;
   }
 
+  static Construct({
+    projectId,
+    defaultLocale,
+    createdById,
+  }: {
+    projectId: string;
+    defaultLocale: string;
+    createdById: string;
+  }): { post: PostEntity; content: ContentEntity } {
+    const postId = v4();
+    const post = new PostEntity({
+      id: postId,
+      projectId,
+      slug: this.GenerateSlug(),
+      status: 'init',
+      publishedAt: null,
+      defaultLocale,
+      version: 0,
+      createdById,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+
+    const content = ContentEntity.Construct({ postId, locale: defaultLocale });
+
+    return { post, content };
+  }
+
   static Reconstruct(post: Post): PostEntity {
     return new PostEntity(post);
+  }
+
+  static GenerateSlug = () => {
+    return v4().trim().replace(/-/g, '').substring(0, 10);
+  };
+
+  id(): string {
+    return this.post.id;
+  }
+
+  defaultLocale(): string {
+    return this.post.defaultLocale;
   }
 
   private copyProps(): Post {
@@ -24,25 +66,7 @@ export class PostEntity {
     return this.copyProps();
   }
 
-  toResponse(
-    locale: string,
-    contents: ContentEntity[],
-    createdBy: UserEntity
-  ): {
-    id: string;
-    slug: string;
-    status: string;
-    updatedAt: Date;
-    publishedAt: Date | null;
-    defaultLocale: string;
-    title: string;
-    body: string;
-    bodyJson: string;
-    bodyHtml: string;
-    locales: string[];
-    authorName: string;
-    contents: Content[];
-  } {
+  toResponse(locale: string, contents: ContentEntity[], createdBy: UserEntity): LocalizedPost {
     const localizedContent = contents.find((content) => content.isSameLocaleContent(locale));
     const locales = contents.map((content) => content.locale());
 
