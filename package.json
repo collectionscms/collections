@@ -64,7 +64,7 @@
     "@tiptap/extension-placeholder": "2.2.2",
     "@tiptap/extension-underline": "2.2.2",
     "@tiptap/html": "2.2.2",
-    "@tiptap/pm": "2.2.2",
+    "@tiptap/pm": "2.2.3",
     "@tiptap/react": "2.2.2",
     "@tiptap/starter-kit": "2.2.2",
     "@types/ms": "0.7.34",
