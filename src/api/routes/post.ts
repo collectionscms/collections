@@ -41,7 +41,7 @@ router.get(
     }
 
     const repository = new PostRepository();
-    const record = await repository.findOneById(prisma, projectId, id);
+    const record = await repository.findOneWithContentsById(prisma, projectId, id);
     const post = record.post.toResponse(locale, record.contents, record.createdBy);
 
     res.json({

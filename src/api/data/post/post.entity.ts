@@ -51,6 +51,10 @@ export class PostEntity {
     return this.post.id;
   }
 
+  status(): string {
+    return this.post.status;
+  }
+
   defaultLocale(): string {
     return this.post.defaultLocale;
   }

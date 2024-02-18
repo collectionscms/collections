@@ -8,9 +8,18 @@ export class ContentEntity {
     this.content = content;
   }
 
-  static Construct({ postId, locale }: { postId: string; locale: string }): ContentEntity {
+  static Construct({
+    projectId,
+    postId,
+    locale,
+  }: {
+    projectId: string;
+    postId: string;
+    locale: string;
+  }): ContentEntity {
     return new ContentEntity({
       id: v4(),
+      projectId,
       postId,
       title: null,
       body: null,
@@ -25,6 +34,18 @@ export class ContentEntity {
 
   static Reconstruct(content: Content): ContentEntity {
     return new ContentEntity(content);
+  }
+
+  id(): string {
+    return this.content.id;
+  }
+
+  projectId(): string {
+    return this.content.projectId;
+  }
+
+  postId(): string {
+    return this.content.postId;
   }
 
   title(): string {
