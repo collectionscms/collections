@@ -27,7 +27,7 @@ export type ApiError = {
 };
 
 export type LocalizedPost = {
-  id: String;
+  id: string;
   slug: string;
   status: string;
   updatedAt: Date;

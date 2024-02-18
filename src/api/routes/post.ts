@@ -7,6 +7,7 @@ import { prisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
 import { authenticatedUser } from '../middleware/auth.js';
 import { CreatePostUseCase } from '../useCases/post/createPost.js';
+import { UpdatePostUseCase } from '../useCases/post/updatePost.js';
 
 const router = express.Router();
 
@@ -69,6 +70,24 @@ router.post(
     res.json({
       post,
     });
+  })
+);
+
+router.patch(
+  '/posts/:id',
+  authenticatedUser,
+  asyncHandler(async (req: Request, res: Response) => {
+    const projectId = req.res?.user.projects[0].id;
+    const id = req.params.id;
+
+    if (!projectId || !id) {
+      throw new InvalidQueryException();
+    }
+
+    const useCase = new UpdatePostUseCase(prisma, new PostRepository());
+    await useCase.execute(projectId, id, req.body);
+
+    res.status(204).send();
   })
 );
 

@@ -59,6 +59,10 @@ export class PostEntity {
     return this.post.defaultLocale;
   }
 
+  version(): number {
+    return this.post.version;
+  }
+
   private copyProps(): Post {
     const copy = {
       ...this.post,
