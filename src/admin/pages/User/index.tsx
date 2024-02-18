@@ -10,9 +10,11 @@ import { Table } from '../../components/elements/Table/index.js';
 import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.js';
 import { buildColumns } from '../../utilities/buildColumns.js';
 import { UserContextProvider, useUser } from './Context/index.js';
+import { useNavigate } from 'react-router-dom';
 
 const UserPageImpl: React.FC = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const { getUsers } = useUser();
   const { data } = getUsers();
 
@@ -40,7 +42,11 @@ const UserPageImpl: React.FC = () => {
   });
 
   return (
-    <MainCard content={false} title={<></>} secondary={<CreateNewButton to="create" />}>
+    <MainCard
+      content={false}
+      title={<></>}
+      secondary={<CreateNewButton onClick={() => navigate('create')} />}
+    >
       <Table columns={columns} rows={data} />
     </MainCard>
   );

@@ -7,3 +7,7 @@ export const api = axios.create({
     'Cache-Control': 'no-store',
   },
 });
+
+export const setAcceptLanguage = (language: string) => {
+  api.defaults.headers.common['accept-language'] = language;
+};

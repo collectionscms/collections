@@ -1,9 +1,10 @@
 import React, { createContext, useContext, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import useSWR, { SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
 import { Me } from '../../../../types/index.js';
 import { logger } from '../../../../utilities/logger.js';
-import { api } from '../../../utilities/api.js';
+import { api, setAcceptLanguage } from '../../../utilities/api.js';
 
 type AuthContext = {
   me: Me | null | undefined;
@@ -15,6 +16,12 @@ type AuthContext = {
 const Context = createContext({} as AuthContext);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { i18n } = useTranslation();
+
+  if (i18n.language) {
+    setAcceptLanguage(i18n.language);
+  }
+
   const getCsrfToken = () =>
     useSWR('/auth/csrf', (url) =>
       api.get<{ csrfToken: string }>(url).then((res) => res.data.csrfToken)
