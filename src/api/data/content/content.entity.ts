@@ -26,7 +26,6 @@ export class ContentEntity {
       bodyJson: null,
       bodyHtml: null,
       locale,
-      publishedAt: null,
       createdAt: new Date(),
       updatedAt: new Date(),
     });

@@ -16,11 +16,7 @@ export class PostRepository {
         },
       },
       include: {
-        contents: {
-          orderBy: {
-            publishedAt: 'desc',
-          },
-        },
+        contents: true,
         createdBy: true,
       },
       orderBy: {
@@ -63,11 +59,7 @@ export class PostRepository {
         projectId: projectId,
       },
       include: {
-        contents: {
-          orderBy: {
-            publishedAt: 'desc',
-          },
-        },
+        contents: true,
         createdBy: true,
       },
       orderBy: {

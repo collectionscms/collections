@@ -40,7 +40,6 @@ export const createPost = async (options?: {
           // todo: add
           bodyJson: '{}',
           bodyHtml: `<p>${body}</p>`,
-          publishedAt: options?.publishedAt ?? currentTime,
           createdAt: currentTime,
           updatedAt: currentTime,
         },
