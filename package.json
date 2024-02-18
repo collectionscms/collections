@@ -60,7 +60,7 @@
     "@pmmmwh/react-refresh-webpack-plugin": "0.5.11",
     "@prisma/client": "5.8.0",
     "@prisma/migrate": "5.9.1",
-    "@tiptap/extension-character-count": "2.2.2",
+    "@tiptap/extension-character-count": "2.2.3",
     "@tiptap/extension-placeholder": "2.2.2",
     "@tiptap/extension-underline": "2.2.2",
     "@tiptap/html": "2.2.2",

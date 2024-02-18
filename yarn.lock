@@ -2586,10 +2586,10 @@
   resolved "https://registry.yarnpkg.com/@tiptap/extension-bullet-list/-/extension-bullet-list-2.2.2.tgz#387e26c8216b9f8a7a2b5862a216610b964b4c95"
   integrity sha512-mZznxwymWitQRHYxEN8LX7theJdQ1/O6kUsvwDyHw42+jaCsZumTHEWGckBwkxk3BWWKbrkRGv/cC78sa3cNJw==
 
-"@tiptap/extension-character-count@2.2.2":
-  version "2.2.2"
-  resolved "https://registry.yarnpkg.com/@tiptap/extension-character-count/-/extension-character-count-2.2.2.tgz#75c545582db141e16d362baf22f3628856a5e505"
-  integrity sha512-aObDoKXxVEi3sLaJFfaFLtKMH6e3zgKCkPhXOROUsrdapmvn/ubTuEXdVjiV9YZ7U6t57IYjlXV/jiVwDSgIjA==
+"@tiptap/extension-character-count@2.2.3":
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/@tiptap/extension-character-count/-/extension-character-count-2.2.3.tgz#da760fe8538127345cdebcc454769b6f21d98eff"
+  integrity sha512-agLFrbeJHPBc5NbjP6Lzq1Rr3UCLBnK3rwH55ynLQZlTIejlLiMJE02js6tTttqHPkgu3qQ/SCcl2AesEKErGA==
 
 "@tiptap/extension-code-block@^2.2.2":
   version "2.2.2"
