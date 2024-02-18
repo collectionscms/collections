@@ -3,12 +3,15 @@ import { ContentEntity } from '../../data/content/content.entity.js';
 import { ContentRepository } from '../../data/content/content.repository.js';
 import { PostEntity } from '../../data/post/post.entity.js';
 import { PostRepository } from '../../data/post/post.repository.js';
+import { PostHistoryEntity } from '../../data/postHistory/postHistory.entity.js';
+import { PostHistoryRepository } from '../../data/postHistory/postHistory.repository.js';
 
 export class UpdateContentUseCase {
   constructor(
     private readonly prisma: PrismaClient,
     private readonly postRepository: PostRepository,
-    private readonly contentRepository: ContentRepository
+    private readonly contentRepository: ContentRepository,
+    private readonly postHistoryRepository: PostHistoryRepository
   ) {}
 
   async execute(
@@ -28,6 +31,15 @@ export class UpdateContentUseCase {
         await this.postRepository.update(
           tx,
           PostEntity.Reconstruct({ ...post.toPersistence(), status: 'draft' })
+        );
+        await this.postHistoryRepository.create(
+          tx,
+          PostHistoryEntity.Construct({
+            postId: post.id(),
+            createdById: post.createdById(),
+            status: 'draft',
+            version: post.version(),
+          })
         );
       }
 

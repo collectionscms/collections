@@ -3,6 +3,7 @@ import { env } from '../../env.js';
 import { InvalidQueryException } from '../../exceptions/invalidQuery.js';
 import { ContentRepository } from '../data/content/content.repository.js';
 import { PostRepository } from '../data/post/post.repository.js';
+import { PostHistoryRepository } from '../data/postHistory/postHistory.repository.js';
 import { prisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
 import { authenticatedUser } from '../middleware/auth.js';
@@ -63,7 +64,12 @@ router.post(
       throw new InvalidQueryException();
     }
 
-    const useCase = new CreatePostUseCase(prisma, new PostRepository(), new ContentRepository());
+    const useCase = new CreatePostUseCase(
+      prisma,
+      new PostRepository(),
+      new ContentRepository(),
+      new PostHistoryRepository()
+    );
     const result = await useCase.execute(projectId, userId, locale);
     const post = result.post.toResponse(locale, result.contents, result.createdBy);
 
@@ -84,7 +90,11 @@ router.patch(
       throw new InvalidQueryException();
     }
 
-    const useCase = new UpdatePostUseCase(prisma, new PostRepository());
+    const useCase = new UpdatePostUseCase(
+      prisma,
+      new PostRepository(),
+      new PostHistoryRepository()
+    );
     await useCase.execute(projectId, id, req.body);
 
     res.status(204).send();

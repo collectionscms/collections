@@ -63,6 +63,10 @@ export class PostEntity {
     return this.post.version;
   }
 
+  createdById(): string {
+    return this.post.createdById;
+  }
+
   private copyProps(): Post {
     const copy = {
       ...this.post,

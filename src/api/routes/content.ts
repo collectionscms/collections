@@ -7,6 +7,7 @@ import { prisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
 import { authenticatedUser } from '../middleware/auth.js';
 import { UpdateContentUseCase } from '../useCases/content/updateContent.js';
+import { PostHistoryRepository } from '../data/postHistory/postHistory.repository.js';
 
 const router = express.Router();
 
@@ -22,7 +23,12 @@ router.patch(
       throw new InvalidQueryException();
     }
 
-    const useCase = new UpdateContentUseCase(prisma, new PostRepository(), new ContentRepository());
+    const useCase = new UpdateContentUseCase(
+      prisma,
+      new PostRepository(),
+      new ContentRepository(),
+      new PostHistoryRepository()
+    );
     await useCase.execute(id, projectId, req.body);
 
     res.status(204).send();
