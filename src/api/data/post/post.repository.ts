@@ -11,6 +11,9 @@ export class PostRepository {
     const records = await prisma.post.findMany({
       where: {
         projectId,
+        status: {
+          not: 'init',
+        },
       },
       include: {
         contents: {
