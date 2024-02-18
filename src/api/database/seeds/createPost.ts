@@ -33,6 +33,7 @@ export const createPost = async (options?: {
       contents: {
         create: {
           id: v4(),
+          projectId: options?.projectId ?? globalProject,
           locale: options?.defaultLocale ?? 'ja',
           title: title,
           body: body,

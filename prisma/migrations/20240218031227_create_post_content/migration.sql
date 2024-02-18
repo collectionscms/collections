@@ -29,6 +29,7 @@ CREATE TABLE "PostHistory" (
 -- CreateTable
 CREATE TABLE "Content" (
     "id" UUID NOT NULL,
+    "projectId" UUID NOT NULL,
     "postId" UUID NOT NULL,
     "title" VARCHAR(255),
     "body" TEXT,
@@ -53,6 +54,9 @@ ALTER TABLE "PostHistory" ADD CONSTRAINT "PostHistory_postId_fkey" FOREIGN KEY (
 
 -- AddForeignKey
 ALTER TABLE "PostHistory" ADD CONSTRAINT "PostHistory_createdById_fkey" FOREIGN KEY ("createdById") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Content" ADD CONSTRAINT "Content_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Project"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Content" ADD CONSTRAINT "Content_postId_fkey" FOREIGN KEY ("postId") REFERENCES "Post"("id") ON DELETE CASCADE ON UPDATE CASCADE;

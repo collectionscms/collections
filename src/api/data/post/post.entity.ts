@@ -34,7 +34,7 @@ export class PostEntity {
       updatedAt: new Date(),
     });
 
-    const content = ContentEntity.Construct({ postId, locale: defaultLocale });
+    const content = ContentEntity.Construct({ projectId, postId, locale: defaultLocale });
 
     return { post, content };
   }
