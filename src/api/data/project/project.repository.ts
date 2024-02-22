@@ -1,12 +1,13 @@
-import { Project } from '@prisma/client';
 import { PrismaType } from '../../database/prisma/client.js';
 import { ProjectEntity } from './project.entity.js';
 
 export class ProjectRepository {
-  async findProject(prisma: PrismaType, id: string): Promise<Project> {
-    return prisma.project.findUniqueOrThrow({
+  async findOneById(prisma: PrismaType, id: string): Promise<ProjectEntity> {
+    const record = await prisma.project.findUniqueOrThrow({
       where: { id },
     });
+
+    return ProjectEntity.Reconstruct(record);
   }
 
   async update(prisma: PrismaType, id: string, entity: ProjectEntity): Promise<ProjectEntity> {
