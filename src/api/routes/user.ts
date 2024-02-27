@@ -8,6 +8,9 @@ import { asyncHandler } from '../middleware/asyncHandler.js';
 import { authenticatedUser } from '../middleware/auth.js';
 import { MailService } from '../services/mail.js';
 import { oneWayHash } from '../utilities/oneWayHash.js';
+import { updateUserUseCaseSchema } from '../useCases/ user/updateUser.schema.js';
+import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
+import { UpdateUserUseCase } from '../useCases/ user/updateUser.useCase.js';
 
 const router = express.Router();
 
@@ -62,20 +65,19 @@ router.patch(
     const id = req.params.id;
     const projectId = res.user.projects[0].id;
 
-    const repository = new UserRepository();
-    await repository.checkUniqueEmail(prisma, id, req.body.email);
-
-    const user = await repository.findUser(prisma, id);
-    const password = req.body.password ? await oneWayHash(req.body.password) : user.password;
-
-    const entity = UserEntity.Reconstruct({
-      ...user,
-      password,
-      name: req.body.name,
-      email: req.body.email,
+    const validated = updateUserUseCaseSchema.safeParse({
+      id,
+      projectId,
+      ...req.body,
     });
+    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
-    await repository.updateWithRole(prisma, id, entity, projectId, req.body.roleId);
+    const userUseCase = new UpdateUserUseCase(prisma, new UserRepository());
+    await userUseCase.execute(validated.data.id, validated.data.projectId, {
+      email: validated.data.email,
+      password: validated.data.password,
+      roleId: validated.data.roleId,
+    });
 
     res.status(204).end();
   })

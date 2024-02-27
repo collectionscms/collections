@@ -21,4 +21,8 @@ export class ProjectEntity {
   toPersistence(): Project {
     return this.copyProps();
   }
+
+  toResponse() {
+    return this.copyProps();
+  }
 }

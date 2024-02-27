@@ -6,7 +6,7 @@ import { PostHistoryRepository } from '../data/postHistory/postHistory.repositor
 import { prisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
 import { authenticatedUser } from '../middleware/auth.js';
-import { UpdateContentUseCase } from '../useCases/content/updateContent.js';
+import { UpdateContentUseCase } from '../useCases/content/updateContent.useCase.js';
 import { updateContentUseCaseSchema } from '../useCases/content/updateContent.schema.js';
 
 const router = express.Router();

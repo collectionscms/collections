@@ -7,9 +7,9 @@ import { PostHistoryRepository } from '../data/postHistory/postHistory.repositor
 import { prisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
 import { authenticatedUser } from '../middleware/auth.js';
-import { CreatePostUseCase } from '../useCases/post/createPost.js';
-import { DeletePostUseCase } from '../useCases/post/deletePost.js';
-import { UpdatePostUseCase } from '../useCases/post/updatePost.js';
+import { CreatePostUseCase } from '../useCases/post/createPost.useCase.js';
+import { DeletePostUseCase } from '../useCases/post/deletePost.useCase.js';
+import { UpdatePostUseCase } from '../useCases/post/updatePost.useCase.js';
 import { updatePostUseCaseSchema } from '../useCases/post/updatePost.schema.js';
 
 const router = express.Router();
