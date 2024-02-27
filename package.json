@@ -52,7 +52,7 @@
     "@ant-design/icons": "5.2.6",
     "@auth/express": "0.5.0",
     "@aws-sdk/client-s3": "3.454.0",
-    "@emotion/react": "11.11.1",
+    "@emotion/react": "11.11.3",
     "@emotion/styled": "11.11.0",
     "@hookform/resolvers": "3.3.2",
     "@mui/lab": "5.0.0-alpha.160",
