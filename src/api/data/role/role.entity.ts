@@ -42,7 +42,7 @@ export class RoleEntity {
     return this.copyProps();
   }
 
-  toJson(): {
+  toResponse(): {
     id: string;
     projectId: string;
     name: string;

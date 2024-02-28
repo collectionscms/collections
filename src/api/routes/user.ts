@@ -54,7 +54,9 @@ router.post(
     const entity = UserEntity.Construct({ ...req.body, password: hashed });
     const user = await repository.create(prisma, entity, projectId, req.body.roleId);
 
-    res.json(user);
+    res.json({
+      user: user.toResponse(),
+    });
   })
 );
 

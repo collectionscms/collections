@@ -52,4 +52,8 @@ export class UserEntity {
   toPersistence(): User {
     return this.copyProps();
   }
+
+  toResponse(): User {
+    return this.copyProps();
+  }
 }
