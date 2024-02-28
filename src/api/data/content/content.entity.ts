@@ -35,6 +35,8 @@ export class ContentEntity {
     return new ContentEntity(content);
   }
 
+  public beforeValidate(): void {}
+
   id(): string {
     return this.content.id;
   }
@@ -79,6 +81,10 @@ export class ContentEntity {
   }
 
   toPersistence(): Content {
+    return this.copyProps();
+  }
+
+  toResponse(): Content {
     return this.copyProps();
   }
 }

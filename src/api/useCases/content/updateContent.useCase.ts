@@ -49,6 +49,7 @@ export class UpdateContentUseCase {
         ...params,
       });
 
+      entity.beforeValidate();
       return await this.contentRepository.update(this.prisma, entity);
     });
 
