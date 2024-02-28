@@ -93,6 +93,7 @@ export class PostEntity {
       body: localizedContent?.body() ?? '',
       bodyJson: localizedContent?.bodyJson() ?? '',
       bodyHtml: localizedContent?.bodyHtml() ?? '',
+      contentLocale: localizedContent?.locale() || this.post.defaultLocale,
       locales,
       authorName: createdBy.name(),
       contents: contents.map((content) => content.toPersistence()),

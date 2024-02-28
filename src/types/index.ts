@@ -33,6 +33,7 @@ export type LocalizedPost = {
   updatedAt: Date;
   publishedAt?: Date | null;
   defaultLocale: string;
+  contentLocale: string;
   title: string;
   body: string;
   bodyJson: string;
