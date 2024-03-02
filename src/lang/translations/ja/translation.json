@@ -162,17 +162,15 @@
     "data_model": "データモデル 編集",
     "custom": "{{page}} 編集"
   },
-  "interface": {
-    "input": "テキストフィールド",
-    "inputMultiline": "テキストエリア",
-    "inputRichTextMd": "マークダウン",
-    "selectDropdown": "セレクトドロップダウン",
-    "dateTime": "日時",
-    "boolean": "真偽値",
-    "fileImage": "画像",
-    "listOneToMany": "コンテンツ参照（1対N）",
-    "selectDropdownManyToOne": "コンテンツ被参照（N対1）",
-    "selectDropdownStatus": "公開ステータス"
+  "editor": {
+    "guide": "エディターガイド",
+    "headline": "見出し",
+    "subtitle": "小見出し",
+    "list": "リスト",
+    "numbered_list": "番号付きリスト",
+    "quote": "引用",
+    "bold": "強調",
+    "draft_save": "下書き保存"
   },
   "field_interface": {
     "input_one_line": "テキストフィールド",

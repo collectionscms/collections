@@ -1,4 +1,16 @@
-import { Box, Container, Stack, TextField, Toolbar, Typography } from '@mui/material';
+import { RiQuestionMark } from '@remixicon/react';
+import {
+  Box,
+  Container,
+  List,
+  ListItem,
+  Popover,
+  Stack,
+  TextField,
+  Toolbar,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 import { Extension } from '@tiptap/core';
 import CharacterCount from '@tiptap/extension-character-count';
 import Placeholder from '@tiptap/extension-placeholder';
@@ -18,6 +30,8 @@ import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/ind
 import { AddLocale } from '../AddLocale/index.js';
 import { PostContextProvider, usePost } from '../Context/index.js';
 import { PublishSetting } from '../PublishSetting/index.js';
+import { IconButton } from '../../../@extended/components/IconButton/index.js';
+import { Guide } from '../Guide/index.js';
 
 export const EditPostPageImpl: React.FC = () => {
   const { id } = useParams();
@@ -150,6 +164,23 @@ export const EditPostPageImpl: React.FC = () => {
     enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
   };
 
+  // /////////////////////////////////////
+  // Editor Guide
+  // /////////////////////////////////////
+
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
+  const [openEditor, setOpenEditor] = useState(false);
+
+  const handleOpenEditorGuide = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+    setOpenEditor(true);
+  };
+
+  const handleCloseEditorGuide = () => {
+    setAnchorEl(null);
+    setOpenEditor(false);
+  };
+
   return (
     <>
       <EditorHeader
@@ -196,7 +227,7 @@ export const EditPostPageImpl: React.FC = () => {
         </Container>
         <Box
           display="flex"
-          justifyContent="flex-end"
+          justifyContent="space-between"
           alignItems="center"
           sx={{
             width: '100%',
@@ -205,6 +236,13 @@ export const EditPostPageImpl: React.FC = () => {
             p: 4,
           }}
         >
+          <Stack direction="row" gap={2}>
+            <Tooltip title={t('editor.guide')} placement="top-start">
+              <IconButton shape="rounded" color="secondary" onClick={handleOpenEditorGuide}>
+                <RiQuestionMark />
+              </IconButton>
+            </Tooltip>
+          </Stack>
           <Typography color="secondary">
             {editor && (
               <>
@@ -221,6 +259,7 @@ export const EditPostPageImpl: React.FC = () => {
         onClose={handleCloseAddLocale}
         onAdded={handleAddedLocale}
       />
+      <Guide open={openEditor} anchor={anchorEl} onClose={handleCloseEditorGuide} />
     </>
   );
 };
