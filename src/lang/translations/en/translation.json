@@ -136,6 +136,7 @@
   "characters": "characters",
   "saved": "Saved",
   "add_localized_content": "Add localized content",
+  "add_to": "Add",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion.",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",

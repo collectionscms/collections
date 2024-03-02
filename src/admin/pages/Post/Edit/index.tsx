@@ -1,16 +1,5 @@
+import { Box, Container, Stack, TextField, Toolbar, Tooltip, Typography } from '@mui/material';
 import { RiQuestionMark } from '@remixicon/react';
-import {
-  Box,
-  Container,
-  List,
-  ListItem,
-  Popover,
-  Stack,
-  TextField,
-  Toolbar,
-  Tooltip,
-  Typography,
-} from '@mui/material';
 import { Extension } from '@tiptap/core';
 import CharacterCount from '@tiptap/extension-character-count';
 import Placeholder from '@tiptap/extension-placeholder';
@@ -23,15 +12,15 @@ import React, { useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useParams } from 'react-router-dom';
 import { logger } from '../../../../utilities/logger.js';
-import { EditorHeader } from '../../../components/elements/EditorHeader/index.js';
+import { IconButton } from '../../../@extended/components/IconButton/index.js';
 import { WYSIWYG } from '../../../components/elements/WYSIWYG/index.js';
 import { useColorMode } from '../../../components/utilities/ColorMode/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
 import { AddLocale } from '../AddLocale/index.js';
 import { PostContextProvider, usePost } from '../Context/index.js';
-import { PublishSetting } from '../PublishSetting/index.js';
-import { IconButton } from '../../../@extended/components/IconButton/index.js';
 import { Guide } from '../Guide/index.js';
+import { PostHeader } from '../PostHeader/index.js';
+import { PublishSetting } from '../PublishSetting/index.js';
 
 export const EditPostPageImpl: React.FC = () => {
   const { id } = useParams();
@@ -183,7 +172,7 @@ export const EditPostPageImpl: React.FC = () => {
 
   return (
     <>
-      <EditorHeader
+      <PostHeader
         post={post}
         currentLocale={locale}
         buttonRef={ref}

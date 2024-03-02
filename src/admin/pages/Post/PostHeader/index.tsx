@@ -27,7 +27,7 @@ export type Props = {
   onOpenAddLocale: () => void;
 };
 
-export const EditorHeader: React.FC<Props> = ({
+export const PostHeader: React.FC<Props> = ({
   post,
   currentLocale,
   buttonRef,
@@ -141,7 +141,7 @@ export const EditorHeader: React.FC<Props> = ({
         ))}
         <MenuItem onClick={handleAddLocale}>
           <RiAddLine size={20} />
-          <Typography sx={{ pl: 1 }}>追加する</Typography>
+          <Typography sx={{ pl: 1 }}>{t('add_to')}</Typography>
         </MenuItem>
       </Menu>
     </AppBarStyled>
