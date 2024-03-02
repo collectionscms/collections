@@ -135,6 +135,7 @@
   "write_the_text": "本文を書く",
   "characters": "文字",
   "saved": "保存しました",
+  "add_localized_content": "ローカライズコンテンツの追加",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",

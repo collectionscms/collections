@@ -1,6 +1,16 @@
-import { ArrowLeftOutlined } from '@ant-design/icons';
-import { AppBarProps, Button, Stack, Toolbar, Tooltip, useTheme } from '@mui/material';
-import React from 'react';
+import {
+  AppBarProps,
+  Button,
+  Menu,
+  MenuItem,
+  Stack,
+  Toolbar,
+  Tooltip,
+  Typography,
+  useTheme,
+} from '@mui/material';
+import { RiAddLine, RiArrowLeftLine, RiEarthLine } from '@remixicon/react';
+import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { LocalizedPost } from '../../../../types/index.js';
@@ -9,12 +19,23 @@ import AppBarStyled from './AppBarStyled.js';
 
 export type Props = {
   post: LocalizedPost;
+  currentLocale: string;
   buttonRef: React.RefObject<HTMLButtonElement>;
   onOpenSettings: () => void;
   onDraftSave: () => void;
+  onChangeLocale: (locale: string) => void;
+  onOpenAddLocale: () => void;
 };
 
-export const EditorHeader: React.FC<Props> = ({ post, buttonRef, onOpenSettings, onDraftSave }) => {
+export const EditorHeader: React.FC<Props> = ({
+  post,
+  currentLocale,
+  buttonRef,
+  onOpenSettings,
+  onDraftSave,
+  onChangeLocale,
+  onOpenAddLocale,
+}) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -34,15 +55,50 @@ export const EditorHeader: React.FC<Props> = ({ post, buttonRef, onOpenSettings,
     navigate('/admin/posts');
   };
 
+  // /////////////////////////////////////
+  // Locale Menu
+  // /////////////////////////////////////
+  const anchorRef = useRef<any>(null);
+  const [localeOpen, setLocaleOpen] = useState(false);
+  const handleLocaleOpen = () => {
+    setLocaleOpen((open) => !open);
+  };
+
+  const handleCloseLocale = (event: MouseEvent | TouchEvent) => {
+    if (anchorRef.current && anchorRef.current.contains(event.target)) {
+      return;
+    }
+    setLocaleOpen(false);
+  };
+
+  const handleChangeLocale = (locale: string) => {
+    onChangeLocale(locale);
+    setLocaleOpen(false);
+  };
+
+  const handleAddLocale = () => {
+    onOpenAddLocale();
+    setLocaleOpen(false);
+  };
+
   return (
     <AppBarStyled open={true} {...appBar}>
       <Toolbar>
         <Stack direction="row" sx={{ flexGrow: 1 }} alignItems="center">
           <IconButton shape="rounded" color="secondary" onClick={navigateToList}>
-            <ArrowLeftOutlined />
+            <RiArrowLeftLine />
           </IconButton>
         </Stack>
         <Stack direction="row" sx={{ p: 0.5 }} gap={2}>
+          <Button
+            variant="text"
+            color="secondary"
+            ref={anchorRef}
+            startIcon={<RiEarthLine size={22} />}
+            onClick={handleLocaleOpen}
+          >
+            {currentLocale}
+          </Button>
           <>
             <Tooltip title="⌘ + S" placement="top-start">
               <Button
@@ -61,6 +117,33 @@ export const EditorHeader: React.FC<Props> = ({ post, buttonRef, onOpenSettings,
           </>
         </Stack>
       </Toolbar>
+      <Menu
+        anchorEl={anchorRef.current}
+        anchorOrigin={{
+          vertical: 35,
+          horizontal: 'right',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        open={localeOpen}
+        onClose={handleCloseLocale}
+      >
+        {post.locales.map((locale: string) => (
+          <MenuItem
+            onClick={() => handleChangeLocale(locale)}
+            selected={currentLocale === locale}
+            key={locale}
+          >
+            <Typography sx={{ pl: 1 }}>{locale}</Typography>
+          </MenuItem>
+        ))}
+        <MenuItem onClick={handleAddLocale}>
+          <RiAddLine size={20} />
+          <Typography sx={{ pl: 1 }}>追加する</Typography>
+        </MenuItem>
+      </Menu>
     </AppBarStyled>
   );
 };
