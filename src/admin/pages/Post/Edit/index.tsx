@@ -15,6 +15,7 @@ import { EditorHeader } from '../../../components/elements/EditorHeader/index.js
 import { WYSIWYG } from '../../../components/elements/WYSIWYG/index.js';
 import { useColorMode } from '../../../components/utilities/ColorMode/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
+import { AddLocale } from '../AddLocale/index.js';
 import { PostContextProvider, usePost } from '../Context/index.js';
 import { PublishSetting } from '../PublishSetting/index.js';
 
@@ -39,7 +40,10 @@ export const EditPostPageImpl: React.FC = () => {
 
   const { getPost, updateContent } = usePost();
   const { data: post, mutate } = getPost(id);
-  const { trigger } = updateContent(post.contents[0].id);
+  const [locale, setLocale] = useState(post.contentLocale);
+  const { trigger } = updateContent(
+    post.contents.find((content) => content.locale === locale)?.id ?? ''
+  );
 
   const [openSettings, setOpenSettings] = useState(false);
   const handleOpenSettings = async () => {
@@ -118,13 +122,44 @@ export const EditPostPageImpl: React.FC = () => {
     content: toJson(post.bodyJson),
   });
 
+  // /////////////////////////////////////
+  // Locale
+  // /////////////////////////////////////
+
+  const handleChangeLocale = (locale: string) => {
+    setLocale(locale);
+
+    const content = post.contents.find((content) => content.locale === locale);
+    setTitle(content?.title ?? '');
+    editor?.commands.setContent(toJson(content?.bodyJson));
+  };
+
+  const [openAddLocale, setOpenAddLocale] = useState(false);
+  const handleOpenAddLocale = () => {
+    setOpenAddLocale(true);
+  };
+
+  const handleCloseAddLocale = () => {
+    setOpenAddLocale(false);
+  };
+
+  const handleAddedLocale = (locale: string) => {
+    setOpenAddLocale(false);
+    mutate();
+    handleChangeLocale(locale);
+    enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
+  };
+
   return (
     <>
       <EditorHeader
         post={post}
+        currentLocale={locale}
         buttonRef={ref}
         onOpenSettings={handleOpenSettings}
         onDraftSave={handleSaveContent}
+        onChangeLocale={handleChangeLocale}
+        onOpenAddLocale={handleOpenAddLocale}
       />
       <Box component="main" sx={{ minHeight: '100vh', backgroundColor: bg }}>
         <Toolbar sx={{ mt: 0 }} />
@@ -180,6 +215,12 @@ export const EditPostPageImpl: React.FC = () => {
         </Box>
       </Box>
       <PublishSetting open={openSettings} post={post} onClose={() => setOpenSettings(false)} />
+      <AddLocale
+        open={openAddLocale}
+        post={post}
+        onClose={handleCloseAddLocale}
+        onAdded={handleAddedLocale}
+      />
     </>
   );
 };

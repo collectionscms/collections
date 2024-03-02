@@ -46,7 +46,7 @@ router.post(
     const repository = new RoleRepository();
     const role = await repository.create(prisma, entity);
 
-    res.json(role.toJson());
+    res.json(role.toResponse());
   })
 );
 

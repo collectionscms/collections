@@ -21,6 +21,7 @@ type PostContext = {
   >;
   createPost: () => SWRMutationResponse<LocalizedPost, any, string>;
   updatePost: (id: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
+  createContent: (id: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
   updateContent: (id: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
 };
 
@@ -55,6 +56,14 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       return api.patch(url, arg).then((res) => res.data);
     });
 
+  const createContent = (id: string) =>
+    useSWRMutation(
+      `/posts/${id}/contents`,
+      async (url: string, { arg }: { arg: Record<string, any> }) => {
+        return api.post(url, arg).then((res) => res.data);
+      }
+    );
+
   const updateContent = (id: string) =>
     useSWRMutation(
       `/contents/${id}`,
@@ -69,9 +78,10 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       getPost,
       createPost,
       updatePost,
+      createContent,
       updateContent,
     }),
-    [getPosts, getPost, createPost, updatePost, updateContent]
+    [getPosts, getPost, createPost, updatePost, createContent, updateContent]
   );
 
   return <Context.Provider value={value}>{children}</Context.Provider>;

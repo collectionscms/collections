@@ -6,10 +6,37 @@ import { PostHistoryRepository } from '../data/postHistory/postHistory.repositor
 import { prisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
 import { authenticatedUser } from '../middleware/auth.js';
-import { UpdateContentUseCase } from '../useCases/content/updateContent.useCase.js';
+import { createContentUseCaseSchema } from '../useCases/content/createContent.schema.js';
+import { CreateContentUseCase } from '../useCases/content/createContent.useCase.js';
 import { updateContentUseCaseSchema } from '../useCases/content/updateContent.schema.js';
+import { UpdateContentUseCase } from '../useCases/content/updateContent.useCase.js';
 
 const router = express.Router();
+
+router.post(
+  '/posts/:id/contents',
+  authenticatedUser,
+  asyncHandler(async (req: Request, res: Response) => {
+    const id = req.params.id;
+    const projectId = req.res?.user.projects[0].id;
+
+    const validated = createContentUseCaseSchema.safeParse({
+      projectId,
+      id,
+      ...req.body,
+    });
+    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
+
+    const useCase = new CreateContentUseCase(prisma, new ContentRepository());
+    const content = await useCase.execute(validated.data.id, validated.data.projectId, {
+      locale: validated.data.locale,
+    });
+
+    res.json({
+      content: content.toResponse(),
+    });
+  })
+);
 
 router.patch(
   '/contents/:id',
