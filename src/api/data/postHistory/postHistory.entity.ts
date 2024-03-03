@@ -33,6 +33,8 @@ export class PostHistoryEntity {
     return new PostHistoryEntity(postHistory);
   }
 
+  public beforeValidate(): void {}
+
   private copyProps(): PostHistory {
     const copy = {
       ...this.postHistory,
