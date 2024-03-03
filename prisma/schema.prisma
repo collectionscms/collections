@@ -127,7 +127,7 @@ model PostHistory {
   status    String   @db.VarChar(255)
   version   Int      @default(0)
   createdAt DateTime @default(now()) @db.Timestamptz(6)
-  post      Post     @relation(fields: [postId], references: [id])
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
 }
 
 model Content {
