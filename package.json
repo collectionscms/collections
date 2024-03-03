@@ -117,7 +117,7 @@
     "webpack-bundle-analyzer": "4.10.1",
     "webpack-cli": "5.1.4",
     "webpack-dev-middleware": "6.1.1",
-    "webpack-hot-middleware": "2.25.4",
+    "webpack-hot-middleware": "2.26.1",
     "webpack-shell-plugin-next": "2.3.1",
     "yup": "1.2.0",
     "zod": "3.22.4"
