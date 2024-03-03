@@ -78,6 +78,7 @@
   "draft": "下書き",
   "published": "公開中",
   "archived": "公開終了",
+  "archive": "非公開にする",
   "optional_system_fields": "追加のシステムフィールド",
   "edit_field": "フィールドの編集",
   "delete_field": "フィールドの削除",
@@ -143,13 +144,16 @@
     "unsaved_changes_title": "未保存の確認",
     "unsaved_changes": "変更が保存されていません。本当に破棄してよろしいですか？",
     "keep_editing": "編集を続ける",
-    "discard_changes": "変更を破棄"
+    "discard_changes": "変更を破棄",
+    "confirm_post_archive_title": "非公開の確認",
+    "confirm_post_archive": "記事を非公開にしますか？"
   },
   "toast": {
     "created_successfully": "登録しました",
     "updated_successfully": "更新しました",
     "deleted_successfully": "削除しました",
-    "imported_successfully": "インポートしました"
+    "imported_successfully": "インポートしました",
+    "archived_successfully": "非公開にしました"
   },
   "create": {
     "user": "ユーザー 新規登録",

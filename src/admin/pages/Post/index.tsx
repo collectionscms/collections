@@ -1,5 +1,5 @@
-import { MoreOutlined } from '@ant-design/icons';
 import { Stack } from '@mui/material';
+import { RiMore2Line } from '@remixicon/react';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -14,7 +14,8 @@ import { Table } from '../../components/elements/Table/index.js';
 import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.js';
 import { buildColumns } from '../../utilities/buildColumns.js';
 import { PostContextProvider, usePost } from './Context/index.js';
-import { EditMenu } from './Menu/index.js';
+import { RowMenu } from './RowMenu/index.js';
+import { enqueueSnackbar } from 'notistack';
 
 export const PostPageImpl: React.FC = () => {
   const { t } = useTranslation();
@@ -24,7 +25,7 @@ export const PostPageImpl: React.FC = () => {
   const { trigger } = createPost();
 
   const [menu, setMenu] = useState<EventTarget | null>(null);
-  const [editPost, setEditPost] = useState<LocalizedPost | undefined>();
+  const [selectedPost, setSelectedPost] = useState<LocalizedPost | undefined>();
 
   const fields = [
     { field: 'title', label: t('title'), type: cells.text() },
@@ -36,10 +37,24 @@ export const PostPageImpl: React.FC = () => {
     { field: 'action', label: '', type: cells.text() },
   ];
 
-  const handleDeleteSuccess = () => {
-    const deletedPost = posts.filter((post) => post.id !== editPost?.id);
+  const handleDeleteSuccess = (postId: string) => {
+    const deletedPost = posts.filter((post) => post.id !== postId);
     mutate(deletedPost);
     setMenu(null);
+    enqueueSnackbar(t('toast.deleted_successfully'), { variant: 'success' });
+  };
+
+  const handleArchiveSuccess = (postId: string) => {
+    const archivedPost = posts.map((post) => {
+      if (post.id == postId) {
+        return { ...post, status: 'archived' };
+      } else {
+        return post;
+      }
+    });
+    mutate(archivedPost);
+    setMenu(null);
+    enqueueSnackbar(t('toast.archived_successfully'), { variant: 'success' });
   };
 
   const handleCreatePost = async () => {
@@ -48,7 +63,7 @@ export const PostPageImpl: React.FC = () => {
   };
 
   const handleOpenMenu = (currentTarget: EventTarget, post: LocalizedPost) => {
-    setEditPost(post);
+    setSelectedPost(post);
     setMenu(currentTarget);
   };
 
@@ -63,10 +78,11 @@ export const PostPageImpl: React.FC = () => {
           <Stack direction="row" gap={2}>
             <IconButton
               color="secondary"
+              shape="rounded"
               size="small"
               onClick={(e) => handleOpenMenu(e.currentTarget, row)}
             >
-              <MoreOutlined />
+              <RiMore2Line />
             </IconButton>
           </Stack>
         );
@@ -77,11 +93,12 @@ export const PostPageImpl: React.FC = () => {
 
   return (
     <>
-      {editPost && (
-        <EditMenu
-          id={editPost.id}
+      {selectedPost && (
+        <RowMenu
+          postId={selectedPost.id}
           menu={menu}
-          onSuccess={handleDeleteSuccess}
+          onDeleteSuccess={handleDeleteSuccess}
+          onArchiveSuccess={handleArchiveSuccess}
           onClose={() => setMenu(null)}
         />
       )}

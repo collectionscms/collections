@@ -44,6 +44,8 @@ export class PostEntity {
     return new PostEntity(post);
   }
 
+  public beforeValidate(): void {}
+
   static GenerateSlug = () => {
     return v4().trim().replace(/-/g, '').substring(0, 10);
   };

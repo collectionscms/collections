@@ -170,12 +170,18 @@ export const EditPostPageImpl: React.FC = () => {
               <TextField
                 type="text"
                 fullWidth
+                multiline
                 placeholder={t('title')}
                 value={title}
+                autoFocus
                 onChange={(e) => setTitle(e.target.value)}
                 sx={{
                   '.MuiOutlinedInput-notchedOutline': {
                     border: 'none !important',
+                  },
+                  '.MuiOutlinedInput-root': {
+                    padding: 0,
+                    lineHeight: 1.85,
                   },
                   '.Mui-focused': {
                     boxShadow: 'none !important',

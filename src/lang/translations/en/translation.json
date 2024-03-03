@@ -78,6 +78,7 @@
   "draft": "Draft",
   "published": "Published",
   "archived": "Archived",
+  "archive": "Archive",
   "optional_system_fields": "Optional System Fields",
   "edit_field": "Edit Field",
   "delete_field": "Delete Field",
@@ -138,18 +139,21 @@
   "add_localized_content": "Add localized content",
   "add_to": "Add",
   "dialog": {
-    "confirm_deletion_title": "Confirm deletion.",
+    "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",
     "unsaved_changes_title": "Unsaved Changes",
     "unsaved_changes": "Your changes have not been saved. Are you sure you want to discard them?",
     "keep_editing": "Keep Editing",
-    "discard_changes": "Discard Changes"
+    "discard_changes": "Discard Changes",
+    "confirm_post_archive_title": "Confirm archive",
+    "confirm_post_archive": "Are you sure you want to archive it?"
   },
   "toast": {
     "created_successfully": "Created successfully.",
     "updated_successfully": "Updated successfully.",
     "deleted_successfully": "Deleted successfully.",
-    "imported_successfully": "Imported successfully."
+    "imported_successfully": "Imported successfully.",
+    "archived_successfully": "Archived successfully."
   },
   "create": {
     "user": "Create User",
