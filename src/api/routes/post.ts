@@ -10,6 +10,7 @@ import { authenticatedUser } from '../middleware/auth.js';
 import { changeStatusUseCaseSchema } from '../useCases/post/changeStatus.schema.js';
 import { ChangeStatusUseCase } from '../useCases/post/changeStatus.useCase.js';
 import { CreatePostUseCase } from '../useCases/post/createPost.useCase.js';
+import { deletePostUseCaseSchema } from '../useCases/post/deletePost.schema.js';
 import { DeletePostUseCase } from '../useCases/post/deletePost.useCase.js';
 import { updatePostUseCaseSchema } from '../useCases/post/updatePost.schema.js';
 import { UpdatePostUseCase } from '../useCases/post/updatePost.useCase.js';
@@ -127,12 +128,14 @@ router.delete(
     const projectId = req.res?.user.projects[0].id;
     const id = req.params.id;
 
-    if (!projectId || !id) {
-      throw new InvalidPayloadException('bad_request');
-    }
+    const validated = deletePostUseCaseSchema.safeParse({
+      id,
+      projectId,
+    });
+    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
     const useCase = new DeletePostUseCase(prisma, new PostRepository());
-    await useCase.execute(projectId, id);
+    await useCase.execute(validated.data.projectId, validated.data.id);
 
     res.status(204).send();
   })
