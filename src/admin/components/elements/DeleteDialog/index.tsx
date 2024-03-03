@@ -18,12 +18,17 @@ export const DeleteDialog: React.FC<Props> = ({ open, title, body, confirm, canc
             </Typography>
             <Typography align="center">{body}</Typography>
           </Stack>
-
           <Stack direction="row" spacing={2} sx={{ width: 1 }}>
-            <Button fullWidth onClick={cancel.action} color="secondary" variant="outlined">
+            <Button
+              fullWidth
+              onClick={cancel.action}
+              color="secondary"
+              variant="outlined"
+              autoFocus
+            >
               {cancel.label}
             </Button>
-            <Button fullWidth color="error" variant="contained" onClick={confirm.action} autoFocus>
+            <Button fullWidth color="error" variant="contained" onClick={confirm.action}>
               {confirm.label}
             </Button>
           </Stack>
