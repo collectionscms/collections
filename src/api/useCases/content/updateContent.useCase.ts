@@ -17,6 +17,7 @@ export class UpdateContentUseCase {
   async execute(
     id: string,
     projectId: string,
+    userName: string,
     params: { title: string; body: string; bodyJson: string; bodyHtml: string }
   ): Promise<ContentEntity> {
     const record = await this.contentRepository.findOneById(this.prisma, id, projectId);
@@ -33,11 +34,12 @@ export class UpdateContentUseCase {
           projectId,
           PostEntity.Reconstruct({ ...post.toPersistence(), status: 'draft' })
         );
+
         await this.postHistoryRepository.create(
           tx,
           PostHistoryEntity.Construct({
             postId: post.id(),
-            createdById: post.createdById(),
+            userName,
             status: 'draft',
             version: post.version(),
           })

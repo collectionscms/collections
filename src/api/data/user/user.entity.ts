@@ -42,6 +42,10 @@ export class UserEntity {
     return this.user.name;
   }
 
+  password(): string {
+    return this.user.password;
+  }
+
   private copyProps(): User {
     const copy = {
       ...this.user,

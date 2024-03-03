@@ -44,10 +44,12 @@ router.patch(
   asyncHandler(async (req: Request, res: Response) => {
     const id = req.params.id;
     const projectId = req.res?.user.projects[0].id;
+    const userName = req.res?.user.name;
 
     const validated = updateContentUseCaseSchema.safeParse({
       projectId,
       id,
+      userName,
       ...req.body,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
@@ -58,7 +60,7 @@ router.patch(
       new ContentRepository(),
       new PostHistoryRepository()
     );
-    await useCase.execute(validated.data.id, validated.data.projectId, {
+    await useCase.execute(validated.data.id, validated.data.projectId, validated.data.userName, {
       title: validated.data.title,
       body: validated.data.body,
       bodyJson: validated.data.bodyJson,

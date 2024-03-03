@@ -10,19 +10,19 @@ export class PostHistoryEntity {
 
   static Construct({
     postId,
-    createdById,
+    userName,
     status,
     version,
   }: {
     postId: string;
-    createdById: string;
+    userName: string;
     status: string;
     version: number;
   }): PostHistoryEntity {
     return new PostHistoryEntity({
       id: v4(),
       postId,
-      createdById,
+      userName,
       status,
       version,
       createdAt: new Date(),

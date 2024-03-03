@@ -30,11 +30,11 @@ router.patch(
     const repository = new UserRepository();
     await repository.checkUniqueEmail(prisma, id, req.body.email);
 
-    const user = await repository.findUser(prisma, id);
-    const password = req.body.password ? await oneWayHash(req.body.password) : user.password;
+    const user = await repository.findUserById(prisma, id);
+    const password = req.body.password ? await oneWayHash(req.body.password) : user.password();
 
     const entity = UserEntity.Reconstruct({
-      ...user,
+      ...user.toPersistence(),
       password,
       name: req.body.name,
       email: req.body.email,

@@ -9,8 +9,8 @@ import { asyncHandler } from '../middleware/asyncHandler.js';
 import { authenticatedUser } from '../middleware/auth.js';
 import { CreatePostUseCase } from '../useCases/post/createPost.useCase.js';
 import { DeletePostUseCase } from '../useCases/post/deletePost.useCase.js';
-import { UpdatePostUseCase } from '../useCases/post/updatePost.useCase.js';
 import { updatePostUseCaseSchema } from '../useCases/post/updatePost.schema.js';
+import { UpdatePostUseCase } from '../useCases/post/updatePost.useCase.js';
 
 const router = express.Router();
 
@@ -86,10 +86,12 @@ router.patch(
   authenticatedUser,
   asyncHandler(async (req: Request, res: Response) => {
     const projectId = req.res?.user.projects[0].id;
+    const name = req.res?.user.name;
     const id = req.params.id;
 
     const validated = updatePostUseCaseSchema.safeParse({
       id,
+      name,
       projectId,
       ...req.body,
     });
@@ -100,7 +102,12 @@ router.patch(
       new PostRepository(),
       new PostHistoryRepository()
     );
-    await useCase.execute(validated.data.projectId, validated.data.id, req.body);
+    await useCase.execute(
+      validated.data.projectId,
+      validated.data.name,
+      validated.data.id,
+      req.body
+    );
 
     res.status(204).send();
   })

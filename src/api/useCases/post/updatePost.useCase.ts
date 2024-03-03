@@ -11,7 +11,12 @@ export class UpdatePostUseCase {
     private readonly postHistoryRepository: PostHistoryRepository
   ) {}
 
-  async execute(projectId: string, id: string, params: { status: string }): Promise<PostEntity> {
+  async execute(
+    projectId: string,
+    userName: string,
+    id: string,
+    params: { status: string }
+  ): Promise<PostEntity> {
     const record = await this.postRepository.findOneById(this.prisma, projectId, id);
 
     const entity = PostEntity.Reconstruct({
@@ -23,11 +28,12 @@ export class UpdatePostUseCase {
 
     const result = await this.prisma.$transaction(async (tx) => {
       const result = await this.postRepository.update(tx, projectId, entity);
+
       await this.postHistoryRepository.create(
         tx,
         PostHistoryEntity.Construct({
           postId: result.id(),
-          createdById: result.createdById(),
+          userName,
           status: params.status,
           version: result.version(),
         })
