@@ -1,4 +1,3 @@
-import { User } from '@prisma/client';
 import crypto from 'crypto';
 import dayjs from 'dayjs';
 import { RecordNotUniqueException } from '../../../exceptions/database/recordNotUnique.js';
@@ -10,14 +9,14 @@ import { oneWayHash } from '../../utilities/oneWayHash.js';
 import { UserEntity } from './user.entity.js';
 
 export class UserRepository {
-  async findUser(prisma: PrismaType, id: string): Promise<User> {
+  async findUserById(prisma: PrismaType, id: string): Promise<UserEntity> {
     const user = await prisma.user.findUniqueOrThrow({
       where: {
         id,
       },
     });
 
-    return user;
+    return UserEntity.Reconstruct(user);
   }
 
   async login(prisma: PrismaType, email: string, password: string): Promise<Me> {

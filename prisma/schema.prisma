@@ -49,7 +49,6 @@ model User {
   updatedAt               DateTime      @updatedAt @db.Timestamptz(6)
   userProjects            UserProject[]
   post                    Post[]
-  postHistories           PostHistory[]
 }
 
 model UserProject {
@@ -122,14 +121,13 @@ model Post {
 }
 
 model PostHistory {
-  id          String   @id @default(uuid()) @db.Uuid
-  postId      String   @db.Uuid
-  createdById String   @db.Uuid
-  status      String   @db.VarChar(255)
-  version     Int      @default(0)
-  createdAt   DateTime @default(now()) @db.Timestamptz(6)
-  post        Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
-  createdBy   User     @relation(fields: [createdById], references: [id])
+  id        String   @id @default(uuid()) @db.Uuid
+  postId    String   @db.Uuid
+  userName  String   @db.VarChar(255)
+  status    String   @db.VarChar(255)
+  version   Int      @default(0)
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  post      Post     @relation(fields: [postId], references: [id])
 }
 
 model Content {

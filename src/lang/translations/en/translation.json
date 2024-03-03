@@ -136,6 +136,7 @@
   "characters": "characters",
   "saved": "Saved",
   "add_localized_content": "Add localized content",
+  "add_to": "Add",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion.",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",
@@ -162,17 +163,15 @@
     "data_model": "Edit Data Model",
     "custom": "Edit {{page}}"
   },
-  "interface": {
-    "input": "Text Field",
-    "inputMultiline": "Textarea",
-    "inputRichTextMd": "Markdown",
-    "selectDropdown": "Select Dropdown",
-    "dateTime": "Date Time",
-    "boolean": "Boolean",
-    "fileImage": "Image",
-    "listOneToMany": "Content References(One to Many)",
-    "selectDropdownManyToOne": "Content Referenced(Many to One)",
-    "selectDropdownStatus": "Public Status"
+  "editor": {
+    "guide": "Editor Guide",
+    "headline": "Headline",
+    "subtitle": "Subtitle",
+    "list": "List",
+    "numbered_list": "Numbered List",
+    "quote": "Quote",
+    "bold": "Bold",
+    "draft_save": "Draft Save"
   },
   "field_interface": {
     "input_one_line": "Text Field",

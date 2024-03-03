@@ -17,6 +17,11 @@ export const createPost = async (options?: {
   const currentTime = new Date();
   const title = faker.music.songName();
   const body = faker.lorem.lines(3);
+  const user = await prisma.user.findFirstOrThrow({
+    where: {
+      id: options?.createdById ?? adminUser,
+    },
+  });
 
   await prisma.post.create({
     data: {
@@ -29,7 +34,7 @@ export const createPost = async (options?: {
       version: options?.version ?? 0,
       createdAt: currentTime,
       updatedAt: currentTime,
-      createdById: options?.createdById ?? adminUser,
+      createdById: user.id,
       contents: {
         create: {
           id: v4(),
@@ -47,7 +52,7 @@ export const createPost = async (options?: {
       postHistories: {
         create: {
           id: v4(),
-          createdById: options?.createdById ?? adminUser,
+          userName: user.name,
           status: options?.status ?? 'published',
           version: options?.version ?? 0,
           createdAt: currentTime,

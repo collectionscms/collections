@@ -9,8 +9,8 @@ import { asyncHandler } from '../middleware/asyncHandler.js';
 import { authenticatedUser } from '../middleware/auth.js';
 import { CreatePostUseCase } from '../useCases/post/createPost.useCase.js';
 import { DeletePostUseCase } from '../useCases/post/deletePost.useCase.js';
-import { UpdatePostUseCase } from '../useCases/post/updatePost.useCase.js';
 import { updatePostUseCaseSchema } from '../useCases/post/updatePost.schema.js';
+import { UpdatePostUseCase } from '../useCases/post/updatePost.useCase.js';
 
 const router = express.Router();
 
@@ -25,7 +25,7 @@ router.get(
     const records = await repository.findManyByProjectId(prisma, projectId);
 
     const posts = records.map((record) => {
-      return record.post.toResponse(locale, record.contents, record.createdBy);
+      return record.post.toResponse(locale, record.contents, record.histories, record.createdBy);
     });
 
     res.json({ posts });
@@ -46,7 +46,12 @@ router.get(
 
     const repository = new PostRepository();
     const record = await repository.findOneWithContentsById(prisma, projectId, id);
-    const post = record.post.toResponse(locale, record.contents, record.createdBy);
+    const post = record.post.toResponse(
+      locale,
+      record.contents,
+      record.histories,
+      record.createdBy
+    );
 
     res.json({
       post,
@@ -73,7 +78,7 @@ router.post(
       new PostHistoryRepository()
     );
     const result = await useCase.execute(projectId, userId, locale);
-    const post = result.post.toResponse(locale, result.contents, result.createdBy);
+    const post = result.post.toResponse(locale, result.contents, [], result.createdBy);
 
     res.json({
       post,
@@ -86,10 +91,12 @@ router.patch(
   authenticatedUser,
   asyncHandler(async (req: Request, res: Response) => {
     const projectId = req.res?.user.projects[0].id;
+    const name = req.res?.user.name;
     const id = req.params.id;
 
     const validated = updatePostUseCaseSchema.safeParse({
       id,
+      name,
       projectId,
       ...req.body,
     });
@@ -100,7 +107,12 @@ router.patch(
       new PostRepository(),
       new PostHistoryRepository()
     );
-    await useCase.execute(validated.data.projectId, validated.data.id, req.body);
+    await useCase.execute(
+      validated.data.projectId,
+      validated.data.name,
+      validated.data.id,
+      req.body
+    );
 
     res.status(204).send();
   })

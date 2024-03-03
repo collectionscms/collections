@@ -2,6 +2,7 @@ import { Post } from '@prisma/client';
 import { v4 } from 'uuid';
 import { LocalizedPost } from '../../../types/index.js';
 import { ContentEntity } from '../content/content.entity.js';
+import { PostHistoryEntity } from '../postHistory/postHistory.entity.js';
 import { UserEntity } from '../user/user.entity.js';
 
 export class PostEntity {
@@ -78,7 +79,12 @@ export class PostEntity {
     return this.copyProps();
   }
 
-  toResponse(locale: string, contents: ContentEntity[], createdBy: UserEntity): LocalizedPost {
+  toResponse(
+    locale: string,
+    contents: ContentEntity[],
+    histories: PostHistoryEntity[],
+    createdBy: UserEntity
+  ): LocalizedPost {
     const localizedContent = contents.find((content) => content.isSameLocaleContent(locale));
     const locales = contents.map((content) => content.locale());
 
@@ -96,7 +102,8 @@ export class PostEntity {
       contentLocale: localizedContent?.locale() || this.post.defaultLocale,
       locales,
       authorName: createdBy.name(),
-      contents: contents.map((content) => content.toPersistence()),
+      contents: contents.map((content) => content.toResponse()),
+      histories: histories.map((history) => history.toResponse()),
     };
   }
 }

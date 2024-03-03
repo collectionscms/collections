@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
-import { UserRepository } from '../../data/user/user.repository.js';
 import { UserEntity } from '../../data/user/user.entity.js';
+import { UserRepository } from '../../data/user/user.repository.js';
 import { prisma } from '../../database/prisma/client.js';
 import { oneWayHash } from '../../utilities/oneWayHash.js';
 
@@ -17,11 +17,11 @@ export class UpdateUserUseCase {
   ): Promise<UserEntity> {
     await this.userRepository.checkUniqueEmail(this.prisma, id, params.email);
 
-    const user = await this.userRepository.findUser(this.prisma, id);
-    const password = params.password ? await oneWayHash(params.password) : user.password;
+    const user = await this.userRepository.findUserById(this.prisma, id);
+    const password = params.password ? await oneWayHash(params.password) : user.password();
 
     const entity = UserEntity.Reconstruct({
-      ...user,
+      ...user.toPersistence(),
       password,
       email: params.email,
     });

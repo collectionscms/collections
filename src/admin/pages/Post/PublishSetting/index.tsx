@@ -22,7 +22,7 @@ import { useNavigate } from 'react-router-dom';
 import { LocalizedPost } from '../../../../types/index.js';
 import { logger } from '../../../../utilities/logger.js';
 import { IconButton } from '../../../@extended/components/IconButton/index.js';
-import AppBarStyled from '../../../components/elements/EditorHeader/AppBarStyled.js';
+import AppBarStyled from '../PostHeader/AppBarStyled.js';
 import { FormValues, editPostValidator } from '../../../fields/validators/post/editPost.js';
 import { usePost } from '../Context/index.js';
 

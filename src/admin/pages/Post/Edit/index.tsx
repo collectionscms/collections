@@ -1,4 +1,4 @@
-import { Box, Container, Stack, TextField, Toolbar, Typography } from '@mui/material';
+import { Box, Container, Stack, TextField, Toolbar } from '@mui/material';
 import { Extension } from '@tiptap/core';
 import CharacterCount from '@tiptap/extension-character-count';
 import Placeholder from '@tiptap/extension-placeholder';
@@ -11,12 +11,13 @@ import React, { useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useParams } from 'react-router-dom';
 import { logger } from '../../../../utilities/logger.js';
-import { EditorHeader } from '../../../components/elements/EditorHeader/index.js';
 import { WYSIWYG } from '../../../components/elements/WYSIWYG/index.js';
 import { useColorMode } from '../../../components/utilities/ColorMode/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
 import { AddLocale } from '../AddLocale/index.js';
 import { PostContextProvider, usePost } from '../Context/index.js';
+import { PostFooter } from '../PostFooter/index.js';
+import { PostHeader } from '../PostHeader/index.js';
 import { PublishSetting } from '../PublishSetting/index.js';
 
 export const EditPostPageImpl: React.FC = () => {
@@ -152,7 +153,7 @@ export const EditPostPageImpl: React.FC = () => {
 
   return (
     <>
-      <EditorHeader
+      <PostHeader
         post={post}
         currentLocale={locale}
         buttonRef={ref}
@@ -194,26 +195,11 @@ export const EditPostPageImpl: React.FC = () => {
             <WYSIWYG editor={editor} />
           </Box>
         </Container>
-        <Box
-          display="flex"
-          justifyContent="flex-end"
-          alignItems="center"
-          sx={{
-            width: '100%',
-            position: 'fixed',
-            bottom: 0,
-            p: 4,
-          }}
-        >
-          <Typography color="secondary">
-            {editor && (
-              <>
-                {editor.storage.characterCount.characters()} {t('characters')}
-              </>
-            )}
-          </Typography>
-        </Box>
       </Box>
+      <PostFooter
+        histories={post.histories}
+        characters={editor?.storage.characterCount.characters() ?? 0}
+      />
       <PublishSetting open={openSettings} post={post} onClose={() => setOpenSettings(false)} />
       <AddLocale
         open={openAddLocale}

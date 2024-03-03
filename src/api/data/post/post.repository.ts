@@ -1,5 +1,6 @@
 import { PrismaType } from '../../database/prisma/client.js';
 import { ContentEntity } from '../content/content.entity.js';
+import { PostHistoryEntity } from '../postHistory/postHistory.entity.js';
 import { UserEntity } from '../user/user.entity.js';
 import { PostEntity } from './post.entity.js';
 
@@ -7,7 +8,14 @@ export class PostRepository {
   async findManyByProjectId(
     prisma: PrismaType,
     projectId: string
-  ): Promise<{ post: PostEntity; contents: ContentEntity[]; createdBy: UserEntity }[]> {
+  ): Promise<
+    {
+      post: PostEntity;
+      contents: ContentEntity[];
+      histories: PostHistoryEntity[];
+      createdBy: UserEntity;
+    }[]
+  > {
     const records = await prisma.post.findMany({
       where: {
         projectId,
@@ -18,6 +26,7 @@ export class PostRepository {
       include: {
         contents: true,
         createdBy: true,
+        postHistories: true,
       },
       orderBy: {
         createdAt: 'desc',
@@ -27,11 +36,15 @@ export class PostRepository {
     return records.map((record) => {
       const post = PostEntity.Reconstruct(record);
       const contents = record.contents.map((content) => ContentEntity.Reconstruct(content));
+      const histories = record.postHistories.map((history) =>
+        PostHistoryEntity.Reconstruct(history)
+      );
       const createdBy = UserEntity.Reconstruct(record.createdBy);
 
       return {
         post,
         contents,
+        histories,
         createdBy,
       };
     });
@@ -52,7 +65,12 @@ export class PostRepository {
     prisma: PrismaType,
     projectId: string,
     id: string
-  ): Promise<{ post: PostEntity; contents: ContentEntity[]; createdBy: UserEntity }> {
+  ): Promise<{
+    post: PostEntity;
+    contents: ContentEntity[];
+    histories: PostHistoryEntity[];
+    createdBy: UserEntity;
+  }> {
     const record = await prisma.post.findFirstOrThrow({
       where: {
         id,
@@ -61,6 +79,7 @@ export class PostRepository {
       include: {
         contents: true,
         createdBy: true,
+        postHistories: true,
       },
       orderBy: {
         createdAt: 'desc',
@@ -69,11 +88,13 @@ export class PostRepository {
 
     const post = PostEntity.Reconstruct(record);
     const contents = record.contents.map((content) => ContentEntity.Reconstruct(content));
+    const histories = record.postHistories.map((history) => PostHistoryEntity.Reconstruct(history));
     const createdBy = UserEntity.Reconstruct(record.createdBy);
 
     return {
       post,
       contents,
+      histories,
       createdBy,
     };
   }
