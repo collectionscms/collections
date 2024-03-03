@@ -25,7 +25,7 @@ router.get(
     const records = await repository.findManyByProjectId(prisma, projectId);
 
     const posts = records.map((record) => {
-      return record.post.toResponse(locale, record.contents, record.createdBy);
+      return record.post.toResponse(locale, record.contents, record.histories, record.createdBy);
     });
 
     res.json({ posts });
@@ -46,7 +46,12 @@ router.get(
 
     const repository = new PostRepository();
     const record = await repository.findOneWithContentsById(prisma, projectId, id);
-    const post = record.post.toResponse(locale, record.contents, record.createdBy);
+    const post = record.post.toResponse(
+      locale,
+      record.contents,
+      record.histories,
+      record.createdBy
+    );
 
     res.json({
       post,
@@ -73,7 +78,7 @@ router.post(
       new PostHistoryRepository()
     );
     const result = await useCase.execute(projectId, userId, locale);
-    const post = result.post.toResponse(locale, result.contents, result.createdBy);
+    const post = result.post.toResponse(locale, result.contents, [], result.createdBy);
 
     res.json({
       post,

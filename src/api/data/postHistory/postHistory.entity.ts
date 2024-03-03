@@ -43,4 +43,8 @@ export class PostHistoryEntity {
   toPersistence(): PostHistory {
     return this.copyProps();
   }
+
+  toResponse(): PostHistory {
+    return this.copyProps();
+  }
 }

@@ -1,5 +1,4 @@
-import { Box, Container, Stack, TextField, Toolbar, Tooltip, Typography } from '@mui/material';
-import { RiQuestionMark } from '@remixicon/react';
+import { Box, Container, Stack, TextField, Toolbar } from '@mui/material';
 import { Extension } from '@tiptap/core';
 import CharacterCount from '@tiptap/extension-character-count';
 import Placeholder from '@tiptap/extension-placeholder';
@@ -12,13 +11,12 @@ import React, { useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useParams } from 'react-router-dom';
 import { logger } from '../../../../utilities/logger.js';
-import { IconButton } from '../../../@extended/components/IconButton/index.js';
 import { WYSIWYG } from '../../../components/elements/WYSIWYG/index.js';
 import { useColorMode } from '../../../components/utilities/ColorMode/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
 import { AddLocale } from '../AddLocale/index.js';
 import { PostContextProvider, usePost } from '../Context/index.js';
-import { Guide } from '../Guide/index.js';
+import { PostFooter } from '../PostFooter/index.js';
 import { PostHeader } from '../PostHeader/index.js';
 import { PublishSetting } from '../PublishSetting/index.js';
 
@@ -153,23 +151,6 @@ export const EditPostPageImpl: React.FC = () => {
     enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
   };
 
-  // /////////////////////////////////////
-  // Editor Guide
-  // /////////////////////////////////////
-
-  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
-  const [openEditor, setOpenEditor] = useState(false);
-
-  const handleOpenEditorGuide = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-    setOpenEditor(true);
-  };
-
-  const handleCloseEditorGuide = () => {
-    setAnchorEl(null);
-    setOpenEditor(false);
-  };
-
   return (
     <>
       <PostHeader
@@ -214,33 +195,11 @@ export const EditPostPageImpl: React.FC = () => {
             <WYSIWYG editor={editor} />
           </Box>
         </Container>
-        <Box
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-          sx={{
-            width: '100%',
-            position: 'fixed',
-            bottom: 0,
-            p: 4,
-          }}
-        >
-          <Stack direction="row" gap={2}>
-            <Tooltip title={t('editor.guide')} placement="top-start">
-              <IconButton shape="rounded" color="secondary" onClick={handleOpenEditorGuide}>
-                <RiQuestionMark />
-              </IconButton>
-            </Tooltip>
-          </Stack>
-          <Typography color="secondary">
-            {editor && (
-              <>
-                {editor.storage.characterCount.characters()} {t('characters')}
-              </>
-            )}
-          </Typography>
-        </Box>
       </Box>
+      <PostFooter
+        histories={post.histories}
+        characters={editor?.storage.characterCount.characters() ?? 0}
+      />
       <PublishSetting open={openSettings} post={post} onClose={() => setOpenSettings(false)} />
       <AddLocale
         open={openAddLocale}
@@ -248,7 +207,6 @@ export const EditPostPageImpl: React.FC = () => {
         onClose={handleCloseAddLocale}
         onAdded={handleAddedLocale}
       />
-      <Guide open={openEditor} anchor={anchorEl} onClose={handleCloseEditorGuide} />
     </>
   );
 };
