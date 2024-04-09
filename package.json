@@ -62,7 +62,7 @@
     "@prisma/migrate": "5.9.1",
     "@remixicon/react": "^4.2.0",
     "@tiptap/extension-character-count": "2.2.4",
-    "@tiptap/extension-placeholder": "2.2.2",
+    "@tiptap/extension-placeholder": "2.3.0",
     "@tiptap/extension-underline": "2.2.2",
     "@tiptap/html": "2.2.4",
     "@tiptap/pm": "2.2.4",
