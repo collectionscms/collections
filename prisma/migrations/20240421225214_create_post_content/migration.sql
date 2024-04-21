@@ -31,11 +31,11 @@ CREATE TABLE "Content" (
     "id" UUID NOT NULL,
     "projectId" UUID NOT NULL,
     "postId" UUID NOT NULL,
+    "fileId" UUID,
     "title" VARCHAR(255),
     "body" TEXT,
     "bodyJson" TEXT,
     "bodyHtml" TEXT,
-    "thumbnail" TEXT,
     "locale" VARCHAR(255) NOT NULL,
     "createdAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMPTZ(6) NOT NULL,
@@ -57,3 +57,6 @@ ALTER TABLE "Content" ADD CONSTRAINT "Content_projectId_fkey" FOREIGN KEY ("proj
 
 -- AddForeignKey
 ALTER TABLE "Content" ADD CONSTRAINT "Content_postId_fkey" FOREIGN KEY ("postId") REFERENCES "Post"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Content" ADD CONSTRAINT "Content_fileId_fkey" FOREIGN KEY ("fileId") REFERENCES "File"("id") ON DELETE SET NULL ON UPDATE CASCADE;
