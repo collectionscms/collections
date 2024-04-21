@@ -111,7 +111,7 @@
     "rimraf": "5.0.5",
     "simplebar-react": "3.2.4",
     "style-loader": "3.3.4",
-    "swr": "2.2.4",
+    "swr": "2.2.5",
     "uuid": "9.0.0",
     "webpack": "5.88.2",
     "webpack-bundle-analyzer": "4.10.1",
