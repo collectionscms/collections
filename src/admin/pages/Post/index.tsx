@@ -1,5 +1,5 @@
-import { Stack } from '@mui/material';
 import { RiMore2Line } from '@remixicon/react';
+import { enqueueSnackbar } from 'notistack';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -15,7 +15,6 @@ import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.
 import { buildColumns } from '../../utilities/buildColumns.js';
 import { PostContextProvider, usePost } from './Context/index.js';
 import { RowMenu } from './RowMenu/index.js';
-import { enqueueSnackbar } from 'notistack';
 
 export const PostPageImpl: React.FC = () => {
   const { t } = useTranslation();
@@ -57,6 +56,19 @@ export const PostPageImpl: React.FC = () => {
     enqueueSnackbar(t('toast.archived_successfully'), { variant: 'success' });
   };
 
+  const handlePublishSuccess = (postId: string) => {
+    const publishedPost = posts.map((post) => {
+      if (post.id == postId) {
+        return { ...post, status: 'published' };
+      } else {
+        return post;
+      }
+    });
+    mutate(publishedPost);
+    setMenu(null);
+    enqueueSnackbar(t('toast.published_successfully'), { variant: 'success' });
+  };
+
   const handleCreatePost = async () => {
     const post = await trigger();
     navigate(`${post.id}`);
@@ -75,16 +87,14 @@ export const PostPageImpl: React.FC = () => {
         return <Link href={`${row.id}`}>{defaultCell}</Link>;
       case 'action':
         return (
-          <Stack direction="row" gap={2}>
-            <IconButton
-              color="secondary"
-              shape="rounded"
-              size="small"
-              onClick={(e) => handleOpenMenu(e.currentTarget, row)}
-            >
-              <RiMore2Line />
-            </IconButton>
-          </Stack>
+          <IconButton
+            color="secondary"
+            shape="rounded"
+            size="small"
+            onClick={(e) => handleOpenMenu(e.currentTarget, row)}
+          >
+            <RiMore2Line />
+          </IconButton>
         );
       default:
         return defaultCell;
@@ -96,9 +106,11 @@ export const PostPageImpl: React.FC = () => {
       {selectedPost && (
         <RowMenu
           postId={selectedPost.id}
+          status={selectedPost.status}
           menu={menu}
           onDeleteSuccess={handleDeleteSuccess}
           onArchiveSuccess={handleArchiveSuccess}
+          onPublishSuccess={handlePublishSuccess}
           onClose={() => setMenu(null)}
         />
       )}

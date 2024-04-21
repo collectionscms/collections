@@ -1,5 +1,5 @@
 import { ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
-import { RiDeleteBinLine, RiForbid2Line } from '@remixicon/react';
+import { RiBookOpenLine, RiDeleteBinLine, RiForbid2Line } from '@remixicon/react';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { logger } from '../../../../utilities/logger.js';
@@ -10,16 +10,21 @@ import { PostContextProvider, usePost } from '../Context/index.js';
 
 type Props = {
   postId: string;
+  status: string;
   menu: any;
   onDeleteSuccess: (postId: string) => void;
   onArchiveSuccess: (postId: string) => void;
+  onPublishSuccess: (postId: string) => void;
   onClose: () => void;
 };
 
 export const RowMenuImpl: React.FC<Props> = (props) => {
-  const { postId, menu, onDeleteSuccess, onClose, onArchiveSuccess } = props;
+  const { postId, status, menu, onDeleteSuccess, onClose, onArchiveSuccess, onPublishSuccess } =
+    props;
   const [openDelete, setOpenDelete] = useState(false);
   const [openArchive, setOpenArchive] = useState(false);
+  const [openPublish, setOpenPublish] = useState(false);
+
   const { t } = useTranslation();
   const { changeStatus } = usePost();
   const { trigger: changeStatusTrigger } = changeStatus(postId);
@@ -27,6 +32,7 @@ export const RowMenuImpl: React.FC<Props> = (props) => {
   const handleClose = () => {
     setOpenDelete(false);
     setOpenArchive(false);
+    setOpenPublish(false);
     onClose();
   };
 
@@ -35,6 +41,7 @@ export const RowMenuImpl: React.FC<Props> = (props) => {
     onDeleteSuccess(postId);
   };
 
+  // publish to archive
   const handleArchive = async () => {
     try {
       await changeStatusTrigger({
@@ -42,6 +49,19 @@ export const RowMenuImpl: React.FC<Props> = (props) => {
       });
       setOpenArchive(false);
       onArchiveSuccess(postId);
+    } catch (error) {
+      logger.error(error);
+    }
+  };
+
+  // archive to publish
+  const handlePublish = async () => {
+    try {
+      await changeStatusTrigger({
+        status: 'published',
+      });
+      setOpenPublish(false);
+      onPublishSuccess(postId);
     } catch (error) {
       logger.error(error);
     }
@@ -63,6 +83,13 @@ export const RowMenuImpl: React.FC<Props> = (props) => {
         confirm={{ label: t('archive'), action: handleArchive }}
         cancel={{ label: t('cancel'), action: handleClose }}
       />
+      <BaseDialog
+        open={openPublish}
+        title={t('dialog.confirm_post_publish_title')}
+        body={t('dialog.confirm_post_publish')}
+        confirm={{ label: t('publish'), action: handlePublish }}
+        cancel={{ label: t('cancel'), action: handleClose }}
+      />
       <Menu
         anchorEl={menu}
         anchorOrigin={{
@@ -77,12 +104,22 @@ export const RowMenuImpl: React.FC<Props> = (props) => {
         onClose={handleClose}
         sx={{ zIndex: 1 }}
       >
-        <MenuItem onClick={() => setOpenArchive(true)}>
-          <ListItemIcon>
-            <RiForbid2Line size={18} />
-          </ListItemIcon>
-          <ListItemText> {t('archive')}</ListItemText>
-        </MenuItem>
+        {status === 'published' && (
+          <MenuItem onClick={() => setOpenArchive(true)}>
+            <ListItemIcon>
+              <RiForbid2Line size={18} />
+            </ListItemIcon>
+            <ListItemText> {t('archive')}</ListItemText>
+          </MenuItem>
+        )}
+        {status === 'archived' && (
+          <MenuItem onClick={() => setOpenPublish(true)}>
+            <ListItemIcon>
+              <RiBookOpenLine size={18} />
+            </ListItemIcon>
+            <ListItemText> {t('publishing')}</ListItemText>
+          </MenuItem>
+        )}
         <MenuItem onClick={() => setOpenDelete(true)}>
           <ListItemIcon>
             <RiDeleteBinLine size={18} />
