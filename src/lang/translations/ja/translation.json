@@ -146,14 +146,17 @@
     "keep_editing": "編集を続ける",
     "discard_changes": "変更を破棄",
     "confirm_post_archive_title": "非公開の確認",
-    "confirm_post_archive": "記事を非公開にしますか？"
+    "confirm_post_archive": "記事を非公開にしますか？",
+    "confirm_post_publish_title": "公開の確認",
+    "confirm_post_publish": "記事を公開しますか？"
   },
   "toast": {
     "created_successfully": "登録しました",
     "updated_successfully": "更新しました",
     "deleted_successfully": "削除しました",
     "imported_successfully": "インポートしました",
-    "archived_successfully": "非公開にしました"
+    "archived_successfully": "非公開にしました",
+    "published_successfully": "公開にしました"
   },
   "create": {
     "user": "ユーザー 新規登録",
