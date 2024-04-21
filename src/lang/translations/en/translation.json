@@ -146,14 +146,17 @@
     "keep_editing": "Keep Editing",
     "discard_changes": "Discard Changes",
     "confirm_post_archive_title": "Confirm archive",
-    "confirm_post_archive": "Are you sure you want to archive it?"
+    "confirm_post_archive": "Are you sure you want to archive it?",
+    "confirm_post_publish_title": "Confirm publish",
+    "confirm_post_publish": "Are you sure you want to publish it?"
   },
   "toast": {
     "created_successfully": "Created successfully.",
     "updated_successfully": "Updated successfully.",
     "deleted_successfully": "Deleted successfully.",
     "imported_successfully": "Imported successfully.",
-    "archived_successfully": "Archived successfully."
+    "archived_successfully": "Archived successfully.",
+    "published_successfully": "Published successfully."
   },
   "create": {
     "user": "Create User",
