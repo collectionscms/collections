@@ -138,6 +138,7 @@ model Content {
   body      String?
   bodyJson  String?
   bodyHtml  String?
+  thumbnail String?
   locale    String   @db.VarChar(255)
   createdAt DateTime @default(now()) @db.Timestamptz(6)
   updatedAt DateTime @updatedAt @db.Timestamptz(6)

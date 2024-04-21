@@ -35,6 +35,7 @@ CREATE TABLE "Content" (
     "body" TEXT,
     "bodyJson" TEXT,
     "bodyHtml" TEXT,
+    "thumbnail" TEXT,
     "locale" VARCHAR(255) NOT NULL,
     "createdAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMPTZ(6) NOT NULL,
