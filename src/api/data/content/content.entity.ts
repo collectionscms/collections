@@ -21,6 +21,7 @@ export class ContentEntity {
       id: v4(),
       projectId,
       postId,
+      fileId: null,
       title: null,
       body: null,
       bodyJson: null,
@@ -74,6 +75,26 @@ export class ContentEntity {
       ...this.content,
     };
     return Object.freeze(copy);
+  }
+
+  updateContent({
+    title,
+    body,
+    bodyJson,
+    bodyHtml,
+    fileId,
+  }: {
+    title: string | null;
+    body: string | null;
+    bodyJson: string | null;
+    bodyHtml: string | null;
+    fileId: string | null;
+  }): void {
+    this.content.title = title;
+    this.content.body = body;
+    this.content.bodyJson = bodyJson;
+    this.content.bodyHtml = bodyHtml;
+    this.content.fileId = fileId;
   }
 
   isSameLocaleContent(locale: string) {

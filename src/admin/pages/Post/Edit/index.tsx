@@ -1,4 +1,5 @@
-import { Box, Container, Stack, TextField, Toolbar } from '@mui/material';
+import { Box, Button, Container, Stack, TextField, Toolbar } from '@mui/material';
+import { RiImageLine } from '@remixicon/react';
 import { Extension } from '@tiptap/core';
 import CharacterCount from '@tiptap/extension-character-count';
 import Placeholder from '@tiptap/extension-placeholder';
@@ -7,9 +8,10 @@ import { useEditor } from '@tiptap/react';
 import { StarterKit } from '@tiptap/starter-kit';
 import { t } from 'i18next';
 import { enqueueSnackbar } from 'notistack';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useParams } from 'react-router-dom';
+import { UploadFile } from '../../../../types/index.js';
 import { logger } from '../../../../utilities/logger.js';
 import { WYSIWYG } from '../../../components/elements/WYSIWYG/index.js';
 import { useColorMode } from '../../../components/utilities/ColorMode/index.js';
@@ -32,19 +34,40 @@ export const EditPostPageImpl: React.FC = () => {
   const ref = React.useRef<HTMLButtonElement>(null);
 
   const { mode } = useColorMode();
-  let bg = '';
-  if (mode === 'light') {
-    bg = '#fff';
-  } else {
-    bg = '#1e1e1e';
-  }
+  const bg = mode === 'light' ? '#fff' : '#1e1e1e';
 
-  const { getPost, updateContent } = usePost();
+  const { getPost, updateContent, createFileImage } = usePost();
   const { data: post, mutate } = getPost(id);
   const [locale, setLocale] = useState(post.contentLocale);
-  const { trigger } = updateContent(
-    post.contents.find((content) => content.locale === locale)?.id ?? ''
-  );
+  const content = post.contents.find((content) => content.locale === locale);
+  const { trigger } = updateContent(content?.id ?? '');
+
+  // /////////////////////////////////////
+  // File Image
+  // /////////////////////////////////////
+
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [uploadFile, setUploadFile] = useState<UploadFile | null>(content?.file ?? null);
+  const { trigger: createFileImageTrigger } = createFileImage();
+
+  const handleUploadThumbnail = async () => {
+    const file = inputRef.current?.files?.[0];
+    if (!file) return;
+
+    const params = new FormData();
+    params.append('file', file);
+
+    try {
+      const res = await createFileImageTrigger(params);
+      setUploadFile(res.file);
+    } catch (e) {
+      logger.error(e);
+    }
+  };
+
+  // /////////////////////////////////////
+  // Save content
+  // /////////////////////////////////////
 
   const [openSettings, setOpenSettings] = useState(false);
   const handleOpenSettings = async () => {
@@ -68,6 +91,7 @@ export const EditPostPageImpl: React.FC = () => {
         body,
         bodyJson: JSON.stringify(bodyJson),
         bodyHtml,
+        fileId: uploadFile?.id ?? null,
       });
       mutate();
 
@@ -92,6 +116,7 @@ export const EditPostPageImpl: React.FC = () => {
   // /////////////////////////////////////
   // Editor
   // /////////////////////////////////////
+
   const [title, setTitle] = useState(post.title);
 
   const extensions = [
@@ -132,6 +157,7 @@ export const EditPostPageImpl: React.FC = () => {
 
     const content = post.contents.find((content) => content.locale === locale);
     setTitle(content?.title ?? '');
+    setUploadFile(content?.file ?? null);
     editor?.commands.setContent(toJson(content?.bodyJson));
   };
 
@@ -166,6 +192,34 @@ export const EditPostPageImpl: React.FC = () => {
         <Toolbar sx={{ mt: 0 }} />
         <Container maxWidth="sm">
           <Box sx={{ p: 10 }}>
+            <Box sx={{ mb: 1 }}>
+              {uploadFile ? (
+                <img
+                  src={uploadFile.url}
+                  style={{
+                    width: '100%',
+                    objectFit: 'cover',
+                  }}
+                />
+              ) : (
+                <Button
+                  variant="text"
+                  color="secondary"
+                  startIcon={<RiImageLine size={22} />}
+                  component="label"
+                >
+                  サムネイル画像を追加
+                  <input
+                    hidden
+                    ref={inputRef}
+                    accept="image/*"
+                    type="file"
+                    onChange={handleUploadThumbnail}
+                  />
+                </Button>
+              )}
+            </Box>
+
             <Stack spacing={1} sx={{ mb: 8 }}>
               <TextField
                 type="text"

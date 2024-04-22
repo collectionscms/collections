@@ -3,7 +3,7 @@ import Busboy from 'busboy';
 import { RequestHandler } from 'express';
 import sizeOf from 'image-size';
 import { extension } from 'mime-types';
-import { v4 as uuidv4 } from 'uuid';
+import { v4 } from 'uuid';
 import { env } from '../../env.js';
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
 import { logger } from '../../utilities/logger.js';
@@ -11,6 +11,11 @@ import { prisma } from '../database/prisma/client.js';
 import { FileService } from '../services/file.js';
 
 export const multipartHandler: RequestHandler = (req, res, next) => {
+  const projectId = req.res?.user.projects[0].id;
+  if (!projectId) {
+    throw new InvalidPayloadException('bad_request');
+  }
+
   const busboy = Busboy({ headers: req.headers });
   const service = new FileService(prisma);
 
@@ -44,7 +49,7 @@ export const multipartHandler: RequestHandler = (req, res, next) => {
     if (fileData) {
       let width = null;
       let height = null;
-      const id = uuidv4();
+      const id = v4();
 
       try {
         const dimensions = sizeOf(fileData);
@@ -56,8 +61,7 @@ export const multipartHandler: RequestHandler = (req, res, next) => {
 
       const meta: File = {
         id,
-        // todo
-        projectId: '',
+        projectId,
         storage: env.STORAGE_DRIVER,
         fileName: fileName,
         fileNameDisk: `${id}.${extension(type)}`,
