@@ -5,13 +5,13 @@ import { expressLogger } from '../../utilities/expressLogger.js';
 import { authConfig } from '../configs/auth.js';
 import { currentSession } from '../middleware/auth.js';
 import { corsMiddleware } from '../middleware/cors.js';
-import { content } from './content.js';
-import { file } from './file.js';
-import { me } from './me.js';
-import { post } from './post.js';
-import { project } from './project.js';
-import { role } from './role.js';
-import { user } from './user.js';
+import { content } from './content.router.js';
+import { file } from './file.router.js';
+import { me } from './me.router.js';
+import { post } from './post.router.js';
+import { project } from './project.router.js';
+import { role } from './role.router.js';
+import { user } from './user.router.js';
 
 export const router = express.Router();
 
