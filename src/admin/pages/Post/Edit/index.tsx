@@ -1,5 +1,5 @@
-import { Box, Button, Container, Stack, TextField, Toolbar } from '@mui/material';
-import { RiImageLine } from '@remixicon/react';
+import { Box, Button, Container, Stack, TextField, Toolbar, alpha, useTheme } from '@mui/material';
+import { RiCloseLine, RiImageLine } from '@remixicon/react';
 import { Extension } from '@tiptap/core';
 import CharacterCount from '@tiptap/extension-character-count';
 import Placeholder from '@tiptap/extension-placeholder';
@@ -13,8 +13,8 @@ import { useHotkeys } from 'react-hotkeys-hook';
 import { useParams } from 'react-router-dom';
 import { UploadFile } from '../../../../types/index.js';
 import { logger } from '../../../../utilities/logger.js';
+import { IconButton } from '../../../@extended/components/IconButton/index.js';
 import { WYSIWYG } from '../../../components/elements/WYSIWYG/index.js';
-import { useColorMode } from '../../../components/utilities/ColorMode/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
 import { AddLocale } from '../AddLocale/index.js';
 import { PostContextProvider, usePost } from '../Context/index.js';
@@ -33,8 +33,8 @@ export const EditPostPageImpl: React.FC = () => {
 
   const ref = React.useRef<HTMLButtonElement>(null);
 
-  const { mode } = useColorMode();
-  const bg = mode === 'light' ? '#fff' : '#1e1e1e';
+  const theme = useTheme();
+  const bg = theme.palette.background.paper;
 
   const { getPost, updateContent, createFileImage } = usePost();
   const { data: post, mutate } = getPost(id);
@@ -57,50 +57,73 @@ export const EditPostPageImpl: React.FC = () => {
     const params = new FormData();
     params.append('file', file);
 
+    const res = await createFileImageTrigger(params);
+    setUploadFile(res.file);
+
     try {
-      const res = await createFileImageTrigger(params);
-      setUploadFile(res.file);
-    } catch (e) {
-      logger.error(e);
+      await saveContent({
+        ...buildParams(),
+        fileId: res.file.id,
+      });
+    } catch (error) {
+      logger.error(error);
     }
+  };
+
+  const handleDeleteThumbnail = async () => {
+    setUploadFile(null);
+    try {
+      await saveContent({
+        ...buildParams(),
+        fileId: null,
+      });
+    } catch (error) {
+      logger.error(error);
+    }
+  };
+
+  // /////////////////////////////////////
+  // Open settings
+  // /////////////////////////////////////
+
+  const [openSettings, setOpenSettings] = useState(false);
+  const handleOpenSettings = async () => {
+    await saveContent(buildParams());
+    setOpenSettings(true);
   };
 
   // /////////////////////////////////////
   // Save content
   // /////////////////////////////////////
 
-  const [openSettings, setOpenSettings] = useState(false);
-  const handleOpenSettings = async () => {
+  const buildParams = () => {
+    return {
+      title: postTitle,
+      body: editor?.getText() ?? null,
+      bodyJson: JSON.stringify(editor?.getJSON()) ?? null,
+      bodyHtml: editor?.getHTML() ?? null,
+      fileId: uploadFile?.id ?? null,
+    };
+  };
+
+  const handleSaveContent = async () => {
     try {
-      await handleSaveContent(false);
-      mutate();
-      setOpenSettings(true);
+      await saveContent(buildParams());
+      enqueueSnackbar(t('saved'), { variant: 'success' });
     } catch (error) {
       logger.error(error);
     }
   };
 
-  const handleSaveContent = async (showSnackbar: boolean = true) => {
-    try {
-      const body = editor?.getText();
-      const bodyJson = editor?.getJSON();
-      const bodyHtml = editor?.getHTML();
-
-      await trigger({
-        title: title,
-        body,
-        bodyJson: JSON.stringify(bodyJson),
-        bodyHtml,
-        fileId: uploadFile?.id ?? null,
-      });
-      mutate();
-
-      if (showSnackbar) {
-        enqueueSnackbar(t('saved'), { variant: 'success' });
-      }
-    } catch (error) {
-      logger.error(error);
-    }
+  const saveContent = async (data: {
+    title: string;
+    body: string | null;
+    bodyJson: string | null;
+    bodyHtml: string | null;
+    fileId: string | null;
+  }) => {
+    await trigger(data);
+    mutate();
   };
 
   const toJson = (value?: string | null) => {
@@ -117,7 +140,7 @@ export const EditPostPageImpl: React.FC = () => {
   // Editor
   // /////////////////////////////////////
 
-  const [title, setTitle] = useState(post.title);
+  const [postTitle, setPostTitle] = useState(post.title);
 
   const extensions = [
     StarterKit.configure({
@@ -156,7 +179,7 @@ export const EditPostPageImpl: React.FC = () => {
     setLocale(locale);
 
     const content = post.contents.find((content) => content.locale === locale);
-    setTitle(content?.title ?? '');
+    setPostTitle(content?.title ?? '');
     setUploadFile(content?.file ?? null);
     editor?.commands.setContent(toJson(content?.bodyJson));
   };
@@ -194,13 +217,32 @@ export const EditPostPageImpl: React.FC = () => {
           <Box sx={{ p: 10 }}>
             <Box sx={{ mb: 1 }}>
               {uploadFile ? (
-                <img
-                  src={uploadFile.url}
-                  style={{
-                    width: '100%',
-                    objectFit: 'cover',
+                <Box
+                  sx={{
+                    position: 'relative',
                   }}
-                />
+                >
+                  <IconButton
+                    shape="rounded"
+                    color="secondary"
+                    sx={{
+                      position: 'absolute',
+                      top: 8,
+                      right: 8,
+                      backgroundColor: alpha('#fff', 0.7),
+                    }}
+                    onClick={handleDeleteThumbnail}
+                  >
+                    <RiCloseLine />
+                  </IconButton>
+                  <img
+                    src={uploadFile.url}
+                    style={{
+                      width: '100%',
+                      objectFit: 'cover',
+                    }}
+                  />
+                </Box>
               ) : (
                 <Button
                   variant="text"
@@ -208,7 +250,7 @@ export const EditPostPageImpl: React.FC = () => {
                   startIcon={<RiImageLine size={22} />}
                   component="label"
                 >
-                  サムネイル画像を追加
+                  {t('add_thumbnail')}
                   <input
                     hidden
                     ref={inputRef}
@@ -226,9 +268,9 @@ export const EditPostPageImpl: React.FC = () => {
                 fullWidth
                 multiline
                 placeholder={t('title')}
-                value={title}
+                value={postTitle}
                 autoFocus
-                onChange={(e) => setTitle(e.target.value)}
+                onChange={(e) => setPostTitle(e.target.value)}
                 sx={{
                   '.MuiOutlinedInput-notchedOutline': {
                     border: 'none !important',
