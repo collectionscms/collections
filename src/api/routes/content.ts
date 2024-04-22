@@ -65,6 +65,7 @@ router.patch(
       body: validated.data.body,
       bodyJson: validated.data.bodyJson,
       bodyHtml: validated.data.bodyHtml,
+      fileId: validated.data.fileId,
     });
 
     res.status(204).send();
