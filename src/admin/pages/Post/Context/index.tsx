@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWR, { SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
-import { LocalizedPost } from '../../../../types/index.js';
+import { LocalizedPost, UploadFile } from '../../../../types/index.js';
 import { api } from '../../../utilities/api.js';
 
 type PostContext = {
@@ -24,6 +24,12 @@ type PostContext = {
   createContent: (id: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
   updateContent: (id: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
   changeStatus: (id: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
+  createFileImage: () => SWRMutationResponse<
+    { file: UploadFile },
+    any,
+    string,
+    Record<string, any>
+  >;
 };
 
 const Context = createContext({} as PostContext);
@@ -81,6 +87,11 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       }
     );
 
+  const createFileImage = () =>
+    useSWRMutation(`/files`, async (url: string, { arg }: { arg: Record<string, any> }) => {
+      return api.post<{ file: UploadFile }>(url, arg).then((res) => res.data);
+    });
+
   const value = useMemo(
     () => ({
       getPosts,
@@ -90,8 +101,18 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       createContent,
       updateContent,
       changeStatus,
+      createFileImage,
     }),
-    [getPosts, getPost, createPost, updatePost, createContent, updateContent, changeStatus]
+    [
+      getPosts,
+      getPost,
+      createPost,
+      updatePost,
+      createContent,
+      updateContent,
+      changeStatus,
+      createFileImage,
+    ]
   );
 
   return <Context.Provider value={value}>{children}</Context.Provider>;

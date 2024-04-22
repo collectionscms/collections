@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { ContentEntity } from '../../data/content/content.entity.js';
 import { ContentRepository } from '../../data/content/content.repository.js';
+import { FileEntity } from '../../data/file/file.entity.js';
 import { PostEntity } from '../../data/post/post.entity.js';
 import { PostRepository } from '../../data/post/post.repository.js';
 import { PostHistoryRepository } from '../../data/postHistory/postHistory.repository.js';
@@ -8,7 +9,10 @@ import { UserEntity } from '../../data/user/user.entity.js';
 
 type CreatePostUseCaseResponse = {
   post: PostEntity;
-  contents: ContentEntity[];
+  contents: {
+    content: ContentEntity;
+    file: FileEntity | null;
+  }[];
   createdBy: UserEntity;
 };
 
@@ -39,7 +43,12 @@ export class CreatePostUseCase {
 
         return {
           post: result.post,
-          contents: [contentEntity],
+          contents: [
+            {
+              content: contentEntity,
+              file: null,
+            },
+          ],
           createdBy: result.createdBy,
         };
       });

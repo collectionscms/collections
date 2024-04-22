@@ -1,4 +1,4 @@
-import { Content, Permission, PostHistory, Project, Role } from '@prisma/client';
+import { Content, File, Permission, PostHistory, Project, Role } from '@prisma/client';
 
 export type UserProfile = {
   id: string;
@@ -40,6 +40,10 @@ export type LocalizedPost = {
   bodyHtml: string;
   locales: string[];
   authorName: string;
-  contents: Content[];
+  contents: (Content & { file: UploadFile | null })[];
   histories: PostHistory[];
 };
+
+export type UploadFile = {
+  url: string;
+} & File;

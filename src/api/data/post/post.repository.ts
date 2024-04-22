@@ -1,5 +1,6 @@
 import { PrismaType } from '../../database/prisma/client.js';
 import { ContentEntity } from '../content/content.entity.js';
+import { FileEntity } from '../file/file.entity.js';
 import { PostHistoryEntity } from '../postHistory/postHistory.entity.js';
 import { UserEntity } from '../user/user.entity.js';
 import { PostEntity } from './post.entity.js';
@@ -11,7 +12,7 @@ export class PostRepository {
   ): Promise<
     {
       post: PostEntity;
-      contents: ContentEntity[];
+      contents: { content: ContentEntity; file: FileEntity | null }[];
       histories: PostHistoryEntity[];
       createdBy: UserEntity;
     }[]
@@ -24,7 +25,11 @@ export class PostRepository {
         },
       },
       include: {
-        contents: true,
+        contents: {
+          include: {
+            file: true,
+          },
+        },
         createdBy: true,
         postHistories: true,
       },
@@ -35,7 +40,13 @@ export class PostRepository {
 
     return records.map((record) => {
       const post = PostEntity.Reconstruct(record);
-      const contents = record.contents.map((content) => ContentEntity.Reconstruct(content));
+      const contents = [];
+      for (const content of record.contents) {
+        contents.push({
+          content: ContentEntity.Reconstruct(content),
+          file: content.file ? FileEntity.Reconstruct(content.file) : null,
+        });
+      }
       const histories = record.postHistories.map((history) =>
         PostHistoryEntity.Reconstruct(history)
       );
@@ -67,7 +78,7 @@ export class PostRepository {
     id: string
   ): Promise<{
     post: PostEntity;
-    contents: ContentEntity[];
+    contents: { content: ContentEntity; file: FileEntity | null }[];
     histories: PostHistoryEntity[];
     createdBy: UserEntity;
   }> {
@@ -77,7 +88,11 @@ export class PostRepository {
         projectId,
       },
       include: {
-        contents: true,
+        contents: {
+          include: {
+            file: true,
+          },
+        },
         createdBy: true,
         postHistories: true,
       },
@@ -87,7 +102,13 @@ export class PostRepository {
     });
 
     const post = PostEntity.Reconstruct(record);
-    const contents = record.contents.map((content) => ContentEntity.Reconstruct(content));
+    const contents = [];
+    for (const content of record.contents) {
+      contents.push({
+        content: ContentEntity.Reconstruct(content),
+        file: content.file ? FileEntity.Reconstruct(content.file) : null,
+      });
+    }
     const histories = record.postHistories.map((history) => PostHistoryEntity.Reconstruct(history));
     const createdBy = UserEntity.Reconstruct(record.createdBy);
 
@@ -103,7 +124,11 @@ export class PostRepository {
     prisma: PrismaType,
     projectId: string,
     userId: string
-  ): Promise<{ post: PostEntity; contents: ContentEntity[]; createdBy: UserEntity } | null> {
+  ): Promise<{
+    post: PostEntity;
+    contents: { content: ContentEntity; file: FileEntity | null }[];
+    createdBy: UserEntity;
+  } | null> {
     const record = await prisma.post.findFirst({
       where: {
         projectId,
@@ -111,7 +136,11 @@ export class PostRepository {
         status: 'init',
       },
       include: {
-        contents: true,
+        contents: {
+          include: {
+            file: true,
+          },
+        },
         createdBy: true,
       },
     });
@@ -119,7 +148,13 @@ export class PostRepository {
     if (!record) return null;
 
     const post = PostEntity.Reconstruct(record);
-    const contents = record.contents.map((content) => ContentEntity.Reconstruct(content));
+    const contents = [];
+    for (const content of record.contents) {
+      contents.push({
+        content: ContentEntity.Reconstruct(content),
+        file: content.file ? FileEntity.Reconstruct(content.file) : null,
+      });
+    }
     const createdBy = UserEntity.Reconstruct(record.createdBy);
 
     return {

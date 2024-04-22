@@ -18,7 +18,13 @@ export class UpdateContentUseCase {
     id: string,
     projectId: string,
     userName: string,
-    params: { title: string; body: string; bodyJson: string; bodyHtml: string }
+    params: {
+      title: string | null;
+      body: string | null;
+      bodyJson: string | null;
+      bodyHtml: string | null;
+      fileId: string | null;
+    }
   ): Promise<ContentEntity> {
     const record = await this.contentRepository.findOneById(this.prisma, id, projectId);
     const post = await this.postRepository.findOneById(
@@ -48,10 +54,9 @@ export class UpdateContentUseCase {
 
       const entity = ContentEntity.Reconstruct({
         ...record.toPersistence(),
-        ...params,
       });
+      entity.updateContent(params);
 
-      entity.beforeValidate();
       return await this.contentRepository.update(this.prisma, entity);
     });
 

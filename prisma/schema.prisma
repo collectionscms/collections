@@ -91,16 +91,17 @@ model Permission {
 }
 
 model File {
-  id           String  @id @default(uuid()) @db.Uuid
-  projectId    String  @db.Uuid
-  storage      String  @db.VarChar(255)
-  fileName     String  @db.VarChar(255)
-  fileNameDisk String  @db.VarChar(255)
-  type         String  @db.VarChar(255)
+  id           String    @id @default(uuid()) @db.Uuid
+  projectId    String    @db.Uuid
+  storage      String    @db.VarChar(255)
+  fileName     String    @db.VarChar(255)
+  fileNameDisk String    @db.VarChar(255)
+  type         String    @db.VarChar(255)
   fileSize     Int?
   width        Int?
   height       Int?
-  project      Project @relation(fields: [projectId], references: [id])
+  project      Project   @relation(fields: [projectId], references: [id])
+  contents     Content[]
 }
 
 model Post {
@@ -134,6 +135,7 @@ model Content {
   id        String   @id @default(uuid()) @db.Uuid
   projectId String   @db.Uuid
   postId    String   @db.Uuid
+  fileId    String?  @db.Uuid
   title     String?  @db.VarChar(255)
   body      String?
   bodyJson  String?
@@ -143,4 +145,5 @@ model Content {
   updatedAt DateTime @updatedAt @db.Timestamptz(6)
   project   Project  @relation(fields: [projectId], references: [id])
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  file      File?    @relation(fields: [fileId], references: [id])
 }

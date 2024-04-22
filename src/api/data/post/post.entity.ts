@@ -2,6 +2,7 @@ import { Post } from '@prisma/client';
 import { v4 } from 'uuid';
 import { LocalizedPost } from '../../../types/index.js';
 import { ContentEntity } from '../content/content.entity.js';
+import { FileEntity } from '../file/file.entity.js';
 import { PostHistoryEntity } from '../postHistory/postHistory.entity.js';
 import { UserEntity } from '../user/user.entity.js';
 
@@ -83,12 +84,12 @@ export class PostEntity {
 
   toResponse(
     locale: string,
-    contents: ContentEntity[],
+    contents: { content: ContentEntity; file: FileEntity | null }[],
     histories: PostHistoryEntity[],
     createdBy: UserEntity
   ): LocalizedPost {
-    const localizedContent = contents.find((content) => content.isSameLocaleContent(locale));
-    const locales = contents.map((content) => content.locale());
+    const localizedContent = contents.find((c) => c.content.isSameLocaleContent(locale));
+    const locales = contents.map((c) => c.content.locale());
 
     return {
       id: this.post.id,
@@ -97,14 +98,17 @@ export class PostEntity {
       updatedAt: this.post.updatedAt,
       publishedAt: this.post.publishedAt,
       defaultLocale: this.post.defaultLocale,
-      title: localizedContent?.title() ?? '',
-      body: localizedContent?.body() ?? '',
-      bodyJson: localizedContent?.bodyJson() ?? '',
-      bodyHtml: localizedContent?.bodyHtml() ?? '',
-      contentLocale: localizedContent?.locale() || this.post.defaultLocale,
+      title: localizedContent?.content.title() ?? '',
+      body: localizedContent?.content.body() ?? '',
+      bodyJson: localizedContent?.content.bodyJson() ?? '',
+      bodyHtml: localizedContent?.content.bodyHtml() ?? '',
+      contentLocale: localizedContent?.content.locale() || this.post.defaultLocale,
       locales,
       authorName: createdBy.name(),
-      contents: contents.map((content) => content.toResponse()),
+      contents: contents.map((c) => ({
+        ...c.content.toResponse(),
+        file: c.file?.toResponse() ?? null,
+      })),
       histories: histories.map((history) => history.toResponse()),
     };
   }

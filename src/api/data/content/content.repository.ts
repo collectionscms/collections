@@ -22,6 +22,8 @@ export class ContentRepository {
   }
 
   async update(prisma: PrismaType, contentEntity: ContentEntity): Promise<ContentEntity> {
+    contentEntity.beforeValidate();
+
     const record = await prisma.content.update({
       where: {
         id: contentEntity.id(),
