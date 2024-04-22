@@ -138,6 +138,7 @@
   "saved": "Saved",
   "add_localized_content": "Add localized content",
   "add_to": "Add",
+  "add_thumbnail": "Add thumbnail image",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",
