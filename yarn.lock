@@ -38,10 +38,10 @@
     classnames "^2.2.6"
     rc-util "^5.31.1"
 
-"@auth/core@0.25.0":
-  version "0.25.0"
-  resolved "https://registry.yarnpkg.com/@auth/core/-/core-0.25.0.tgz#8bdccebdce669fc49d200fc27ba6d4cbe3c52232"
-  integrity sha512-UxENsD+WNlY1NOFsr3Ygc7F1Ypbia8VCd9NU8cbAhSJ0Z8dtyZ0xmssRo1G3ZW50QnW0AaAMuYzY5oumnPMQzA==
+"@auth/core@0.30.0":
+  version "0.30.0"
+  resolved "https://registry.yarnpkg.com/@auth/core/-/core-0.30.0.tgz#78b74b13a1e2193b7b2ae42c0f7dc2fb4e698b2d"
+  integrity sha512-8AE4m/nk+4EIiVCJwxZAsJeAQuzpEC8M8768mmKVn60CGDdupKQkVhxbRlm5Qh7eNRCoFFME+0DvtaX2aXrYaA==
   dependencies:
     "@panva/hkdf" "^1.1.1"
     "@types/cookie" "0.6.0"
@@ -51,12 +51,12 @@
     preact "10.11.3"
     preact-render-to-string "5.2.3"
 
-"@auth/express@0.5.0":
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/@auth/express/-/express-0.5.0.tgz#00b124584e7c68cf02dd476111fe41d4ef377d79"
-  integrity sha512-zNE5fkhkO6HgYCZC/rhLT1kEiis3EzN/nEcagbeWx836UA7O6eDPQJFlr08P32mzNHDkunzIRdFn6e/IFlVV0g==
+"@auth/express@0.5.3":
+  version "0.5.3"
+  resolved "https://registry.yarnpkg.com/@auth/express/-/express-0.5.3.tgz#437c8505cd57d45adb80a734fdc987d920731f19"
+  integrity sha512-ewe+qxJOqh0BY9tEs0RrxyBmo1AGYx/d1AGJsDvgz4SEp6scZST0faHGQyAKUgx1Evv2guyhlRJaMzvjvb9w8g==
   dependencies:
-    "@auth/core" "0.25.0"
+    "@auth/core" "0.30.0"
 
 "@aws-crypto/crc32@3.0.0":
   version "3.0.0"
