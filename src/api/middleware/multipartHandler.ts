@@ -8,7 +8,7 @@ import { env } from '../../env.js';
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
 import { logger } from '../../utilities/logger.js';
 import { prisma } from '../database/prisma/client.js';
-import { FileService } from '../services/file.js';
+import { FileService } from '../services/file.service.js';
 
 export const multipartHandler: RequestHandler = (req, res, next) => {
   const projectId = req.res?.user.projects[0].id;

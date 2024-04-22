@@ -4,7 +4,7 @@ import { UnknownException } from '../../exceptions/storage/unknown.js';
 import { logger } from '../../utilities/logger.js';
 import { prisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
-import { FileService } from '../services/file.js';
+import { FileService } from '../services/file.service.js';
 import { getStorage } from '../storages/storage.js';
 
 const router = express.Router();

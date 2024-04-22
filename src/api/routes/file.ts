@@ -4,7 +4,7 @@ import { prisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
 import { authenticatedUser } from '../middleware/auth.js';
 import { multipartHandler } from '../middleware/multipartHandler.js';
-import { FileService } from '../services/file.js';
+import { FileService } from '../services/file.service.js';
 
 const router = express.Router();
 
