@@ -2,10 +2,10 @@ import express, { Request, Response } from 'express';
 import { Readable } from 'stream';
 import { UnknownException } from '../../exceptions/storage/unknown.js';
 import { logger } from '../../utilities/logger.js';
+import { FileRepository } from '../data/file/file.repository.js';
 import { prisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
-import { FileService } from '../services/file.service.js';
-import { getStorage } from '../storages/storage.js';
+import { GetDataUseCase } from '../useCases/asset/getData.useCase.js';
 
 const router = express.Router();
 
@@ -19,13 +19,8 @@ router.get(
 router.get(
   '/assets/:id',
   asyncHandler(async (req: Request, res: Response) => {
-    const service = new FileService(prisma);
-    const file = await service.findFile(req.params.id);
-
-    const storage = getStorage(file.storage);
-    const key = storage.key(file.fileNameDisk);
-
-    const data = await storage.getBuffer(key);
+    const useCase = new GetDataUseCase(prisma, new FileRepository());
+    const { file, data } = await useCase.execute(req.params.id);
 
     res.attachment(file.fileName);
     res.setHeader('Content-Type', file.type);

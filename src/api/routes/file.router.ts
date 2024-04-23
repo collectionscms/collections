@@ -1,10 +1,13 @@
+import { File } from '@prisma/client';
 import express, { Request, Response } from 'express';
-import { env } from '../../env.js';
+import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
+import { FileRepository } from '../data/file/file.repository.js';
 import { prisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
 import { authenticatedUser } from '../middleware/auth.js';
 import { multipartHandler } from '../middleware/multipartHandler.js';
-import { FileService } from '../services/file.service.js';
+import { CreateFileUseCase } from '../useCases/file/createFile.useCase.js';
+import { GetFileUseCase } from '../useCases/file/getFile.useCase.js';
 
 const router = express.Router();
 
@@ -13,13 +16,16 @@ router.post(
   authenticatedUser,
   asyncHandler(multipartHandler),
   asyncHandler(async (_req: Request, res: Response) => {
-    const keys = res.locals.savedFileKeys;
+    const files = res.locals.files as Omit<File, 'id'>[];
+    const fileData = res.locals.fileData as Buffer;
 
-    const service = new FileService(prisma);
-    const file = await service.findFile(keys[0]);
-    const url = assetPath(file.id);
+    if (!files || files.length === 0 || !fileData) {
+      throw new InvalidPayloadException('bad_request');
+    }
 
-    res.json({ file: { ...file, url } });
+    const useCase = new CreateFileUseCase(prisma, fileData, new FileRepository());
+    const response = await useCase.execute(files[0]);
+    res.json(response);
   })
 );
 
@@ -29,14 +35,10 @@ router.get(
   asyncHandler(async (req: Request, res: Response) => {
     const id = req.params.id;
 
-    const service = new FileService(prisma);
-    const file = await service.findFile(id);
-    const url = assetPath(file.id);
-
-    res.json({ file: { ...file, url } });
+    const useCase = new GetFileUseCase(prisma, new FileRepository());
+    const data = await useCase.execute(id);
+    res.json(data);
   })
 );
-
-const assetPath = (id: string) => `${env.PUBLIC_SERVER_URL}/assets/${id}`;
 
 export const file = router;

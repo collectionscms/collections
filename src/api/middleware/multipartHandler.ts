@@ -7,8 +7,6 @@ import { v4 } from 'uuid';
 import { env } from '../../env.js';
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
 import { logger } from '../../utilities/logger.js';
-import { prisma } from '../database/prisma/client.js';
-import { FileService } from '../services/file.service.js';
 
 export const multipartHandler: RequestHandler = (req, res, next) => {
   const projectId = req.res?.user.projects[0].id;
@@ -17,13 +15,12 @@ export const multipartHandler: RequestHandler = (req, res, next) => {
   }
 
   const busboy = Busboy({ headers: req.headers });
-  const service = new FileService(prisma);
 
   let fileName = '';
   let type = '';
   let fileData: Buffer | null = null;
   let fileCount = 0;
-  let savedFileKeys: string[] = [];
+  let files: Omit<File, 'id'>[] = [];
 
   busboy.on('file', async (_name, stream, info) => {
     const { filename, mimeType } = info;
@@ -59,8 +56,7 @@ export const multipartHandler: RequestHandler = (req, res, next) => {
         logger.info(err, `Couldn't get dimensions of file "${fileName}"`);
       }
 
-      const meta: File = {
-        id,
+      const file = {
         projectId,
         storage: env.STORAGE_DRIVER,
         fileName: fileName,
@@ -71,8 +67,7 @@ export const multipartHandler: RequestHandler = (req, res, next) => {
         height,
       };
 
-      const file = await service.upload(fileData, meta);
-      savedFileKeys.push(file.id);
+      files.push(file);
       tryDone();
     }
   });
@@ -81,8 +76,8 @@ export const multipartHandler: RequestHandler = (req, res, next) => {
 
   const tryDone = () => {
     if (fileCount === 0) throw new InvalidPayloadException('no_file_req_body');
-    if (fileCount === savedFileKeys.length) {
-      res.locals.savedFileKeys = savedFileKeys;
+    if (fileCount === files.length) {
+      res.locals.files = files;
       res.locals.fileData = fileData;
       return next();
     }

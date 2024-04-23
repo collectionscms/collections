@@ -1,21 +1,14 @@
-import { File, PrismaClient } from '@prisma/client';
 import { env } from '../../env.js';
+import { FileEntity } from '../data/file/file.entity.js';
+import { FileRepository } from '../data/file/file.repository.js';
+import { PrismaType } from '../database/prisma/client.js';
 import { getStorage } from '../storages/storage.js';
 
 export class FileService {
-  prisma: PrismaClient;
-
-  constructor(prisma: PrismaClient) {
-    this.prisma = prisma;
-  }
-
-  async findFile(id: string) {
-    return this.prisma.file.findUniqueOrThrow({
-      where: {
-        id,
-      },
-    });
-  }
+  constructor(
+    private readonly prisma: PrismaType,
+    private readonly fileRepository: FileRepository
+  ) {}
 
   /**
    * @description Upload file to storage
@@ -23,14 +16,11 @@ export class FileService {
    * @param file
    * @returns file
    */
-  async upload(buffer: Buffer, file: File): Promise<File> {
+  async upload(buffer: Buffer, file: FileEntity): Promise<FileEntity> {
     const storage = getStorage(env.STORAGE_DRIVER);
     await storage.put(file.fileNameDisk, buffer);
 
-    const uploadedFile = await this.prisma.file.create({
-      data: file,
-    });
-
-    return uploadedFile;
+    const entity = await this.fileRepository.upload(this.prisma, file);
+    return entity;
   }
 }
