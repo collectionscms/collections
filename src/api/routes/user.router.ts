@@ -6,7 +6,7 @@ import { UserRepository } from '../data/user/user.repository.js';
 import { prisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
 import { authenticatedUser } from '../middleware/auth.js';
-import { MailService } from '../services/mail.js';
+import { MailService } from '../services/mail.service.js';
 import { oneWayHash } from '../utilities/oneWayHash.js';
 import { updateUserUseCaseSchema } from '../useCases/ user/updateUser.schema.js';
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
