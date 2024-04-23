@@ -8,6 +8,7 @@ import { authenticatedUser } from '../middleware/auth.js';
 import { multipartHandler } from '../middleware/multipartHandler.js';
 import { CreateFileUseCase } from '../useCases/file/createFile.useCase.js';
 import { GetFileUseCase } from '../useCases/file/getFile.useCase.js';
+import { getFileUseCaseSchema } from '../useCases/file/getFileUse.schema.js';
 
 const router = express.Router();
 
@@ -33,10 +34,13 @@ router.get(
   '/files/:id',
   authenticatedUser,
   asyncHandler(async (req: Request, res: Response) => {
-    const id = req.params.id;
+    const validated = getFileUseCaseSchema.safeParse({
+      fileId: req.params.id,
+    });
+    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
     const useCase = new GetFileUseCase(prisma, new FileRepository());
-    const data = await useCase.execute(id);
+    const data = await useCase.execute(validated.data.fileId);
     res.json(data);
   })
 );

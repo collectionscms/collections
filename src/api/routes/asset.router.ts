@@ -6,6 +6,8 @@ import { FileRepository } from '../data/file/file.repository.js';
 import { prisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
 import { GetDataUseCase } from '../useCases/asset/getData.useCase.js';
+import { getDataUseCaseSchema } from '../useCases/asset/getData.schema.js';
+import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
 
 const router = express.Router();
 
@@ -19,8 +21,13 @@ router.get(
 router.get(
   '/assets/:id',
   asyncHandler(async (req: Request, res: Response) => {
+    const validated = getDataUseCaseSchema.safeParse({
+      fileId: req.params.id,
+    });
+    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
+
     const useCase = new GetDataUseCase(prisma, new FileRepository());
-    const { file, data } = await useCase.execute(req.params.id);
+    const { file, data } = await useCase.execute(validated.data.fileId);
 
     res.attachment(file.fileName);
     res.setHeader('Content-Type', file.type);
