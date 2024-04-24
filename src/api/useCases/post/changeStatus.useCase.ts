@@ -25,6 +25,7 @@ export class ChangeStatusUseCase {
       await this.postRepository.update(tx, projectId, postEntity);
 
       const postHistoryEntity = PostHistoryEntity.Construct({
+        projectId: post.projectId,
         postId: post.id(),
         userName,
         status: params.status,

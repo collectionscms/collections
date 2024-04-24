@@ -32,6 +32,7 @@ export class UpdatePostUseCase {
       await this.postHistoryRepository.create(
         tx,
         PostHistoryEntity.Construct({
+          projectId: result.projectId,
           postId: result.id(),
           userName,
           status: params.status,

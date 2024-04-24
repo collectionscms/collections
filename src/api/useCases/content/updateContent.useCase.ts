@@ -44,6 +44,7 @@ export class UpdateContentUseCase {
         await this.postHistoryRepository.create(
           tx,
           PostHistoryEntity.Construct({
+            projectId: post.projectId,
             postId: post.id(),
             userName,
             status: 'draft',
