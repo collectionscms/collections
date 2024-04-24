@@ -1,16 +1,24 @@
+import { v4 } from 'uuid';
 import { prisma } from '../prisma/client.js';
 import { globalOrganization } from './createOrganizations.js';
 
-export const globalProject = '10000000-1000-0000-0000-000000000001';
+export const usProject = v4();
+export const jaProject = v4();
 
 export const createProjects = async (): Promise<void> => {
   await prisma.project.createMany({
     data: [
       {
-        id: globalProject,
+        id: usProject,
         organizationId: globalOrganization,
-        slug: 'global',
-        name: 'Global Project',
+        slug: 'us',
+        name: 'US Project',
+      },
+      {
+        id: jaProject,
+        organizationId: globalOrganization,
+        slug: 'ja',
+        name: 'JA Project',
       },
     ],
   });

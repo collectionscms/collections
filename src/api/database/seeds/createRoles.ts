@@ -1,29 +1,52 @@
+import { v4 } from 'uuid';
 import { prisma } from '../prisma/client.js';
-import { globalProject } from './createProjects.js';
+import { jaProject, usProject } from './createProjects.js';
 
-export const adminRole = '10000000-2000-0000-0000-000000000001';
-export const editorRole = '10000000-2000-0000-0000-000000000002';
-export const guestRole = '10000000-2000-0000-0000-000000000003';
+export const usAdminRole = v4();
+export const usEditorRole = v4();
+export const usGuestRole = v4();
+export const jaAdminRole = v4();
+export const jaEditorRole = v4();
+export const jaGuestRole = v4();
 
 export const createRoles = async (): Promise<void> => {
   await prisma.role.createMany({
     data: [
-      // Global Project
+      // US Project
       {
-        id: adminRole,
-        projectId: globalProject,
+        id: usAdminRole,
+        projectId: usProject,
         name: 'Administrator',
         description: 'Administrator',
       },
       {
-        id: editorRole,
-        projectId: globalProject,
+        id: usEditorRole,
+        projectId: usProject,
         name: 'Editor',
         description: 'Editor',
       },
       {
-        id: guestRole,
-        projectId: globalProject,
+        id: usGuestRole,
+        projectId: usProject,
+        name: 'Guest',
+        description: 'Guest',
+      },
+      // Ja Project
+      {
+        id: jaAdminRole,
+        projectId: jaProject,
+        name: 'Administrator',
+        description: 'Administrator',
+      },
+      {
+        id: jaEditorRole,
+        projectId: jaProject,
+        name: 'Editor',
+        description: 'Editor',
+      },
+      {
+        id: jaGuestRole,
+        projectId: jaProject,
         name: 'Guest',
         description: 'Guest',
       },

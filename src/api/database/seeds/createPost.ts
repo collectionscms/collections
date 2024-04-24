@@ -1,19 +1,20 @@
 import { faker } from '@faker-js/faker';
 import { v4 } from 'uuid';
 import { prisma } from '../prisma/client.js';
-import { globalProject } from './createProjects.js';
 import { adminUser } from './createUsers.js';
 
-export const createPost = async (options?: {
-  id?: string;
-  projectId?: string;
-  slug?: string;
-  status?: string;
-  publishedAt?: Date;
-  defaultLocale?: string;
-  version?: number;
-  createdById?: string;
-}): Promise<void> => {
+export const createPost = async (
+  projectId: string,
+  options?: {
+    id?: string;
+    slug?: string;
+    status?: string;
+    publishedAt?: Date;
+    defaultLocale?: string;
+    version?: number;
+    createdById?: string;
+  }
+): Promise<void> => {
   const currentTime = new Date();
   const title = faker.music.songName();
   const body = faker.lorem.lines(3);
@@ -26,7 +27,7 @@ export const createPost = async (options?: {
   await prisma.post.create({
     data: {
       id: options?.id ?? v4(),
-      projectId: options?.projectId ?? globalProject,
+      projectId,
       slug: options?.slug ?? faker.lorem.slug(),
       status: options?.status ?? 'published',
       publishedAt: options?.publishedAt ?? currentTime,
@@ -38,7 +39,7 @@ export const createPost = async (options?: {
       contents: {
         create: {
           id: v4(),
-          projectId: options?.projectId ?? globalProject,
+          projectId,
           locale: options?.defaultLocale ?? 'ja',
           title: title,
           body: body,
@@ -52,6 +53,7 @@ export const createPost = async (options?: {
       postHistories: {
         create: {
           id: v4(),
+          projectId,
           userName: user.name,
           status: options?.status ?? 'published',
           version: options?.version ?? 0,
