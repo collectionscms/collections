@@ -881,7 +881,7 @@
   dependencies:
     "@babel/helper-plugin-utils" "^7.20.2"
 
-"@babel/runtime@^7.11.2", "@babel/runtime@^7.12.5", "@babel/runtime@^7.18.3", "@babel/runtime@^7.22.10", "@babel/runtime@^7.22.15", "@babel/runtime@^7.22.5", "@babel/runtime@^7.23.2", "@babel/runtime@^7.23.7", "@babel/runtime@^7.23.9", "@babel/runtime@^7.3.1", "@babel/runtime@^7.5.5", "@babel/runtime@^7.8.7":
+"@babel/runtime@^7.11.2", "@babel/runtime@^7.12.5", "@babel/runtime@^7.18.3", "@babel/runtime@^7.22.5", "@babel/runtime@^7.23.2", "@babel/runtime@^7.23.7", "@babel/runtime@^7.23.9", "@babel/runtime@^7.3.1", "@babel/runtime@^7.5.5", "@babel/runtime@^7.8.7":
   version "7.24.4"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.24.4.tgz#de795accd698007a66ba44add6cc86542aff1edd"
   integrity sha512-dkxf7+hn8mFBwKjs9bvBlArzLVxVbS8usaPUDd5p2a9JCL9tB8OaOVN1isD4+Xyk4ns89/xeOmbQvgdK7IIVdA==
@@ -3128,10 +3128,10 @@
     tapable "^2.2.0"
     webpack "^5"
 
-"@types/webpack-node-externals@3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@types/webpack-node-externals/-/webpack-node-externals-3.0.0.tgz#4b85b93cde99a16779c4b1faebaa23c3ef46ec0b"
-  integrity sha512-Z3ELJiH0aZjxkoymT2nrGSmCF/CYjiqC0bpv4/DWy9h7e6gP4B2qmKZFHJFermeF0SYURbSw0puddQl9dMMV0w==
+"@types/webpack-node-externals@3.0.4":
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/@types/webpack-node-externals/-/webpack-node-externals-3.0.4.tgz#00581677aedea57cbe180afc2987b12fa95cf351"
+  integrity sha512-8Z3/edqxE3RRlOJwKSgOFxLZRt/i1qFlv/Bi308ZUKo9jh8oGngd9r8GR0ZNKW5AEJq8QNQE3b17CwghTjQ0Uw==
   dependencies:
     "@types/node" "*"
     webpack "^5"
