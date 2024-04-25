@@ -9,8 +9,12 @@ export const seedDev = async (): Promise<void> => {
     await createProjects();
     await createRoles();
     await createUsers();
-    await createPost(usProject);
-    await createPost(jaProject);
+    await createPost(usProject, {
+      defaultLocale: 'en',
+    });
+    await createPost(jaProject, {
+      defaultLocale: 'ja',
+    });
 
     process.exit(0);
   } catch (e) {

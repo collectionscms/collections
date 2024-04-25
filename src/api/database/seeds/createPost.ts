@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { v4 } from 'uuid';
-import { prisma } from '../prisma/client.js';
+import { bypassPrisma, prisma } from '../prisma/client.js';
 import { adminUser } from './createUsers.js';
 
 export const createPost = async (
@@ -24,14 +24,14 @@ export const createPost = async (
     },
   });
 
-  await prisma.post.create({
+  await bypassPrisma().post.create({
     data: {
       id: options?.id ?? v4(),
       projectId,
       slug: options?.slug ?? faker.lorem.slug(),
       status: options?.status ?? 'published',
       publishedAt: options?.publishedAt ?? currentTime,
-      defaultLocale: options?.defaultLocale ?? 'ja',
+      defaultLocale: options?.defaultLocale ?? 'en',
       version: options?.version ?? 0,
       createdAt: currentTime,
       updatedAt: currentTime,
@@ -40,7 +40,7 @@ export const createPost = async (
         create: {
           id: v4(),
           projectId,
-          locale: options?.defaultLocale ?? 'ja',
+          locale: options?.defaultLocale ?? 'en',
           title: title,
           body: body,
           // todo: add
