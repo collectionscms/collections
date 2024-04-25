@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,31 +7,21 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Organization {
-  id        String    @id @default(uuid()) @db.Uuid
-  name      String    @db.VarChar(255)
-  enabled   Boolean   @default(true)
-  createdAt DateTime  @default(now()) @db.Timestamptz(6)
-  updatedAt DateTime  @updatedAt @db.Timestamptz(6)
-  projects  Project[]
-}
-
 model Project {
-  id             String        @id @default(uuid()) @db.Uuid
-  organizationId String        @db.Uuid
-  name           String        @db.VarChar(255)
-  description    String?       @db.VarChar(255)
-  slug           String        @unique @db.VarChar(255)
-  createdAt      DateTime      @default(now()) @db.Timestamptz(6)
-  updatedAt      DateTime      @updatedAt @db.Timestamptz(6)
-  userProjects   UserProject[]
-  files          File[]
-  roles          Role[]
-  permissions    Permission[]
-  organization   Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  posts          Post[]
-  contents       Content[]
-  PostHistory    PostHistory[]
+  id           String        @id @default(uuid()) @db.Uuid
+  name         String        @db.VarChar(255)
+  description  String?       @db.VarChar(255)
+  subdomain    String        @unique @db.VarChar(255)
+  enabled      Boolean       @default(true)
+  createdAt    DateTime      @default(now()) @db.Timestamptz(6)
+  updatedAt    DateTime      @updatedAt @db.Timestamptz(6)
+  userProjects UserProject[]
+  files        File[]
+  roles        Role[]
+  permissions  Permission[]
+  posts        Post[]
+  contents     Content[]
+  PostHistory  PostHistory[]
 }
 
 model User {

@@ -1,21 +1,10 @@
 -- CreateTable
-CREATE TABLE "Organization" (
-    "id" UUID NOT NULL,
-    "name" VARCHAR(255) NOT NULL,
-    "enabled" BOOLEAN NOT NULL DEFAULT true,
-    "createdAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMPTZ(6) NOT NULL,
-
-    CONSTRAINT "Organization_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "Project" (
     "id" UUID NOT NULL,
-    "organizationId" UUID NOT NULL,
     "name" VARCHAR(255) NOT NULL,
     "description" VARCHAR(255),
-    "slug" VARCHAR(255) NOT NULL,
+    "subdomain" VARCHAR(255) NOT NULL,
+    "enabled" BOOLEAN NOT NULL DEFAULT true,
     "createdAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMPTZ(6) NOT NULL,
 
@@ -139,16 +128,13 @@ CREATE TABLE "Content" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Project_slug_key" ON "Project"("slug");
+CREATE UNIQUE INDEX "Project_subdomain_key" ON "Project"("subdomain");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "UserProject_userId_projectId_key" ON "UserProject"("userId", "projectId");
-
--- AddForeignKey
-ALTER TABLE "Project" ADD CONSTRAINT "Project_organizationId_fkey" FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "UserProject" ADD CONSTRAINT "UserProject_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
