@@ -1,12 +1,12 @@
 import { env } from '../../env.js';
 import { FileEntity } from '../data/file/file.entity.js';
 import { FileRepository } from '../data/file/file.repository.js';
-import { PrismaType } from '../database/prisma/client.js';
+import { ProjectPrismaType } from '../database/prisma/client.js';
 import { getStorage } from '../storages/storage.js';
 
 export class FileService {
   constructor(
-    private readonly prisma: PrismaType,
+    private readonly prisma: ProjectPrismaType,
     private readonly fileRepository: FileRepository
   ) {}
 

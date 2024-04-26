@@ -1,11 +1,10 @@
-import { PrismaClient } from '@prisma/client';
 import { ContentEntity } from '../../data/content/content.entity.js';
 import { ContentRepository } from '../../data/content/content.repository.js';
 import { FileEntity } from '../../data/file/file.entity.js';
 import { PostEntity } from '../../data/post/post.entity.js';
 import { PostRepository } from '../../data/post/post.repository.js';
-import { PostHistoryRepository } from '../../data/postHistory/postHistory.repository.js';
 import { UserEntity } from '../../data/user/user.entity.js';
+import { ProjectPrismaClient } from '../../database/prisma/client.js';
 
 type CreatePostUseCaseResponse = {
   post: PostEntity;
@@ -18,10 +17,9 @@ type CreatePostUseCaseResponse = {
 
 export class CreatePostUseCase {
   constructor(
-    private readonly prisma: PrismaClient,
+    private readonly prisma: ProjectPrismaClient,
     private readonly postRepository: PostRepository,
-    private readonly contentRepository: ContentRepository,
-    private readonly postHistoryRepository: PostHistoryRepository
+    private readonly contentRepository: ContentRepository
   ) {}
 
   async execute(
@@ -29,7 +27,7 @@ export class CreatePostUseCase {
     userId: string,
     locale: string
   ): Promise<CreatePostUseCaseResponse> {
-    let record = await this.postRepository.findInitByUserId(this.prisma, projectId, userId);
+    let record = await this.postRepository.findInitByUserId(this.prisma, userId);
     if (!record) {
       const { post, content } = PostEntity.Construct({
         projectId,

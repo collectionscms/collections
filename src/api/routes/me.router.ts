@@ -3,7 +3,7 @@ import express, { Request, Response } from 'express';
 import { authConfig } from '../configs/auth.js';
 import { UserEntity } from '../data/user/user.entity.js';
 import { UserRepository } from '../data/user/user.repository.js';
-import { prisma } from '../database/prisma/client.js';
+import { projectPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
 import { authenticatedUser } from '../middleware/auth.js';
 import { oneWayHash } from '../utilities/oneWayHash.js';
@@ -26,11 +26,12 @@ router.patch(
   authenticatedUser,
   asyncHandler(async (req: Request, res: Response) => {
     const id = res.user.id;
+    const projectId = res.user.projects[0].id;
 
     const repository = new UserRepository();
-    await repository.checkUniqueEmail(prisma, id, req.body.email);
+    await repository.checkUniqueEmail(projectPrisma(projectId), id, req.body.email);
 
-    const user = await repository.findUserById(prisma, id);
+    const user = await repository.findUserById(projectPrisma(projectId), id);
     const password = req.body.password ? await oneWayHash(req.body.password) : user.password();
 
     const entity = UserEntity.Reconstruct({
@@ -39,7 +40,7 @@ router.patch(
       name: req.body.name,
       email: req.body.email,
     });
-    await repository.update(prisma, id, entity);
+    await repository.update(projectPrisma(projectId), id, entity);
 
     res.status(204).end();
   })

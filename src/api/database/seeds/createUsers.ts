@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { v4 as uuidV4, v4 } from 'uuid';
 import { oneWayHash } from '../../utilities/oneWayHash.js';
-import { bypassPrisma } from '../prisma/client.js';
+import { bypassRLSPrisma } from '../prisma/client.js';
 import { jaProject, usProject } from './createProjects.js';
 import {
   jaAdminRole,
@@ -19,7 +19,7 @@ export const guestUser = v4();
 export const createUsers = async (): Promise<void> => {
   const password = await oneWayHash('password');
 
-  await bypassPrisma().$transaction(async (tx) => {
+  await bypassRLSPrisma().$transaction(async (tx) => {
     await tx.user.createMany({
       data: [
         {

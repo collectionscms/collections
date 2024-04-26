@@ -1,4 +1,4 @@
-import { PrismaType } from '../../database/prisma/client.js';
+import { ProjectPrismaClient, ProjectPrismaType } from '../../database/prisma/client.js';
 import { ContentEntity } from '../content/content.entity.js';
 import { FileEntity } from '../file/file.entity.js';
 import { PostHistoryEntity } from '../postHistory/postHistory.entity.js';
@@ -6,10 +6,7 @@ import { UserEntity } from '../user/user.entity.js';
 import { PostEntity } from './post.entity.js';
 
 export class PostRepository {
-  async findManyByProjectId(
-    prisma: PrismaType,
-    projectId: string
-  ): Promise<
+  async findManyByProjectId(prisma: ProjectPrismaType): Promise<
     {
       post: PostEntity;
       contents: { content: ContentEntity; file: FileEntity | null }[];
@@ -19,7 +16,6 @@ export class PostRepository {
   > {
     const records = await prisma.post.findMany({
       where: {
-        projectId,
         status: {
           not: 'init',
         },
@@ -61,7 +57,7 @@ export class PostRepository {
     });
   }
 
-  async findOneById(prisma: PrismaType, projectId: string, id: string): Promise<PostEntity> {
+  async findOneById(prisma: ProjectPrismaType, projectId: string, id: string): Promise<PostEntity> {
     const record = await prisma.post.findFirstOrThrow({
       where: {
         id,
@@ -73,7 +69,7 @@ export class PostRepository {
   }
 
   async findOneWithContentsById(
-    prisma: PrismaType,
+    prisma: ProjectPrismaType,
     projectId: string,
     id: string
   ): Promise<{
@@ -121,8 +117,7 @@ export class PostRepository {
   }
 
   async findInitByUserId(
-    prisma: PrismaType,
-    projectId: string,
+    prisma: ProjectPrismaClient,
     userId: string
   ): Promise<{
     post: PostEntity;
@@ -131,7 +126,6 @@ export class PostRepository {
   } | null> {
     const record = await prisma.post.findFirst({
       where: {
-        projectId,
         createdById: userId,
         status: 'init',
       },
@@ -165,7 +159,7 @@ export class PostRepository {
   }
 
   async create(
-    prisma: PrismaType,
+    prisma: ProjectPrismaType,
     postEntity: PostEntity
   ): Promise<{ post: PostEntity; createdBy: UserEntity }> {
     const record = await prisma.post.create({
@@ -181,7 +175,11 @@ export class PostRepository {
     };
   }
 
-  async update(prisma: PrismaType, projectId: string, postEntity: PostEntity): Promise<PostEntity> {
+  async update(
+    prisma: ProjectPrismaType,
+    projectId: string,
+    postEntity: PostEntity
+  ): Promise<PostEntity> {
     const record = await prisma.post.update({
       where: {
         id: postEntity.id(),
@@ -193,7 +191,7 @@ export class PostRepository {
     return PostEntity.Reconstruct(record);
   }
 
-  async delete(prisma: PrismaType, projectId: string, id: string): Promise<PostEntity> {
+  async delete(prisma: ProjectPrismaType, projectId: string, id: string): Promise<PostEntity> {
     const record = await prisma.post.delete({
       where: {
         id,

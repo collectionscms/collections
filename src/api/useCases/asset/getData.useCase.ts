@@ -1,6 +1,7 @@
-import { File, PrismaClient } from '@prisma/client';
+import { File } from '@prisma/client';
 import { Buffer } from 'buffer';
 import { FileRepository } from '../../data/file/file.repository.js';
+import { ProjectPrismaType } from '../../database/prisma/client.js';
 import { getStorage } from '../../storages/storage.js';
 
 type GetDataUseCaseResponse = {
@@ -10,7 +11,7 @@ type GetDataUseCaseResponse = {
 
 export class GetDataUseCase {
   constructor(
-    private readonly prisma: PrismaClient,
+    private readonly prisma: ProjectPrismaType,
     private readonly fileRepository: FileRepository
   ) {}
 

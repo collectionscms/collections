@@ -1,10 +1,10 @@
-import { PrismaClient } from '@prisma/client';
 import { ContentEntity } from '../../data/content/content.entity.js';
 import { ContentRepository } from '../../data/content/content.repository.js';
+import { ProjectPrismaType } from '../../database/prisma/client.js';
 
 export class CreateContentUseCase {
   constructor(
-    private readonly prisma: PrismaClient,
+    private readonly prisma: ProjectPrismaType,
     private readonly contentRepository: ContentRepository
   ) {}
 

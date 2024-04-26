@@ -1,8 +1,8 @@
-import { PrismaType } from '../../database/prisma/client.js';
+import { ProjectPrismaType } from '../../database/prisma/client.js';
 import { FileEntity } from './file.entity.js';
 
 export class FileRepository {
-  async findFile(prisma: PrismaType, id: string) {
+  async findFile(prisma: ProjectPrismaType, id: string) {
     const file = await prisma.file.findUniqueOrThrow({
       where: {
         id,
@@ -12,7 +12,7 @@ export class FileRepository {
     return FileEntity.Reconstruct(file);
   }
 
-  async upload(prisma: PrismaType, file: FileEntity): Promise<FileEntity> {
+  async upload(prisma: ProjectPrismaType, file: FileEntity): Promise<FileEntity> {
     const uploadedFile = await prisma.file.create({
       data: file.toPersistence(),
     });

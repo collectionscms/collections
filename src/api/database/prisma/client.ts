@@ -1,8 +1,6 @@
 import { Prisma, PrismaClient } from '@prisma/client';
 
-export const prisma = new PrismaClient();
-
-function bypassRLS() {
+const bypassRLS = () => {
   return Prisma.defineExtension((prisma) =>
     prisma.$extends({
       query: {
@@ -18,9 +16,9 @@ function bypassRLS() {
       },
     })
   );
-}
+};
 
-export const forProject = (projectId: string) => {
+const forProject = (projectId: string) => {
   return Prisma.defineExtension((prisma) =>
     prisma.$extends({
       query: {
@@ -38,17 +36,17 @@ export const forProject = (projectId: string) => {
   );
 };
 
-export const bypassPrisma = () => prisma.$extends(bypassRLS());
-export type BypassPrismaClient = ReturnType<typeof bypassPrisma>;
+// Access to tables with no row-level security
+export const prisma = new PrismaClient();
+export type PrismaType = PrismaClient | Prisma.TransactionClient;
 
+// Access to tables with row-level security
 export const projectPrisma = (projectId: string) => prisma.$extends(forProject(projectId));
 export type ProjectPrismaClient = ReturnType<typeof projectPrisma>;
-
-// ref: https://github.com/prisma/prisma/issues/20738#issuecomment-1807917019
 export type ProjectTransactionClient = Parameters<
   Parameters<ProjectPrismaClient['$transaction']>[0]
 >[0];
-
 export type ProjectPrismaType = ProjectPrismaClient | ProjectTransactionClient;
 
-export type PrismaType = PrismaClient | Prisma.TransactionClient;
+// Access bypassing row-level security
+export const bypassRLSPrisma = () => prisma.$extends(bypassRLS());

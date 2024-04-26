@@ -1,11 +1,11 @@
 import { v4 } from 'uuid';
-import { bypassPrisma } from '../prisma/client.js';
+import { bypassRLSPrisma } from '../prisma/client.js';
 
 export const usProject = v4();
 export const jaProject = v4();
 
 export const createProjects = async (): Promise<void> => {
-  await bypassPrisma().project.createMany({
+  await bypassRLSPrisma().project.createMany({
     data: [
       {
         id: usProject,

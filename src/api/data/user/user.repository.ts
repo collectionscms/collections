@@ -3,13 +3,13 @@ import dayjs from 'dayjs';
 import { RecordNotUniqueException } from '../../../exceptions/database/recordNotUnique.js';
 import { InvalidCredentialsException } from '../../../exceptions/invalidCredentials.js';
 import { Me, UserProfile } from '../../../types/index.js';
-import { PrismaType } from '../../database/prisma/client.js';
+import { PrismaType, ProjectPrismaType } from '../../database/prisma/client.js';
 import { comparePasswords } from '../../utilities/comparePasswords.js';
 import { oneWayHash } from '../../utilities/oneWayHash.js';
 import { UserEntity } from './user.entity.js';
 
 export class UserRepository {
-  async findUserById(prisma: PrismaType, id: string): Promise<UserEntity> {
+  async findUserById(prisma: ProjectPrismaType, id: string): Promise<UserEntity> {
     const user = await prisma.user.findUniqueOrThrow({
       where: {
         id,
@@ -30,11 +30,11 @@ export class UserRepository {
         userProjects: {
           include: {
             project: true,
-            role: {
-              include: {
-                permissions: true,
-              },
-            },
+            // role: {
+            //   include: {
+            //     permissions: true,
+            //   },
+            // },
           },
         },
       },
@@ -49,14 +49,15 @@ export class UserRepository {
       name: user.name,
       email: user.email,
       apiKey: user.apiKey,
-      // todo support multiple projects
-      isAdmin: user.userProjects[0].isAdmin,
+      isAdmin: true,
+      roles: [],
+      // isAdmin: user.userProjects[0].isAdmin,
       projects: user.userProjects.map((userProject) => userProject.project),
-      roles: user.userProjects.map((userProject) => userProject.role),
+      // roles: user.userProjects.map((userProject) => userProject.role),
     };
   }
 
-  async findUserProfile(prisma: PrismaType, id: string): Promise<UserProfile> {
+  async findUserProfile(prisma: ProjectPrismaType, id: string): Promise<UserProfile> {
     const user = await prisma.user.findUniqueOrThrow({
       where: {
         id,
@@ -84,7 +85,7 @@ export class UserRepository {
     };
   }
 
-  async findUserProfiles(prisma: PrismaType): Promise<UserProfile[]> {
+  async findUserProfiles(prisma: ProjectPrismaType): Promise<UserProfile[]> {
     const users = await prisma.user.findMany({
       include: {
         userProjects: {
@@ -111,7 +112,7 @@ export class UserRepository {
   }
 
   async create(
-    prisma: PrismaType,
+    prisma: ProjectPrismaType,
     entity: UserEntity,
     projectId: string,
     roleId: string
@@ -139,7 +140,7 @@ export class UserRepository {
     return UserEntity.Reconstruct(user);
   }
 
-  async update(prisma: PrismaType, userId: string, entity: UserEntity): Promise<UserEntity> {
+  async update(prisma: ProjectPrismaType, userId: string, entity: UserEntity): Promise<UserEntity> {
     const record = entity.toPersistence();
     const user = await prisma.user.update({
       where: {
@@ -157,7 +158,7 @@ export class UserRepository {
   }
 
   async updateWithRole(
-    prisma: PrismaType,
+    prisma: ProjectPrismaType,
     userId: string,
     entity: UserEntity,
     projectId: string,
@@ -196,7 +197,7 @@ export class UserRepository {
     return UserEntity.Reconstruct(user);
   }
 
-  async delete(prisma: PrismaType, id: string): Promise<void> {
+  async delete(prisma: ProjectPrismaType, id: string): Promise<void> {
     await prisma.user.delete({
       where: {
         id,
@@ -204,7 +205,7 @@ export class UserRepository {
     });
   }
 
-  async checkUniqueEmail(prisma: PrismaType, id: string, email: string) {
+  async checkUniqueEmail(prisma: ProjectPrismaType, id: string, email: string) {
     const user = await prisma.user.findFirst({
       where: {
         email,
@@ -216,7 +217,11 @@ export class UserRepository {
     }
   }
 
-  async resetPassword(prisma: PrismaType, token: string, password: string): Promise<UserEntity> {
+  async resetPassword(
+    prisma: ProjectPrismaType,
+    token: string,
+    password: string
+  ): Promise<UserEntity> {
     const user = await prisma.user.findFirst({
       where: {
         resetPasswordToken: token,
@@ -240,7 +245,7 @@ export class UserRepository {
     return entity;
   }
 
-  async setResetPasswordToken(prisma: PrismaType, email: string): Promise<string> {
+  async setResetPasswordToken(prisma: ProjectPrismaType, email: string): Promise<string> {
     const user = await prisma.user.findFirst({
       where: {
         email,

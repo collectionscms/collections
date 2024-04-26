@@ -1,16 +1,16 @@
 import express, { Request, Response } from 'express';
 import { env } from '../../env.js';
+import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
 import { UnprocessableEntityException } from '../../exceptions/unprocessableEntity.js';
 import { UserEntity } from '../data/user/user.entity.js';
 import { UserRepository } from '../data/user/user.repository.js';
-import { prisma } from '../database/prisma/client.js';
+import { projectPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
 import { authenticatedUser } from '../middleware/auth.js';
 import { MailService } from '../services/mail.service.js';
-import { oneWayHash } from '../utilities/oneWayHash.js';
 import { updateUserUseCaseSchema } from '../useCases/ user/updateUser.schema.js';
-import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
 import { UpdateUserUseCase } from '../useCases/ user/updateUser.useCase.js';
+import { oneWayHash } from '../utilities/oneWayHash.js';
 
 const router = express.Router();
 
@@ -18,8 +18,10 @@ router.get(
   '/users',
   authenticatedUser,
   asyncHandler(async (_req: Request, res: Response) => {
+    const projectId = res.user.projects[0].id;
+
     const repository = new UserRepository();
-    const users = await repository.findUserProfiles(prisma);
+    const users = await repository.findUserProfiles(projectPrisma(projectId));
 
     res.json({
       users,
@@ -31,8 +33,10 @@ router.get(
   '/users/:id',
   authenticatedUser,
   asyncHandler(async (req: Request, res: Response) => {
+    const projectId = res.user.projects[0].id;
+
     const repository = new UserRepository();
-    const user = await repository.findUserProfile(prisma, req.params.id);
+    const user = await repository.findUserProfile(projectPrisma(projectId), req.params.id);
 
     res.json({
       user,
@@ -47,12 +51,17 @@ router.post(
     const projectId = res.user.projects[0].id;
 
     const repository = new UserRepository();
-    await repository.checkUniqueEmail(prisma, res.user.id, req.body.email);
+    await repository.checkUniqueEmail(projectPrisma(projectId), res.user.id, req.body.email);
 
     const hashed = await oneWayHash(req.body.password);
 
     const entity = UserEntity.Construct({ ...req.body, password: hashed });
-    const user = await repository.create(prisma, entity, projectId, req.body.roleId);
+    const user = await repository.create(
+      projectPrisma(projectId),
+      entity,
+      projectId,
+      req.body.roleId
+    );
 
     res.json({
       user: user.toResponse(),
@@ -74,8 +83,9 @@ router.patch(
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
-    const userUseCase = new UpdateUserUseCase(prisma, new UserRepository());
+    const userUseCase = new UpdateUserUseCase(projectPrisma(projectId), new UserRepository());
     await userUseCase.execute(validated.data.id, validated.data.projectId, {
+      name: validated.data.name,
       email: validated.data.email,
       password: validated.data.password,
       roleId: validated.data.roleId,
@@ -91,12 +101,14 @@ router.delete(
   asyncHandler(async (req: Request, res: Response) => {
     const userId = res.user.id;
     const id = req.params.id;
+    const projectId = res.user.projects[0].id;
+
     if (userId === id) {
       throw new UnprocessableEntityException('can_not_delete_itself');
     }
 
     const repository = new UserRepository();
-    await repository.delete(prisma, id);
+    await repository.delete(projectPrisma(projectId), id);
 
     res.status(204).end();
   })
@@ -108,9 +120,10 @@ router.post(
   asyncHandler(async (req: Request, res: Response) => {
     const token = req.body.token;
     const password = req.body.password;
+    const projectId = res.user.projects[0].id;
 
     const repository = new UserRepository();
-    await repository.resetPassword(prisma, token, password);
+    await repository.resetPassword(projectPrisma(projectId), token, password);
 
     res.status(204).end();
   })
@@ -120,8 +133,10 @@ router.post(
   '/users/forgot-password',
   authenticatedUser,
   asyncHandler(async (req: Request, res: Response) => {
+    const projectId = res.user.projects[0].id;
+
     const repository = new UserRepository();
-    const token = await repository.setResetPasswordToken(prisma, req.body.email);
+    const token = await repository.setResetPasswordToken(projectPrisma(projectId), req.body.email);
 
     const html = `You are receiving this message because you have requested a password reset for your account.<br/>
     Please click the following link and enter your new password.<br/><br/>

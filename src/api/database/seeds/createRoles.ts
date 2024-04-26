@@ -1,5 +1,5 @@
 import { v4 } from 'uuid';
-import { bypassPrisma } from '../prisma/client.js';
+import { bypassRLSPrisma } from '../prisma/client.js';
 import { jaProject, usProject } from './createProjects.js';
 
 export const usAdminRole = v4();
@@ -10,7 +10,7 @@ export const jaEditorRole = v4();
 export const jaGuestRole = v4();
 
 export const createRoles = async (): Promise<void> => {
-  await bypassPrisma().role.createMany({
+  await bypassRLSPrisma().role.createMany({
     data: [
       // US Project
       {

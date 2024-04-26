@@ -1,14 +1,14 @@
-import { PrismaClient } from '@prisma/client';
 import { ContentEntity } from '../../data/content/content.entity.js';
 import { ContentRepository } from '../../data/content/content.repository.js';
 import { PostEntity } from '../../data/post/post.entity.js';
 import { PostRepository } from '../../data/post/post.repository.js';
 import { PostHistoryEntity } from '../../data/postHistory/postHistory.entity.js';
 import { PostHistoryRepository } from '../../data/postHistory/postHistory.repository.js';
+import { ProjectPrismaClient } from '../../database/prisma/client.js';
 
 export class UpdateContentUseCase {
   constructor(
-    private readonly prisma: PrismaClient,
+    private readonly prisma: ProjectPrismaClient,
     private readonly postRepository: PostRepository,
     private readonly contentRepository: ContentRepository,
     private readonly postHistoryRepository: PostHistoryRepository

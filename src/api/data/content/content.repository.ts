@@ -1,8 +1,12 @@
-import { PrismaType } from '../../database/prisma/client.js';
+import { ProjectPrismaType } from '../../database/prisma/client.js';
 import { ContentEntity } from './content.entity.js';
 
 export class ContentRepository {
-  async findOneById(prisma: PrismaType, id: string, projectId: string): Promise<ContentEntity> {
+  async findOneById(
+    prisma: ProjectPrismaType,
+    id: string,
+    projectId: string
+  ): Promise<ContentEntity> {
     const record = await prisma.content.findFirstOrThrow({
       where: {
         id,
@@ -13,7 +17,7 @@ export class ContentRepository {
     return ContentEntity.Reconstruct(record);
   }
 
-  async create(prisma: PrismaType, contentEntity: ContentEntity): Promise<ContentEntity> {
+  async create(prisma: ProjectPrismaType, contentEntity: ContentEntity): Promise<ContentEntity> {
     const record = await prisma.content.create({
       data: contentEntity.toPersistence(),
     });
@@ -21,7 +25,7 @@ export class ContentRepository {
     return ContentEntity.Reconstruct(record);
   }
 
-  async update(prisma: PrismaType, contentEntity: ContentEntity): Promise<ContentEntity> {
+  async update(prisma: ProjectPrismaType, contentEntity: ContentEntity): Promise<ContentEntity> {
     contentEntity.beforeValidate();
 
     const record = await prisma.content.update({
