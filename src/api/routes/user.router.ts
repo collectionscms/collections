@@ -1,13 +1,11 @@
 import express, { Request, Response } from 'express';
-import { env } from '../../env.js';
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
 import { UnprocessableEntityException } from '../../exceptions/unprocessableEntity.js';
 import { UserEntity } from '../data/user/user.entity.js';
 import { UserRepository } from '../data/user/user.repository.js';
-import { projectPrisma } from '../database/prisma/client.js';
+import { prisma, projectPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
 import { authenticatedUser } from '../middleware/auth.js';
-import { MailService } from '../services/mail.service.js';
 import { updateUserUseCaseSchema } from '../useCases/ user/updateUser.schema.js';
 import { UpdateUserUseCase } from '../useCases/ user/updateUser.useCase.js';
 import { oneWayHash } from '../utilities/oneWayHash.js';
@@ -51,7 +49,7 @@ router.post(
     const projectId = res.user.projects[0].id;
 
     const repository = new UserRepository();
-    await repository.checkUniqueEmail(projectPrisma(projectId), res.user.id, req.body.email);
+    await repository.checkUniqueEmail(prisma, res.user.id, req.body.email);
 
     const hashed = await oneWayHash(req.body.password);
 
@@ -83,7 +81,11 @@ router.patch(
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
-    const userUseCase = new UpdateUserUseCase(projectPrisma(projectId), new UserRepository());
+    const userUseCase = new UpdateUserUseCase(
+      prisma,
+      projectPrisma(projectId),
+      new UserRepository()
+    );
     await userUseCase.execute(validated.data.id, validated.data.projectId, {
       name: validated.data.name,
       email: validated.data.email,
@@ -111,50 +113,6 @@ router.delete(
     await repository.delete(projectPrisma(projectId), id);
 
     res.status(204).end();
-  })
-);
-
-router.post(
-  '/users/reset-password',
-  authenticatedUser,
-  asyncHandler(async (req: Request, res: Response) => {
-    const token = req.body.token;
-    const password = req.body.password;
-    const projectId = res.user.projects[0].id;
-
-    const repository = new UserRepository();
-    await repository.resetPassword(projectPrisma(projectId), token, password);
-
-    res.status(204).end();
-  })
-);
-
-router.post(
-  '/users/forgot-password',
-  authenticatedUser,
-  asyncHandler(async (req: Request, res: Response) => {
-    const projectId = res.user.projects[0].id;
-
-    const repository = new UserRepository();
-    const token = await repository.setResetPasswordToken(projectPrisma(projectId), req.body.email);
-
-    const html = `You are receiving this message because you have requested a password reset for your account.<br/>
-    Please click the following link and enter your new password.<br/><br/>
-    <a href="${env.PUBLIC_SERVER_URL}/admin/auth/reset-password/${token}">
-      ${env.PUBLIC_SERVER_URL}/admin/auth/reset-password/${token}
-    </a><br/><br/>
-    If you did not request this, please ignore this email and your password will remain unchanged.`;
-
-    const mail = new MailService();
-    mail.sendEmail('Collections', {
-      to: req.body.email,
-      subject: 'Password Reset Request',
-      html,
-    });
-
-    res.json({
-      message: 'success',
-    });
   })
 );
 

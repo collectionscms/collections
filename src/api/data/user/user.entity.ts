@@ -38,6 +38,14 @@ export class UserEntity {
     return new UserEntity(user);
   }
 
+  get id(): string {
+    return this.user.id;
+  }
+
+  get email(): string {
+    return this.user.email;
+  }
+
   name(): string {
     return this.user.name;
   }
@@ -51,6 +59,20 @@ export class UserEntity {
       ...this.user,
     };
     return Object.freeze(copy);
+  }
+
+  update(params: { name?: string; email?: string; password?: string }) {
+    if (params.name) {
+      this.user.name = params.name;
+    }
+
+    if (params.email) {
+      this.user.email = params.email;
+    }
+
+    if (params.password) {
+      this.user.password = params.password;
+    }
   }
 
   toPersistence(): User {

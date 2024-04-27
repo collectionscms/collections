@@ -31,7 +31,7 @@ router.get(
       return record.post.toResponse(locale, record.contents, record.histories, record.createdBy);
     });
 
-    res.json({ posts: [] });
+    res.json({ posts });
   })
 );
 

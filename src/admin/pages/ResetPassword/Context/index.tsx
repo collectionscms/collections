@@ -10,7 +10,7 @@ export const ResetPasswordContextProvider: React.FC<{ children: React.ReactNode 
 }) => {
   const resetPassword = () =>
     useSWRMutation(
-      '/users/reset-password',
+      '/me/reset-password',
       async (url: string, { arg }: { arg: Record<string, any> }) => {
         return api.post<{ message: string }>(url, arg).then((res) => res.data.message);
       }
