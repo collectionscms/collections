@@ -161,7 +161,7 @@
     "react-refresh": "0.14.0",
     "ts-jest": "29.1.0",
     "ts-loader": "9.4.4",
-    "ts-node": "10.9.1",
+    "ts-node": "10.9.2",
     "tsconfig-paths": "4.2.0",
     "typescript": "5.3.3",
     "worker-plugin": "5.0.1"
