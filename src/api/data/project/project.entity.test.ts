@@ -6,9 +6,9 @@ describe('ProjectEntity', () => {
   let projectEntity: ProjectEntity;
   const project: Project = {
     id: v4(),
-    organizationId: v4(),
     name: 'Formula one project',
-    slug: 'f1-project',
+    subdomain: 'f1-project',
+    enabled: true,
     description: 'This is a formula one project',
     createdAt: new Date(),
     updatedAt: new Date(),

@@ -1,10 +1,10 @@
-import { PrismaClient } from '@prisma/client';
 import { ProjectEntity } from '../../data/project/project.entity.js';
 import { ProjectRepository } from '../../data/project/project.repository.js';
+import { ProjectPrismaType } from '../../database/prisma/client.js';
 
 export class UpdateProjectUseCase {
   constructor(
-    private readonly prisma: PrismaClient,
+    private readonly prisma: ProjectPrismaType,
     private readonly projectRepository: ProjectRepository
   ) {}
 

@@ -1,15 +1,18 @@
 import { Role, UserProject } from '@prisma/client';
 import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
 import { UnprocessableEntityException } from '../../../exceptions/unprocessableEntity.js';
-import { PrismaType } from '../../database/prisma/client';
+import { ProjectPrismaType } from '../../database/prisma/client';
 import { RoleEntity } from './role.entity.js';
 
 export class RoleRepository {
-  async findRoles(prisma: PrismaType): Promise<Role[]> {
+  async findRoles(prisma: ProjectPrismaType): Promise<Role[]> {
     return await prisma.role.findMany();
   }
 
-  async findRole(prisma: PrismaType, id: string): Promise<Role & { userProjects: UserProject[] }> {
+  async findRole(
+    prisma: ProjectPrismaType,
+    id: string
+  ): Promise<Role & { userProjects: UserProject[] }> {
     return await prisma.role.findUniqueOrThrow({
       where: {
         id,
@@ -20,14 +23,14 @@ export class RoleRepository {
     });
   }
 
-  async create(prisma: PrismaType, entity: RoleEntity): Promise<RoleEntity> {
+  async create(prisma: ProjectPrismaType, entity: RoleEntity): Promise<RoleEntity> {
     const record = await prisma.role.create({
       data: entity.toPersistence(),
     });
     return RoleEntity.Reconstruct(record);
   }
 
-  async update(prisma: PrismaType, id: string, entity: RoleEntity): Promise<RoleEntity> {
+  async update(prisma: ProjectPrismaType, id: string, entity: RoleEntity): Promise<RoleEntity> {
     const record = entity.toPersistence();
     const result = await prisma.role.update({
       where: {
@@ -41,7 +44,7 @@ export class RoleRepository {
     return RoleEntity.Reconstruct(result);
   }
 
-  async delete(prisma: PrismaType, id: string): Promise<void> {
+  async delete(prisma: ProjectPrismaType, id: string): Promise<void> {
     const role = await this.findRole(prisma, id);
     if (!role) throw new RecordNotFoundException('record_not_found');
     if (role.userProjects) new UnprocessableEntityException('can_not_delete_role_in_use');

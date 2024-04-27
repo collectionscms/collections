@@ -55,6 +55,10 @@ export class PostEntity {
     return this.post.id;
   }
 
+  get projectId(): string {
+    return this.projectId;
+  }
+
   status(): string {
     return this.post.status;
   }

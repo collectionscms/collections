@@ -10,7 +10,7 @@ export const ForgotPasswordContextProvider: React.FC<{ children: React.ReactNode
 }) => {
   const forgotPassword = () =>
     useSWRMutation(
-      '/users/forgot-password',
+      '/me/forgot-password',
       async (url: string, { arg }: { arg: Record<string, any> }) => {
         return api.post<{ message: string }>(url, arg).then((res) => res.data.message);
       }

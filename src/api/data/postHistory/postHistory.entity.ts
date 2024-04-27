@@ -9,11 +9,13 @@ export class PostHistoryEntity {
   }
 
   static Construct({
+    projectId,
     postId,
     userName,
     status,
     version,
   }: {
+    projectId: string;
     postId: string;
     userName: string;
     status: string;
@@ -21,6 +23,7 @@ export class PostHistoryEntity {
   }): PostHistoryEntity {
     return new PostHistoryEntity({
       id: v4(),
+      projectId,
       postId,
       userName,
       status,

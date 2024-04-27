@@ -1,117 +1,85 @@
-import crypto from 'crypto';
-import dayjs from 'dayjs';
 import { RecordNotUniqueException } from '../../../exceptions/database/recordNotUnique.js';
-import { InvalidCredentialsException } from '../../../exceptions/invalidCredentials.js';
-import { Me, UserProfile } from '../../../types/index.js';
-import { PrismaType } from '../../database/prisma/client.js';
-import { comparePasswords } from '../../utilities/comparePasswords.js';
-import { oneWayHash } from '../../utilities/oneWayHash.js';
+import { UserProfile } from '../../../types/index.js';
+import {
+  PrismaType,
+  ProjectPrismaClient,
+  ProjectPrismaType,
+} from '../../database/prisma/client.js';
 import { UserEntity } from './user.entity.js';
 
 export class UserRepository {
-  async findUserById(prisma: PrismaType, id: string): Promise<UserEntity> {
-    const user = await prisma.user.findUniqueOrThrow({
+  async findUserById(prisma: ProjectPrismaType, id: string): Promise<UserEntity> {
+    const project = await prisma.project.findFirstOrThrow({
       where: {
-        id,
-      },
-    });
-
-    return UserEntity.Reconstruct(user);
-  }
-
-  async login(prisma: PrismaType, email: string, password: string): Promise<Me> {
-    const user = await prisma.user.findFirst({
-      where: {
-        email: {
-          contains: email,
-        },
-      },
-      include: {
         userProjects: {
-          include: {
-            project: true,
-            role: {
-              include: {
-                permissions: true,
-              },
-            },
+          some: {
+            userId: id,
           },
         },
-      },
-    });
-
-    if (!user || !comparePasswords(user.password, password)) {
-      throw new InvalidCredentialsException('incorrect_email_or_password');
-    }
-
-    return {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      apiKey: user.apiKey,
-      // todo support multiple projects
-      isAdmin: user.userProjects[0].isAdmin,
-      projects: user.userProjects.map((userProject) => userProject.project),
-      roles: user.userProjects.map((userProject) => userProject.role),
-    };
-  }
-
-  async findUserProfile(prisma: PrismaType, id: string): Promise<UserProfile> {
-    const user = await prisma.user.findUniqueOrThrow({
-      where: {
-        id,
       },
       include: {
         userProjects: {
           select: {
-            project: true,
-            role: {
-              include: {
-                permissions: true,
-              },
-            },
+            user: true,
           },
         },
       },
     });
+
+    return UserEntity.Reconstruct(project.userProjects[0].user);
+  }
+
+  async findUserProfile(prisma: ProjectPrismaType, id: string): Promise<UserProfile> {
+    const project = await prisma.project.findFirstOrThrow({
+      include: {
+        userProjects: {
+          where: {
+            userId: id,
+          },
+          select: {
+            user: true,
+            role: true,
+          },
+        },
+      },
+    });
+
+    const { user, role } = project.userProjects[0];
 
     return {
       id: user.id,
       name: user.name,
       email: user.email,
       isActive: user.isActive,
-      role: user.userProjects[0].role,
+      role: role,
     };
   }
 
-  async findUserProfiles(prisma: PrismaType): Promise<UserProfile[]> {
-    const users = await prisma.user.findMany({
+  async findUserProfiles(prisma: ProjectPrismaType): Promise<UserProfile[]> {
+    const project = await prisma.project.findFirstOrThrow({
       include: {
         userProjects: {
           select: {
-            role: {
-              include: {
-                permissions: true,
-              },
-            },
+            user: true,
+            role: true,
           },
         },
       },
     });
 
-    return users.map((user) => {
+    return project.userProjects.map((userProject) => {
       return {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        isActive: user.isActive,
-        role: user.userProjects[0].role,
+        id: userProject.user.id,
+        name: userProject.user.name,
+        email: userProject.user.email,
+        isActive: userProject.user.isActive,
+        role: userProject.role,
       };
     });
   }
 
   async create(
-    prisma: PrismaType,
+    prisma: ProjectPrismaType,
     entity: UserEntity,
     projectId: string,
     roleId: string
@@ -139,40 +107,50 @@ export class UserRepository {
     return UserEntity.Reconstruct(user);
   }
 
-  async update(prisma: PrismaType, userId: string, entity: UserEntity): Promise<UserEntity> {
-    const record = entity.toPersistence();
-    const user = await prisma.user.update({
+  async update(
+    prisma: ProjectPrismaType,
+    userId: string,
+    params: {
+      password: string;
+      email: string;
+      name: string;
+    }
+  ): Promise<UserEntity> {
+    const user = await this.findUserById(prisma, userId);
+    user.update(params);
+
+    const updatedUser = await prisma.user.update({
       where: {
         id: userId,
       },
-      data: {
-        name: record.name,
-        email: record.email,
-        password: record.password,
-        isActive: record.isActive,
-      },
+      data: user.toPersistence(),
     });
 
-    return UserEntity.Reconstruct(user);
+    return UserEntity.Reconstruct(updatedUser);
   }
 
   async updateWithRole(
-    prisma: PrismaType,
+    prisma: ProjectPrismaClient,
     userId: string,
-    entity: UserEntity,
     projectId: string,
-    roleId: string
+    roleId: string,
+    params: {
+      password: string;
+      email: string;
+      name: string;
+    }
   ): Promise<UserEntity> {
-    const record = entity.toPersistence();
-    const user = await prisma.user.update({
+    const user = await this.findUserById(prisma, userId);
+    user.update(params);
+
+    const updatedUser = await prisma.user.update({
       where: {
         id: userId,
       },
       data: {
-        name: record.name,
-        email: record.email,
-        password: record.password,
-        isActive: record.isActive,
+        password: user.password(),
+        email: user.email,
+        name: user.name(),
         userProjects: {
           update: {
             where: {
@@ -182,24 +160,22 @@ export class UserRepository {
               },
             },
             data: {
-              role: {
-                connect: {
-                  id: roleId,
-                },
-              },
+              roleId,
             },
           },
         },
       },
     });
 
-    return UserEntity.Reconstruct(user);
+    return UserEntity.Reconstruct(updatedUser);
   }
 
-  async delete(prisma: PrismaType, id: string): Promise<void> {
+  async delete(prisma: ProjectPrismaType, id: string): Promise<void> {
+    const user = await this.findUserById(prisma, id);
+
     await prisma.user.delete({
       where: {
-        id,
+        id: user.id,
       },
     });
   }
@@ -214,56 +190,5 @@ export class UserRepository {
     if (user && user.id !== id) {
       throw new RecordNotUniqueException('already_registered_email');
     }
-  }
-
-  async resetPassword(prisma: PrismaType, token: string, password: string): Promise<UserEntity> {
-    const user = await prisma.user.findFirst({
-      where: {
-        resetPasswordToken: token,
-        resetPasswordExpiration: {
-          gt: new Date(),
-        },
-      },
-    });
-
-    if (!user) throw new InvalidCredentialsException('token_invalid_or_expired');
-
-    const entity = UserEntity.Reconstruct({
-      ...user,
-      password: await oneWayHash(password),
-      resetPasswordExpiration: new Date(),
-    });
-
-    // todo
-    // await this.update(prisma, user.id, entity);
-
-    return entity;
-  }
-
-  async setResetPasswordToken(prisma: PrismaType, email: string): Promise<string> {
-    const user = await prisma.user.findFirst({
-      where: {
-        email,
-      },
-    });
-
-    if (!user) {
-      throw new InvalidCredentialsException('unregistered_email_address');
-    }
-
-    let token: string | Buffer = crypto.randomBytes(20);
-    token = token.toString('hex');
-
-    await prisma.user.update({
-      where: {
-        id: user.id,
-      },
-      data: {
-        resetPasswordToken: token,
-        resetPasswordExpiration: dayjs().add(1, 'hour').toDate(),
-      },
-    });
-
-    return token;
   }
 }

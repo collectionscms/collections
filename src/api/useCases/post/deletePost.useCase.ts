@@ -1,10 +1,10 @@
-import { PrismaClient } from '@prisma/client';
 import { PostEntity } from '../../data/post/post.entity.js';
 import { PostRepository } from '../../data/post/post.repository.js';
+import { ProjectPrismaClient } from '../../database/prisma/client.js';
 
 export class DeletePostUseCase {
   constructor(
-    private readonly prisma: PrismaClient,
+    private readonly prisma: ProjectPrismaClient,
     private readonly postRepository: PostRepository
   ) {}
 

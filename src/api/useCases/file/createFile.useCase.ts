@@ -1,6 +1,7 @@
-import { File, PrismaClient } from '@prisma/client';
+import { File } from '@prisma/client';
 import { FileEntity } from '../../data/file/file.entity.js';
 import { FileRepository } from '../../data/file/file.repository.js';
+import { ProjectPrismaClient } from '../../database/prisma/client.js';
 import { FileService } from '../../services/file.service.js';
 
 type CreateFileUseCaseResponse = {
@@ -9,7 +10,7 @@ type CreateFileUseCaseResponse = {
 
 export class CreateFileUseCase {
   constructor(
-    private readonly prisma: PrismaClient,
+    private readonly prisma: ProjectPrismaClient,
     private readonly buffer: Buffer,
     private readonly fileRepository: FileRepository
   ) {}

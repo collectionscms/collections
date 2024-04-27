@@ -4,7 +4,7 @@ import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
 import { ContentRepository } from '../data/content/content.repository.js';
 import { PostRepository } from '../data/post/post.repository.js';
 import { PostHistoryRepository } from '../data/postHistory/postHistory.repository.js';
-import { prisma } from '../database/prisma/client.js';
+import { projectPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
 import { authenticatedUser } from '../middleware/auth.js';
 import { changeStatusUseCaseSchema } from '../useCases/post/changeStatus.schema.js';
@@ -25,7 +25,7 @@ router.get(
     const projectId = res.user.projects[0].id;
 
     const repository = new PostRepository();
-    const records = await repository.findManyByProjectId(prisma, projectId);
+    const records = await repository.findManyByProjectId(projectPrisma(projectId));
 
     const posts = records.map((record) => {
       return record.post.toResponse(locale, record.contents, record.histories, record.createdBy);
@@ -48,7 +48,11 @@ router.get(
     }
 
     const repository = new PostRepository();
-    const record = await repository.findOneWithContentsById(prisma, projectId, id);
+    const record = await repository.findOneWithContentsById(
+      projectPrisma(projectId),
+      projectId,
+      id
+    );
     const post = record.post.toResponse(
       locale,
       record.contents,
@@ -70,15 +74,15 @@ router.post(
     const projectId = req.res?.user.projects[0].id;
     const userId = req.res?.user.id;
 
+    // todo validate request body
     if (!projectId || !userId) {
       throw new InvalidPayloadException('bad_request');
     }
 
     const useCase = new CreatePostUseCase(
-      prisma,
+      projectPrisma(projectId),
       new PostRepository(),
-      new ContentRepository(),
-      new PostHistoryRepository()
+      new ContentRepository()
     );
     const result = await useCase.execute(projectId, userId, locale);
     const post = result.post.toResponse(locale, result.contents, [], result.createdBy);
@@ -93,7 +97,7 @@ router.patch(
   '/posts/:id',
   authenticatedUser,
   asyncHandler(async (req: Request, res: Response) => {
-    const projectId = req.res?.user.projects[0].id;
+    const projectId = res.user.projects[0].id;
     const name = req.res?.user.name;
     const id = req.params.id;
 
@@ -106,7 +110,7 @@ router.patch(
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
     const useCase = new UpdatePostUseCase(
-      prisma,
+      projectPrisma(projectId),
       new PostRepository(),
       new PostHistoryRepository()
     );
@@ -125,7 +129,7 @@ router.delete(
   '/posts/:id',
   authenticatedUser,
   asyncHandler(async (req: Request, res: Response) => {
-    const projectId = req.res?.user.projects[0].id;
+    const projectId = res.user.projects[0].id;
     const id = req.params.id;
 
     const validated = deletePostUseCaseSchema.safeParse({
@@ -134,7 +138,7 @@ router.delete(
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
-    const useCase = new DeletePostUseCase(prisma, new PostRepository());
+    const useCase = new DeletePostUseCase(projectPrisma(projectId), new PostRepository());
     await useCase.execute(validated.data.projectId, validated.data.id);
 
     res.status(204).send();
@@ -146,7 +150,7 @@ router.patch(
   authenticatedUser,
   asyncHandler(async (req: Request, res: Response) => {
     const id = req.params.id;
-    const projectId = req.res?.user.projects[0].id;
+    const projectId = res.user.projects[0].id;
     const userName = req.res?.user.name;
 
     const validated = changeStatusUseCaseSchema.safeParse({
@@ -158,7 +162,7 @@ router.patch(
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
     const useCase = new ChangeStatusUseCase(
-      prisma,
+      projectPrisma(projectId),
       new PostRepository(),
       new PostHistoryRepository()
     );

@@ -1,6 +1,6 @@
 import CredentialsProvider from '@auth/express/providers/credentials';
 import { logger } from '../../utilities/logger.js';
-import { UserRepository } from '../data/user/user.repository.js';
+import { MeRepository } from '../data/user/me.repository.js';
 import { prisma } from '../database/prisma/client.js';
 
 export const authConfig = {
@@ -33,7 +33,7 @@ export const authConfig = {
         const { email, password } = credentials;
 
         try {
-          const repository = new UserRepository();
+          const repository = new MeRepository();
           const user = await repository.login(prisma, String(email), String(password));
           return user;
         } catch (e) {

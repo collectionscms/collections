@@ -3,7 +3,7 @@ import { RecordNotFoundException } from '../../exceptions/database/recordNotFoun
 import { PermissionRepository } from '../data/permission/permission.repository.js';
 import { RoleEntity } from '../data/role/role.entity.js';
 import { RoleRepository } from '../data/role/role.repository.js';
-import { prisma } from '../database/prisma/client.js';
+import { projectPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
 import { authenticatedUser } from '../middleware/auth.js';
 
@@ -13,8 +13,10 @@ router.get(
   '/roles',
   authenticatedUser,
   asyncHandler(async (_req: Request, res: Response) => {
+    const id = res.user.projects[0].id;
+
     const repository = new RoleRepository();
-    const roles = await repository.findRoles(prisma);
+    const roles = await repository.findRoles(projectPrisma(id));
 
     res.json({ roles });
   })
@@ -24,8 +26,10 @@ router.get(
   '/roles/:id',
   authenticatedUser,
   asyncHandler(async (req: Request, res: Response) => {
+    const id = res.user.projects[0].id;
+
     const repository = new RoleRepository();
-    const role = await repository.findRole(prisma, req.params.id);
+    const role = await repository.findRole(projectPrisma(id), req.params.id);
 
     if (!role) throw new RecordNotFoundException('record_not_found');
 
@@ -37,6 +41,8 @@ router.post(
   '/roles',
   authenticatedUser,
   asyncHandler(async (req: Request, res: Response) => {
+    const id = res.user.projects[0].id;
+
     const entity = RoleEntity.Construct({
       projectId: res.user.projects[0].id,
       name: req.body.name,
@@ -44,7 +50,7 @@ router.post(
     });
 
     const repository = new RoleRepository();
-    const role = await repository.create(prisma, entity);
+    const role = await repository.create(projectPrisma(id), entity);
 
     res.json(role.toResponse());
   })
@@ -54,15 +60,17 @@ router.patch(
   '/roles/:id',
   authenticatedUser,
   asyncHandler(async (req: Request, res: Response) => {
+    const id = res.user.projects[0].id;
+
     const repository = new RoleRepository();
-    const role = await repository.findRole(prisma, req.params.id);
+    const role = await repository.findRole(projectPrisma(id), req.params.id);
     const entity = RoleEntity.Reconstruct({
       ...role,
       name: req.body.name,
       description: req.body.description,
     });
 
-    await repository.update(prisma, role.id, entity);
+    await repository.update(projectPrisma(id), role.id, entity);
 
     res.status(204).end();
   })
@@ -72,8 +80,10 @@ router.delete(
   '/roles/:id',
   authenticatedUser,
   asyncHandler(async (req: Request, res: Response) => {
+    const id = res.user.projects[0].id;
+
     const repository = new RoleRepository();
-    await repository.delete(prisma, req.params.id);
+    await repository.delete(projectPrisma(id), req.params.id);
 
     res.status(204).end();
   })
@@ -83,8 +93,10 @@ router.get(
   '/roles/:id/permissions',
   authenticatedUser,
   asyncHandler(async (req: Request, res: Response) => {
+    const id = res.user.projects[0].id;
+
     const repository = new PermissionRepository();
-    const permissions = await repository.findPermissions(prisma, req.params.id);
+    const permissions = await repository.findPermissions(projectPrisma(id), req.params.id);
 
     res.json({ permissions });
   })

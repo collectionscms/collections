@@ -1,21 +1,27 @@
 import { faker } from '@faker-js/faker';
-import { v4 as uuidV4 } from 'uuid';
+import { v4 as uuidV4, v4 } from 'uuid';
 import { oneWayHash } from '../../utilities/oneWayHash.js';
-import { prisma } from '../prisma/client.js';
-import { globalProject } from './createProjects.js';
-import { adminRole, editorRole, guestRole } from './createRoles.js';
+import { bypassRLSPrisma } from '../prisma/client.js';
+import { jaProject, usProject } from './createProjects.js';
+import {
+  jaAdminRole,
+  jaEditorRole,
+  jaGuestRole,
+  usAdminRole,
+  usEditorRole,
+  usGuestRole,
+} from './createRoles.js';
 
-export const adminUser = '10000000-2000-1000-0000-000000000001';
-export const editorUser = '10000000-2000-1000-0000-000000000002';
-export const guestUser = '10000000-2000-1000-0000-000000000003';
+export const adminUser = v4();
+export const editorUser = v4();
+export const guestUser = v4();
 
 export const createUsers = async (): Promise<void> => {
   const password = await oneWayHash('password');
 
-  await prisma.$transaction(async (tx) => {
+  await bypassRLSPrisma().$transaction(async (tx) => {
     await tx.user.createMany({
       data: [
-        // Global Project
         {
           id: adminUser,
           name: faker.person.firstName() + ' ' + faker.person.lastName(),
@@ -27,7 +33,6 @@ export const createUsers = async (): Promise<void> => {
         },
         {
           id: editorUser,
-
           name: faker.person.firstName() + ' ' + faker.person.lastName(),
           email: 'editor@collections.dev',
           avatarUrl: faker.internet.avatar(),
@@ -49,23 +54,42 @@ export const createUsers = async (): Promise<void> => {
 
     await tx.userProject.createMany({
       data: [
-        // Global Project
+        // US Project
         {
-          projectId: globalProject,
+          projectId: usProject,
           userId: adminUser,
-          roleId: adminRole,
+          roleId: usAdminRole,
           isAdmin: true,
         },
         {
-          projectId: globalProject,
+          projectId: usProject,
           userId: editorUser,
-          roleId: editorRole,
+          roleId: usEditorRole,
           isAdmin: false,
         },
         {
-          projectId: globalProject,
+          projectId: usProject,
           userId: guestUser,
-          roleId: guestRole,
+          roleId: usGuestRole,
+          isAdmin: false,
+        },
+        // JA Project
+        {
+          projectId: jaProject,
+          userId: adminUser,
+          roleId: jaAdminRole,
+          isAdmin: true,
+        },
+        {
+          projectId: jaProject,
+          userId: editorUser,
+          roleId: jaEditorRole,
+          isAdmin: false,
+        },
+        {
+          projectId: jaProject,
+          userId: guestUser,
+          roleId: jaGuestRole,
           isAdmin: false,
         },
       ],
