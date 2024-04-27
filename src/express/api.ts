@@ -1,7 +1,7 @@
 import boxen from 'boxen';
 import chalk from 'chalk';
 import { Express } from 'express';
-import { errorHandler } from '../api/middleware/errorHandler.js';
+import { errorHandler } from '../api/middlewares/errorHandler.js';
 import { asset } from '../api/routes/asset.router.js';
 import { router } from '../api/routes/index.js';
 import { env } from '../env.js';

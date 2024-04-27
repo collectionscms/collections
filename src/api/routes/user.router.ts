@@ -4,8 +4,8 @@ import { UnprocessableEntityException } from '../../exceptions/unprocessableEnti
 import { UserEntity } from '../data/user/user.entity.js';
 import { UserRepository } from '../data/user/user.repository.js';
 import { prisma, projectPrisma } from '../database/prisma/client.js';
-import { asyncHandler } from '../middleware/asyncHandler.js';
-import { authenticatedUser } from '../middleware/auth.js';
+import { asyncHandler } from '../middlewares/asyncHandler.js';
+import { authenticatedUser } from '../middlewares/auth.js';
 import { updateUserUseCaseSchema } from '../useCases/ user/updateUser.schema.js';
 import { UpdateUserUseCase } from '../useCases/ user/updateUser.useCase.js';
 import { oneWayHash } from '../utilities/oneWayHash.js';
