@@ -3110,6 +3110,13 @@
   resolved "https://registry.yarnpkg.com/@types/uuid/-/uuid-9.0.8.tgz#7545ba4fc3c003d6c756f651f3bf163d8f0f29ba"
   integrity sha512-jg+97EGIcY9AGHJJRaaPVgetKDsrTgbRjQ5Msgjh/DQKEFl0DtyRr/VCOyD1T2R1MNeWPK/u7JoGhlDZnKBAfA==
 
+"@types/vhost@^3.0.9":
+  version "3.0.9"
+  resolved "https://registry.yarnpkg.com/@types/vhost/-/vhost-3.0.9.tgz#21148e713acb69f6d683123099da0c3adf2a44aa"
+  integrity sha512-1XtvjHU2Y/ULSFsh7GT3mfTQa7dh8vfN48quUlFJdbh4nSM5BgjK+extSErJvmOueWqtXA30ACDha7aApx7Pvw==
+  dependencies:
+    "@types/connect" "*"
+
 "@types/webpack-bundle-analyzer@4.6.3":
   version "4.6.3"
   resolved "https://registry.yarnpkg.com/@types/webpack-bundle-analyzer/-/webpack-bundle-analyzer-4.6.3.tgz#53c26f21134ca2e5049fd2af4f2ffbf8dfe87b4f"
@@ -10521,6 +10528,11 @@ verror@1.10.0:
     assert-plus "^1.0.0"
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
+
+vhost@3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/vhost/-/vhost-3.0.2.tgz#2fb1decd4c466aa88b0f9341af33dc1aff2478d5"
+  integrity sha512-S3pJdWrpFWrKMboRU4dLYgMrTgoPALsmYwOvyebK2M6X95b9kQrjZy5rwl3uzzpfpENe/XrNYu/2U+e7/bmT5g==
 
 void-elements@3.1.0:
   version "3.1.0"
