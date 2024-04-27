@@ -32,7 +32,7 @@ CREATE TABLE "User" (
 CREATE TABLE "UserProject" (
     "id" UUID NOT NULL,
     "userId" UUID NOT NULL,
-    "projectId" UUID NOT NULL DEFAULT (current_setting('app.current_project_id'::text))::uuid,
+    "projectId" UUID NOT NULL,
     "roleId" UUID NOT NULL,
     "isAdmin" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,

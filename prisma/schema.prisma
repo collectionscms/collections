@@ -43,7 +43,7 @@ model User {
 model UserProject {
   id        String   @id @default(uuid()) @db.Uuid
   userId    String   @db.Uuid
-  projectId String   @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
+  projectId String   @db.Uuid
   roleId    String   @db.Uuid
   isAdmin   Boolean  @default(false)
   createdAt DateTime @default(now()) @db.Timestamptz(6)
