@@ -133,7 +133,7 @@
     "@types/http-proxy": "1.17.14",
     "@types/inquirer": "9.0.7",
     "@types/jest": "29.5.12",
-    "@types/jsonwebtoken": "9.0.4",
+    "@types/jsonwebtoken": "9.0.6",
     "@types/mime-types": "2.1.4",
     "@types/node": "20.12.7",
     "@types/nodemailer": "6.4.14",
