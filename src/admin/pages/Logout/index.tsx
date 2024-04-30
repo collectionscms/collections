@@ -25,6 +25,7 @@ export const Logout: React.FC = () => {
 
     if (csrfToken) {
       logout();
+      window.location.href = getLoginUrl();
     }
   }, [csrfToken]);
 
