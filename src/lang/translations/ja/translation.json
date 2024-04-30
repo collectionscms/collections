@@ -63,7 +63,6 @@
   "submit": "送信",
   "email_sent": "メールを送信しました",
   "check_email_reset_password": "パスワードを再設定するためのリンクをメールでご確認ください。",
-  "already_logged_in": "すでにログイン済みです",
   "reset_password": "パスワードの再設定",
   "reset_password_success": "パスワードを再設定しました",
   "value": "値",

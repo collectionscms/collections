@@ -13,15 +13,17 @@ import { enqueueSnackbar } from 'notistack';
 import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { logger } from '../../../utilities/logger.js';
 import { AuthCard } from '../../@extended/components/AuthCard/index.js';
+import { Loading } from '../../components/elements/Loading/index.js';
 import { useAuth } from '../../components/utilities/Auth/index.js';
 import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.js';
 import {
   FormValues,
   resetPassword as resetPasswordSchema,
 } from '../../fields/schemas/authentications/resetPassword.js';
+import { getPathToTenant } from '../../utilities/urlGenerator.js';
 import { ResetPasswordContextProvider, useResetPassword } from './Context/index.js';
 
 const ResetPasswordImpl: React.FC = () => {
@@ -53,29 +55,8 @@ const ResetPasswordImpl: React.FC = () => {
   };
 
   if (me) {
-    return (
-      <Grid container spacing={3}>
-        <Grid xs={12}>
-          <Box sx={{ mb: { xs: -0.5, sm: 0.5 } }}>
-            <Typography variant="h3">{t('already_logged_in')}</Typography>
-          </Box>
-        </Grid>
-        <Grid xs={12}>
-          <Button
-            component={RouterLink}
-            to="/admin/posts"
-            disableElevation
-            fullWidth
-            size="large"
-            type="submit"
-            variant="contained"
-            color="primary"
-          >
-            {t('back_to_home')}
-          </Button>
-        </Grid>
-      </Grid>
-    );
+    window.location.href = getPathToTenant(me.projects[0].subdomain, '/admin/posts');
+    return <Loading />;
   }
 
   return (

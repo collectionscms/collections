@@ -63,7 +63,6 @@
   "submit": "Submit",
   "email_sent": "Email Sent",
   "check_email_reset_password": "Check your email for a link that will allow you to reset your password.",
-  "already_logged_in": "You&apos;re already logged in",
   "reset_password": "Reset Password",
   "reset_password_success": "Password successfully reset.",
   "value": "Value",
