@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Avatar } from '../../../../@extended/components/Avatar/index.js';
 import { useAuth } from '../../../utilities/Auth/index.js';
+import { redirectPathToMain } from '../../../../utilities/redirectTo.js';
 
 export const BottomContent: React.FC = () => {
   const navigate = useNavigate();
@@ -40,7 +41,7 @@ export const BottomContent: React.FC = () => {
   }, [anchorEl]);
 
   const handleLogout = () => {
-    navigate('/admin/auth/logout');
+    window.location.href = redirectPathToMain('/admin/auth/logout');
   };
 
   return (

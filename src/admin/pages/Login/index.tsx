@@ -13,18 +13,18 @@ import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import React, { useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import { logger } from '../../../utilities/logger.js';
 import { Loader } from '../../components/elements/Loader/index.js';
 import { Logo } from '../../components/elements/Logo/index.js';
 import { useAuth } from '../../components/utilities/Auth/index.js';
 import { FormValues, loginSchema } from '../../fields/schemas/authentications/login.js';
 import lazy from '../../utilities/lazy.js';
+import { redirectPathToTenant } from '../../utilities/redirectTo.js';
 
 const Loading = Loader(lazy(() => import('../../components/elements/Loading/index.js'), 'Loading'));
 
 export const Login: React.FC = () => {
-  const navigate = useNavigate();
   const { t } = useTranslation();
   const { me, getCsrfToken, login } = useAuth();
   const { trigger, isMutating } = login();
@@ -47,7 +47,7 @@ export const Login: React.FC = () => {
 
   useEffect(() => {
     if (me) {
-      navigate('/admin/posts');
+      window.location.href = redirectPathToTenant(me.projects[0].subdomain, '/admin/posts');
     }
   }, [me]);
 
