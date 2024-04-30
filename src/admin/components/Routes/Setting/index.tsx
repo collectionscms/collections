@@ -7,6 +7,7 @@ import { Loader } from '../../elements/Loader/index.js';
 import { MainHeader } from '../../elements/MainHeader/index.js';
 import { MainLayout } from '../../layouts/Main/index.js';
 import { useAuth } from '../../utilities/Auth/index.js';
+import { Me } from '../../../../types/index.js';
 
 const Project = Loader(lazy(() => import('../../../pages/Project/index.js'), 'Project'));
 const Role = Loader(lazy(() => import('../../../pages/Role/index.js'), 'RolePage'));
@@ -22,21 +23,10 @@ const EditUser = Loader(lazy(() => import('../../../pages/User/Edit/index.js'), 
 const NotFound = Loader(lazy(() => import('../../../pages/NotFound/index.js'), 'NotFound'));
 const group = settingsGroupNavItems();
 
-export const SettingRoutes = () => {
-  const { me } = useAuth();
+export const SettingRoutes = (me: Me | null | undefined) => {
   const { t } = useTranslation();
 
-  if (!me) {
-    return {
-      path: '/admin/settings',
-      children: [
-        { path: '', element: <Navigate to="/admin/auth/login" replace /> },
-        { path: '*', element: <Navigate to="/admin/auth/login" replace /> },
-      ],
-    };
-  }
-
-  if (!me.isAdmin) {
+  if (!me?.isAdmin) {
     return {
       path: '/admin/settings',
       children: [

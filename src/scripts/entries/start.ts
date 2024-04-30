@@ -5,12 +5,10 @@ import { pathList } from '../../utilities/pathList.js';
 
 const app = express();
 
-(async () => {
-  app.use(helmet());
-  await initApiServer(app);
+app.use(helmet());
+await initApiServer(app);
 
-  app.use('/admin', express.static(pathList.build('admin')));
-  app.get('/admin/*', (_req, res) => {
-    res.sendFile(pathList.build('admin', 'index.html'));
-  });
-})();
+app.use('/admin', express.static(pathList.build('admin')));
+app.get('/admin/*', (_req, res) => {
+  res.sendFile(pathList.build('admin', 'index.html'));
+});

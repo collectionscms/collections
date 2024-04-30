@@ -39,7 +39,14 @@ The easiest way to get started with Collections is to use the create-collections
 npx create-collections-app my-app
 ```
 
-Open [http://localhost:4000/admin](http://localhost:4000/admin) to view your running app.
+Add the following lines to the `/etc/hosts`
+
+```sh
+127.0.0.1   test.com
+127.0.0.1   us.test.com
+```
+
+Open [http://test.com:4000/admin](http://test.com:4000/admin) to view your running app.
 When you're ready for production, run `npm run build` then `npm run start`.
 
 ## 💬 Community

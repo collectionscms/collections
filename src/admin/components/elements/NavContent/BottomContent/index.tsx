@@ -10,12 +10,11 @@ import {
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 import { Avatar } from '../../../../@extended/components/Avatar/index.js';
+import { getLogoutUrl } from '../../../../utilities/urlGenerator.js';
 import { useAuth } from '../../../utilities/Auth/index.js';
 
 export const BottomContent: React.FC = () => {
-  const navigate = useNavigate();
   const { t } = useTranslation();
   const { me } = useAuth();
 
@@ -40,7 +39,7 @@ export const BottomContent: React.FC = () => {
   }, [anchorEl]);
 
   const handleLogout = () => {
-    navigate('/admin/auth/logout');
+    window.location.href = getLogoutUrl();
   };
 
   return (

@@ -4,8 +4,8 @@ import { PermissionRepository } from '../data/permission/permission.repository.j
 import { RoleEntity } from '../data/role/role.entity.js';
 import { RoleRepository } from '../data/role/role.repository.js';
 import { projectPrisma } from '../database/prisma/client.js';
-import { asyncHandler } from '../middleware/asyncHandler.js';
-import { authenticatedUser } from '../middleware/auth.js';
+import { asyncHandler } from '../middlewares/asyncHandler.js';
+import { authenticatedUser } from '../middlewares/auth.js';
 
 const router = express.Router();
 

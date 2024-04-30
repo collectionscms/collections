@@ -5,7 +5,7 @@ import { UnknownException } from '../../exceptions/storage/unknown.js';
 import { logger } from '../../utilities/logger.js';
 import { FileRepository } from '../data/file/file.repository.js';
 import { projectPrisma } from '../database/prisma/client.js';
-import { asyncHandler } from '../middleware/asyncHandler.js';
+import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { getDataUseCaseSchema } from '../useCases/asset/getData.schema.js';
 import { GetDataUseCase } from '../useCases/asset/getData.useCase.js';
 

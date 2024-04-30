@@ -1,18 +1,16 @@
+import express from 'express';
 import httpProxy from 'http-proxy';
 import { env } from '../../env.js';
 import { initApiServer } from '../../express/api.js';
 import { logger } from '../../utilities/logger.js';
-import express from 'express';
 
 const app = express();
 
-(async () => {
-  await initApiServer(app);
-  const proxy = httpProxy.createProxyServer();
+await initApiServer(app);
 
-  app.get(['/admin/*', '/admin'], (req, res) => {
-    proxy.web(req, res, { target: `http://localhost:${env.ADMIN_PORT}/` }, (e) => {
-      logger.error(e);
-    });
+app.get(['/admin/*', '/admin'], (req, res) => {
+  const proxy = httpProxy.createProxyServer();
+  proxy.web(req, res, { target: `http://localhost:${env.ADMIN_PORT}/` }, (e) => {
+    logger.error(e);
   });
-})();
+});

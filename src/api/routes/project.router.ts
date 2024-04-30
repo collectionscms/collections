@@ -2,8 +2,8 @@ import express, { Request, Response } from 'express';
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
 import { ProjectRepository } from '../data/project/project.repository.js';
 import { projectPrisma } from '../database/prisma/client.js';
-import { asyncHandler } from '../middleware/asyncHandler.js';
-import { authenticatedUser } from '../middleware/auth.js';
+import { asyncHandler } from '../middlewares/asyncHandler.js';
+import { authenticatedUser } from '../middlewares/auth.js';
 import { updateProjectUseCaseSchema } from '../useCases/project/updateProject.schema.js';
 import { UpdateProjectUseCase } from '../useCases/project/updateProject.useCase.js';
 

@@ -13,18 +13,19 @@ import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import React, { useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import { logger } from '../../../utilities/logger.js';
+import { AuthCard } from '../../@extended/components/AuthCard/index.js';
 import { Loader } from '../../components/elements/Loader/index.js';
 import { Logo } from '../../components/elements/Logo/index.js';
 import { useAuth } from '../../components/utilities/Auth/index.js';
 import { FormValues, loginSchema } from '../../fields/schemas/authentications/login.js';
 import lazy from '../../utilities/lazy.js';
+import { getPathToTenant } from '../../utilities/urlGenerator.js';
 
 const Loading = Loader(lazy(() => import('../../components/elements/Loading/index.js'), 'Loading'));
 
 export const Login: React.FC = () => {
-  const navigate = useNavigate();
   const { t } = useTranslation();
   const { me, getCsrfToken, login } = useAuth();
   const { trigger, isMutating } = login();
@@ -47,7 +48,7 @@ export const Login: React.FC = () => {
 
   useEffect(() => {
     if (me) {
-      navigate('/admin/posts');
+      window.location.href = getPathToTenant(me.projects[0].subdomain, '/admin/posts');
     }
   }, [me]);
 
@@ -62,7 +63,7 @@ export const Login: React.FC = () => {
   if (me) return <Loading />;
 
   return (
-    <>
+    <AuthCard>
       <Stack spacing={3.5}>
         <Stack direction="row" justifyContent="left" alignItems="center" spacing={1}>
           <Box sx={{ width: '40px', height: '40px' }}>
@@ -128,6 +129,6 @@ export const Login: React.FC = () => {
           </Grid>
         </Stack>
       </Stack>
-    </>
+    </AuthCard>
   );
 };
