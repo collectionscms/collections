@@ -52,8 +52,6 @@
   "allow": "Allow",
   "not_allow": "Not Allow",
   "admin_has_all_permissions": "Admin has all permissions",
-  "log_back_in": "Log back in",
-  "logged_out": "Logged out",
   "no_contents": "There are no contents yet.",
   "no_roles": "There are no roles yet.",
   "back_to_home": "Back to Home",

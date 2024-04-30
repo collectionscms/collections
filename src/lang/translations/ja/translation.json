@@ -52,8 +52,6 @@
   "allow": "許可",
   "not_allow": "許可しない",
   "admin_has_all_permissions": "管理者は全ての権限を持っています",
-  "log_back_in": "再ログインする",
-  "logged_out": "ログアウトしました",
   "no_contents": "まだコンテンツはありません",
   "no_roles": "まだロールはありません",
   "back_to_home": "ホームに戻る",
