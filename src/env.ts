@@ -102,8 +102,8 @@ type AllowedEnvironmentVariable =
 
 export const defaults: Partial<Record<AllowedEnvironmentVariable, any>> = {
   // General
-  PUBLIC_SERVER_URL: 'http://localhost:4000',
-  SERVER_HOST: 'http://localhost',
+  PUBLIC_SERVER_URL: 'http://test.com',
+  SERVER_HOST: 'http://test.com',
   SERVER_PORT: '4000',
   ADMIN_PORT: '4001',
   DEFAULT_LOCALE: 'ja',
