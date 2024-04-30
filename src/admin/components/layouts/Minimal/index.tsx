@@ -1,7 +1,6 @@
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import { AuthCard } from '../../../@extended/components/AuthCard/index.js';
 
 export const MinimalLayout: React.FC = () => {
   return (
@@ -12,9 +11,7 @@ export const MinimalLayout: React.FC = () => {
       direction="row"
       sx={{ minHeight: '100vh' }}
     >
-      <AuthCard>
-        <Outlet />
-      </AuthCard>
+      <Outlet />
     </Grid>
   );
 };

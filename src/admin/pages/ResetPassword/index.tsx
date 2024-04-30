@@ -15,6 +15,7 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom';
 import { logger } from '../../../utilities/logger.js';
+import { AuthCard } from '../../@extended/components/AuthCard/index.js';
 import { useAuth } from '../../components/utilities/Auth/index.js';
 import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.js';
 import {
@@ -78,52 +79,54 @@ const ResetPasswordImpl: React.FC = () => {
   }
 
   return (
-    <Grid container spacing={3}>
-      <Grid xs={12}>
-        <Box sx={{ mb: { xs: -0.5, sm: 0.5 } }}>
-          <Typography variant="h3">{t('reset_password')}</Typography>
-        </Box>
-      </Grid>
-      <Grid xs={12}>
-        <Stack component="form" onSubmit={handleSubmit(onSubmit)}>
-          <Grid container spacing={3}>
-            <Grid xs={12}>
-              <Stack spacing={1}>
-                <Controller
-                  name="token"
-                  control={control}
-                  render={({ field }) => (
-                    <TextField {...field} type="hidden" sx={{ display: 'none' }} />
-                  )}
-                />
-                <input type="hidden" {...register('token')} value={token} />
-                <InputLabel>{t('new_password')}</InputLabel>
-                <Controller
-                  name="password"
-                  control={control}
-                  render={({ field }) => (
-                    <TextField {...field} type="password" error={errors.password !== undefined} />
-                  )}
-                />
-                <FormHelperText error>{errors.password?.message}</FormHelperText>
-              </Stack>
+    <AuthCard>
+      <Grid container spacing={3}>
+        <Grid xs={12}>
+          <Box sx={{ mb: { xs: -0.5, sm: 0.5 } }}>
+            <Typography variant="h3">{t('reset_password')}</Typography>
+          </Box>
+        </Grid>
+        <Grid xs={12}>
+          <Stack component="form" onSubmit={handleSubmit(onSubmit)}>
+            <Grid container spacing={3}>
+              <Grid xs={12}>
+                <Stack spacing={1}>
+                  <Controller
+                    name="token"
+                    control={control}
+                    render={({ field }) => (
+                      <TextField {...field} type="hidden" sx={{ display: 'none' }} />
+                    )}
+                  />
+                  <input type="hidden" {...register('token')} value={token} />
+                  <InputLabel>{t('new_password')}</InputLabel>
+                  <Controller
+                    name="password"
+                    control={control}
+                    render={({ field }) => (
+                      <TextField {...field} type="password" error={errors.password !== undefined} />
+                    )}
+                  />
+                  <FormHelperText error>{errors.password?.message}</FormHelperText>
+                </Stack>
+              </Grid>
+              <Grid xs={12}>
+                <Button
+                  disableElevation
+                  fullWidth
+                  variant="contained"
+                  type="submit"
+                  size="large"
+                  disabled={isMutating}
+                >
+                  {t('save')}
+                </Button>
+              </Grid>
             </Grid>
-            <Grid xs={12}>
-              <Button
-                disableElevation
-                fullWidth
-                variant="contained"
-                type="submit"
-                size="large"
-                disabled={isMutating}
-              >
-                {t('save')}
-              </Button>
-            </Grid>
-          </Grid>
-        </Stack>
+          </Stack>
+        </Grid>
       </Grid>
-    </Grid>
+    </AuthCard>
   );
 };
 

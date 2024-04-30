@@ -15,6 +15,7 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import { logger } from '../../../utilities/logger.js';
+import { AuthCard } from '../../@extended/components/AuthCard/index.js';
 import { Loader } from '../../components/elements/Loader/index.js';
 import { Logo } from '../../components/elements/Logo/index.js';
 import { useAuth } from '../../components/utilities/Auth/index.js';
@@ -62,7 +63,7 @@ export const Login: React.FC = () => {
   if (me) return <Loading />;
 
   return (
-    <>
+    <AuthCard>
       <Stack spacing={3.5}>
         <Stack direction="row" justifyContent="left" alignItems="center" spacing={1}>
           <Box sx={{ width: '40px', height: '40px' }}>
@@ -128,6 +129,6 @@ export const Login: React.FC = () => {
           </Grid>
         </Stack>
       </Stack>
-    </>
+    </AuthCard>
   );
 };
