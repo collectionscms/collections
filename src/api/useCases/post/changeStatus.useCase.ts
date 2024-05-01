@@ -26,10 +26,10 @@ export class ChangeStatusUseCase {
 
       const postHistoryEntity = PostHistoryEntity.Construct({
         projectId: post.projectId,
-        postId: post.id(),
+        postId: post.id,
         userName,
         status: params.status,
-        version: post.version(),
+        version: post.version,
       });
       postHistoryEntity.beforeValidate();
       await this.postHistoryRepository.create(tx, postHistoryEntity);

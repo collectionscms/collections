@@ -18,7 +18,7 @@ export class UpdateUserUseCase {
     await this.userRepository.checkUniqueEmail(this.prisma, userId, params.email);
 
     const user = await this.userRepository.findUserById(this.projectPrisma, userId);
-    const password = params.password ? await oneWayHash(params.password) : user.password();
+    const password = params.password ? await oneWayHash(params.password) : user.password;
 
     return await this.userRepository.updateWithRole(
       this.projectPrisma,

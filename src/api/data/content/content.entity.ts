@@ -38,35 +38,35 @@ export class ContentEntity {
 
   public beforeValidate(): void {}
 
-  id(): string {
+  get id(): string {
     return this.content.id;
   }
 
-  projectId(): string {
+  get projectId(): string {
     return this.content.projectId;
   }
 
-  postId(): string {
+  get postId(): string {
     return this.content.postId;
   }
 
-  title(): string {
+  get title(): string {
     return this.content.title ?? '';
   }
 
-  body(): string {
+  get body(): string {
     return this.content.body ?? '';
   }
 
-  bodyJson(): string {
+  get bodyJson(): string {
     return this.content.bodyJson ?? '';
   }
 
-  bodyHtml(): string {
+  get bodyHtml(): string {
     return this.content.bodyHtml ?? '';
   }
 
-  locale(): string {
+  get locale(): string {
     return this.content.locale;
   }
 

@@ -182,7 +182,7 @@ export class PostRepository {
   ): Promise<PostEntity> {
     const record = await prisma.post.update({
       where: {
-        id: postEntity.id(),
+        id: postEntity.id,
         projectId,
       },
       data: postEntity.toPersistence(),
