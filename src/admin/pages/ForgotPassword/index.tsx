@@ -13,7 +13,7 @@ import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { t } from 'i18next';
 import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { logger } from '../../../utilities/logger.js';
 import { AuthCard } from '../../@extended/components/AuthCard/index.js';
 import { Loading } from '../../components/elements/Loading/index.js';
@@ -23,11 +23,11 @@ import {
   FormValues,
   forgotPasswordSchema,
 } from '../../fields/schemas/authentications/forgotPassword.js';
-import { getUrlForTenant } from '../../utilities/urlGenerator.js';
 import { ForgotPasswordContextProvider, useForgotPassword } from './Context/index.js';
 
 const ForgotPasswordImpl: React.FC = () => {
   const { me } = useAuth();
+  const navigate = useNavigate();
   const { forgotPassword } = useForgotPassword();
   const { data: message, trigger, isMutating } = forgotPassword();
 
@@ -75,7 +75,7 @@ const ForgotPasswordImpl: React.FC = () => {
   }
 
   if (me) {
-    window.location.href = getUrlForTenant(me.projects[0].subdomain, '/admin/posts');
+    navigate('/admin');
     return <Loading />;
   }
 

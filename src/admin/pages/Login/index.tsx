@@ -13,7 +13,7 @@ import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import React, { useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { logger } from '../../../utilities/logger.js';
 import { AuthCard } from '../../@extended/components/AuthCard/index.js';
 import { Loader } from '../../components/elements/Loader/index.js';
@@ -28,6 +28,7 @@ const Loading = Loader(lazy(() => import('../../components/elements/Loading/inde
 export const Login: React.FC = () => {
   const { t } = useTranslation();
   const { me, getCsrfToken, login } = useAuth();
+  const navigate = useNavigate();
   const { trigger, isMutating } = login();
   const { data: csrfToken } = getCsrfToken();
   const {
@@ -47,8 +48,12 @@ export const Login: React.FC = () => {
   }, [csrfToken]);
 
   useEffect(() => {
-    if (me) {
+    if (!me) return;
+
+    if (me.projects.length === 1) {
       window.location.href = getUrlForTenant(me.projects[0].subdomain, '/admin/posts');
+    } else {
+      navigate('/admin');
     }
   }, [me]);
 

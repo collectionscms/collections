@@ -23,7 +23,6 @@ import {
   FormValues,
   resetPassword as resetPasswordSchema,
 } from '../../fields/schemas/authentications/resetPassword.js';
-import { getUrlForTenant } from '../../utilities/urlGenerator.js';
 import { ResetPasswordContextProvider, useResetPassword } from './Context/index.js';
 
 const ResetPasswordImpl: React.FC = () => {
@@ -55,7 +54,7 @@ const ResetPasswordImpl: React.FC = () => {
   };
 
   if (me) {
-    window.location.href = getUrlForTenant(me.projects[0].subdomain, '/admin/posts');
+    navigate('/admin');
     return <Loading />;
   }
 
