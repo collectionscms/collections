@@ -5,15 +5,15 @@ import { Loading } from '../elements/Loading/index.js';
 import { useAuth } from '../utilities/Auth/index.js';
 import { AuthRoutes } from './Auth/index.js';
 import { NoRoutes } from './NoRoutes/index.js';
+import { PortalRootRoutes } from './PortalRoot/index.js';
 import { PostRoutes } from './Post/index.js';
-import { MainRootRoutes } from './MainRoot/index.js';
-import { TenantRootRoutes } from './TenantRoot/index.js';
 import { SettingRoutes } from './Setting/index.js';
+import { TenantRootRoutes } from './TenantRoot/index.js';
 
 export const Routes: React.FC = () => {
   const { me } = useAuth();
 
-  const mainRouter = createBrowserRouter([MainRootRoutes, AuthRoutes, NoRoutes()]);
+  const portalRouter = createBrowserRouter([PortalRootRoutes, AuthRoutes, NoRoutes()]);
   const tenantRouter = createBrowserRouter([
     TenantRootRoutes(),
     PostRoutes(),
@@ -33,6 +33,6 @@ export const Routes: React.FC = () => {
   if (subdomain) {
     return <RouterProvider router={tenantRouter} />;
   } else {
-    return <RouterProvider router={mainRouter} />;
+    return <RouterProvider router={portalRouter} />;
   }
 };

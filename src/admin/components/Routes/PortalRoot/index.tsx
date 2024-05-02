@@ -7,7 +7,7 @@ const ProjectListPage = Loader(
   lazy(() => import('../../../pages/ProjectList/index.js'), 'ProjectListPage')
 );
 
-export const MainRootRoutes = {
+export const PortalRootRoutes = {
   path: '/admin',
   element: <MainLayout showNavContent={false} />,
   children: [
