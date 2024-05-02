@@ -4,6 +4,7 @@ CREATE TABLE "Project" (
     "name" VARCHAR(255) NOT NULL,
     "description" VARCHAR(255),
     "subdomain" VARCHAR(255) NOT NULL,
+    "iconUrl" VARCHAR(255),
     "enabled" BOOLEAN NOT NULL DEFAULT true,
     "createdAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMPTZ(6) NOT NULL,
