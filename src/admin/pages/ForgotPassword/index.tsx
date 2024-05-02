@@ -23,7 +23,7 @@ import {
   FormValues,
   forgotPasswordSchema,
 } from '../../fields/schemas/authentications/forgotPassword.js';
-import { getPathToTenant } from '../../utilities/urlGenerator.js';
+import { getUrlForTenant } from '../../utilities/urlGenerator.js';
 import { ForgotPasswordContextProvider, useForgotPassword } from './Context/index.js';
 
 const ForgotPasswordImpl: React.FC = () => {
@@ -75,7 +75,7 @@ const ForgotPasswordImpl: React.FC = () => {
   }
 
   if (me) {
-    window.location.href = getPathToTenant(me.projects[0].subdomain, '/admin/posts');
+    window.location.href = getUrlForTenant(me.projects[0].subdomain, '/admin/posts');
     return <Loading />;
   }
 

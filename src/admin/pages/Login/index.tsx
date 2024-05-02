@@ -21,7 +21,7 @@ import { Logo } from '../../components/elements/Logo/index.js';
 import { useAuth } from '../../components/utilities/Auth/index.js';
 import { FormValues, loginSchema } from '../../fields/schemas/authentications/login.js';
 import lazy from '../../utilities/lazy.js';
-import { getPathToTenant } from '../../utilities/urlGenerator.js';
+import { getUrlForTenant } from '../../utilities/urlGenerator.js';
 
 const Loading = Loader(lazy(() => import('../../components/elements/Loading/index.js'), 'Loading'));
 
@@ -48,7 +48,7 @@ export const Login: React.FC = () => {
 
   useEffect(() => {
     if (me) {
-      window.location.href = getPathToTenant(me.projects[0].subdomain, '/admin/posts');
+      window.location.href = getUrlForTenant(me.projects[0].subdomain, '/admin/posts');
     }
   }, [me]);
 

@@ -6,7 +6,7 @@ export const getLogoutUrl = () => {
   return generateUrlWithCurrentDomain('/admin/auth/logout');
 };
 
-export const getPathToTenant = (subdomain: string, path: string) => {
+export const getUrlForTenant = (subdomain: string, path: string) => {
   return generateUrlWithCurrentDomain(path, subdomain);
 };
 
