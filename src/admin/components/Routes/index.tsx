@@ -6,17 +6,18 @@ import { useAuth } from '../utilities/Auth/index.js';
 import { AuthRoutes } from './Auth/index.js';
 import { NoRoutes } from './NoRoutes/index.js';
 import { PostRoutes } from './Post/index.js';
-import { RootRoutes } from './Root/index.js';
+import { MainRootRoutes } from './MainRoot/index.js';
+import { TenantRootRoutes } from './TenantRoot/index.js';
 import { SettingRoutes } from './Setting/index.js';
 
 export const Routes: React.FC = () => {
   const { me } = useAuth();
 
-  const router = createBrowserRouter([
-    RootRoutes(),
+  const mainRouter = createBrowserRouter([MainRootRoutes, AuthRoutes, NoRoutes()]);
+  const tenantRouter = createBrowserRouter([
+    TenantRootRoutes(),
     PostRoutes(),
     SettingRoutes(me),
-    AuthRoutes,
     NoRoutes(),
   ]);
 
@@ -27,5 +28,11 @@ export const Routes: React.FC = () => {
     window.location.href = loginUrl;
   }
 
-  return <RouterProvider router={router} />;
+  const hostParts = window.location.host.split('.');
+  const subdomain = hostParts.length > 2 ? hostParts.slice(0, -2).join('.') : null;
+  if (subdomain) {
+    return <RouterProvider router={tenantRouter} />;
+  } else {
+    return <RouterProvider router={mainRouter} />;
+  }
 };
