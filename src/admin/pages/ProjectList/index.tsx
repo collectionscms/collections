@@ -6,15 +6,15 @@ import { Link } from '../../components/elements/Link/index.js';
 import { Cell } from '../../components/elements/Table/Cell/index.js';
 import { cells } from '../../components/elements/Table/Cell/types.js';
 import { Table } from '../../components/elements/Table/index.js';
-import { useAuth } from '../../components/utilities/Auth/index.js';
 import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.js';
 import { buildColumns } from '../../utilities/buildColumns.js';
 import { getUrlForTenant } from '../../utilities/urlGenerator.js';
-import { ProjectListContextProvider } from './Context/index.js';
+import { ProjectListContextProvider, useProjectList } from './Context/index.js';
 
 const ProjectListPageImpl: React.FC = () => {
   const { t } = useTranslation();
-  const { me } = useAuth();
+  const { getMyProjects } = useProjectList();
+  const { data: projects } = getMyProjects();
 
   const fields = [
     { field: 'name', label: t('project_name'), type: cells.text() },
@@ -36,7 +36,7 @@ const ProjectListPageImpl: React.FC = () => {
   return (
     <>
       <MainCard content={false} title={<></>} secondary={<></>}>
-        <Table columns={columns} rows={me?.projects ?? []} />
+        <Table columns={columns} rows={projects} />
       </MainCard>
     </>
   );

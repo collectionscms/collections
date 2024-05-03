@@ -101,4 +101,29 @@ export class MeRepository {
 
     return token;
   }
+
+  async findMeWithProjects(
+    prisma: PrismaType,
+    id: string
+  ): Promise<{ user: UserEntity; projects: ProjectEntity[] }> {
+    const user = await prisma.user.findUniqueOrThrow({
+      where: {
+        id,
+      },
+      include: {
+        userProjects: {
+          include: {
+            project: true,
+          },
+        },
+      },
+    });
+
+    return {
+      user: UserEntity.Reconstruct(user),
+      projects: user.userProjects.map((userProject) =>
+        ProjectEntity.Reconstruct(userProject.project)
+      ),
+    };
+  }
 }
