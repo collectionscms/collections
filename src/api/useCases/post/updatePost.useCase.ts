@@ -23,7 +23,7 @@ export class UpdatePostUseCase {
       ...record.toPersistence(),
       ...params,
       publishedAt: params.status === 'published' ? new Date() : null,
-      version: params.status === 'published' ? record.version() + 1 : record.version(),
+      version: params.status === 'published' ? record.version + 1 : record.version,
     });
 
     const result = await this.prisma.$transaction(async (tx) => {
@@ -33,10 +33,10 @@ export class UpdatePostUseCase {
         tx,
         PostHistoryEntity.Construct({
           projectId: result.projectId,
-          postId: result.id(),
+          postId: result.id,
           userName,
           status: params.status,
-          version: result.version(),
+          version: result.version,
         })
       );
 

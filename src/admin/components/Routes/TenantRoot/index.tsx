@@ -1,7 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Navigate } from 'react-router-dom';
-import { profileNavItems } from '../../../utilities/groupNavItems.js';
 import lazy from '../../../utilities/lazy.js';
 import { Loader } from '../../elements/Loader/index.js';
 import { MainHeader } from '../../elements/MainHeader/index.js';
@@ -9,14 +8,13 @@ import { MainLayout } from '../../layouts/Main/index.js';
 
 const ProfilePage = Loader(lazy(() => import('../../../pages/Profile/index.js'), 'ProfilePage'));
 const PostPage = Loader(lazy(() => import('../../../pages/Post/index.js'), 'PostPage'));
-const group = profileNavItems();
 
-export const RootRoutes = () => {
+export const TenantRootRoutes = () => {
   const { t } = useTranslation();
 
   return {
     path: '/admin',
-    element: <MainLayout group={group} />,
+    element: <MainLayout showNavContent={true} />,
     children: [
       { path: '', element: <Navigate to="/admin/posts" replace /> },
       {

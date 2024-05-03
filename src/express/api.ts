@@ -6,7 +6,7 @@ import { currentSession } from '../api/middlewares/auth.js';
 import { corsMiddleware } from '../api/middlewares/cors.js';
 import { errorHandler } from '../api/middlewares/errorHandler.js';
 import { asset } from '../api/routes/asset.router.js';
-import { mainApiRouter } from '../api/routes/main.router.js';
+import { portalApiRouter } from '../api/routes/portal.router.js';
 import { tenantApiRouter } from '../api/routes/tenant.router.js';
 import { env } from '../env.js';
 import { expressLogger } from '../utilities/expressLogger.js';
@@ -27,9 +27,9 @@ export const initApiServer = async (app: Express) => {
   app.use(currentSession);
 
   // api
-  const mainApp = express();
-  mainApp.use('/api', mainApiRouter);
-  app.use(vhost('*.*', mainApp));
+  const portalApp = express();
+  portalApp.use('/api', portalApiRouter);
+  app.use(vhost('*.*', portalApp));
 
   const tenantApp = express();
   tenantApp.use('/api', tenantApiRouter);

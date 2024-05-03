@@ -1,6 +1,6 @@
 import { Project } from '@prisma/client';
-import { ProjectEntity } from './project.entity';
 import { v4 } from 'uuid';
+import { ProjectEntity } from './project.entity';
 
 describe('ProjectEntity', () => {
   let projectEntity: ProjectEntity;
@@ -9,6 +9,7 @@ describe('ProjectEntity', () => {
     name: 'Formula one project',
     subdomain: 'f1-project',
     enabled: true,
+    iconUrl: null,
     description: 'This is a formula one project',
     createdAt: new Date(),
     updatedAt: new Date(),

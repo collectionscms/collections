@@ -148,9 +148,9 @@ export class UserRepository {
         id: userId,
       },
       data: {
-        password: user.password(),
+        password: user.password,
         email: user.email,
-        name: user.name(),
+        name: user.name,
         userProjects: {
           update: {
             where: {

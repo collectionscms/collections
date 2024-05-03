@@ -29,12 +29,12 @@ export class UpdateContentUseCase {
     const record = await this.contentRepository.findOneById(this.prisma, id, projectId);
     const post = await this.postRepository.findOneById(
       this.prisma,
-      record.projectId(),
-      record.postId()
+      record.projectId,
+      record.postId
     );
 
     const result = await this.prisma.$transaction(async (tx) => {
-      if (post.status() === 'init') {
+      if (post.status === 'init') {
         await this.postRepository.update(
           tx,
           projectId,
@@ -45,10 +45,10 @@ export class UpdateContentUseCase {
           tx,
           PostHistoryEntity.Construct({
             projectId: post.projectId,
-            postId: post.id(),
+            postId: post.id,
             userName,
             status: 'draft',
-            version: post.version(),
+            version: post.version,
           })
         );
       }

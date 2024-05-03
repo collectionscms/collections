@@ -1,6 +1,6 @@
 import { LogoutOutlined, UserOutlined } from '@ant-design/icons';
 import {
-  Button,
+  IconButton,
   List,
   ListItem,
   ListItemButton,
@@ -12,11 +12,9 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Avatar } from '../../../../@extended/components/Avatar/index.js';
 import { getLogoutUrl } from '../../../../utilities/urlGenerator.js';
-import { useAuth } from '../../../utilities/Auth/index.js';
 
 export const BottomContent: React.FC = () => {
   const { t } = useTranslation();
-  const { me } = useAuth();
 
   // Menu
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
@@ -44,14 +42,17 @@ export const BottomContent: React.FC = () => {
 
   return (
     <>
-      <Button fullWidth variant="text" color="inherit" onClick={handleMenuOpen}>
-        <Stack direction="row" gap={1} sx={{ alignItems: 'center', width: '100%' }}>
+      <IconButton color="inherit" onClick={handleMenuOpen}>
+        <Stack
+          direction="row"
+          gap={1}
+          sx={{ alignItems: 'center', width: '100%', justifyContent: 'center' }}
+        >
           <Avatar size="sm" color="secondary" type="combined">
-            <UserOutlined />
+            <UserOutlined style={{ fontSize: 16 }} />
           </Avatar>
-          {me?.name}
         </Stack>
-      </Button>
+      </IconButton>
       <Popover
         open={open}
         anchorEl={anchorEl}
@@ -61,11 +62,11 @@ export const BottomContent: React.FC = () => {
           horizontal: 'center',
         }}
         transformOrigin={{
-          vertical: 60,
-          horizontal: 'center',
+          vertical: 0,
+          horizontal: 'left',
         }}
       >
-        <List sx={{ width: clientWidth }}>
+        <List sx={{ width: '100%' }}>
           <ListItem disablePadding>
             <ListItemButton onClick={handleLogout}>
               <ListItemIcon>

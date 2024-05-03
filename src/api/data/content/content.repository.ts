@@ -30,7 +30,7 @@ export class ContentRepository {
 
     const record = await prisma.content.update({
       where: {
-        id: contentEntity.id(),
+        id: contentEntity.id,
       },
       data: contentEntity.toPersistence(),
     });

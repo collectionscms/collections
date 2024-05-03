@@ -17,6 +17,7 @@
   "language": "言語",
   "japanese": "日本語",
   "project_name": "プロジェクト名",
+  "project_id": "プロジェクトID",
   "logout": "ログアウト",
   "update": "更新",
   "login": "ログイン",
