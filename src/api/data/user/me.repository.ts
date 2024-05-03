@@ -1,3 +1,4 @@
+import { Project } from '@prisma/client';
 import crypto from 'crypto';
 import dayjs from 'dayjs';
 import { InvalidCredentialsException } from '../../../exceptions/invalidCredentials.js';
@@ -35,7 +36,7 @@ export class MeRepository {
     return {
       user: UserEntity.Reconstruct(user),
       projects: user.userProjects.map((userProject) =>
-        ProjectEntity.Reconstruct(userProject.project)
+        ProjectEntity.Reconstruct<Project, ProjectEntity>(userProject.project)
       ),
     };
   }
@@ -111,7 +112,7 @@ export class MeRepository {
     return {
       user: UserEntity.Reconstruct(user),
       projects: user.userProjects.map((userProject) =>
-        ProjectEntity.Reconstruct(userProject.project)
+        ProjectEntity.Reconstruct<Project, ProjectEntity>(userProject.project)
       ),
     };
   }

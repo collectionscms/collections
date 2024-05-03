@@ -1,3 +1,4 @@
+import { Project } from '@prisma/client';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
 import { ProjectEntity } from './project.entity.js';
 
@@ -7,7 +8,7 @@ export class ProjectRepository {
       where: { id },
     });
 
-    return ProjectEntity.Reconstruct(record);
+    return ProjectEntity.Reconstruct<Project, ProjectEntity>(record);
   }
 
   async update(
@@ -24,6 +25,6 @@ export class ProjectRepository {
       },
     });
 
-    return ProjectEntity.Reconstruct(result);
+    return ProjectEntity.Reconstruct<Project, ProjectEntity>(record);
   }
 }
