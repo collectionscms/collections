@@ -16,7 +16,7 @@ const router = express.Router();
 router.get(
   '/me',
   asyncHandler(async (req: Request, res: Response) => {
-    const user = res.user ?? (await getSession(req, authConfig));
+    const user = res.user ?? (await getSession(req, authConfig))?.user;
 
     return res.json({
       me: user || null,
