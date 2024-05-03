@@ -51,7 +51,7 @@ export class PostEntity {
     return v4().trim().replace(/-/g, '').substring(0, 10);
   };
 
-  id(): string {
+  get id(): string {
     return this.post.id;
   }
 
@@ -59,19 +59,19 @@ export class PostEntity {
     return this.projectId;
   }
 
-  status(): string {
+  get status(): string {
     return this.post.status;
   }
 
-  defaultLocale(): string {
+  get defaultLocale(): string {
     return this.post.defaultLocale;
   }
 
-  version(): number {
+  get version(): number {
     return this.post.version;
   }
 
-  createdById(): string {
+  get createdById(): string {
     return this.post.createdById;
   }
 
@@ -93,7 +93,7 @@ export class PostEntity {
     createdBy: UserEntity
   ): LocalizedPost {
     const localizedContent = contents.find((c) => c.content.isSameLocaleContent(locale));
-    const locales = contents.map((c) => c.content.locale());
+    const locales = contents.map((c) => c.content.locale);
 
     return {
       id: this.post.id,
@@ -102,13 +102,13 @@ export class PostEntity {
       updatedAt: this.post.updatedAt,
       publishedAt: this.post.publishedAt,
       defaultLocale: this.post.defaultLocale,
-      title: localizedContent?.content.title() ?? '',
-      body: localizedContent?.content.body() ?? '',
-      bodyJson: localizedContent?.content.bodyJson() ?? '',
-      bodyHtml: localizedContent?.content.bodyHtml() ?? '',
-      contentLocale: localizedContent?.content.locale() || this.post.defaultLocale,
+      title: localizedContent?.content.title ?? '',
+      body: localizedContent?.content.body ?? '',
+      bodyJson: localizedContent?.content.bodyJson ?? '',
+      bodyHtml: localizedContent?.content.bodyHtml ?? '',
+      contentLocale: localizedContent?.content.locale || this.post.defaultLocale,
       locales,
-      authorName: createdBy.name(),
+      authorName: createdBy.name,
       contents: contents.map((c) => ({
         ...c.content.toResponse(),
         file: c.file?.toResponse() ?? null,

@@ -12,6 +12,7 @@ model Project {
   name         String        @db.VarChar(255)
   description  String?       @db.VarChar(255)
   subdomain    String        @unique @db.VarChar(255)
+  iconUrl      String?       @db.VarChar(255)
   enabled      Boolean       @default(true)
   createdAt    DateTime      @default(now()) @db.Timestamptz(6)
   updatedAt    DateTime      @updatedAt @db.Timestamptz(6)

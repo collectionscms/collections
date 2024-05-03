@@ -34,7 +34,7 @@ router.patch(
     await repository.checkUniqueEmail(prisma, id, req.body.email);
 
     const user = await repository.findUserById(projectPrisma(projectId), id);
-    const password = req.body.password ? await oneWayHash(req.body.password) : user.password();
+    const password = req.body.password ? await oneWayHash(req.body.password) : user.password;
 
     await repository.update(projectPrisma(projectId), id, {
       name: req.body.name,

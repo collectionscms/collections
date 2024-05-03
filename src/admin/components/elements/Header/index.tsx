@@ -2,7 +2,6 @@ import { MenuOutlined } from '@ant-design/icons';
 import { AppBar, AppBarProps, Toolbar, useMediaQuery, useTheme } from '@mui/material';
 import React, { ReactNode } from 'react';
 import { IconButton } from '../../../@extended/components/IconButton/index.js';
-import { config } from '../../../config/ui.js';
 import { AppBarStyled } from './styled.js';
 import { Props } from './types.js';
 
@@ -43,7 +42,6 @@ export const Header: React.FC<Props> = ({ open, toggleDrawer }) => {
     sx: {
       borderBottom: `1px solid ${theme.palette.divider}`,
       zIndex: 1200,
-      width: { xs: '100%', lg: `calc(100% - ${config.ui.navWidth}px)` },
     },
   };
 

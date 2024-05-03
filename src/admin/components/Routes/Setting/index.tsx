@@ -1,13 +1,12 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Navigate } from 'react-router-dom';
+import { Me } from '../../../../types/index.js';
 import { settingsGroupNavItems } from '../../../utilities/groupNavItems.js';
 import lazy from '../../../utilities/lazy.js';
 import { Loader } from '../../elements/Loader/index.js';
 import { MainHeader } from '../../elements/MainHeader/index.js';
 import { MainLayout } from '../../layouts/Main/index.js';
-import { useAuth } from '../../utilities/Auth/index.js';
-import { Me } from '../../../../types/index.js';
 
 const Project = Loader(lazy(() => import('../../../pages/Project/index.js'), 'Project'));
 const Role = Loader(lazy(() => import('../../../pages/Role/index.js'), 'RolePage'));
@@ -38,7 +37,7 @@ export const SettingRoutes = (me: Me | null | undefined) => {
 
   return {
     path: '/admin/settings',
-    element: <MainLayout group={group} />,
+    element: <MainLayout showNavContent={true} />,
     children: [
       { path: '', element: <Navigate to={group.items[0].href} replace /> },
       {

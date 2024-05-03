@@ -46,11 +46,11 @@ export class UserEntity {
     return this.user.email;
   }
 
-  name(): string {
+  get name(): string {
     return this.user.name;
   }
 
-  password(): string {
+  get password(): string {
     return this.user.password;
   }
 
