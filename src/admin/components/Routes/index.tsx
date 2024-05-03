@@ -26,6 +26,7 @@ export const Routes: React.FC = () => {
   const loginUrl = getLoginUrl();
   if (me === null && window.location.href !== loginUrl) {
     window.location.href = loginUrl;
+    return;
   }
 
   const hostParts = window.location.host.split('.');
