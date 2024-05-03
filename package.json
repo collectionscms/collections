@@ -57,7 +57,7 @@
     "@hookform/resolvers": "3.3.2",
     "@mui/lab": "5.0.0-alpha.160",
     "@mui/material": "5.15.16",
-    "@pmmmwh/react-refresh-webpack-plugin": "0.5.11",
+    "@pmmmwh/react-refresh-webpack-plugin": "0.5.13",
     "@prisma/client": "5.13.0",
     "@prisma/migrate": "5.13.0",
     "@remixicon/react": "4.2.0",
