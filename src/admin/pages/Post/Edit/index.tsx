@@ -109,7 +109,7 @@ export const EditPostPageImpl: React.FC = () => {
   const handleSaveContent = async () => {
     try {
       await saveContent(buildParams());
-      enqueueSnackbar(t('saved'), { variant: 'success' });
+      enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
     } catch (error) {
       logger.error(error);
     }
