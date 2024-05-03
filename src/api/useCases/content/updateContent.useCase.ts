@@ -1,4 +1,4 @@
-import { Post } from '@prisma/client';
+import { Content, Post } from '@prisma/client';
 import { ContentEntity } from '../../data/content/content.entity.js';
 import { ContentRepository } from '../../data/content/content.repository.js';
 import { PostEntity } from '../../data/post/post.entity.js';
@@ -6,6 +6,7 @@ import { PostRepository } from '../../data/post/post.repository.js';
 import { PostHistoryEntity } from '../../data/postHistory/postHistory.entity.js';
 import { PostHistoryRepository } from '../../data/postHistory/postHistory.repository.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
+import { UpdateContentUseCaseSchemaType } from './updateContent.schema.js';
 
 export class UpdateContentUseCase {
   constructor(
@@ -15,18 +16,9 @@ export class UpdateContentUseCase {
     private readonly postHistoryRepository: PostHistoryRepository
   ) {}
 
-  async execute(
-    id: string,
-    projectId: string,
-    userName: string,
-    params: {
-      title: string | null;
-      body: string | null;
-      bodyJson: string | null;
-      bodyHtml: string | null;
-      fileId: string | null;
-    }
-  ): Promise<ContentEntity> {
+  async execute(props: UpdateContentUseCaseSchemaType): Promise<Content> {
+    const { id, projectId, userName, fileId, title, body, bodyJson, bodyHtml } = props;
+
     const record = await this.contentRepository.findOneById(this.prisma, id, projectId);
     const post = await this.postRepository.findOneById(
       this.prisma,
@@ -52,14 +44,18 @@ export class UpdateContentUseCase {
         );
       }
 
-      const entity = ContentEntity.Reconstruct({
-        ...record.toPersistence(),
+      const entity = ContentEntity.Reconstruct<Content, ContentEntity>(record.toPersistence());
+      entity.updateContent({
+        fileId,
+        title,
+        body,
+        bodyJson,
+        bodyHtml,
       });
-      entity.updateContent(params);
 
       return await this.contentRepository.update(this.prisma, entity);
     });
 
-    return result;
+    return result.toResponse();
   }
 }

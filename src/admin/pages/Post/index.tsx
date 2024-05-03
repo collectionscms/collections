@@ -40,7 +40,6 @@ export const PostPageImpl: React.FC = () => {
     const deletedPost = posts.filter((post) => post.id !== postId);
     mutate(deletedPost);
     setMenu(null);
-    enqueueSnackbar(t('toast.deleted_successfully'), { variant: 'success' });
   };
 
   const handleArchiveSuccess = (postId: string) => {

@@ -1,13 +1,9 @@
 import { Content } from '@prisma/client';
 import { v4 } from 'uuid';
+import { UnexpectedException } from '../../../exceptions/unexpected.js';
+import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 
-export class ContentEntity {
-  private readonly content: Content;
-
-  constructor(content: Content) {
-    this.content = content;
-  }
-
+export class ContentEntity extends PrismaBaseEntity<Content> {
   static Construct({
     projectId,
     postId,
@@ -32,49 +28,50 @@ export class ContentEntity {
     });
   }
 
-  static Reconstruct(content: Content): ContentEntity {
-    return new ContentEntity(content);
+  private isValid() {
+    if (!this.props.id) {
+      throw new UnexpectedException({ message: 'id is required' });
+    }
   }
 
-  public beforeValidate(): void {}
+  public beforeUpdateValidate(): void {
+    this.isValid();
+  }
+
+  public beforeInsertValidate(): void {
+    this.isValid();
+  }
 
   get id(): string {
-    return this.content.id;
+    return this.props.id;
   }
 
   get projectId(): string {
-    return this.content.projectId;
+    return this.props.projectId;
   }
 
   get postId(): string {
-    return this.content.postId;
+    return this.props.postId;
   }
 
   get title(): string {
-    return this.content.title ?? '';
+    return this.props.title ?? '';
   }
 
   get body(): string {
-    return this.content.body ?? '';
+    return this.props.body ?? '';
   }
 
   get bodyJson(): string {
-    return this.content.bodyJson ?? '';
+    return this.props.bodyJson ?? '';
   }
 
   get bodyHtml(): string {
-    return this.content.bodyHtml ?? '';
+    return this.props.bodyHtml ?? '';
   }
 
   get locale(): string {
-    return this.content.locale;
-  }
-
-  private copyProps(): Content {
-    const copy = {
-      ...this.content,
-    };
-    return Object.freeze(copy);
+    return this.props.locale;
   }
 
   updateContent({
@@ -90,22 +87,14 @@ export class ContentEntity {
     bodyHtml: string | null;
     fileId: string | null;
   }): void {
-    this.content.title = title;
-    this.content.body = body;
-    this.content.bodyJson = bodyJson;
-    this.content.bodyHtml = bodyHtml;
-    this.content.fileId = fileId;
+    this.props.title = title;
+    this.props.body = body;
+    this.props.bodyJson = bodyJson;
+    this.props.bodyHtml = bodyHtml;
+    this.props.fileId = fileId;
   }
 
   isSameLocaleContent(locale: string) {
-    return this.content.locale.toLocaleLowerCase() === locale.toLocaleLowerCase();
-  }
-
-  toPersistence(): Content {
-    return this.copyProps();
-  }
-
-  toResponse(): Content {
-    return this.copyProps();
+    return this.props.locale.toLocaleLowerCase() === locale.toLocaleLowerCase();
   }
 }

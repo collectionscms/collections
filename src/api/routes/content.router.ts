@@ -17,23 +17,21 @@ router.post(
   '/posts/:id/contents',
   authenticatedUser,
   asyncHandler(async (req: Request, res: Response) => {
-    const id = req.params.id;
-    const projectId = res.user.projects[0].id;
-
     const validated = createContentUseCaseSchema.safeParse({
-      projectId,
-      id,
-      ...req.body,
+      projectId: res.tenantProjectId,
+      id: req.params.id,
+      locale: req.body.locale,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
-    const useCase = new CreateContentUseCase(projectPrisma(projectId), new ContentRepository());
-    const content = await useCase.execute(validated.data.id, validated.data.projectId, {
-      locale: validated.data.locale,
-    });
+    const useCase = new CreateContentUseCase(
+      projectPrisma(validated.data.projectId),
+      new ContentRepository()
+    );
+    const content = await useCase.execute(validated.data);
 
     res.json({
-      content: content.toResponse(),
+      content,
     });
   })
 );
@@ -42,31 +40,25 @@ router.patch(
   '/contents/:id',
   authenticatedUser,
   asyncHandler(async (req: Request, res: Response) => {
-    const id = req.params.id;
-    const projectId = res.user.projects[0].id;
-    const userName = res.user.name;
-
     const validated = updateContentUseCaseSchema.safeParse({
-      projectId,
-      id,
-      userName,
-      ...req.body,
+      projectId: res.tenantProjectId,
+      id: req.params.id,
+      userName: res.user.name,
+      fileId: req.body.fileId,
+      title: req.body.title,
+      body: req.body.body,
+      bodyJson: req.body.bodyJson,
+      bodyHtml: req.body.bodyHtml,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
     const useCase = new UpdateContentUseCase(
-      projectPrisma(projectId),
+      projectPrisma(validated.data.projectId),
       new PostRepository(),
       new ContentRepository(),
       new PostHistoryRepository()
     );
-    await useCase.execute(validated.data.id, validated.data.projectId, validated.data.userName, {
-      title: validated.data.title,
-      body: validated.data.body,
-      bodyJson: validated.data.bodyJson,
-      bodyHtml: validated.data.bodyHtml,
-      fileId: validated.data.fileId,
-    });
+    await useCase.execute(validated.data);
 
     res.status(204).send();
   })

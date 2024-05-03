@@ -1,4 +1,4 @@
-import { Post, PostHistory } from '@prisma/client';
+import { Content, Post, PostHistory } from '@prisma/client';
 import { ProjectPrismaClient, ProjectPrismaType } from '../../database/prisma/client.js';
 import { ContentEntity } from '../content/content.entity.js';
 import { FileEntity } from '../file/file.entity.js';
@@ -40,7 +40,7 @@ export class PostRepository {
       const contents = [];
       for (const content of record.contents) {
         contents.push({
-          content: ContentEntity.Reconstruct(content),
+          content: ContentEntity.Reconstruct<Content, ContentEntity>(content),
           file: content.file ? FileEntity.Reconstruct(content.file) : null,
         });
       }
@@ -102,7 +102,7 @@ export class PostRepository {
     const contents = [];
     for (const content of record.contents) {
       contents.push({
-        content: ContentEntity.Reconstruct(content),
+        content: ContentEntity.Reconstruct<Content, ContentEntity>(content),
         file: content.file ? FileEntity.Reconstruct(content.file) : null,
       });
     }
@@ -148,7 +148,7 @@ export class PostRepository {
     const contents = [];
     for (const content of record.contents) {
       contents.push({
-        content: ContentEntity.Reconstruct(content),
+        content: ContentEntity.Reconstruct<Content, ContentEntity>(content),
         file: content.file ? FileEntity.Reconstruct(content.file) : null,
       });
     }
