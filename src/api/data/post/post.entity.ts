@@ -1,18 +1,14 @@
 import { Post } from '@prisma/client';
 import { v4 } from 'uuid';
+import { UnexpectedException } from '../../../exceptions/unexpected.js';
 import { LocalizedPost } from '../../../types/index.js';
 import { ContentEntity } from '../content/content.entity.js';
 import { FileEntity } from '../file/file.entity.js';
 import { PostHistoryEntity } from '../postHistory/postHistory.entity.js';
+import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 import { UserEntity } from '../user/user.entity.js';
 
-export class PostEntity {
-  private readonly post: Post;
-
-  constructor(post: Post) {
-    this.post = post;
-  }
-
+export class PostEntity extends PrismaBaseEntity<Post> {
   static Construct({
     projectId,
     defaultLocale,
@@ -41,18 +37,26 @@ export class PostEntity {
     return { post, content };
   }
 
-  static Reconstruct(post: Post): PostEntity {
-    return new PostEntity(post);
+  private isValid() {
+    if (!this.props.id) {
+      throw new UnexpectedException({ message: 'id is required' });
+    }
   }
 
-  public beforeValidate(): void {}
+  public beforeUpdateValidate(): void {
+    this.isValid();
+  }
+
+  public beforeInsertValidate(): void {
+    this.isValid();
+  }
 
   static GenerateSlug = () => {
     return v4().trim().replace(/-/g, '').substring(0, 10);
   };
 
   get id(): string {
-    return this.post.id;
+    return this.props.id;
   }
 
   get projectId(): string {
@@ -60,33 +64,35 @@ export class PostEntity {
   }
 
   get status(): string {
-    return this.post.status;
+    return this.props.status;
   }
 
   get defaultLocale(): string {
-    return this.post.defaultLocale;
+    return this.props.defaultLocale;
   }
 
   get version(): number {
-    return this.post.version;
+    return this.props.version;
   }
 
   get createdById(): string {
-    return this.post.createdById;
+    return this.props.createdById;
   }
 
-  private copyProps(): Post {
-    const copy = {
-      ...this.post,
-    };
-    return Object.freeze(copy);
+  updatePost(status: string) {
+    this.props.status = status;
+
+    if (status === 'published') {
+      this.props.publishedAt = new Date();
+      this.props.version += 1;
+    }
   }
 
-  toPersistence(): Post {
-    return this.copyProps();
+  updateStatus(status: string) {
+    this.props.status = status;
   }
 
-  toResponse(
+  toLocalizedWithContentsResponse(
     locale: string,
     contents: { content: ContentEntity; file: FileEntity | null }[],
     histories: PostHistoryEntity[],
@@ -96,17 +102,17 @@ export class PostEntity {
     const locales = contents.map((c) => c.content.locale);
 
     return {
-      id: this.post.id,
-      slug: this.post.slug,
-      status: this.post.status,
-      updatedAt: this.post.updatedAt,
-      publishedAt: this.post.publishedAt,
-      defaultLocale: this.post.defaultLocale,
+      id: this.props.id,
+      slug: this.props.slug,
+      status: this.props.status,
+      updatedAt: this.props.updatedAt,
+      publishedAt: this.props.publishedAt,
+      defaultLocale: this.props.defaultLocale,
       title: localizedContent?.content.title ?? '',
       body: localizedContent?.content.body ?? '',
       bodyJson: localizedContent?.content.bodyJson ?? '',
       bodyHtml: localizedContent?.content.bodyHtml ?? '',
-      contentLocale: localizedContent?.content.locale || this.post.defaultLocale,
+      contentLocale: localizedContent?.content.locale || this.props.defaultLocale,
       locales,
       authorName: createdBy.name,
       contents: contents.map((c) => ({

@@ -1,3 +1,4 @@
+import { LocalizedPost } from '../../../types/index.js';
 import { ContentEntity } from '../../data/content/content.entity.js';
 import { ContentRepository } from '../../data/content/content.repository.js';
 import { FileEntity } from '../../data/file/file.entity.js';
@@ -5,6 +6,7 @@ import { PostEntity } from '../../data/post/post.entity.js';
 import { PostRepository } from '../../data/post/post.repository.js';
 import { UserEntity } from '../../data/user/user.entity.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
+import { CreatePostUseCaseSchemaType } from './createPost.schema.js';
 
 type CreatePostUseCaseResponse = {
   post: PostEntity;
@@ -22,15 +24,13 @@ export class CreatePostUseCase {
     private readonly contentRepository: ContentRepository
   ) {}
 
-  async execute(
-    projectId: string,
-    userId: string,
-    locale: string
-  ): Promise<CreatePostUseCaseResponse> {
+  async execute(props: CreatePostUseCaseSchemaType): Promise<LocalizedPost> {
+    const { userId, projectId, locale } = props;
+
     let record = await this.postRepository.findInitByUserId(this.prisma, userId);
     if (!record) {
       const { post, content } = PostEntity.Construct({
-        projectId,
+        projectId: projectId,
         defaultLocale: locale,
         createdById: userId,
       });
@@ -52,6 +52,11 @@ export class CreatePostUseCase {
       });
     }
 
-    return record;
+    return record.post.toLocalizedWithContentsResponse(
+      locale,
+      record.contents,
+      [],
+      record.createdBy
+    );
   }
 }
