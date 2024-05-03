@@ -1,14 +1,15 @@
 import { getSession } from '@auth/express';
 import express, { Request, Response } from 'express';
+import { env } from '../../env.js';
 import { authConfig } from '../configs/auth.js';
+import { MeRepository } from '../data/user/me.repository.js';
 import { UserRepository } from '../data/user/user.repository.js';
 import { prisma, projectPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';
-import { oneWayHash } from '../utilities/oneWayHash.js';
-import { env } from '../../env.js';
-import { MeRepository } from '../data/user/me.repository.js';
 import { MailService } from '../services/mail.service.js';
+import { GetMyProjectsUseCase } from '../useCases/me/getMyProjects.useCase.js';
+import { oneWayHash } from '../utilities/oneWayHash.js';
 
 const router = express.Router();
 
@@ -20,6 +21,19 @@ router.get(
     return res.json({
       me: user || null,
     });
+  })
+);
+
+router.get(
+  '/me/projects',
+  authenticatedUser,
+  asyncHandler(async (req: Request, res: Response) => {
+    const id = res.user.id;
+
+    const useCase = new GetMyProjectsUseCase(prisma, new MeRepository());
+    const projects = await useCase.execute(id);
+
+    return res.json(projects);
   })
 );
 

@@ -1,15 +1,18 @@
-import { Project } from '@prisma/client';
 import crypto from 'crypto';
 import dayjs from 'dayjs';
 import { InvalidCredentialsException } from '../../../exceptions/invalidCredentials.js';
-import { Me } from '../../../types/index.js';
-import { PrismaType, projectPrisma } from '../../database/prisma/client.js';
+import { PrismaType } from '../../database/prisma/client.js';
 import { comparePasswords } from '../../utilities/comparePasswords.js';
 import { oneWayHash } from '../../utilities/oneWayHash.js';
+import { ProjectEntity } from '../project/project.entity.js';
 import { UserEntity } from './user.entity.js';
 
 export class MeRepository {
-  async login(prisma: PrismaType, email: string, password: string): Promise<Me> {
+  async login(
+    prisma: PrismaType,
+    email: string,
+    password: string
+  ): Promise<{ user: UserEntity; projects: ProjectEntity[] }> {
     const user = await prisma.user.findFirst({
       where: {
         email: {
@@ -17,7 +20,11 @@ export class MeRepository {
         },
       },
       include: {
-        userProjects: true,
+        userProjects: {
+          include: {
+            project: true,
+          },
+        },
       },
     });
 
@@ -25,29 +32,11 @@ export class MeRepository {
       throw new InvalidCredentialsException('incorrect_email_or_password');
     }
 
-    let projects: Project[] = [];
-    for (const userProject of user.userProjects) {
-      const project = await projectPrisma(userProject.projectId).project.findUnique({
-        where: {
-          id: userProject.projectId,
-        },
-      });
-      if (project) {
-        projects.push(project);
-      }
-    }
-
     return {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      apiKey: user.apiKey,
-      isAdmin: true,
-      // todo
-      roles: [],
-      projects: projects,
-      // isAdmin: user.userProjects[0].isAdmin,
-      // roles: user.userProjects.map((userProject) => userProject.role),
+      user: UserEntity.Reconstruct(user),
+      projects: user.userProjects.map((userProject) =>
+        ProjectEntity.Reconstruct(userProject.project)
+      ),
     };
   }
 
@@ -100,5 +89,30 @@ export class MeRepository {
     });
 
     return token;
+  }
+
+  async findMeWithProjects(
+    prisma: PrismaType,
+    id: string
+  ): Promise<{ user: UserEntity; projects: ProjectEntity[] }> {
+    const user = await prisma.user.findUniqueOrThrow({
+      where: {
+        id,
+      },
+      include: {
+        userProjects: {
+          include: {
+            project: true,
+          },
+        },
+      },
+    });
+
+    return {
+      user: UserEntity.Reconstruct(user),
+      projects: user.userProjects.map((userProject) =>
+        ProjectEntity.Reconstruct(userProject.project)
+      ),
+    };
   }
 }
