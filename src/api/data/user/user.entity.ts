@@ -54,6 +54,10 @@ export class UserEntity {
     return this.user.password;
   }
 
+  get apiKey(): string | null {
+    return this.user.apiKey;
+  }
+
   private copyProps(): User {
     const copy = {
       ...this.user,
