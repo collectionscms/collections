@@ -107,18 +107,7 @@ export class UserRepository {
     return UserEntity.Reconstruct(user);
   }
 
-  async update(
-    prisma: ProjectPrismaType,
-    userId: string,
-    params: {
-      password: string;
-      email: string;
-      name: string;
-    }
-  ): Promise<UserEntity> {
-    const user = await this.findUserById(prisma, userId);
-    user.update(params);
-
+  async update(prisma: ProjectPrismaType, userId: string, user: UserEntity): Promise<UserEntity> {
     const updatedUser = await prisma.user.update({
       where: {
         id: userId,

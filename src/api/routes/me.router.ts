@@ -1,6 +1,7 @@
 import { getSession } from '@auth/express';
 import express, { Request, Response } from 'express';
 import { env } from '../../env.js';
+import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
 import { authConfig } from '../configs/auth.js';
 import { MeRepository } from '../data/user/me.repository.js';
 import { UserRepository } from '../data/user/user.repository.js';
@@ -9,7 +10,8 @@ import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';
 import { MailService } from '../services/mail.service.js';
 import { GetMyProjectsUseCase } from '../useCases/me/getMyProjects.useCase.js';
-import { oneWayHash } from '../utilities/oneWayHash.js';
+import { updateProfileUseCaseSchema } from '../useCases/me/updateProfile.schema.js';
+import { UpdateProfileUseCase } from '../useCases/me/updateProfile.useCase.js';
 
 const router = express.Router();
 
@@ -41,20 +43,20 @@ router.patch(
   '/me',
   authenticatedUser,
   asyncHandler(async (req: Request, res: Response) => {
-    const id = res.user.id;
-    const projectId = res.user.projects[0].id;
-
-    const repository = new UserRepository();
-    await repository.checkUniqueEmail(prisma, id, req.body.email);
-
-    const user = await repository.findUserById(projectPrisma(projectId), id);
-    const password = req.body.password ? await oneWayHash(req.body.password) : user.password;
-
-    await repository.update(projectPrisma(projectId), id, {
-      name: req.body.name,
-      email: req.body.email,
-      password,
+    const validated = updateProfileUseCaseSchema.safeParse({
+      userId: res.user.id,
+      projectId: res.tenantProjectId,
+      ...req.body,
+      password: req.body.password || null,
     });
+    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
+
+    const useCase = new UpdateProfileUseCase(
+      prisma,
+      projectPrisma(validated.data.projectId),
+      new UserRepository()
+    );
+    await useCase.execute(validated.data);
 
     res.status(204).end();
   })
