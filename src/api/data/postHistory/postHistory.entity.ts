@@ -1,6 +1,7 @@
 import { PostHistory } from '@prisma/client';
 import { v4 } from 'uuid';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
+import { UnexpectedException } from '../../../exceptions/unexpected.js';
 
 export class PostHistoryEntity extends PrismaBaseEntity<PostHistory> {
   static Construct({
@@ -27,7 +28,19 @@ export class PostHistoryEntity extends PrismaBaseEntity<PostHistory> {
     });
   }
 
-  public beforeValidate(): void {}
+  private isValid() {
+    if (!this.props.id) {
+      throw new UnexpectedException({ message: 'id is required' });
+    }
+  }
+
+  public beforeUpdateValidate(): void {
+    this.isValid();
+  }
+
+  public beforeInsertValidate(): void {
+    this.isValid();
+  }
 
   private copyProps(): PostHistory {
     const copy = {
