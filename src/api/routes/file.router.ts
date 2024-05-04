@@ -1,11 +1,12 @@
-import { File } from '@prisma/client';
 import express, { Request, Response } from 'express';
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
+import { FileEntity } from '../data/file/file.entity.js';
 import { FileRepository } from '../data/file/file.repository.js';
 import { projectPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';
 import { multipartHandler } from '../middlewares/multipartHandler.js';
+import { createFileUseCaseSchema } from '../useCases/file/createFile.schema.js';
 import { CreateFileUseCase } from '../useCases/file/createFile.useCase.js';
 import { GetFileUseCase } from '../useCases/file/getFile.useCase.js';
 import { getFileUseCaseSchema } from '../useCases/file/getFileUse.schema.js';
@@ -17,16 +18,20 @@ router.post(
   authenticatedUser,
   asyncHandler(multipartHandler),
   asyncHandler(async (_req: Request, res: Response) => {
-    const files = res.locals.files as Omit<File, 'id'>[];
-    const fileData = res.locals.fileData as Buffer;
-    const projectId = res.user.projects[0].id;
+    const files = res.locals.files as FileEntity[];
 
-    if (!files || files.length === 0 || !fileData) {
-      throw new InvalidPayloadException('bad_request');
-    }
+    const validated = createFileUseCaseSchema.safeParse({
+      projectId: res.tenantProjectId,
+    });
+    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
+    if (!files || files.length === 0) throw new InvalidPayloadException('bad_request');
 
-    const useCase = new CreateFileUseCase(projectPrisma(projectId), fileData, new FileRepository());
-    const response = await useCase.execute(files[0]);
+    const useCase = new CreateFileUseCase(
+      projectPrisma(validated.data.projectId),
+      new FileRepository()
+    );
+    const response = await useCase.execute(files);
+
     res.json(response);
   })
 );
@@ -35,15 +40,15 @@ router.get(
   '/files/:id',
   authenticatedUser,
   asyncHandler(async (req: Request, res: Response) => {
-    const projectId = res.user.projects[0].id;
-
     const validated = getFileUseCaseSchema.safeParse({
       fileId: req.params.id,
+      projectId: res.tenantProjectId,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
-    const useCase = new GetFileUseCase(projectPrisma(projectId), new FileRepository());
+    const useCase = new GetFileUseCase(projectPrisma(validated.data.fileId), new FileRepository());
     const data = await useCase.execute(validated.data.fileId);
+
     res.json(data);
   })
 );

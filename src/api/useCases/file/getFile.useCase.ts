@@ -16,10 +16,7 @@ export class GetFileUseCase {
     const entity = await this.fileRepository.findFile(this.prisma, fileId);
 
     return {
-      file: {
-        ...entity.toResponse(),
-        url: entity.url(),
-      },
+      file: entity.toResponseWithUrl(),
     };
   }
 }

@@ -117,7 +117,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       authorName: createdBy.name,
       contents: contents.map((c) => ({
         ...c.content.toResponse(),
-        file: c.file?.toResponse() ?? null,
+        file: c.file?.toResponseWithUrl() ?? null,
       })),
       histories: histories.map((history) => history.toResponse()),
     };

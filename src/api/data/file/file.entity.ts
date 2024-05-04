@@ -1,14 +1,8 @@
 import { File } from '@prisma/client';
 import { v4 } from 'uuid';
-import { env } from '../../../env.js';
+import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 
-export class FileEntity {
-  private readonly file: File;
-
-  constructor(file: File) {
-    this.file = file;
-  }
-
+export class FileEntity extends PrismaBaseEntity<File> {
   static Construct({
     projectId,
     storage,
@@ -43,39 +37,24 @@ export class FileEntity {
   }
 
   get id(): string {
-    return this.file.id;
+    return this.props.id;
   }
 
   get storage(): string {
-    return this.file.storage;
+    return this.props.storage;
   }
 
   get fileNameDisk(): string {
-    return this.file.fileNameDisk;
+    return this.props.fileNameDisk;
   }
 
   url(): string {
-    return `${env.PUBLIC_SERVER_URL}/assets/${this.file.id}`;
+    return `/assets/${this.props.id}`;
   }
 
-  static Reconstruct(file: File): FileEntity {
-    return new FileEntity(file);
-  }
-
-  private copyProps(): File {
-    const copy = {
-      ...this.file,
-    };
-    return Object.freeze(copy);
-  }
-
-  toPersistence(): File {
-    return this.copyProps();
-  }
-
-  toResponse(): File & { url: string } {
+  toResponseWithUrl(): File & { url: string } {
     return {
-      ...this.copyProps(),
+      ...this.props,
       url: this.url(),
     };
   }

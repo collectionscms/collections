@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { v4 as uuidV4, v4 } from 'uuid';
 import { oneWayHash } from '../../utilities/oneWayHash.js';
-import { bypassRLSPrisma } from '../prisma/client.js';
+import { bypassRLSPrisma, prisma } from '../prisma/client.js';
 import { jaProject, usProject } from './createProjects.js';
 import {
   jaAdminRole,

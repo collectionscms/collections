@@ -1,4 +1,4 @@
-import { Content, Post, PostHistory } from '@prisma/client';
+import { Content, File, Post, PostHistory } from '@prisma/client';
 import { ProjectPrismaClient, ProjectPrismaType } from '../../database/prisma/client.js';
 import { ContentEntity } from '../content/content.entity.js';
 import { FileEntity } from '../file/file.entity.js';
@@ -41,7 +41,7 @@ export class PostRepository {
       for (const content of record.contents) {
         contents.push({
           content: ContentEntity.Reconstruct<Content, ContentEntity>(content),
-          file: content.file ? FileEntity.Reconstruct(content.file) : null,
+          file: content.file ? FileEntity.Reconstruct<File, FileEntity>(content.file) : null,
         });
       }
       const histories = record.postHistories.map((history) =>
@@ -103,7 +103,7 @@ export class PostRepository {
     for (const content of record.contents) {
       contents.push({
         content: ContentEntity.Reconstruct<Content, ContentEntity>(content),
-        file: content.file ? FileEntity.Reconstruct(content.file) : null,
+        file: content.file ? FileEntity.Reconstruct<File, FileEntity>(content.file) : null,
       });
     }
     const histories = record.postHistories.map((history) =>
@@ -149,7 +149,7 @@ export class PostRepository {
     for (const content of record.contents) {
       contents.push({
         content: ContentEntity.Reconstruct<Content, ContentEntity>(content),
-        file: content.file ? FileEntity.Reconstruct(content.file) : null,
+        file: content.file ? FileEntity.Reconstruct<File, FileEntity>(content.file) : null,
       });
     }
     const createdBy = UserEntity.Reconstruct(record.createdBy);
