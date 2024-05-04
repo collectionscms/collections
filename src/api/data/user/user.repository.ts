@@ -1,79 +1,73 @@
+import { User } from '@auth/express';
+import { Role } from '@prisma/client';
 import { RecordNotUniqueException } from '../../../exceptions/database/recordNotUnique.js';
-import { UserProfile } from '../../../types/index.js';
 import {
   PrismaType,
   ProjectPrismaClient,
   ProjectPrismaType,
 } from '../../database/prisma/client.js';
+import { RoleEntity } from '../role/role.entity.js';
 import { UserEntity } from './user.entity.js';
 
 export class UserRepository {
-  async findUserById(prisma: ProjectPrismaType, id: string): Promise<UserEntity> {
-    const project = await prisma.project.findFirstOrThrow({
+  async findUserById(
+    prisma: ProjectPrismaType,
+    projectId: string,
+    userId: string
+  ): Promise<UserEntity> {
+    const record = await prisma.userProject.findFirstOrThrow({
       where: {
-        userProjects: {
-          some: {
-            userId: id,
-          },
-        },
+        projectId,
+        userId,
       },
       include: {
-        userProjects: {
-          select: {
-            user: true,
-          },
-        },
+        user: true,
       },
     });
 
-    return UserEntity.Reconstruct(project.userProjects[0].user);
+    return UserEntity.Reconstruct<User, UserEntity>(record.user);
   }
 
-  async findUserProfile(prisma: ProjectPrismaType, id: string): Promise<UserProfile> {
-    const project = await prisma.project.findFirstOrThrow({
+  async findUserRole(
+    prisma: ProjectPrismaType,
+    projectId: string,
+    userId: string
+  ): Promise<{ user: UserEntity; role: RoleEntity }> {
+    const record = await prisma.userProject.findFirstOrThrow({
+      where: {
+        projectId,
+        userId,
+      },
       include: {
-        userProjects: {
-          where: {
-            userId: id,
-          },
-          select: {
-            user: true,
-            role: true,
-          },
-        },
+        user: true,
+        role: true,
       },
     });
 
-    const { user, role } = project.userProjects[0];
-
     return {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      isActive: user.isActive,
-      role: role,
+      user: UserEntity.Reconstruct<User, UserEntity>(record.user),
+      role: RoleEntity.Reconstruct<Role, RoleEntity>(record.role),
     };
   }
 
-  async findUserProfiles(prisma: ProjectPrismaType): Promise<UserProfile[]> {
-    const project = await prisma.project.findFirstOrThrow({
+  async findUserRoles(
+    prisma: ProjectPrismaType,
+    projectId: string
+  ): Promise<{ user: UserEntity; role: RoleEntity }[]> {
+    const records = await prisma.userProject.findMany({
+      where: {
+        projectId,
+      },
       include: {
-        userProjects: {
-          select: {
-            user: true,
-            role: true,
-          },
-        },
+        user: true,
+        role: true,
       },
     });
 
-    return project.userProjects.map((userProject) => {
+    return records.map((record) => {
       return {
-        id: userProject.user.id,
-        name: userProject.user.name,
-        email: userProject.user.email,
-        isActive: userProject.user.isActive,
-        role: userProject.role,
+        user: UserEntity.Reconstruct<User, UserEntity>(record.user),
+        role: RoleEntity.Reconstruct<Role, RoleEntity>(record.role),
       };
     });
   }
@@ -104,7 +98,7 @@ export class UserRepository {
       },
     });
 
-    return UserEntity.Reconstruct(user);
+    return UserEntity.Reconstruct<User, UserEntity>(user);
   }
 
   async update(prisma: ProjectPrismaType, userId: string, user: UserEntity): Promise<UserEntity> {
@@ -115,7 +109,7 @@ export class UserRepository {
       data: user.toPersistence(),
     });
 
-    return UserEntity.Reconstruct(updatedUser);
+    return UserEntity.Reconstruct<User, UserEntity>(updatedUser);
   }
 
   async updateWithRole(
@@ -129,7 +123,7 @@ export class UserRepository {
       name: string;
     }
   ): Promise<UserEntity> {
-    const user = await this.findUserById(prisma, userId);
+    const user = await this.findUserById(prisma, projectId, userId);
     user.update(params);
 
     const updatedUser = await prisma.user.update({
@@ -156,15 +150,13 @@ export class UserRepository {
       },
     });
 
-    return UserEntity.Reconstruct(updatedUser);
+    return UserEntity.Reconstruct<User, UserEntity>(updatedUser);
   }
 
   async delete(prisma: ProjectPrismaType, id: string): Promise<void> {
-    const user = await this.findUserById(prisma, id);
-
     await prisma.user.delete({
       where: {
-        id: user.id,
+        id,
       },
     });
   }

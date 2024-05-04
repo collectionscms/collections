@@ -1,4 +1,4 @@
-import { Project } from '@prisma/client';
+import { Project, User } from '@prisma/client';
 import crypto from 'crypto';
 import dayjs from 'dayjs';
 import { InvalidCredentialsException } from '../../../exceptions/invalidCredentials.js';
@@ -34,7 +34,7 @@ export class MeRepository {
     }
 
     return {
-      user: UserEntity.Reconstruct(user),
+      user: UserEntity.Reconstruct<User, UserEntity>(user),
       projects: user.userProjects.map((userProject) =>
         ProjectEntity.Reconstruct<Project, ProjectEntity>(userProject.project)
       ),
@@ -53,16 +53,17 @@ export class MeRepository {
 
     if (!user) throw new InvalidCredentialsException('token_invalid_or_expired');
 
-    const entity = UserEntity.Reconstruct({
-      ...user,
-      password: await oneWayHash(password),
-      resetPasswordExpiration: new Date(),
+    const updatedUser = await prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        password: await oneWayHash(password),
+        resetPasswordExpiration: new Date(),
+      },
     });
 
-    // todo
-    // await this.update(prisma, user.id, entity);
-
-    return entity;
+    return UserEntity.Reconstruct<User, UserEntity>(updatedUser);
   }
 
   async setResetPasswordToken(prisma: PrismaType, email: string): Promise<string> {
@@ -110,7 +111,7 @@ export class MeRepository {
     });
 
     return {
-      user: UserEntity.Reconstruct(user),
+      user: UserEntity.Reconstruct<User, UserEntity>(user),
       projects: user.userProjects.map((userProject) =>
         ProjectEntity.Reconstruct<Project, ProjectEntity>(userProject.project)
       ),

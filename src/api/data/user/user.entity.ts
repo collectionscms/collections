@@ -1,13 +1,8 @@
 import { User } from '@prisma/client';
 import { v4 } from 'uuid';
+import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 
-export class UserEntity {
-  private readonly user: User;
-
-  constructor(user: User) {
-    this.user = user;
-  }
-
+export class UserEntity extends PrismaBaseEntity<User> {
   static Construct({
     name,
     email,
@@ -34,56 +29,41 @@ export class UserEntity {
     });
   }
 
-  static Reconstruct(user: User): UserEntity {
-    return new UserEntity(user);
-  }
-
   get id(): string {
-    return this.user.id;
+    return this.props.id;
   }
 
   get email(): string {
-    return this.user.email;
+    return this.props.email;
   }
 
   get name(): string {
-    return this.user.name;
+    return this.props.name;
   }
 
   get password(): string {
-    return this.user.password;
+    return this.props.password;
   }
 
   get apiKey(): string | null {
-    return this.user.apiKey;
+    return this.props.apiKey;
   }
 
-  private copyProps(): User {
-    const copy = {
-      ...this.user,
-    };
-    return Object.freeze(copy);
+  get isActive(): boolean {
+    return this.props.isActive;
   }
 
   update(params: { name?: string; email?: string; password?: string }) {
     if (params.name) {
-      this.user.name = params.name;
+      this.props.name = params.name;
     }
 
     if (params.email) {
-      this.user.email = params.email;
+      this.props.email = params.email;
     }
 
     if (params.password) {
-      this.user.password = params.password;
+      this.props.password = params.password;
     }
-  }
-
-  toPersistence(): User {
-    return this.copyProps();
-  }
-
-  toResponse(): User {
-    return this.copyProps();
   }
 }

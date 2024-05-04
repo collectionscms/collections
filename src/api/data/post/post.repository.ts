@@ -1,3 +1,4 @@
+import { User } from '@auth/express';
 import { Content, File, Post, PostHistory } from '@prisma/client';
 import { ProjectPrismaClient, ProjectPrismaType } from '../../database/prisma/client.js';
 import { ContentEntity } from '../content/content.entity.js';
@@ -47,7 +48,7 @@ export class PostRepository {
       const histories = record.postHistories.map((history) =>
         PostHistoryEntity.Reconstruct<PostHistory, PostHistoryEntity>(history)
       );
-      const createdBy = UserEntity.Reconstruct(record.createdBy);
+      const createdBy = UserEntity.Reconstruct<User, UserEntity>(record.createdBy);
 
       return {
         post,
@@ -109,7 +110,7 @@ export class PostRepository {
     const histories = record.postHistories.map((history) =>
       PostHistoryEntity.Reconstruct<PostHistory, PostHistoryEntity>(history)
     );
-    const createdBy = UserEntity.Reconstruct(record.createdBy);
+    const createdBy = UserEntity.Reconstruct<User, UserEntity>(record.createdBy);
 
     return {
       post,
@@ -152,7 +153,7 @@ export class PostRepository {
         file: content.file ? FileEntity.Reconstruct<File, FileEntity>(content.file) : null,
       });
     }
-    const createdBy = UserEntity.Reconstruct(record.createdBy);
+    const createdBy = UserEntity.Reconstruct<User, UserEntity>(record.createdBy);
 
     return {
       post,
@@ -174,7 +175,7 @@ export class PostRepository {
 
     return {
       post: postEntity,
-      createdBy: UserEntity.Reconstruct(record.createdBy),
+      createdBy: UserEntity.Reconstruct<User, UserEntity>(record.createdBy),
     };
   }
 
