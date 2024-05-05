@@ -5,3 +5,5 @@ export const createContentUseCaseSchema = z.object({
   projectId: z.string(),
   locale: z.string(),
 });
+
+export type CreateContentUseCaseSchemaType = z.infer<typeof createContentUseCaseSchema>;

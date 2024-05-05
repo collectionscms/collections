@@ -1,6 +1,6 @@
 import { Me } from '../../../types/index.js';
 import { MeRepository } from '../../data/user/me.repository.js';
-import { PrismaType } from '../../database/prisma/client.js';
+import { BypassPrismaType } from '../../database/prisma/client.js';
 
 type LoginUseCaseResponse = {
   me: Me;
@@ -8,7 +8,7 @@ type LoginUseCaseResponse = {
 
 export class LoginUseCase {
   constructor(
-    private readonly prisma: PrismaType,
+    private readonly prisma: BypassPrismaType,
     private readonly meRepository: MeRepository
   ) {}
 

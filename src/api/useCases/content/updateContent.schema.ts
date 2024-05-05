@@ -10,3 +10,5 @@ export const updateContentUseCaseSchema = z.object({
   bodyJson: z.string().nullable(),
   bodyHtml: z.string().nullable(),
 });
+
+export type UpdateContentUseCaseSchemaType = z.infer<typeof updateContentUseCaseSchema>;

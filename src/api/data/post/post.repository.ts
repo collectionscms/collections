@@ -1,3 +1,5 @@
+import { User } from '@auth/express';
+import { Content, File, Post, PostHistory } from '@prisma/client';
 import { ProjectPrismaClient, ProjectPrismaType } from '../../database/prisma/client.js';
 import { ContentEntity } from '../content/content.entity.js';
 import { FileEntity } from '../file/file.entity.js';
@@ -35,18 +37,18 @@ export class PostRepository {
     });
 
     return records.map((record) => {
-      const post = PostEntity.Reconstruct(record);
+      const post = PostEntity.Reconstruct<Post, PostEntity>(record);
       const contents = [];
       for (const content of record.contents) {
         contents.push({
-          content: ContentEntity.Reconstruct(content),
-          file: content.file ? FileEntity.Reconstruct(content.file) : null,
+          content: ContentEntity.Reconstruct<Content, ContentEntity>(content),
+          file: content.file ? FileEntity.Reconstruct<File, FileEntity>(content.file) : null,
         });
       }
       const histories = record.postHistories.map((history) =>
-        PostHistoryEntity.Reconstruct(history)
+        PostHistoryEntity.Reconstruct<PostHistory, PostHistoryEntity>(history)
       );
-      const createdBy = UserEntity.Reconstruct(record.createdBy);
+      const createdBy = UserEntity.Reconstruct<User, UserEntity>(record.createdBy);
 
       return {
         post,
@@ -65,7 +67,7 @@ export class PostRepository {
       },
     });
 
-    return PostEntity.Reconstruct(record);
+    return PostEntity.Reconstruct<Post, PostEntity>(record);
   }
 
   async findOneWithContentsById(
@@ -97,16 +99,18 @@ export class PostRepository {
       },
     });
 
-    const post = PostEntity.Reconstruct(record);
+    const post = PostEntity.Reconstruct<Post, PostEntity>(record);
     const contents = [];
     for (const content of record.contents) {
       contents.push({
-        content: ContentEntity.Reconstruct(content),
-        file: content.file ? FileEntity.Reconstruct(content.file) : null,
+        content: ContentEntity.Reconstruct<Content, ContentEntity>(content),
+        file: content.file ? FileEntity.Reconstruct<File, FileEntity>(content.file) : null,
       });
     }
-    const histories = record.postHistories.map((history) => PostHistoryEntity.Reconstruct(history));
-    const createdBy = UserEntity.Reconstruct(record.createdBy);
+    const histories = record.postHistories.map((history) =>
+      PostHistoryEntity.Reconstruct<PostHistory, PostHistoryEntity>(history)
+    );
+    const createdBy = UserEntity.Reconstruct<User, UserEntity>(record.createdBy);
 
     return {
       post,
@@ -141,15 +145,15 @@ export class PostRepository {
 
     if (!record) return null;
 
-    const post = PostEntity.Reconstruct(record);
+    const post = PostEntity.Reconstruct<Post, PostEntity>(record);
     const contents = [];
     for (const content of record.contents) {
       contents.push({
-        content: ContentEntity.Reconstruct(content),
-        file: content.file ? FileEntity.Reconstruct(content.file) : null,
+        content: ContentEntity.Reconstruct<Content, ContentEntity>(content),
+        file: content.file ? FileEntity.Reconstruct<File, FileEntity>(content.file) : null,
       });
     }
-    const createdBy = UserEntity.Reconstruct(record.createdBy);
+    const createdBy = UserEntity.Reconstruct<User, UserEntity>(record.createdBy);
 
     return {
       post,
@@ -171,7 +175,7 @@ export class PostRepository {
 
     return {
       post: postEntity,
-      createdBy: UserEntity.Reconstruct(record.createdBy),
+      createdBy: UserEntity.Reconstruct<User, UserEntity>(record.createdBy),
     };
   }
 
@@ -188,7 +192,7 @@ export class PostRepository {
       data: postEntity.toPersistence(),
     });
 
-    return PostEntity.Reconstruct(record);
+    return PostEntity.Reconstruct<Post, PostEntity>(record);
   }
 
   async delete(prisma: ProjectPrismaType, projectId: string, id: string): Promise<PostEntity> {
@@ -199,6 +203,6 @@ export class PostRepository {
       },
     });
 
-    return PostEntity.Reconstruct(record);
+    return PostEntity.Reconstruct<Post, PostEntity>(record);
   }
 }

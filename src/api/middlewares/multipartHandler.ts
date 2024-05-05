@@ -1,4 +1,3 @@
-import { File } from '@prisma/client';
 import Busboy from 'busboy';
 import { RequestHandler } from 'express';
 import sizeOf from 'image-size';
@@ -7,20 +6,23 @@ import { v4 } from 'uuid';
 import { env } from '../../env.js';
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
 import { logger } from '../../utilities/logger.js';
+import { FileEntity } from '../data/file/file.entity.js';
+import { FileService } from '../services/file.service.js';
 
 export const multipartHandler: RequestHandler = (req, res, next) => {
-  const projectId = req.res?.user.projects[0].id;
+  const projectId = res.tenantProjectId;
   if (!projectId) {
-    throw new InvalidPayloadException('bad_request');
+    return next(new InvalidPayloadException('bad_request'));
   }
 
   const busboy = Busboy({ headers: req.headers });
+  const service = new FileService();
 
   let fileName = '';
   let type = '';
   let fileData: Buffer | null = null;
   let fileCount = 0;
-  let files: Omit<File, 'id'>[] = [];
+  let files: FileEntity[] = [];
 
   busboy.on('file', async (_name, stream, info) => {
     const { filename, mimeType } = info;
@@ -56,7 +58,7 @@ export const multipartHandler: RequestHandler = (req, res, next) => {
         logger.info(err, `Couldn't get dimensions of file "${fileName}"`);
       }
 
-      const file = {
+      const file = FileEntity.Construct({
         projectId,
         storage: env.STORAGE_DRIVER,
         fileName: fileName,
@@ -65,9 +67,11 @@ export const multipartHandler: RequestHandler = (req, res, next) => {
         type: type,
         width,
         height,
-      };
-
+      });
       files.push(file);
+
+      await service.upload(fileData, file.fileNameDisk);
+
       tryDone();
     }
   });
@@ -75,10 +79,9 @@ export const multipartHandler: RequestHandler = (req, res, next) => {
   req.pipe(busboy);
 
   const tryDone = () => {
-    if (fileCount === 0) throw new InvalidPayloadException('no_file_req_body');
+    if (fileCount === 0) return next(new InvalidPayloadException('no_file_req_body'));
     if (fileCount === files.length) {
       res.locals.files = files;
-      res.locals.fileData = fileData;
       return next();
     }
   };

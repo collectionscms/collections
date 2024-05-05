@@ -6,3 +6,5 @@ export const updatePostUseCaseSchema = z.object({
   name: z.string(),
   status: z.string(),
 });
+
+export type UpdatePostUseCaseSchemaType = z.infer<typeof updatePostUseCaseSchema>;

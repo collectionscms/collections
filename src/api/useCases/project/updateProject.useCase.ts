@@ -1,3 +1,4 @@
+import { Project } from '@prisma/client';
 import { ProjectEntity } from '../../data/project/project.entity.js';
 import { ProjectRepository } from '../../data/project/project.repository.js';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
@@ -11,7 +12,7 @@ export class UpdateProjectUseCase {
   async execute(id: string, params: { name: string }): Promise<ProjectEntity> {
     const record = await this.projectRepository.findOneById(this.prisma, id);
 
-    const entity = ProjectEntity.Reconstruct({
+    const entity = ProjectEntity.Reconstruct<Project, ProjectEntity>({
       ...record.toPersistence(),
       name: params.name,
     });

@@ -1,4 +1,5 @@
-import { ProjectPrismaType } from '../../database/prisma/client.js';
+import { Project } from '@prisma/client';
+import { PrismaType, ProjectPrismaType } from '../../database/prisma/client.js';
 import { ProjectEntity } from './project.entity.js';
 
 export class ProjectRepository {
@@ -7,7 +8,17 @@ export class ProjectRepository {
       where: { id },
     });
 
-    return ProjectEntity.Reconstruct(record);
+    return ProjectEntity.Reconstruct<Project, ProjectEntity>(record);
+  }
+
+  async findOneBySubdomain(prisma: PrismaType, subdomain: string): Promise<ProjectEntity> {
+    const record = await prisma.project.findFirstOrThrow({
+      where: {
+        subdomain: subdomain,
+      },
+    });
+
+    return ProjectEntity.Reconstruct<Project, ProjectEntity>(record);
   }
 
   async update(
@@ -24,6 +35,6 @@ export class ProjectRepository {
       },
     });
 
-    return ProjectEntity.Reconstruct(result);
+    return ProjectEntity.Reconstruct<Project, ProjectEntity>(record);
   }
 }

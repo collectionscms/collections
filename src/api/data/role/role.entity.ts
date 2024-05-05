@@ -1,13 +1,8 @@
 import { Role } from '@prisma/client';
 import { v4 } from 'uuid';
+import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 
-export class RoleEntity {
-  private readonly role: Role;
-
-  constructor(role: Role) {
-    this.role = role;
-  }
-
+export class RoleEntity extends PrismaBaseEntity<Role> {
   static Construct({
     projectId,
     name,
@@ -27,32 +22,11 @@ export class RoleEntity {
     });
   }
 
-  static Reconstruct(role: Role): RoleEntity {
-    return new RoleEntity(role);
-  }
+  update = (params: { name: string; description: string | null }) => {
+    this.props.name = params.name;
 
-  private copyProps(): Role {
-    const copy = {
-      ...this.role,
-    };
-    return Object.freeze(copy);
-  }
-
-  toPersistence(): Role {
-    return this.copyProps();
-  }
-
-  toResponse(): {
-    id: string;
-    projectId: string;
-    name: string;
-    description: string | null;
-  } {
-    return {
-      id: this.role.id,
-      projectId: this.role.projectId,
-      name: this.role.name,
-      description: this.role.description,
-    };
-  }
+    if (params.description) {
+      this.props.description = params.description;
+    }
+  };
 }

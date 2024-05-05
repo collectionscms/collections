@@ -1,3 +1,4 @@
+import { Content } from '@prisma/client';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
 import { ContentEntity } from './content.entity.js';
 
@@ -14,19 +15,21 @@ export class ContentRepository {
       },
     });
 
-    return ContentEntity.Reconstruct(record);
+    return ContentEntity.Reconstruct<Content, ContentEntity>(record);
   }
 
   async create(prisma: ProjectPrismaType, contentEntity: ContentEntity): Promise<ContentEntity> {
+    contentEntity.beforeInsertValidate();
+
     const record = await prisma.content.create({
       data: contentEntity.toPersistence(),
     });
 
-    return ContentEntity.Reconstruct(record);
+    return ContentEntity.Reconstruct<Content, ContentEntity>(record);
   }
 
   async update(prisma: ProjectPrismaType, contentEntity: ContentEntity): Promise<ContentEntity> {
-    contentEntity.beforeValidate();
+    contentEntity.beforeUpdateValidate();
 
     const record = await prisma.content.update({
       where: {
@@ -35,6 +38,6 @@ export class ContentRepository {
       data: contentEntity.toPersistence(),
     });
 
-    return ContentEntity.Reconstruct(record);
+    return ContentEntity.Reconstruct<Content, ContentEntity>(record);
   }
 }

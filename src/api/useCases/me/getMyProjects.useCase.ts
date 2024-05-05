@@ -1,6 +1,6 @@
 import { Project } from '@prisma/client';
 import { MeRepository } from '../../data/user/me.repository.js';
-import { PrismaType } from '../../database/prisma/client.js';
+import { BypassPrismaType, PrismaType } from '../../database/prisma/client.js';
 
 type GetMyProjectsUseCaseResponse = {
   projects: Project[];
@@ -8,7 +8,7 @@ type GetMyProjectsUseCaseResponse = {
 
 export class GetMyProjectsUseCase {
   constructor(
-    private readonly prisma: PrismaType,
+    private readonly prisma: BypassPrismaType,
     private readonly meRepository: MeRepository
   ) {}
 

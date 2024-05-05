@@ -25,7 +25,7 @@ type PostContext = {
   updateContent: (id: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
   changeStatus: (id: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
   createFileImage: () => SWRMutationResponse<
-    { file: UploadFile },
+    { files: UploadFile[] },
     any,
     string,
     Record<string, any>
@@ -89,7 +89,7 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
 
   const createFileImage = () =>
     useSWRMutation(`/files`, async (url: string, { arg }: { arg: Record<string, any> }) => {
-      return api.post<{ file: UploadFile }>(url, arg).then((res) => res.data);
+      return api.post<{ files: UploadFile[] }>(url, arg).then((res) => res.data);
     });
 
   const value = useMemo(

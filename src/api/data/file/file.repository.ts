@@ -1,3 +1,4 @@
+import { File } from '@prisma/client';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
 import { FileEntity } from './file.entity.js';
 
@@ -9,14 +10,14 @@ export class FileRepository {
       },
     });
 
-    return FileEntity.Reconstruct(file);
+    return FileEntity.Reconstruct<File, FileEntity>(file);
   }
 
-  async upload(prisma: ProjectPrismaType, file: FileEntity): Promise<FileEntity> {
-    const uploadedFile = await prisma.file.create({
+  async create(prisma: ProjectPrismaType, file: FileEntity): Promise<FileEntity> {
+    const createdFile = await prisma.file.create({
       data: file.toPersistence(),
     });
 
-    return FileEntity.Reconstruct(uploadedFile);
+    return FileEntity.Reconstruct<File, FileEntity>(createdFile);
   }
 }

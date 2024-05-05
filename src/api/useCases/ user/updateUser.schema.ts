@@ -8,3 +8,5 @@ export const updateUserUseCaseSchema = z.object({
   email: z.string(),
   password: z.string().optional(),
 });
+
+export type UpdateUserUseCaseSchemaType = z.infer<typeof updateUserUseCaseSchema>;

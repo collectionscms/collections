@@ -1,14 +1,20 @@
 import express, { Request, Response } from 'express';
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
 import { UnprocessableEntityException } from '../../exceptions/unprocessableEntity.js';
-import { UserEntity } from '../data/user/user.entity.js';
 import { UserRepository } from '../data/user/user.repository.js';
 import { prisma, projectPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';
+import { createUserUseCaseSchema } from '../useCases/ user/createUser.schema.js';
+import { CreateUserUseCase } from '../useCases/ user/createUser.useCase.js';
+import { deleteUserUseCaseSchema } from '../useCases/ user/deleteUser.schema.js';
+import { DeleteUserUseCase } from '../useCases/ user/deleteUser.useCase.js';
+import { getUserProfileUseCaseSchema } from '../useCases/ user/getUserProfile.schema.js';
+import { GetUserProfileUseCase } from '../useCases/ user/getUserProfile.useCase.js';
+import { getUserProfilesUseCaseSchema } from '../useCases/ user/getUserProfiles.schema.js';
+import { GetUserProfilesUseCase } from '../useCases/ user/getUserProfiles.useCase.js';
 import { updateUserUseCaseSchema } from '../useCases/ user/updateUser.schema.js';
 import { UpdateUserUseCase } from '../useCases/ user/updateUser.useCase.js';
-import { oneWayHash } from '../utilities/oneWayHash.js';
 
 const router = express.Router();
 
@@ -16,10 +22,16 @@ router.get(
   '/users',
   authenticatedUser,
   asyncHandler(async (_req: Request, res: Response) => {
-    const projectId = res.user.projects[0].id;
+    const validated = getUserProfilesUseCaseSchema.safeParse({
+      projectId: res.tenantProjectId,
+    });
+    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
-    const repository = new UserRepository();
-    const users = await repository.findUserProfiles(projectPrisma(projectId));
+    const useCase = new GetUserProfilesUseCase(
+      projectPrisma(validated.data.projectId),
+      new UserRepository()
+    );
+    const users = await useCase.execute();
 
     res.json({
       users,
@@ -31,10 +43,17 @@ router.get(
   '/users/:id',
   authenticatedUser,
   asyncHandler(async (req: Request, res: Response) => {
-    const projectId = res.user.projects[0].id;
+    const validated = getUserProfileUseCaseSchema.safeParse({
+      projectId: res.tenantProjectId,
+      userId: req.params.id,
+    });
+    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
-    const repository = new UserRepository();
-    const user = await repository.findUserProfile(projectPrisma(projectId), req.params.id);
+    const useCase = new GetUserProfileUseCase(
+      projectPrisma(validated.data.projectId),
+      new UserRepository()
+    );
+    const user = await useCase.execute(validated.data.userId);
 
     res.json({
       user,
@@ -46,23 +65,25 @@ router.post(
   '/users',
   authenticatedUser,
   asyncHandler(async (req: Request, res: Response) => {
-    const projectId = res.user.projects[0].id;
+    const validated = createUserUseCaseSchema.safeParse({
+      projectId: res.tenantProjectId,
+      name: req.body.name,
+      email: req.body.email,
+      password: req.body.password,
+      apiKey: req.body.apiKey,
+      roleId: req.body.roleId,
+    });
+    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
-    const repository = new UserRepository();
-    await repository.checkUniqueEmail(prisma, res.user.id, req.body.email);
-
-    const hashed = await oneWayHash(req.body.password);
-
-    const entity = UserEntity.Construct({ ...req.body, password: hashed });
-    const user = await repository.create(
-      projectPrisma(projectId),
-      entity,
-      projectId,
-      req.body.roleId
+    const useCase = new CreateUserUseCase(
+      prisma,
+      projectPrisma(validated.data.projectId),
+      new UserRepository()
     );
+    const user = await useCase.execute(validated.data);
 
     res.json({
-      user: user.toResponse(),
+      user,
     });
   })
 );
@@ -71,27 +92,22 @@ router.patch(
   '/users/:id',
   authenticatedUser,
   asyncHandler(async (req: Request, res: Response) => {
-    const id = req.params.id;
-    const projectId = res.user.projects[0].id;
-
     const validated = updateUserUseCaseSchema.safeParse({
-      id,
-      projectId,
-      ...req.body,
+      id: req.params.id,
+      projectId: res.tenantProjectId,
+      name: req.body.name,
+      email: req.body.email,
+      password: req.body.password,
+      roleId: req.body.roleId,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
     const userUseCase = new UpdateUserUseCase(
       prisma,
-      projectPrisma(projectId),
+      projectPrisma(validated.data.projectId),
       new UserRepository()
     );
-    await userUseCase.execute(validated.data.id, validated.data.projectId, {
-      name: validated.data.name,
-      email: validated.data.email,
-      password: validated.data.password,
-      roleId: validated.data.roleId,
-    });
+    await userUseCase.execute(validated.data);
 
     res.status(204).end();
   })
@@ -101,16 +117,22 @@ router.delete(
   '/users/:id',
   authenticatedUser,
   asyncHandler(async (req: Request, res: Response) => {
-    const userId = res.user.id;
-    const id = req.params.id;
-    const projectId = res.user.projects[0].id;
+    const validated = deleteUserUseCaseSchema.safeParse({
+      userId: req.params.id,
+      ownUserId: res.user.id,
+      projectId: res.tenantProjectId,
+    });
+    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
-    if (userId === id) {
+    if (validated.data.userId === validated.data.ownUserId) {
       throw new UnprocessableEntityException('can_not_delete_itself');
     }
 
-    const repository = new UserRepository();
-    await repository.delete(projectPrisma(projectId), id);
+    const useCase = new DeleteUserUseCase(
+      projectPrisma(validated.data.userId),
+      new UserRepository()
+    );
+    await useCase.execute(validated.data.userId);
 
     res.status(204).end();
   })

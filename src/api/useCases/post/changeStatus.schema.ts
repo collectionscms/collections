@@ -6,3 +6,5 @@ export const changeStatusUseCaseSchema = z.object({
   userName: z.string(),
   status: z.string(),
 });
+
+export type ChangeStatusUseCaseSchemaType = z.infer<typeof changeStatusUseCaseSchema>;

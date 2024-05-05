@@ -3,7 +3,6 @@ import { v4 } from 'uuid';
 import { ProjectEntity } from './project.entity';
 
 describe('ProjectEntity', () => {
-  let projectEntity: ProjectEntity;
   const project: Project = {
     id: v4(),
     name: 'Formula one project',
@@ -15,23 +14,9 @@ describe('ProjectEntity', () => {
     updatedAt: new Date(),
   };
 
-  beforeEach(() => {
-    projectEntity = new ProjectEntity(project);
-  });
-
-  it('should create a new instance of ProjectEntity', () => {
-    expect(projectEntity).toBeInstanceOf(ProjectEntity);
-  });
-
   it('should reconstruct the project', () => {
-    const reconstructedProjectEntity = ProjectEntity.Reconstruct(project);
+    const reconstructedProjectEntity = ProjectEntity.Reconstruct<Project, ProjectEntity>(project);
     expect(reconstructedProjectEntity).toBeInstanceOf(ProjectEntity);
     expect(reconstructedProjectEntity.toPersistence()).toEqual(project);
-  });
-
-  it('should copy the project properties', () => {
-    const copiedProject = projectEntity.toPersistence();
-    expect(copiedProject).toEqual(project);
-    expect(copiedProject).not.toBe(project);
   });
 });

@@ -58,12 +58,12 @@ export const EditPostPageImpl: React.FC = () => {
     params.append('file', file);
 
     const res = await createFileImageTrigger(params);
-    setUploadFile(res.file);
+    setUploadFile(res.files[0]);
 
     try {
       await saveContent({
         ...buildParams(),
-        fileId: res.file.id,
+        fileId: res.files[0].id,
       });
     } catch (error) {
       logger.error(error);
@@ -109,7 +109,7 @@ export const EditPostPageImpl: React.FC = () => {
   const handleSaveContent = async () => {
     try {
       await saveContent(buildParams());
-      enqueueSnackbar(t('saved'), { variant: 'success' });
+      enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
     } catch (error) {
       logger.error(error);
     }

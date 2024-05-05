@@ -1,3 +1,4 @@
+import { PostHistory } from '@prisma/client';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
 import { PostHistoryEntity } from './postHistory.entity.js';
 
@@ -7,6 +8,6 @@ export class PostHistoryRepository {
       data: entity.toPersistence(),
     });
 
-    return PostHistoryEntity.Reconstruct(record);
+    return PostHistoryEntity.Reconstruct<PostHistory, PostHistoryEntity>(record);
   }
 }

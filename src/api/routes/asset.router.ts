@@ -4,10 +4,12 @@ import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
 import { UnknownException } from '../../exceptions/storage/unknown.js';
 import { logger } from '../../utilities/logger.js';
 import { FileRepository } from '../data/file/file.repository.js';
-import { projectPrisma } from '../database/prisma/client.js';
+import { ProjectRepository } from '../data/project/project.repository.js';
+import { prisma, projectPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { getDataUseCaseSchema } from '../useCases/asset/getData.schema.js';
 import { GetDataUseCase } from '../useCases/asset/getData.useCase.js';
+import { GetProjectFromSubdomainUseCase } from '../useCases/asset/getProjectFromSubdomain.useCase.js';
 
 const router = express.Router();
 
@@ -21,14 +23,16 @@ router.get(
 router.get(
   '/assets/:id',
   asyncHandler(async (req: Request, res: Response) => {
-    const projectId = res.user.projects[0].id;
-
     const validated = getDataUseCaseSchema.safeParse({
       fileId: req.params.id,
+      subdomain: req.subdomains[0],
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
-    const useCase = new GetDataUseCase(projectPrisma(projectId), new FileRepository());
+    const projectUseCase = new GetProjectFromSubdomainUseCase(prisma, new ProjectRepository());
+    const project = await projectUseCase.execute(validated.data.subdomain);
+
+    const useCase = new GetDataUseCase(projectPrisma(project.id), new FileRepository());
     const { file, data } = await useCase.execute(validated.data.fileId);
 
     res.attachment(file.fileName);

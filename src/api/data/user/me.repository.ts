@@ -1,7 +1,8 @@
+import { Project, User } from '@prisma/client';
 import crypto from 'crypto';
 import dayjs from 'dayjs';
 import { InvalidCredentialsException } from '../../../exceptions/invalidCredentials.js';
-import { PrismaType } from '../../database/prisma/client.js';
+import { BypassPrismaType, PrismaType } from '../../database/prisma/client.js';
 import { comparePasswords } from '../../utilities/comparePasswords.js';
 import { oneWayHash } from '../../utilities/oneWayHash.js';
 import { ProjectEntity } from '../project/project.entity.js';
@@ -9,7 +10,7 @@ import { UserEntity } from './user.entity.js';
 
 export class MeRepository {
   async login(
-    prisma: PrismaType,
+    prisma: BypassPrismaType,
     email: string,
     password: string
   ): Promise<{ user: UserEntity; projects: ProjectEntity[] }> {
@@ -33,9 +34,9 @@ export class MeRepository {
     }
 
     return {
-      user: UserEntity.Reconstruct(user),
+      user: UserEntity.Reconstruct<User, UserEntity>(user),
       projects: user.userProjects.map((userProject) =>
-        ProjectEntity.Reconstruct(userProject.project)
+        ProjectEntity.Reconstruct<Project, ProjectEntity>(userProject.project)
       ),
     };
   }
@@ -52,16 +53,17 @@ export class MeRepository {
 
     if (!user) throw new InvalidCredentialsException('token_invalid_or_expired');
 
-    const entity = UserEntity.Reconstruct({
-      ...user,
-      password: await oneWayHash(password),
-      resetPasswordExpiration: new Date(),
+    const updatedUser = await prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        password: await oneWayHash(password),
+        resetPasswordExpiration: new Date(),
+      },
     });
 
-    // todo
-    // await this.update(prisma, user.id, entity);
-
-    return entity;
+    return UserEntity.Reconstruct<User, UserEntity>(updatedUser);
   }
 
   async setResetPasswordToken(prisma: PrismaType, email: string): Promise<string> {
@@ -92,7 +94,7 @@ export class MeRepository {
   }
 
   async findMeWithProjects(
-    prisma: PrismaType,
+    prisma: BypassPrismaType,
     id: string
   ): Promise<{ user: UserEntity; projects: ProjectEntity[] }> {
     const user = await prisma.user.findUniqueOrThrow({
@@ -109,9 +111,9 @@ export class MeRepository {
     });
 
     return {
-      user: UserEntity.Reconstruct(user),
+      user: UserEntity.Reconstruct<User, UserEntity>(user),
       projects: user.userProjects.map((userProject) =>
-        ProjectEntity.Reconstruct(userProject.project)
+        ProjectEntity.Reconstruct<Project, ProjectEntity>(userProject.project)
       ),
     };
   }
