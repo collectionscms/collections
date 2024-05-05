@@ -8,7 +8,7 @@ datasource db {
 }
 
 model Project {
-  id           String        @id @default(uuid()) @db.Uuid
+  id           String        @id @db.Uuid
   name         String        @db.VarChar(255)
   description  String?       @db.VarChar(255)
   subdomain    String        @unique @db.VarChar(255)
@@ -26,7 +26,7 @@ model Project {
 }
 
 model User {
-  id                      String        @id @default(uuid()) @db.Uuid
+  id                      String        @id @db.Uuid
   name                    String        @db.VarChar(255)
   email                   String        @unique
   password                String        @db.VarChar(255)
@@ -42,9 +42,9 @@ model User {
 }
 
 model UserProject {
-  id        String   @id @default(uuid()) @db.Uuid
+  id        String   @id @db.Uuid
   userId    String   @db.Uuid
-  projectId String   @db.Uuid
+  projectId String   @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
   roleId    String   @db.Uuid
   isAdmin   Boolean  @default(false)
   createdAt DateTime @default(now()) @db.Timestamptz(6)
@@ -57,7 +57,7 @@ model UserProject {
 }
 
 model Role {
-  id           String        @id @default(uuid()) @db.Uuid
+  id           String        @id @db.Uuid
   projectId    String        @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
   name         String        @db.VarChar(255)
   description  String?       @db.VarChar(255)
@@ -69,7 +69,7 @@ model Role {
 }
 
 model Permission {
-  id          String   @id @default(uuid()) @db.Uuid
+  id          String   @id @db.Uuid
   roleId      String   @db.Uuid
   projectId   String   @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
   name        String   @db.VarChar(255)
@@ -81,7 +81,7 @@ model Permission {
 }
 
 model File {
-  id           String    @id @default(uuid()) @db.Uuid
+  id           String    @id @db.Uuid
   projectId    String    @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
   storage      String    @db.VarChar(255)
   fileName     String    @db.VarChar(255)
@@ -95,7 +95,7 @@ model File {
 }
 
 model Post {
-  id            String        @id @default(uuid()) @db.Uuid
+  id            String        @id @db.Uuid
   projectId     String        @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
   slug          String        @db.VarChar(255)
   status        String        @db.VarChar(255)
@@ -112,7 +112,7 @@ model Post {
 }
 
 model PostHistory {
-  id        String   @id @default(uuid()) @db.Uuid
+  id        String   @id @db.Uuid
   projectId String   @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
   postId    String   @db.Uuid
   userName  String   @db.VarChar(255)
@@ -124,7 +124,7 @@ model PostHistory {
 }
 
 model Content {
-  id        String   @id @default(uuid()) @db.Uuid
+  id        String   @id @db.Uuid
   projectId String   @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
   postId    String   @db.Uuid
   fileId    String?  @db.Uuid
