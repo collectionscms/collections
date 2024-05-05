@@ -1,4 +1,3 @@
-import { File } from '@prisma/client';
 import Busboy from 'busboy';
 import { RequestHandler } from 'express';
 import sizeOf from 'image-size';
@@ -13,7 +12,7 @@ import { FileService } from '../services/file.service.js';
 export const multipartHandler: RequestHandler = (req, res, next) => {
   const projectId = res.tenantProjectId;
   if (!projectId) {
-    throw new InvalidPayloadException('bad_request');
+    return next(new InvalidPayloadException('bad_request'));
   }
 
   const busboy = Busboy({ headers: req.headers });
@@ -80,7 +79,7 @@ export const multipartHandler: RequestHandler = (req, res, next) => {
   req.pipe(busboy);
 
   const tryDone = () => {
-    if (fileCount === 0) throw new InvalidPayloadException('no_file_req_body');
+    if (fileCount === 0) return next(new InvalidPayloadException('no_file_req_body'));
     if (fileCount === files.length) {
       res.locals.files = files;
       return next();
