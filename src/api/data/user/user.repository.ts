@@ -1,5 +1,6 @@
 import { User } from '@auth/express';
 import { Role } from '@prisma/client';
+import { v4 } from 'uuid';
 import { RecordNotUniqueException } from '../../../exceptions/database/recordNotUnique.js';
 import {
   PrismaType,
@@ -83,6 +84,7 @@ export class UserRepository {
         ...entity.toPersistence(),
         userProjects: {
           create: {
+            id: v4(),
             role: {
               connect: {
                 id: roleId,

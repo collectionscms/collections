@@ -2,7 +2,7 @@ import { Project, User } from '@prisma/client';
 import crypto from 'crypto';
 import dayjs from 'dayjs';
 import { InvalidCredentialsException } from '../../../exceptions/invalidCredentials.js';
-import { PrismaType } from '../../database/prisma/client.js';
+import { BypassPrismaType, PrismaType } from '../../database/prisma/client.js';
 import { comparePasswords } from '../../utilities/comparePasswords.js';
 import { oneWayHash } from '../../utilities/oneWayHash.js';
 import { ProjectEntity } from '../project/project.entity.js';
@@ -10,7 +10,7 @@ import { UserEntity } from './user.entity.js';
 
 export class MeRepository {
   async login(
-    prisma: PrismaType,
+    prisma: BypassPrismaType,
     email: string,
     password: string
   ): Promise<{ user: UserEntity; projects: ProjectEntity[] }> {
@@ -94,7 +94,7 @@ export class MeRepository {
   }
 
   async findMeWithProjects(
-    prisma: PrismaType,
+    prisma: BypassPrismaType,
     id: string
   ): Promise<{ user: UserEntity; projects: ProjectEntity[] }> {
     const user = await prisma.user.findUniqueOrThrow({

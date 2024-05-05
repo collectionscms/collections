@@ -49,4 +49,9 @@ export type ProjectTransactionClient = Parameters<
 export type ProjectPrismaType = ProjectPrismaClient | ProjectTransactionClient;
 
 // Access bypassing row-level security
-export const bypassRLSPrisma = () => prisma.$extends(bypassRLS());
+export const bypassPrisma = new PrismaClient().$extends(bypassRLS());
+export type BypassPrismaClient = typeof bypassPrisma;
+export type BypassTransactionClient = Parameters<
+  Parameters<BypassPrismaClient['$transaction']>[0]
+>[0];
+export type BypassPrismaType = BypassPrismaClient | BypassTransactionClient;

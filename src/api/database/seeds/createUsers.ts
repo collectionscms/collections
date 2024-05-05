@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { v4 as uuidV4, v4 } from 'uuid';
 import { oneWayHash } from '../../utilities/oneWayHash.js';
-import { bypassRLSPrisma, prisma } from '../prisma/client.js';
+import { bypassPrisma } from '../prisma/client.js';
 import { jaProject, usProject } from './createProjects.js';
 import {
   jaAdminRole,
@@ -19,7 +19,7 @@ export const guestUser = v4();
 export const createUsers = async (): Promise<void> => {
   const password = await oneWayHash('password');
 
-  await bypassRLSPrisma().$transaction(async (tx) => {
+  await bypassPrisma.$transaction(async (tx) => {
     await tx.user.createMany({
       data: [
         {
@@ -56,18 +56,21 @@ export const createUsers = async (): Promise<void> => {
       data: [
         // US Project
         {
+          id: v4(),
           projectId: usProject,
           userId: adminUser,
           roleId: usAdminRole,
           isAdmin: true,
         },
         {
+          id: v4(),
           projectId: usProject,
           userId: editorUser,
           roleId: usEditorRole,
           isAdmin: false,
         },
         {
+          id: v4(),
           projectId: usProject,
           userId: guestUser,
           roleId: usGuestRole,
@@ -75,18 +78,21 @@ export const createUsers = async (): Promise<void> => {
         },
         // JA Project
         {
+          id: v4(),
           projectId: jaProject,
           userId: adminUser,
           roleId: jaAdminRole,
           isAdmin: true,
         },
         {
+          id: v4(),
           projectId: jaProject,
           userId: editorUser,
           roleId: jaEditorRole,
           isAdmin: false,
         },
         {
+          id: v4(),
           projectId: jaProject,
           userId: guestUser,
           roleId: jaGuestRole,

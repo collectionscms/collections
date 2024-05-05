@@ -5,7 +5,7 @@ import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
 import { authConfig } from '../configs/auth.js';
 import { MeRepository } from '../data/user/me.repository.js';
 import { UserRepository } from '../data/user/user.repository.js';
-import { prisma, projectPrisma } from '../database/prisma/client.js';
+import { bypassPrisma, prisma, projectPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';
 import { MailService } from '../services/mail.service.js';
@@ -32,7 +32,7 @@ router.get(
   asyncHandler(async (req: Request, res: Response) => {
     const id = res.user.id;
 
-    const useCase = new GetMyProjectsUseCase(prisma, new MeRepository());
+    const useCase = new GetMyProjectsUseCase(bypassPrisma, new MeRepository());
     const projects = await useCase.execute(id);
 
     return res.json(projects);
