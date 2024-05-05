@@ -55,7 +55,7 @@
     "@emotion/react": "11.11.4",
     "@emotion/styled": "11.11.5",
     "@hookform/resolvers": "3.3.2",
-    "@mui/lab": "5.0.0-alpha.160",
+    "@mui/lab": "5.0.0-alpha.170",
     "@mui/material": "5.15.16",
     "@pmmmwh/react-refresh-webpack-plugin": "0.5.13",
     "@prisma/client": "5.13.0",
