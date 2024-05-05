@@ -31,7 +31,7 @@ router.get(
       projectPrisma(validated.data.projectId),
       new UserRepository()
     );
-    const users = await useCase.execute(validated.data.projectId);
+    const users = await useCase.execute();
 
     res.json({
       users,
@@ -53,7 +53,7 @@ router.get(
       projectPrisma(validated.data.projectId),
       new UserRepository()
     );
-    const user = await useCase.execute(validated.data.projectId, validated.data.userId);
+    const user = await useCase.execute(validated.data.userId);
 
     res.json({
       user,

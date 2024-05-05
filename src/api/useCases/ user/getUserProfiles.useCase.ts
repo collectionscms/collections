@@ -8,8 +8,8 @@ export class GetUserProfilesUseCase {
     private readonly userRepository: UserRepository
   ) {}
 
-  async execute(projectId: string): Promise<UserProfile[]> {
-    const userRoles = await this.userRepository.findUserRoles(this.prisma, projectId);
+  async execute(): Promise<UserProfile[]> {
+    const userRoles = await this.userRepository.findUserRoles(this.prisma);
 
     return userRoles.map((userRole) => {
       return {

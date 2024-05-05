@@ -31,12 +31,10 @@ export class UserRepository {
 
   async findUserRole(
     prisma: ProjectPrismaType,
-    projectId: string,
     userId: string
   ): Promise<{ user: UserEntity; role: RoleEntity }> {
     const record = await prisma.userProject.findFirstOrThrow({
       where: {
-        projectId,
         userId,
       },
       include: {
@@ -52,13 +50,9 @@ export class UserRepository {
   }
 
   async findUserRoles(
-    prisma: ProjectPrismaType,
-    projectId: string
+    prisma: ProjectPrismaType
   ): Promise<{ user: UserEntity; role: RoleEntity }[]> {
     const records = await prisma.userProject.findMany({
-      where: {
-        projectId,
-      },
       include: {
         user: true,
         role: true,
