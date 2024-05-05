@@ -1,4 +1,4 @@
-import { LogoutOutlined, UserOutlined } from '@ant-design/icons';
+import { UserOutlined } from '@ant-design/icons';
 import {
   IconButton,
   List,
@@ -8,10 +8,10 @@ import {
   Popover,
   Stack,
 } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Avatar } from '../../../../@extended/components/Avatar/index.js';
-import { getLogoutUrl } from '../../../../utilities/urlGenerator.js';
+import { getMeUrl } from '../../../../utilities/urlGenerator.js';
 
 export const BottomContent: React.FC = () => {
   const { t } = useTranslation();
@@ -28,16 +28,8 @@ export const BottomContent: React.FC = () => {
     setAnchorEl(null);
   };
 
-  // Menu width
-  const [clientWidth, setClientWidth] = useState(0);
-  useEffect(() => {
-    if (anchorEl) {
-      setClientWidth(anchorEl.clientWidth);
-    }
-  }, [anchorEl]);
-
-  const handleLogout = () => {
-    window.location.href = getLogoutUrl();
+  const handleProfile = () => {
+    window.location.href = getMeUrl();
   };
 
   return (
@@ -67,12 +59,20 @@ export const BottomContent: React.FC = () => {
         }}
       >
         <List sx={{ width: '100%' }}>
-          <ListItem disablePadding>
+          {/* <ListItem disablePadding>
             <ListItemButton onClick={handleLogout}>
               <ListItemIcon>
                 <LogoutOutlined />
               </ListItemIcon>
               {t('logout')}
+            </ListItemButton>
+          </ListItem> */}
+          <ListItem disablePadding>
+            <ListItemButton onClick={handleProfile}>
+              <ListItemIcon>
+                <UserOutlined />
+              </ListItemIcon>
+              {t('profile')}
             </ListItemButton>
           </ListItem>
         </List>

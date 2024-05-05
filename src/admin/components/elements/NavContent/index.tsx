@@ -1,9 +1,5 @@
 import React, { useMemo } from 'react';
-import {
-  postNavItems,
-  profileNavItems,
-  settingsGroupNavItems,
-} from '../../../utilities/groupNavItems.js';
+import { postNavItems, settingsGroupNavItems } from '../../../utilities/groupNavItems.js';
 import { useAuth } from '../../utilities/Auth/index.js';
 import { NavGroup } from '../NavGroup/index.js';
 import { NavHeader } from '../NavHeader/index.js';
@@ -14,9 +10,7 @@ export const NavContent: React.FC = () => {
 
   const navHeader = useMemo(() => <NavHeader />, []);
 
-  const navGroupItems = me?.isAdmin
-    ? [postNavItems(), settingsGroupNavItems(), profileNavItems()]
-    : [postNavItems(), profileNavItems()];
+  const navGroupItems = me?.isAdmin ? [postNavItems(), settingsGroupNavItems()] : [postNavItems()];
   const navGroups = navGroupItems.map((group) => {
     return <NavGroup key={group.label} group={group} />;
   });

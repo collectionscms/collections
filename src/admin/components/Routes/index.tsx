@@ -13,7 +13,7 @@ import { TenantRootRoutes } from './TenantRoot/index.js';
 export const Routes: React.FC = () => {
   const { me } = useAuth();
 
-  const portalRouter = createBrowserRouter([PortalRootRoutes, AuthRoutes, NoRoutes()]);
+  const portalRouter = createBrowserRouter([PortalRootRoutes(), AuthRoutes, NoRoutes()]);
   const tenantRouter = createBrowserRouter([
     TenantRootRoutes(),
     PostRoutes(),

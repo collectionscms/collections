@@ -6,7 +6,6 @@ import { Loader } from '../../elements/Loader/index.js';
 import { MainHeader } from '../../elements/MainHeader/index.js';
 import { MainLayout } from '../../layouts/Main/index.js';
 
-const ProfilePage = Loader(lazy(() => import('../../../pages/Profile/index.js'), 'ProfilePage'));
 const PostPage = Loader(lazy(() => import('../../../pages/Post/index.js'), 'PostPage'));
 
 export const TenantRootRoutes = () => {
@@ -17,14 +16,6 @@ export const TenantRootRoutes = () => {
     element: <MainLayout showNavContent={true} />,
     children: [
       { path: '', element: <Navigate to="/admin/posts" replace /> },
-      {
-        path: 'me',
-        element: (
-          <MainHeader label={t('profile')}>
-            <ProfilePage />
-          </MainHeader>
-        ),
-      },
       {
         path: 'posts',
         element: (
