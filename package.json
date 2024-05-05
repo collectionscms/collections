@@ -121,7 +121,7 @@
     "webpack-dev-middleware": "7.2.1",
     "webpack-hot-middleware": "2.26.1",
     "webpack-shell-plugin-next": "2.3.1",
-    "yup": "1.2.0",
+    "yup": "1.4.0",
     "zod": "3.23.3"
   },
   "devDependencies": {
