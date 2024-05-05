@@ -5,7 +5,7 @@ import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
 import { authConfig } from '../configs/auth.js';
 import { MeRepository } from '../data/user/me.repository.js';
 import { UserRepository } from '../data/user/user.repository.js';
-import { bypassPrisma, prisma, projectPrisma } from '../database/prisma/client.js';
+import { bypassPrisma, prisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';
 import { MailService } from '../services/mail.service.js';
@@ -45,17 +45,12 @@ router.patch(
   asyncHandler(async (req: Request, res: Response) => {
     const validated = updateProfileUseCaseSchema.safeParse({
       userId: res.user.id,
-      projectId: res.tenantProjectId,
       ...req.body,
       password: req.body.password || null,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
-    const useCase = new UpdateProfileUseCase(
-      prisma,
-      projectPrisma(validated.data.projectId),
-      new UserRepository()
-    );
+    const useCase = new UpdateProfileUseCase(prisma, new MeRepository(), new UserRepository());
     await useCase.execute(validated.data);
 
     res.status(204).end();

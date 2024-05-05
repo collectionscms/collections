@@ -1,5 +1,6 @@
 import {
   EditOutlined,
+  LogoutOutlined,
   SafetyOutlined,
   SettingOutlined,
   TeamOutlined,
@@ -7,20 +8,9 @@ import {
 } from '@ant-design/icons';
 import { Group } from '../components/elements/NavGroup/types.js';
 
-export const postNavItems = (): Group => {
-  const path = '/admin';
-
-  return {
-    label: 'posts',
-    items: [
-      {
-        label: 'posts',
-        href: `${path}/posts`,
-        icon: EditOutlined,
-      },
-    ],
-  };
-};
+// /////////////////////////////////////
+// Portal
+// /////////////////////////////////////
 
 export const profileNavItems = (): Group => {
   const path = '/admin';
@@ -32,6 +22,30 @@ export const profileNavItems = (): Group => {
         label: 'profile',
         href: `${path}/me`,
         icon: UserOutlined,
+      },
+      {
+        label: 'logout',
+        href: `${path}/auth/logout`,
+        icon: LogoutOutlined,
+      },
+    ],
+  };
+};
+
+// /////////////////////////////////////
+// Tenant
+// /////////////////////////////////////
+
+export const postNavItems = (): Group => {
+  const path = '/admin';
+
+  return {
+    label: 'posts',
+    items: [
+      {
+        label: 'posts',
+        href: `${path}/posts`,
+        icon: EditOutlined,
       },
     ],
   };

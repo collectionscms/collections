@@ -1,5 +1,11 @@
 import { Box, Drawer, Stack, useMediaQuery, useTheme } from '@mui/material';
 import React, { useMemo } from 'react';
+import {
+  postNavItems,
+  profileNavItems,
+  settingsGroupNavItems,
+} from '../../../utilities/groupNavItems.js';
+import { useAuth } from '../../utilities/Auth/index.js';
 import { NavContent } from '../NavContent/index.js';
 import { Sidebar } from '../Sidebar/index.js';
 import { MinimalStyled } from './minimal.js';
@@ -7,23 +13,33 @@ import { MinimalStyled } from './minimal.js';
 type Props = {
   window?: () => Window;
   open: boolean;
-  showNavContent: boolean;
+  variable: 'portal' | 'profile' | 'tenant';
   toggleDrawer: () => void;
 };
 
-export const Nav: React.FC<Props> = ({ window, open, showNavContent, toggleDrawer }) => {
+export const Nav: React.FC<Props> = ({ window, open, variable, toggleDrawer }) => {
+  const { me } = useAuth();
   const theme = useTheme();
   const lgUp = useMediaQuery(theme.breakpoints.up('lg'));
-  const navWidth = showNavContent ? 300 : 60;
+  const navWidth = variable === 'portal' ? 60 : 300;
+
+  // nav content groups
+  const tenantGroups = me?.isAdmin ? [postNavItems(), settingsGroupNavItems()] : [postNavItems()];
+  const profileGroups = [profileNavItems()];
 
   const container = window !== undefined ? () => window().document.body : undefined;
   const sidebar = useMemo(
     () => (
       <Stack direction="row">
         <Sidebar />
-        {showNavContent && (
+        {variable === 'profile' && (
           <Box sx={{ width: 240, borderLeft: `1px solid ${theme.palette.divider}` }}>
-            <NavContent />
+            <NavContent navGroupItems={profileGroups} />
+          </Box>
+        )}
+        {variable === 'tenant' && (
+          <Box sx={{ width: 240, borderLeft: `1px solid ${theme.palette.divider}` }}>
+            <NavContent navGroupItems={tenantGroups} />
           </Box>
         )}
       </Stack>
