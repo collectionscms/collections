@@ -22,7 +22,8 @@ model Project {
   permissions  Permission[]
   posts        Post[]
   contents     Content[]
-  PostHistory  PostHistory[]
+  postHistory  PostHistory[]
+  apiKeys      ApiKey[]
 }
 
 model User {
@@ -34,7 +35,6 @@ model User {
   avatarUrl               String?       @db.VarChar(255)
   resetPasswordToken      String?       @db.VarChar(255)
   resetPasswordExpiration DateTime?
-  apiKey                  String?       @db.VarChar(255)
   createdAt               DateTime      @default(now()) @db.Timestamptz(6)
   updatedAt               DateTime      @updatedAt @db.Timestamptz(6)
   userProjects            UserProject[]
@@ -138,4 +138,14 @@ model Content {
   project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   file      File?    @relation(fields: [fileId], references: [id], onDelete: SetNull)
+}
+
+model ApiKey {
+  id        String   @id @db.Uuid
+  projectId String   @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
+  name      String   @db.VarChar(255)
+  key       String   @db.VarChar(255)
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime @updatedAt @db.Timestamptz(6)
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
 }
