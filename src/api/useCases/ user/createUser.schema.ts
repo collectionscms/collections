@@ -5,7 +5,6 @@ export const createUserUseCaseSchema = z.object({
   name: z.string(),
   email: z.string().email(),
   password: z.string(),
-  apiKey: z.string().nullable(),
   roleId: z.string(),
 });
 

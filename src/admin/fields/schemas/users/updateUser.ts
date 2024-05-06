@@ -7,7 +7,6 @@ export type FormValues = {
   email: string;
   password?: string | null;
   isActive: boolean;
-  apiKey?: string | null;
   roleId: string;
 };
 
@@ -23,11 +22,6 @@ export const updateUser = (t: TFunction): ObjectSchema<FormValues> => {
         excludeEmptyString: true,
       })
       .min(4)
-      .max(250)
-      .transform((value) => value || null),
-    apiKey: yup
-      .string()
-      .notRequired()
       .max(250)
       .transform((value) => value || null),
     isActive: yup.boolean().required(),

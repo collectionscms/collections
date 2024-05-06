@@ -21,7 +21,6 @@ const UserPageImpl: React.FC = () => {
   const fields = [
     { field: 'name', label: t('name'), type: cells.text() },
     { field: 'email', label: t('email'), type: cells.text() },
-    { field: 'apiKey', label: t('api_key'), type: cells.text() },
     { field: 'role', label: t('role'), type: cells.text() },
     { field: 'updatedAt', label: t('updated_at'), type: cells.date() },
   ];
@@ -30,8 +29,6 @@ const UserPageImpl: React.FC = () => {
     const defaultCell = <Cell colIndex={i} type={fields[i].type} cellData={data} />;
 
     switch (fields[i].field) {
-      case 'apiKey':
-        return <Cell colIndex={i} type={fields[i].type} cellData={row.apiKey && t('valid')} />;
       case 'role':
         return <Cell colIndex={i} type={fields[i].type} cellData={row.role.name} />;
       case 'name':

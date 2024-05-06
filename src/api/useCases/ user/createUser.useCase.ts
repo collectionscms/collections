@@ -13,7 +13,7 @@ export class CreateUserUseCase {
   ) {}
 
   async execute(props: CreateUserUseCaseSchemaType): Promise<User> {
-    const { projectId, name, email, password, apiKey, roleId } = props;
+    const { projectId, name, email, password, roleId } = props;
 
     await this.userRepository.checkUniqueEmail(this.prisma, '', email);
 
@@ -23,7 +23,6 @@ export class CreateUserUseCase {
       name,
       email,
       password: hashed,
-      apiKey,
     });
 
     const user = await this.userRepository.create(this.projectPrisma, entity, projectId, roleId);

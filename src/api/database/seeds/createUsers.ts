@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { v4 as uuidV4, v4 } from 'uuid';
+import { v4 } from 'uuid';
 import { oneWayHash } from '../../utilities/oneWayHash.js';
 import { bypassPrisma } from '../prisma/client.js';
 import { jaProject, usProject } from './createProjects.js';
@@ -29,7 +29,6 @@ export const createUsers = async (): Promise<void> => {
           avatarUrl: faker.internet.avatar(),
           password: password,
           isActive: true,
-          apiKey: uuidV4(),
         },
         {
           id: editorUser,
@@ -38,7 +37,6 @@ export const createUsers = async (): Promise<void> => {
           avatarUrl: faker.internet.avatar(),
           password: password,
           isActive: true,
-          apiKey: uuidV4(),
         },
         {
           id: guestUser,
@@ -47,7 +45,6 @@ export const createUsers = async (): Promise<void> => {
           avatarUrl: faker.internet.avatar(),
           password: password,
           isActive: true,
-          apiKey: uuidV4(),
         },
       ],
     });
