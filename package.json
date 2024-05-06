@@ -122,7 +122,7 @@
     "webpack-hot-middleware": "2.26.1",
     "webpack-shell-plugin-next": "2.3.1",
     "yup": "1.4.0",
-    "zod": "3.23.3"
+    "zod": "3.23.6"
   },
   "devDependencies": {
     "@commitlint/cli": "19.3.0",
