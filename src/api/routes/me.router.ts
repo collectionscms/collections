@@ -9,6 +9,9 @@ import { bypassPrisma, prisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';
 import { MailService } from '../services/mail.service.js';
+import { getMyProfileUseCaseSchema } from '../useCases/me/getMyProfile.schema.js';
+import { GetMyProfileUseCase } from '../useCases/me/getMyProfile.useCase.js';
+import { getMyProjectsUseCaseSchema } from '../useCases/me/getMyProjects.schema.js';
 import { GetMyProjectsUseCase } from '../useCases/me/getMyProjects.useCase.js';
 import { updateProfileUseCaseSchema } from '../useCases/me/updateProfile.schema.js';
 import { UpdateProfileUseCase } from '../useCases/me/updateProfile.useCase.js';
@@ -23,6 +26,21 @@ router.get(
     return res.json({
       me: user || null,
     });
+  })
+);
+
+router.get(
+  '/me/profile',
+  asyncHandler(async (req: Request, res: Response) => {
+    const validated = getMyProfileUseCaseSchema.safeParse({
+      userId: res.user.id,
+    });
+    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
+
+    const useCase = new GetMyProfileUseCase(prisma, new MeRepository());
+    const user = await useCase.execute(validated.data.userId);
+
+    return res.json({ user });
   })
 );
 
