@@ -97,17 +97,6 @@ export class UserRepository {
     return UserEntity.Reconstruct<User, UserEntity>(user);
   }
 
-  async update(prisma: ProjectPrismaType, userId: string, user: UserEntity): Promise<UserEntity> {
-    const updatedUser = await prisma.user.update({
-      where: {
-        id: userId,
-      },
-      data: user.toPersistence(),
-    });
-
-    return UserEntity.Reconstruct<User, UserEntity>(updatedUser);
-  }
-
   async updateWithRole(
     prisma: ProjectPrismaClient,
     userId: string,

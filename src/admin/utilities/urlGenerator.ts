@@ -2,8 +2,8 @@ export const getLoginUrl = () => {
   return generateUrlWithCurrentDomain('/admin/auth/login');
 };
 
-export const getLogoutUrl = () => {
-  return generateUrlWithCurrentDomain('/admin/auth/logout');
+export const getMeUrl = () => {
+  return generateUrlWithCurrentDomain('/admin/me');
 };
 
 export const getUrlForTenant = (subdomain: string, path: string) => {

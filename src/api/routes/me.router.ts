@@ -5,10 +5,13 @@ import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
 import { authConfig } from '../configs/auth.js';
 import { MeRepository } from '../data/user/me.repository.js';
 import { UserRepository } from '../data/user/user.repository.js';
-import { bypassPrisma, prisma, projectPrisma } from '../database/prisma/client.js';
+import { bypassPrisma, prisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';
 import { MailService } from '../services/mail.service.js';
+import { getMyProfileUseCaseSchema } from '../useCases/me/getMyProfile.schema.js';
+import { GetMyProfileUseCase } from '../useCases/me/getMyProfile.useCase.js';
+import { getMyProjectsUseCaseSchema } from '../useCases/me/getMyProjects.schema.js';
 import { GetMyProjectsUseCase } from '../useCases/me/getMyProjects.useCase.js';
 import { updateProfileUseCaseSchema } from '../useCases/me/updateProfile.schema.js';
 import { UpdateProfileUseCase } from '../useCases/me/updateProfile.useCase.js';
@@ -27,13 +30,31 @@ router.get(
 );
 
 router.get(
+  '/me/profile',
+  asyncHandler(async (req: Request, res: Response) => {
+    const validated = getMyProfileUseCaseSchema.safeParse({
+      userId: res.user.id,
+    });
+    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
+
+    const useCase = new GetMyProfileUseCase(prisma, new MeRepository());
+    const user = await useCase.execute(validated.data.userId);
+
+    return res.json({ user });
+  })
+);
+
+router.get(
   '/me/projects',
   authenticatedUser,
   asyncHandler(async (req: Request, res: Response) => {
-    const id = res.user.id;
+    const validated = getMyProjectsUseCaseSchema.safeParse({
+      userId: res.user.id,
+    });
+    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
     const useCase = new GetMyProjectsUseCase(bypassPrisma, new MeRepository());
-    const projects = await useCase.execute(id);
+    const projects = await useCase.execute(validated.data.userId);
 
     return res.json(projects);
   })
@@ -45,17 +66,12 @@ router.patch(
   asyncHandler(async (req: Request, res: Response) => {
     const validated = updateProfileUseCaseSchema.safeParse({
       userId: res.user.id,
-      projectId: res.tenantProjectId,
       ...req.body,
       password: req.body.password || null,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
-    const useCase = new UpdateProfileUseCase(
-      prisma,
-      projectPrisma(validated.data.projectId),
-      new UserRepository()
-    );
+    const useCase = new UpdateProfileUseCase(prisma, new MeRepository(), new UserRepository());
     await useCase.execute(validated.data);
 
     res.status(204).end();

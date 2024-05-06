@@ -4,9 +4,8 @@ import { Navigate } from 'react-router-dom';
 import lazy from '../../../utilities/lazy.js';
 import { Loader } from '../../elements/Loader/index.js';
 import { MainHeader } from '../../elements/MainHeader/index.js';
-import { MainLayout } from '../../layouts/Main/index.js';
+import { SidebarLayout } from '../../layouts/Sidebar/index.js';
 
-const ProfilePage = Loader(lazy(() => import('../../../pages/Profile/index.js'), 'ProfilePage'));
 const PostPage = Loader(lazy(() => import('../../../pages/Post/index.js'), 'PostPage'));
 
 export const TenantRootRoutes = () => {
@@ -14,17 +13,9 @@ export const TenantRootRoutes = () => {
 
   return {
     path: '/admin',
-    element: <MainLayout showNavContent={true} />,
+    element: <SidebarLayout variable="tenant" />,
     children: [
       { path: '', element: <Navigate to="/admin/posts" replace /> },
-      {
-        path: 'me',
-        element: (
-          <MainHeader label={t('profile')}>
-            <ProfilePage />
-          </MainHeader>
-        ),
-      },
       {
         path: 'posts',
         element: (

@@ -5,10 +5,10 @@ import { Header } from '../../elements/Header/index.js';
 import { Nav } from '../../elements/Nav/index.js';
 
 type Props = {
-  showNavContent: boolean;
+  variable: 'portal' | 'profile' | 'tenant';
 };
 
-export const MainLayout: React.FC<Props> = ({ showNavContent }) => {
+export const SidebarLayout: React.FC<Props> = ({ variable }) => {
   const [open, setOpen] = useState(true);
   const theme = useTheme();
   const lgDown = useMediaQuery(theme.breakpoints.down('lg'));
@@ -20,7 +20,7 @@ export const MainLayout: React.FC<Props> = ({ showNavContent }) => {
   return (
     <Box sx={{ display: 'flex', width: '100%' }}>
       <Header open={open} toggleDrawer={toggleDrawer} />
-      <Nav open={open} showNavContent={showNavContent} toggleDrawer={toggleDrawer} />
+      <Nav open={open} variable={variable} toggleDrawer={toggleDrawer} />
       <Box component="main" sx={{ width: 'calc(100% - 300px)', flexGrow: 1, p: { xs: 2, sm: 3 } }}>
         {lgDown && <Toolbar sx={{ mt: 'inherit' }} />}
         <Container

@@ -41,6 +41,27 @@ export class MeRepository {
     };
   }
 
+  async findMeById(prisma: PrismaType, userId: string): Promise<UserEntity> {
+    const record = await prisma.user.findFirstOrThrow({
+      where: {
+        id: userId,
+      },
+    });
+
+    return UserEntity.Reconstruct<User, UserEntity>(record);
+  }
+
+  async update(prisma: PrismaType, userId: string, user: UserEntity): Promise<UserEntity> {
+    const updatedUser = await prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: user.toPersistence(),
+    });
+
+    return UserEntity.Reconstruct<User, UserEntity>(updatedUser);
+  }
+
   async resetPassword(prisma: PrismaType, token: string, password: string): Promise<UserEntity> {
     const user = await prisma.user.findFirst({
       where: {

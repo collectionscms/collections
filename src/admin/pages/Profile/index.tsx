@@ -26,7 +26,6 @@ import { IconButton } from '../../@extended/components/IconButton/index.js';
 import { MainCard } from '../../@extended/components/MainCard/index.js';
 import { ConfirmDiscardDialog } from '../../components/elements/ConfirmDiscardDialog/index.js';
 import { Loader } from '../../components/elements/Loader/index.js';
-import { useAuth } from '../../components/utilities/Auth/index.js';
 import { useColorMode } from '../../components/utilities/ColorMode/index.js';
 import { Mode } from '../../components/utilities/ColorMode/types.js';
 import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.js';
@@ -43,8 +42,8 @@ const Loading = Loader(lazy(() => import('../../components/elements/Loading/inde
 const ProfilePageImpl: React.FC = () => {
   const { t, i18n } = useTranslation();
   const { mode, setMode, autoMode } = useColorMode();
-  const { me } = useAuth();
-  const { updateMe } = useProfile();
+  const { getProfile, updateMe } = useProfile();
+  const { data: user } = getProfile();
   const { trigger, isMutating } = updateMe();
 
   const {
@@ -55,8 +54,8 @@ const ProfilePageImpl: React.FC = () => {
     formState: { isDirty, errors },
   } = useForm<FormValues>({
     defaultValues: {
-      name: me?.name,
-      email: me?.email,
+      name: user?.name,
+      email: user?.email,
       password: '',
       apiKey: '',
     },
@@ -80,13 +79,12 @@ const ProfilePageImpl: React.FC = () => {
       reset(form);
       await trigger(form);
       enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
-      // if (form.apiKey) updateApiKey(form.apiKey);
     } catch (e) {
       logger.error(e);
     }
   };
 
-  if (!me) return <Loading />;
+  if (!user) return <Loading />;
 
   return (
     <>
@@ -200,7 +198,9 @@ const ProfilePageImpl: React.FC = () => {
                           id="apiKey"
                           type="text"
                           placeholder={
-                            me.apiKey ? t('hidden_for_security') : t('generate_api_key_placeholder')
+                            user.apiKey
+                              ? t('hidden_for_security')
+                              : t('generate_api_key_placeholder')
                           }
                           fullWidth
                           InputProps={{
