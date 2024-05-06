@@ -30,10 +30,13 @@ router.get(
   '/me/projects',
   authenticatedUser,
   asyncHandler(async (req: Request, res: Response) => {
-    const id = res.user.id;
+    const validated = getMyProjectsUseCaseSchema.safeParse({
+      userId: res.user.id,
+    });
+    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
     const useCase = new GetMyProjectsUseCase(bypassPrisma, new MeRepository());
-    const projects = await useCase.execute(id);
+    const projects = await useCase.execute(validated.data.userId);
 
     return res.json(projects);
   })
