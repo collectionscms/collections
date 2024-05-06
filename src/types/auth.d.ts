@@ -6,7 +6,6 @@ declare module '@auth/express' {
       id: string;
       email: string;
       name: string;
-      apiKey: string | null;
       isAdmin: boolean;
       projects: {
         id: string;

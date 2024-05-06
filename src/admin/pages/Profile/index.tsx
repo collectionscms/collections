@@ -1,10 +1,8 @@
-import { SyncOutlined } from '@ant-design/icons';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Button,
   FormControlLabel,
   FormHelperText,
-  InputAdornment,
   InputLabel,
   MenuItem,
   Radio,
@@ -13,16 +11,13 @@ import {
   SelectChangeEvent,
   Stack,
   TextField,
-  Tooltip,
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { enqueueSnackbar } from 'notistack';
 import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { v4 as uuidv4 } from 'uuid';
 import { logger } from '../../../utilities/logger.js';
-import { IconButton } from '../../@extended/components/IconButton/index.js';
 import { MainCard } from '../../@extended/components/MainCard/index.js';
 import { ConfirmDiscardDialog } from '../../components/elements/ConfirmDiscardDialog/index.js';
 import { Loader } from '../../components/elements/Loader/index.js';
@@ -50,14 +45,12 @@ const ProfilePageImpl: React.FC = () => {
     reset,
     control,
     handleSubmit,
-    setValue,
     formState: { isDirty, errors },
   } = useForm<FormValues>({
     defaultValues: {
       name: user?.name,
       email: user?.email,
       password: '',
-      apiKey: '',
     },
     resolver: yupResolver(updateUserSchema(t)),
   });
@@ -67,13 +60,8 @@ const ProfilePageImpl: React.FC = () => {
     i18n.changeLanguage(event.target.value);
   };
 
-  const handleGenerateApiKey = () => {
-    setValue('apiKey', uuidv4());
-  };
-
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     if (!form.password) delete form.password;
-    if (!form.apiKey) delete form.apiKey;
 
     try {
       reset(form);
@@ -184,46 +172,6 @@ const ProfilePageImpl: React.FC = () => {
                       )}
                     />
                     <FormHelperText error>{errors.password?.message}</FormHelperText>
-                  </Stack>
-                </Grid>
-                <Grid xs={12} sm={6}>
-                  <Stack spacing={1}>
-                    <InputLabel htmlFor="apiKey">{t('api_key')}</InputLabel>
-                    <Controller
-                      name="apiKey"
-                      control={control}
-                      render={({ field }) => (
-                        <TextField
-                          {...field}
-                          id="apiKey"
-                          type="text"
-                          placeholder={
-                            user.apiKey
-                              ? t('hidden_for_security')
-                              : t('generate_api_key_placeholder')
-                          }
-                          fullWidth
-                          InputProps={{
-                            readOnly: true,
-                            endAdornment: (
-                              <InputAdornment position="end">
-                                <Tooltip title={t('generate_api_key')} placement="top">
-                                  <IconButton
-                                    edge="end"
-                                    color="secondary"
-                                    onClick={handleGenerateApiKey}
-                                  >
-                                    <SyncOutlined />
-                                  </IconButton>
-                                </Tooltip>
-                              </InputAdornment>
-                            ),
-                          }}
-                          error={errors.apiKey !== undefined}
-                        />
-                      )}
-                    />
-                    <FormHelperText error>{errors.apiKey?.message}</FormHelperText>
                   </Stack>
                 </Grid>
                 <Grid xs={12}>

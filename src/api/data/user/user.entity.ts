@@ -7,19 +7,16 @@ export class UserEntity extends PrismaBaseEntity<User> {
     name,
     email,
     password,
-    apiKey,
   }: {
     name: string;
     email: string;
     password: string;
-    apiKey: string | null;
   }): UserEntity {
     return new UserEntity({
       id: v4(),
       name,
       email,
       password,
-      apiKey,
       isActive: true,
       avatarUrl: null,
       resetPasswordToken: null,
@@ -43,10 +40,6 @@ export class UserEntity extends PrismaBaseEntity<User> {
 
   get password(): string {
     return this.props.password;
-  }
-
-  get apiKey(): string | null {
-    return this.props.apiKey;
   }
 
   get isActive(): boolean {

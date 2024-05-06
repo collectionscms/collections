@@ -70,7 +70,6 @@ router.post(
       name: req.body.name,
       email: req.body.email,
       password: req.body.password,
-      apiKey: req.body.apiKey,
       roleId: req.body.roleId,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);

@@ -43,24 +43,18 @@ const CreateUserPageImpl: React.FC = () => {
     reset,
     control,
     handleSubmit,
-    setValue,
     formState: { isDirty, errors },
   } = useForm<FormValues>({
     defaultValues: {
       name: '',
       email: '',
       password: '',
-      apiKey: '',
       isActive: true,
       roleId: roles ? roles[0]?.id.toString() : '',
     },
     resolver: yupResolver(createUserSchema(t)),
   });
   const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
-
-  const onGenerateApiKey = () => {
-    setValue('apiKey', uuidv4());
-  };
 
   const navigateToList = () => {
     navigate('../users');
@@ -137,42 +131,6 @@ const CreateUserPageImpl: React.FC = () => {
                       )}
                     />
                     <FormHelperText error>{errors.password?.message}</FormHelperText>
-                  </Stack>
-                </Grid>
-                <Grid xs={12} sm={6}>
-                  <Stack spacing={1}>
-                    <InputLabel htmlFor="apiKey">{t('api_key')}</InputLabel>
-                    <Controller
-                      name="apiKey"
-                      control={control}
-                      render={({ field }) => (
-                        <TextField
-                          {...field}
-                          id="apiKey"
-                          type="text"
-                          placeholder={t('generate_api_key_placeholder')}
-                          fullWidth
-                          InputProps={{
-                            readOnly: true,
-                            endAdornment: (
-                              <InputAdornment position="end">
-                                <Tooltip title={t('generate_api_key')} placement="top">
-                                  <IconButton
-                                    edge="end"
-                                    color="secondary"
-                                    onClick={onGenerateApiKey}
-                                  >
-                                    <SyncOutlined />
-                                  </IconButton>
-                                </Tooltip>
-                              </InputAdornment>
-                            ),
-                          }}
-                          error={errors.apiKey !== undefined}
-                        />
-                      )}
-                    />
-                    <FormHelperText error>{errors.apiKey?.message}</FormHelperText>
                   </Stack>
                 </Grid>
                 <Grid xs={12} sm={6}>

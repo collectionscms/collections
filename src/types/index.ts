@@ -12,7 +12,6 @@ export type Me = {
   id: string;
   email: string;
   name: string;
-  apiKey: string | null;
   isAdmin: boolean;
   projects: Project[];
   roles: (Role & { permissions: Permission[] })[];

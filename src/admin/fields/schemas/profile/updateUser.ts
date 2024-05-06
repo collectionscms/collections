@@ -6,7 +6,6 @@ export type FormValues = {
   name: string;
   email: string;
   password?: string | null;
-  apiKey?: string | null;
 };
 
 export const updateUser = (t: TFunction): ObjectSchema<FormValues> => {
@@ -21,11 +20,6 @@ export const updateUser = (t: TFunction): ObjectSchema<FormValues> => {
         excludeEmptyString: true,
       })
       .min(4)
-      .max(250)
-      .transform((value) => value || null),
-    apiKey: yup
-      .string()
-      .notRequired()
       .max(250)
       .transform((value) => value || null),
   });

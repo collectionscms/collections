@@ -20,7 +20,6 @@ export class LoginUseCase {
         id: user.id,
         name: user.name,
         email: user.email,
-        apiKey: user.apiKey,
         isAdmin: true,
         projects: projects.map((project) => project.toResponse()),
         // todo
