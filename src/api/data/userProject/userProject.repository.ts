@@ -18,4 +18,36 @@ export class UserProjectRepository {
       UserProjectEntity.Reconstruct<UserProject, UserProjectEntity>(record)
     );
   }
+
+  async findOne(
+    prisma: ProjectPrismaType,
+    projectId: string,
+    userId: string
+  ): Promise<UserProjectEntity> {
+    const record = await prisma.userProject.findUniqueOrThrow({
+      where: {
+        userId_projectId: {
+          userId,
+          projectId,
+        },
+      },
+    });
+    return UserProjectEntity.Reconstruct<UserProject, UserProjectEntity>(record);
+  }
+  async delete(
+    prisma: ProjectPrismaType,
+    projectId: string,
+    userId: string
+  ): Promise<UserProjectEntity> {
+    const userProject = await prisma.userProject.delete({
+      where: {
+        userId_projectId: {
+          userId,
+          projectId,
+        },
+      },
+    });
+
+    return UserProjectEntity.Reconstruct<UserProject, UserProjectEntity>(userProject);
+  }
 }

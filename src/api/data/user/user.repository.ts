@@ -138,14 +138,6 @@ export class UserRepository {
     return UserEntity.Reconstruct<User, UserEntity>(updatedUser);
   }
 
-  async delete(prisma: ProjectPrismaType, id: string): Promise<void> {
-    await prisma.user.delete({
-      where: {
-        id,
-      },
-    });
-  }
-
   async checkUniqueEmail(prisma: PrismaType, id: string, email: string) {
     const user = await prisma.user.findFirst({
       where: {

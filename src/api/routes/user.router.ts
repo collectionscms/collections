@@ -118,20 +118,15 @@ router.delete(
   asyncHandler(async (req: Request, res: Response) => {
     const validated = deleteUserUseCaseSchema.safeParse({
       userId: req.params.id,
-      ownUserId: res.user.id,
       projectId: res.tenantProjectId,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
-    if (validated.data.userId === validated.data.ownUserId) {
-      throw new UnprocessableEntityException('can_not_delete_itself');
-    }
-
     const useCase = new DeleteUserUseCase(
-      projectPrisma(validated.data.userId),
-      new UserRepository()
+      projectPrisma(validated.data.projectId),
+      new UserProjectRepository()
     );
-    await useCase.execute(validated.data.userId);
+    await useCase.execute(validated.data.projectId, validated.data.userId);
 
     res.status(204).end();
   })
