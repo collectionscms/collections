@@ -1,5 +1,5 @@
 import { UserProject } from '@prisma/client';
-import { ProjectPrismaType } from '../../database/prisma/client.js';
+import { ProjectPrismaClient, ProjectPrismaType } from '../../database/prisma/client.js';
 import { UserProjectEntity } from './userProject.entity.js';
 
 export class UserProjectRepository {
@@ -34,6 +34,26 @@ export class UserProjectRepository {
     });
     return UserProjectEntity.Reconstruct<UserProject, UserProjectEntity>(record);
   }
+
+  async updateRole(
+    prisma: ProjectPrismaClient,
+    userId: string,
+    projectId: string,
+    entity: UserProjectEntity
+  ): Promise<UserProjectEntity> {
+    const userProject = await prisma.userProject.update({
+      where: {
+        userId_projectId: {
+          userId,
+          projectId,
+        },
+      },
+      data: entity.toPersistence(),
+    });
+
+    return UserProjectEntity.Reconstruct<UserProject, UserProjectEntity>(userProject);
+  }
+
   async delete(
     prisma: ProjectPrismaType,
     projectId: string,

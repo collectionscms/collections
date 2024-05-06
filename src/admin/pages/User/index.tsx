@@ -2,7 +2,6 @@ import { Role, User } from '@prisma/client';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { MainCard } from '../../@extended/components/MainCard/index.js';
-import { CreateNewButton } from '../../components/elements/CreateNewButton/index.js';
 import { Link } from '../../components/elements/Link/index.js';
 import { Cell } from '../../components/elements/Table/Cell/index.js';
 import { cells } from '../../components/elements/Table/Cell/types.js';
@@ -10,11 +9,9 @@ import { Table } from '../../components/elements/Table/index.js';
 import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.js';
 import { buildColumns } from '../../utilities/buildColumns.js';
 import { UserContextProvider, useUser } from './Context/index.js';
-import { useNavigate } from 'react-router-dom';
 
 const UserPageImpl: React.FC = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const { getUsers } = useUser();
   const { data } = getUsers();
 
@@ -22,7 +19,6 @@ const UserPageImpl: React.FC = () => {
     { field: 'name', label: t('name'), type: cells.text() },
     { field: 'email', label: t('email'), type: cells.text() },
     { field: 'role', label: t('role'), type: cells.text() },
-    { field: 'updatedAt', label: t('updated_at'), type: cells.date() },
   ];
 
   const columns = buildColumns(fields, (i: number, row: User & { role: Role }, data: any) => {
@@ -39,11 +35,7 @@ const UserPageImpl: React.FC = () => {
   });
 
   return (
-    <MainCard
-      content={false}
-      title={<></>}
-      secondary={<CreateNewButton onClick={() => navigate('create')} />}
-    >
+    <MainCard content={false} title={<></>} secondary={<></>}>
       <Table columns={columns} rows={data} />
     </MainCard>
   );

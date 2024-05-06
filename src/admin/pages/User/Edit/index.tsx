@@ -1,15 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import {
-  Button,
-  Checkbox,
-  FormControlLabel,
-  FormHelperText,
-  InputLabel,
-  MenuItem,
-  Select,
-  Stack,
-  TextField,
-} from '@mui/material';
+import { Button, InputLabel, MenuItem, Select, Stack, Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { useSnackbar } from 'notistack';
 import React from 'react';
@@ -43,14 +33,9 @@ const EditUserPageImpl: React.FC = () => {
     reset,
     control,
     handleSubmit,
-    setValue,
-    formState: { isDirty, errors },
+    formState: { isDirty },
   } = useForm<FormValues>({
     defaultValues: {
-      name: user.name,
-      email: user.email,
-      password: '',
-      isActive: Boolean(user.isActive),
       roleId: user.role.id,
     },
     resolver: yupResolver(updateUserSchema(t)),
@@ -62,8 +47,6 @@ const EditUserPageImpl: React.FC = () => {
   };
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
-    if (!form.password) delete form.password;
-
     try {
       reset(form);
       await trigger(form);
@@ -84,57 +67,16 @@ const EditUserPageImpl: React.FC = () => {
               <Grid container spacing={3}>
                 <Grid xs={12} sm={6}>
                   <Stack spacing={1}>
-                    <InputLabel required>{t('name')}</InputLabel>
-                    <Controller
-                      name="name"
-                      control={control}
-                      render={({ field }) => (
-                        <TextField
-                          {...field}
-                          type="text"
-                          fullWidth
-                          error={errors.name !== undefined}
-                        />
-                      )}
-                    />
-                    <FormHelperText error>{errors.name?.message}</FormHelperText>
-                  </Stack>
-                </Grid>
-                <Grid xs={12} sm={6}>
-                  <Stack spacing={1}>
                     <InputLabel required>{t('email')}</InputLabel>
-                    <Controller
-                      name="email"
-                      control={control}
-                      render={({ field }) => (
-                        <TextField
-                          {...field}
-                          type="text"
-                          fullWidth
-                          error={errors.email !== undefined}
-                        />
-                      )}
-                    />
-                    <FormHelperText error>{errors.email?.message}</FormHelperText>
-                  </Stack>
-                </Grid>
-                <Grid xs={12} sm={6}>
-                  <Stack spacing={1}>
-                    <InputLabel required>{t('password')}</InputLabel>
-                    <Controller
-                      name="password"
-                      control={control}
-                      render={({ field }) => (
-                        <TextField
-                          {...field}
-                          type="password"
-                          placeholder={t('hidden_for_security')}
-                          fullWidth
-                          error={errors.password !== undefined}
-                        />
-                      )}
-                    />
-                    <FormHelperText error>{errors.password?.message}</FormHelperText>
+                    <Typography
+                      sx={{
+                        height: 40,
+                        display: 'flex',
+                        alignItems: 'center',
+                      }}
+                    >
+                      {user.email}
+                    </Typography>
                   </Stack>
                 </Grid>
                 <Grid xs={12} sm={6}>
@@ -153,23 +95,6 @@ const EditUserPageImpl: React.FC = () => {
                         </Select>
                       )}
                     />
-                  </Stack>
-                </Grid>
-                <Grid xs={12} sm={6}>
-                  <Stack spacing={1}>
-                    <InputLabel>{t('status')}</InputLabel>
-                    <Controller
-                      name="isActive"
-                      control={control}
-                      render={({ field }) => (
-                        <FormControlLabel
-                          {...field}
-                          label={t('is_active')}
-                          control={<Checkbox checked={field.value} />}
-                        />
-                      )}
-                    />
-                    <FormHelperText error>{errors.isActive?.message}</FormHelperText>
                   </Stack>
                 </Grid>
                 <Grid xs={12}>
