@@ -2,11 +2,7 @@ import { User } from '@auth/express';
 import { Role } from '@prisma/client';
 import { v4 } from 'uuid';
 import { RecordNotUniqueException } from '../../../exceptions/database/recordNotUnique.js';
-import {
-  PrismaType,
-  ProjectPrismaClient,
-  ProjectPrismaType,
-} from '../../database/prisma/client.js';
+import { PrismaType, ProjectPrismaType } from '../../database/prisma/client.js';
 import { RoleEntity } from '../role/role.entity.js';
 import { UserEntity } from './user.entity.js';
 
@@ -95,55 +91,6 @@ export class UserRepository {
     });
 
     return UserEntity.Reconstruct<User, UserEntity>(user);
-  }
-
-  async updateWithRole(
-    prisma: ProjectPrismaClient,
-    userId: string,
-    projectId: string,
-    roleId: string,
-    params: {
-      password: string;
-      email: string;
-      name: string;
-    }
-  ): Promise<UserEntity> {
-    const user = await this.findUserById(prisma, projectId, userId);
-    user.update(params);
-
-    const updatedUser = await prisma.user.update({
-      where: {
-        id: userId,
-      },
-      data: {
-        password: user.password,
-        email: user.email,
-        name: user.name,
-        userProjects: {
-          update: {
-            where: {
-              userId_projectId: {
-                userId,
-                projectId,
-              },
-            },
-            data: {
-              roleId,
-            },
-          },
-        },
-      },
-    });
-
-    return UserEntity.Reconstruct<User, UserEntity>(updatedUser);
-  }
-
-  async delete(prisma: ProjectPrismaType, id: string): Promise<void> {
-    await prisma.user.delete({
-      where: {
-        id,
-      },
-    });
   }
 
   async checkUniqueEmail(prisma: PrismaType, id: string, email: string) {

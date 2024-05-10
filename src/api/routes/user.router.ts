@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
-import { UnprocessableEntityException } from '../../exceptions/unprocessableEntity.js';
 import { UserRepository } from '../data/user/user.repository.js';
+import { UserProjectRepository } from '../data/userProject/userProject.repository.js';
 import { prisma, projectPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';
@@ -94,17 +94,13 @@ router.patch(
     const validated = updateUserUseCaseSchema.safeParse({
       id: req.params.id,
       projectId: res.tenantProjectId,
-      name: req.body.name,
-      email: req.body.email,
-      password: req.body.password,
       roleId: req.body.roleId,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
     const userUseCase = new UpdateUserUseCase(
-      prisma,
       projectPrisma(validated.data.projectId),
-      new UserRepository()
+      new UserProjectRepository()
     );
     await userUseCase.execute(validated.data);
 
@@ -118,20 +114,15 @@ router.delete(
   asyncHandler(async (req: Request, res: Response) => {
     const validated = deleteUserUseCaseSchema.safeParse({
       userId: req.params.id,
-      ownUserId: res.user.id,
       projectId: res.tenantProjectId,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
-    if (validated.data.userId === validated.data.ownUserId) {
-      throw new UnprocessableEntityException('can_not_delete_itself');
-    }
-
     const useCase = new DeleteUserUseCase(
-      projectPrisma(validated.data.userId),
-      new UserRepository()
+      projectPrisma(validated.data.projectId),
+      new UserProjectRepository()
     );
-    await useCase.execute(validated.data.userId);
+    await useCase.execute(validated.data.projectId, validated.data.userId);
 
     res.status(204).end();
   })

@@ -209,7 +209,6 @@
     "incorrect_email_or_password": "Incorrect email address or password.",
     "can_not_delete_role_in_use": "Cannot delete roles in use.",
     "can_not_delete_last_admin_role": "Cannot delete the last admin role.",
-    "can_not_delete_itself": "Cannot delete itself.",
     "forbidden": "You don't have permission to access this.",
     "already_registered_email": "Already registered email.",
     "already_registered_name": "Already registered.",
@@ -227,7 +226,8 @@
     "invalid_token": "Invalid token.",
     "invalid_date_format": "Invalid date format.",
     "unsupported_media_type": "Unsupported media type.",
-    "bad_request": "Request is incorrect."
+    "bad_request": "Request is incorrect.",
+    "unable_delete_user": "Unable to delete user."
   },
   "yup": {
     "mixed": {
