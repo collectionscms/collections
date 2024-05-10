@@ -3,15 +3,10 @@ import { ProjectPrismaClient, ProjectPrismaType } from '../../database/prisma/cl
 import { UserProjectEntity } from './userProject.entity.js';
 
 export class UserProjectRepository {
-  async findMany(
-    prisma: ProjectPrismaType,
-    projectId: string,
-    roleId: string
-  ): Promise<UserProjectEntity[]> {
+  async findMany(prisma: ProjectPrismaType, projectId: string): Promise<UserProjectEntity[]> {
     const records = await prisma.userProject.findMany({
       where: {
         projectId,
-        roleId,
       },
     });
     return records.map((record) =>
