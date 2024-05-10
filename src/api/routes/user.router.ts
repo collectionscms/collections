@@ -5,16 +5,16 @@ import { UserProjectRepository } from '../data/userProject/userProject.repositor
 import { prisma, projectPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';
-import { createUserUseCaseSchema } from '../useCases/ user/createUser.schema.js';
-import { CreateUserUseCase } from '../useCases/ user/createUser.useCase.js';
-import { deleteUserUseCaseSchema } from '../useCases/ user/deleteUser.schema.js';
-import { DeleteUserUseCase } from '../useCases/ user/deleteUser.useCase.js';
-import { getUserProfileUseCaseSchema } from '../useCases/ user/getUserProfile.schema.js';
-import { GetUserProfileUseCase } from '../useCases/ user/getUserProfile.useCase.js';
-import { getUserProfilesUseCaseSchema } from '../useCases/ user/getUserProfiles.schema.js';
-import { GetUserProfilesUseCase } from '../useCases/ user/getUserProfiles.useCase.js';
-import { updateUserUseCaseSchema } from '../useCases/ user/updateUser.schema.js';
-import { UpdateUserUseCase } from '../useCases/ user/updateUser.useCase.js';
+import { createUserUseCaseSchema } from '../useCases/user/createUser.schema.js';
+import { CreateUserUseCase } from '../useCases/user/createUser.useCase.js';
+import { deleteUserUseCaseSchema } from '../useCases/user/deleteUser.schema.js';
+import { DeleteUserUseCase } from '../useCases/user/deleteUser.useCase.js';
+import { getUserProfileUseCaseSchema } from '../useCases/user/getUserProfile.schema.js';
+import { GetUserProfileUseCase } from '../useCases/user/getUserProfile.useCase.js';
+import { getUserProfilesUseCaseSchema } from '../useCases/user/getUserProfiles.schema.js';
+import { GetUserProfilesUseCase } from '../useCases/user/getUserProfiles.useCase.js';
+import { updateUserUseCaseSchema } from '../useCases/user/updateUser.schema.js';
+import { UpdateUserUseCase } from '../useCases/user/updateUser.useCase.js';
 
 const router = express.Router();
 
@@ -122,7 +122,7 @@ router.delete(
       projectPrisma(validated.data.projectId),
       new UserProjectRepository()
     );
-    await useCase.execute(validated.data.projectId, validated.data.userId);
+    await useCase.execute(validated.data.userId);
 
     res.status(204).end();
   })

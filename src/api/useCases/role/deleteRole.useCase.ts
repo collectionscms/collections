@@ -10,9 +10,9 @@ export class DeleteRoleUseCase {
     private readonly userProjectRepository: UserProjectRepository
   ) {}
 
-  async execute(projectId: string, roleId: string): Promise<void> {
-    const userProjects = await this.userProjectRepository.findMany(this.prisma, projectId);
-    if (userProjects.some((userProject) => userProject.roleId === roleId)) {
+  async execute(roleId: string): Promise<void> {
+    const userProjects = await this.userProjectRepository.findMany(this.prisma);
+    if (userProjects.some((userProject) => userProject.role.id === roleId)) {
       throw new UnprocessableEntityException('can_not_delete_role_in_use');
     }
 

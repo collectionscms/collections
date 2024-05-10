@@ -1,49 +1,43 @@
-import { UserProject } from '@prisma/client';
+import { Role, User, UserProject } from '@prisma/client';
 import { ProjectPrismaClient, ProjectPrismaType } from '../../database/prisma/client.js';
+import { RoleEntity } from '../role/role.entity.js';
+import { UserEntity } from '../user/user.entity.js';
 import { UserProjectEntity } from './userProject.entity.js';
 
 export class UserProjectRepository {
-  async findMany(prisma: ProjectPrismaType, projectId: string): Promise<UserProjectEntity[]> {
+  async findMany(
+    prisma: ProjectPrismaType
+  ): Promise<{ userProject: UserProjectEntity; user: UserEntity; role: RoleEntity }[]> {
     const records = await prisma.userProject.findMany({
-      where: {
-        projectId,
+      include: {
+        user: true,
+        role: true,
       },
     });
-    return records.map((record) =>
-      UserProjectEntity.Reconstruct<UserProject, UserProjectEntity>(record)
-    );
-  }
 
-  async findOne(
-    prisma: ProjectPrismaType,
-    projectId: string,
-    userId: string
-  ): Promise<UserProjectEntity> {
-    const record = await prisma.userProject.findUniqueOrThrow({
-      where: {
-        userId_projectId: {
-          userId,
-          projectId,
-        },
-      },
+    return records.map((record) => {
+      return {
+        userProject: UserProjectEntity.Reconstruct<UserProject, UserProjectEntity>(record),
+        user: UserEntity.Reconstruct<User, UserEntity>(record.user),
+        role: RoleEntity.Reconstruct<Role, RoleEntity>(record.role),
+      };
     });
-    return UserProjectEntity.Reconstruct<UserProject, UserProjectEntity>(record);
   }
 
   async updateRole(
     prisma: ProjectPrismaClient,
-    userId: string,
-    projectId: string,
     entity: UserProjectEntity
   ): Promise<UserProjectEntity> {
     const userProject = await prisma.userProject.update({
       where: {
         userId_projectId: {
-          userId,
-          projectId,
+          userId: entity.userId,
+          projectId: entity.projectId,
         },
       },
-      data: entity.toPersistence(),
+      data: {
+        roleId: entity.roleId,
+      },
     });
 
     return UserProjectEntity.Reconstruct<UserProject, UserProjectEntity>(userProject);
