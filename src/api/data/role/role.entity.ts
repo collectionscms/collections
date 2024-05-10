@@ -17,9 +17,18 @@ export class RoleEntity extends PrismaBaseEntity<Role> {
       projectId,
       name,
       description,
+      isAdmin: false,
       createdAt: new Date(),
       updatedAt: new Date(),
     });
+  }
+
+  get id(): string {
+    return this.props.id;
+  }
+
+  get isAdmin(): boolean {
+    return this.props.isAdmin;
   }
 
   update = (params: { name: string; description: string | null }) => {

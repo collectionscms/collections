@@ -57,21 +57,18 @@ export const createUsers = async (): Promise<void> => {
           projectId: usProject,
           userId: adminUser,
           roleId: usAdminRole,
-          isAdmin: true,
         },
         {
           id: v4(),
           projectId: usProject,
           userId: editorUser,
           roleId: usEditorRole,
-          isAdmin: false,
         },
         {
           id: v4(),
           projectId: usProject,
           userId: guestUser,
           roleId: usGuestRole,
-          isAdmin: false,
         },
         // JA Project
         {
@@ -79,21 +76,18 @@ export const createUsers = async (): Promise<void> => {
           projectId: jaProject,
           userId: adminUser,
           roleId: jaAdminRole,
-          isAdmin: true,
         },
         {
           id: v4(),
           projectId: jaProject,
           userId: editorUser,
           roleId: jaEditorRole,
-          isAdmin: false,
         },
         {
           id: v4(),
           projectId: jaProject,
           userId: guestUser,
           roleId: jaGuestRole,
-          isAdmin: false,
         },
       ],
     });
