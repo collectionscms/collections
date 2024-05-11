@@ -28,24 +28,24 @@ export class InviteUserUseCase {
 
     // Check if the user is already invited
     const invitationRoles = await this.invitationRepository.findManyByPendingStatus(this.prisma);
-    const hasInvitation = invitationRoles.some(
+    const invitationRole = invitationRoles.find(
       (invitationRole) => invitationRole.invitation.email === email
     );
 
-    if (hasInvitation) {
-      throw new RecordNotUniqueException('already_invited_email');
-    }
-
-    const entity = InvitationEntity.Construct({
-      email,
-      projectId,
-      roleId,
-      invitedById,
-    });
+    const entity =
+      invitationRole?.invitation ??
+      (await this.invitationRepository.create(
+        this.prisma,
+        InvitationEntity.Construct({
+          email,
+          projectId,
+          roleId,
+          invitedById,
+        })
+      ));
 
     await this.invitationMailService.sendInvitation(entity);
-    const result = await this.invitationRepository.create(this.prisma, entity);
 
-    return result.toResponse();
+    return entity.toResponse();
   }
 }
