@@ -6,25 +6,25 @@ declare module '@auth/express' {
       id: string;
       email: string;
       name: string;
-      isAdmin: boolean;
       projects: {
-        id: string;
-        subdomain: string;
-        description: string | null;
-        subdomain: string;
-        iconUrl: string | null;
-        enabled: boolean;
-      }[];
-      roles: [
-        {
+        [key: string]: {
           id: string;
-          permissions: [
-            {
-              id: string;
-            },
-          ];
-        },
-      ];
+          subdomain: string;
+          description: string | null;
+          iconUrl: string | null;
+          enabled: boolean;
+          role: {
+            id: string;
+            projectId: string;
+            name: string;
+            description: string;
+            isAdmin: boolean;
+            createdAt: Date;
+            updatedAt: Date;
+            permissions: [];
+          };
+        };
+      };
     };
   }
 }

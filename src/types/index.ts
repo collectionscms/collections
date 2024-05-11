@@ -8,13 +8,12 @@ export type UserProfile = {
   role: Role;
 };
 
+export type ProjectWithRole = Project & { role: Role & { permissions: Permission[] } };
 export type Me = {
   id: string;
   email: string;
   name: string;
-  isAdmin: boolean;
-  projects: Project[];
-  roles: (Role & { permissions: Permission[] })[];
+  projects: Record<string, ProjectWithRole>;
 };
 
 export type ApiError = {

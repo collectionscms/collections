@@ -1,7 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Navigate } from 'react-router-dom';
-import { Me } from '../../../../types/index.js';
 import { settingsGroupNavItems } from '../../../utilities/groupNavItems.js';
 import lazy from '../../../utilities/lazy.js';
 import { Loader } from '../../elements/Loader/index.js';
@@ -22,10 +21,10 @@ const EditUser = Loader(lazy(() => import('../../../pages/User/Edit/index.js'), 
 const NotFound = Loader(lazy(() => import('../../../pages/NotFound/index.js'), 'NotFound'));
 const group = settingsGroupNavItems();
 
-export const SettingRoutes = (me: Me | null | undefined) => {
+export const SettingRoutes = (isAdmin: boolean) => {
   const { t } = useTranslation();
 
-  if (!me?.isAdmin) {
+  if (!isAdmin) {
     return {
       path: '/admin/settings',
       children: [

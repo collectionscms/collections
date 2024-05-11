@@ -3,7 +3,7 @@ import CredentialsProvider from '@auth/express/providers/credentials';
 import { env } from '../../env.js';
 import { logger } from '../../utilities/logger.js';
 import { MeRepository } from '../data/user/me.repository.js';
-import { bypassPrisma, prisma } from '../database/prisma/client.js';
+import { bypassPrisma } from '../database/prisma/client.js';
 import { LoginUseCase } from '../useCases/me/login.useCase.js';
 
 const useSecureCookies = env.PUBLIC_SERVER_URL.startsWith('https://');
@@ -40,8 +40,8 @@ export const authConfig: Omit<AuthConfig, 'raw'> = {
 
         try {
           const useCase = new LoginUseCase(bypassPrisma, new MeRepository());
-          const result = await useCase.execute(email as string, password as string);
-          return result.me;
+          const me = await useCase.execute(email as string, password as string);
+          return me;
         } catch (e) {
           logger.error(e);
         }

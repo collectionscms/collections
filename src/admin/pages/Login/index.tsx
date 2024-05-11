@@ -49,12 +49,7 @@ export const Login: React.FC = () => {
 
   useEffect(() => {
     if (!me) return;
-
-    if (me.projects.length === 1) {
-      window.location.href = getUrlForTenant(me.projects[0].subdomain, '/admin/posts');
-    } else {
-      navigate('/admin');
-    }
+    navigate('/admin');
   }, [me]);
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {

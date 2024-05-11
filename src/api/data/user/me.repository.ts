@@ -1,11 +1,13 @@
-import { Project, User } from '@prisma/client';
+import { Permission, Project, Role, User } from '@prisma/client';
 import crypto from 'crypto';
 import dayjs from 'dayjs';
 import { InvalidCredentialsException } from '../../../exceptions/invalidCredentials.js';
 import { BypassPrismaType, PrismaType } from '../../database/prisma/client.js';
 import { comparePasswords } from '../../utilities/comparePasswords.js';
 import { oneWayHash } from '../../utilities/oneWayHash.js';
+import { PermissionEntity } from '../permission/permission.entity.js';
 import { ProjectEntity } from '../project/project.entity.js';
+import { RoleEntity } from '../role/role.entity.js';
 import { UserEntity } from './user.entity.js';
 
 export class MeRepository {
@@ -13,7 +15,14 @@ export class MeRepository {
     prisma: BypassPrismaType,
     email: string,
     password: string
-  ): Promise<{ user: UserEntity; projects: ProjectEntity[] }> {
+  ): Promise<{
+    user: UserEntity;
+    projectRoles: {
+      project: ProjectEntity;
+      role: RoleEntity;
+      permissions: PermissionEntity[];
+    }[];
+  }> {
     const user = await prisma.user.findFirst({
       where: {
         email: {
@@ -24,6 +33,11 @@ export class MeRepository {
         userProjects: {
           include: {
             project: true,
+            role: {
+              include: {
+                permissions: true,
+              },
+            },
           },
         },
       },
@@ -35,9 +49,15 @@ export class MeRepository {
 
     return {
       user: UserEntity.Reconstruct<User, UserEntity>(user),
-      projects: user.userProjects.map((userProject) =>
-        ProjectEntity.Reconstruct<Project, ProjectEntity>(userProject.project)
-      ),
+      projectRoles: user.userProjects.map((userProject) => {
+        return {
+          project: ProjectEntity.Reconstruct<Project, ProjectEntity>(userProject.project),
+          role: RoleEntity.Reconstruct<Role, RoleEntity>(userProject.role),
+          permissions: userProject.role.permissions.map((permission) =>
+            PermissionEntity.Reconstruct<Permission, PermissionEntity>(permission)
+          ),
+        };
+      }),
     };
   }
 

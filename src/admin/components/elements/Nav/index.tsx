@@ -18,13 +18,14 @@ type Props = {
 };
 
 export const Nav: React.FC<Props> = ({ window, open, variable, toggleDrawer }) => {
-  const { me } = useAuth();
+  const { tenantRole } = useAuth();
   const theme = useTheme();
   const lgUp = useMediaQuery(theme.breakpoints.up('lg'));
   const navWidth = variable === 'portal' ? 60 : 300;
 
-  // nav content groups
-  const tenantGroups = me?.isAdmin ? [postNavItems(), settingsGroupNavItems()] : [postNavItems()];
+  const tenantGroups = tenantRole?.isAdmin
+    ? [postNavItems(), settingsGroupNavItems()]
+    : [postNavItems()];
   const profileGroups = [profileNavItems()];
 
   const container = window !== undefined ? () => window().document.body : undefined;
