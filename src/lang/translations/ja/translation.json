@@ -134,6 +134,7 @@
   "add_localized_content": "ローカライズコンテンツの追加",
   "add_to": "追加する",
   "add_thumbnail": "サムネイル画像を追加",
+  "invite": "招待",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",
@@ -152,7 +153,8 @@
     "deleted_successfully": "削除しました",
     "imported_successfully": "インポートしました",
     "archived_successfully": "非公開にしました",
-    "published_successfully": "公開にしました"
+    "published_successfully": "公開にしました",
+    "invited_successfully": "招待しました"
   },
   "create": {
     "user": "ユーザー 新規登録",
@@ -175,34 +177,6 @@
     "quote": "引用",
     "bold": "強調",
     "draft_save": "下書き保存"
-  },
-  "field_interface": {
-    "input_one_line": "テキストフィールド",
-    "input_one_line_caption": "テキスト型のフィールドです。1行の値を入力します。",
-    "input_multi_line": "テキストエリア",
-    "input_multi_line_caption": "テキスト型のフィールドです。複数行の値を入力します。",
-    "date_time": "日時",
-    "date_time_caption": "Date型のフィールドです。カレンダーから日時を選択します。",
-    "boolean": "真偽値",
-    "boolean_caption": "Boolean型のフィールドです。チェックボックスでオン/オフを切り替えます。",
-    "input_rich_text_html": "リッチエディタ",
-    "input_rich_text_html_caption": "テキスト型のフィールドです。リッチエディタを使って値を入力します。",
-    "input_rich_text_md": "マークダウン",
-    "input_rich_text_md_caption": "テキスト型のフィールドです。マークダウンエディタを使って値を入力します。",
-    "file": "ファイル",
-    "file_caption": "ファイル型のフィールドです。ファイルをアップロードします。",
-    "file_image": "画像",
-    "file_image_caption": "ファイル型のフィールドです。画像をアップロードします。",
-    "list": "リピーター",
-    "list_caption": "選択型のフィールドです。アイテムを選択して繰り返し入力します。",
-    "list_o2o": "コンテンツ参照",
-    "list_o2o_caption": "参照型のフィールドです。他コンテンツと「1対1」で参照します。",
-    "list_o2m": "複数コンテンツ参照",
-    "list_o2m_caption": "参照型のフィールドです。他コンテンツと「1対N」で参照します。",
-    "select_dropdown": "セレクトドロップダウン",
-    "select_dropdown_caption": "選択型のフィールドです。選択肢も自由に作成できます。",
-    "select_dropdown_m2o": "複数コンテンツ被参照",
-    "select_dropdown_m2o_caption": "参照型のフィールドです。他コンテンツから「N対1」で参照されます。"
   },
   "error": {
     "invalid_user_credentials": "無効なユーザ認証情報です。",
@@ -227,7 +201,8 @@
     "invalid_date_format": "無効な日付フォーマットです",
     "unsupported_media_type": "サポートされていないメディア形式です。",
     "bad_request": "リクエストの内容が正しくありません。",
-    "unable_delete_user": "削除できないユーザーです"
+    "unable_delete_user": "削除できないユーザーです",
+    "already_invited_email": "すでに招待済みです。"
   },
   "yup": {
     "mixed": {
