@@ -24,6 +24,7 @@ model Project {
   contents     Content[]
   postHistory  PostHistory[]
   apiKeys      ApiKey[]
+  invitations  Invitation[]
 }
 
 model User {
@@ -39,6 +40,7 @@ model User {
   updatedAt               DateTime      @updatedAt @db.Timestamptz(6)
   userProjects            UserProject[]
   post                    Post[]
+  invitations             Invitation[]
 }
 
 model UserProject {
@@ -55,6 +57,22 @@ model UserProject {
   @@unique([userId, projectId])
 }
 
+model Invitation {
+  id          String   @id @db.Uuid
+  email       String
+  projectId   String   @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
+  roleId      String   @db.Uuid
+  invitedById String   @db.Uuid
+  token       String   @db.VarChar(255)
+  status      String   @db.VarChar(255)
+  createdAt   DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt   DateTime @updatedAt @db.Timestamptz(6)
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  role    Role    @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [invitedById], references: [id])
+}
+
 model Role {
   id           String        @id @db.Uuid
   projectId    String        @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
@@ -66,6 +84,7 @@ model Role {
   permissions  Permission[]
   project      Project       @relation(fields: [projectId], references: [id], onDelete: Cascade)
   userProjects UserProject[]
+  invitations  Invitation[]
 }
 
 model Permission {
