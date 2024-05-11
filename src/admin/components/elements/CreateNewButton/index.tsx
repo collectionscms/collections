@@ -5,10 +5,13 @@ import { useTranslation } from 'react-i18next';
 
 type Props = {
   disabled?: boolean | undefined;
+  options?: {
+    subject?: string;
+  };
   onClick: () => void;
 };
 
-export const CreateNewButton: React.FC<Props> = ({ disabled, onClick }) => {
+export const CreateNewButton: React.FC<Props> = ({ disabled, options, onClick }) => {
   const { t } = useTranslation();
 
   return (
@@ -19,7 +22,7 @@ export const CreateNewButton: React.FC<Props> = ({ disabled, onClick }) => {
       startIcon={<PlusOutlined style={{ fontSize: '10px' }} />}
       onClick={onClick}
     >
-      {t('create_new')}
+      {options?.subject || t('create_new')}
     </Button>
   );
 };

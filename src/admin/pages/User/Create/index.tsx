@@ -1,17 +1,12 @@
-import { SyncOutlined } from '@ant-design/icons';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Button,
-  Checkbox,
-  FormControlLabel,
   FormHelperText,
-  InputAdornment,
   InputLabel,
   MenuItem,
   Select,
   Stack,
   TextField,
-  Tooltip,
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { useSnackbar } from 'notistack';
@@ -19,15 +14,13 @@ import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { v4 as uuidv4 } from 'uuid';
 import { logger } from '../../../../utilities/logger.js';
-import { IconButton } from '../../../@extended/components/IconButton/index.js';
 import { MainCard } from '../../../@extended/components/MainCard/index.js';
 import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscardDialog/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
 import {
   FormValues,
-  createUser as createUserSchema,
+  inviteUser as createUserSchema,
 } from '../../../fields/schemas/users/createUser.js';
 import { useUnsavedChangesPrompt } from '../../../hooks/useUnsavedChangesPrompt.js';
 import { UserContextProvider, useUser } from '../Context/index.js';
@@ -36,8 +29,8 @@ const CreateUserPageImpl: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
-  const { createUser, getRoles } = useUser();
-  const { trigger, isMutating } = createUser();
+  const { inviteUser, getRoles } = useUser();
+  const { trigger, isMutating } = inviteUser();
   const { data: roles } = getRoles();
   const {
     reset,
@@ -46,10 +39,7 @@ const CreateUserPageImpl: React.FC = () => {
     formState: { isDirty, errors },
   } = useForm<FormValues>({
     defaultValues: {
-      name: '',
       email: '',
-      password: '',
-      isActive: true,
       roleId: roles ? roles[0]?.id.toString() : '',
     },
     resolver: yupResolver(createUserSchema(t)),
@@ -64,7 +54,7 @@ const CreateUserPageImpl: React.FC = () => {
     try {
       reset(form);
       await trigger(form);
-      enqueueSnackbar(t('toast.created_successfully'), { variant: 'success' });
+      enqueueSnackbar(t('toast.invited_successfully'), { variant: 'success' });
       navigate('../users');
     } catch (e) {
       logger.error(e);
@@ -81,24 +71,6 @@ const CreateUserPageImpl: React.FC = () => {
               <Grid container spacing={3}>
                 <Grid xs={12} sm={6}>
                   <Stack spacing={1}>
-                    <InputLabel required>{t('name')}</InputLabel>
-                    <Controller
-                      name="name"
-                      control={control}
-                      render={({ field }) => (
-                        <TextField
-                          {...field}
-                          type="text"
-                          fullWidth
-                          error={errors.name !== undefined}
-                        />
-                      )}
-                    />
-                    <FormHelperText error>{errors.name?.message}</FormHelperText>
-                  </Stack>
-                </Grid>
-                <Grid xs={12} sm={6}>
-                  <Stack spacing={1}>
                     <InputLabel required>{t('email')}</InputLabel>
                     <Controller
                       name="email"
@@ -113,24 +85,6 @@ const CreateUserPageImpl: React.FC = () => {
                       )}
                     />
                     <FormHelperText error>{errors.email?.message}</FormHelperText>
-                  </Stack>
-                </Grid>
-                <Grid xs={12} sm={6}>
-                  <Stack spacing={1}>
-                    <InputLabel required>{t('password')}</InputLabel>
-                    <Controller
-                      name="password"
-                      control={control}
-                      render={({ field }) => (
-                        <TextField
-                          {...field}
-                          type="password"
-                          fullWidth
-                          error={errors.password !== undefined}
-                        />
-                      )}
-                    />
-                    <FormHelperText error>{errors.password?.message}</FormHelperText>
                   </Stack>
                 </Grid>
                 <Grid xs={12} sm={6}>
@@ -152,30 +106,13 @@ const CreateUserPageImpl: React.FC = () => {
                     />
                   </Stack>
                 </Grid>
-                <Grid xs={12} sm={6}>
-                  <Stack spacing={1}>
-                    <InputLabel>{t('status')}</InputLabel>
-                    <Controller
-                      name="isActive"
-                      control={control}
-                      render={({ field }) => (
-                        <FormControlLabel
-                          {...field}
-                          label={t('is_active')}
-                          control={<Checkbox checked={field.value} />}
-                        />
-                      )}
-                    />
-                    <FormHelperText error>{errors.isActive?.message}</FormHelperText>
-                  </Stack>
-                </Grid>
                 <Grid xs={12}>
                   <Stack direction="row" justifyContent="flex-end" spacing={1}>
                     <Button variant="outlined" color="secondary" onClick={navigateToList}>
                       {t('cancel')}
                     </Button>
                     <Button variant="contained" type="submit" disabled={isMutating}>
-                      {t('save')}
+                      {t('invite')}
                     </Button>
                   </Stack>
                 </Grid>

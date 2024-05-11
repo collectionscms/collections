@@ -1,7 +1,9 @@
 import { Role, User } from '@prisma/client';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { MainCard } from '../../@extended/components/MainCard/index.js';
+import { CreateNewButton } from '../../components/elements/CreateNewButton/index.js';
 import { Link } from '../../components/elements/Link/index.js';
 import { Cell } from '../../components/elements/Table/Cell/index.js';
 import { cells } from '../../components/elements/Table/Cell/types.js';
@@ -12,6 +14,7 @@ import { UserContextProvider, useUser } from './Context/index.js';
 
 const UserPageImpl: React.FC = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const { getUsers } = useUser();
   const { data } = getUsers();
 
@@ -35,7 +38,18 @@ const UserPageImpl: React.FC = () => {
   });
 
   return (
-    <MainCard content={false} title={<></>} secondary={<></>}>
+    <MainCard
+      content={false}
+      title={<></>}
+      secondary={
+        <CreateNewButton
+          options={{
+            subject: t('add'),
+          }}
+          onClick={() => navigate('create')}
+        />
+      }
+    >
       <Table columns={columns} rows={data} />
     </MainCard>
   );
