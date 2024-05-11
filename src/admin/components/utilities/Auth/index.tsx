@@ -5,9 +5,11 @@ import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
 import { Me } from '../../../../types/index.js';
 import { logger } from '../../../../utilities/logger.js';
 import { api, setAcceptLanguage } from '../../../utilities/api.js';
+import { Role, Permission } from '@prisma/client';
 
 type AuthContext = {
   me: Me | null | undefined;
+  tenantRole: (Role & { permissions: Permission[] }) | null | undefined;
   getCsrfToken: () => SWRResponse<string, Error>;
   login: () => SWRMutationResponse<void, Error, string, Record<string, any>>;
   logout: () => SWRMutationResponse<void, Error, string, Record<string, any>>;
@@ -17,6 +19,8 @@ const Context = createContext({} as AuthContext);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { i18n } = useTranslation();
+  const hostParts = window.location.host.split('.');
+  const subdomain = hostParts.length > 2 ? hostParts.slice(0, -2).join('.') : null;
 
   if (i18n.language) {
     setAcceptLanguage(i18n.language);
@@ -60,6 +64,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const value = useMemo(
     () => ({
       me,
+      tenantRole: subdomain ? me?.projects[subdomain]?.role : null,
       getCsrfToken,
       login,
       logout,

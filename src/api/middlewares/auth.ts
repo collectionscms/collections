@@ -10,7 +10,7 @@ export const authenticatedUser = async (req: Request, res: Response, next: NextF
 
   const subdomain = req.subdomains[0];
   if (subdomain) {
-    const project = user.projects.find((project) => project.subdomain === subdomain);
+    const project = user.projects[subdomain];
     if (!project) {
       return next(new RecordNotFoundException('record_not_found'));
     }
