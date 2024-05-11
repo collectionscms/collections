@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
+import { InvitationRepository } from '../data/invitation/invitation.repository.js';
 import { UserRepository } from '../data/user/user.repository.js';
 import { UserProjectRepository } from '../data/userProject/userProject.repository.js';
 import { projectPrisma } from '../database/prisma/client.js';
@@ -27,7 +28,8 @@ router.get(
 
     const useCase = new GetUserProfilesUseCase(
       projectPrisma(validated.data.projectId),
-      new UserRepository()
+      new UserRepository(),
+      new InvitationRepository()
     );
     const users = await useCase.execute();
 

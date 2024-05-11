@@ -27,8 +27,10 @@ export class InviteUserUseCase {
     }
 
     // Check if the user is already invited
-    const invitations = await this.invitationRepository.findManyByPendingStatus(this.prisma);
-    const hasInvitation = invitations.some((invitation) => invitation.email === email);
+    const invitationRoles = await this.invitationRepository.findManyByPendingStatus(this.prisma);
+    const hasInvitation = invitationRoles.some(
+      (invitationRole) => invitationRole.invitation.email === email
+    );
 
     if (hasInvitation) {
       throw new RecordNotUniqueException('already_invited_email');

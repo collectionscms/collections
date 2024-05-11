@@ -34,6 +34,10 @@ export class InvitationEntity extends PrismaBaseEntity<Invitation> {
     });
   }
 
+  get id(): string {
+    return this.props.id;
+  }
+
   get email(): string {
     return this.props.email;
   }

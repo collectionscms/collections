@@ -1,7 +1,8 @@
-import { Role, User } from '@prisma/client';
+import { Chip } from '@mui/material';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { UserProfile } from '../../../types/index.js';
 import { MainCard } from '../../@extended/components/MainCard/index.js';
 import { CreateNewButton } from '../../components/elements/CreateNewButton/index.js';
 import { Link } from '../../components/elements/Link/index.js';
@@ -24,14 +25,21 @@ const UserPageImpl: React.FC = () => {
     { field: 'role', label: t('role'), type: cells.text() },
   ];
 
-  const columns = buildColumns(fields, (i: number, row: User & { role: Role }, data: any) => {
+  const columns = buildColumns(fields, (i: number, row: UserProfile, data: any) => {
     const defaultCell = <Cell colIndex={i} type={fields[i].type} cellData={data} />;
 
     switch (fields[i].field) {
       case 'role':
         return <Cell colIndex={i} type={fields[i].type} cellData={row.role.name} />;
       case 'name':
-        return <Link href={`${row.id}`}>{defaultCell}</Link>;
+        return row.isRegistered ? (
+          <Link href={`${row.id}`}>{defaultCell}</Link>
+        ) : (
+          <>
+            {defaultCell}
+            <Chip label={t('invited')} color="warning" size="small" sx={{ marginLeft: 1 }} />
+          </>
+        );
       default:
         return defaultCell;
     }
