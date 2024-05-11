@@ -7,8 +7,8 @@ import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';
 import { InvitationMailService } from '../services/invitationMail.service.js';
 import { MailService } from '../services/mail.service.js';
-import { inviteUserUseCaseSchema } from '../useCases/user/inviteUser.schema.js';
-import { InviteUserUseCase } from '../useCases/user/inviteUser.useCase.js';
+import { inviteUserUseCaseSchema } from '../useCases/invitation/inviteUser.schema.js';
+import { InviteUserUseCase } from '../useCases/invitation/inviteUser.useCase.js';
 
 const router = express.Router();
 
