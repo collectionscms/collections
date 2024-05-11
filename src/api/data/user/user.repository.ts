@@ -63,36 +63,6 @@ export class UserRepository {
     });
   }
 
-  async create(
-    prisma: ProjectPrismaType,
-    entity: UserEntity,
-    projectId: string,
-    roleId: string
-  ): Promise<UserEntity> {
-    const user = await prisma.user.create({
-      data: {
-        ...entity.toPersistence(),
-        userProjects: {
-          create: {
-            id: v4(),
-            role: {
-              connect: {
-                id: roleId,
-              },
-            },
-            project: {
-              connect: {
-                id: projectId,
-              },
-            },
-          },
-        },
-      },
-    });
-
-    return UserEntity.Reconstruct<User, UserEntity>(user);
-  }
-
   async checkUniqueEmail(prisma: PrismaType, id: string, email: string) {
     const user = await prisma.user.findFirst({
       where: {

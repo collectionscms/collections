@@ -2,11 +2,9 @@ import express, { Request, Response } from 'express';
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
 import { UserRepository } from '../data/user/user.repository.js';
 import { UserProjectRepository } from '../data/userProject/userProject.repository.js';
-import { prisma, projectPrisma } from '../database/prisma/client.js';
+import { projectPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';
-import { createUserUseCaseSchema } from '../useCases/user/createUser.schema.js';
-import { CreateUserUseCase } from '../useCases/user/createUser.useCase.js';
 import { deleteUserUseCaseSchema } from '../useCases/user/deleteUser.schema.js';
 import { DeleteUserUseCase } from '../useCases/user/deleteUser.useCase.js';
 import { getUserProfileUseCaseSchema } from '../useCases/user/getUserProfile.schema.js';
@@ -54,32 +52,6 @@ router.get(
       new UserRepository()
     );
     const user = await useCase.execute(validated.data.userId);
-
-    res.json({
-      user,
-    });
-  })
-);
-
-router.post(
-  '/users',
-  authenticatedUser,
-  asyncHandler(async (req: Request, res: Response) => {
-    const validated = createUserUseCaseSchema.safeParse({
-      projectId: res.tenantProjectId,
-      name: req.body.name,
-      email: req.body.email,
-      password: req.body.password,
-      roleId: req.body.roleId,
-    });
-    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
-
-    const useCase = new CreateUserUseCase(
-      prisma,
-      projectPrisma(validated.data.projectId),
-      new UserRepository()
-    );
-    const user = await useCase.execute(validated.data);
 
     res.json({
       user,
