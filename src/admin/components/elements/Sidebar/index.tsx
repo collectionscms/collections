@@ -1,4 +1,4 @@
-import { Box, Stack, useTheme } from '@mui/material';
+import { Box, Stack, Tooltip, useTheme } from '@mui/material';
 import Avatar from 'boring-avatars';
 import React, { useMemo } from 'react';
 import { getUrlForTenant } from '../../../utilities/urlGenerator.js';
@@ -27,13 +27,15 @@ export const Sidebar: React.FC = () => {
                 }}
                 key={project.id}
               >
-                <Box sx={{ opacity: tenantRole?.projectId === project.id ? '1' : '0.5' }}>
-                  {project.iconUrl ? (
-                    <img src={project.iconUrl} alt={project.name} />
-                  ) : (
-                    <Avatar size={32} name={project.name} variant="marble" />
-                  )}
-                </Box>
+                <Tooltip title={project.name} placement="left-start">
+                  <Box sx={{ opacity: tenantRole?.projectId === project.id ? '1' : '0.5' }}>
+                    {project.iconUrl ? (
+                      <img src={project.iconUrl} alt={project.name} />
+                    ) : (
+                      <Avatar size={32} name={project.name} variant="marble" />
+                    )}
+                  </Box>
+                </Tooltip>
               </Link>
             ))}
           </Stack>
