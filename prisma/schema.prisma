@@ -46,7 +46,6 @@ model UserProject {
   userId    String   @db.Uuid
   projectId String   @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
   roleId    String   @db.Uuid
-  isAdmin   Boolean  @default(false)
   createdAt DateTime @default(now()) @db.Timestamptz(6)
   updatedAt DateTime @updatedAt @db.Timestamptz(6)
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -61,6 +60,7 @@ model Role {
   projectId    String        @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
   name         String        @db.VarChar(255)
   description  String?       @db.VarChar(255)
+  isAdmin      Boolean       @default(false)
   createdAt    DateTime      @default(now()) @db.Timestamptz(6)
   updatedAt    DateTime      @updatedAt @db.Timestamptz(6)
   permissions  Permission[]

@@ -208,7 +208,7 @@
     "invalid_user_credentials": "Invalid user credentials.",
     "incorrect_email_or_password": "Incorrect email address or password.",
     "can_not_delete_role_in_use": "Cannot delete roles in use.",
-    "can_not_delete_last_admin_role": "Cannot delete the last admin role.",
+    "can_not_delete_last_admin_role": "At least one administrator is required.",
     "forbidden": "You don't have permission to access this.",
     "already_registered_email": "Already registered email.",
     "already_registered_name": "Already registered.",

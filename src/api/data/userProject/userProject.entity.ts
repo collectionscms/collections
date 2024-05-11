@@ -2,8 +2,12 @@ import { UserProject } from '@prisma/client';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 
 export class UserProjectEntity extends PrismaBaseEntity<UserProject> {
-  get isAdmin(): boolean {
-    return this.props.isAdmin;
+  get userId(): string {
+    return this.props.userId;
+  }
+
+  get projectId(): string {
+    return this.props.projectId;
   }
 
   get roleId(): string {

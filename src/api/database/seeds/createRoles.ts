@@ -18,6 +18,7 @@ export const createRoles = async (): Promise<void> => {
         projectId: usProject,
         name: 'Administrator',
         description: 'Administrator',
+        isAdmin: true,
       },
       {
         id: usEditorRole,
@@ -37,6 +38,7 @@ export const createRoles = async (): Promise<void> => {
         projectId: jaProject,
         name: 'Administrator',
         description: 'Administrator',
+        isAdmin: true,
       },
       {
         id: jaEditorRole,

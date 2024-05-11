@@ -118,7 +118,7 @@ router.delete(
       new RoleRepository(),
       new UserProjectRepository()
     );
-    await useCase.execute(validate.data.projectId, validate.data.roleId);
+    await useCase.execute(validate.data.roleId);
 
     res.status(204).end();
   })
