@@ -12,25 +12,27 @@ const ResetPassword = Loader(
   lazy(() => import('../../../pages/ResetPassword/index.js'), 'ResetPassword')
 );
 
-export const AuthRoutes = {
-  path: '/admin/auth',
-  element: <MinimalLayout />,
-  children: [
-    {
-      path: 'login',
-      element: <Login />,
-    },
-    {
-      path: 'forgot',
-      element: <ForgotPassword />,
-    },
-    {
-      path: 'logout',
-      element: <Logout />,
-    },
-    {
-      path: 'reset-password/:token',
-      element: <ResetPassword />,
-    },
-  ],
+export const AuthRoutes = () => {
+  return {
+    path: '/admin/auth',
+    element: <MinimalLayout />,
+    children: [
+      {
+        path: 'login',
+        element: <Login />,
+      },
+      {
+        path: 'forgot',
+        element: <ForgotPassword />,
+      },
+      {
+        path: 'logout',
+        element: <Logout />,
+      },
+      {
+        path: 'reset-password/:token',
+        element: <ResetPassword />,
+      },
+    ],
+  };
 };

@@ -5,6 +5,7 @@ import { Loading } from '../elements/Loading/index.js';
 import { useAuth } from '../utilities/Auth/index.js';
 import { AuthRoutes } from './Auth/index.js';
 import { MeRoutes } from './Me/index.js';
+import { NavigateLoginRoutes } from './NavigateLogin/index.js';
 import { NoRoutes } from './NoRoutes/index.js';
 import { PortalRootRoutes } from './PortalRoot/index.js';
 import { PostRoutes } from './Post/index.js';
@@ -17,9 +18,11 @@ export const Routes: React.FC = () => {
   const portalRouter = createBrowserRouter([
     PortalRootRoutes(),
     MeRoutes(),
-    AuthRoutes,
+    AuthRoutes(),
     NoRoutes(),
   ]);
+  const portalGuestRouter = createBrowserRouter([AuthRoutes(), NavigateLoginRoutes()]);
+
   const tenantRouter = createBrowserRouter([
     TenantRootRoutes(),
     PostRoutes(),
@@ -29,17 +32,16 @@ export const Routes: React.FC = () => {
 
   if (me === undefined) return <Loading />;
 
-  const loginUrl = getLoginUrl();
-  if (me === null && window.location.href !== loginUrl) {
-    window.location.href = loginUrl;
-    return;
-  }
-
   const hostParts = window.location.host.split('.');
   const subdomain = hostParts.length > 2 ? hostParts.slice(0, -2).join('.') : null;
   if (subdomain) {
+    if (me === null) {
+      window.location.href = getLoginUrl();
+      return;
+    }
+
     return <RouterProvider router={tenantRouter} />;
   } else {
-    return <RouterProvider router={portalRouter} />;
+    return <RouterProvider router={me ? portalRouter : portalGuestRouter} />;
   }
 };
