@@ -157,7 +157,8 @@
     "imported_successfully": "インポートしました",
     "archived_successfully": "非公開にしました",
     "published_successfully": "公開にしました",
-    "invited_successfully": "招待しました"
+    "invited_successfully": "招待しました",
+    "joined_project": "プロジェクトに参加しました"
   },
   "create": {
     "user": "ユーザー 新規登録",

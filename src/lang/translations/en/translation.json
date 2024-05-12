@@ -157,7 +157,8 @@
     "imported_successfully": "Imported successfully.",
     "archived_successfully": "Archived successfully.",
     "published_successfully": "Published successfully.",
-    "invited_successfully": "Invited successfully"
+    "invited_successfully": "Invited successfully",
+    "joined_project": "Joined the project"
   },
   "create": {
     "user": "Create User",

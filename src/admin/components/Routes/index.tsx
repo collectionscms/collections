@@ -5,6 +5,7 @@ import { Loading } from '../elements/Loading/index.js';
 import { useAuth } from '../utilities/Auth/index.js';
 import { AuthRoutes } from './Auth/index.js';
 import { GuestRoutes } from './Guest/index.js';
+import { InvitationRoutes } from './Invitation/index.js';
 import { MeRoutes } from './Me/index.js';
 import { NavigateLoginRoutes } from './NavigateLogin/index.js';
 import { NoRoutes } from './NoRoutes/index.js';
@@ -12,7 +13,6 @@ import { PortalRootRoutes } from './PortalRoot/index.js';
 import { PostRoutes } from './Post/index.js';
 import { SettingRoutes } from './Setting/index.js';
 import { TenantRootRoutes } from './TenantRoot/index.js';
-import { VerifyInvitationRoutes } from './VerifyInvitation/index.js';
 
 export const Routes: React.FC = () => {
   const { me, tenantRole } = useAuth();
@@ -21,7 +21,7 @@ export const Routes: React.FC = () => {
     PortalRootRoutes(),
     MeRoutes(),
     AuthRoutes(),
-    VerifyInvitationRoutes(),
+    InvitationRoutes(),
     NoRoutes(),
   ]);
   const portalGuestRouter = createBrowserRouter([

@@ -11,7 +11,7 @@ export const GuestRoutes = () => {
     element: <MinimalLayout />,
     children: [
       {
-        path: 'verify-invitation',
+        path: 'invitations/accept',
         element: <SignUp />,
       },
     ],
