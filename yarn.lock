@@ -2560,10 +2560,10 @@
   resolved "https://registry.yarnpkg.com/@tiptap/extension-underline/-/extension-underline-2.3.1.tgz#90a594cc69644464f1070b4bd36ed4bed4ce3c38"
   integrity sha512-xgLGr7bM5OAKagUKdL5dWxJHgwEp2fk3D5XCVUBwqgeOZtOFteoqPzb/2617w7qrP+9oM9zRjw6z27hM8YxyvQ==
 
-"@tiptap/html@2.3.1":
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/@tiptap/html/-/html-2.3.1.tgz#ee0f807ffa695c03ea195e84f329d73d332e9c7a"
-  integrity sha512-1UtlJJv7RGRXbHBHefjSqoJwWZxobLNHrfw0FKyVO9r6Y4tgYFcwe/Oghktea1Na7U6gn2/1csE0Xqvt+VSIDg==
+"@tiptap/html@2.3.2":
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/@tiptap/html/-/html-2.3.2.tgz#4fe5a921563330b242bf3f6c786bdcbde3c7f905"
+  integrity sha512-2pkdqFI4KqHb6/UJanSX5sXD72RlKWb6xjAP+TXwnbuy61M4koZFkQ+zTdVlyyur5Ar7DC9JSNskLWDlqkDmRA==
   dependencies:
     zeed-dom "^0.10.9"
 
