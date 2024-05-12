@@ -24,6 +24,7 @@
   "forgot": "パスワードをお忘れの方",
   "api_preview": "APIプレビュー",
   "fetch": "取得",
+  "register": "登録",
   "create_new": "新規登録",
   "save": "保存",
   "delete": "削除",
@@ -136,6 +137,7 @@
   "add_thumbnail": "サムネイル画像を追加",
   "invite": "招待",
   "invited": "招待中",
+  "create_account": "アカウント登録",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",
@@ -203,7 +205,8 @@
     "unsupported_media_type": "サポートされていないメディア形式です。",
     "bad_request": "リクエストの内容が正しくありません。",
     "unable_delete_user": "削除できないユーザーです",
-    "already_invited_email": "すでに招待済みです。"
+    "already_invited_email": "すでに招待済みです。",
+    "unauthorized_user": "不正なユーザーです"
   },
   "yup": {
     "mixed": {

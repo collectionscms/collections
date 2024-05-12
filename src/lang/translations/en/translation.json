@@ -24,6 +24,7 @@
   "forgot": "Forgot password",
   "api_preview": "API Preview",
   "fetch": "Fetch",
+  "register": "Register",
   "create_new": "Create New",
   "save": "Save",
   "delete": "Delete",
@@ -136,6 +137,7 @@
   "add_thumbnail": "Add thumbnail image",
   "invite": "Invite",
   "invited": "Invited",
+  "create_account": "Create an account",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",
@@ -203,7 +205,8 @@
     "unsupported_media_type": "Unsupported media type.",
     "bad_request": "Request is incorrect.",
     "unable_delete_user": "Unable to delete user.",
-    "already_invited_email": "Already invited."
+    "already_invited_email": "Already invited.",
+    "unauthorized_user": "Unauthorized User."
   },
   "yup": {
     "mixed": {
