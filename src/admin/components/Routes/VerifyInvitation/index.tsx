@@ -3,18 +3,18 @@ import lazy from '../../../utilities/lazy.js';
 import { Loader } from '../../elements/Loader/index.js';
 
 const MinimalLayout = Loader(lazy(() => import('../../layouts/Minimal/index.js'), 'MinimalLayout'));
-const GuestInvitation = Loader(
-  lazy(() => import('../../../pages/GuestInvitation/index.js'), 'GuestInvitation')
+const VerifyInvitation = Loader(
+  lazy(() => import('../../../pages/VerifyInvitation/index.js'), 'VerifyInvitation')
 );
 
-export const GuestInvitationRoutes = () => {
+export const VerifyInvitationRoutes = () => {
   return {
     path: '/admin',
     element: <MinimalLayout />,
     children: [
       {
-        path: 'invitations',
-        element: <GuestInvitation />,
+        path: 'verify-invitation',
+        element: <VerifyInvitation />,
       },
     ],
   };

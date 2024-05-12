@@ -7,7 +7,7 @@ export class InvitationMailService {
 
   async sendInvitation(entity: InvitationEntity): Promise<void> {
     const email = encodeURIComponent(entity.email);
-    const url = `${env.PUBLIC_SERVER_URL}/admin/invitations?token=${entity.token}&email=${email}`;
+    const url = `${env.PUBLIC_SERVER_URL}/admin/verify-invitation?token=${entity.token}&email=${email}`;
     const html = `Invited to the project.<br/><br/>
     <a href="${url}">${url}</a><br/><br/>
     If you did not request this, please ignore this email and your password will remain unchanged.`;
