@@ -1,8 +1,7 @@
 import { Invitation } from '@prisma/client';
-import dayjs from 'dayjs';
 import { v4 } from 'uuid';
-import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 import { UnexpectedException } from '../../../exceptions/unexpected.js';
+import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 
 export const Status = {
   Pending: 'pending',
@@ -46,14 +45,26 @@ export class InvitationEntity extends PrismaBaseEntity<Invitation> {
     return this.props.token;
   }
 
+  get roleId(): string {
+    return this.props.roleId;
+  }
+
   get projectId(): string {
     return this.props.projectId;
+  }
+
+  get status(): string {
+    return this.props.status;
   }
 
   private isValid() {
     if (!this.props.id) {
       throw new UnexpectedException({ message: 'id is required' });
     }
+  }
+
+  acceptInvitation(): void {
+    this.props.status = Status.Accepted;
   }
 
   public beforeUpdateValidate(): void {

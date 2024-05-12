@@ -16,11 +16,18 @@ declare namespace Express {
             id: string;
             projectId: string;
             name: string;
-            description: string;
+            description: string | null;
             isAdmin: boolean;
             createdAt: Date;
             updatedAt: Date;
-            permissions: [];
+            permissions: {
+              id: string;
+              roleId: string;
+              name: string;
+              description: string | null;
+              createdAt: Date;
+              updatedAt: Date;
+            }[];
           };
         };
       };

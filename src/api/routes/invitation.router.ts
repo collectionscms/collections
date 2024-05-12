@@ -2,11 +2,13 @@ import express, { Request, Response } from 'express';
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
 import { InvitationRepository } from '../data/invitation/invitation.repository.js';
 import { UserProjectRepository } from '../data/userProject/userProject.repository.js';
-import { projectPrisma } from '../database/prisma/client.js';
+import { bypassPrisma, projectPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';
 import { InvitationMailService } from '../services/invitationMail.service.js';
 import { MailService } from '../services/mail.service.js';
+import { acceptInvitationUseCaseSchema } from '../useCases/invitation/acceptInvitation.schema.js';
+import { AcceptInvitationUseCase } from '../useCases/invitation/acceptInvitation.useCase.js';
 import { inviteUserUseCaseSchema } from '../useCases/invitation/inviteUser.schema.js';
 import { InviteUserUseCase } from '../useCases/invitation/inviteUser.useCase.js';
 
@@ -35,6 +37,31 @@ router.post(
 
     res.json({
       invitation,
+    });
+  })
+);
+
+router.post(
+  '/invitations/accept',
+  authenticatedUser,
+  asyncHandler(async (req: Request, res: Response) => {
+    const validated = acceptInvitationUseCaseSchema.safeParse({
+      token: req.body.token,
+      userId: res.user.id,
+      email: res.user.email,
+    });
+    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
+
+    const useCase = new AcceptInvitationUseCase(
+      bypassPrisma,
+      new UserProjectRepository(),
+      new InvitationRepository()
+    );
+
+    const result = await useCase.execute(validated.data);
+
+    res.json({
+      project: result.project,
     });
   })
 );

@@ -1,7 +1,7 @@
 import { Invitation, Role } from '@prisma/client';
-import { ProjectPrismaType } from '../../database/prisma/client.js';
-import { InvitationEntity } from './invitation.entity.js';
+import { BypassPrismaType, ProjectPrismaType } from '../../database/prisma/client.js';
 import { RoleEntity } from '../role/role.entity.js';
+import { InvitationEntity } from './invitation.entity.js';
 
 export class InvitationRepository {
   async findManyByPendingStatus(
@@ -21,6 +21,16 @@ export class InvitationRepository {
     });
   }
 
+  async findOneByToken(prisma: BypassPrismaType, token: string): Promise<InvitationEntity> {
+    const record = await prisma.invitation.findFirstOrThrow({
+      where: {
+        token,
+      },
+    });
+
+    return InvitationEntity.Reconstruct<Invitation, InvitationEntity>(record);
+  }
+
   async create(
     prisma: ProjectPrismaType,
     invitationEntity: InvitationEntity
@@ -29,6 +39,24 @@ export class InvitationRepository {
 
     const record = await prisma.invitation.create({
       data: invitationEntity.toPersistence(),
+    });
+
+    return InvitationEntity.Reconstruct<Invitation, InvitationEntity>(record);
+  }
+
+  async updateStatus(
+    prisma: ProjectPrismaType,
+    invitationEntity: InvitationEntity
+  ): Promise<InvitationEntity> {
+    invitationEntity.beforeUpdateValidate();
+
+    const record = await prisma.invitation.update({
+      where: {
+        id: invitationEntity.id,
+      },
+      data: {
+        status: invitationEntity.status,
+      },
     });
 
     return InvitationEntity.Reconstruct<Invitation, InvitationEntity>(record);
