@@ -3,7 +3,9 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { getLoginUrl } from '../../utilities/urlGenerator.js';
 import { Loading } from '../elements/Loading/index.js';
 import { useAuth } from '../utilities/Auth/index.js';
+import { UserInvitationRoutes } from './UserInvitation/index.js';
 import { AuthRoutes } from './Auth/index.js';
+import { GuestInvitationRoutes } from './GuestInvitation/index.js';
 import { MeRoutes } from './Me/index.js';
 import { NavigateLoginRoutes } from './NavigateLogin/index.js';
 import { NoRoutes } from './NoRoutes/index.js';
@@ -19,9 +21,14 @@ export const Routes: React.FC = () => {
     PortalRootRoutes(),
     MeRoutes(),
     AuthRoutes(),
+    UserInvitationRoutes(),
     NoRoutes(),
   ]);
-  const portalGuestRouter = createBrowserRouter([AuthRoutes(), NavigateLoginRoutes()]);
+  const portalGuestRouter = createBrowserRouter([
+    AuthRoutes(),
+    GuestInvitationRoutes(),
+    NavigateLoginRoutes(),
+  ]);
 
   const tenantRouter = createBrowserRouter([
     TenantRootRoutes(),
