@@ -107,7 +107,7 @@
     "react-hook-form": "7.51.3",
     "react-hotkeys-hook": "4.5.0",
     "react-i18next": "14.1.1",
-    "react-router-dom": "6.23.0",
+    "react-router-dom": "6.23.1",
     "react-syntax-highlighter": "15.5.0",
     "rimraf": "5.0.5",
     "simplebar-react": "3.2.5",
