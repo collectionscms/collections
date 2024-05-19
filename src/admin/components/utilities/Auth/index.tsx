@@ -73,8 +73,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     { suspense: true }
   );
 
-  console.log(projectRoles);
-
   const value = useMemo(
     () => ({
       me,
