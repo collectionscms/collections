@@ -1,6 +1,6 @@
 import { Project } from '@prisma/client';
 import { MeRepository } from '../../data/user/me.repository.js';
-import { BypassPrismaType, PrismaType } from '../../database/prisma/client.js';
+import { BypassPrismaType } from '../../database/prisma/client.js';
 
 type GetMyProjectsUseCaseResponse = {
   projects: Project[];
@@ -16,7 +16,7 @@ export class GetMyProjectsUseCase {
     const result = await this.meRepository.findMeWithProjects(this.prisma, userId);
 
     return {
-      projects: result.projects.map((project) => project.toResponse()),
+      projects: result.projectRoles.map((projectRole) => projectRole.project.toResponse()),
     };
   }
 }

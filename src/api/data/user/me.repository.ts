@@ -11,18 +11,7 @@ import { RoleEntity } from '../role/role.entity.js';
 import { UserEntity } from './user.entity.js';
 
 export class MeRepository {
-  async login(
-    prisma: BypassPrismaType,
-    email: string,
-    password: string
-  ): Promise<{
-    user: UserEntity;
-    projectRoles: {
-      project: ProjectEntity;
-      role: RoleEntity;
-      permissions: PermissionEntity[];
-    }[];
-  }> {
+  async login(prisma: BypassPrismaType, email: string, password: string): Promise<UserEntity> {
     const user = await prisma.user.findFirst({
       where: {
         email: {
@@ -47,18 +36,7 @@ export class MeRepository {
       throw new InvalidCredentialsException('incorrect_email_or_password');
     }
 
-    return {
-      user: UserEntity.Reconstruct<User, UserEntity>(user),
-      projectRoles: user.userProjects.map((userProject) => {
-        return {
-          project: ProjectEntity.Reconstruct<Project, ProjectEntity>(userProject.project),
-          role: RoleEntity.Reconstruct<Role, RoleEntity>(userProject.role),
-          permissions: userProject.role.permissions.map((permission) =>
-            PermissionEntity.Reconstruct<Permission, PermissionEntity>(permission)
-          ),
-        };
-      }),
-    };
+    return UserEntity.Reconstruct<User, UserEntity>(user);
   }
 
   async findMeById(prisma: PrismaType, userId: string): Promise<UserEntity> {
@@ -137,7 +115,14 @@ export class MeRepository {
   async findMeWithProjects(
     prisma: BypassPrismaType,
     id: string
-  ): Promise<{ user: UserEntity; projects: ProjectEntity[] }> {
+  ): Promise<{
+    user: UserEntity;
+    projectRoles: {
+      project: ProjectEntity;
+      role: RoleEntity;
+      permissions: PermissionEntity[];
+    }[];
+  }> {
     const user = await prisma.user.findUniqueOrThrow({
       where: {
         id,
@@ -146,6 +131,11 @@ export class MeRepository {
         userProjects: {
           include: {
             project: true,
+            role: {
+              include: {
+                permissions: true,
+              },
+            },
           },
         },
       },
@@ -153,9 +143,15 @@ export class MeRepository {
 
     return {
       user: UserEntity.Reconstruct<User, UserEntity>(user),
-      projects: user.userProjects.map((userProject) =>
-        ProjectEntity.Reconstruct<Project, ProjectEntity>(userProject.project)
-      ),
+      projectRoles: user.userProjects.map((userProject) => {
+        return {
+          project: ProjectEntity.Reconstruct<Project, ProjectEntity>(userProject.project),
+          role: RoleEntity.Reconstruct<Role, RoleEntity>(userProject.role),
+          permissions: userProject.role.permissions.map((permission) =>
+            PermissionEntity.Reconstruct<Permission, PermissionEntity>(permission)
+          ),
+        };
+      }),
     };
   }
 }

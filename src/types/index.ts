@@ -1,4 +1,4 @@
-import { Content, File, Permission, PostHistory, Project, Role } from '@prisma/client';
+import { Content, File, PostHistory, Role } from '@prisma/client';
 
 export type UserProfile = {
   id: string;
@@ -8,12 +8,9 @@ export type UserProfile = {
   role: Role;
 };
 
-export type ProjectWithRole = Project & { role: Role & { permissions: Permission[] } };
 export type Me = {
   id: string;
   email: string;
-  name: string;
-  projects: Record<string, ProjectWithRole>;
 };
 
 export type ApiError = {
