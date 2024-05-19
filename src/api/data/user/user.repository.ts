@@ -1,6 +1,5 @@
 import { User } from '@auth/express';
 import { Role } from '@prisma/client';
-import { v4 } from 'uuid';
 import { RecordNotUniqueException } from '../../../exceptions/database/recordNotUnique.js';
 import { PrismaType, ProjectPrismaType } from '../../database/prisma/client.js';
 import { RoleEntity } from '../role/role.entity.js';
@@ -63,14 +62,15 @@ export class UserRepository {
     });
   }
 
-  async checkUniqueEmail(prisma: PrismaType, id: string, email: string) {
+  async checkUniqueEmail(prisma: PrismaType, email: string, ownId?: string) {
     const user = await prisma.user.findFirst({
       where: {
         email,
+        isActive: true,
       },
     });
 
-    if (user && user.id !== id) {
+    if (user && ownId && user.id !== ownId) {
       throw new RecordNotUniqueException('already_registered_email');
     }
   }
