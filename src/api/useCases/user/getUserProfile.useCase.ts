@@ -16,6 +16,7 @@ export class GetUserProfileUseCase {
       name: userRole.user.name,
       email: userRole.user.email,
       isActive: userRole.user.isActive,
+      isRegistered: true,
       role: userRole.role.toResponse(),
     };
   }

@@ -4,6 +4,8 @@ import { getLoginUrl } from '../../utilities/urlGenerator.js';
 import { Loading } from '../elements/Loading/index.js';
 import { useAuth } from '../utilities/Auth/index.js';
 import { AuthRoutes } from './Auth/index.js';
+import { GuestRoutes } from './Guest/index.js';
+import { InvitationRoutes } from './Invitation/index.js';
 import { MeRoutes } from './Me/index.js';
 import { NavigateLoginRoutes } from './NavigateLogin/index.js';
 import { NoRoutes } from './NoRoutes/index.js';
@@ -19,9 +21,14 @@ export const Routes: React.FC = () => {
     PortalRootRoutes(),
     MeRoutes(),
     AuthRoutes(),
+    InvitationRoutes(),
     NoRoutes(),
   ]);
-  const portalGuestRouter = createBrowserRouter([AuthRoutes(), NavigateLoginRoutes()]);
+  const portalGuestRouter = createBrowserRouter([
+    AuthRoutes(),
+    GuestRoutes(),
+    NavigateLoginRoutes(),
+  ]);
 
   const tenantRouter = createBrowserRouter([
     TenantRootRoutes(),

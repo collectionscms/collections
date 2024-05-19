@@ -24,6 +24,7 @@
   "forgot": "Forgot password",
   "api_preview": "API Preview",
   "fetch": "Fetch",
+  "register": "Register",
   "create_new": "Create New",
   "save": "Save",
   "delete": "Delete",
@@ -134,6 +135,9 @@
   "add_localized_content": "Add localized content",
   "add_to": "Add",
   "add_thumbnail": "Add thumbnail image",
+  "invite": "Invite",
+  "invited": "Invited",
+  "create_account": "Create an account",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",
@@ -152,7 +156,9 @@
     "deleted_successfully": "Deleted successfully.",
     "imported_successfully": "Imported successfully.",
     "archived_successfully": "Archived successfully.",
-    "published_successfully": "Published successfully."
+    "published_successfully": "Published successfully.",
+    "invited_successfully": "Invited successfully",
+    "joined_project": "Joined the project"
   },
   "create": {
     "user": "Create User",
@@ -175,34 +181,6 @@
     "quote": "Quote",
     "bold": "Bold",
     "draft_save": "Draft Save"
-  },
-  "field_interface": {
-    "input_one_line": "Text Field",
-    "input_one_line_caption": "Text type field. Enter one line of values.",
-    "input_multi_line": "Textarea",
-    "input_multi_line_caption": "Text type field. Enter multiple lines of values.",
-    "date_time": "Date Time",
-    "date_time_caption": "Date type field. Select a date and time from the calendar.",
-    "boolean": "Boolean",
-    "boolean_caption": "Boolean type field. Check box to toggle on/off.",
-    "input_rich_text_html": "Rich Editor",
-    "input_rich_text_html_caption": "Rich text type field. Use a rich editor to enter values.",
-    "input_rich_text_md": "Markdown",
-    "input_rich_text_md_caption": "Text type field. Enter values using the markdown editor.",
-    "file": "File",
-    "file_caption": "File type field. Upload the file.",
-    "file_image": "Image",
-    "file_image_caption": "File type field. Upload the image.",
-    "list": "Repeater",
-    "list_caption": "Select an item that has already been created and repeat the entry.",
-    "list_o2o": "Content Reference",
-    "list_o2o_caption": "Reference type field. Referenced 'one-to-one' with other content.",
-    "list_o2m": "Multiple Content References",
-    "list_o2m_caption": "Reference type field. Referenced 'one-to-many' with other content.",
-    "select_dropdown": "Select Dropdown",
-    "select_dropdown_caption": "Selection type field. You can create your own choices.",
-    "select_dropdown_m2o": "Multiple Content Referencing",
-    "select_dropdown_m2o_caption": "Reference type field. Referenced 'many to one' from other contents."
   },
   "error": {
     "invalid_user_credentials": "Invalid user credentials.",
@@ -227,7 +205,9 @@
     "invalid_date_format": "Invalid date format.",
     "unsupported_media_type": "Unsupported media type.",
     "bad_request": "Request is incorrect.",
-    "unable_delete_user": "Unable to delete user."
+    "unable_delete_user": "Unable to delete user.",
+    "already_invited_email": "Already invited.",
+    "unauthorized_user": "Unauthorized User."
   },
   "yup": {
     "mixed": {

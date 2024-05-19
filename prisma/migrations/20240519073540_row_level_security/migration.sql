@@ -41,6 +41,21 @@ CREATE TABLE "UserProject" (
 );
 
 -- CreateTable
+CREATE TABLE "Invitation" (
+    "id" UUID NOT NULL,
+    "email" TEXT NOT NULL,
+    "projectId" UUID NOT NULL DEFAULT (current_setting('app.current_project_id'::text))::uuid,
+    "roleId" UUID NOT NULL,
+    "invitedById" UUID NOT NULL,
+    "token" VARCHAR(255) NOT NULL,
+    "status" VARCHAR(255) NOT NULL,
+    "createdAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMPTZ(6) NOT NULL,
+
+    CONSTRAINT "Invitation_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "Role" (
     "id" UUID NOT NULL,
     "projectId" UUID NOT NULL DEFAULT (current_setting('app.current_project_id'::text))::uuid,
@@ -156,6 +171,15 @@ ALTER TABLE "UserProject" ADD CONSTRAINT "UserProject_projectId_fkey" FOREIGN KE
 
 -- AddForeignKey
 ALTER TABLE "UserProject" ADD CONSTRAINT "UserProject_roleId_fkey" FOREIGN KEY ("roleId") REFERENCES "Role"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Invitation" ADD CONSTRAINT "Invitation_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Project"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Invitation" ADD CONSTRAINT "Invitation_roleId_fkey" FOREIGN KEY ("roleId") REFERENCES "Role"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Invitation" ADD CONSTRAINT "Invitation_invitedById_fkey" FOREIGN KEY ("invitedById") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Role" ADD CONSTRAINT "Role_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Project"("id") ON DELETE CASCADE ON UPDATE CASCADE;

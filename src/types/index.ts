@@ -6,6 +6,7 @@ export type UserProfile = {
   email: string;
   name: string;
   isActive: boolean;
+  isRegistered: boolean;
   role: Role;
 };
 

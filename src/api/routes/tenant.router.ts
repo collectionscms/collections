@@ -1,6 +1,7 @@
 import express from 'express';
 import { content } from './content.router.js';
 import { file } from './file.router.js';
+import { invitation } from './invitation.router.js';
 import { me } from './me.router.js';
 import { post } from './post.router.js';
 import { project } from './project.router.js';
@@ -17,3 +18,4 @@ tenantApiRouter.use(me);
 tenantApiRouter.use(file);
 tenantApiRouter.use(post);
 tenantApiRouter.use(content);
+tenantApiRouter.use(invitation);

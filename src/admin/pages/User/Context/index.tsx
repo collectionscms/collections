@@ -27,7 +27,7 @@ type UserContext = {
       suspense: true;
     }
   >;
-  createUser: () => SWRMutationResponse<number, any, string, Record<string, any>>;
+  inviteUser: () => SWRMutationResponse<number, any, string, Record<string, any>>;
   updateUser: (id: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
 };
 
@@ -52,8 +52,8 @@ export const UserContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       }
     );
 
-  const createUser = () =>
-    useSWRMutation(`/users`, async (url: string, { arg }: { arg: Record<string, any> }) => {
+  const inviteUser = () =>
+    useSWRMutation(`/invitations`, async (url: string, { arg }: { arg: Record<string, any> }) => {
       return api.post<{ id: number }>(url, arg).then((res) => res.data.id);
     });
 
@@ -72,10 +72,10 @@ export const UserContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       getUsers,
       getUser,
       getRoles,
-      createUser,
+      inviteUser,
       updateUser,
     }),
-    [getUsers, getUser, getRoles, createUser, updateUser]
+    [getUsers, getUser, getRoles, inviteUser, updateUser]
   );
 
   return <Context.Provider value={value}>{children}</Context.Provider>;
