@@ -14,7 +14,7 @@ export class ChangeStatusUseCase {
   ) {}
 
   async execute(props: ChangeStatusUseCaseSchemaType): Promise<void> {
-    const { projectId, id, userName, status } = props;
+    const { projectId, id, userId, status } = props;
 
     const post = await this.postRepository.findOneById(this.prisma, projectId, id);
     const postEntity = PostEntity.Reconstruct<Post, PostEntity>(post.toPersistence());
@@ -27,7 +27,7 @@ export class ChangeStatusUseCase {
       const postHistoryEntity = PostHistoryEntity.Construct({
         projectId: projectId,
         postId: id,
-        userName,
+        userId,
         status,
         version: updatedPost.version,
       });
