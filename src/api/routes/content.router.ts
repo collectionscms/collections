@@ -43,7 +43,7 @@ router.patch(
     const validated = updateContentUseCaseSchema.safeParse({
       projectId: res.tenantProjectId,
       id: req.params.id,
-      userName: res.user.name,
+      userId: res.user.id,
       fileId: req.body.fileId,
       title: req.body.title,
       body: req.body.body,

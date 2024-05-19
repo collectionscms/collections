@@ -14,7 +14,7 @@ export class UpdatePostUseCase {
   ) {}
 
   async execute(props: UpdatePostUseCaseSchemaType): Promise<Post> {
-    const { projectId, id, name, status } = props;
+    const { projectId, id, userId, status } = props;
 
     const record = await this.postRepository.findOneById(this.prisma, projectId, id);
 
@@ -29,7 +29,7 @@ export class UpdatePostUseCase {
         PostHistoryEntity.Construct({
           projectId: projectId,
           postId: id,
-          userName: name,
+          userId,
           status: entity.status,
           version: entity.version,
         })

@@ -17,7 +17,7 @@ export class UpdateContentUseCase {
   ) {}
 
   async execute(props: UpdateContentUseCaseSchemaType): Promise<Content> {
-    const { id, projectId, userName, fileId, title, body, bodyJson, bodyHtml } = props;
+    const { id, projectId, userId, fileId, title, body, bodyJson, bodyHtml } = props;
 
     const record = await this.contentRepository.findOneById(this.prisma, id, projectId);
     const post = await this.postRepository.findOneById(
@@ -37,7 +37,7 @@ export class UpdateContentUseCase {
           PostHistoryEntity.Construct({
             projectId: post.projectId,
             postId: post.id,
-            userName,
+            userId,
             status: 'draft',
             version: post.version,
           })
