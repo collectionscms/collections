@@ -1,11 +1,11 @@
-import { Project } from '@prisma/client';
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWR, { SWRResponse } from 'swr';
+import { ProjectRole } from '../../../../types/index.js';
 import { api } from '../../../utilities/api.js';
 
 export type ProjectListContext = {
   getMyProjects: () => SWRResponse<
-    Project[],
+    ProjectRole[],
     Error,
     {
       suspense: true;
@@ -21,7 +21,12 @@ export const ProjectListContextProvider: React.FC<{ children: React.ReactNode }>
   const getMyProjects = () =>
     useSWR(
       '/me/projects',
-      (url) => api.get<{ projects: Project[] }>(url).then((res) => res.data.projects),
+      (url) =>
+        api
+          .get<{
+            projectRoles: ProjectRole[];
+          }>(url)
+          .then((res) => res.data.projectRoles),
       { suspense: true }
     );
 

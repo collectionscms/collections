@@ -14,7 +14,8 @@ import { ProjectListContextProvider, useProjectList } from './Context/index.js';
 const ProjectListPageImpl: React.FC = () => {
   const { t } = useTranslation();
   const { getMyProjects } = useProjectList();
-  const { data: projects } = getMyProjects();
+  const { data: projectRoles } = getMyProjects();
+  const projects = projectRoles.map((pr) => pr.project);
 
   const fields = [
     { field: 'name', label: t('project_name'), type: cells.text() },
