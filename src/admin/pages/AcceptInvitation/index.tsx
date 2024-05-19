@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Loading } from '../../components/elements/Loading/index.js';
 import { useAuth } from '../../components/utilities/Auth/index.js';
 import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.js';
+import { getUrlForTenant } from '../../utilities/urlGenerator.js';
 import { AcceptInvitationContextProvider, useInvitation } from './Context/index.js';
 
 const AcceptInvitationImpl: React.FC = () => {
@@ -25,11 +26,11 @@ const AcceptInvitationImpl: React.FC = () => {
     }
 
     const accept = async () => {
-      await trigger({
+      const project = await trigger({
         token: token,
       });
 
-      enqueueSnackbar(t('toast.joined_project'), { variant: 'success' });
+      window.location.href = getUrlForTenant(project.subdomain, '/admin');
     };
 
     accept();
