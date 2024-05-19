@@ -18,6 +18,8 @@ export class UserEntity extends PrismaBaseEntity<User> {
       email,
       password,
       isActive: true,
+      confirmationToken: null,
+      confirmedAt: null,
       avatarUrl: null,
       resetPasswordToken: null,
       resetPasswordExpiration: null,

@@ -19,6 +19,8 @@ CREATE TABLE "User" (
     "email" TEXT NOT NULL,
     "password" VARCHAR(255) NOT NULL,
     "isActive" BOOLEAN NOT NULL DEFAULT true,
+    "confirmationToken" VARCHAR(255),
+    "confirmedAt" TIMESTAMP(3),
     "avatarUrl" VARCHAR(255),
     "resetPasswordToken" VARCHAR(255),
     "resetPasswordExpiration" TIMESTAMP(3),

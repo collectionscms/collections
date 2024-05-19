@@ -29,6 +29,8 @@ export const createUsers = async (): Promise<void> => {
           avatarUrl: faker.internet.avatar(),
           password: password,
           isActive: true,
+          confirmationToken: v4(),
+          confirmedAt: new Date(),
         },
         {
           id: editorUser,
@@ -37,6 +39,8 @@ export const createUsers = async (): Promise<void> => {
           avatarUrl: faker.internet.avatar(),
           password: password,
           isActive: true,
+          confirmationToken: v4(),
+          confirmedAt: new Date(),
         },
         {
           id: guestUser,
@@ -45,6 +49,8 @@ export const createUsers = async (): Promise<void> => {
           avatarUrl: faker.internet.avatar(),
           password: password,
           isActive: true,
+          confirmationToken: v4(),
+          confirmedAt: new Date(),
         },
       ],
     });
