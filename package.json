@@ -115,7 +115,7 @@
     "swr": "2.2.5",
     "uuid": "9.0.1",
     "vhost": "3.0.2",
-    "webpack": "5.88.2",
+    "webpack": "5.91.0",
     "webpack-bundle-analyzer": "4.10.2",
     "webpack-cli": "5.1.4",
     "webpack-dev-middleware": "7.2.1",
