@@ -11,11 +11,7 @@ export class UpdateRoleUseCase {
   ) {}
 
   async execute(props: UpdateRoleUseCaseSchemaType): Promise<Role> {
-    console.log('roleとる', props.roleId);
-
     const role = await this.roleRepository.findOne(this.prisma, props.roleId);
-    console.log('roleとる', role);
-
     const entity = RoleEntity.Reconstruct<Role, RoleEntity>(role.toPersistence());
     entity.update({
       name: props.name,

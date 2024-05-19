@@ -100,7 +100,7 @@ router.patch(
   asyncHandler(async (req: Request, res: Response) => {
     const validated = updatePostUseCaseSchema.safeParse({
       id: req.params.id,
-      name: res.user.name,
+      userId: res.user.id,
       projectId: res.tenantProjectId,
       status: req.body.status,
     });
@@ -144,7 +144,7 @@ router.patch(
     const validated = changeStatusUseCaseSchema.safeParse({
       id: req.params.id,
       projectId: res.tenantProjectId,
-      userName: res.user.name,
+      userId: res.user.id,
       status: req.body.status,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);

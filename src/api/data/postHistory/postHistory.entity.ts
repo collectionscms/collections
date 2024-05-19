@@ -1,19 +1,19 @@
 import { PostHistory } from '@prisma/client';
 import { v4 } from 'uuid';
-import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 import { UnexpectedException } from '../../../exceptions/unexpected.js';
+import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 
 export class PostHistoryEntity extends PrismaBaseEntity<PostHistory> {
   static Construct({
     projectId,
     postId,
-    userName,
+    userId,
     status,
     version,
   }: {
     projectId: string;
     postId: string;
-    userName: string;
+    userId: string;
     status: string;
     version: number;
   }): PostHistoryEntity {
@@ -21,7 +21,7 @@ export class PostHistoryEntity extends PrismaBaseEntity<PostHistory> {
       id: v4(),
       projectId,
       postId,
-      userName,
+      userId,
       status,
       version,
       createdAt: new Date(),

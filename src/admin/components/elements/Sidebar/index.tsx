@@ -8,15 +8,15 @@ import { BottomContent } from '../NavContent/BottomContent/index.js';
 
 export const Sidebar: React.FC = () => {
   const theme = useTheme();
-  const { me, tenantRole } = useAuth();
+  const { me, currentProjectRole, projects } = useAuth();
   const bottomContent = useMemo(() => <BottomContent />, []);
 
   return (
     <>
       <Box sx={{ width: 60, height: '100vh', position: 'relative', paddingY: '16px' }}>
-        {me && (
+        {projects && (
           <Stack spacing={2}>
-            {Object.values(me.projects).map((project) => (
+            {Object.values(projects).map((project) => (
               <Link
                 href={getUrlForTenant(project.subdomain, '/admin')}
                 sx={{
@@ -28,7 +28,9 @@ export const Sidebar: React.FC = () => {
                 key={project.id}
               >
                 <Tooltip title={project.name} placement="left-start">
-                  <Box sx={{ opacity: tenantRole?.projectId === project.id ? '1' : '0.5' }}>
+                  <Box
+                    sx={{ opacity: currentProjectRole?.project.id === project.id ? '1' : '0.5' }}
+                  >
                     {project.iconUrl ? (
                       <img src={project.iconUrl} alt={project.name} />
                     ) : (

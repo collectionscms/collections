@@ -54,7 +54,7 @@ export const createPost = async (
         create: {
           id: v4(),
           projectId,
-          userName: user.name,
+          userId: user.id,
           status: options?.status ?? 'published',
           version: options?.version ?? 0,
           createdAt: currentTime,
