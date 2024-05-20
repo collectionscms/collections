@@ -4,8 +4,8 @@ import {
   Button,
   FormHelperText,
   InputLabel,
-  Stack,
   Link,
+  Stack,
   TextField,
   Typography,
 } from '@mui/material';
@@ -13,13 +13,12 @@ import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { t } from 'i18next';
 import React, { useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { useLocation } from 'react-router-dom';
+import { Link as RouterLink, useLocation } from 'react-router-dom';
 import { logger } from '../../../utilities/logger.js';
 import { AuthCard } from '../../@extended/components/AuthCard/index.js';
 import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.js';
 import { FormValues, signUpSchema } from '../../fields/schemas/authentications/signUp.js';
 import { SignUpContextProvider, useSignUp } from './Context/index.js';
-import { Link as RouterLink } from 'react-router-dom';
 
 const SignUpImpl: React.FC = () => {
   const { signUp } = useSignUp();
@@ -29,7 +28,7 @@ const SignUpImpl: React.FC = () => {
   const token = queryParams.get('token');
   const email = queryParams.get('email');
 
-  const [created, setCreated] = useState(false);
+  const [isSignedUp, setIsSignedUp] = useState(false);
 
   const {
     control,
@@ -43,7 +42,7 @@ const SignUpImpl: React.FC = () => {
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
       await trigger(form);
-      setCreated(true);
+      setIsSignedUp(true);
     } catch (e) {
       logger.error(e);
     }
@@ -58,7 +57,7 @@ const SignUpImpl: React.FC = () => {
           </Box>
         </Grid>
         <Grid xs={12}>
-          {created ? (
+          {isSignedUp ? (
             <>
               <Box>{t('check_email_to_verify')}</Box>
               <Box sx={{ mt: 1 }}>
