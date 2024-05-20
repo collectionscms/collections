@@ -17,6 +17,7 @@ export class MeRepository {
         email: {
           contains: email,
         },
+        isActive: true,
       },
       include: {
         userProjects: {

@@ -1,13 +1,16 @@
 import { Invitation, Role } from '@prisma/client';
 import { BypassPrismaType, ProjectPrismaType } from '../../database/prisma/client.js';
 import { RoleEntity } from '../role/role.entity.js';
-import { InvitationEntity } from './invitation.entity.js';
+import { InvitationEntity, Status } from './invitation.entity.js';
 
 export class InvitationRepository {
   async findManyByPendingStatus(
     prisma: ProjectPrismaType
   ): Promise<{ invitation: InvitationEntity; role: RoleEntity }[]> {
     const records = await prisma.invitation.findMany({
+      where: {
+        status: Status.Pending,
+      },
       include: {
         role: true,
       },

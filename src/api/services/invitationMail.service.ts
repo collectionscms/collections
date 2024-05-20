@@ -2,9 +2,7 @@ import { env } from '../../env.js';
 import { InvitationEntity } from '../data/invitation/invitation.entity.js';
 import { MailService } from './mail.service.js';
 
-export class InvitationMailService {
-  constructor(private readonly mailService: MailService) {}
-
+export class InvitationMailService extends MailService {
   async sendInvitation(entity: InvitationEntity): Promise<void> {
     const email = encodeURIComponent(entity.email);
     const url = `${env.PUBLIC_SERVER_URL}/admin/invitations/accept?token=${entity.token}&email=${email}`;
@@ -12,7 +10,7 @@ export class InvitationMailService {
     <a href="${url}">${url}</a><br/><br/>
     If you did not request this, please ignore this email and your password will remain unchanged.`;
 
-    this.mailService.sendEmail('Collections', {
+    super.sendEmail('Collections', {
       to: entity.email,
       subject: 'Invited to the project',
       html,
