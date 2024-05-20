@@ -11,6 +11,7 @@ const ForgotPassword = Loader(
 const ResetPassword = Loader(
   lazy(() => import('../../../pages/ResetPassword/index.js'), 'ResetPassword')
 );
+const SignUp = Loader(lazy(() => import('../../../pages/SignUp/index.js'), 'SignUp'));
 
 export const AuthRoutes = () => {
   return {
@@ -32,6 +33,10 @@ export const AuthRoutes = () => {
       {
         path: 'reset-password/:token',
         element: <ResetPassword />,
+      },
+      {
+        path: 'signUp',
+        element: <SignUp />,
       },
     ],
   };
