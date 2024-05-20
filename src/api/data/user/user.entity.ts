@@ -7,17 +7,19 @@ export class UserEntity extends PrismaBaseEntity<User> {
     name,
     email,
     password,
+    isActive,
   }: {
     name: string;
     email: string;
     password: string;
+    isActive: boolean;
   }): UserEntity {
     return new UserEntity({
       id: v4(),
       name,
       email,
       password,
-      isActive: true,
+      isActive,
       confirmationToken: null,
       confirmedAt: null,
       avatarUrl: null,
@@ -46,6 +48,14 @@ export class UserEntity extends PrismaBaseEntity<User> {
 
   get isActive(): boolean {
     return this.props.isActive;
+  }
+
+  get confirmationToken(): string | null {
+    return this.props.confirmationToken;
+  }
+
+  generateConfirmationToken(): void {
+    this.props.confirmationToken = v4();
   }
 
   update(params: { name?: string; email?: string; password?: string }) {

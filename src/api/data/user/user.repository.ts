@@ -1,7 +1,7 @@
 import { User } from '@auth/express';
 import { Role } from '@prisma/client';
 import { RecordNotUniqueException } from '../../../exceptions/database/recordNotUnique.js';
-import { PrismaType, ProjectPrismaType } from '../../database/prisma/client.js';
+import { BypassPrismaType, PrismaType, ProjectPrismaType } from '../../database/prisma/client.js';
 import { RoleEntity } from '../role/role.entity.js';
 import { UserEntity } from './user.entity.js';
 
@@ -22,6 +22,16 @@ export class UserRepository {
     });
 
     return UserEntity.Reconstruct<User, UserEntity>(record.user);
+  }
+
+  async findOneByEmail(prisma: PrismaType, email: string): Promise<UserEntity | null> {
+    const user = await prisma.user.findFirst({
+      where: {
+        email,
+      },
+    });
+
+    return user ? UserEntity.Reconstruct<User, UserEntity>(user) : null;
   }
 
   async findUserRole(
@@ -60,6 +70,18 @@ export class UserRepository {
         role: RoleEntity.Reconstruct<Role, RoleEntity>(record.role),
       };
     });
+  }
+
+  async upsert(prisma: BypassPrismaType, entity: UserEntity): Promise<UserEntity> {
+    const user = await prisma.user.upsert({
+      update: entity.toPersistence(),
+      create: entity.toPersistence(),
+      where: {
+        id: entity.id,
+      },
+    });
+
+    return UserEntity.Reconstruct<User, UserEntity>(user);
   }
 
   async checkUniqueEmail(prisma: PrismaType, email: string, ownId?: string) {
