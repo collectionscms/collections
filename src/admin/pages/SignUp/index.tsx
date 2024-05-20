@@ -4,15 +4,16 @@ import {
   Button,
   FormHelperText,
   InputLabel,
+  Link,
   Stack,
   TextField,
   Typography,
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { t } from 'i18next';
-import React from 'react';
+import React, { useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { useLocation } from 'react-router-dom';
+import { Link as RouterLink, useLocation } from 'react-router-dom';
 import { logger } from '../../../utilities/logger.js';
 import { AuthCard } from '../../@extended/components/AuthCard/index.js';
 import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.js';
@@ -27,6 +28,8 @@ const SignUpImpl: React.FC = () => {
   const token = queryParams.get('token');
   const email = queryParams.get('email');
 
+  const [isSignedUp, setIsSignedUp] = useState(false);
+
   const {
     control,
     handleSubmit,
@@ -39,6 +42,7 @@ const SignUpImpl: React.FC = () => {
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
       await trigger(form);
+      setIsSignedUp(true);
     } catch (e) {
       logger.error(e);
     }
@@ -53,64 +57,77 @@ const SignUpImpl: React.FC = () => {
           </Box>
         </Grid>
         <Grid xs={12}>
-          <Stack component="form" onSubmit={handleSubmit(onSubmit)}>
-            <Grid container spacing={3}>
-              <Grid xs={12}>
-                <Stack spacing={1}>
-                  <InputLabel>{t('email')}</InputLabel>
-                  {email ? (
-                    <Typography>{email}</Typography>
-                  ) : (
-                    <>
+          {isSignedUp ? (
+            <>
+              <Box>{t('check_email_to_verify')}</Box>
+              <Box sx={{ mt: 1 }}>
+                <Link variant="h6" component={RouterLink} to="/admin/auth/login">
+                  {t('login_now')}
+                </Link>
+              </Box>
+            </>
+          ) : (
+            <>
+              <Stack component="form" onSubmit={handleSubmit(onSubmit)}>
+                <Grid container spacing={3}>
+                  <Grid xs={12}>
+                    <Stack spacing={1}>
+                      <InputLabel>{t('email')}</InputLabel>
+                      {email ? (
+                        <Typography>{email}</Typography>
+                      ) : (
+                        <>
+                          <Controller
+                            name="email"
+                            control={control}
+                            render={({ field }) => (
+                              <TextField
+                                {...field}
+                                id="email"
+                                type="email"
+                                error={errors.email !== undefined}
+                              />
+                            )}
+                          />
+                          <FormHelperText error>{errors.email?.message}</FormHelperText>
+                        </>
+                      )}
+                    </Stack>
+                  </Grid>
+                  <Grid xs={12}>
+                    <Stack spacing={1}>
+                      <InputLabel htmlFor="password">{t('password')}</InputLabel>
                       <Controller
-                        name="email"
+                        name="password"
                         control={control}
                         render={({ field }) => (
                           <TextField
                             {...field}
-                            id="email"
-                            type="email"
-                            error={errors.email !== undefined}
+                            id="password"
+                            type="password"
+                            error={errors.password !== undefined}
                           />
                         )}
                       />
-                      <FormHelperText error>{errors.email?.message}</FormHelperText>
-                    </>
-                  )}
-                </Stack>
-              </Grid>
-              <Grid xs={12}>
-                <Stack spacing={1}>
-                  <InputLabel htmlFor="password">{t('password')}</InputLabel>
-                  <Controller
-                    name="password"
-                    control={control}
-                    render={({ field }) => (
-                      <TextField
-                        {...field}
-                        id="password"
-                        type="password"
-                        error={errors.password !== undefined}
-                      />
-                    )}
-                  />
-                  <FormHelperText error>{errors.password?.message}</FormHelperText>
-                </Stack>
-              </Grid>
-              <Grid xs={12}>
-                <Button
-                  disableElevation
-                  fullWidth
-                  variant="contained"
-                  type="submit"
-                  size="large"
-                  disabled={isMutating}
-                >
-                  {t('register')}
-                </Button>
-              </Grid>
-            </Grid>
-          </Stack>
+                      <FormHelperText error>{errors.password?.message}</FormHelperText>
+                    </Stack>
+                  </Grid>
+                  <Grid xs={12}>
+                    <Button
+                      disableElevation
+                      fullWidth
+                      variant="contained"
+                      type="submit"
+                      size="large"
+                      disabled={isMutating}
+                    >
+                      {t('register')}
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Stack>
+            </>
+          )}
         </Grid>
       </Grid>
     </AuthCard>

@@ -138,6 +138,9 @@
   "invite": "Invite",
   "invited": "Invited",
   "create_account": "Create an account",
+  "check_email_to_verify": "Hi! Thank you for creating a Collection account. Please check your email to verify your account and login.",
+  "login_now": "Login now",
+  "email_verified": "Your email has been verified.",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",
@@ -207,7 +210,8 @@
     "bad_request": "Request is incorrect.",
     "unable_delete_user": "Unable to delete user.",
     "already_invited_email": "Already invited.",
-    "unauthorized_user": "Unauthorized User."
+    "unauthorized_user": "Unauthorized user.",
+    "already_confirmed": "Already confirmed user."
   },
   "yup": {
     "mixed": {

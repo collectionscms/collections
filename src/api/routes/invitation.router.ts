@@ -6,7 +6,6 @@ import { bypassPrisma, projectPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';
 import { InvitationMailService } from '../services/invitationMail.service.js';
-import { MailService } from '../services/mail.service.js';
 import { acceptInvitationUseCaseSchema } from '../useCases/invitation/acceptInvitation.schema.js';
 import { AcceptInvitationUseCase } from '../useCases/invitation/acceptInvitation.useCase.js';
 import { inviteUserUseCaseSchema } from '../useCases/invitation/inviteUser.schema.js';
@@ -30,7 +29,7 @@ router.post(
       projectPrisma(validated.data.projectId),
       new UserProjectRepository(),
       new InvitationRepository(),
-      new InvitationMailService(new MailService())
+      new InvitationMailService()
     );
 
     const invitation = await useCase.execute(validated.data);

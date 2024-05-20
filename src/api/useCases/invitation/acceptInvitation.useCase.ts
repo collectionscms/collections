@@ -6,8 +6,6 @@ import { UserProjectEntity } from '../../data/userProject/userProject.entity.js'
 import { UserProjectRepository } from '../../data/userProject/userProject.repository.js';
 import { BypassPrismaType, projectPrisma } from '../../database/prisma/client.js';
 import { AcceptInvitationUseCaseSchemaType } from './acceptInvitation.schema.js';
-import { getSession } from '@auth/express';
-import { authConfig } from '../../configs/auth.js';
 
 export type AcceptInvitationUseCaseResponse = {
   project: Project;
@@ -28,7 +26,7 @@ export class AcceptInvitationUseCase {
     const { token, userId, email } = props;
 
     const invitation = await this.invitationRepository.findOneByToken(this.prisma, token);
-    if (invitation.email !== email) {
+    if (invitation.email !== email || invitation.isAccepted()) {
       throw new InvalidTokenException();
     }
 
@@ -37,8 +35,6 @@ export class AcceptInvitationUseCase {
       projectId: invitation.projectId,
       roleId: invitation.roleId,
     });
-
-    // todo 付与済みかチェック
 
     const projectRole = await projectPrisma(invitation.projectId).$transaction(async (tx) => {
       await this.userProjectRepository.create(tx, entity);

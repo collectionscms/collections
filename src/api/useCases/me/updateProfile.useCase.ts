@@ -15,7 +15,7 @@ export class UpdateProfileUseCase {
   async execute(props: UpdateProfileUseCaseSchemaType): Promise<User> {
     const { name, email, password, userId } = props;
 
-    await this.userRepository.checkUniqueEmail(this.prisma, userId, email);
+    await this.userRepository.checkUniqueEmail(this.prisma, email, userId);
 
     const hashed = password ? await oneWayHash(password) : undefined;
     const user = await this.meRepository.findMeById(this.prisma, userId);

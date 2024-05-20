@@ -33,6 +33,8 @@ model User {
   email                   String        @unique
   password                String        @db.VarChar(255)
   isActive                Boolean       @default(true)
+  confirmationToken       String?       @db.VarChar(255)
+  confirmedAt             DateTime?
   avatarUrl               String?       @db.VarChar(255)
   resetPasswordToken      String?       @db.VarChar(255)
   resetPasswordExpiration DateTime?

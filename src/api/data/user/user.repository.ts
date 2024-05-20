@@ -1,8 +1,7 @@
 import { User } from '@auth/express';
 import { Role } from '@prisma/client';
-import { v4 } from 'uuid';
 import { RecordNotUniqueException } from '../../../exceptions/database/recordNotUnique.js';
-import { PrismaType, ProjectPrismaType } from '../../database/prisma/client.js';
+import { BypassPrismaType, PrismaType, ProjectPrismaType } from '../../database/prisma/client.js';
 import { RoleEntity } from '../role/role.entity.js';
 import { UserEntity } from './user.entity.js';
 
@@ -23,6 +22,26 @@ export class UserRepository {
     });
 
     return UserEntity.Reconstruct<User, UserEntity>(record.user);
+  }
+
+  async findOneByEmail(prisma: PrismaType, email: string): Promise<UserEntity | null> {
+    const user = await prisma.user.findFirst({
+      where: {
+        email,
+      },
+    });
+
+    return user ? UserEntity.Reconstruct<User, UserEntity>(user) : null;
+  }
+
+  async findOneByConfirmationToken(prisma: PrismaType, token: string): Promise<UserEntity | null> {
+    const user = await prisma.user.findFirst({
+      where: {
+        confirmationToken: token,
+      },
+    });
+
+    return user ? UserEntity.Reconstruct<User, UserEntity>(user) : null;
   }
 
   async findUserRole(
@@ -63,14 +82,41 @@ export class UserRepository {
     });
   }
 
-  async checkUniqueEmail(prisma: PrismaType, id: string, email: string) {
-    const user = await prisma.user.findFirst({
+  async upsert(prisma: BypassPrismaType, entity: UserEntity): Promise<UserEntity> {
+    const user = await prisma.user.upsert({
+      update: entity.toPersistence(),
+      create: entity.toPersistence(),
       where: {
-        email,
+        id: entity.id,
       },
     });
 
-    if (user && user.id !== id) {
+    return UserEntity.Reconstruct<User, UserEntity>(user);
+  }
+
+  async verified(prisma: PrismaType, entity: UserEntity): Promise<UserEntity> {
+    const user = await prisma.user.update({
+      where: {
+        id: entity.id,
+      },
+      data: {
+        confirmedAt: entity.confirmedAt,
+        isActive: entity.isActive,
+      },
+    });
+
+    return UserEntity.Reconstruct<User, UserEntity>(user);
+  }
+
+  async checkUniqueEmail(prisma: PrismaType, email: string, ownId?: string) {
+    const user = await prisma.user.findFirst({
+      where: {
+        email,
+        isActive: true,
+      },
+    });
+
+    if ((user && !ownId) || (user && ownId && user.id !== ownId)) {
       throw new RecordNotUniqueException('already_registered_email');
     }
   }

@@ -109,6 +109,11 @@ export const Login: React.FC = () => {
               </Stack>
             </Grid>
             <Grid xs={12} sx={{ mt: -1 }}>
+              <Link variant="h6" component={RouterLink} to="/admin/auth/signUp">
+                {t('create_account')}
+              </Link>
+            </Grid>
+            <Grid xs={12} sx={{ mt: -1 }}>
               <Link variant="h6" component={RouterLink} to="/admin/auth/forgot">
                 {t('forgot')}
               </Link>

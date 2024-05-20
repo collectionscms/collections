@@ -138,6 +138,9 @@
   "invite": "招待",
   "invited": "招待中",
   "create_account": "アカウント登録",
+  "login_now": "今すぐログイン",
+  "check_email_to_verify": "Collection アカウントを登録していただきありがとうございます。アカウントの確認とログインのため、Eメールをご確認ください。",
+  "email_verified": "メールが認証されました",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",
@@ -207,7 +210,8 @@
     "bad_request": "リクエストの内容が正しくありません。",
     "unable_delete_user": "削除できないユーザーです",
     "already_invited_email": "すでに招待済みです。",
-    "unauthorized_user": "不正なユーザーです"
+    "unauthorized_user": "不正なユーザーです",
+    "already_confirmed": "すでに認証済みのユーザーです"
   },
   "yup": {
     "mixed": {
