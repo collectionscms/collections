@@ -70,7 +70,7 @@ export class UserRepository {
       },
     });
 
-    if (user && ownId && user.id !== ownId) {
+    if ((user && !ownId) || (user && ownId && user.id !== ownId)) {
       throw new RecordNotUniqueException('already_registered_email');
     }
   }
