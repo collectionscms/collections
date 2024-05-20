@@ -8,6 +8,8 @@ import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { SignUpMailService } from '../services/signUpMail.service.js';
 import { signUpUseCaseSchema } from '../useCases/auth/signUp.schema.js';
 import { SignUpUseCase } from '../useCases/auth/signUp.useCase.js';
+import { VerifyUseCase } from '../useCases/auth/verify.useCase.js';
+import { verifyUseCaseSchema } from '../useCases/auth/verify.schema.js';
 
 const router = express.Router();
 
@@ -29,6 +31,23 @@ router.post(
       new UserProjectRepository(),
       new SignUpMailService()
     );
+    const me = await useCase.execute(validated.data);
+
+    return res.json({
+      me,
+    });
+  })
+);
+
+router.post(
+  '/verify',
+  asyncHandler(async (req: Request, res: Response) => {
+    const validated = verifyUseCaseSchema.safeParse({
+      token: req.body.token,
+    });
+    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
+
+    const useCase = new VerifyUseCase(prisma, new UserRepository());
     const me = await useCase.execute(validated.data);
 
     return res.json({

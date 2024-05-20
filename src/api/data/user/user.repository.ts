@@ -34,6 +34,16 @@ export class UserRepository {
     return user ? UserEntity.Reconstruct<User, UserEntity>(user) : null;
   }
 
+  async findOneByConfirmationToken(prisma: PrismaType, token: string): Promise<UserEntity | null> {
+    const user = await prisma.user.findFirst({
+      where: {
+        confirmationToken: token,
+      },
+    });
+
+    return user ? UserEntity.Reconstruct<User, UserEntity>(user) : null;
+  }
+
   async findUserRole(
     prisma: ProjectPrismaType,
     userId: string
@@ -78,6 +88,20 @@ export class UserRepository {
       create: entity.toPersistence(),
       where: {
         id: entity.id,
+      },
+    });
+
+    return UserEntity.Reconstruct<User, UserEntity>(user);
+  }
+
+  async verified(prisma: PrismaType, entity: UserEntity): Promise<UserEntity> {
+    const user = await prisma.user.update({
+      where: {
+        id: entity.id,
+      },
+      data: {
+        confirmedAt: entity.confirmedAt,
+        isActive: entity.isActive,
       },
     });
 

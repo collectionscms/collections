@@ -54,8 +54,16 @@ export class UserEntity extends PrismaBaseEntity<User> {
     return this.props.confirmationToken;
   }
 
+  get confirmedAt(): Date | null {
+    return this.props.confirmedAt;
+  }
+
   generateConfirmationToken(): void {
     this.props.confirmationToken = v4();
+  }
+
+  verified(): void {
+    this.props.confirmedAt = new Date();
   }
 
   update(params: { name?: string; email?: string; password?: string }) {
