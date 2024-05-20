@@ -39,7 +39,7 @@ export class SignUpUseCase {
     const invitation = props.token
       ? await this.invitationRepository.findOneByToken(this.bypassPrisma, props.token)
       : null;
-    if (invitation && invitation.email !== props.email) {
+    if (invitation && (invitation.email !== props.email || invitation.isAccepted())) {
       throw new InvalidTokenException();
     }
 

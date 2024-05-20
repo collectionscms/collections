@@ -57,14 +57,18 @@ export class InvitationEntity extends PrismaBaseEntity<Invitation> {
     return this.props.status;
   }
 
+  acceptInvitation(): void {
+    this.props.status = Status.Accepted;
+  }
+
+  isAccepted(): boolean {
+    return this.props.status === Status.Accepted;
+  }
+
   private isValid() {
     if (!this.props.id) {
       throw new UnexpectedException({ message: 'id is required' });
     }
-  }
-
-  acceptInvitation(): void {
-    this.props.status = Status.Accepted;
   }
 
   public beforeUpdateValidate(): void {
