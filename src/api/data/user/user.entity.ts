@@ -64,6 +64,7 @@ export class UserEntity extends PrismaBaseEntity<User> {
 
   verified(): void {
     this.props.confirmedAt = new Date();
+    this.props.isActive = true;
   }
 
   update(params: { name?: string; email?: string; password?: string }) {
