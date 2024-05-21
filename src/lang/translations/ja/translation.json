@@ -139,8 +139,9 @@
   "invited": "招待中",
   "create_account": "アカウント登録",
   "login_now": "今すぐログイン",
-  "check_email_to_verify": "Collection アカウントを登録していただきありがとうございます。アカウントの確認とログインのため、Eメールをご確認ください。",
+  "check_email_to_verify": "Collections アカウントを登録していただきありがとうございます。アカウントの確認とログインのため、Eメールをご確認ください。",
   "email_verified": "メールが認証されました",
+  "check_email_to_reset_password": "パスワードをリセットするためのリンクをメールでお送りしました。",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",
