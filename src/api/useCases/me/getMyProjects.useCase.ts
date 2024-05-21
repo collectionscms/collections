@@ -1,5 +1,5 @@
 import { Permission, Project, Role } from '@prisma/client';
-import { MeRepository } from '../../data/user/me.repository.js';
+import { UserRepository } from '../../data/user/user.repository.js';
 import { BypassPrismaType } from '../../database/prisma/client.js';
 
 type GetMyProjectsUseCaseResponse = {
@@ -13,11 +13,11 @@ type GetMyProjectsUseCaseResponse = {
 export class GetMyProjectsUseCase {
   constructor(
     private readonly prisma: BypassPrismaType,
-    private readonly meRepository: MeRepository
+    private readonly userRepository: UserRepository
   ) {}
 
   async execute(userId: string): Promise<GetMyProjectsUseCaseResponse> {
-    const result = await this.meRepository.findMeWithProjects(this.prisma, userId);
+    const result = await this.userRepository.findOneWithProjects(this.prisma, userId);
 
     return {
       projectRoles: result.projectRoles.map((projectRole) => ({

@@ -1,9 +1,9 @@
 import { getSession } from '@auth/express';
 import express, { Request, Response } from 'express';
 import { env } from '../../env.js';
+import { InvalidCredentialsException } from '../../exceptions/invalidCredentials.js';
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
 import { authConfig } from '../configs/auth.js';
-import { MeRepository } from '../data/user/me.repository.js';
 import { UserRepository } from '../data/user/user.repository.js';
 import { bypassPrisma, prisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
@@ -37,7 +37,7 @@ router.get(
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
-    const useCase = new GetMyProfileUseCase(prisma, new MeRepository());
+    const useCase = new GetMyProfileUseCase(prisma, new UserRepository());
     const user = await useCase.execute(validated.data.userId);
 
     return res.json({ user });
@@ -53,7 +53,7 @@ router.get(
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
-    const useCase = new GetMyProjectsUseCase(bypassPrisma, new MeRepository());
+    const useCase = new GetMyProjectsUseCase(bypassPrisma, new UserRepository());
     const projects = await useCase.execute(validated.data.userId);
 
     return res.json(projects);
@@ -71,7 +71,7 @@ router.patch(
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
-    const useCase = new UpdateProfileUseCase(prisma, new MeRepository(), new UserRepository());
+    const useCase = new UpdateProfileUseCase(prisma, new UserRepository());
     await useCase.execute(validated.data);
 
     res.status(204).end();
@@ -85,7 +85,7 @@ router.post(
     const token = req.body.token;
     const password = req.body.password;
 
-    const repository = new MeRepository();
+    const repository = new UserRepository();
     await repository.resetPassword(prisma, token, password);
 
     res.status(204).end();
@@ -96,8 +96,15 @@ router.post(
   '/me/forgot-password',
   authenticatedUser,
   asyncHandler(async (req: Request, res: Response) => {
-    const repository = new MeRepository();
-    const token = await repository.setResetPasswordToken(prisma, req.body.email);
+    const repository = new UserRepository();
+    const user = await repository.findOneByEmail(prisma, req.body.email);
+
+    if (!user) {
+      throw new InvalidCredentialsException('unregistered_email_address');
+    }
+
+    user.resetPassword();
+    const token = await repository.updatePasswordToken(prisma, user);
 
     const html = `You are receiving this message because you have requested a password reset for your account.<br/>
     Please click the following link and enter your new password.<br/><br/>

@@ -1,4 +1,5 @@
 import { User } from '@prisma/client';
+import dayjs from 'dayjs';
 import { v4 } from 'uuid';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 
@@ -56,6 +57,19 @@ export class UserEntity extends PrismaBaseEntity<User> {
 
   get confirmedAt(): Date | null {
     return this.props.confirmedAt;
+  }
+
+  get resetPasswordToken(): string | null {
+    return this.props.resetPasswordToken;
+  }
+
+  get resetPasswordExpiration(): Date | null {
+    return this.props.resetPasswordExpiration;
+  }
+
+  resetPassword(): void {
+    this.props.resetPasswordToken = v4();
+    this.props.resetPasswordExpiration = dayjs().add(1, 'hour').toDate();
   }
 
   generateConfirmationToken(): void {

@@ -1,5 +1,5 @@
 import { Permission, Project, Role } from '@prisma/client';
-import { MeRepository } from '../../data/user/me.repository.js';
+import { UserRepository } from '../../data/user/user.repository.js';
 import { BypassPrismaType } from '../../database/prisma/client.js';
 
 type ProjectWithRole = Project & { role: Role & { permissions: Permission[] } };
@@ -7,11 +7,11 @@ type ProjectWithRole = Project & { role: Role & { permissions: Permission[] } };
 export class GetMyProjectRolesUseCase {
   constructor(
     private readonly prisma: BypassPrismaType,
-    private readonly meRepository: MeRepository
+    private readonly userRepository: UserRepository
   ) {}
 
   async execute(userId: string): Promise<{ projects: { [key: string]: ProjectWithRole } }> {
-    const { projectRoles } = await this.meRepository.findMeWithProjects(this.prisma, userId);
+    const { projectRoles } = await this.userRepository.findOneWithProjects(this.prisma, userId);
 
     return {
       projects: projectRoles.reduce((acc: { [key: string]: ProjectWithRole }, projectRole) => {
