@@ -43,7 +43,8 @@ Add the following lines to the `/etc/hosts`
 
 ```sh
 127.0.0.1   test.com
-127.0.0.1   us.test.com
+127.0.0.1   en.test.com
+127.0.0.1   ja.test.com
 ```
 
 Open [http://test.com:4000/admin](http://test.com:4000/admin) to view your running app.

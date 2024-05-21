@@ -2,14 +2,14 @@ import { faker } from '@faker-js/faker';
 import { v4 } from 'uuid';
 import { oneWayHash } from '../../utilities/oneWayHash.js';
 import { bypassPrisma } from '../prisma/client.js';
-import { jaProject, usProject } from './createProjects.js';
+import { jaProject, enProject } from './createProjects.js';
 import {
   jaAdminRole,
   jaEditorRole,
   jaGuestRole,
-  usAdminRole,
-  usEditorRole,
-  usGuestRole,
+  enAdminRole,
+  enEditorRole,
+  enGuestRole,
 } from './createRoles.js';
 
 export const adminUser = v4();
@@ -60,21 +60,21 @@ export const createUsers = async (): Promise<void> => {
         // US Project
         {
           id: v4(),
-          projectId: usProject,
+          projectId: enProject,
           userId: adminUser,
-          roleId: usAdminRole,
+          roleId: enAdminRole,
         },
         {
           id: v4(),
-          projectId: usProject,
+          projectId: enProject,
           userId: editorUser,
-          roleId: usEditorRole,
+          roleId: enEditorRole,
         },
         {
           id: v4(),
-          projectId: usProject,
+          projectId: enProject,
           userId: guestUser,
-          roleId: usGuestRole,
+          roleId: enGuestRole,
         },
         // JA Project
         {

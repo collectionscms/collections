@@ -1,6 +1,6 @@
 import { Output } from '../../../utilities/output.js';
 import { createPost } from './createPost.js';
-import { createProjects, jaProject, usProject } from './createProjects.js';
+import { createProjects, jaProject, enProject } from './createProjects.js';
 import { createRoles } from './createRoles.js';
 import { createUsers } from './createUsers.js';
 
@@ -9,7 +9,7 @@ export const seedDev = async (): Promise<void> => {
     await createProjects();
     await createRoles();
     await createUsers();
-    await createPost(usProject, {
+    await createPost(enProject, {
       defaultLocale: 'en',
     });
     await createPost(jaProject, {

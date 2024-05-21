@@ -1,10 +1,10 @@
 import { v4 } from 'uuid';
 import { bypassPrisma } from '../prisma/client.js';
-import { jaProject, usProject } from './createProjects.js';
+import { jaProject, enProject } from './createProjects.js';
 
-export const usAdminRole = v4();
-export const usEditorRole = v4();
-export const usGuestRole = v4();
+export const enAdminRole = v4();
+export const enEditorRole = v4();
+export const enGuestRole = v4();
 export const jaAdminRole = v4();
 export const jaEditorRole = v4();
 export const jaGuestRole = v4();
@@ -12,27 +12,27 @@ export const jaGuestRole = v4();
 export const createRoles = async (): Promise<void> => {
   await bypassPrisma.role.createMany({
     data: [
-      // US Project
+      // EN Project
       {
-        id: usAdminRole,
-        projectId: usProject,
+        id: enAdminRole,
+        projectId: enProject,
         name: 'Administrator',
         description: 'Administrator',
         isAdmin: true,
       },
       {
-        id: usEditorRole,
-        projectId: usProject,
+        id: enEditorRole,
+        projectId: enProject,
         name: 'Editor',
         description: 'Editor',
       },
       {
-        id: usGuestRole,
-        projectId: usProject,
+        id: enGuestRole,
+        projectId: enProject,
         name: 'Guest',
         description: 'Guest',
       },
-      // Ja Project
+      // JA Project
       {
         id: jaAdminRole,
         projectId: jaProject,
