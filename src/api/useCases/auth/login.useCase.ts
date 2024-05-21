@@ -1,15 +1,15 @@
 import { Me } from '../../../types/index.js';
-import { MeRepository } from '../../data/user/me.repository.js';
+import { UserRepository } from '../../data/user/user.repository.js';
 import { BypassPrismaType } from '../../database/prisma/client.js';
 
 export class LoginUseCase {
   constructor(
     private readonly prisma: BypassPrismaType,
-    private readonly meRepository: MeRepository
+    private readonly userRepository: UserRepository
   ) {}
 
   async execute(email: string, password: string): Promise<Me> {
-    const user = await this.meRepository.login(this.prisma, email, password);
+    const user = await this.userRepository.login(this.prisma, email, password);
 
     return {
       id: user.id,

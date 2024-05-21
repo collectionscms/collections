@@ -1,11 +1,44 @@
 import { User } from '@auth/express';
-import { Role } from '@prisma/client';
+import { Permission, Project, Role } from '@prisma/client';
 import { RecordNotUniqueException } from '../../../exceptions/database/recordNotUnique.js';
+import { InvalidCredentialsException } from '../../../exceptions/invalidCredentials.js';
 import { BypassPrismaType, PrismaType, ProjectPrismaType } from '../../database/prisma/client.js';
+import { comparePasswords } from '../../utilities/comparePasswords.js';
 import { RoleEntity } from '../role/role.entity.js';
 import { UserEntity } from './user.entity.js';
+import { ProjectEntity } from '../project/project.entity.js';
+import { PermissionEntity } from '../permission/permission.entity.js';
 
 export class UserRepository {
+  async login(prisma: BypassPrismaType, email: string, password: string): Promise<UserEntity> {
+    const user = await prisma.user.findFirst({
+      where: {
+        email: {
+          contains: email,
+        },
+        isActive: true,
+      },
+      include: {
+        userProjects: {
+          include: {
+            project: true,
+            role: {
+              include: {
+                permissions: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (!user || !comparePasswords(user.password, password)) {
+      throw new InvalidCredentialsException('incorrect_email_or_password');
+    }
+
+    return UserEntity.Reconstruct<User, UserEntity>(user);
+  }
+
   async findUserById(
     prisma: ProjectPrismaType,
     projectId: string,
