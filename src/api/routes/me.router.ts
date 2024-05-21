@@ -15,6 +15,8 @@ import { getMyProjectsUseCaseSchema } from '../useCases/me/getMyProjects.schema.
 import { GetMyProjectsUseCase } from '../useCases/me/getMyProjects.useCase.js';
 import { updateProfileUseCaseSchema } from '../useCases/me/updateProfile.schema.js';
 import { UpdateProfileUseCase } from '../useCases/me/updateProfile.useCase.js';
+import { resetPasswordUseCaseSchema } from '../useCases/user/resetPassword.schema.js';
+import { ResetPasswordUseCase } from '../useCases/user/resetPassword.useCase.js';
 
 const router = express.Router();
 
@@ -82,11 +84,14 @@ router.post(
   '/me/reset-password',
   authenticatedUser,
   asyncHandler(async (req: Request, res: Response) => {
-    const token = req.body.token;
-    const password = req.body.password;
+    const validated = resetPasswordUseCaseSchema.safeParse({
+      token: req.body.token,
+      password: req.body.password,
+    });
+    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
-    const repository = new UserRepository();
-    await repository.resetPassword(prisma, token, password);
+    const useCase = new ResetPasswordUseCase(prisma, new UserRepository());
+    await useCase.execute(validated.data);
 
     res.status(204).end();
   })
@@ -104,7 +109,7 @@ router.post(
     }
 
     user.resetPassword();
-    const token = await repository.updatePasswordToken(prisma, user);
+    const token = await repository.updateResetPasswordToken(prisma, user);
 
     const html = `You are receiving this message because you have requested a password reset for your account.<br/>
     Please click the following link and enter your new password.<br/><br/>

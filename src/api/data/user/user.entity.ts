@@ -1,6 +1,7 @@
 import { User } from '@prisma/client';
 import dayjs from 'dayjs';
 import { v4 } from 'uuid';
+import { oneWayHash } from '../../utilities/oneWayHash.js';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 
 export class UserEntity extends PrismaBaseEntity<User> {
@@ -74,6 +75,10 @@ export class UserEntity extends PrismaBaseEntity<User> {
 
   generateConfirmationToken(): void {
     this.props.confirmationToken = v4();
+  }
+
+  async hashPassword(password: string): Promise<void> {
+    this.props.password = await oneWayHash(password);
   }
 
   verified(): void {

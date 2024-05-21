@@ -4,7 +4,6 @@ import { RecordNotUniqueException } from '../../../exceptions/database/recordNot
 import { InvalidCredentialsException } from '../../../exceptions/invalidCredentials.js';
 import { BypassPrismaType, PrismaType, ProjectPrismaType } from '../../database/prisma/client.js';
 import { comparePasswords } from '../../utilities/comparePasswords.js';
-import { oneWayHash } from '../../utilities/oneWayHash.js';
 import { PermissionEntity } from '../permission/permission.entity.js';
 import { ProjectEntity } from '../project/project.entity.js';
 import { RoleEntity } from '../role/role.entity.js';
@@ -178,7 +177,7 @@ export class UserRepository {
     return UserEntity.Reconstruct<User, UserEntity>(user);
   }
 
-  async resetPassword(prisma: PrismaType, token: string, password: string): Promise<UserEntity> {
+  async findOneByResetToken(prisma: PrismaType, token: string): Promise<UserEntity> {
     const user = await prisma.user.findFirst({
       where: {
         resetPasswordToken: token,
@@ -190,12 +189,16 @@ export class UserRepository {
 
     if (!user) throw new InvalidCredentialsException('token_invalid_or_expired');
 
+    return UserEntity.Reconstruct<User, UserEntity>(user);
+  }
+
+  async updatePassword(prisma: PrismaType, entity: UserEntity): Promise<UserEntity> {
     const updatedUser = await prisma.user.update({
       where: {
-        id: user.id,
+        id: entity.id,
       },
       data: {
-        password: await oneWayHash(password),
+        password: entity.password,
         resetPasswordExpiration: new Date(),
       },
     });
@@ -203,7 +206,7 @@ export class UserRepository {
     return UserEntity.Reconstruct<User, UserEntity>(updatedUser);
   }
 
-  async updatePasswordToken(prisma: PrismaType, entity: UserEntity): Promise<UserEntity> {
+  async updateResetPasswordToken(prisma: PrismaType, entity: UserEntity): Promise<UserEntity> {
     const user = await prisma.user.update({
       where: {
         id: entity.id,
