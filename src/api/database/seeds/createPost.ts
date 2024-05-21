@@ -1,9 +1,10 @@
 import { faker } from '@faker-js/faker';
 import { v4 } from 'uuid';
-import { bypassPrisma } from '../prisma/client.js';
+import { BypassPrismaType } from '../prisma/client.js';
 import { adminUser } from './createUsers.js';
 
 export const createPost = async (
+  prisma: BypassPrismaType,
   projectId: string,
   options?: {
     id?: string;
@@ -18,13 +19,13 @@ export const createPost = async (
   const currentTime = new Date();
   const title = faker.music.songName();
   const body = faker.lorem.lines(3);
-  const user = await bypassPrisma.user.findFirstOrThrow({
+  const user = await prisma.user.findFirstOrThrow({
     where: {
       id: options?.createdById ?? adminUser,
     },
   });
 
-  await bypassPrisma.post.create({
+  await prisma.post.create({
     data: {
       id: options?.id ?? v4(),
       projectId,
