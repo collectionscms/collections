@@ -1,7 +1,10 @@
 import React, { createContext, useContext, useMemo } from 'react';
-import useSWRMutation from 'swr/mutation';
+import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
 import { api } from '../../../utilities/api.js';
-import { ForgotPasswordContext } from './types.js';
+
+type ForgotPasswordContext = {
+  forgotPassword: () => SWRMutationResponse<void, any, string, Record<string, any>>;
+};
 
 const Context = createContext({} as ForgotPasswordContext);
 
@@ -12,7 +15,7 @@ export const ForgotPasswordContextProvider: React.FC<{ children: React.ReactNode
     useSWRMutation(
       '/me/forgot-password',
       async (url: string, { arg }: { arg: Record<string, any> }) => {
-        return api.post<{ message: string }>(url, arg).then((res) => res.data.message);
+        return api.post(url, arg).then((res) => res.data);
       }
     );
 
