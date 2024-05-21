@@ -1,10 +1,11 @@
-import { Box, Stack, Tooltip, useTheme } from '@mui/material';
-import Avatar from 'boring-avatars';
+import { Box, Button, Stack, Tooltip, useTheme } from '@mui/material';
 import React, { useMemo } from 'react';
 import { getUrlForTenant } from '../../../utilities/urlGenerator.js';
 import { useAuth } from '../../utilities/Auth/index.js';
 import { Link } from '../Link/index.js';
 import { BottomContent } from '../NavContent/BottomContent/index.js';
+import { Avatar } from '../../../@extended/components/Avatar/index.js';
+import { project } from '../../../../api/routes/project.router.js';
 
 export const Sidebar: React.FC = () => {
   const theme = useTheme();
@@ -24,6 +25,9 @@ export const Sidebar: React.FC = () => {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
+                  '&:hover': {
+                    textDecoration: 'none',
+                  },
                 }}
                 key={project.id}
               >
@@ -34,7 +38,15 @@ export const Sidebar: React.FC = () => {
                     {project.iconUrl ? (
                       <img src={project.iconUrl} alt={project.name} />
                     ) : (
-                      <Avatar size={32} name={project.name} variant="marble" />
+                      <Avatar
+                        size="sm"
+                        color="secondary"
+                        variant="square"
+                        type="filled"
+                        sx={{ borderRadius: 1 }}
+                      >
+                        {project.name[0].toUpperCase()}
+                      </Avatar>
                     )}
                   </Box>
                 </Tooltip>
