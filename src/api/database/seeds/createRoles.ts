@@ -54,4 +54,72 @@ export const createRoles = async (prisma: BypassPrismaType): Promise<void> => {
       },
     ],
   });
+
+  // Editor role
+  const editorRoles = [
+    {
+      roleId: enEditorRole,
+      projectId: enProject,
+    },
+    {
+      roleId: jaEditorRole,
+      projectId: jaProject,
+    },
+  ];
+
+  for (const { roleId, projectId } of editorRoles) {
+    await prisma.permission.createMany({
+      data: [
+        {
+          id: v4(),
+          roleId: roleId,
+          projectId: projectId,
+          accessAction: 'read_post',
+        },
+        {
+          id: v4(),
+          roleId: roleId,
+          projectId: projectId,
+          accessAction: 'create_post',
+        },
+        {
+          id: v4(),
+          roleId: roleId,
+          projectId: projectId,
+          accessAction: 'update_post',
+        },
+        {
+          id: v4(),
+          roleId: roleId,
+          projectId: projectId,
+          accessAction: 'delete_post',
+        },
+      ],
+    });
+  }
+
+  // Guest role
+  const guestRoles = [
+    {
+      roleId: enGuestRole,
+      projectId: enProject,
+    },
+    {
+      roleId: jaGuestRole,
+      projectId: jaProject,
+    },
+  ];
+
+  for (const { roleId, projectId } of guestRoles) {
+    await prisma.permission.createMany({
+      data: [
+        {
+          id: v4(),
+          roleId: roleId,
+          projectId: projectId,
+          accessAction: 'read_post',
+        },
+      ],
+    });
+  }
 };
