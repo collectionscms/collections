@@ -91,15 +91,22 @@ model Role {
 }
 
 model Permission {
-  id          String   @id @db.Uuid
-  roleId      String   @db.Uuid
-  projectId   String   @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
-  name        String   @db.VarChar(255)
-  description String?  @db.VarChar(255)
-  createdAt   DateTime @default(now()) @db.Timestamptz(6)
-  updatedAt   DateTime @updatedAt @db.Timestamptz(6)
-  role        Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
-  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  id           String   @id @db.Uuid
+  roleId       String   @db.Uuid
+  projectId    String   @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
+  accessAction String   @db.VarChar(255)
+  createdAt    DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt    DateTime @updatedAt @db.Timestamptz(6)
+  role         Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  project      Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  access       Access   @relation(fields: [accessAction], references: [action], onDelete: Cascade)
+}
+
+model Access {
+  action       String       @id @db.VarChar(255)
+  group        String       @db.VarChar(255)
+  displayOrder Int
+  permissions  Permission[]
 }
 
 model File {

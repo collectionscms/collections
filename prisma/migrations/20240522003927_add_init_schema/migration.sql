@@ -75,12 +75,20 @@ CREATE TABLE "Permission" (
     "id" UUID NOT NULL,
     "roleId" UUID NOT NULL,
     "projectId" UUID NOT NULL DEFAULT (current_setting('app.current_project_id'::text))::uuid,
-    "name" VARCHAR(255) NOT NULL,
-    "description" VARCHAR(255),
+    "accessAction" VARCHAR(255) NOT NULL,
     "createdAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMPTZ(6) NOT NULL,
 
     CONSTRAINT "Permission_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Access" (
+    "action" VARCHAR(255) NOT NULL,
+    "group" VARCHAR(255) NOT NULL,
+    "displayOrder" INTEGER NOT NULL,
+
+    CONSTRAINT "Access_pkey" PRIMARY KEY ("action")
 );
 
 -- CreateTable
@@ -191,6 +199,9 @@ ALTER TABLE "Permission" ADD CONSTRAINT "Permission_roleId_fkey" FOREIGN KEY ("r
 
 -- AddForeignKey
 ALTER TABLE "Permission" ADD CONSTRAINT "Permission_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Project"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Permission" ADD CONSTRAINT "Permission_accessAction_fkey" FOREIGN KEY ("accessAction") REFERENCES "Access"("action") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "File" ADD CONSTRAINT "File_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Project"("id") ON DELETE CASCADE ON UPDATE CASCADE;
