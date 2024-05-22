@@ -1,6 +1,6 @@
 import { getSession } from '@auth/express';
 import { NextFunction, Request, Response } from 'express';
-import { RecordNotFoundException } from '../../exceptions/database/recordNotFound.js';
+import { InvalidTokenException } from '../../exceptions/invalidToken.js';
 import { UnauthorizedException } from '../../exceptions/unauthorized.js';
 import { authConfig } from '../configs/auth.js';
 import { UserRepository } from '../data/user/user.repository.js';
@@ -20,19 +20,17 @@ export const authenticatedUser = async (req: Request, res: Response, next: NextF
   if (!sessionUser) return next(new UnauthorizedException());
 
   const useCase = new GetMyProjectRolesUseCase(bypassPrisma, new UserRepository());
-  const { projects } = await useCase.execute(sessionUser.id);
-  res.projects = projects;
+  const { projectRoles } = await useCase.execute(sessionUser.id);
 
-  // Check has project role
+  // When accessing tenants, check has role to project
   const subdomain = req.subdomains[0];
   if (subdomain) {
-    const projectRole = projects[subdomain];
-
+    const projectRole = projectRoles[subdomain];
     if (!projectRole) {
-      return next(new RecordNotFoundException('record_not_found'));
+      return next(new InvalidTokenException());
     }
 
-    res.tenantProjectId = projectRole.id;
+    res.projectRole = projectRoles[subdomain];
   }
 
   return next();

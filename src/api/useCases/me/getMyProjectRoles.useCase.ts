@@ -10,11 +10,11 @@ export class GetMyProjectRolesUseCase {
     private readonly userRepository: UserRepository
   ) {}
 
-  async execute(userId: string): Promise<{ projects: { [key: string]: ProjectWithRole } }> {
+  async execute(userId: string): Promise<{ projectRoles: { [key: string]: ProjectWithRole } }> {
     const { projectRoles } = await this.userRepository.findOneWithProjects(this.prisma, userId);
 
     return {
-      projects: projectRoles.reduce((acc: { [key: string]: ProjectWithRole }, projectRole) => {
+      projectRoles: projectRoles.reduce((acc: { [key: string]: ProjectWithRole }, projectRole) => {
         acc[projectRole.project.subdomain] = {
           ...projectRole.project.toResponse(),
           role: {

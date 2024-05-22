@@ -10,7 +10,7 @@ import { FileEntity } from '../data/file/file.entity.js';
 import { FileService } from '../services/file.service.js';
 
 export const multipartHandler: RequestHandler = (req, res, next) => {
-  const projectId = res.tenantProjectId;
+  const projectId = res.projectRole?.id;
   if (!projectId) {
     return next(new InvalidPayloadException('bad_request'));
   }

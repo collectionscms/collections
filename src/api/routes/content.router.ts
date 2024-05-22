@@ -18,7 +18,7 @@ router.post(
   authenticatedUser,
   asyncHandler(async (req: Request, res: Response) => {
     const validated = createContentUseCaseSchema.safeParse({
-      projectId: res.tenantProjectId,
+      projectId: res.projectRole?.id,
       id: req.params.id,
       locale: req.body.locale,
     });
@@ -41,7 +41,7 @@ router.patch(
   authenticatedUser,
   asyncHandler(async (req: Request, res: Response) => {
     const validated = updateContentUseCaseSchema.safeParse({
-      projectId: res.tenantProjectId,
+      projectId: res.projectRole?.id,
       id: req.params.id,
       userId: res.user.id,
       fileId: req.body.fileId,

@@ -22,7 +22,7 @@ router.get(
   authenticatedUser,
   asyncHandler(async (_req: Request, res: Response) => {
     const validated = getUserProfilesUseCaseSchema.safeParse({
-      projectId: res.tenantProjectId,
+      projectId: res.projectRole?.id,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
@@ -44,7 +44,7 @@ router.get(
   authenticatedUser,
   asyncHandler(async (req: Request, res: Response) => {
     const validated = getUserProfileUseCaseSchema.safeParse({
-      projectId: res.tenantProjectId,
+      projectId: res.projectRole?.id,
       userId: req.params.id,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
@@ -67,7 +67,7 @@ router.patch(
   asyncHandler(async (req: Request, res: Response) => {
     const validated = updateUserUseCaseSchema.safeParse({
       id: req.params.id,
-      projectId: res.tenantProjectId,
+      projectId: res.projectRole?.id,
       roleId: req.body.roleId,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
@@ -88,7 +88,7 @@ router.delete(
   asyncHandler(async (req: Request, res: Response) => {
     const validated = deleteUserUseCaseSchema.safeParse({
       userId: req.params.id,
-      projectId: res.tenantProjectId,
+      projectId: res.projectRole?.id,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 

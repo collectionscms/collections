@@ -26,7 +26,7 @@ router.get(
   authenticatedUser,
   asyncHandler(async (_req: Request, res: Response) => {
     const validated = getRolesUseCaseSchema.safeParse({
-      projectId: res.tenantProjectId,
+      projectId: res.projectRole?.id,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
@@ -45,7 +45,7 @@ router.get(
   authenticatedUser,
   asyncHandler(async (req: Request, res: Response) => {
     const validated = getRoleUseCaseSchema.safeParse({
-      projectId: res.tenantProjectId,
+      projectId: res.projectRole?.id,
       roleId: req.params.id,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
@@ -65,7 +65,7 @@ router.post(
   authenticatedUser,
   asyncHandler(async (req: Request, res: Response) => {
     const validated = createRoleUseCaseSchema.safeParse({
-      projectId: res.tenantProjectId,
+      projectId: res.projectRole?.id,
       name: req.body.name,
       description: req.body.description,
     });
@@ -86,7 +86,7 @@ router.patch(
   authenticatedUser,
   asyncHandler(async (req: Request, res: Response) => {
     const validated = updateRoleUseCaseSchema.safeParse({
-      projectId: res.tenantProjectId,
+      projectId: res.projectRole?.id,
       roleId: req.params.id,
       name: req.body.name,
       description: req.body.description,
@@ -108,7 +108,7 @@ router.delete(
   authenticatedUser,
   asyncHandler(async (req: Request, res: Response) => {
     const validate = deleteRoleUseCaseSchema.safeParse({
-      projectId: res.tenantProjectId,
+      projectId: res.projectRole?.id,
       roleId: req.params.id,
     });
     if (!validate.success) throw new InvalidPayloadException('bad_request', validate.error);
@@ -129,7 +129,7 @@ router.get(
   authenticatedUser,
   asyncHandler(async (req: Request, res: Response) => {
     const validated = getPermissionsUseCaseSchema.safeParse({
-      projectId: res.tenantProjectId,
+      projectId: res.projectRole?.id,
       roleId: req.params.id,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);

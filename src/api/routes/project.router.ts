@@ -16,7 +16,7 @@ router.get(
   authenticatedUser,
   asyncHandler(async (_req: Request, res: Response) => {
     const validated = getProjectUseCaseSchema.safeParse({
-      projectId: res.tenantProjectId,
+      projectId: res.projectRole?.id,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
@@ -35,7 +35,7 @@ router.patch(
   authenticatedUser,
   asyncHandler(async (req: Request, res: Response) => {
     const validated = updateProjectUseCaseSchema.safeParse({
-      id: res.tenantProjectId,
+      id: res.projectRole?.id,
       ...req.body,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);

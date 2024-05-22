@@ -28,7 +28,7 @@ router.get(
   asyncHandler(async (req: Request, res: Response) => {
     const locale = req.headers['accept-language'] || env.DEFAULT_LOCALE;
     const validated = getPostsUseCaseSchema.safeParse({
-      projectId: res.tenantProjectId,
+      projectId: res.projectRole?.id,
       locale,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
@@ -50,7 +50,7 @@ router.get(
     const locale = req.headers['accept-language'] || env.DEFAULT_LOCALE;
 
     const validated = getPostUseCaseSchema.safeParse({
-      projectId: res.tenantProjectId,
+      projectId: res.projectRole?.id,
       postId: req.params.id,
       locale,
     });
@@ -75,7 +75,7 @@ router.post(
     const locale = req.headers['accept-language'] || env.DEFAULT_LOCALE;
 
     const validated = createPostUseCaseSchema.safeParse({
-      projectId: res.tenantProjectId,
+      projectId: res.projectRole?.id,
       userId: res.user.id,
       locale,
     });
@@ -101,7 +101,7 @@ router.patch(
     const validated = updatePostUseCaseSchema.safeParse({
       id: req.params.id,
       userId: res.user.id,
-      projectId: res.tenantProjectId,
+      projectId: res.projectRole?.id,
       status: req.body.status,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
@@ -123,7 +123,7 @@ router.delete(
   asyncHandler(async (req: Request, res: Response) => {
     const validated = deletePostUseCaseSchema.safeParse({
       id: req.params.id,
-      projectId: res.tenantProjectId,
+      projectId: res.projectRole?.id,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
@@ -143,7 +143,7 @@ router.patch(
   asyncHandler(async (req: Request, res: Response) => {
     const validated = changeStatusUseCaseSchema.safeParse({
       id: req.params.id,
-      projectId: res.tenantProjectId,
+      projectId: res.projectRole?.id,
       userId: res.user.id,
       status: req.body.status,
     });
