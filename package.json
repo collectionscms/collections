@@ -87,7 +87,7 @@
     "i18next": "23.11.5",
     "i18next-browser-languagedetector": "7.2.1",
     "image-size": "1.1.1",
-    "inquirer": "9.2.20",
+    "inquirer": "9.2.22",
     "joi": "17.13.1",
     "mime-types": "2.1.35",
     "ms": "2.1.3",
