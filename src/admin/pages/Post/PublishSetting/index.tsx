@@ -15,10 +15,10 @@ import {
   useTheme,
 } from '@mui/material';
 import { RiCloseLine } from '@remixicon/react';
-import { t } from 'i18next';
 import { enqueueSnackbar } from 'notistack';
 import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { LocalizedPost } from '../../../../types/index.js';
 import { logger } from '../../../../utilities/logger.js';
@@ -34,6 +34,7 @@ export type Props = {
 };
 
 export const PublishSetting: React.FC<Props> = ({ open, post, onClose }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const theme = useTheme();
   const { updatePost } = usePost();

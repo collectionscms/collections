@@ -10,7 +10,7 @@ import {
   Typography,
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
-import { t } from 'i18next';
+
 import React, { useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
@@ -24,8 +24,10 @@ import {
   forgotPasswordSchema,
 } from '../../fields/schemas/authentications/forgotPassword.js';
 import { ForgotPasswordContextProvider, useForgotPassword } from './Context/index.js';
+import { useTranslation } from 'react-i18next';
 
 const ForgotPasswordImpl: React.FC = () => {
+  const { t } = useTranslation();
   const { me } = useAuth();
   const navigate = useNavigate();
   const { forgotPassword } = useForgotPassword();
