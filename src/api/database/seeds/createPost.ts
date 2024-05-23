@@ -1,5 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { v4 } from 'uuid';
+import { StatusType } from '../../data/post/post.entity.js';
 import { BypassPrismaType } from '../prisma/client.js';
 import { adminUser } from './createUsers.js';
 
@@ -9,7 +10,7 @@ export const createPost = async (
   options?: {
     id?: string;
     slug?: string;
-    status?: string;
+    status?: StatusType;
     publishedAt?: Date;
     defaultLocale?: string;
     version?: number;

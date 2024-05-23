@@ -5,6 +5,7 @@ import { createPost } from './createPost.js';
 import { createProjects, enProject, jaProject } from './createProjects.js';
 import { createRoles } from './createRoles.js';
 import { createUsers } from './createUsers.js';
+import { status } from '../../data/post/post.entity.js';
 
 export const seedDev = async (): Promise<void> => {
   try {
@@ -13,12 +14,23 @@ export const seedDev = async (): Promise<void> => {
       await createProjects(tx);
       await createRoles(tx);
       await createUsers(tx);
-      await createPost(tx, enProject, {
-        defaultLocale: 'en',
-      });
-      await createPost(tx, jaProject, {
-        defaultLocale: 'ja',
-      });
+
+      for (const project of [enProject, jaProject]) {
+        await createPost(tx, project, {
+          status: status.draft,
+          defaultLocale: project === enProject ? 'en' : 'ja',
+        });
+
+        await createPost(tx, project, {
+          status: status.published,
+          defaultLocale: project === enProject ? 'en' : 'ja',
+        });
+
+        await createPost(tx, project, {
+          status: status.archived,
+          defaultLocale: project === enProject ? 'en' : 'ja',
+        });
+      }
     });
 
     process.exit(0);

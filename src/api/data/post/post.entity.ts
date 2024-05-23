@@ -8,6 +8,14 @@ import { PostHistoryEntity } from '../postHistory/postHistory.entity.js';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 import { UserEntity } from '../user/user.entity.js';
 
+export const status = {
+  init: 'init',
+  draft: 'draft',
+  published: 'published',
+  archived: 'archived',
+} as const;
+export type StatusType = (typeof status)[keyof typeof status];
+
 export class PostEntity extends PrismaBaseEntity<Post> {
   static Construct({
     projectId,
@@ -23,7 +31,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       id: postId,
       projectId,
       slug: this.GenerateSlug(),
-      status: 'init',
+      status: status.init,
       publishedAt: null,
       defaultLocale,
       version: 0,
