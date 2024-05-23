@@ -4,6 +4,7 @@ import { ProjectRepository } from '../data/project/project.repository.js';
 import { projectPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';
+import { validateAccess } from '../middlewares/validateAccess.js';
 import { getProjectUseCaseSchema } from '../useCases/project/getProject.schema.js';
 import { GetProjectUseCase } from '../useCases/project/getProject.useCase.js';
 import { updateProjectUseCaseSchema } from '../useCases/project/updateProject.schema.js';
@@ -14,6 +15,7 @@ const router = express.Router();
 router.get(
   '/projects',
   authenticatedUser,
+  validateAccess('readProject'),
   asyncHandler(async (_req: Request, res: Response) => {
     const validated = getProjectUseCaseSchema.safeParse({
       projectId: res.projectRole?.id,
@@ -33,6 +35,7 @@ router.get(
 router.patch(
   '/projects',
   authenticatedUser,
+  validateAccess('updateProject'),
   asyncHandler(async (req: Request, res: Response) => {
     const validated = updateProjectUseCaseSchema.safeParse({
       id: res.projectRole?.id,
