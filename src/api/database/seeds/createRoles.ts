@@ -74,25 +74,25 @@ export const createRoles = async (prisma: BypassPrismaType): Promise<void> => {
           id: v4(),
           roleId: roleId,
           projectId: projectId,
-          accessAction: 'read_post',
+          accessAction: 'readPost',
         },
         {
           id: v4(),
           roleId: roleId,
           projectId: projectId,
-          accessAction: 'create_post',
+          accessAction: 'createPost',
         },
         {
           id: v4(),
           roleId: roleId,
           projectId: projectId,
-          accessAction: 'update_post',
+          accessAction: 'updatePost',
         },
         {
           id: v4(),
           roleId: roleId,
           projectId: projectId,
-          accessAction: 'delete_post',
+          accessAction: 'deletePost',
         },
       ],
     });
@@ -117,7 +117,7 @@ export const createRoles = async (prisma: BypassPrismaType): Promise<void> => {
           id: v4(),
           roleId: roleId,
           projectId: projectId,
-          accessAction: 'read_post',
+          accessAction: 'readPost',
         },
       ],
     });
