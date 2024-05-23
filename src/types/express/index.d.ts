@@ -11,7 +11,7 @@ declare namespace Express {
       role: {
         isAdmin: boolean;
         permissions: {
-          accessAction: string;
+          action: string;
         }[];
       };
     };

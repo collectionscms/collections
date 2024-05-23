@@ -1,6 +1,5 @@
 import express, { Request, Response } from 'express';
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
-import { PermissionRepository } from '../data/permission/permission.repository.js';
 import { RoleRepository } from '../data/role/role.repository.js';
 import { UserProjectRepository } from '../data/userProject/userProject.repository.js';
 import { projectPrisma } from '../database/prisma/client.js';
@@ -136,7 +135,7 @@ router.get(
 
     const useCase = new GetPermissionsUseCase(
       projectPrisma(validated.data.projectId),
-      new PermissionRepository()
+      new RoleRepository()
     );
     const permissions = await useCase.execute(validated.data.roleId);
 

@@ -1,10 +1,10 @@
 import { Permission, Project, Role, User, UserProject } from '@prisma/client';
 import { ProjectPrismaClient, ProjectPrismaType } from '../../database/prisma/client.js';
 import { PermissionEntity } from '../permission/permission.entity.js';
+import { ProjectEntity } from '../project/project.entity.js';
 import { RoleEntity } from '../role/role.entity.js';
 import { UserEntity } from '../user/user.entity.js';
 import { UserProjectEntity } from './userProject.entity.js';
-import { ProjectEntity } from '../project/project.entity.js';
 
 export class UserProjectRepository {
   async findMany(
@@ -42,7 +42,11 @@ export class UserProjectRepository {
         project: true,
         role: {
           include: {
-            permissions: true,
+            rolePermissions: {
+              include: {
+                permission: true,
+              },
+            },
           },
         },
       },
@@ -53,8 +57,8 @@ export class UserProjectRepository {
     return {
       project: ProjectEntity.Reconstruct<Project, ProjectEntity>(record.project),
       role: RoleEntity.Reconstruct<Role, RoleEntity>(record.role),
-      permissions: record.role.permissions.map((permission) =>
-        PermissionEntity.Reconstruct<Permission, PermissionEntity>(permission)
+      permissions: record.role.rolePermissions.map((rolePermission) =>
+        PermissionEntity.Reconstruct<Permission, PermissionEntity>(rolePermission.permission)
       ),
     };
   }

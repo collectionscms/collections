@@ -104,11 +104,11 @@ export const createRoles = async (prisma: BypassPrismaType): Promise<void> => {
         description: role.description,
         isAdmin: role.isAdmin,
         projectId: role.projectId,
-        permissions: {
+        rolePermissions: {
           create: role.permissions.map((permission) => ({
             id: v4(),
-            accessAction: permission,
             projectId: role.projectId,
+            permissionAction: permission,
           })),
         },
       },

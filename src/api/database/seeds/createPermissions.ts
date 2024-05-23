@@ -1,6 +1,6 @@
 import { BypassPrismaType } from '../prisma/client.js';
 
-export const createAccess = async (prisma: BypassPrismaType): Promise<void> => {
+export const createPermissions = async (prisma: BypassPrismaType): Promise<void> => {
   const postActions = [
     'readPost',
     'createPost',
@@ -11,7 +11,7 @@ export const createAccess = async (prisma: BypassPrismaType): Promise<void> => {
   ];
   const projectActions = ['readProject', 'updateProject'];
 
-  await prisma.access.createMany({
+  await prisma.permission.createMany({
     data: [
       // post
       ...postActions.map((action, i) => ({

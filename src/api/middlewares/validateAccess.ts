@@ -13,7 +13,7 @@ export const validateAccess =
       return next();
     }
 
-    if (projectRole.role.permissions.some((p) => p.accessAction === action)) {
+    if (projectRole.role.permissions.some((p) => p.action === action)) {
       return next();
     }
 
