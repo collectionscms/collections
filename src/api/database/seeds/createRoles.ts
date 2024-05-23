@@ -4,122 +4,114 @@ import { enProject, jaProject } from './createProjects.js';
 
 export const enAdminRole = v4();
 export const enEditorRole = v4();
-export const enGuestRole = v4();
+export const enContributorRole = v4();
+export const enViewerRole = v4();
 export const jaAdminRole = v4();
 export const jaEditorRole = v4();
-export const jaGuestRole = v4();
+export const jaContributorRole = v4();
+export const jaViewerRole = v4();
 
 export const createRoles = async (prisma: BypassPrismaType): Promise<void> => {
-  await prisma.role.createMany({
-    data: [
-      // EN Project
-      {
-        id: enAdminRole,
-        projectId: enProject,
-        name: 'Administrator',
-        description: 'Administrator role with all permissions.',
-        isAdmin: true,
-      },
-      {
-        id: enEditorRole,
-        projectId: enProject,
-        name: 'Editor',
-        description: 'Editor role with permission to edit posts.',
-      },
-      {
-        id: enGuestRole,
-        projectId: enProject,
-        name: 'Guest',
-        description: 'Guest role with permission to view posts.',
-      },
-      // JA Project
-      {
-        id: jaAdminRole,
-        projectId: jaProject,
-        name: '管理者',
-        description: 'すべての権限をもつ管理者ロール',
-        isAdmin: true,
-      },
-      {
-        id: jaEditorRole,
-        projectId: jaProject,
-        name: 'エディター',
-        description: '投稿の編集権限をもつエディターロール',
-      },
-      {
-        id: jaGuestRole,
-        projectId: jaProject,
-        name: 'ゲスト',
-        description: '投稿の閲覧権限をもつゲストロール',
-      },
-    ],
-  });
-
-  // Editor role
-  const editorRoles = [
+  const enProjectRoles = [
     {
-      roleId: enEditorRole,
+      id: enAdminRole,
+      name: 'Administrator',
+      description: 'Administrator role with all permissions.',
+      isAdmin: true,
       projectId: enProject,
+      permissions: [],
     },
     {
-      roleId: jaEditorRole,
-      projectId: jaProject,
+      id: enEditorRole,
+      name: 'Editor',
+      description: 'Editor role with permission to edit and publish posts.',
+      isAdmin: false,
+      projectId: enProject,
+      permissions: [
+        'readPost',
+        'createPost',
+        'updatePost',
+        'deletePost',
+        'publishPost',
+        'archivePost',
+      ],
+    },
+    {
+      id: enContributorRole,
+      name: 'ContributorRole',
+      description: 'ContributorRole role with permission to create posts.',
+      isAdmin: false,
+      projectId: enProject,
+      permissions: ['readPost', 'createPost', 'updatePost'],
+    },
+    {
+      id: enViewerRole,
+      name: 'Viewer',
+      description: 'Viewer role with permission to read posts.',
+      isAdmin: false,
+      projectId: enProject,
+      permissions: ['readPost'],
     },
   ];
 
-  for (const { roleId, projectId } of editorRoles) {
-    await prisma.permission.createMany({
-      data: [
-        {
-          id: v4(),
-          roleId: roleId,
-          projectId: projectId,
-          accessAction: 'readPost',
-        },
-        {
-          id: v4(),
-          roleId: roleId,
-          projectId: projectId,
-          accessAction: 'createPost',
-        },
-        {
-          id: v4(),
-          roleId: roleId,
-          projectId: projectId,
-          accessAction: 'updatePost',
-        },
-        {
-          id: v4(),
-          roleId: roleId,
-          projectId: projectId,
-          accessAction: 'deletePost',
-        },
-      ],
-    });
-  }
-
-  // Guest role
-  const guestRoles = [
+  const jaProjectRoles = [
     {
-      roleId: enGuestRole,
-      projectId: enProject,
+      id: jaAdminRole,
+      name: '管理者',
+      description: 'すべての権限をもつ管理者ロール',
+      isAdmin: true,
+      projectId: jaProject,
+      permissions: [],
     },
     {
-      roleId: jaGuestRole,
+      id: jaEditorRole,
+      name: 'エディター',
+      description: '記事の編集・公開権限をもつ編集者ロール',
+      isAdmin: false,
       projectId: jaProject,
+      permissions: [
+        'readPost',
+        'createPost',
+        'updatePost',
+        'deletePost',
+        'publishPost',
+        'archivePost',
+      ],
+    },
+    {
+      id: jaContributorRole,
+      name: '投稿者',
+      description: '記事の作成権限をもつ投稿者ロール',
+      isAdmin: false,
+      projectId: jaProject,
+      permissions: ['readPost', 'createPost', 'updatePost'],
+    },
+    {
+      id: jaViewerRole,
+      name: 'ビューアー',
+      description: '記事の閲覧権限をもつビューアーロール',
+      isAdmin: false,
+      projectId: jaProject,
+      permissions: ['readPost'],
     },
   ];
 
-  for (const { roleId, projectId } of guestRoles) {
-    await prisma.permission.createMany({
-      data: [
-        {
-          id: v4(),
-          roleId: roleId,
-          projectId: projectId,
-          accessAction: 'readPost',
+  for (const role of [...enProjectRoles, ...jaProjectRoles]) {
+    await prisma.role.create({
+      data: {
+        id: role.id,
+        name: role.name,
+        description: role.description,
+        isAdmin: role.isAdmin,
+        projectId: role.projectId,
+        permissions: {
+          create: role.permissions.map((permission) => ({
+            id: v4(),
+            accessAction: permission,
+            projectId: role.projectId,
+          })),
         },
-      ],
+      },
     });
   }
 };

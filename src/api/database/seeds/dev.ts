@@ -1,7 +1,7 @@
 import { Output } from '../../../utilities/output.js';
 import { bypassPrisma } from '../prisma/client.js';
 import { createAccess } from './createAccess.js';
-import { createPost } from './createPosts.js';
+import { createPost } from './createPost.js';
 import { createProjects, enProject, jaProject } from './createProjects.js';
 import { createRoles } from './createRoles.js';
 import { createUsers } from './createUsers.js';

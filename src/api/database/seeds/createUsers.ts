@@ -5,95 +5,100 @@ import { BypassPrismaType } from '../prisma/client.js';
 import { enProject, jaProject } from './createProjects.js';
 import {
   enAdminRole,
+  enContributorRole,
   enEditorRole,
-  enGuestRole,
+  enViewerRole,
   jaAdminRole,
+  jaContributorRole,
   jaEditorRole,
-  jaGuestRole,
+  jaViewerRole,
 } from './createRoles.js';
 
 export const adminUser = v4();
 export const editorUser = v4();
-export const guestUser = v4();
+export const contributorUser = v4();
+export const viewerUser = v4();
 
 export const createUsers = async (prisma: BypassPrismaType): Promise<void> => {
   const password = await oneWayHash('password');
+  const users = [
+    {
+      id: adminUser,
+      email: 'admin@collections.dev',
+      userProjects: [
+        {
+          projectId: enProject,
+          roleId: enAdminRole,
+        },
+        {
+          projectId: jaProject,
+          roleId: jaAdminRole,
+        },
+      ],
+    },
+    {
+      id: editorUser,
+      email: 'editor@collections.dev',
+      userProjects: [
+        {
+          projectId: enProject,
+          roleId: enEditorRole,
+        },
+        {
+          projectId: jaProject,
+          roleId: jaEditorRole,
+        },
+      ],
+    },
+    {
+      id: contributorUser,
+      email: 'contributor@collections.dev',
+      userProjects: [
+        {
+          projectId: enProject,
+          roleId: enContributorRole,
+        },
+        {
+          projectId: jaProject,
+          roleId: jaContributorRole,
+        },
+      ],
+    },
+    {
+      id: viewerUser,
+      email: 'viewer@collections.dev',
+      userProjects: [
+        {
+          projectId: enProject,
+          roleId: enViewerRole,
+        },
+        {
+          projectId: jaProject,
+          roleId: jaViewerRole,
+        },
+      ],
+    },
+  ];
 
-  await prisma.user.createMany({
-    data: [
-      {
-        id: adminUser,
+  for (const user of users) {
+    await prisma.user.create({
+      data: {
+        id: user.id,
         name: faker.person.firstName() + ' ' + faker.person.lastName(),
-        email: 'admin@collections.dev',
+        email: user.email,
         avatarUrl: faker.image.avatar(),
         password: password,
         isActive: true,
         confirmationToken: v4(),
         confirmedAt: new Date(),
+        userProjects: {
+          create: user.userProjects.map((userProject) => ({
+            id: v4(),
+            projectId: userProject.projectId,
+            roleId: userProject.roleId,
+          })),
+        },
       },
-      {
-        id: editorUser,
-        name: faker.person.firstName() + ' ' + faker.person.lastName(),
-        email: 'editor@collections.dev',
-        avatarUrl: faker.image.avatar(),
-        password: password,
-        isActive: true,
-        confirmationToken: v4(),
-        confirmedAt: new Date(),
-      },
-      {
-        id: guestUser,
-        name: faker.person.firstName() + ' ' + faker.person.lastName(),
-        email: 'guest@collections.dev',
-        avatarUrl: faker.image.avatar(),
-        password: password,
-        isActive: true,
-        confirmationToken: v4(),
-        confirmedAt: new Date(),
-      },
-    ],
-  });
-
-  await prisma.userProject.createMany({
-    data: [
-      // US Project
-      {
-        id: v4(),
-        projectId: enProject,
-        userId: adminUser,
-        roleId: enAdminRole,
-      },
-      {
-        id: v4(),
-        projectId: enProject,
-        userId: editorUser,
-        roleId: enEditorRole,
-      },
-      {
-        id: v4(),
-        projectId: enProject,
-        userId: guestUser,
-        roleId: enGuestRole,
-      },
-      // JA Project
-      {
-        id: v4(),
-        projectId: jaProject,
-        userId: adminUser,
-        roleId: jaAdminRole,
-      },
-      {
-        id: v4(),
-        projectId: jaProject,
-        userId: editorUser,
-        roleId: jaEditorRole,
-      },
-      {
-        id: v4(),
-        projectId: jaProject,
-        userId: guestUser,
-        roleId: jaGuestRole,
-      },
-    ],
-  });
+    });
+  }
 };
