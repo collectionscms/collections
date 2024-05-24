@@ -7,14 +7,15 @@ import { Underline } from '@tiptap/extension-underline';
 import { useEditor } from '@tiptap/react';
 import { StarterKit } from '@tiptap/starter-kit';
 import { enqueueSnackbar } from 'notistack';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { UploadFile } from '../../../../types/index.js';
 import { logger } from '../../../../utilities/logger.js';
 import { IconButton } from '../../../@extended/components/IconButton/index.js';
 import { WYSIWYG } from '../../../components/elements/WYSIWYG/index.js';
+import { useAuth } from '../../../components/utilities/Auth/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
 import { AddLocale } from '../AddLocale/index.js';
 import { PostContextProvider, usePost } from '../Context/index.js';
@@ -23,6 +24,8 @@ import { PostHeader } from '../PostHeader/index.js';
 import { PublishSetting } from '../PublishSetting/index.js';
 
 export const EditPostPageImpl: React.FC = () => {
+  const { hasPermission } = useAuth();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const { id } = useParams();
   if (!id) throw new Error('id is not defined');
@@ -31,6 +34,12 @@ export const EditPostPageImpl: React.FC = () => {
     preventDefault: true,
     enableOnFormTags: ['INPUT'],
   });
+
+  useEffect(() => {
+    if (!hasPermission('updatePost')) {
+      navigate('/admin/posts');
+    }
+  }, [hasPermission]);
 
   const ref = React.useRef<HTMLButtonElement>(null);
 
@@ -200,6 +209,10 @@ export const EditPostPageImpl: React.FC = () => {
     handleChangeLocale(locale);
     enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
   };
+
+  if (!hasPermission('updatePost')) {
+    return <></>;
+  }
 
   return (
     <>

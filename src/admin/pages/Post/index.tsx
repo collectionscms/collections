@@ -15,8 +15,10 @@ import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.
 import { buildColumns } from '../../utilities/buildColumns.js';
 import { PostContextProvider, usePost } from './Context/index.js';
 import { RowMenu } from './RowMenu/index.js';
+import { useAuth } from '../../components/utilities/Auth/index.js';
 
 export const PostPageImpl: React.FC = () => {
+  const { hasPermission } = useAuth();
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { getPosts, createPost } = usePost();
@@ -83,7 +85,11 @@ export const PostPageImpl: React.FC = () => {
 
     switch (fields[i].field) {
       case 'title':
-        return <Link href={`${row.id}`}>{defaultCell}</Link>;
+        return hasPermission('updatePost') ? (
+          <Link href={`${row.id}`}>{defaultCell}</Link>
+        ) : (
+          defaultCell
+        );
       case 'action':
         return (
           <IconButton
@@ -116,7 +122,7 @@ export const PostPageImpl: React.FC = () => {
       <MainCard
         content={false}
         title={<></>}
-        secondary={<CreateNewButton onClick={handleCreatePost} />}
+        secondary={hasPermission('createPost') && <CreateNewButton onClick={handleCreatePost} />}
       >
         <Table columns={columns} rows={posts} />
       </MainCard>

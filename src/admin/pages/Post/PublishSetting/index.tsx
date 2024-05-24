@@ -23,6 +23,7 @@ import { useNavigate } from 'react-router-dom';
 import { LocalizedPost } from '../../../../types/index.js';
 import { logger } from '../../../../utilities/logger.js';
 import { IconButton } from '../../../@extended/components/IconButton/index.js';
+import { useAuth } from '../../../components/utilities/Auth/index.js';
 import { FormValues, editPostValidator } from '../../../fields/validators/post/editPost.js';
 import { usePost } from '../Context/index.js';
 import AppBarStyled from '../PostHeader/AppBarStyled.js';
@@ -34,6 +35,7 @@ export type Props = {
 };
 
 export const PublishSetting: React.FC<Props> = ({ open, post, onClose }) => {
+  const { hasPermission } = useAuth();
   const { t } = useTranslation();
   const navigate = useNavigate();
   const theme = useTheme();
@@ -124,12 +126,14 @@ export const PublishSetting: React.FC<Props> = ({ open, post, onClose }) => {
                         control={<Radio />}
                         label={t('review')}
                       />
-                      <FormControlLabel
-                        {...field}
-                        value="published"
-                        control={<Radio />}
-                        label={t('publish')}
-                      />
+                      {hasPermission('publishPost') && (
+                        <FormControlLabel
+                          {...field}
+                          value="published"
+                          control={<Radio />}
+                          label={t('publish')}
+                        />
+                      )}
                     </RadioGroup>
                   )}
                 />

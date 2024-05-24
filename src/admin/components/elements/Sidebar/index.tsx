@@ -1,15 +1,14 @@
-import { Box, Button, Stack, Tooltip, useTheme } from '@mui/material';
+import { Box, Stack, Tooltip, useTheme } from '@mui/material';
 import React, { useMemo } from 'react';
+import { Avatar } from '../../../@extended/components/Avatar/index.js';
 import { getUrlForTenant } from '../../../utilities/urlGenerator.js';
 import { useAuth } from '../../utilities/Auth/index.js';
 import { Link } from '../Link/index.js';
 import { BottomContent } from '../NavContent/BottomContent/index.js';
-import { Avatar } from '../../../@extended/components/Avatar/index.js';
-import { project } from '../../../../api/routes/project.router.js';
 
 export const Sidebar: React.FC = () => {
   const theme = useTheme();
-  const { me, currentProjectRole, projects } = useAuth();
+  const { currentProjectRole, projects } = useAuth();
   const bottomContent = useMemo(() => <BottomContent />, []);
 
   return (
