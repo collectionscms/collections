@@ -17,12 +17,14 @@ import { getRolesUseCaseSchema } from '../useCases/role/getRoles.schema.js';
 import { GetRolesUseCase } from '../useCases/role/getRoles.useCase.js';
 import { updateRoleUseCaseSchema } from '../useCases/role/updateRole.schema.js';
 import { UpdateRoleUseCase } from '../useCases/role/updateRole.useCase.js';
+import { validateAccess } from '../middlewares/validateAccess.js';
 
 const router = express.Router();
 
 router.get(
   '/roles',
   authenticatedUser,
+  validateAccess(['readRole']),
   asyncHandler(async (_req: Request, res: Response) => {
     const validated = getRolesUseCaseSchema.safeParse({
       projectId: res.projectRole?.id,
@@ -42,6 +44,7 @@ router.get(
 router.get(
   '/roles/:id',
   authenticatedUser,
+  validateAccess(['readRole']),
   asyncHandler(async (req: Request, res: Response) => {
     const validated = getRoleUseCaseSchema.safeParse({
       projectId: res.projectRole?.id,
@@ -62,6 +65,7 @@ router.get(
 router.post(
   '/roles',
   authenticatedUser,
+  validateAccess(['createRole']),
   asyncHandler(async (req: Request, res: Response) => {
     const validated = createRoleUseCaseSchema.safeParse({
       projectId: res.projectRole?.id,
@@ -83,6 +87,7 @@ router.post(
 router.patch(
   '/roles/:id',
   authenticatedUser,
+  validateAccess(['updateRole']),
   asyncHandler(async (req: Request, res: Response) => {
     const validated = updateRoleUseCaseSchema.safeParse({
       projectId: res.projectRole?.id,
@@ -105,6 +110,7 @@ router.patch(
 router.delete(
   '/roles/:id',
   authenticatedUser,
+  validateAccess(['deleteRole']),
   asyncHandler(async (req: Request, res: Response) => {
     const validate = deleteRoleUseCaseSchema.safeParse({
       projectId: res.projectRole?.id,

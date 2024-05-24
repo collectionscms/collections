@@ -14,12 +14,14 @@ import { getUserProfilesUseCaseSchema } from '../useCases/user/getUserProfiles.s
 import { GetUserProfilesUseCase } from '../useCases/user/getUserProfiles.useCase.js';
 import { updateUserUseCaseSchema } from '../useCases/user/updateUser.schema.js';
 import { UpdateUserUseCase } from '../useCases/user/updateUser.useCase.js';
+import { validateAccess } from '../middlewares/validateAccess.js';
 
 const router = express.Router();
 
 router.get(
   '/users',
   authenticatedUser,
+  validateAccess(['readUser']),
   asyncHandler(async (_req: Request, res: Response) => {
     const validated = getUserProfilesUseCaseSchema.safeParse({
       projectId: res.projectRole?.id,
@@ -42,6 +44,7 @@ router.get(
 router.get(
   '/users/:id',
   authenticatedUser,
+  validateAccess(['readUser']),
   asyncHandler(async (req: Request, res: Response) => {
     const validated = getUserProfileUseCaseSchema.safeParse({
       projectId: res.projectRole?.id,
@@ -64,6 +67,7 @@ router.get(
 router.patch(
   '/users/:id',
   authenticatedUser,
+  validateAccess(['updateUser']),
   asyncHandler(async (req: Request, res: Response) => {
     const validated = updateUserUseCaseSchema.safeParse({
       id: req.params.id,
@@ -85,6 +89,7 @@ router.patch(
 router.delete(
   '/users/:id',
   authenticatedUser,
+  validateAccess(['deleteUser']),
   asyncHandler(async (req: Request, res: Response) => {
     const validated = deleteUserUseCaseSchema.safeParse({
       userId: req.params.id,

@@ -10,6 +10,9 @@ export const createPermissions = async (prisma: BypassPrismaType): Promise<void>
     'archivePost',
   ];
   const projectActions = ['readProject', 'updateProject'];
+  const roleActions = ['readRole', 'createRole', 'updateRole', 'deleteRole'];
+  const userActions = ['readUser', 'updateUser', 'deleteUser'];
+  const invitationActions = ['inviteUser'];
 
   await prisma.permission.createMany({
     data: [
@@ -24,6 +27,27 @@ export const createPermissions = async (prisma: BypassPrismaType): Promise<void>
       ...projectActions.map((action, i) => ({
         action,
         group: 'project',
+        displayOrder: i,
+      })),
+
+      // role
+      ...roleActions.map((action, i) => ({
+        action,
+        group: 'role',
+        displayOrder: i,
+      })),
+
+      // user
+      ...userActions.map((action, i) => ({
+        action,
+        group: 'user',
+        displayOrder: i,
+      })),
+
+      // invitation
+      ...invitationActions.map((action, i) => ({
+        action,
+        group: 'invitation',
         displayOrder: i,
       })),
     ],

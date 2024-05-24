@@ -15,7 +15,7 @@ const router = express.Router();
 router.get(
   '/projects',
   authenticatedUser,
-  validateAccess('readProject'),
+  validateAccess(['readProject']),
   asyncHandler(async (_req: Request, res: Response) => {
     const validated = getProjectUseCaseSchema.safeParse({
       projectId: res.projectRole?.id,
@@ -35,7 +35,7 @@ router.get(
 router.patch(
   '/projects',
   authenticatedUser,
-  validateAccess('updateProject'),
+  validateAccess(['updateProject']),
   asyncHandler(async (req: Request, res: Response) => {
     const validated = updateProjectUseCaseSchema.safeParse({
       id: res.projectRole?.id,

@@ -7,6 +7,7 @@ import { PostHistoryRepository } from '../data/postHistory/postHistory.repositor
 import { projectPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';
+import { validateAccess } from '../middlewares/validateAccess.js';
 import { changeStatusUseCaseSchema } from '../useCases/post/changeStatus.schema.js';
 import { ChangeStatusUseCase } from '../useCases/post/changeStatus.useCase.js';
 import { createPostUseCaseSchema } from '../useCases/post/createPost.schema.js';
@@ -25,6 +26,7 @@ const router = express.Router();
 router.get(
   '/posts',
   authenticatedUser,
+  validateAccess(['readPost']),
   asyncHandler(async (req: Request, res: Response) => {
     const locale = req.headers['accept-language'] || env.DEFAULT_LOCALE;
     const validated = getPostsUseCaseSchema.safeParse({
@@ -46,6 +48,7 @@ router.get(
 router.get(
   '/posts/:id',
   authenticatedUser,
+  validateAccess(['readPost']),
   asyncHandler(async (req: Request, res: Response) => {
     const locale = req.headers['accept-language'] || env.DEFAULT_LOCALE;
 
@@ -71,6 +74,7 @@ router.get(
 router.post(
   '/posts',
   authenticatedUser,
+  validateAccess(['createPost']),
   asyncHandler(async (req: Request, res: Response) => {
     const locale = req.headers['accept-language'] || env.DEFAULT_LOCALE;
 
@@ -97,6 +101,7 @@ router.post(
 router.patch(
   '/posts/:id',
   authenticatedUser,
+  validateAccess(['updatePost']),
   asyncHandler(async (req: Request, res: Response) => {
     const validated = updatePostUseCaseSchema.safeParse({
       id: req.params.id,
@@ -120,6 +125,7 @@ router.patch(
 router.delete(
   '/posts/:id',
   authenticatedUser,
+  validateAccess(['deletePost']),
   asyncHandler(async (req: Request, res: Response) => {
     const validated = deletePostUseCaseSchema.safeParse({
       id: req.params.id,
@@ -140,6 +146,7 @@ router.delete(
 router.patch(
   '/posts/:id/changeStatus',
   authenticatedUser,
+  validateAccess(['archivePost', 'publishPost']),
   asyncHandler(async (req: Request, res: Response) => {
     const validated = changeStatusUseCaseSchema.safeParse({
       id: req.params.id,
