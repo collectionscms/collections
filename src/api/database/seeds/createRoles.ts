@@ -34,6 +34,8 @@ export const createRoles = async (prisma: BypassPrismaType): Promise<void> => {
         'deletePost',
         'publishPost',
         'archivePost',
+        'readProject',
+        'updateProject',
       ],
     },
     {
@@ -76,6 +78,8 @@ export const createRoles = async (prisma: BypassPrismaType): Promise<void> => {
         'deletePost',
         'publishPost',
         'archivePost',
+        'readProject',
+        'updateProject',
       ],
     },
     {

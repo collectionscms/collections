@@ -7,6 +7,7 @@ import {
   UserOutlined,
 } from '@ant-design/icons';
 import { Group } from '../components/elements/NavGroup/types.js';
+import { useAuth } from '../components/utilities/Auth/index.js';
 
 // /////////////////////////////////////
 // Portal
@@ -52,26 +53,37 @@ export const postNavItems = (): Group => {
 };
 
 export const settingsGroupNavItems = (): Group => {
+  const { hasPermission } = useAuth();
   const path = '/admin/settings';
+
+  const items = [];
+
+  if (hasPermission('readProject')) {
+    items.push({
+      label: 'project_setting',
+      href: `${path}/project`,
+      icon: SettingOutlined,
+    });
+  }
+
+  if (hasPermission('readRole')) {
+    items.push({
+      label: 'role',
+      href: `${path}/roles`,
+      icon: SafetyOutlined,
+    });
+  }
+
+  if (hasPermission('readUser')) {
+    items.push({
+      label: 'user',
+      href: `${path}/users`,
+      icon: TeamOutlined,
+    });
+  }
 
   return {
     label: 'setting',
-    items: [
-      {
-        label: 'project_setting',
-        href: `${path}/project`,
-        icon: SettingOutlined,
-      },
-      {
-        label: 'role',
-        href: `${path}/roles`,
-        icon: SafetyOutlined,
-      },
-      {
-        label: 'user',
-        href: `${path}/users`,
-        icon: TeamOutlined,
-      },
-    ],
+    items,
   };
 };
