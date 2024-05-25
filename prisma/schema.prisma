@@ -8,23 +8,23 @@ datasource db {
 }
 
 model Project {
-  id           String        @id @db.Uuid
-  name         String        @db.VarChar(255)
-  description  String?       @db.VarChar(255)
-  subdomain    String        @unique @db.VarChar(255)
-  iconUrl      String?       @db.VarChar(255)
-  enabled      Boolean       @default(true)
-  createdAt    DateTime      @default(now()) @db.Timestamptz(6)
-  updatedAt    DateTime      @updatedAt @db.Timestamptz(6)
-  userProjects UserProject[]
-  files        File[]
-  roles        Role[]
-  permissions  Permission[]
-  posts        Post[]
-  contents     Content[]
-  postHistory  PostHistory[]
-  apiKeys      ApiKey[]
-  invitations  Invitation[]
+  id              String           @id @db.Uuid
+  name            String           @db.VarChar(255)
+  description     String?          @db.VarChar(255)
+  subdomain       String           @unique @db.VarChar(255)
+  iconUrl         String?          @db.VarChar(255)
+  enabled         Boolean          @default(true)
+  createdAt       DateTime         @default(now()) @db.Timestamptz(6)
+  updatedAt       DateTime         @updatedAt @db.Timestamptz(6)
+  userProjects    UserProject[]
+  files           File[]
+  roles           Role[]
+  posts           Post[]
+  contents        Content[]
+  postHistory     PostHistory[]
+  apiKeys         ApiKey[]
+  invitations     Invitation[]
+  rolePermissions RolePermission[]
 }
 
 model User {
@@ -70,36 +70,42 @@ model Invitation {
   status      String   @db.VarChar(255)
   createdAt   DateTime @default(now()) @db.Timestamptz(6)
   updatedAt   DateTime @updatedAt @db.Timestamptz(6)
-
-  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  role    Role    @relation(fields: [roleId], references: [id], onDelete: Cascade)
-  user    User    @relation(fields: [invitedById], references: [id])
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  role        Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  user        User     @relation(fields: [invitedById], references: [id])
 }
 
 model Role {
-  id           String        @id @db.Uuid
-  projectId    String        @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
-  name         String        @db.VarChar(255)
-  description  String?       @db.VarChar(255)
-  isAdmin      Boolean       @default(false)
-  createdAt    DateTime      @default(now()) @db.Timestamptz(6)
-  updatedAt    DateTime      @updatedAt @db.Timestamptz(6)
-  permissions  Permission[]
-  project      Project       @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  userProjects UserProject[]
-  invitations  Invitation[]
+  id              String           @id @db.Uuid
+  projectId       String           @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
+  name            String           @db.VarChar(255)
+  description     String?          @db.VarChar(255)
+  isAdmin         Boolean          @default(false)
+  createdAt       DateTime         @default(now()) @db.Timestamptz(6)
+  updatedAt       DateTime         @updatedAt @db.Timestamptz(6)
+  project         Project          @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  userProjects    UserProject[]
+  invitations     Invitation[]
+  rolePermissions RolePermission[]
+}
+
+model RolePermission {
+  id               String     @id @db.Uuid
+  roleId           String     @db.Uuid
+  projectId        String     @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
+  permissionAction String     @db.VarChar(255)
+  createdAt        DateTime   @default(now()) @db.Timestamptz(6)
+  updatedAt        DateTime   @updatedAt @db.Timestamptz(6)
+  role             Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  project          Project    @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  permission       Permission @relation(fields: [permissionAction], references: [action], onDelete: Cascade)
 }
 
 model Permission {
-  id          String   @id @db.Uuid
-  roleId      String   @db.Uuid
-  projectId   String   @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
-  name        String   @db.VarChar(255)
-  description String?  @db.VarChar(255)
-  createdAt   DateTime @default(now()) @db.Timestamptz(6)
-  updatedAt   DateTime @updatedAt @db.Timestamptz(6)
-  role        Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
-  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  action          String           @id @db.VarChar(255)
+  group           String           @db.VarChar(255)
+  displayOrder    Int
+  rolePermissions RolePermission[]
 }
 
 model File {

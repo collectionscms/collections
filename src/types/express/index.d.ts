@@ -4,21 +4,15 @@ declare namespace Express {
       id: string;
       email: string;
     };
-    tenantProjectId?: string;
-    projects?: {
-      [key: string]: {
-        id: string;
-        subdomain: string;
-        enabled: boolean;
-        role: {
-          id: string;
-          projectId: string;
-          isAdmin: boolean;
-          permissions: {
-            id: string;
-            name: string;
-          }[];
-        };
+    projectRole?: {
+      id: string;
+      subdomain: string;
+      enabled: boolean;
+      role: {
+        isAdmin: boolean;
+        permissions: {
+          action: string;
+        }[];
       };
     };
   }

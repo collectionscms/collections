@@ -1,5 +1,4 @@
-import { Permission } from '@aws-sdk/client-s3';
-import { Content, File, PostHistory, Project, Role } from '@prisma/client';
+import { Content, File, Permission, PostHistory, Project, Role } from '@prisma/client';
 
 export type UserProfile = {
   id: string;

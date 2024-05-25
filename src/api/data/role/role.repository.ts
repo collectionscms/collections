@@ -1,5 +1,6 @@
-import { Role } from '@prisma/client';
-import { ProjectPrismaType } from '../../database/prisma/client';
+import { Permission, Role } from '@prisma/client';
+import { ProjectPrismaType } from '../../database/prisma/client.js';
+import { PermissionEntity } from '../permission/permission.entity.js';
 import { RoleEntity } from './role.entity.js';
 
 export class RoleRepository {
@@ -16,6 +17,34 @@ export class RoleRepository {
     });
 
     return RoleEntity.Reconstruct<Role, RoleEntity>(record);
+  }
+
+  async findOneWithPermissions(
+    prisma: ProjectPrismaType,
+    id: string
+  ): Promise<{
+    role: RoleEntity;
+    permissions: PermissionEntity[];
+  }> {
+    const records = await prisma.role.findUniqueOrThrow({
+      where: {
+        id,
+      },
+      include: {
+        rolePermissions: {
+          include: {
+            permission: true,
+          },
+        },
+      },
+    });
+
+    return {
+      role: RoleEntity.Reconstruct<Role, RoleEntity>(records),
+      permissions: records.rolePermissions.map((rolePermission) =>
+        PermissionEntity.Reconstruct<Permission, PermissionEntity>(rolePermission.permission)
+      ),
+    };
   }
 
   async create(prisma: ProjectPrismaType, entity: RoleEntity): Promise<RoleEntity> {

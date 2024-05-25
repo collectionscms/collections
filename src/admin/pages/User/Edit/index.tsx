@@ -10,6 +10,7 @@ import { logger } from '../../../../utilities/logger.js';
 import { MainCard } from '../../../@extended/components/MainCard/index.js';
 import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscardDialog/index.js';
 import { DeleteButton } from '../../../components/elements/DeleteButton/index.js';
+import { useAuth } from '../../../components/utilities/Auth/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
 import {
   FormValues,
@@ -22,6 +23,7 @@ const EditUserPageImpl: React.FC = () => {
   const { id } = useParams();
   if (!id) throw new Error('id is not defined');
 
+  const { hasPermission } = useAuth();
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
@@ -104,7 +106,11 @@ const EditUserPageImpl: React.FC = () => {
                     justifyContent="space-between"
                     sx={{ width: 1 }}
                   >
-                    <DeleteButton id={id} slug="users" onSuccess={navigateToList} />
+                    {hasPermission('deleteUser') ? (
+                      <DeleteButton id={id} slug="users" onSuccess={navigateToList} />
+                    ) : (
+                      <div />
+                    )}
                     <Stack direction="row" spacing={1}>
                       <Button variant="outlined" color="secondary" onClick={navigateToList}>
                         {t('cancel')}

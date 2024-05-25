@@ -21,7 +21,7 @@ router.post(
     const files = res.locals.files as FileEntity[];
 
     const validated = createFileUseCaseSchema.safeParse({
-      projectId: res.tenantProjectId,
+      projectId: res.projectRole?.id,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
     if (!files || files.length === 0) throw new InvalidPayloadException('bad_request');
@@ -42,7 +42,7 @@ router.get(
   asyncHandler(async (req: Request, res: Response) => {
     const validated = getFileUseCaseSchema.safeParse({
       fileId: req.params.id,
-      projectId: res.tenantProjectId,
+      projectId: res.projectRole?.id,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 

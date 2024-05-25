@@ -1,6 +1,5 @@
 import express, { Request, Response } from 'express';
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
-import { PermissionRepository } from '../data/permission/permission.repository.js';
 import { RoleRepository } from '../data/role/role.repository.js';
 import { UserProjectRepository } from '../data/userProject/userProject.repository.js';
 import { projectPrisma } from '../database/prisma/client.js';
@@ -18,15 +17,17 @@ import { getRolesUseCaseSchema } from '../useCases/role/getRoles.schema.js';
 import { GetRolesUseCase } from '../useCases/role/getRoles.useCase.js';
 import { updateRoleUseCaseSchema } from '../useCases/role/updateRole.schema.js';
 import { UpdateRoleUseCase } from '../useCases/role/updateRole.useCase.js';
+import { validateAccess } from '../middlewares/validateAccess.js';
 
 const router = express.Router();
 
 router.get(
   '/roles',
   authenticatedUser,
+  validateAccess(['readRole']),
   asyncHandler(async (_req: Request, res: Response) => {
     const validated = getRolesUseCaseSchema.safeParse({
-      projectId: res.tenantProjectId,
+      projectId: res.projectRole?.id,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
@@ -43,9 +44,10 @@ router.get(
 router.get(
   '/roles/:id',
   authenticatedUser,
+  validateAccess(['readRole']),
   asyncHandler(async (req: Request, res: Response) => {
     const validated = getRoleUseCaseSchema.safeParse({
-      projectId: res.tenantProjectId,
+      projectId: res.projectRole?.id,
       roleId: req.params.id,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
@@ -63,9 +65,10 @@ router.get(
 router.post(
   '/roles',
   authenticatedUser,
+  validateAccess(['createRole']),
   asyncHandler(async (req: Request, res: Response) => {
     const validated = createRoleUseCaseSchema.safeParse({
-      projectId: res.tenantProjectId,
+      projectId: res.projectRole?.id,
       name: req.body.name,
       description: req.body.description,
     });
@@ -84,9 +87,10 @@ router.post(
 router.patch(
   '/roles/:id',
   authenticatedUser,
+  validateAccess(['updateRole']),
   asyncHandler(async (req: Request, res: Response) => {
     const validated = updateRoleUseCaseSchema.safeParse({
-      projectId: res.tenantProjectId,
+      projectId: res.projectRole?.id,
       roleId: req.params.id,
       name: req.body.name,
       description: req.body.description,
@@ -106,9 +110,10 @@ router.patch(
 router.delete(
   '/roles/:id',
   authenticatedUser,
+  validateAccess(['deleteRole']),
   asyncHandler(async (req: Request, res: Response) => {
     const validate = deleteRoleUseCaseSchema.safeParse({
-      projectId: res.tenantProjectId,
+      projectId: res.projectRole?.id,
       roleId: req.params.id,
     });
     if (!validate.success) throw new InvalidPayloadException('bad_request', validate.error);
@@ -129,14 +134,14 @@ router.get(
   authenticatedUser,
   asyncHandler(async (req: Request, res: Response) => {
     const validated = getPermissionsUseCaseSchema.safeParse({
-      projectId: res.tenantProjectId,
+      projectId: res.projectRole?.id,
       roleId: req.params.id,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
     const useCase = new GetPermissionsUseCase(
       projectPrisma(validated.data.projectId),
-      new PermissionRepository()
+      new RoleRepository()
     );
     const permissions = await useCase.execute(validated.data.roleId);
 

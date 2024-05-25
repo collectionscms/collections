@@ -15,7 +15,7 @@ import { SettingRoutes } from './Setting/index.js';
 import { TenantRootRoutes } from './TenantRoot/index.js';
 
 export const Routes: React.FC = () => {
-  const { me, currentProjectRole } = useAuth();
+  const { me } = useAuth();
 
   const portalRouter = createBrowserRouter([
     PortalRootRoutes(),
@@ -33,7 +33,7 @@ export const Routes: React.FC = () => {
   const tenantRouter = createBrowserRouter([
     TenantRootRoutes(),
     PostRoutes(),
-    SettingRoutes(currentProjectRole?.role.isAdmin || false),
+    SettingRoutes(),
     NoRoutes(),
   ]);
 

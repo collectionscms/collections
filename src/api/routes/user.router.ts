@@ -14,15 +14,17 @@ import { getUserProfilesUseCaseSchema } from '../useCases/user/getUserProfiles.s
 import { GetUserProfilesUseCase } from '../useCases/user/getUserProfiles.useCase.js';
 import { updateUserUseCaseSchema } from '../useCases/user/updateUser.schema.js';
 import { UpdateUserUseCase } from '../useCases/user/updateUser.useCase.js';
+import { validateAccess } from '../middlewares/validateAccess.js';
 
 const router = express.Router();
 
 router.get(
   '/users',
   authenticatedUser,
+  validateAccess(['readUser']),
   asyncHandler(async (_req: Request, res: Response) => {
     const validated = getUserProfilesUseCaseSchema.safeParse({
-      projectId: res.tenantProjectId,
+      projectId: res.projectRole?.id,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
@@ -42,9 +44,10 @@ router.get(
 router.get(
   '/users/:id',
   authenticatedUser,
+  validateAccess(['readUser']),
   asyncHandler(async (req: Request, res: Response) => {
     const validated = getUserProfileUseCaseSchema.safeParse({
-      projectId: res.tenantProjectId,
+      projectId: res.projectRole?.id,
       userId: req.params.id,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
@@ -64,10 +67,11 @@ router.get(
 router.patch(
   '/users/:id',
   authenticatedUser,
+  validateAccess(['updateUser']),
   asyncHandler(async (req: Request, res: Response) => {
     const validated = updateUserUseCaseSchema.safeParse({
       id: req.params.id,
-      projectId: res.tenantProjectId,
+      projectId: res.projectRole?.id,
       roleId: req.body.roleId,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
@@ -85,10 +89,11 @@ router.patch(
 router.delete(
   '/users/:id',
   authenticatedUser,
+  validateAccess(['deleteUser']),
   asyncHandler(async (req: Request, res: Response) => {
     const validated = deleteUserUseCaseSchema.safeParse({
       userId: req.params.id,
-      projectId: res.tenantProjectId,
+      projectId: res.projectRole?.id,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 

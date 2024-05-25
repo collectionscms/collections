@@ -1,101 +1,104 @@
 import { faker } from '@faker-js/faker';
 import { v4 } from 'uuid';
 import { oneWayHash } from '../../utilities/oneWayHash.js';
-import { bypassPrisma } from '../prisma/client.js';
-import { jaProject, usProject } from './createProjects.js';
+import { BypassPrismaType } from '../prisma/client.js';
+import { enProject, jaProject } from './createProjects.js';
 import {
+  enAdminRole,
+  enContributorRole,
+  enEditorRole,
+  enViewerRole,
   jaAdminRole,
+  jaContributorRole,
   jaEditorRole,
-  jaGuestRole,
-  usAdminRole,
-  usEditorRole,
-  usGuestRole,
+  jaViewerRole,
 } from './createRoles.js';
 
 export const adminUser = v4();
 export const editorUser = v4();
-export const guestUser = v4();
+export const contributorUser = v4();
+export const viewerUser = v4();
 
-export const createUsers = async (): Promise<void> => {
+export const createUsers = async (prisma: BypassPrismaType): Promise<void> => {
   const password = await oneWayHash('password');
-
-  await bypassPrisma.$transaction(async (tx) => {
-    await tx.user.createMany({
-      data: [
+  const users = [
+    {
+      id: adminUser,
+      email: 'admin@collections.dev',
+      userProjects: [
         {
-          id: adminUser,
-          name: faker.person.firstName() + ' ' + faker.person.lastName(),
-          email: 'admin@collections.dev',
-          avatarUrl: faker.image.avatar(),
-          password: password,
-          isActive: true,
-          confirmationToken: v4(),
-          confirmedAt: new Date(),
+          projectId: enProject,
+          roleId: enAdminRole,
         },
         {
-          id: editorUser,
-          name: faker.person.firstName() + ' ' + faker.person.lastName(),
-          email: 'editor@collections.dev',
-          avatarUrl: faker.image.avatar(),
-          password: password,
-          isActive: true,
-          confirmationToken: v4(),
-          confirmedAt: new Date(),
-        },
-        {
-          id: guestUser,
-          name: faker.person.firstName() + ' ' + faker.person.lastName(),
-          email: 'guest@collections.dev',
-          avatarUrl: faker.image.avatar(),
-          password: password,
-          isActive: true,
-          confirmationToken: v4(),
-          confirmedAt: new Date(),
-        },
-      ],
-    });
-
-    await tx.userProject.createMany({
-      data: [
-        // US Project
-        {
-          id: v4(),
-          projectId: usProject,
-          userId: adminUser,
-          roleId: usAdminRole,
-        },
-        {
-          id: v4(),
-          projectId: usProject,
-          userId: editorUser,
-          roleId: usEditorRole,
-        },
-        {
-          id: v4(),
-          projectId: usProject,
-          userId: guestUser,
-          roleId: usGuestRole,
-        },
-        // JA Project
-        {
-          id: v4(),
           projectId: jaProject,
-          userId: adminUser,
           roleId: jaAdminRole,
         },
+      ],
+    },
+    {
+      id: editorUser,
+      email: 'editor@collections.dev',
+      userProjects: [
         {
-          id: v4(),
+          projectId: enProject,
+          roleId: enEditorRole,
+        },
+        {
           projectId: jaProject,
-          userId: editorUser,
           roleId: jaEditorRole,
         },
+      ],
+    },
+    {
+      id: contributorUser,
+      email: 'contributor@collections.dev',
+      userProjects: [
         {
-          id: v4(),
+          projectId: enProject,
+          roleId: enContributorRole,
+        },
+        {
           projectId: jaProject,
-          userId: guestUser,
-          roleId: jaGuestRole,
+          roleId: jaContributorRole,
         },
       ],
+    },
+    {
+      id: viewerUser,
+      email: 'viewer@collections.dev',
+      userProjects: [
+        {
+          projectId: enProject,
+          roleId: enViewerRole,
+        },
+        {
+          projectId: jaProject,
+          roleId: jaViewerRole,
+        },
+      ],
+    },
+  ];
+
+  for (const user of users) {
+    await prisma.user.create({
+      data: {
+        id: user.id,
+        name: faker.person.firstName() + ' ' + faker.person.lastName(),
+        email: user.email,
+        avatarUrl: faker.image.avatar(),
+        password: password,
+        isActive: true,
+        confirmationToken: v4(),
+        confirmedAt: new Date(),
+        userProjects: {
+          create: user.userProjects.map((userProject) => ({
+            id: v4(),
+            projectId: userProject.projectId,
+            roleId: userProject.roleId,
+          })),
+        },
+      },
     });
-  });
+  }
 };

@@ -5,6 +5,7 @@ import { UserProjectRepository } from '../data/userProject/userProject.repositor
 import { bypassPrisma, projectPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';
+import { validateAccess } from '../middlewares/validateAccess.js';
 import { InvitationMailService } from '../services/invitationMail.service.js';
 import { acceptInvitationUseCaseSchema } from '../useCases/invitation/acceptInvitation.schema.js';
 import { AcceptInvitationUseCase } from '../useCases/invitation/acceptInvitation.useCase.js';
@@ -16,9 +17,10 @@ const router = express.Router();
 router.post(
   '/invitations',
   authenticatedUser,
+  validateAccess(['inviteUser']),
   asyncHandler(async (req: Request, res: Response) => {
     const validated = inviteUserUseCaseSchema.safeParse({
-      projectId: res.tenantProjectId,
+      projectId: res.projectRole?.id,
       email: req.body.email,
       roleId: req.body.roleId,
       invitedById: res.user.id,

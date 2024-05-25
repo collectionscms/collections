@@ -10,9 +10,9 @@ import {
   Typography,
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
-import { t } from 'i18next';
 import React, { useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import { logger } from '../../../utilities/logger.js';
 import { AuthCard } from '../../@extended/components/AuthCard/index.js';
@@ -21,6 +21,7 @@ import { FormValues, signUpSchema } from '../../fields/schemas/authentications/s
 import { SignUpContextProvider, useSignUp } from './Context/index.js';
 
 const SignUpImpl: React.FC = () => {
+  const { t } = useTranslation();
   const { signUp } = useSignUp();
   const { trigger, isMutating } = signUp();
   const location = useLocation();

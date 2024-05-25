@@ -6,10 +6,10 @@ import Placeholder from '@tiptap/extension-placeholder';
 import { Underline } from '@tiptap/extension-underline';
 import { useEditor } from '@tiptap/react';
 import { StarterKit } from '@tiptap/starter-kit';
-import { t } from 'i18next';
 import { enqueueSnackbar } from 'notistack';
 import React, { useRef, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
+import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { UploadFile } from '../../../../types/index.js';
 import { logger } from '../../../../utilities/logger.js';
@@ -23,6 +23,7 @@ import { PostHeader } from '../PostHeader/index.js';
 import { PublishSetting } from '../PublishSetting/index.js';
 
 export const EditPostPageImpl: React.FC = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   if (!id) throw new Error('id is not defined');
 

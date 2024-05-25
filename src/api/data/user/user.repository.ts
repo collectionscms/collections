@@ -18,18 +18,6 @@ export class UserRepository {
         },
         isActive: true,
       },
-      include: {
-        userProjects: {
-          include: {
-            project: true,
-            role: {
-              include: {
-                permissions: true,
-              },
-            },
-          },
-        },
-      },
     });
 
     if (!user || !comparePasswords(user.password, password)) {
@@ -128,7 +116,11 @@ export class UserRepository {
             project: true,
             role: {
               include: {
-                permissions: true,
+                rolePermissions: {
+                  include: {
+                    permission: true,
+                  },
+                },
               },
             },
           },
@@ -142,8 +134,8 @@ export class UserRepository {
         return {
           project: ProjectEntity.Reconstruct<Project, ProjectEntity>(userProject.project),
           role: RoleEntity.Reconstruct<Role, RoleEntity>(userProject.role),
-          permissions: userProject.role.permissions.map((permission) =>
-            PermissionEntity.Reconstruct<Permission, PermissionEntity>(permission)
+          permissions: userProject.role.rolePermissions.map((rolePermission) =>
+            PermissionEntity.Reconstruct<Permission, PermissionEntity>(rolePermission.permission)
           ),
         };
       }),

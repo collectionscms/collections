@@ -6,6 +6,7 @@ import { PostHistoryRepository } from '../data/postHistory/postHistory.repositor
 import { projectPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';
+import { validateAccess } from '../middlewares/validateAccess.js';
 import { createContentUseCaseSchema } from '../useCases/content/createContent.schema.js';
 import { CreateContentUseCase } from '../useCases/content/createContent.useCase.js';
 import { updateContentUseCaseSchema } from '../useCases/content/updateContent.schema.js';
@@ -16,9 +17,10 @@ const router = express.Router();
 router.post(
   '/posts/:id/contents',
   authenticatedUser,
+  validateAccess(['createPost']),
   asyncHandler(async (req: Request, res: Response) => {
     const validated = createContentUseCaseSchema.safeParse({
-      projectId: res.tenantProjectId,
+      projectId: res.projectRole?.id,
       id: req.params.id,
       locale: req.body.locale,
     });
@@ -39,9 +41,10 @@ router.post(
 router.patch(
   '/contents/:id',
   authenticatedUser,
+  validateAccess(['updatePost']),
   asyncHandler(async (req: Request, res: Response) => {
     const validated = updateContentUseCaseSchema.safeParse({
-      projectId: res.tenantProjectId,
+      projectId: res.projectRole?.id,
       id: req.params.id,
       userId: res.user.id,
       fileId: req.body.fileId,

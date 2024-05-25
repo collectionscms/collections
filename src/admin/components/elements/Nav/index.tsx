@@ -5,7 +5,6 @@ import {
   profileNavItems,
   settingsGroupNavItems,
 } from '../../../utilities/groupNavItems.js';
-import { useAuth } from '../../utilities/Auth/index.js';
 import { NavContent } from '../NavContent/index.js';
 import { Sidebar } from '../Sidebar/index.js';
 import { MinimalStyled } from './minimal.js';
@@ -18,14 +17,11 @@ type Props = {
 };
 
 export const Nav: React.FC<Props> = ({ window, open, variable, toggleDrawer }) => {
-  const { currentProjectRole } = useAuth();
   const theme = useTheme();
   const lgUp = useMediaQuery(theme.breakpoints.up('lg'));
   const navWidth = variable === 'portal' ? 60 : 300;
 
-  const tenantGroups = currentProjectRole?.role.isAdmin
-    ? [postNavItems(), settingsGroupNavItems()]
-    : [postNavItems()];
+  const tenantGroups = [postNavItems(), settingsGroupNavItems()];
   const profileGroups = [profileNavItems()];
 
   const container = window !== undefined ? () => window().document.body : undefined;

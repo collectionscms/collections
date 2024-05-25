@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { logger } from '../../../utilities/logger.js';
 import { MainCard } from '../../@extended/components/MainCard/index.js';
 import { ConfirmDiscardDialog } from '../../components/elements/ConfirmDiscardDialog/index.js';
+import { useAuth } from '../../components/utilities/Auth/index.js';
 import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.js';
 import {
   FormValues,
@@ -17,6 +18,7 @@ import { useUnsavedChangesPrompt } from '../../hooks/useUnsavedChangesPrompt.js'
 import { ProjectContextProvider, useProject } from './Context/index.js';
 
 const ProjectImpl: React.FC = () => {
+  const { hasPermission } = useAuth();
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
   const { getProject, updateProject } = useProject();
@@ -73,13 +75,15 @@ const ProjectImpl: React.FC = () => {
                     <FormHelperText error>{errors.name?.message}</FormHelperText>
                   </Stack>
                 </Grid>
-                <Grid xs={12}>
-                  <Stack direction="row" justifyContent="flex-end">
-                    <Button variant="contained" type="submit" disabled={isMutating}>
-                      {t('update')}
-                    </Button>
-                  </Stack>
-                </Grid>
+                {hasPermission('updateProject') && (
+                  <Grid xs={12}>
+                    <Stack direction="row" justifyContent="flex-end">
+                      <Button variant="contained" type="submit" disabled={isMutating}>
+                        {t('update')}
+                      </Button>
+                    </Stack>
+                  </Grid>
+                )}
               </Grid>
             </form>
           </MainCard>

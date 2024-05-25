@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { logger } from '../../../../utilities/logger.js';
 import { BaseDialog } from '../../../components/elements/BaseDialog/index.js';
 import { DeleteDocument } from '../../../components/elements/DeleteDocument/index.js';
+import { useAuth } from '../../../components/utilities/Auth/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
 import { PostContextProvider, usePost } from '../Context/index.js';
 
@@ -19,6 +20,7 @@ type Props = {
 };
 
 export const RowMenuImpl: React.FC<Props> = (props) => {
+  const { hasPermission } = useAuth();
   const { postId, status, menu, onDeleteSuccess, onClose, onArchiveSuccess, onPublishSuccess } =
     props;
   const [openDelete, setOpenDelete] = useState(false);
@@ -104,28 +106,30 @@ export const RowMenuImpl: React.FC<Props> = (props) => {
         onClose={handleClose}
         sx={{ zIndex: 1 }}
       >
-        {status === 'published' && (
+        {status === 'published' && hasPermission('archivePost') && (
           <MenuItem onClick={() => setOpenArchive(true)}>
             <ListItemIcon>
               <RiForbid2Line size={18} />
             </ListItemIcon>
-            <ListItemText> {t('archive')}</ListItemText>
+            <ListItemText>{t('archive')}</ListItemText>
           </MenuItem>
         )}
-        {status === 'archived' && (
+        {status === 'archived' && hasPermission('publishPost') && (
           <MenuItem onClick={() => setOpenPublish(true)}>
             <ListItemIcon>
               <RiBookOpenLine size={18} />
             </ListItemIcon>
-            <ListItemText> {t('publishing')}</ListItemText>
+            <ListItemText>{t('publishing')}</ListItemText>
           </MenuItem>
         )}
-        <MenuItem onClick={() => setOpenDelete(true)}>
-          <ListItemIcon>
-            <RiDeleteBinLine size={18} />
-          </ListItemIcon>
-          <ListItemText> {t('delete')}</ListItemText>
-        </MenuItem>
+        {status !== 'published' && hasPermission('deletePost') && (
+          <MenuItem onClick={() => setOpenDelete(true)}>
+            <ListItemIcon>
+              <RiDeleteBinLine size={18} />
+            </ListItemIcon>
+            <ListItemText>{t('delete')}</ListItemText>
+          </MenuItem>
+        )}
       </Menu>
     </>
   );

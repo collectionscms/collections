@@ -11,7 +11,7 @@ type Props = {
 export const NavContent: React.FC<Props> = ({ navGroupItems }) => {
   const navHeader = useMemo(() => <NavHeader />, []);
   const navGroups = navGroupItems.map((group) => {
-    return <NavGroup key={group.label} group={group} />;
+    return group.items.length > 0 ? <NavGroup key={group.label} group={group} /> : null;
   });
 
   return (

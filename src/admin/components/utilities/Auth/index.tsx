@@ -14,6 +14,7 @@ type AuthContext = {
   getCsrfToken: () => SWRResponse<string, Error>;
   login: () => SWRMutationResponse<void, Error, string, Record<string, any>>;
   logout: () => SWRMutationResponse<void, Error, string, Record<string, any>>;
+  hasPermission: (action: string) => boolean;
 };
 
 const Context = createContext({} as AuthContext);
@@ -73,6 +74,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     { suspense: true }
   );
 
+  const hasPermission = (action: string) => {
+    if (!subdomain) return false;
+    const projectRole =
+      projectRoles?.find((projectRole) => projectRole.project.subdomain === subdomain) ?? null;
+    if (!projectRole) return false;
+    if (projectRole.role.isAdmin) return true;
+
+    return projectRole.permissions.some((p) => p.action === action);
+  };
+
   const value = useMemo(
     () => ({
       me,
@@ -83,6 +94,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       getCsrfToken,
       login,
       logout,
+      hasPermission,
     }),
     [me, getCsrfToken, login, logout]
   );

@@ -1,6 +1,6 @@
-import { t } from 'i18next';
 import { enqueueSnackbar } from 'notistack';
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Loading } from '../../components/elements/Loading/index.js';
 import { useAuth } from '../../components/utilities/Auth/index.js';
@@ -9,6 +9,7 @@ import { getUrlForTenant } from '../../utilities/urlGenerator.js';
 import { AcceptInvitationContextProvider, useInvitation } from './Context/index.js';
 
 const AcceptInvitationImpl: React.FC = () => {
+  const { t } = useTranslation();
   const { me } = useAuth();
   const navigate = useNavigate();
   const { accept } = useInvitation();
