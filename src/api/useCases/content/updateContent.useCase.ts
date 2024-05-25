@@ -28,23 +28,22 @@ export class UpdateContentUseCase {
 
     const result = await this.prisma.$transaction(async (tx) => {
       if (post.status === 'init') {
-        const entity = PostEntity.Reconstruct<Post, PostEntity>(post.toPersistence());
+        const entity = PostEntity.Reconstruct<Post, PostEntity>(post.toResponse());
         entity.updateStatus('draft');
+
         await this.postRepository.update(tx, projectId, entity);
 
-        await this.postHistoryRepository.create(
-          tx,
-          PostHistoryEntity.Construct({
-            projectId: post.projectId,
-            postId: post.id,
-            userId,
-            status: 'draft',
-            version: post.version,
-          })
-        );
+        const postHistoryEntity = PostHistoryEntity.Construct({
+          projectId: projectId,
+          postId: post.id,
+          userId,
+          status: 'draft',
+          version: post.version,
+        });
+        await this.postHistoryRepository.create(tx, postHistoryEntity);
       }
 
-      const entity = ContentEntity.Reconstruct<Content, ContentEntity>(record.toPersistence());
+      const entity = ContentEntity.Reconstruct<Content, ContentEntity>(record.toResponse());
       entity.updateContent({
         fileId,
         title,
@@ -53,7 +52,9 @@ export class UpdateContentUseCase {
         bodyHtml,
       });
 
-      return await this.contentRepository.update(this.prisma, entity);
+      const content = await this.contentRepository.update(this.prisma, entity);
+
+      return content;
     });
 
     return result.toResponse();

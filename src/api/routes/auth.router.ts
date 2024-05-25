@@ -1,15 +1,18 @@
 import express, { Request, Response } from 'express';
+import { InvalidCredentialsException } from '../../exceptions/invalidCredentials.js';
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
+import { UnknownException } from '../../exceptions/storage/unknown.js';
 import { InvitationRepository } from '../data/invitation/invitation.repository.js';
 import { UserRepository } from '../data/user/user.repository.js';
 import { UserProjectRepository } from '../data/userProject/userProject.repository.js';
 import { bypassPrisma, prisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { SignUpMailService } from '../services/signUpMail.service.js';
+import { signInErrorUseCaseSchema } from '../useCases/auth/signInError.schema.js';
 import { signUpUseCaseSchema } from '../useCases/auth/signUp.schema.js';
 import { SignUpUseCase } from '../useCases/auth/signUp.useCase.js';
-import { VerifyUseCase } from '../useCases/auth/verify.useCase.js';
 import { verifyUseCaseSchema } from '../useCases/auth/verify.schema.js';
+import { VerifyUseCase } from '../useCases/auth/verify.useCase.js';
 
 const router = express.Router();
 
@@ -53,6 +56,27 @@ router.post(
     return res.json({
       me,
     });
+  })
+);
+
+// Called when an exception is thrown by auth.js authorize
+router.get(
+  '/auth/signin',
+  asyncHandler(async (req: Request, res: Response) => {
+    const validated = signInErrorUseCaseSchema.safeParse({
+      error: req.query.error,
+      code: req.query.code,
+    });
+    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
+
+    if (
+      validated.data.error === 'CredentialsSignin' &&
+      validated.data.code === 'invalid_credentials'
+    ) {
+      throw new InvalidCredentialsException('incorrect_email_or_password');
+    } else {
+      throw new UnknownException('internal_server_error');
+    }
   })
 );
 

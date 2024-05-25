@@ -5,9 +5,15 @@ import { logger } from '../../utilities/logger.js';
 import { UserRepository } from '../data/user/user.repository.js';
 import { bypassPrisma } from '../database/prisma/client.js';
 import { LoginUseCase } from '../useCases/auth/login.useCase.js';
+import { CredentialsSignin } from '@auth/express';
 
 const useSecureCookies = env.PUBLIC_SERVER_URL.startsWith('https://');
 const hostName = new URL(env.PUBLIC_SERVER_URL).hostname;
+
+// ref: https://authjs.dev/reference/express#credentialssignin
+class InvalidLoginError extends CredentialsSignin {
+  code = 'invalid_credentials';
+}
 
 export const authConfig: Omit<AuthConfig, 'raw'> = {
   callbacks: {
@@ -44,9 +50,8 @@ export const authConfig: Omit<AuthConfig, 'raw'> = {
           return me;
         } catch (e) {
           logger.error(e);
+          throw new InvalidLoginError();
         }
-
-        return null;
       },
     }),
   ],
