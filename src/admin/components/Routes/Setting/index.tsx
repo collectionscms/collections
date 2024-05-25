@@ -96,7 +96,7 @@ export const SettingRoutes = () => {
     });
   }
 
-  if (hasPermission('createUser')) {
+  if (hasPermission('inviteUser')) {
     children.push({
       path: 'users/create',
       element: (

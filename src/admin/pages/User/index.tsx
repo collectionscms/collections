@@ -9,11 +9,13 @@ import { Link } from '../../components/elements/Link/index.js';
 import { Cell } from '../../components/elements/Table/Cell/index.js';
 import { cells } from '../../components/elements/Table/Cell/types.js';
 import { Table } from '../../components/elements/Table/index.js';
+import { useAuth } from '../../components/utilities/Auth/index.js';
 import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.js';
 import { buildColumns } from '../../utilities/buildColumns.js';
 import { UserContextProvider, useUser } from './Context/index.js';
 
 const UserPageImpl: React.FC = () => {
+  const { hasPermission } = useAuth();
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { getUsers } = useUser();
@@ -32,14 +34,21 @@ const UserPageImpl: React.FC = () => {
       case 'role':
         return <Cell colIndex={i} type={fields[i].type} cellData={row.role.name} />;
       case 'name':
-        return row.isRegistered ? (
-          <Link href={`${row.id}`}>{defaultCell}</Link>
-        ) : (
-          <>
-            {defaultCell}
-            <Chip label={t('invited')} color="warning" size="small" sx={{ marginLeft: 1 }} />
-          </>
-        );
+        if (row.isRegistered) {
+          return hasPermission('updateUser') ? (
+            <Link href={`${row.id}`}>{defaultCell}</Link>
+          ) : (
+            <>{defaultCell}</>
+          );
+        } else {
+          return (
+            <>
+              {defaultCell}
+              <Chip label={t('invited')} color="warning" size="small" sx={{ marginLeft: 1 }} />
+            </>
+          );
+        }
+
       default:
         return defaultCell;
     }
@@ -50,12 +59,14 @@ const UserPageImpl: React.FC = () => {
       content={false}
       title={<></>}
       secondary={
-        <CreateNewButton
-          options={{
-            subject: t('add'),
-          }}
-          onClick={() => navigate('create')}
-        />
+        hasPermission('inviteUser') && (
+          <CreateNewButton
+            options={{
+              subject: t('add'),
+            }}
+            onClick={() => navigate('create')}
+          />
+        )
       }
     >
       <Table columns={columns} rows={data} />
