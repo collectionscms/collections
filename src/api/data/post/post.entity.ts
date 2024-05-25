@@ -106,7 +106,8 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     histories: PostHistoryEntity[],
     createdBy: UserEntity
   ): LocalizedPost {
-    const localizedContent = contents.find((c) => c.content.isSameLocaleContent(locale));
+    const localizedOrDefaultContent =
+      contents.find((c) => c.content.isSameLocaleContent(locale)) || contents[0];
     const locales = contents.map((c) => c.content.locale);
 
     return {
@@ -116,11 +117,11 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       updatedAt: this.props.updatedAt,
       publishedAt: this.props.publishedAt,
       defaultLocale: this.props.defaultLocale,
-      title: localizedContent?.content.title ?? '',
-      body: localizedContent?.content.body ?? '',
-      bodyJson: localizedContent?.content.bodyJson ?? '',
-      bodyHtml: localizedContent?.content.bodyHtml ?? '',
-      contentLocale: localizedContent?.content.locale || this.props.defaultLocale,
+      title: localizedOrDefaultContent.content.title ?? '',
+      body: localizedOrDefaultContent.content.body ?? '',
+      bodyJson: localizedOrDefaultContent.content.bodyJson ?? '',
+      bodyHtml: localizedOrDefaultContent.content.bodyHtml ?? '',
+      contentLocale: localizedOrDefaultContent.content.locale || this.props.defaultLocale,
       locales,
       authorName: createdBy.name,
       contents: contents.map((c) => ({
