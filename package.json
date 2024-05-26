@@ -69,7 +69,7 @@
     "@tiptap/react": "2.4.0",
     "@tiptap/starter-kit": "2.4.0",
     "@types/ms": "0.7.34",
-    "argon2": "0.40.1",
+    "argon2": "0.40.3",
     "axios": "1.7.2",
     "boxen": "7.1.1",
     "busboy": "1.6.0",
