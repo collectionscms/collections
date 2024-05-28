@@ -21,8 +21,8 @@ const Context = createContext({} as AuthContext);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { i18n } = useTranslation();
-  const hostParts = window.location.host.split('.');
-  const subdomain = hostParts.length > 2 ? hostParts.slice(0, -2).join('.') : null;
+  const subdomain = window.location.host.split('.')[0];
+  const projectSubdomain = subdomain === process.env.PUBLIC_PORTAL_SUBDOMAIN ? null : subdomain;
 
   if (i18n.language) {
     setAcceptLanguage(i18n.language);
@@ -75,9 +75,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   );
 
   const hasPermission = (action: string) => {
-    if (!subdomain) return false;
+    if (!projectSubdomain) return false;
     const projectRole =
-      projectRoles?.find((projectRole) => projectRole.project.subdomain === subdomain) ?? null;
+      projectRoles?.find((projectRole) => projectRole.project.subdomain === projectSubdomain) ??
+      null;
     if (!projectRole) return false;
     if (projectRole.role.isAdmin) return true;
 
@@ -88,8 +89,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     () => ({
       me,
       projects: projectRoles?.map((projectRole) => projectRole.project) || [],
-      currentProjectRole: subdomain
-        ? projectRoles?.find((projectRole) => projectRole.project.subdomain === subdomain) ?? null
+      currentProjectRole: projectSubdomain
+        ? projectRoles?.find((projectRole) => projectRole.project.subdomain === projectSubdomain) ??
+          null
         : null,
       getCsrfToken,
       login,

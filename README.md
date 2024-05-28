@@ -42,12 +42,12 @@ npx create-collections-app my-app
 Add the following lines to the `/etc/hosts`
 
 ```sh
-127.0.0.1   test.com
+127.0.0.1   app.test.com
 127.0.0.1   en.test.com
 127.0.0.1   ja.test.com
 ```
 
-Open [http://test.com:4000/admin](http://test.com:4000/admin) to view your running app.
+Open [http://app.test.com:4000/admin](http://app.test.com:4000/admin) to view your running app.
 When you're ready for production, run `npm run build` then `npm run start`.
 
 ## 💬 Community

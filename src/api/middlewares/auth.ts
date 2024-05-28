@@ -1,5 +1,6 @@
 import { getSession } from '@auth/express';
 import { NextFunction, Request, Response } from 'express';
+import { env } from '../../env.js';
 import { InvalidTokenException } from '../../exceptions/invalidToken.js';
 import { UnauthorizedException } from '../../exceptions/unauthorized.js';
 import { authConfig } from '../configs/auth.js';
@@ -24,7 +25,7 @@ export const authenticatedUser = async (req: Request, res: Response, next: NextF
 
   // When accessing tenants, check has role to project
   const subdomain = req.subdomains[0];
-  if (subdomain) {
+  if (subdomain !== env.PUBLIC_PORTAL_SUBDOMAIN) {
     const projectRole = projectRoles[subdomain];
     if (!projectRole) {
       return next(new InvalidTokenException());
