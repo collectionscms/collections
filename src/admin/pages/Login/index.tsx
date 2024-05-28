@@ -36,7 +36,7 @@ export const Login: React.FC = () => {
     setValue,
     formState: { errors },
   } = useForm<FormValues>({
-    defaultValues: { email: 'admin@collections.dev', password: 'password', csrfToken: '' },
+    defaultValues: { email: '', password: '', csrfToken: '' },
     resolver: yupResolver(loginSchema),
   });
 
@@ -60,6 +60,8 @@ export const Login: React.FC = () => {
   };
 
   if (me) return <Loading />;
+
+  const loginPageText = process.env.PUBLIC_LOGIN_PAGE_TEXT ?? '';
 
   return (
     <AuthCard>
@@ -130,6 +132,7 @@ export const Login: React.FC = () => {
                 {t('login')}
               </Button>
             </Grid>
+            {loginPageText && <div dangerouslySetInnerHTML={{ __html: loginPageText }} />}
           </Grid>
         </Stack>
       </Stack>
