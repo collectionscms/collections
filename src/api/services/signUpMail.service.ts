@@ -4,7 +4,7 @@ import { MailService } from './mail.service.js';
 
 export class SignUpMailService extends MailService {
   async sendVerify(entity: UserEntity): Promise<void> {
-    const url = `${env.PUBLIC_SERVER_URL}/admin/auth/verify?token=${entity.confirmationToken}`;
+    const url = `${env.PUBLIC_SERVER_ORIGIN}/admin/auth/verify?token=${entity.confirmationToken}`;
     const html = `Hi! Thank you for creating a Collection account.
     Please validate your email address. Once verified, you will be able to log in successfully.<br/><br/>
     <a href="${url}">${url}</a><br/><br/>`;

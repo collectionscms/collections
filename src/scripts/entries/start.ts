@@ -6,6 +6,7 @@ import { pathList } from '../../utilities/pathList.js';
 const app = express();
 
 app.use(helmet());
+app.set('trust proxy', true);
 await initApiServer(app);
 
 app.use('/admin', express.static(pathList.build('admin')));

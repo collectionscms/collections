@@ -16,6 +16,7 @@ import { Output } from '../utilities/output.js';
 export const initApiServer = async (app: Express) => {
   const port = env.SERVER_PORT;
   const host = env.SERVER_HOST;
+  const subdomain = env.PUBLIC_PORTAL_SUBDOMAIN;
 
   if (Boolean(env.CORS_ENABLED) === true) {
     app.use(corsMiddleware);
@@ -29,7 +30,7 @@ export const initApiServer = async (app: Express) => {
   // api
   const portalApp = express();
   portalApp.use('/api', portalApiRouter);
-  app.use(vhost('*.*', portalApp));
+  app.use(vhost(`${subdomain}.*.*`, portalApp));
 
   const tenantApp = express();
   tenantApp.use('/api', tenantApiRouter);
@@ -41,8 +42,8 @@ export const initApiServer = async (app: Express) => {
   app
     .listen(port, () => {
       let message = chalk.green('Starting!');
-      message += `\n\n${chalk.bold('- API:')}    ${host}:${port}`;
-      message += `\n${chalk.bold('- Admin:')}  ${host}:${port}/admin`;
+      message += `\n\n${chalk.bold('- API:')}    ${subdomain}.${host}:${port}`;
+      message += `\n${chalk.bold('- Admin:')}  ${subdomain}.${host}:${port}/admin`;
 
       console.log(
         boxen(message, {

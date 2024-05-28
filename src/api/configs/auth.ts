@@ -7,8 +7,8 @@ import { bypassPrisma } from '../database/prisma/client.js';
 import { LoginUseCase } from '../useCases/auth/login.useCase.js';
 import { CredentialsSignin } from '@auth/express';
 
-const useSecureCookies = env.PUBLIC_SERVER_URL.startsWith('https://');
-const hostName = new URL(env.PUBLIC_SERVER_URL).hostname;
+const useSecureCookies = env.PUBLIC_SERVER_ORIGIN.startsWith('https://');
+const hostName = env.SERVER_HOST;
 
 // ref: https://authjs.dev/reference/express#credentialssignin
 class InvalidLoginError extends CredentialsSignin {

@@ -39,9 +39,8 @@ export const Routes: React.FC = () => {
 
   if (me === undefined) return <Loading />;
 
-  const hostParts = window.location.host.split('.');
-  const subdomain = hostParts.length > 2 ? hostParts.slice(0, -2).join('.') : null;
-  if (subdomain) {
+  const subdomain = window.location.host.split('.')[0];
+  if (subdomain !== process.env.PUBLIC_PORTAL_SUBDOMAIN) {
     if (me === null) {
       window.location.href = getLoginUrl();
       return;

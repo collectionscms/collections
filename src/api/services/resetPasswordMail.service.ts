@@ -5,8 +5,8 @@ export class ResetPasswordMailService extends MailService {
   async sendResetPassword(token: string, email: string): Promise<void> {
     const html = `You are receiving this message because you have requested a password reset for your account.<br/>
     Please click the following link and enter your new password.<br/><br/>
-    <a href="${env.PUBLIC_SERVER_URL}/admin/auth/reset-password/${token}">
-      ${env.PUBLIC_SERVER_URL}/admin/auth/reset-password/${token}
+    <a href="${env.PUBLIC_SERVER_ORIGIN}/admin/auth/reset-password/${token}">
+      ${env.PUBLIC_SERVER_ORIGIN}/admin/auth/reset-password/${token}
     </a><br/><br/>
     If you did not request this, please ignore this email and your password will remain unchanged.`;
 
