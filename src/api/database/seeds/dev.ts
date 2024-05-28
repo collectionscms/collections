@@ -4,8 +4,18 @@ import { bypassPrisma } from '../prisma/client.js';
 import { createPermissions } from './createPermissions.js';
 import { createPost } from './createPost.js';
 import { createProjects, enProject, jaProject } from './createProjects.js';
-import { createRoles } from './createRoles.js';
-import { createUsers } from './createUsers.js';
+import {
+  createRoles,
+  enAdminRole,
+  enContributorRole,
+  enEditorRole,
+  enViewerRole,
+  jaAdminRole,
+  jaContributorRole,
+  jaEditorRole,
+  jaViewerRole,
+} from './createRoles.js';
+import { adminUser, contributorUser, createUsers, editorUser, viewerUser } from './createUsers.js';
 
 export const seedDev = async (): Promise<void> => {
   try {
@@ -13,7 +23,7 @@ export const seedDev = async (): Promise<void> => {
       await createProjects(tx);
       await createPermissions(tx);
       await createRoles(tx);
-      await createUsers(tx);
+      await createUsers(tx, getUsers());
 
       for (const project of [enProject, jaProject]) {
         await createPost(tx, project, {
@@ -39,3 +49,70 @@ export const seedDev = async (): Promise<void> => {
     process.exit(1);
   }
 };
+
+function getUsers() {
+  const users = [
+    {
+      id: adminUser,
+      email: 'admin@collections.dev',
+      password: 'password',
+      userProjects: [
+        {
+          projectId: enProject,
+          roleId: enAdminRole,
+        },
+        {
+          projectId: jaProject,
+          roleId: jaAdminRole,
+        },
+      ],
+    },
+    {
+      id: editorUser,
+      email: 'editor@collections.dev',
+      password: 'password',
+      userProjects: [
+        {
+          projectId: enProject,
+          roleId: enEditorRole,
+        },
+        {
+          projectId: jaProject,
+          roleId: jaEditorRole,
+        },
+      ],
+    },
+    {
+      id: contributorUser,
+      email: 'contributor@collections.dev',
+      password: 'password',
+      userProjects: [
+        {
+          projectId: enProject,
+          roleId: enContributorRole,
+        },
+        {
+          projectId: jaProject,
+          roleId: jaContributorRole,
+        },
+      ],
+    },
+    {
+      id: viewerUser,
+      email: 'viewer@collections.dev',
+      password: 'password',
+      userProjects: [
+        {
+          projectId: enProject,
+          roleId: enViewerRole,
+        },
+        {
+          projectId: jaProject,
+          roleId: jaViewerRole,
+        },
+      ],
+    },
+  ];
+
+  return users;
+}

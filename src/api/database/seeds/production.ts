@@ -1,34 +1,25 @@
 import process from 'process';
 import { Output } from '../../../utilities/output.js';
-// import { createProjectSetting } from './createProjectSetting.js';
+import { bypassPrisma } from '../prisma/client.js';
+import { createPermissions } from './createPermissions.js';
+import { adminUser, createUsers } from './createUsers.js';
 
 export const seedProduction = async (email: string, password: string): Promise<void> => {
-  // const usersService = new UsersService(prisma);
-  // const rolesService = new RolesService(prisma);
-
   try {
-    // Role
-    // Output.info('Creating roles...');
-    // const role = await rolesService.create({
-    //   name: 'Administrator',
-    //   description: 'Administrator',
-    //   adminAccess: true,
-    // });
+    await bypassPrisma.$transaction(async (tx) => {
+      Output.info('Creating permissions...');
+      await createPermissions(tx);
 
-    // // User
-    // Output.info('Creating users...');
-    // const hashed = await oneWayHash(password);
-
-    // await usersService.create({
-    //   name: 'admin',
-    //   email,
-    //   password: hashed,
-    //   roleId: role!.id,
-    // });
-
-    // // Project
-    // Output.info('Creating project settings...');
-    // await createProjectSetting();
+      Output.info('Creating users...');
+      await createUsers(tx, [
+        {
+          id: adminUser,
+          email: email,
+          password: password,
+          userProjects: [],
+        },
+      ]);
+    });
 
     process.exit(0);
   } catch (e) {
