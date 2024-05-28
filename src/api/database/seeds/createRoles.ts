@@ -20,13 +20,10 @@ export const createRoles = async (prisma: BypassPrismaType): Promise<void> => {
     'publishPost',
     'archivePost',
     'readProject',
-    'updateProject',
     'readRole',
     'createRole',
-    'updateRole',
     'readUser',
     'inviteUser',
-    'updateUser',
   ];
 
   const contributorPermissions = [
