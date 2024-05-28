@@ -12,7 +12,7 @@ Collections is an open-source Headless CMS that uses React, Node.js, and RDB. It
 
 <hr/>
 <h4>
-<a target="_blank" href="https://demo.collections.dev/admin/" rel="dofollow"><strong>Try Live Demo</strong></a>
+<a target="_blank" href="https://app.collections.dev/admin/" rel="dofollow"><strong>Try Live Demo</strong></a>
 </h4>
 <hr/>
 
