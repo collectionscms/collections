@@ -7,10 +7,6 @@ import { logger } from '../../utilities/logger.js';
 export class MailService {
   mailer: Transporter;
 
-  origin = `${env.PROTOCOL}://${env.PUBLIC_PORTAL_SUBDOMAIN}.${env.SERVER_HOST}${
-    env.SERVER_PORT ? `:${env.SERVER_PORT}` : ''
-  }`;
-
   constructor() {
     this.mailer = mailer();
     this.mailer.verify((e) => {

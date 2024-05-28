@@ -11,8 +11,8 @@ type AllowedEnvironmentVariable =
   // /////////////////////////////////////
   // General
   // /////////////////////////////////////
+  | 'PUBLIC_SERVER_ORIGIN'
   | 'PUBLIC_PORTAL_SUBDOMAIN'
-  | 'PROTOCOL'
   | 'SERVER_HOST'
   | 'SERVER_PORT'
   | 'ADMIN_PORT'
@@ -103,8 +103,8 @@ type AllowedEnvironmentVariable =
 
 export const defaults: Partial<Record<AllowedEnvironmentVariable, any>> = {
   // General
+  PUBLIC_SERVER_ORIGIN: 'http://app.test.com:4000',
   PUBLIC_PORTAL_SUBDOMAIN: 'app',
-  PROTOCOL: 'http',
   SERVER_HOST: 'test.com',
   SERVER_PORT: '4000',
   ADMIN_PORT: '4001',
