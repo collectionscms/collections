@@ -28,6 +28,7 @@ Easiest way to start using Collections on a local host.
 ```sh
 git clone git@github.com:collectionscms/collections.git
 cd collections
+npm run db:refresh
 npm run dev
 ```
 
