@@ -24,6 +24,7 @@ export const createRoles = async (prisma: BypassPrismaType): Promise<void> => {
     'createRole',
     'readUser',
     'inviteUser',
+    'readOwnReview',
     'readAllReview',
     'createReview',
     'approveReview',
