@@ -11,6 +11,7 @@ import { UserEntity } from '../user/user.entity.js';
 export const status = {
   init: 'init',
   draft: 'draft',
+  review: 'review',
   published: 'published',
   archived: 'archived',
 } as const;

@@ -26,16 +26,25 @@ export const seedDev = async (): Promise<void> => {
       await createUsers(tx, getUsers());
 
       for (const project of [enProject, jaProject]) {
+        // draft
         await createPost(tx, project, {
           status: status.draft,
           defaultLocale: project === enProject ? 'en' : 'ja',
         });
 
+        // review
+        await createPost(tx, project, {
+          status: status.review,
+          defaultLocale: project === enProject ? 'en' : 'ja',
+        });
+
+        // published
         await createPost(tx, project, {
           status: status.published,
           defaultLocale: project === enProject ? 'en' : 'ja',
         });
 
+        // archived
         await createPost(tx, project, {
           status: status.archived,
           defaultLocale: project === enProject ? 'en' : 'ja',
