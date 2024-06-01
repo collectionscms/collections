@@ -25,6 +25,7 @@ model Project {
   apiKeys         ApiKey[]
   invitations     Invitation[]
   rolePermissions RolePermission[]
+  reivews         Review[]
 }
 
 model User {
@@ -44,6 +45,8 @@ model User {
   posts                   Post[]
   postHistories           PostHistory[]
   invitations             Invitation[]
+  revieweeHasReviews      Review[]      @relation("Reviewee")
+  reviewerHasReviews      Review[]      @relation("Reviewer")
 }
 
 model UserProject {
@@ -137,6 +140,7 @@ model Post {
   contents      Content[]
   createdBy     User          @relation(fields: [createdById], references: [id])
   postHistories PostHistory[]
+  reviews       Review[]
 }
 
 model PostHistory {
@@ -150,6 +154,21 @@ model PostHistory {
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Review {
+  id         String   @id @db.Uuid
+  projectId  String   @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
+  postId     String   @db.Uuid
+  revieweeId String   @db.Uuid
+  reviewerId String?  @db.Uuid
+  status     String   @db.VarChar(255)
+  createdAt  DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt  DateTime @updatedAt @db.Timestamptz(6)
+  post       Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  project    Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  reviewee   User     @relation(name: "Reviewee", fields: [revieweeId], references: [id], onDelete: Cascade)
+  reviewer   User?    @relation(name: "Reviewer", fields: [reviewerId], references: [id], onDelete: SetNull)
 }
 
 model Content {

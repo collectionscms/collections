@@ -6,5 +6,8 @@
     "source.fixAll": "explicit"
   },
   "files.trimTrailingWhitespace": true,
-  "[prisma]": { "editor.defaultFormatter": "Prisma.prisma" }
+  "[prisma]": {
+    "editor.defaultFormatter": "Prisma.prisma"
+  },
+  "cSpell.words": ["Reviewee"]
 }
