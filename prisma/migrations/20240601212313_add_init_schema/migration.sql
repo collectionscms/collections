@@ -142,6 +142,8 @@ CREATE TABLE "Review" (
     "postId" UUID NOT NULL,
     "revieweeId" UUID NOT NULL,
     "reviewerId" UUID,
+    "title" VARCHAR(255) NOT NULL,
+    "body" TEXT,
     "status" VARCHAR(255) NOT NULL,
     "createdAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMPTZ(6) NOT NULL,

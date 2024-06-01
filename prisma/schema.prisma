@@ -162,6 +162,8 @@ model Review {
   postId     String   @db.Uuid
   revieweeId String   @db.Uuid
   reviewerId String?  @db.Uuid
+  title      String   @db.VarChar(255)
+  body       String?
   status     String   @db.VarChar(255)
   createdAt  DateTime @default(now()) @db.Timestamptz(6)
   updatedAt  DateTime @updatedAt @db.Timestamptz(6)
