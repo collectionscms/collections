@@ -24,6 +24,10 @@ export const createRoles = async (prisma: BypassPrismaType): Promise<void> => {
     'createRole',
     'readUser',
     'inviteUser',
+    'readAllReview',
+    'createReview',
+    'approveReview',
+    'closeReview',
   ];
 
   const contributorPermissions = [
@@ -34,7 +38,12 @@ export const createRoles = async (prisma: BypassPrismaType): Promise<void> => {
     'readProject',
     'readRole',
     'readUser',
+    'readOwnReview',
+    'createReview',
+    'closeReview',
   ];
+
+  const viewerPermissions = ['readPost'];
 
   const enProjectRoles = [
     {
@@ -67,7 +76,7 @@ export const createRoles = async (prisma: BypassPrismaType): Promise<void> => {
       description: 'Viewer role with permission to read posts.',
       isAdmin: false,
       projectId: enProject,
-      permissions: ['readPost'],
+      permissions: viewerPermissions,
     },
   ];
 
@@ -102,7 +111,7 @@ export const createRoles = async (prisma: BypassPrismaType): Promise<void> => {
       description: '記事の閲覧権限をもつビューアーロール',
       isAdmin: false,
       projectId: jaProject,
-      permissions: ['readPost'],
+      permissions: viewerPermissions,
     },
   ];
 
