@@ -5,6 +5,7 @@ import { invitation } from './invitation.router.js';
 import { me } from './me.router.js';
 import { post } from './post.router.js';
 import { project } from './project.router.js';
+import { review } from './review.router.js';
 import { role } from './role.router.js';
 import { user } from './user.router.js';
 
@@ -19,3 +20,4 @@ tenantApiRouter.use(file);
 tenantApiRouter.use(post);
 tenantApiRouter.use(content);
 tenantApiRouter.use(invitation);
+tenantApiRouter.use(review);
