@@ -31,4 +31,12 @@ export class ReviewRepository {
     const record = await prisma.review.findUniqueOrThrow({ where: { id } });
     return ReviewEntity.Reconstruct<Review, ReviewEntity>(record);
   }
+
+  async updateStatus(prisma: ProjectPrismaType, review: ReviewEntity): Promise<ReviewEntity> {
+    const record = await prisma.review.update({
+      where: { id: review.id },
+      data: { status: review.status },
+    });
+    return ReviewEntity.Reconstruct<Review, ReviewEntity>(record);
+  }
 }
