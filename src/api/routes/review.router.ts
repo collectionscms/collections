@@ -7,6 +7,7 @@ import { projectPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';
 import { validateAccess } from '../middlewares/validateAccess.js';
+import { ChangeReviewStatusService } from '../services/changeReviewStatus.service.js';
 import { approveReviewUseCaseSchema } from '../useCases/review/approveReview.schema.js';
 import { ApproveReviewUseCase } from '../useCases/review/approveReview.useCase.js';
 import { closeReviewUseCaseSchema } from '../useCases/review/closeReview.schema.js';
@@ -85,9 +86,11 @@ router.patch(
 
     const useCase = new CloseReviewUseCase(
       projectPrisma(validated.data.projectId),
-      new ReviewRepository(),
-      new PostRepository(),
-      new PostHistoryRepository()
+      new ChangeReviewStatusService(
+        new ReviewRepository(),
+        new PostRepository(),
+        new PostHistoryRepository()
+      )
     );
 
     const permissions = res.projectRole?.role.permissions ?? [];
@@ -112,9 +115,11 @@ router.patch(
 
     const useCase = new ApproveReviewUseCase(
       projectPrisma(validated.data.projectId),
-      new ReviewRepository(),
-      new PostRepository(),
-      new PostHistoryRepository()
+      new ChangeReviewStatusService(
+        new ReviewRepository(),
+        new PostRepository(),
+        new PostHistoryRepository()
+      )
     );
 
     const permissions = res.projectRole?.role.permissions ?? [];

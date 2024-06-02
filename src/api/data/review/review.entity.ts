@@ -44,6 +44,10 @@ export class ReviewEntity extends PrismaBaseEntity<Review> {
     return this.props.postId;
   }
 
+  get projectId(): string {
+    return this.props.projectId;
+  }
+
   get revieweeId(): string {
     return this.props.revieweeId;
   }
