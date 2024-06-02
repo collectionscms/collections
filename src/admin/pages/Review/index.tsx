@@ -17,6 +17,7 @@ const ReviewPageImpl: React.FC = () => {
 
   const fields = [
     { field: 'title', label: t('title'), type: cells.text() },
+    { field: 'status', label: t('status'), type: cells.text() },
     { field: 'updatedAt', label: t('updated_at'), type: cells.date() },
   ];
 

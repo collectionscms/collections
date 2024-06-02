@@ -142,6 +142,8 @@
   "check_email_to_verify": "Collections アカウントを登録していただきありがとうございます。アカウントの確認とログインのため、Eメールをご確認ください。",
   "email_verified": "メールが認証されました",
   "check_email_to_reset_password": "パスワードをリセットするためのリンクをメールでお送りしました。",
+  "approve_and_publish": "承認して公開",
+  "close_without_publish": "公開せずに終了",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",

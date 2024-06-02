@@ -13,6 +13,7 @@ import { PortalRootRoutes } from './PortalRoot/index.js';
 import { PostRoutes } from './Post/index.js';
 import { SettingRoutes } from './Setting/index.js';
 import { TenantRootRoutes } from './TenantRoot/index.js';
+import { ReviewRoutes } from './Review/index.js';
 
 export const Routes: React.FC = () => {
   const { me } = useAuth();
@@ -33,6 +34,7 @@ export const Routes: React.FC = () => {
   const tenantRouter = createBrowserRouter([
     TenantRootRoutes(),
     PostRoutes(),
+    ReviewRoutes(),
     SettingRoutes(),
     NoRoutes(),
   ]);
