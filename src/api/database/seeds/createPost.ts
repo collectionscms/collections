@@ -27,6 +27,17 @@ export const createPost = async (
     },
   });
 
+  const reviewData =
+    options?.defaultLocale === 'ja'
+      ? {
+          title: `記事を書いた！`,
+          body: `「${title}」というタイトルの記事を書いたので、レビューをお願いします`,
+        }
+      : {
+          title: `I wrote a post!`,
+          body: `Please review the post entitled '${title}'`,
+        };
+
   await prisma.post.create({
     data: {
       id: options?.id ?? v4(),
@@ -70,7 +81,8 @@ export const createPost = async (
                 id: v4(),
                 projectId,
                 revieweeId: user.id,
-                title: `Review of ${title}`,
+                title: reviewData.title,
+                body: reviewData.body,
                 status: reviewStatus.Request,
                 createdAt: currentTime,
                 updatedAt: currentTime,

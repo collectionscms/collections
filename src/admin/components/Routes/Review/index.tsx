@@ -1,5 +1,5 @@
-import { t } from 'i18next';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import lazy from '../../../utilities/lazy.js';
 import { Loader } from '../../elements/Loader/index.js';
 import { MainHeader } from '../../elements/MainHeader/index.js';
@@ -13,6 +13,7 @@ const NotFound = Loader(lazy(() => import('../../../pages/NotFound/index.js'), '
 
 export const ReviewRoutes = () => {
   const { hasPermission } = useAuth();
+  const { t } = useTranslation();
 
   const children = [{ path: '*', element: <NotFound /> }];
 

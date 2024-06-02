@@ -3,10 +3,11 @@ import { v4 } from 'uuid';
 import { oneWayHash } from '../../utilities/oneWayHash.js';
 import { BypassPrismaType } from '../prisma/client.js';
 
-export const adminUser = v4();
-export const editorUser = v4();
-export const contributorUser = v4();
-export const viewerUser = v4();
+// Fixed to avoid mismatch between session and user id.
+export const adminUser = '1bc49902-bee5-4c90-b87a-3254d5c7e504';
+export const editorUser = '513a1cb6-68d9-4618-bc6d-4bb2c3b54048';
+export const contributorUser = 'ea23ce3d-b236-41b8-9696-7b2a6377451f';
+export const viewerUser = 'f3d75e36-387b-459c-a227-83c7a0c54a1a';
 
 export const createUsers = async (
   prisma: BypassPrismaType,
