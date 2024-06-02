@@ -31,7 +31,6 @@ export class ChangeStatusUseCase {
         status,
         version: updatedPost.version,
       });
-      postHistoryEntity.beforeInsertValidate();
       await this.postHistoryRepository.create(tx, postHistoryEntity);
 
       return postEntity;
