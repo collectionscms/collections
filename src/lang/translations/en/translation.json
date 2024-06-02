@@ -142,6 +142,8 @@
   "login_now": "Login now",
   "email_verified": "Your email has been verified.",
   "check_email_to_reset_password": "We have sent you an email with a link to reset your password.",
+  "approve_and_publish": "Approve and publish",
+  "close_without_publish": "Close without publish",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",

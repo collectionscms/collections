@@ -1,0 +1,30 @@
+import { Review } from '@prisma/client';
+import { status } from '../../data/post/post.entity.js';
+import { reviewStatus } from '../../data/review/review.entity.js';
+import { ProjectPrismaClient } from '../../database/prisma/client.js';
+import { ChangeReviewStatusService } from '../../services/changeReviewStatus.service.js';
+import { CloseReviewUseCaseSchemaType } from './closeReview.schema.js';
+
+export class CloseReviewUseCase {
+  constructor(
+    private readonly prisma: ProjectPrismaClient,
+    private readonly changeReviewStatusService: ChangeReviewStatusService
+  ) {}
+
+  async execute(props: CloseReviewUseCaseSchemaType, hasReadAllReview: boolean): Promise<Review> {
+    const updatedReview = await this.prisma.$transaction(async (tx) => {
+      const result = await this.changeReviewStatusService.execute(
+        tx,
+        props.reviewId,
+        props.userId,
+        reviewStatus.Close,
+        status.draft,
+        hasReadAllReview
+      );
+
+      return result;
+    });
+
+    return updatedReview.toResponse();
+  }
+}

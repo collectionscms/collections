@@ -59,11 +59,10 @@ export class PostRepository {
     });
   }
 
-  async findOneById(prisma: ProjectPrismaType, projectId: string, id: string): Promise<PostEntity> {
+  async findOneById(prisma: ProjectPrismaType, id: string): Promise<PostEntity> {
     const record = await prisma.post.findFirstOrThrow({
       where: {
         id,
-        projectId,
       },
     });
 
@@ -179,17 +178,17 @@ export class PostRepository {
     };
   }
 
-  async update(
-    prisma: ProjectPrismaType,
-    projectId: string,
-    postEntity: PostEntity
-  ): Promise<PostEntity> {
+  async updateStatus(prisma: ProjectPrismaType, postEntity: PostEntity): Promise<PostEntity> {
+    postEntity.beforeUpdateValidate();
     const record = await prisma.post.update({
       where: {
         id: postEntity.id,
-        projectId,
       },
-      data: postEntity.toPersistence(),
+      data: {
+        status: postEntity.status,
+        publishedAt: postEntity.publishedAt,
+        version: postEntity.version,
+      },
     });
 
     return PostEntity.Reconstruct<Post, PostEntity>(record);

@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { v4 } from 'uuid';
-import { StatusType } from '../../data/post/post.entity.js';
+import { StatusType, status } from '../../data/post/post.entity.js';
+import { reviewStatus } from '../../data/review/review.entity.js';
 import { BypassPrismaType } from '../prisma/client.js';
 import { adminUser } from './createUsers.js';
 
@@ -25,6 +26,17 @@ export const createPost = async (
       id: options?.createdById ?? adminUser,
     },
   });
+
+  const reviewData =
+    options?.defaultLocale === 'ja'
+      ? {
+          title: `記事を書いた！`,
+          body: `「${title}」というタイトルの記事を書いたので、レビューをお願いします`,
+        }
+      : {
+          title: `I wrote a post!`,
+          body: `Please review the post entitled '${title}'`,
+        };
 
   await prisma.post.create({
     data: {
@@ -62,6 +74,21 @@ export const createPost = async (
           createdAt: currentTime,
         },
       },
+      reviews:
+        options?.status === status.review
+          ? {
+              create: {
+                id: v4(),
+                projectId,
+                revieweeId: user.id,
+                title: reviewData.title,
+                body: reviewData.body,
+                status: reviewStatus.Request,
+                createdAt: currentTime,
+                updatedAt: currentTime,
+              },
+            }
+          : {},
     },
   });
 };

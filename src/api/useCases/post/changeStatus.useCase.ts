@@ -16,13 +16,12 @@ export class ChangeStatusUseCase {
   async execute(props: ChangeStatusUseCaseSchemaType): Promise<void> {
     const { projectId, id, userId, status } = props;
 
-    const post = await this.postRepository.findOneById(this.prisma, projectId, id);
+    const post = await this.postRepository.findOneById(this.prisma, id);
     const postEntity = PostEntity.Reconstruct<Post, PostEntity>(post.toPersistence());
-    postEntity.updateStatus(status);
+    postEntity.changeStatus(status);
 
     await this.prisma.$transaction(async (tx) => {
-      postEntity.beforeUpdateValidate();
-      const updatedPost = await this.postRepository.update(tx, projectId, postEntity);
+      const updatedPost = await this.postRepository.updateStatus(tx, postEntity);
 
       const postHistoryEntity = PostHistoryEntity.Construct({
         projectId: projectId,
@@ -31,7 +30,6 @@ export class ChangeStatusUseCase {
         status,
         version: updatedPost.version,
       });
-      postHistoryEntity.beforeInsertValidate();
       await this.postHistoryRepository.create(tx, postHistoryEntity);
 
       return postEntity;
