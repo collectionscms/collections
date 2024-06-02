@@ -1,14 +1,6 @@
-## V2
-
-We've started the V2 project with a new concept.
-
-https://github.com/collectionscms/collections/pull/1173
-
 ## ⭐ What is Collections
 
-![promotion](https://github.com/collectionscms/collections/assets/59549200/1ebe8a23-13fd-40fe-900e-885fe39fd5f5)
-
-Collections is an open-source Headless CMS that uses React, Node.js, and RDB. It allows for easy modeling in the GUI and seamless data retrieval via API. Content migration from WordPress is also supported.
+Collections is a headless CMS that offers AI-powered automatic translation and seamless multilingual delivery. We provide the best writing and developer experience for global websites.
 
 <hr/>
 <h4>
@@ -18,11 +10,9 @@ Collections is an open-source Headless CMS that uses React, Node.js, and RDB. It
 
 ### Features
 
-- 📚 Support English / 日本語
-- 😻 Markdown can be used (with GitHub flavored markdown)
-- 🌒 Support light-mode / dark-mode
-- 📱 Responsive Design
-- 🔀 Drag and drop WordPress XML to import
+- 🌐 Making content multilingual
+- 🖊 Intuitive editor
+- 🛡 Detailed permission management
 
 ## 📚 Usage & Documentation
 
@@ -33,10 +23,13 @@ Extended documentation is available on our website.
 
 ## 🚀 Installation
 
-The easiest way to get started with Collections is to use the create-collections-app package.
+Easiest way to start using Collections on a local host.
 
 ```sh
-npx create-collections-app my-app
+git clone git@github.com:collectionscms/collections.git
+cd collections
+npm run db:refresh
+npm run dev
 ```
 
 Add the following lines to the `/etc/hosts`
@@ -57,7 +50,7 @@ To chat with other community members you can join the [Collections Discord](http
 ## 💚 Tech Stack
 
 - Self-hosted - know where your data is stored!
-- DB - RDB (MySQL, PostgreSQL, SQLite)
+- DB - PostgreSQL
 - Backend - Node.js, Express
 - Admin - React, MUI
 

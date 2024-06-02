@@ -1,5 +1,6 @@
 import {
   EditOutlined,
+  InboxOutlined,
   LogoutOutlined,
   SafetyOutlined,
   SettingOutlined,
@@ -38,17 +39,30 @@ export const profileNavItems = (): Group => {
 // /////////////////////////////////////
 
 export const postNavItems = (): Group => {
+  const { hasPermission } = useAuth();
   const path = '/admin';
+
+  const items = [];
+
+  if (hasPermission('readPost')) {
+    items.push({
+      label: 'posts',
+      href: `${path}/posts`,
+      icon: EditOutlined,
+    });
+  }
+
+  if (hasPermission('readOwnReview')) {
+    items.push({
+      label: 'review',
+      href: `${path}/reviews`,
+      icon: InboxOutlined,
+    });
+  }
 
   return {
     label: 'posts',
-    items: [
-      {
-        label: 'posts',
-        href: `${path}/posts`,
-        icon: EditOutlined,
-      },
-    ],
+    items,
   };
 };
 

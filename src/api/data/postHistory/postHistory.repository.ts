@@ -4,6 +4,8 @@ import { PostHistoryEntity } from './postHistory.entity.js';
 
 export class PostHistoryRepository {
   async create(prisma: ProjectPrismaType, entity: PostHistoryEntity): Promise<PostHistoryEntity> {
+    entity.beforeInsertValidate();
+
     const record = await prisma.postHistory.create({
       data: entity.toPersistence(),
     });

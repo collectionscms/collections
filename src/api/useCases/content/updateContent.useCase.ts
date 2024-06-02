@@ -1,7 +1,7 @@
 import { Content, Post } from '@prisma/client';
 import { ContentEntity } from '../../data/content/content.entity.js';
 import { ContentRepository } from '../../data/content/content.repository.js';
-import { PostEntity } from '../../data/post/post.entity.js';
+import { PostEntity, status } from '../../data/post/post.entity.js';
 import { PostRepository } from '../../data/post/post.repository.js';
 import { PostHistoryEntity } from '../../data/postHistory/postHistory.entity.js';
 import { PostHistoryRepository } from '../../data/postHistory/postHistory.repository.js';
@@ -20,18 +20,14 @@ export class UpdateContentUseCase {
     const { id, projectId, userId, fileId, title, body, bodyJson, bodyHtml } = props;
 
     const record = await this.contentRepository.findOneById(this.prisma, id, projectId);
-    const post = await this.postRepository.findOneById(
-      this.prisma,
-      record.projectId,
-      record.postId
-    );
+    const post = await this.postRepository.findOneById(this.prisma, record.postId);
 
     const result = await this.prisma.$transaction(async (tx) => {
       if (post.status === 'init') {
         const entity = PostEntity.Reconstruct<Post, PostEntity>(post.toResponse());
-        entity.updateStatus('draft');
+        entity.changeStatus(status.draft);
 
-        await this.postRepository.update(tx, projectId, entity);
+        await this.postRepository.updateStatus(tx, entity);
 
         const postHistoryEntity = PostHistoryEntity.Construct({
           projectId: projectId,
