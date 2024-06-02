@@ -76,6 +76,10 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     return this.props.status;
   }
 
+  get publishedAt(): Date | null {
+    return this.props.publishedAt;
+  }
+
   get defaultLocale(): string {
     return this.props.defaultLocale;
   }
@@ -88,17 +92,13 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     return this.props.createdById;
   }
 
-  updatePost(status: string) {
+  changeStatus(status: string) {
     this.props.status = status;
 
     if (status === 'published') {
       this.props.publishedAt = new Date();
       this.props.version += 1;
     }
-  }
-
-  updateStatus(status: string) {
-    this.props.status = status;
   }
 
   toLocalizedWithContentsResponse(

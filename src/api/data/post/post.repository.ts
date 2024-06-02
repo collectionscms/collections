@@ -178,12 +178,17 @@ export class PostRepository {
     };
   }
 
-  async update(prisma: ProjectPrismaType, postEntity: PostEntity): Promise<PostEntity> {
+  async updateStatus(prisma: ProjectPrismaType, postEntity: PostEntity): Promise<PostEntity> {
+    postEntity.beforeUpdateValidate();
     const record = await prisma.post.update({
       where: {
         id: postEntity.id,
       },
-      data: postEntity.toPersistence(),
+      data: {
+        status: postEntity.status,
+        publishedAt: postEntity.publishedAt,
+        version: postEntity.version,
+      },
     });
 
     return PostEntity.Reconstruct<Post, PostEntity>(record);

@@ -35,7 +35,7 @@ export class ChangeReviewStatusService {
     }
 
     const post = await this.postRepository.findOneById(prisma, review.postId);
-    post.updatePost(statusType);
+    post.changeStatus(statusType);
 
     const postHistory = PostHistoryEntity.Construct({
       projectId: review.projectId,
@@ -45,7 +45,7 @@ export class ChangeReviewStatusService {
       version: post.version,
     });
 
-    await this.postRepository.update(prisma, post);
+    await this.postRepository.updateStatus(prisma, post);
     await this.postHistoryRepository.create(prisma, postHistory);
 
     const updatedReview = await this.reviewRepository.updateStatus(prisma, review);

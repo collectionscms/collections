@@ -19,10 +19,10 @@ export class UpdatePostUseCase {
     const record = await this.postRepository.findOneById(this.prisma, id);
 
     const entity = PostEntity.Reconstruct<Post, PostEntity>(record.toPersistence());
-    entity.updatePost(status);
+    entity.changeStatus(status);
 
     const updatedPost = await this.prisma.$transaction(async (tx) => {
-      const result = await this.postRepository.update(tx, entity);
+      const result = await this.postRepository.updateStatus(tx, entity);
 
       await this.postHistoryRepository.create(
         tx,

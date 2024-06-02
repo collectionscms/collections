@@ -18,11 +18,10 @@ export class ChangeStatusUseCase {
 
     const post = await this.postRepository.findOneById(this.prisma, id);
     const postEntity = PostEntity.Reconstruct<Post, PostEntity>(post.toPersistence());
-    postEntity.updateStatus(status);
+    postEntity.changeStatus(status);
 
     await this.prisma.$transaction(async (tx) => {
-      postEntity.beforeUpdateValidate();
-      const updatedPost = await this.postRepository.update(tx, postEntity);
+      const updatedPost = await this.postRepository.updateStatus(tx, postEntity);
 
       const postHistoryEntity = PostHistoryEntity.Construct({
         projectId: projectId,
