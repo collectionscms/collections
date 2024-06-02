@@ -1,3 +1,4 @@
+import { FileTextOutlined, RightOutlined } from '@ant-design/icons';
 import { Button, Stack, Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { enqueueSnackbar } from 'notistack';
@@ -6,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { logger } from '../../../../utilities/logger.js';
 import { MainCard } from '../../../@extended/components/MainCard/index.js';
+import { Link } from '../../../components/elements/Link/index.js';
 import { useAuth } from '../../../components/utilities/Auth/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
 import { ReviewContextProvider, useReview } from '../Context/index.js';
@@ -50,6 +52,11 @@ const ReviewDetailPageImpl: React.FC = () => {
           <MainCard>
             <Grid container spacing={3}>
               <Grid xs={12}>
+                <Stack direction="row" spacing={1} sx={{ mb: 1 }}>
+                  <FileTextOutlined />
+                  <RightOutlined />
+                  <Link href={`/admin/posts/${review.postId}`}>{review.postId}</Link>
+                </Stack>
                 <Stack spacing={1}>
                   <Typography variant="h4">{review.title}</Typography>
                   <Typography>{review.body}</Typography>
