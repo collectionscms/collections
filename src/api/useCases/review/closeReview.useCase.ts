@@ -17,7 +17,7 @@ export class CloseReviewUseCase {
         tx,
         props.reviewId,
         props.userId,
-        reviewStatus.close,
+        reviewStatus.Close,
         status.draft,
         hasReadAllReview
       );

@@ -71,7 +71,7 @@ export const createPost = async (
                 projectId,
                 revieweeId: user.id,
                 title: `Review of ${title}`,
-                status: reviewStatus.request,
+                status: reviewStatus.Request,
                 createdAt: currentTime,
                 updatedAt: currentTime,
               },

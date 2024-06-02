@@ -26,9 +26,9 @@ export class ChangeReviewStatusService {
       ? await this.reviewRepository.findOne(prisma, reviewId)
       : await this.reviewRepository.findOwnOne(prisma, userId, reviewId);
 
-    if (reviewStatusType === reviewStatus.approve) {
+    if (reviewStatusType === reviewStatus.Approve) {
       review.approve();
-    } else if (reviewStatusType === reviewStatus.close) {
+    } else if (reviewStatusType === reviewStatus.Close) {
       review.close();
     } else {
       throw new UnexpectedException();

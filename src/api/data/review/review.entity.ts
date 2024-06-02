@@ -3,19 +3,19 @@ import { UnexpectedException } from '../../../exceptions/unexpected.js';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 
 export const reviewStatus = {
-  request: 'request',
-  approve: 'approve',
-  close: 'close',
+  Request: 'request',
+  Approve: 'approve',
+  Close: 'close',
 } as const;
 export type ReviewStatusType = (typeof reviewStatus)[keyof typeof reviewStatus];
 
 export class ReviewEntity extends PrismaBaseEntity<Review> {
   close(): void {
-    this.props.status = reviewStatus.close;
+    this.props.status = reviewStatus.Close;
   }
 
   approve(): void {
-    this.props.status = reviewStatus.approve;
+    this.props.status = reviewStatus.Approve;
   }
 
   private isValid() {
