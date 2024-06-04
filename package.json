@@ -136,7 +136,7 @@
     "@types/jest": "29.5.12",
     "@types/jsonwebtoken": "9.0.6",
     "@types/mime-types": "2.1.4",
-    "@types/node": "20.13.0",
+    "@types/node": "20.14.1",
     "@types/nodemailer": "6.4.15",
     "@types/react": "18.3.3",
     "@types/react-copy-to-clipboard": "5.0.7",
