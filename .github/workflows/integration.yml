@@ -30,4 +30,4 @@ jobs:
         run: docker compose -f test/docker-compose.yml up ${{ matrix.database }} -d --quiet-pull --wait
 
       - name: Run Tests
-        run: TEST_DB=${{ matrix.database }} yarn test:int
+        run: TEST_DB=${{ matrix.database }} yarn test:int --runInBand
