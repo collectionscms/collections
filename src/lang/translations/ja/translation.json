@@ -154,7 +154,8 @@
     "confirm_post_archive_title": "非公開の確認",
     "confirm_post_archive": "記事を非公開にしますか？",
     "confirm_post_publish_title": "公開の確認",
-    "confirm_post_publish": "記事を公開しますか？"
+    "confirm_post_publish": "記事を公開しますか？",
+    "confirm_removal_user_from_project": "ユーザーをプロジェクトから削除します。よろしいですか？"
   },
   "toast": {
     "created_successfully": "登録しました",

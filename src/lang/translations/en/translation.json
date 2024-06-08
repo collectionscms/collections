@@ -154,7 +154,8 @@
     "confirm_post_archive_title": "Confirm archive",
     "confirm_post_archive": "Are you sure you want to archive it?",
     "confirm_post_publish_title": "Confirm publish",
-    "confirm_post_publish": "Are you sure you want to publish it?"
+    "confirm_post_publish": "Are you sure you want to publish it?",
+    "confirm_removal_user_from_project": "Are you sure you want to remove user from project?"
   },
   "toast": {
     "created_successfully": "Created successfully.",

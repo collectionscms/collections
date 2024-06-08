@@ -4,9 +4,19 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { IconButton } from '../../../@extended/components/IconButton/index.js';
 import { DeleteDocument } from '../DeleteDocument/index.js';
-import { Props } from './types.js';
 
-export const DeleteButton: React.FC<Props> = ({ id, slug, disabled, onSuccess }) => {
+type Props = {
+  id: string;
+  slug: string;
+  disabled?: boolean;
+  options?: {
+    title?: string;
+    content?: string;
+  };
+  onSuccess: () => void;
+};
+
+export const DeleteButton: React.FC<Props> = ({ id, slug, disabled, options, onSuccess }) => {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
 
@@ -28,6 +38,7 @@ export const DeleteButton: React.FC<Props> = ({ id, slug, disabled, onSuccess })
         id={id}
         slug={slug}
         openState={open}
+        options={options}
         onSuccess={handleOnSuccess}
         onClose={handleOnClose}
       />

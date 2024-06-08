@@ -107,7 +107,14 @@ const EditUserPageImpl: React.FC = () => {
                     sx={{ width: 1 }}
                   >
                     {hasPermission('deleteUser') ? (
-                      <DeleteButton id={id} slug="users" onSuccess={navigateToList} />
+                      <DeleteButton
+                        id={id}
+                        slug="users"
+                        options={{
+                          content: t('dialog.confirm_removal_user_from_project'),
+                        }}
+                        onSuccess={navigateToList}
+                      />
                     ) : (
                       <div />
                     )}

@@ -6,15 +6,15 @@ import { UserProjectRepository } from '../data/userProject/userProject.repositor
 import { projectPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';
-import { deleteUserUseCaseSchema } from '../useCases/user/deleteUser.schema.js';
-import { DeleteUserUseCase } from '../useCases/user/deleteUser.useCase.js';
+import { validateAccess } from '../middlewares/validateAccess.js';
+import { deleteUserProjectUseCaseSchema } from '../useCases/user/deleteUserProject.schema.js';
+import { DeleteUserProjectUserUseCase } from '../useCases/user/deleteUserProject.useCase.js';
 import { getUserProfileUseCaseSchema } from '../useCases/user/getUserProfile.schema.js';
 import { GetUserProfileUseCase } from '../useCases/user/getUserProfile.useCase.js';
 import { getUserProfilesUseCaseSchema } from '../useCases/user/getUserProfiles.schema.js';
 import { GetUserProfilesUseCase } from '../useCases/user/getUserProfiles.useCase.js';
 import { updateUserUseCaseSchema } from '../useCases/user/updateUser.schema.js';
 import { UpdateUserUseCase } from '../useCases/user/updateUser.useCase.js';
-import { validateAccess } from '../middlewares/validateAccess.js';
 
 const router = express.Router();
 
@@ -91,13 +91,13 @@ router.delete(
   authenticatedUser,
   validateAccess(['deleteUser']),
   asyncHandler(async (req: Request, res: Response) => {
-    const validated = deleteUserUseCaseSchema.safeParse({
+    const validated = deleteUserProjectUseCaseSchema.safeParse({
       userId: req.params.id,
       projectId: res.projectRole?.id,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
-    const useCase = new DeleteUserUseCase(
+    const useCase = new DeleteUserProjectUserUseCase(
       projectPrisma(validated.data.projectId),
       new UserProjectRepository()
     );
