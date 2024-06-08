@@ -32,6 +32,22 @@ export class ReviewRepository {
     return ReviewEntity.Reconstruct<Review, ReviewEntity>(record);
   }
 
+  async findOneByPostId(prisma: ProjectPrismaType, postId: string): Promise<ReviewEntity | null> {
+    const record = await prisma.review.findFirst({ where: { postId } });
+    return record ? ReviewEntity.Reconstruct<Review, ReviewEntity>(record) : null;
+  }
+
+  async upsert(prisma: ProjectPrismaType, review: ReviewEntity): Promise<ReviewEntity> {
+    review.beforeUpdateValidate();
+
+    const record = await prisma.review.upsert({
+      where: { id: review.id },
+      create: review.toPersistence(),
+      update: review.toPersistence(),
+    });
+    return ReviewEntity.Reconstruct<Review, ReviewEntity>(record);
+  }
+
   async updateStatus(prisma: ProjectPrismaType, review: ReviewEntity): Promise<ReviewEntity> {
     const record = await prisma.review.update({
       where: { id: review.id },
