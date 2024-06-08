@@ -4,6 +4,7 @@ import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
 import { ContentRepository } from '../data/content/content.repository.js';
 import { PostRepository } from '../data/post/post.repository.js';
 import { PostHistoryRepository } from '../data/postHistory/postHistory.repository.js';
+import { ReviewRepository } from '../data/review/review.repository.js';
 import { projectPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';
@@ -108,13 +109,16 @@ router.patch(
       userId: res.user.id,
       projectId: res.projectRole?.id,
       status: req.body.status,
+      title: req.body.title,
+      body: req.body.body,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
     const useCase = new UpdatePostUseCase(
       projectPrisma(validated.data.projectId),
       new PostRepository(),
-      new PostHistoryRepository()
+      new PostHistoryRepository(),
+      new ReviewRepository()
     );
     await useCase.execute(validated.data);
 

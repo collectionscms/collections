@@ -159,7 +159,7 @@ model PostHistory {
 model Review {
   id         String   @id @db.Uuid
   projectId  String   @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
-  postId     String   @db.Uuid
+  postId     String   @unique @db.Uuid
   revieweeId String   @db.Uuid
   reviewerId String?  @db.Uuid
   title      String   @db.VarChar(255)

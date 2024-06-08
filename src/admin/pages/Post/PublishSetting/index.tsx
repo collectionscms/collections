@@ -7,13 +7,17 @@ import {
   Dialog,
   FormControl,
   FormControlLabel,
+  FormHelperText,
+  InputLabel,
   Radio,
   RadioGroup,
   Stack,
+  TextField,
   Toolbar,
   Typography,
   useTheme,
 } from '@mui/material';
+import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { RiCloseLine } from '@remixicon/react';
 import { enqueueSnackbar } from 'notistack';
 import React from 'react';
@@ -63,6 +67,8 @@ export const PublishSetting: React.FC<Props> = ({ open, post, onClose }) => {
     defaultValues: {
       slug: post.slug,
       status: post.status !== 'published' ? 'review' : 'published',
+      title: '',
+      body: '',
     },
     resolver: yupResolver(editPostValidator()),
   });
@@ -139,6 +145,50 @@ export const PublishSetting: React.FC<Props> = ({ open, post, onClose }) => {
                 />
               </FormControl>
             </Box>
+            {watch('status') === 'review' && (
+              <>
+                <Grid container spacing={3}>
+                  <Grid xs={12}>
+                    <Stack spacing={1}>
+                      <InputLabel required>{t('title')}</InputLabel>
+                      <Controller
+                        name="title"
+                        control={control}
+                        render={({ field }) => (
+                          <TextField
+                            {...field}
+                            type="text"
+                            fullWidth
+                            error={errors.title !== undefined}
+                          />
+                        )}
+                      />
+                      <FormHelperText error>{errors.title?.message}</FormHelperText>
+                    </Stack>
+                  </Grid>
+                  <Grid xs={12}>
+                    <Stack spacing={1}>
+                      <InputLabel>{t('description')}</InputLabel>
+                      <Controller
+                        name="body"
+                        control={control}
+                        render={({ field }) => (
+                          <TextField
+                            {...field}
+                            type="text"
+                            fullWidth
+                            multiline
+                            rows={4}
+                            error={errors.body !== undefined}
+                          />
+                        )}
+                      />
+                      <FormHelperText error>{errors.body?.message}</FormHelperText>
+                    </Stack>
+                  </Grid>
+                </Grid>
+              </>
+            )}
           </Container>
         </Box>
       </form>
