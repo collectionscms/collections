@@ -29,16 +29,10 @@ export const Nav: React.FC<Props> = ({ window, open, variable, toggleDrawer }) =
     () => (
       <Stack direction="row">
         <Sidebar />
-        {variable === 'profile' && (
-          <Box sx={{ width: 240, borderLeft: `1px solid ${theme.palette.divider}` }}>
-            <NavContent navGroupItems={profileGroups} />
-          </Box>
-        )}
-        {variable === 'tenant' && (
-          <Box sx={{ width: 240, borderLeft: `1px solid ${theme.palette.divider}` }}>
-            <NavContent navGroupItems={tenantGroups} />
-          </Box>
-        )}
+        <Box sx={{ width: 240 }}>
+          {variable === 'profile' && <NavContent navGroupItems={profileGroups} />}
+          {variable === 'tenant' && <NavContent navGroupItems={tenantGroups} />}
+        </Box>
       </Stack>
     ),
     []
