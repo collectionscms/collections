@@ -3,7 +3,7 @@ import { UnprocessableEntityException } from '../../../exceptions/unprocessableE
 import { UserProjectRepository } from '../../data/userProject/userProject.repository.js';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
 
-export class DeleteUserUseCase {
+export class DeleteUserProjectUserUseCase {
   constructor(
     private readonly prisma: ProjectPrismaType,
     private readonly userProjectRepository: UserProjectRepository
