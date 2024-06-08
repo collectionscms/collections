@@ -13,7 +13,15 @@ export const Sidebar: React.FC = () => {
 
   return (
     <>
-      <Box sx={{ width: 60, height: '100vh', position: 'relative', paddingY: '16px' }}>
+      <Box
+        sx={{
+          width: 60,
+          height: '100vh',
+          position: 'relative',
+          paddingY: '16px',
+          borderRight: `1px solid ${theme.palette.divider}`,
+        }}
+      >
         {projects && (
           <Stack spacing={2}>
             {Object.values(projects).map((project) => (

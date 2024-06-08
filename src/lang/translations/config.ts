@@ -13,10 +13,18 @@ export const resources = {
   },
 } as const;
 
+const domain = window.location.hostname.split('.').slice(-2).join('.');
+
 i18next
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
+    detection: {
+      order: ['cookie', 'navigator', 'htmlTag', 'path', 'subdomain'],
+      lookupCookie: 'i18next',
+      caches: ['cookie'],
+      cookieDomain: `.${domain}`,
+    },
     resources,
     fallbackLng: 'en',
     interpolation: {
