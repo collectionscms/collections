@@ -31,7 +31,6 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       id: postId,
       projectId,
       slug: this.GenerateSlug(),
-      status: status.draft,
       defaultLocale,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -73,16 +72,8 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     return this.projectId;
   }
 
-  get status(): string {
-    return this.props.status;
-  }
-
   get defaultLocale(): string {
     return this.props.defaultLocale;
-  }
-
-  changeStatus(status: string) {
-    this.props.status = status;
   }
 
   toLocalizedWithContentsResponse(

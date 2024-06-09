@@ -117,20 +117,6 @@ export class PostRepository {
     return PostEntity.Reconstruct<Post, PostEntity>(record);
   }
 
-  async updateStatus(prisma: ProjectPrismaType, postEntity: PostEntity): Promise<PostEntity> {
-    postEntity.beforeUpdateValidate();
-    const record = await prisma.post.update({
-      where: {
-        id: postEntity.id,
-      },
-      data: {
-        status: postEntity.status,
-      },
-    });
-
-    return PostEntity.Reconstruct<Post, PostEntity>(record);
-  }
-
   async delete(prisma: ProjectPrismaType, projectId: string, id: string): Promise<PostEntity> {
     const record = await prisma.post.delete({
       where: {
