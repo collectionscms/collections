@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { v4 } from 'uuid';
 import { contentStatus } from '../../data/content/content.entity.js';
-import { StatusType, status } from '../../data/post/post.entity.js';
+import { StatusType } from '../../data/post/post.entity.js';
 import { reviewStatus } from '../../data/review/review.entity.js';
 import { BypassPrismaType } from '../prisma/client.js';
 import { adminUser } from './createUsers.js';
@@ -39,9 +39,11 @@ export const createPost = async (
           body: `Please review the post entitled '${title}'`,
         };
 
+  const postId = options?.id ?? v4();
+
   await prisma.post.create({
     data: {
-      id: options?.id ?? v4(),
+      id: postId,
       projectId,
       slug: options?.slug ?? faker.lorem.slug(),
       status: options?.status ?? 'published',
@@ -64,6 +66,22 @@ export const createPost = async (
           createdById: user.id,
           createdAt: currentTime,
           updatedAt: currentTime,
+          review:
+            options?.status === contentStatus.review
+              ? {
+                  create: {
+                    id: v4(),
+                    projectId,
+                    postId,
+                    revieweeId: user.id,
+                    title: reviewData.title,
+                    body: reviewData.body,
+                    status: reviewStatus.Request,
+                    createdAt: currentTime,
+                    updatedAt: currentTime,
+                  },
+                }
+              : {},
         },
       },
       postHistories: {
@@ -76,21 +94,6 @@ export const createPost = async (
           createdAt: currentTime,
         },
       },
-      reviews:
-        options?.status === status.review
-          ? {
-              create: {
-                id: v4(),
-                projectId,
-                revieweeId: user.id,
-                title: reviewData.title,
-                body: reviewData.body,
-                status: reviewStatus.Request,
-                createdAt: currentTime,
-                updatedAt: currentTime,
-              },
-            }
-          : {},
     },
   });
 };
