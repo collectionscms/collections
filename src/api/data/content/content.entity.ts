@@ -105,6 +105,10 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     return this.props.createdById;
   }
 
+  get updatedAt(): Date {
+    return this.props.updatedAt;
+  }
+
   changeStatus(status: string) {
     this.props.status = status;
 

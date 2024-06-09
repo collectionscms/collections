@@ -48,16 +48,16 @@ export class UpdatePostUseCase {
         this.reviewRepository.upsert(tx, review);
       }
 
-      await this.postHistoryRepository.create(
-        tx,
-        PostHistoryEntity.Construct({
-          projectId: projectId,
-          postId: id,
-          userId,
-          status: entity.status,
-          version: entity.version,
-        })
-      );
+      // await this.postHistoryRepository.create(
+      //   tx,
+      //   PostHistoryEntity.Construct({
+      //     projectId: projectId,
+      //     postId: id,
+      //     userId,
+      //     status: entity.status,
+      //     version: entity.version,
+      //   })
+      // );
 
       return result;
     });

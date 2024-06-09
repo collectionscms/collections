@@ -23,14 +23,14 @@ export class ChangeStatusUseCase {
     await this.prisma.$transaction(async (tx) => {
       const updatedPost = await this.postRepository.updateStatus(tx, postEntity);
 
-      const postHistoryEntity = PostHistoryEntity.Construct({
-        projectId: projectId,
-        postId: id,
-        userId,
-        status,
-        version: updatedPost.version,
-      });
-      await this.postHistoryRepository.create(tx, postHistoryEntity);
+      // const postHistoryEntity = PostHistoryEntity.Construct({
+      //   projectId: projectId,
+      //   postId: id,
+      //   userId,
+      //   status,
+      //   version: updatedPost.version,
+      // });
+      // await this.postHistoryRepository.create(tx, postHistoryEntity);
 
       return postEntity;
     });

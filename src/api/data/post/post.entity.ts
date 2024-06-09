@@ -33,9 +33,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       projectId,
       slug: this.GenerateSlug(),
       status: status.init,
-      publishedAt: null,
       defaultLocale,
-      version: 0,
       createdAt: new Date(),
       updatedAt: new Date(),
     });
@@ -80,25 +78,12 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     return this.props.status;
   }
 
-  get publishedAt(): Date | null {
-    return this.props.publishedAt;
-  }
-
   get defaultLocale(): string {
     return this.props.defaultLocale;
   }
 
-  get version(): number {
-    return this.props.version;
-  }
-
   changeStatus(status: string) {
     this.props.status = status;
-
-    if (status === 'published') {
-      this.props.publishedAt = new Date();
-      this.props.version += 1;
-    }
   }
 
   toLocalizedWithContentsResponse(
@@ -114,9 +99,9 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       id: this.props.id,
       slug: this.props.slug,
       status: this.props.status,
-      updatedAt: this.props.updatedAt,
-      publishedAt: this.props.publishedAt,
       defaultLocale: this.props.defaultLocale,
+      updatedAt: localizedOrDefaultContent.content.updatedAt,
+      publishedAt: localizedOrDefaultContent.content.publishedAt,
       title: localizedOrDefaultContent.content.title ?? '',
       body: localizedOrDefaultContent.content.body ?? '',
       bodyJson: localizedOrDefaultContent.content.bodyJson ?? '',

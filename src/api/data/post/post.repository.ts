@@ -167,8 +167,6 @@ export class PostRepository {
       },
       data: {
         status: postEntity.status,
-        publishedAt: postEntity.publishedAt,
-        version: postEntity.version,
       },
     });
 

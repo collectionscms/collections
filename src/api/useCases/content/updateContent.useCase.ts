@@ -29,14 +29,14 @@ export class UpdateContentUseCase {
 
         await this.postRepository.updateStatus(tx, entity);
 
-        const postHistoryEntity = PostHistoryEntity.Construct({
-          projectId: projectId,
-          postId: post.id,
-          userId,
-          status: 'draft',
-          version: post.version,
-        });
-        await this.postHistoryRepository.create(tx, postHistoryEntity);
+        // const postHistoryEntity = PostHistoryEntity.Construct({
+        //   projectId: projectId,
+        //   postId: post.id,
+        //   userId,
+        //   status: 'draft',
+        //   version: post.version,
+        // });
+        // await this.postHistoryRepository.create(tx, postHistoryEntity);
       }
 
       const entity = ContentEntity.Reconstruct<Content, ContentEntity>(record.toResponse());
