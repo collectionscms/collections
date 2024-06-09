@@ -42,7 +42,6 @@ model User {
   createdAt               DateTime      @default(now()) @db.Timestamptz(6)
   updatedAt               DateTime      @updatedAt @db.Timestamptz(6)
   userProjects            UserProject[]
-  posts                   Post[]
   postHistories           PostHistory[]
   invitations             Invitation[]
   revieweeHasReviews      Review[]      @relation("Reviewee")
@@ -136,10 +135,8 @@ model Post {
   version       Int           @default(0)
   createdAt     DateTime      @default(now()) @db.Timestamptz(6)
   updatedAt     DateTime      @updatedAt @db.Timestamptz(6)
-  createdById   String        @db.Uuid
   project       Project       @relation(fields: [projectId], references: [id], onDelete: Cascade)
   contents      Content[]
-  createdBy     User          @relation(fields: [createdById], references: [id])
   postHistories PostHistory[]
   reviews       Review[]
 }

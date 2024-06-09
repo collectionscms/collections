@@ -1,23 +1,9 @@
-import { record } from 'zod';
 import { LocalizedPost } from '../../../types/index.js';
-import { ContentEntity } from '../../data/content/content.entity.js';
 import { ContentRepository } from '../../data/content/content.repository.js';
-import { FileEntity } from '../../data/file/file.entity.js';
 import { PostEntity } from '../../data/post/post.entity.js';
 import { PostRepository } from '../../data/post/post.repository.js';
-import { UserEntity } from '../../data/user/user.entity.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
-import { content } from '../../routes/content.router.js';
 import { CreatePostUseCaseSchemaType } from './createPost.schema.js';
-
-type CreatePostUseCaseResponse = {
-  post: PostEntity;
-  contents: {
-    content: ContentEntity;
-    file: FileEntity | null;
-  }[];
-  createdBy: UserEntity;
-};
 
 export class CreatePostUseCase {
   constructor(
@@ -29,7 +15,7 @@ export class CreatePostUseCase {
   async execute(props: CreatePostUseCaseSchemaType): Promise<LocalizedPost> {
     const { userId, projectId, locale } = props;
 
-    let record = await this.postRepository.findInitByUserId(this.prisma, userId);
+    let record = await this.postRepository.findInit(this.prisma);
     if (!record) {
       const { post, content } = PostEntity.Construct({
         projectId: projectId,
@@ -38,27 +24,25 @@ export class CreatePostUseCase {
       });
 
       record = await this.prisma.$transaction(async (tx) => {
-        const result = await this.postRepository.create(tx, post);
-        const contentEntity = await this.contentRepository.create(tx, content);
+        const createdPost = await this.postRepository.create(tx, post);
+        const { content: createdContent, createdBy } = await this.contentRepository.create(
+          tx,
+          content
+        );
 
         return {
-          post: result.post,
+          post: createdPost,
           contents: [
             {
-              content: contentEntity,
+              content: createdContent,
               file: null,
+              createdBy: createdBy,
             },
           ],
-          createdBy: result.createdBy,
         };
       });
     }
 
-    return record.post.toLocalizedWithContentsResponse(
-      locale,
-      record.contents,
-      [],
-      record.createdBy
-    );
+    return record.post.toLocalizedWithContentsResponse(locale, record.contents, []);
   }
 }

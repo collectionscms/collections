@@ -11,9 +11,8 @@ export class PostRepository {
   async findManyByProjectId(prisma: ProjectPrismaType): Promise<
     {
       post: PostEntity;
-      contents: { content: ContentEntity; file: FileEntity | null }[];
+      contents: { content: ContentEntity; file: FileEntity | null; createdBy: UserEntity }[];
       histories: PostHistoryEntity[];
-      createdBy: UserEntity;
     }[]
   > {
     const records = await prisma.post.findMany({
@@ -26,9 +25,9 @@ export class PostRepository {
         contents: {
           include: {
             file: true,
+            createdBy: true,
           },
         },
-        createdBy: true,
         postHistories: true,
       },
       orderBy: {
@@ -43,18 +42,17 @@ export class PostRepository {
         contents.push({
           content: ContentEntity.Reconstruct<Content, ContentEntity>(content),
           file: content.file ? FileEntity.Reconstruct<File, FileEntity>(content.file) : null,
+          createdBy: UserEntity.Reconstruct<User, UserEntity>(content.createdBy),
         });
       }
       const histories = record.postHistories.map((history) =>
         PostHistoryEntity.Reconstruct<PostHistory, PostHistoryEntity>(history)
       );
-      const createdBy = UserEntity.Reconstruct<User, UserEntity>(record.createdBy);
 
       return {
         post,
         contents,
         histories,
-        createdBy,
       };
     });
   }
@@ -75,9 +73,8 @@ export class PostRepository {
     id: string
   ): Promise<{
     post: PostEntity;
-    contents: { content: ContentEntity; file: FileEntity | null }[];
+    contents: { content: ContentEntity; file: FileEntity | null; createdBy: UserEntity }[];
     histories: PostHistoryEntity[];
-    createdBy: UserEntity;
   }> {
     const record = await prisma.post.findFirstOrThrow({
       where: {
@@ -88,9 +85,9 @@ export class PostRepository {
         contents: {
           include: {
             file: true,
+            createdBy: true,
           },
         },
-        createdBy: true,
         postHistories: true,
       },
       orderBy: {
@@ -104,41 +101,35 @@ export class PostRepository {
       contents.push({
         content: ContentEntity.Reconstruct<Content, ContentEntity>(content),
         file: content.file ? FileEntity.Reconstruct<File, FileEntity>(content.file) : null,
+        createdBy: UserEntity.Reconstruct<User, UserEntity>(content.createdBy),
       });
     }
     const histories = record.postHistories.map((history) =>
       PostHistoryEntity.Reconstruct<PostHistory, PostHistoryEntity>(history)
     );
-    const createdBy = UserEntity.Reconstruct<User, UserEntity>(record.createdBy);
 
     return {
       post,
       contents,
       histories,
-      createdBy,
     };
   }
 
-  async findInitByUserId(
-    prisma: ProjectPrismaClient,
-    userId: string
-  ): Promise<{
+  async findInit(prisma: ProjectPrismaClient): Promise<{
     post: PostEntity;
-    contents: { content: ContentEntity; file: FileEntity | null }[];
-    createdBy: UserEntity;
+    contents: { content: ContentEntity; file: FileEntity | null; createdBy: UserEntity }[];
   } | null> {
     const record = await prisma.post.findFirst({
       where: {
-        createdById: userId,
         status: 'init',
       },
       include: {
         contents: {
           include: {
             file: true,
+            createdBy: true,
           },
         },
-        createdBy: true,
       },
     });
 
@@ -150,32 +141,22 @@ export class PostRepository {
       contents.push({
         content: ContentEntity.Reconstruct<Content, ContentEntity>(content),
         file: content.file ? FileEntity.Reconstruct<File, FileEntity>(content.file) : null,
+        createdBy: UserEntity.Reconstruct<User, UserEntity>(content.createdBy),
       });
     }
-    const createdBy = UserEntity.Reconstruct<User, UserEntity>(record.createdBy);
 
     return {
       post,
       contents,
-      createdBy,
     };
   }
 
-  async create(
-    prisma: ProjectPrismaType,
-    postEntity: PostEntity
-  ): Promise<{ post: PostEntity; createdBy: UserEntity }> {
+  async create(prisma: ProjectPrismaType, postEntity: PostEntity): Promise<PostEntity> {
     const record = await prisma.post.create({
       data: postEntity.toPersistence(),
-      include: {
-        createdBy: true,
-      },
     });
 
-    return {
-      post: postEntity,
-      createdBy: UserEntity.Reconstruct<User, UserEntity>(record.createdBy),
-    };
+    return PostEntity.Reconstruct<Post, PostEntity>(record);
   }
 
   async updateStatus(prisma: ProjectPrismaType, postEntity: PostEntity): Promise<PostEntity> {

@@ -20,6 +20,6 @@ export class CreateContentUseCase {
 
     entity.beforeInsertValidate();
     const result = await this.contentRepository.create(this.prisma, entity);
-    return result.toResponse();
+    return result.content.toResponse();
   }
 }

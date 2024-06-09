@@ -16,8 +16,7 @@ export class GetPostsUseCase {
       return record.post.toLocalizedWithContentsResponse(
         props.locale,
         record.contents,
-        record.histories,
-        record.createdBy
+        record.histories
       );
     });
   }

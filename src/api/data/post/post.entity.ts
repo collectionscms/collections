@@ -36,7 +36,6 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       publishedAt: null,
       defaultLocale,
       version: 0,
-      createdById,
       createdAt: new Date(),
       updatedAt: new Date(),
     });
@@ -93,10 +92,6 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     return this.props.version;
   }
 
-  get createdById(): string {
-    return this.props.createdById;
-  }
-
   changeStatus(status: string) {
     this.props.status = status;
 
@@ -108,9 +103,8 @@ export class PostEntity extends PrismaBaseEntity<Post> {
 
   toLocalizedWithContentsResponse(
     locale: string,
-    contents: { content: ContentEntity; file: FileEntity | null }[],
-    histories: PostHistoryEntity[],
-    createdBy: UserEntity
+    contents: { content: ContentEntity; file: FileEntity | null; createdBy: UserEntity }[],
+    histories: PostHistoryEntity[]
   ): LocalizedPost {
     const localizedOrDefaultContent =
       contents.find((c) => c.content.isSameLocaleContent(locale)) || contents[0];
@@ -129,7 +123,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       bodyHtml: localizedOrDefaultContent.content.bodyHtml ?? '',
       contentLocale: localizedOrDefaultContent.content.locale || this.props.defaultLocale,
       locales,
-      authorName: createdBy.name,
+      authorName: localizedOrDefaultContent.createdBy.name,
       contents: contents.map((c) => ({
         ...c.content.toResponse(),
         file: c.file?.toResponseWithUrl() ?? null,

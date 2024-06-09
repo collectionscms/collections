@@ -50,7 +50,6 @@ export const createPost = async (
       version: options?.version ?? 0,
       createdAt: currentTime,
       updatedAt: currentTime,
-      createdById: user.id,
       contents: {
         create: {
           id: v4(),
