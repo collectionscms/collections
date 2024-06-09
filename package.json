@@ -113,7 +113,7 @@
     "simplebar-react": "3.2.5",
     "style-loader": "4.0.0",
     "swr": "2.2.5",
-    "uuid": "9.0.1",
+    "uuid": "10.0.0",
     "vhost": "3.0.2",
     "webpack": "5.88.2",
     "webpack-bundle-analyzer": "4.10.2",
