@@ -211,7 +211,7 @@ export const EditPostPageImpl: React.FC = () => {
         currentLocale={locale}
         buttonRef={ref}
         onOpenSettings={handleOpenSettings}
-        onDraftSave={handleSaveContent}
+        onSaveDraft={handleSaveContent}
         onChangeLocale={handleChangeLocale}
         onOpenAddLocale={handleOpenAddLocale}
       />

@@ -122,8 +122,8 @@
   "published_at": "公開日時",
   "author": "作成者",
   "publish_settings": "公開設定",
-  "temporary_save": "一時保存",
-  "draft_save": "下書き保存",
+  "save_draft_new_ver": "下書き保存（新バージョン）",
+  "save_draft": "下書き保存",
   "publish": "公開",
   "review": "レビュー",
   "publishing": "公開する",
@@ -187,7 +187,7 @@
     "numbered_list": "番号付きリスト",
     "quote": "引用",
     "bold": "強調",
-    "draft_save": "下書き保存"
+    "save_draft": "下書き保存"
   },
   "error": {
     "invalid_user_credentials": "無効なユーザ認証情報です。",

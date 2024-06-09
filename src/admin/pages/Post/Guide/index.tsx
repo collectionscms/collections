@@ -77,7 +77,7 @@ export const Guide: React.FC = () => {
             <Typography color="secondary" sx={{ mr: 1 }}>
               ⌘ + S
             </Typography>
-            <Typography>{t('editor.draft_save')}</Typography>
+            <Typography>{t('editor.save_draft')}</Typography>
           </ListItem>
         </List>
       </Popover>
