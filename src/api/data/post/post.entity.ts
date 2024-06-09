@@ -3,13 +3,12 @@ import { v4 } from 'uuid';
 import { UnexpectedException } from '../../../exceptions/unexpected.js';
 import { LocalizedPost } from '../../../types/index.js';
 import { ContentEntity } from '../content/content.entity.js';
+import { ContentHistoryEntity } from '../contentHistory/contentHistory.entity.js';
 import { FileEntity } from '../file/file.entity.js';
-import { PostHistoryEntity } from '../postHistory/postHistory.entity.js';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 import { UserEntity } from '../user/user.entity.js';
 
 export const status = {
-  init: 'init',
   draft: 'draft',
   review: 'review',
   published: 'published',
@@ -32,16 +31,17 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       id: postId,
       projectId,
       slug: this.GenerateSlug(),
-      status: status.init,
-      publishedAt: null,
       defaultLocale,
-      version: 0,
-      createdById,
       createdAt: new Date(),
       updatedAt: new Date(),
     });
 
-    const content = ContentEntity.Construct({ projectId, postId, locale: defaultLocale });
+    const content = ContentEntity.Construct({
+      projectId,
+      postId,
+      locale: defaultLocale,
+      createdById,
+    });
 
     return { post, content };
   }
@@ -72,40 +72,18 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     return this.projectId;
   }
 
-  get status(): string {
-    return this.props.status;
-  }
-
-  get publishedAt(): Date | null {
-    return this.props.publishedAt;
-  }
-
   get defaultLocale(): string {
     return this.props.defaultLocale;
   }
 
-  get version(): number {
-    return this.props.version;
-  }
-
-  get createdById(): string {
-    return this.props.createdById;
-  }
-
-  changeStatus(status: string) {
-    this.props.status = status;
-
-    if (status === 'published') {
-      this.props.publishedAt = new Date();
-      this.props.version += 1;
-    }
-  }
-
   toLocalizedWithContentsResponse(
     locale: string,
-    contents: { content: ContentEntity; file: FileEntity | null }[],
-    histories: PostHistoryEntity[],
-    createdBy: UserEntity
+    contents: {
+      content: ContentEntity;
+      file: FileEntity | null;
+      createdBy: UserEntity;
+      histories: ContentHistoryEntity[];
+    }[]
   ): LocalizedPost {
     const localizedOrDefaultContent =
       contents.find((c) => c.content.isSameLocaleContent(locale)) || contents[0];
@@ -114,22 +92,22 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     return {
       id: this.props.id,
       slug: this.props.slug,
-      status: this.props.status,
-      updatedAt: this.props.updatedAt,
-      publishedAt: this.props.publishedAt,
       defaultLocale: this.props.defaultLocale,
+      status: localizedOrDefaultContent.content.status,
+      updatedAt: localizedOrDefaultContent.content.updatedAt,
+      publishedAt: localizedOrDefaultContent.content.publishedAt,
       title: localizedOrDefaultContent.content.title ?? '',
       body: localizedOrDefaultContent.content.body ?? '',
       bodyJson: localizedOrDefaultContent.content.bodyJson ?? '',
       bodyHtml: localizedOrDefaultContent.content.bodyHtml ?? '',
       contentLocale: localizedOrDefaultContent.content.locale || this.props.defaultLocale,
       locales,
-      authorName: createdBy.name,
+      authorName: localizedOrDefaultContent.createdBy.name,
       contents: contents.map((c) => ({
         ...c.content.toResponse(),
         file: c.file?.toResponseWithUrl() ?? null,
       })),
-      histories: histories.map((history) => history.toResponse()),
+      histories: localizedOrDefaultContent.histories.map((history) => history.toResponse()),
     };
   }
 }

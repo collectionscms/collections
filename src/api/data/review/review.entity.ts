@@ -14,12 +14,14 @@ export class ReviewEntity extends PrismaBaseEntity<Review> {
   static Construct({
     projectId,
     postId,
+    contentId,
     revieweeId,
     title,
     body,
   }: {
     projectId: string;
     postId: string;
+    contentId: string;
     revieweeId: string;
     title: string;
     body: string | null;
@@ -29,6 +31,7 @@ export class ReviewEntity extends PrismaBaseEntity<Review> {
       id: v4(),
       projectId,
       postId,
+      contentId,
       revieweeId,
       reviewerId: null,
       title,
@@ -77,6 +80,10 @@ export class ReviewEntity extends PrismaBaseEntity<Review> {
 
   get postId(): string {
     return this.props.postId;
+  }
+
+  get contentId(): string {
+    return this.props.contentId;
   }
 
   get projectId(): string {

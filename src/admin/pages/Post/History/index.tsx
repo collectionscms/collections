@@ -8,7 +8,7 @@ import {
   timelineItemClasses,
 } from '@mui/lab';
 import { Popover, Tooltip, Typography } from '@mui/material';
-import { PostHistory } from '@prisma/client';
+import { ContentHistory } from '@prisma/client';
 import { RiHistoryLine } from '@remixicon/react';
 import dayjs from 'dayjs';
 import React, { useState } from 'react';
@@ -16,7 +16,7 @@ import { useTranslation } from 'react-i18next';
 import { IconButton } from '../../../@extended/components/IconButton/index.js';
 
 type Props = {
-  histories: PostHistory[];
+  histories: ContentHistory[];
 };
 
 export const History: React.FC<Props> = ({ histories }) => {

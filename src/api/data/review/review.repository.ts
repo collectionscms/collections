@@ -32,8 +32,11 @@ export class ReviewRepository {
     return ReviewEntity.Reconstruct<Review, ReviewEntity>(record);
   }
 
-  async findOneByPostId(prisma: ProjectPrismaType, postId: string): Promise<ReviewEntity | null> {
-    const record = await prisma.review.findFirst({ where: { postId } });
+  async findOneByContentId(
+    prisma: ProjectPrismaType,
+    contentId: string
+  ): Promise<ReviewEntity | null> {
+    const record = await prisma.review.findFirst({ where: { contentId } });
     return record ? ReviewEntity.Reconstruct<Review, ReviewEntity>(record) : null;
   }
 

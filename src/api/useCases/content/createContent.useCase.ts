@@ -15,10 +15,11 @@ export class CreateContentUseCase {
       projectId: props.projectId,
       postId: props.id,
       locale: props.locale,
+      createdById: props.userId,
     });
 
     entity.beforeInsertValidate();
     const result = await this.contentRepository.create(this.prisma, entity);
-    return result.toResponse();
+    return result.content.toResponse();
   }
 }

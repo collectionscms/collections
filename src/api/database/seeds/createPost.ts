@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { v4 } from 'uuid';
-import { StatusType, status } from '../../data/post/post.entity.js';
+import { contentStatus } from '../../data/content/content.entity.js';
+import { StatusType } from '../../data/post/post.entity.js';
 import { reviewStatus } from '../../data/review/review.entity.js';
 import { BypassPrismaType } from '../prisma/client.js';
 import { adminUser } from './createUsers.js';
@@ -38,57 +39,60 @@ export const createPost = async (
           body: `Please review the post entitled '${title}'`,
         };
 
+  const postId = options?.id ?? v4();
+
   await prisma.post.create({
     data: {
-      id: options?.id ?? v4(),
+      id: postId,
       projectId,
       slug: options?.slug ?? faker.lorem.slug(),
-      status: options?.status ?? 'published',
-      publishedAt: options?.publishedAt ?? currentTime,
       defaultLocale: options?.defaultLocale ?? 'en',
-      version: options?.version ?? 0,
       createdAt: currentTime,
       updatedAt: currentTime,
-      createdById: user.id,
       contents: {
         create: {
           id: v4(),
           projectId,
+          status: options?.status ?? contentStatus.published,
+          publishedAt: options?.publishedAt ?? currentTime,
           locale: options?.defaultLocale ?? 'en',
+          version: options?.version ?? 0,
           title: title,
           body: body,
           // todo: add
           bodyJson: '{}',
           bodyHtml: `<p>${body}</p>`,
+          createdById: user.id,
           createdAt: currentTime,
           updatedAt: currentTime,
+          review:
+            options?.status === contentStatus.review
+              ? {
+                  create: {
+                    id: v4(),
+                    projectId,
+                    postId,
+                    revieweeId: user.id,
+                    title: reviewData.title,
+                    body: reviewData.body,
+                    status: reviewStatus.Request,
+                    createdAt: currentTime,
+                    updatedAt: currentTime,
+                  },
+                }
+              : {},
+          contentHistories: {
+            create: {
+              id: v4(),
+              projectId,
+              userId: user.id,
+              status: options?.status ?? 'published',
+              version: options?.version ?? 0,
+              createdAt: currentTime,
+            },
+          },
         },
       },
-      postHistories: {
-        create: {
-          id: v4(),
-          projectId,
-          userId: user.id,
-          status: options?.status ?? 'published',
-          version: options?.version ?? 0,
-          createdAt: currentTime,
-        },
-      },
-      reviews:
-        options?.status === status.review
-          ? {
-              create: {
-                id: v4(),
-                projectId,
-                revieweeId: user.id,
-                title: reviewData.title,
-                body: reviewData.body,
-                status: reviewStatus.Request,
-                createdAt: currentTime,
-                updatedAt: currentTime,
-              },
-            }
-          : {},
     },
   });
 };

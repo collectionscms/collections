@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
-import { PostRepository } from '../data/post/post.repository.js';
-import { PostHistoryRepository } from '../data/postHistory/postHistory.repository.js';
+import { ContentRepository } from '../data/content/content.repository.js';
+import { ContentHistoryRepository } from '../data/contentHistory/contentHistory.repository.js';
 import { ReviewRepository } from '../data/review/review.repository.js';
 import { projectPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
@@ -88,8 +88,8 @@ router.patch(
       projectPrisma(validated.data.projectId),
       new ChangeReviewStatusService(
         new ReviewRepository(),
-        new PostRepository(),
-        new PostHistoryRepository()
+        new ContentRepository(),
+        new ContentHistoryRepository()
       )
     );
 
@@ -117,8 +117,8 @@ router.patch(
       projectPrisma(validated.data.projectId),
       new ChangeReviewStatusService(
         new ReviewRepository(),
-        new PostRepository(),
-        new PostHistoryRepository()
+        new ContentRepository(),
+        new ContentHistoryRepository()
       )
     );
 

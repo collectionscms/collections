@@ -303,7 +303,14 @@ export const EditPostPageImpl: React.FC = () => {
         histories={post.histories}
         characters={editor?.storage.characterCount.characters() ?? 0}
       />
-      <PublishSetting open={openSettings} post={post} onClose={() => setOpenSettings(false)} />
+      {content && (
+        <PublishSetting
+          open={openSettings}
+          contentId={content.id}
+          status={content.status}
+          onClose={() => setOpenSettings(false)}
+        />
+      )}
       <AddLocale
         open={openAddLocale}
         post={post}

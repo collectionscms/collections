@@ -24,27 +24,31 @@ import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { LocalizedPost } from '../../../../types/index.js';
 import { logger } from '../../../../utilities/logger.js';
 import { IconButton } from '../../../@extended/components/IconButton/index.js';
 import { useAuth } from '../../../components/utilities/Auth/index.js';
-import { FormValues, editPostValidator } from '../../../fields/validators/post/editPost.js';
+import {
+  FormValues,
+  editContentValidator,
+} from '../../../fields/validators/content/editContent.js';
 import { usePost } from '../Context/index.js';
 import AppBarStyled from '../PostHeader/AppBarStyled.js';
 
 export type Props = {
   open: boolean;
-  post: LocalizedPost;
+  contentId: string;
+  status: string;
   onClose: () => void;
 };
 
-export const PublishSetting: React.FC<Props> = ({ open, post, onClose }) => {
+export const PublishSetting: React.FC<Props> = ({ open, contentId, status, onClose }) => {
   const { hasPermission } = useAuth();
   const { t } = useTranslation();
   const navigate = useNavigate();
   const theme = useTheme();
-  const { updatePost } = usePost();
-  const { trigger } = updatePost(post.id);
+  const { requestReview, publish } = usePost();
+  const { trigger: requestReviewTrigger } = requestReview(contentId);
+  const { trigger: publishTrigger } = publish(contentId);
 
   const appBar: AppBarProps = {
     position: 'fixed',
@@ -65,18 +69,22 @@ export const PublishSetting: React.FC<Props> = ({ open, post, onClose }) => {
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
-      slug: post.slug,
-      status: post.status !== 'published' ? 'review' : 'published',
+      status: status !== 'published' ? 'review' : 'published',
       title: '',
       body: '',
     },
-    resolver: yupResolver(editPostValidator()),
+    resolver: yupResolver(editContentValidator()),
   });
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
+      if (form.status === 'review') {
+        await requestReviewTrigger(form);
+      } else {
+        await publishTrigger(form);
+      }
+
       reset(form);
-      await trigger(form);
       enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
       navigate('/admin/posts');
     } catch (error) {
@@ -99,7 +107,7 @@ export const PublishSetting: React.FC<Props> = ({ open, post, onClose }) => {
               </IconButton>
             </Stack>
             <Button variant="contained" type="submit">
-              {post.status === 'published'
+              {status === 'published'
                 ? t('updating')
                 : watch('status') === 'review'
                   ? t('publish_for_review')
@@ -128,7 +136,7 @@ export const PublishSetting: React.FC<Props> = ({ open, post, onClose }) => {
                       <FormControlLabel
                         {...field}
                         value="review"
-                        disabled={post.status === 'published'}
+                        disabled={status === 'published'}
                         control={<Radio />}
                         label={t('review')}
                       />
