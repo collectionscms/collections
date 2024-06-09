@@ -1,6 +1,6 @@
 import { User } from '@auth/express';
 import { Content, File, Post, PostHistory } from '@prisma/client';
-import { ProjectPrismaClient, ProjectPrismaType } from '../../database/prisma/client.js';
+import { ProjectPrismaType } from '../../database/prisma/client.js';
 import { ContentEntity } from '../content/content.entity.js';
 import { FileEntity } from '../file/file.entity.js';
 import { PostHistoryEntity } from '../postHistory/postHistory.entity.js';
@@ -32,7 +32,8 @@ export class PostRepository {
 
     return records.map((record) => {
       const post = PostEntity.Reconstruct<Post, PostEntity>(record);
-      const contents = [];
+      const contents: { content: ContentEntity; file: FileEntity | null; createdBy: UserEntity }[] =
+        [];
       for (const content of record.contents) {
         contents.push({
           content: ContentEntity.Reconstruct<Content, ContentEntity>(content),
