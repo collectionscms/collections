@@ -3,15 +3,26 @@ import { v4 } from 'uuid';
 import { UnexpectedException } from '../../../exceptions/unexpected.js';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 
+export const contentStatus = {
+  init: 'init',
+  draft: 'draft',
+  review: 'review',
+  published: 'published',
+  archived: 'archived',
+} as const;
+export type ContentStatusType = (typeof contentStatus)[keyof typeof contentStatus];
+
 export class ContentEntity extends PrismaBaseEntity<Content> {
   static Construct({
     projectId,
     postId,
     locale,
+    createdById,
   }: {
     projectId: string;
     postId: string;
     locale: string;
+    createdById: string;
   }): ContentEntity {
     return new ContentEntity({
       id: v4(),
@@ -23,6 +34,10 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
       bodyJson: null,
       bodyHtml: null,
       locale,
+      status: contentStatus.init,
+      publishedAt: null,
+      version: 0,
+      createdById,
       createdAt: new Date(),
       updatedAt: new Date(),
     });
@@ -72,6 +87,31 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
 
   get locale(): string {
     return this.props.locale;
+  }
+
+  get status(): string {
+    return this.props.status;
+  }
+
+  get publishedAt(): Date | null {
+    return this.props.publishedAt;
+  }
+
+  get version(): number {
+    return this.props.version;
+  }
+
+  get createdById(): string {
+    return this.props.createdById;
+  }
+
+  changeStatus(status: string) {
+    this.props.status = status;
+
+    if (status === contentStatus.published) {
+      this.props.publishedAt = new Date();
+      this.props.version += 1;
+    }
   }
 
   updateContent({

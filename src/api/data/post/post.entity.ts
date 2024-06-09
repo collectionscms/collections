@@ -41,7 +41,12 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       updatedAt: new Date(),
     });
 
-    const content = ContentEntity.Construct({ projectId, postId, locale: defaultLocale });
+    const content = ContentEntity.Construct({
+      projectId,
+      postId,
+      locale: defaultLocale,
+      createdById,
+    });
 
     return { post, content };
   }

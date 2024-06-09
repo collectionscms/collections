@@ -1,3 +1,4 @@
+import { record } from 'zod';
 import { LocalizedPost } from '../../../types/index.js';
 import { ContentEntity } from '../../data/content/content.entity.js';
 import { ContentRepository } from '../../data/content/content.repository.js';
@@ -6,6 +7,7 @@ import { PostEntity } from '../../data/post/post.entity.js';
 import { PostRepository } from '../../data/post/post.repository.js';
 import { UserEntity } from '../../data/user/user.entity.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
+import { content } from '../../routes/content.router.js';
 import { CreatePostUseCaseSchemaType } from './createPost.schema.js';
 
 type CreatePostUseCaseResponse = {

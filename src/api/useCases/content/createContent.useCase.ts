@@ -15,6 +15,7 @@ export class CreateContentUseCase {
       projectId: props.projectId,
       postId: props.id,
       locale: props.locale,
+      createdById: props.userId,
     });
 
     entity.beforeInsertValidate();

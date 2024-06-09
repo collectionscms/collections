@@ -23,6 +23,7 @@ router.post(
       projectId: res.projectRole?.id,
       id: req.params.id,
       locale: req.body.locale,
+      userId: res.user.id,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 

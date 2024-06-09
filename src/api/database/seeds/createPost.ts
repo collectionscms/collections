@@ -1,5 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { v4 } from 'uuid';
+import { contentStatus } from '../../data/content/content.entity.js';
 import { StatusType, status } from '../../data/post/post.entity.js';
 import { reviewStatus } from '../../data/review/review.entity.js';
 import { BypassPrismaType } from '../prisma/client.js';
@@ -54,12 +55,16 @@ export const createPost = async (
         create: {
           id: v4(),
           projectId,
+          status: options?.status ?? contentStatus.published,
+          publishedAt: options?.publishedAt ?? currentTime,
           locale: options?.defaultLocale ?? 'en',
+          version: options?.version ?? 0,
           title: title,
           body: body,
           // todo: add
           bodyJson: '{}',
           bodyHtml: `<p>${body}</p>`,
+          createdById: user.id,
           createdAt: currentTime,
           updatedAt: currentTime,
         },
