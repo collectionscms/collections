@@ -69,7 +69,6 @@ export class PostRepository {
 
   async findOneWithContentsById(
     prisma: ProjectPrismaType,
-    projectId: string,
     id: string
   ): Promise<{
     post: PostEntity;
@@ -79,7 +78,6 @@ export class PostRepository {
     const record = await prisma.post.findFirstOrThrow({
       where: {
         id,
-        projectId,
       },
       include: {
         contents: {

@@ -50,4 +50,21 @@ export class ContentRepository {
 
     return ContentEntity.Reconstruct<Content, ContentEntity>(record);
   }
+
+  async updateStatus(
+    prisma: ProjectPrismaType,
+    contentEntity: ContentEntity
+  ): Promise<ContentEntity> {
+    contentEntity.beforeUpdateValidate();
+    const record = await prisma.content.update({
+      where: {
+        id: contentEntity.id,
+      },
+      data: {
+        status: contentEntity.status,
+      },
+    });
+
+    return ContentEntity.Reconstruct<Content, ContentEntity>(record);
+  }
 }

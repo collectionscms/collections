@@ -1,7 +1,7 @@
 import { Post } from '@prisma/client';
-import { PostEntity } from '../../data/post/post.entity.js';
+import { ContentRepository } from '../../data/content/content.repository.js';
 import { PostRepository } from '../../data/post/post.repository.js';
-import { PostHistoryEntity } from '../../data/postHistory/postHistory.entity.js';
+
 import { PostHistoryRepository } from '../../data/postHistory/postHistory.repository.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
 import { ChangeStatusUseCaseSchemaType } from './changeStatus.schema.js';
@@ -10,18 +10,20 @@ export class ChangeStatusUseCase {
   constructor(
     private readonly prisma: ProjectPrismaClient,
     private readonly postRepository: PostRepository,
-    private readonly postHistoryRepository: PostHistoryRepository
+    private readonly postHistoryRepository: PostHistoryRepository,
+    private readonly contentRepository: ContentRepository
   ) {}
 
-  async execute(props: ChangeStatusUseCaseSchemaType): Promise<void> {
+  async execute(props: ChangeStatusUseCaseSchemaType): Promise<Post> {
     const { projectId, id, userId, status } = props;
-
-    const post = await this.postRepository.findOneById(this.prisma, id);
-    const postEntity = PostEntity.Reconstruct<Post, PostEntity>(post.toPersistence());
-    postEntity.changeStatus(status);
+    const { post, contents } = await this.postRepository.findOneWithContentsById(this.prisma, id);
 
     await this.prisma.$transaction(async (tx) => {
-      const updatedPost = await this.postRepository.updateStatus(tx, postEntity);
+      for (const c of contents) {
+        const content = c.content;
+        content.changeStatus(status);
+        await this.contentRepository.updateStatus(tx, content);
+      }
 
       // const postHistoryEntity = PostHistoryEntity.Construct({
       //   projectId: projectId,
@@ -31,8 +33,8 @@ export class ChangeStatusUseCase {
       //   version: updatedPost.version,
       // });
       // await this.postHistoryRepository.create(tx, postHistoryEntity);
-
-      return postEntity;
     });
+
+    return post.toResponse();
   }
 }

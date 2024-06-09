@@ -163,7 +163,8 @@ router.patch(
     const useCase = new ChangeStatusUseCase(
       projectPrisma(validated.data.projectId),
       new PostRepository(),
-      new PostHistoryRepository()
+      new PostHistoryRepository(),
+      new ContentRepository()
     );
 
     await useCase.execute(validated.data);
