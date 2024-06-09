@@ -1,7 +1,8 @@
 import { Content } from '@prisma/client';
 import { contentStatus } from '../../data/content/content.entity.js';
 import { ContentRepository } from '../../data/content/content.repository.js';
-import { PostHistoryRepository } from '../../data/postHistory/postHistory.repository.js';
+import { ContentHistoryEntity } from '../../data/contentHistory/contentHistory.entity.js';
+import { ContentHistoryRepository } from '../../data/contentHistory/contentHistory.repository.js';
 import { ReviewEntity } from '../../data/review/review.entity.js';
 import { ReviewRepository } from '../../data/review/review.repository.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
@@ -11,7 +12,7 @@ export class RequestReviewUseCase {
   constructor(
     private readonly prisma: ProjectPrismaClient,
     private readonly contentRepository: ContentRepository,
-    private readonly postHistoryRepository: PostHistoryRepository,
+    private readonly contentHistoryRepository: ContentHistoryRepository,
     private readonly reviewRepository: ReviewRepository
   ) {}
 
@@ -39,16 +40,14 @@ export class RequestReviewUseCase {
       }
       this.reviewRepository.upsert(tx, review);
 
-      // await this.postHistoryRepository.create(
-      //   tx,
-      //   PostHistoryEntity.Construct({
-      //     projectId: projectId,
-      //     postId: id,
-      //     userId,
-      //     status: entity.status,
-      //     version: entity.version,
-      //   })
-      // );
+      const contentHistory = ContentHistoryEntity.Construct({
+        projectId,
+        contentId: content.id,
+        userId,
+        status: content.status,
+        version: content.version,
+      });
+      await this.contentHistoryRepository.create(tx, contentHistory);
 
       return result;
     });

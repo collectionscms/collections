@@ -81,16 +81,16 @@ export const createPost = async (
                   },
                 }
               : {},
-        },
-      },
-      postHistories: {
-        create: {
-          id: v4(),
-          projectId,
-          userId: user.id,
-          status: options?.status ?? 'published',
-          version: options?.version ?? 0,
-          createdAt: currentTime,
+          contentHistories: {
+            create: {
+              id: v4(),
+              projectId,
+              userId: user.id,
+              status: options?.status ?? 'published',
+              version: options?.version ?? 0,
+              createdAt: currentTime,
+            },
+          },
         },
       },
     },

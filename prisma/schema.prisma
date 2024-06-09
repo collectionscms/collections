@@ -21,7 +21,7 @@ model Project {
   roles           Role[]
   posts           Post[]
   contents        Content[]
-  postHistory     PostHistory[]
+  contentHistory  ContentHistory[]
   apiKeys         ApiKey[]
   invitations     Invitation[]
   rolePermissions RolePermission[]
@@ -29,23 +29,23 @@ model Project {
 }
 
 model User {
-  id                      String        @id @db.Uuid
-  name                    String        @db.VarChar(255)
-  email                   String        @unique
-  password                String        @db.VarChar(255)
-  isActive                Boolean       @default(true)
-  confirmationToken       String?       @db.VarChar(255)
+  id                      String           @id @db.Uuid
+  name                    String           @db.VarChar(255)
+  email                   String           @unique
+  password                String           @db.VarChar(255)
+  isActive                Boolean          @default(true)
+  confirmationToken       String?          @db.VarChar(255)
   confirmedAt             DateTime?
-  avatarUrl               String?       @db.VarChar(255)
-  resetPasswordToken      String?       @db.VarChar(255)
+  avatarUrl               String?          @db.VarChar(255)
+  resetPasswordToken      String?          @db.VarChar(255)
   resetPasswordExpiration DateTime?
-  createdAt               DateTime      @default(now()) @db.Timestamptz(6)
-  updatedAt               DateTime      @updatedAt @db.Timestamptz(6)
+  createdAt               DateTime         @default(now()) @db.Timestamptz(6)
+  updatedAt               DateTime         @updatedAt @db.Timestamptz(6)
   userProjects            UserProject[]
-  postHistories           PostHistory[]
+  contentHistories        ContentHistory[]
   invitations             Invitation[]
-  revieweeHasReviews      Review[]      @relation("Reviewee")
-  reviewerHasReviews      Review[]      @relation("Reviewer")
+  revieweeHasReviews      Review[]         @relation("Reviewee")
+  reviewerHasReviews      Review[]         @relation("Reviewer")
   contents                Content[]
 }
 
@@ -126,29 +126,15 @@ model File {
 }
 
 model Post {
-  id            String        @id @db.Uuid
-  projectId     String        @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
-  slug          String        @db.VarChar(255)
-  defaultLocale String        @db.VarChar(255)
-  createdAt     DateTime      @default(now()) @db.Timestamptz(6)
-  updatedAt     DateTime      @updatedAt @db.Timestamptz(6)
-  project       Project       @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  id            String    @id @db.Uuid
+  projectId     String    @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
+  slug          String    @db.VarChar(255)
+  defaultLocale String    @db.VarChar(255)
+  createdAt     DateTime  @default(now()) @db.Timestamptz(6)
+  updatedAt     DateTime  @updatedAt @db.Timestamptz(6)
+  project       Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
   contents      Content[]
-  postHistories PostHistory[]
   reviews       Review[]
-}
-
-model PostHistory {
-  id        String   @id @db.Uuid
-  projectId String   @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
-  postId    String   @db.Uuid
-  userId    String   @db.Uuid
-  status    String   @db.VarChar(255)
-  version   Int      @default(0)
-  createdAt DateTime @default(now()) @db.Timestamptz(6)
-  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
-  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Review {
@@ -171,26 +157,40 @@ model Review {
 }
 
 model Content {
-  id          String    @id @db.Uuid
-  projectId   String    @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
-  postId      String    @db.Uuid
-  fileId      String?   @db.Uuid
-  createdById String    @db.Uuid
-  title       String?   @db.VarChar(255)
-  body        String?
-  bodyJson    String?
-  bodyHtml    String?
-  locale      String    @db.VarChar(255)
-  status      String    @db.VarChar(255)
-  version     Int       @default(0)
-  publishedAt DateTime? @db.Timestamptz(6)
-  createdAt   DateTime  @default(now()) @db.Timestamptz(6)
-  updatedAt   DateTime  @updatedAt @db.Timestamptz(6)
-  project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  post        Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
-  createdBy   User      @relation(fields: [createdById], references: [id])
-  file        File?     @relation(fields: [fileId], references: [id], onDelete: SetNull)
-  review      Review?
+  id               String           @id @db.Uuid
+  projectId        String           @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
+  postId           String           @db.Uuid
+  fileId           String?          @db.Uuid
+  createdById      String           @db.Uuid
+  title            String?          @db.VarChar(255)
+  body             String?
+  bodyJson         String?
+  bodyHtml         String?
+  locale           String           @db.VarChar(255)
+  status           String           @db.VarChar(255)
+  version          Int              @default(0)
+  publishedAt      DateTime?        @db.Timestamptz(6)
+  createdAt        DateTime         @default(now()) @db.Timestamptz(6)
+  updatedAt        DateTime         @updatedAt @db.Timestamptz(6)
+  project          Project          @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  post             Post             @relation(fields: [postId], references: [id], onDelete: Cascade)
+  createdBy        User             @relation(fields: [createdById], references: [id])
+  file             File?            @relation(fields: [fileId], references: [id], onDelete: SetNull)
+  review           Review?
+  contentHistories ContentHistory[]
+}
+
+model ContentHistory {
+  id        String   @id @db.Uuid
+  projectId String   @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
+  contentId String   @db.Uuid
+  userId    String   @db.Uuid
+  status    String   @db.VarChar(255)
+  version   Int      @default(0)
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  content   Content  @relation(fields: [contentId], references: [id], onDelete: Cascade)
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model ApiKey {

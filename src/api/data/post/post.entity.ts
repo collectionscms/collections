@@ -3,8 +3,8 @@ import { v4 } from 'uuid';
 import { UnexpectedException } from '../../../exceptions/unexpected.js';
 import { LocalizedPost } from '../../../types/index.js';
 import { ContentEntity } from '../content/content.entity.js';
+import { ContentHistoryEntity } from '../contentHistory/contentHistory.entity.js';
 import { FileEntity } from '../file/file.entity.js';
-import { PostHistoryEntity } from '../postHistory/postHistory.entity.js';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 import { UserEntity } from '../user/user.entity.js';
 
@@ -78,8 +78,12 @@ export class PostEntity extends PrismaBaseEntity<Post> {
 
   toLocalizedWithContentsResponse(
     locale: string,
-    contents: { content: ContentEntity; file: FileEntity | null; createdBy: UserEntity }[],
-    histories: PostHistoryEntity[]
+    contents: {
+      content: ContentEntity;
+      file: FileEntity | null;
+      createdBy: UserEntity;
+      histories: ContentHistoryEntity[];
+    }[]
   ): LocalizedPost {
     const localizedOrDefaultContent =
       contents.find((c) => c.content.isSameLocaleContent(locale)) || contents[0];
@@ -103,7 +107,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
         ...c.content.toResponse(),
         file: c.file?.toResponseWithUrl() ?? null,
       })),
-      histories: histories.map((history) => history.toResponse()),
+      histories: localizedOrDefaultContent.histories.map((history) => history.toResponse()),
     };
   }
 }

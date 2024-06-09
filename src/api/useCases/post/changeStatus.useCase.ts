@@ -1,8 +1,8 @@
 import { Post } from '@prisma/client';
 import { ContentRepository } from '../../data/content/content.repository.js';
+import { ContentHistoryEntity } from '../../data/contentHistory/contentHistory.entity.js';
+import { ContentHistoryRepository } from '../../data/contentHistory/contentHistory.repository.js';
 import { PostRepository } from '../../data/post/post.repository.js';
-
-import { PostHistoryRepository } from '../../data/postHistory/postHistory.repository.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
 import { ChangeStatusUseCaseSchemaType } from './changeStatus.schema.js';
 
@@ -10,7 +10,7 @@ export class ChangeStatusUseCase {
   constructor(
     private readonly prisma: ProjectPrismaClient,
     private readonly postRepository: PostRepository,
-    private readonly postHistoryRepository: PostHistoryRepository,
+    private readonly contentHistoryRepository: ContentHistoryRepository,
     private readonly contentRepository: ContentRepository
   ) {}
 
@@ -23,16 +23,16 @@ export class ChangeStatusUseCase {
         const content = c.content;
         content.changeStatus(status);
         await this.contentRepository.updateStatus(tx, content);
-      }
 
-      // const postHistoryEntity = PostHistoryEntity.Construct({
-      //   projectId: projectId,
-      //   postId: id,
-      //   userId,
-      //   status,
-      //   version: updatedPost.version,
-      // });
-      // await this.postHistoryRepository.create(tx, postHistoryEntity);
+        const contentHistory = ContentHistoryEntity.Construct({
+          projectId,
+          contentId: content.id,
+          userId,
+          status: content.status,
+          version: content.version,
+        });
+        await this.contentHistoryRepository.create(tx, contentHistory);
+      }
     });
 
     return post.toResponse();

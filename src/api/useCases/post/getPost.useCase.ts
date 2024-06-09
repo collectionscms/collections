@@ -12,10 +12,6 @@ export class GetPostUseCase {
   async execute(props: GetPostUseCaseSchemaType): Promise<LocalizedPost> {
     const record = await this.postRepository.findOneWithContentsById(this.prisma, props.postId);
 
-    return record.post.toLocalizedWithContentsResponse(
-      props.locale,
-      record.contents,
-      record.histories
-    );
+    return record.post.toLocalizedWithContentsResponse(props.locale, record.contents);
   }
 }

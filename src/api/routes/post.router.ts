@@ -2,8 +2,8 @@ import express, { Request, Response } from 'express';
 import { env } from '../../env.js';
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
 import { ContentRepository } from '../data/content/content.repository.js';
+import { ContentHistoryRepository } from '../data/contentHistory/contentHistory.repository.js';
 import { PostRepository } from '../data/post/post.repository.js';
-import { PostHistoryRepository } from '../data/postHistory/postHistory.repository.js';
 import { projectPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';
@@ -86,7 +86,8 @@ router.post(
     const useCase = new CreatePostUseCase(
       projectPrisma(validated.data.projectId),
       new PostRepository(),
-      new ContentRepository()
+      new ContentRepository(),
+      new ContentHistoryRepository()
     );
     const post = await useCase.execute(validated.data);
 
@@ -133,7 +134,7 @@ router.patch(
     const useCase = new ChangeStatusUseCase(
       projectPrisma(validated.data.projectId),
       new PostRepository(),
-      new PostHistoryRepository(),
+      new ContentHistoryRepository(),
       new ContentRepository()
     );
 

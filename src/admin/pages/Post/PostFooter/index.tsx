@@ -1,12 +1,12 @@
 import { Box, Stack, Typography } from '@mui/material';
-import { PostHistory } from '@prisma/client';
+import { ContentHistory } from '@prisma/client';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Guide } from '../Guide/index.js';
 import { History } from '../History/index.js';
 
 export type Props = {
-  histories: PostHistory[];
+  histories: ContentHistory[];
   characters: number;
 };
 
