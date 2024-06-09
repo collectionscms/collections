@@ -4,7 +4,6 @@ import { UnexpectedException } from '../../../exceptions/unexpected.js';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 
 export const contentStatus = {
-  init: 'init',
   draft: 'draft',
   review: 'review',
   published: 'published',
@@ -34,7 +33,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
       bodyJson: null,
       bodyHtml: null,
       locale,
-      status: contentStatus.init,
+      status: contentStatus.draft,
       publishedAt: null,
       version: 0,
       createdById,

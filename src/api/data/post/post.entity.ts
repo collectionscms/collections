@@ -9,7 +9,6 @@ import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 import { UserEntity } from '../user/user.entity.js';
 
 export const status = {
-  init: 'init',
   draft: 'draft',
   review: 'review',
   published: 'published',
@@ -32,7 +31,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       id: postId,
       projectId,
       slug: this.GenerateSlug(),
-      status: status.init,
+      status: status.draft,
       defaultLocale,
       createdAt: new Date(),
       updatedAt: new Date(),

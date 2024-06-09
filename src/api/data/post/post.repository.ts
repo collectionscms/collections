@@ -16,11 +16,6 @@ export class PostRepository {
     }[]
   > {
     const records = await prisma.post.findMany({
-      where: {
-        status: {
-          not: 'init',
-        },
-      },
       include: {
         contents: {
           include: {
@@ -110,42 +105,6 @@ export class PostRepository {
       post,
       contents,
       histories,
-    };
-  }
-
-  async findInit(prisma: ProjectPrismaClient): Promise<{
-    post: PostEntity;
-    contents: { content: ContentEntity; file: FileEntity | null; createdBy: UserEntity }[];
-  } | null> {
-    const record = await prisma.post.findFirst({
-      where: {
-        status: 'init',
-      },
-      include: {
-        contents: {
-          include: {
-            file: true,
-            createdBy: true,
-          },
-        },
-      },
-    });
-
-    if (!record) return null;
-
-    const post = PostEntity.Reconstruct<Post, PostEntity>(record);
-    const contents = [];
-    for (const content of record.contents) {
-      contents.push({
-        content: ContentEntity.Reconstruct<Content, ContentEntity>(content),
-        file: content.file ? FileEntity.Reconstruct<File, FileEntity>(content.file) : null,
-        createdBy: UserEntity.Reconstruct<User, UserEntity>(content.createdBy),
-      });
-    }
-
-    return {
-      post,
-      contents,
     };
   }
 

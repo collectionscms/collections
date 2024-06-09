@@ -15,33 +15,39 @@ export class CreatePostUseCase {
   async execute(props: CreatePostUseCaseSchemaType): Promise<LocalizedPost> {
     const { userId, projectId, locale } = props;
 
-    let record = await this.postRepository.findInit(this.prisma);
-    if (!record) {
-      const { post, content } = PostEntity.Construct({
-        projectId: projectId,
-        defaultLocale: locale,
-        createdById: userId,
-      });
+    const { post, content } = PostEntity.Construct({
+      projectId: projectId,
+      defaultLocale: locale,
+      createdById: userId,
+    });
 
-      record = await this.prisma.$transaction(async (tx) => {
-        const createdPost = await this.postRepository.create(tx, post);
-        const { content: createdContent, createdBy } = await this.contentRepository.create(
-          tx,
-          content
-        );
+    const record = await this.prisma.$transaction(async (tx) => {
+      const createdPost = await this.postRepository.create(tx, post);
+      const { content: createdContent, createdBy } = await this.contentRepository.create(
+        tx,
+        content
+      );
 
-        return {
-          post: createdPost,
-          contents: [
-            {
-              content: createdContent,
-              file: null,
-              createdBy: createdBy,
-            },
-          ],
-        };
-      });
-    }
+      // const postHistoryEntity = PostHistoryEntity.Construct({
+      //   projectId: projectId,
+      //   postId: post.id,
+      //   userId,
+      //   status: 'draft',
+      //   version: post.version,
+      // });
+      // await this.postHistoryRepository.create(tx, postHistoryEntity);
+
+      return {
+        post: createdPost,
+        contents: [
+          {
+            content: createdContent,
+            file: null,
+            createdBy: createdBy,
+          },
+        ],
+      };
+    });
 
     return record.post.toLocalizedWithContentsResponse(locale, record.contents, []);
   }
