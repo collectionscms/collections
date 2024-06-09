@@ -37,6 +37,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
       publishedAt: null,
       version: 0,
       createdById,
+      updatedById: null,
       createdAt: new Date(),
       updatedAt: new Date(),
     });
@@ -123,18 +124,21 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     bodyJson,
     bodyHtml,
     fileId,
+    updatedById,
   }: {
     title: string | null;
     body: string | null;
     bodyJson: string | null;
     bodyHtml: string | null;
     fileId: string | null;
+    updatedById: string;
   }): void {
     this.props.title = title;
     this.props.body = body;
     this.props.bodyJson = bodyJson;
     this.props.bodyHtml = bodyHtml;
     this.props.fileId = fileId;
+    this.props.updatedById = updatedById;
   }
 
   isSameLocaleContent(locale: string) {

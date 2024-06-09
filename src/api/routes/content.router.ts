@@ -1,7 +1,6 @@
 import express, { Request, Response } from 'express';
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
 import { ContentRepository } from '../data/content/content.repository.js';
-import { PostRepository } from '../data/post/post.repository.js';
 import { ContentHistoryRepository } from '../data/contentHistory/contentHistory.repository.js';
 import { ReviewRepository } from '../data/review/review.repository.js';
 import { projectPrisma } from '../database/prisma/client.js';
@@ -63,9 +62,7 @@ router.patch(
 
     const useCase = new UpdateContentUseCase(
       projectPrisma(validated.data.projectId),
-      new PostRepository(),
-      new ContentRepository(),
-      new ContentHistoryRepository()
+      new ContentRepository()
     );
     await useCase.execute(validated.data);
 

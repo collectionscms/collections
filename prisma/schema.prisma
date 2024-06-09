@@ -46,7 +46,8 @@ model User {
   invitations             Invitation[]
   revieweeHasReviews      Review[]         @relation("Reviewee")
   reviewerHasReviews      Review[]         @relation("Reviewer")
-  contents                Content[]
+  createdByHasContents    Content[]        @relation("CreatedBy")
+  updatedByHasContents    Content[]        @relation("UpdatedBy")
 }
 
 model UserProject {
@@ -75,7 +76,7 @@ model Invitation {
   updatedAt   DateTime @updatedAt @db.Timestamptz(6)
   project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
   role        Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
-  user        User     @relation(fields: [invitedById], references: [id])
+  user        User     @relation(fields: [invitedById], references: [id], onDelete: NoAction)
 }
 
 model Role {
@@ -161,7 +162,6 @@ model Content {
   projectId        String           @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
   postId           String           @db.Uuid
   fileId           String?          @db.Uuid
-  createdById      String           @db.Uuid
   title            String?          @db.VarChar(255)
   body             String?
   bodyJson         String?
@@ -170,11 +170,14 @@ model Content {
   status           String           @db.VarChar(255)
   version          Int              @default(0)
   publishedAt      DateTime?        @db.Timestamptz(6)
+  createdById      String           @db.Uuid
+  updatedById      String?          @db.Uuid
   createdAt        DateTime         @default(now()) @db.Timestamptz(6)
   updatedAt        DateTime         @updatedAt @db.Timestamptz(6)
   project          Project          @relation(fields: [projectId], references: [id], onDelete: Cascade)
   post             Post             @relation(fields: [postId], references: [id], onDelete: Cascade)
-  createdBy        User             @relation(fields: [createdById], references: [id])
+  createdBy        User             @relation(name: "CreatedBy", fields: [createdById], references: [id], onDelete: NoAction)
+  updatedBy        User?            @relation(name: "UpdatedBy", fields: [updatedById], references: [id], onDelete: SetNull)
   file             File?            @relation(fields: [fileId], references: [id], onDelete: SetNull)
   review           Review?
   contentHistories ContentHistory[]
