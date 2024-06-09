@@ -17,7 +17,7 @@ export class UpdateContentUseCase {
   async execute(props: UpdateContentUseCaseSchemaType): Promise<Content> {
     const { id, projectId, userId, fileId, title, body, bodyJson, bodyHtml } = props;
 
-    const record = await this.contentRepository.findOneById(this.prisma, id, projectId);
+    const record = await this.contentRepository.findOneById(this.prisma, id);
     const post = await this.postRepository.findOneById(this.prisma, record.postId);
 
     const result = await this.prisma.$transaction(async (tx) => {

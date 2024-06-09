@@ -4,15 +4,10 @@ import { UserEntity } from '../user/user.entity.js';
 import { ContentEntity } from './content.entity.js';
 
 export class ContentRepository {
-  async findOneById(
-    prisma: ProjectPrismaType,
-    id: string,
-    projectId: string
-  ): Promise<ContentEntity> {
+  async findOneById(prisma: ProjectPrismaType, id: string): Promise<ContentEntity> {
     const record = await prisma.content.findFirstOrThrow({
       where: {
         id,
-        projectId,
       },
     });
 

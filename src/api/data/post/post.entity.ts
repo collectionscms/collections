@@ -97,8 +97,8 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     return {
       id: this.props.id,
       slug: this.props.slug,
-      status: this.props.status,
       defaultLocale: this.props.defaultLocale,
+      status: localizedOrDefaultContent.content.status,
       updatedAt: localizedOrDefaultContent.content.updatedAt,
       publishedAt: localizedOrDefaultContent.content.publishedAt,
       title: localizedOrDefaultContent.content.title ?? '',

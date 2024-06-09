@@ -20,10 +20,12 @@ type PostContext = {
     }
   >;
   createPost: () => SWRMutationResponse<LocalizedPost, any, string>;
-  updatePost: (id: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
-  createContent: (id: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
-  updateContent: (id: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
-  changeStatus: (id: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
+  // updatePost: (id: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
+  createContent: (postId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
+  changeStatus: (postId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
+  updateContent: (contentId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
+  requestReview: (contentId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
+  publish: (contentId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
   createFileImage: () => SWRMutationResponse<
     { files: UploadFile[] },
     any,
@@ -58,30 +60,46 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       return api.post<{ post: LocalizedPost }>(url).then((res) => res.data.post);
     });
 
-  const updatePost = (id: string) =>
-    useSWRMutation(`/posts/${id}`, async (url: string, { arg }: { arg: Record<string, any> }) => {
-      return api.patch(url, arg).then((res) => res.data);
-    });
+  // const updatePost = (id: string) =>
+  //   useSWRMutation(`/posts/${id}`, async (url: string, { arg }: { arg: Record<string, any> }) => {
+  //     return api.patch(url, arg).then((res) => res.data);
+  //   });
 
-  const createContent = (id: string) =>
+  const createContent = (postId: string) =>
     useSWRMutation(
-      `/posts/${id}/contents`,
+      `/posts/${postId}/contents`,
       async (url: string, { arg }: { arg: Record<string, any> }) => {
         return api.post(url, arg).then((res) => res.data);
       }
     );
 
-  const changeStatus = (id: string) =>
+  const changeStatus = (postId: string) =>
     useSWRMutation(
-      `/posts/${id}/changeStatus`,
+      `/posts/${postId}/changeStatus`,
       async (url: string, { arg }: { arg: Record<string, any> }) => {
         return api.patch(url, arg).then((res) => res.data);
       }
     );
 
-  const updateContent = (id: string) =>
+  const updateContent = (contentId: string) =>
     useSWRMutation(
-      `/contents/${id}`,
+      `/contents/${contentId}`,
+      async (url: string, { arg }: { arg: Record<string, any> }) => {
+        return api.patch(url, arg).then((res) => res.data);
+      }
+    );
+
+  const requestReview = (contentId: string) =>
+    useSWRMutation(
+      `/contents/${contentId}/requestReview`,
+      async (url: string, { arg }: { arg: Record<string, any> }) => {
+        return api.patch(url, arg).then((res) => res.data);
+      }
+    );
+
+  const publish = (contentId: string) =>
+    useSWRMutation(
+      `/contents/${contentId}/publish`,
       async (url: string, { arg }: { arg: Record<string, any> }) => {
         return api.patch(url, arg).then((res) => res.data);
       }
@@ -97,20 +115,24 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       getPosts,
       getPost,
       createPost,
-      updatePost,
+      // updatePost,
       createContent,
       updateContent,
       changeStatus,
+      requestReview,
+      publish,
       createFileImage,
     }),
     [
       getPosts,
       getPost,
       createPost,
-      updatePost,
+      // updatePost,
       createContent,
       updateContent,
       changeStatus,
+      requestReview,
+      publish,
       createFileImage,
     ]
   );
