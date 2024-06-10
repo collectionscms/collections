@@ -63,6 +63,7 @@ export const createPost = async (
           bodyJson: '{}',
           bodyHtml: `<p>${body}</p>`,
           createdById: user.id,
+          updatedById: user.id,
           createdAt: currentTime,
           updatedAt: currentTime,
           review:
