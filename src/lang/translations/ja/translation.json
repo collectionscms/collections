@@ -212,10 +212,11 @@
     "invalid_date_format": "無効な日付フォーマットです",
     "unsupported_media_type": "サポートされていないメディア形式です。",
     "bad_request": "リクエストの内容が正しくありません。",
-    "unable_delete_user": "削除できないユーザーです",
+    "unable_delete_user": "削除できないユーザーです。",
     "already_invited_email": "すでに招待済みです。",
-    "unauthorized_user": "不正なユーザーです",
-    "already_confirmed": "すでに認証済みのユーザーです"
+    "unauthorized_user": "不正なユーザーです。",
+    "already_confirmed": "すでに認証済みのユーザーです。",
+    "already_updated_by_another_user": "すでに他のユーザーによって更新されています。"
   },
   "yup": {
     "mixed": {
