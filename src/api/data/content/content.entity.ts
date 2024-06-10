@@ -17,11 +17,13 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     postId,
     locale,
     createdById,
+    version,
   }: {
     projectId: string;
     postId: string;
     locale: string;
     createdById: string;
+    version?: number;
   }): ContentEntity {
     return new ContentEntity({
       id: v4(),
@@ -35,7 +37,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
       locale,
       status: contentStatus.draft,
       publishedAt: null,
-      version: 0,
+      version: version || 1,
       createdById,
       updatedById: null,
       createdAt: new Date(),
@@ -114,8 +116,17 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
 
     if (status === contentStatus.published) {
       this.props.publishedAt = new Date();
-      this.props.version += 1;
     }
+  }
+
+  hasNewVersion(contents: ContentEntity[]): boolean {
+    return contents.some(
+      (c) => c.props.locale === this.props.locale && c.props.version > this.props.version
+    );
+  }
+
+  isPublished(): boolean {
+    return this.props.status === contentStatus.published;
   }
 
   updateContent({
