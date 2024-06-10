@@ -8381,10 +8381,10 @@ pino-http@10.1.0:
     pino-std-serializers "^7.0.0"
     process-warning "^3.0.0"
 
-pino-pretty@11.1.0:
-  version "11.1.0"
-  resolved "https://registry.yarnpkg.com/pino-pretty/-/pino-pretty-11.1.0.tgz#0df8b7b95cdfa5b5fbb90df49dc98763adef6ae3"
-  integrity sha512-PjBzFL7IMSl1YkS9cSVWC+4gONmW0Fi+fvUzy74zK6RJHk4RkfW+e22NydRrGEtBRa5n6/oPNLPqjUeQrzqcLQ==
+pino-pretty@11.2.0:
+  version "11.2.0"
+  resolved "https://registry.yarnpkg.com/pino-pretty/-/pino-pretty-11.2.0.tgz#9f0b6fe6bc26e90ee1b06386a4afd7f11d777bca"
+  integrity sha512-k6VHtZBcfLDB1mB8TWPE19OyLygfNdqOgX/uACqBbVMaUK2JeXHBUTINvJ/QPs5Vazwfq4gWIDpTYDnhkfy7Jw==
   dependencies:
     colorette "^2.0.7"
     dateformat "^4.6.3"
