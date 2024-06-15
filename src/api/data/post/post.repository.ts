@@ -88,10 +88,10 @@ export class PostRepository {
             createdBy: true,
             contentHistories: true,
           },
+          orderBy: {
+            version: 'desc',
+          },
         },
-      },
-      orderBy: {
-        createdAt: 'desc',
       },
     });
 

@@ -85,9 +85,34 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       histories: ContentHistoryEntity[];
     }[]
   ): LocalizedPost {
+    const latestContentsPerLocale = Object.values(
+      contents.reduce(
+        (
+          acc: {
+            [key: string]: {
+              content: ContentEntity;
+              createdBy: UserEntity;
+              histories: ContentHistoryEntity[];
+            };
+          },
+          c
+        ) => {
+          if (!acc[c.content.locale] || acc[c.content.locale].content.version < c.content.version) {
+            acc[c.content.locale] = c;
+          }
+          return acc;
+        },
+        {}
+      )
+    );
+
+    // Get localized or default content
     const localizedOrDefaultContent =
-      contents.find((c) => c.content.isSameLocaleContent(locale)) || contents[0];
-    const locales = contents.map((c) => c.content.locale);
+      latestContentsPerLocale.find((c) => c.content.isSameLocaleContent(locale)) ||
+      latestContentsPerLocale[0];
+
+    // Get unique locales
+    const locales = [...new Set(contents.map((c) => c.content.locale))];
 
     return {
       id: this.props.id,
