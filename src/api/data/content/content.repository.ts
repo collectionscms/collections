@@ -57,6 +57,7 @@ export class ContentRepository {
       },
       data: {
         status: contentEntity.status,
+        publishedAt: contentEntity.publishedAt,
       },
     });
 

@@ -147,7 +147,7 @@ CREATE TABLE "Content" (
     "bodyHtml" TEXT,
     "locale" VARCHAR(255) NOT NULL,
     "status" VARCHAR(255) NOT NULL,
-    "version" INTEGER NOT NULL DEFAULT 0,
+    "version" INTEGER NOT NULL DEFAULT 1,
     "publishedAt" TIMESTAMPTZ(6),
     "createdById" UUID NOT NULL,
     "updatedById" UUID,
@@ -164,7 +164,7 @@ CREATE TABLE "ContentHistory" (
     "contentId" UUID NOT NULL,
     "userId" UUID NOT NULL,
     "status" VARCHAR(255) NOT NULL,
-    "version" INTEGER NOT NULL DEFAULT 0,
+    "version" INTEGER NOT NULL,
     "createdAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "ContentHistory_pkey" PRIMARY KEY ("id")

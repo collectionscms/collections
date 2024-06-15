@@ -41,14 +41,17 @@ export const EditPostPageImpl: React.FC = () => {
   const { data: post, mutate } = getPost(id);
   const [locale, setLocale] = useState(post.contentLocale);
   const content = post.contents.find((content) => content.locale === locale);
-  const { trigger } = updateContent(content?.id ?? '');
+
+  if (!content) throw new Error('content is not defined');
+
+  const { trigger } = updateContent(content.id ?? '');
 
   // /////////////////////////////////////
   // File Image
   // /////////////////////////////////////
 
   const inputRef = useRef<HTMLInputElement>(null);
-  const [uploadFile, setUploadFile] = useState<UploadFile | null>(content?.file ?? null);
+  const [uploadFile, setUploadFile] = useState<UploadFile | null>(content.file ?? null);
   const { trigger: createFileImageTrigger } = createFileImage();
 
   const handleUploadThumbnail = async () => {
@@ -208,7 +211,7 @@ export const EditPostPageImpl: React.FC = () => {
         currentLocale={locale}
         buttonRef={ref}
         onOpenSettings={handleOpenSettings}
-        onDraftSave={handleSaveContent}
+        onSaveDraft={handleSaveContent}
         onChangeLocale={handleChangeLocale}
         onOpenAddLocale={handleOpenAddLocale}
       />
@@ -303,14 +306,12 @@ export const EditPostPageImpl: React.FC = () => {
         histories={post.histories}
         characters={editor?.storage.characterCount.characters() ?? 0}
       />
-      {content && (
-        <PublishSetting
-          open={openSettings}
-          contentId={content.id}
-          status={content.status}
-          onClose={() => setOpenSettings(false)}
-        />
-      )}
+      <PublishSetting
+        open={openSettings}
+        contentId={content.id}
+        status={content.status}
+        onClose={() => setOpenSettings(false)}
+      />
       <AddLocale
         open={openAddLocale}
         post={post}

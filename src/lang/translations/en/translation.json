@@ -122,8 +122,8 @@
   "published_at": "Published At",
   "author": "Author",
   "publish_settings": "Publish Settings",
-  "temporary_save": "Temporary Save",
-  "draft_save": "Draft Save",
+  "save_draft_new_ver": "Save Draft(New Ver)",
+  "save_draft": "Save Draft",
   "publish": "Publish",
   "review": "Review",
   "publishing": "Publish",
@@ -187,7 +187,7 @@
     "numbered_list": "Numbered List",
     "quote": "Quote",
     "bold": "Bold",
-    "draft_save": "Draft Save"
+    "save_draft": "Save Draft"
   },
   "error": {
     "invalid_user_credentials": "Invalid user credentials.",
@@ -215,7 +215,8 @@
     "unable_delete_user": "Unable to delete user.",
     "already_invited_email": "Already invited.",
     "unauthorized_user": "Unauthorized user.",
-    "already_confirmed": "Already confirmed user."
+    "already_confirmed": "Already confirmed user.",
+    "already_updated_by_another_user": "Already updated by another user."
   },
   "yup": {
     "mixed": {

@@ -22,7 +22,7 @@ export type Props = {
   currentLocale: string;
   buttonRef: React.RefObject<HTMLButtonElement>;
   onOpenSettings: () => void;
-  onDraftSave: () => void;
+  onSaveDraft: () => void;
   onChangeLocale: (locale: string) => void;
   onOpenAddLocale: () => void;
 };
@@ -32,7 +32,7 @@ export const PostHeader: React.FC<Props> = ({
   currentLocale,
   buttonRef,
   onOpenSettings,
-  onDraftSave,
+  onSaveDraft,
   onChangeLocale,
   onOpenAddLocale,
 }) => {
@@ -106,9 +106,9 @@ export const PostHeader: React.FC<Props> = ({
                 variant="outlined"
                 size="small"
                 color="secondary"
-                onClick={onDraftSave}
+                onClick={onSaveDraft}
               >
-                {post.status === 'published' ? t('temporary_save') : t('draft_save')}
+                {post.status === 'published' ? t('save_draft_new_ver') : t('save_draft')}
               </Button>
             </Tooltip>
             <Button variant="contained" size="small" onClick={onOpenSettings}>
