@@ -46,10 +46,12 @@ router.get(
   authenticatedUser,
   validateAccess(['readPost']),
   asyncHandler(async (req: Request, res: Response) => {
+    const locale = req.query.locale || res.projectRole?.defaultLocale;
+
     const validated = getPostUseCaseSchema.safeParse({
       projectId: res.projectRole?.id,
       postId: req.params.id,
-      defaultLocale: res.projectRole?.defaultLocale,
+      locale: locale,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 

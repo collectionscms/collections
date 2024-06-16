@@ -81,14 +81,16 @@ export const History: React.FC<Props> = ({ histories }) => {
         </Timeline>
       </Popover>
       <Tooltip title="履歴" placement="top-start">
-        <IconButton
-          shape="rounded"
-          color="secondary"
-          onClick={handleOpenHistory}
-          disabled={histories.length === 0}
-        >
-          <RiHistoryLine />
-        </IconButton>
+        <span>
+          <IconButton
+            shape="rounded"
+            color="secondary"
+            onClick={handleOpenHistory}
+            disabled={histories.length === 0}
+          >
+            <RiHistoryLine />
+          </IconButton>
+        </span>
       </Tooltip>
     </>
   );

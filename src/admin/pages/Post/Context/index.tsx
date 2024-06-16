@@ -12,7 +12,10 @@ type PostContext = {
       suspense: true;
     }
   >;
-  getPost: (id: string) => SWRResponse<
+  getPost: (
+    id: string,
+    locale: string | null
+  ) => SWRResponse<
     LocalizedPost,
     Error,
     {
@@ -45,9 +48,9 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       }
     );
 
-  const getPost = (id: string) =>
+  const getPost = (id: string, locale: string | null) =>
     useSWR(
-      `/posts/${id}`,
+      `/posts/${id}${locale ? `?locale=${locale}` : ''}`,
       (url) => api.get<{ post: LocalizedPost }>(url).then((res) => res.data.post),
       {
         suspense: true,

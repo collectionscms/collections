@@ -72,7 +72,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
   }
 
   toLocalizedWithContentsResponse(
-    defaultLocale: string,
+    locale: string,
     contents: {
       content: ContentEntity;
       file: FileEntity | null;
@@ -80,31 +80,10 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       histories: ContentHistoryEntity[];
     }[]
   ): LocalizedPost {
-    const latestContentsPerLocale = Object.values(
-      contents.reduce(
-        (
-          acc: {
-            [key: string]: {
-              content: ContentEntity;
-              createdBy: UserEntity;
-              histories: ContentHistoryEntity[];
-            };
-          },
-          c
-        ) => {
-          if (!acc[c.content.locale] || acc[c.content.locale].content.version < c.content.version) {
-            acc[c.content.locale] = c;
-          }
-          return acc;
-        },
-        {}
-      )
-    );
-
-    // Get content of default locale
-    const defaultLocaleContent =
-      latestContentsPerLocale.find((c) => c.content.locale === defaultLocale) ||
-      latestContentsPerLocale[0];
+    // Get content of locale
+    const localeContent = contents
+      .filter((c) => c.content.locale === locale)
+      .sort((a, b) => b.content.version - a.content.version)[0];
 
     // Get unique locales
     const locales = [...new Set(contents.map((c) => c.content.locale))];
@@ -112,21 +91,19 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     return {
       id: this.props.id,
       slug: this.props.slug,
-      status: defaultLocaleContent.content.status,
-      updatedAt: defaultLocaleContent.content.updatedAt,
-      publishedAt: defaultLocaleContent.content.publishedAt,
-      title: defaultLocaleContent.content.title ?? '',
-      body: defaultLocaleContent.content.body ?? '',
-      bodyJson: defaultLocaleContent.content.bodyJson ?? '',
-      bodyHtml: defaultLocaleContent.content.bodyHtml ?? '',
-      contentLocale: defaultLocaleContent.content.locale,
+      contentId: localeContent.content.id,
+      status: localeContent.content.status,
+      updatedAt: localeContent.content.updatedAt,
+      publishedAt: localeContent.content.publishedAt,
+      title: localeContent.content.title ?? '',
+      body: localeContent.content.body ?? '',
+      bodyJson: localeContent.content.bodyJson ?? '',
+      bodyHtml: localeContent.content.bodyHtml ?? '',
+      contentLocale: localeContent.content.locale,
       locales,
-      authorName: defaultLocaleContent.createdBy.name,
-      contents: contents.map((c) => ({
-        ...c.content.toResponse(),
-        file: c.file?.toResponseWithUrl() ?? null,
-      })),
-      histories: defaultLocaleContent.histories.map((history) => history.toResponse()),
+      authorName: localeContent.createdBy.name,
+      file: localeContent.file?.toResponseWithUrl() ?? null,
+      histories: localeContent.histories.map((history) => history.toResponse()),
     };
   }
 }
