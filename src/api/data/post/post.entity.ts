@@ -80,13 +80,19 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       histories: ContentHistoryEntity[];
     }[]
   ): LocalizedPost {
+    const localeContents = contents.filter((c) => c.content.locale === locale);
+
     // Get content of locale
-    const localeContent = contents
-      .filter((c) => c.content.locale === locale)
-      .sort((a, b) => b.content.version - a.content.version)[0];
+    const localeContent = localeContents.sort((a, b) => b.content.version - a.content.version)[0];
 
     // Get unique locales
     const locales = [...new Set(contents.map((c) => c.content.locale))];
+
+    // Get history of locale
+    const histories = localeContents.reduce(
+      (acc: ContentHistoryEntity[], c) => acc.concat(c.histories),
+      []
+    );
 
     return {
       id: this.props.id,
@@ -103,7 +109,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       locales,
       authorName: localeContent.createdBy.name,
       file: localeContent.file?.toResponseWithUrl() ?? null,
-      histories: localeContent.histories.map((history) => history.toResponse()),
+      histories: histories.map((history) => history.toResponse()),
     };
   }
 }
