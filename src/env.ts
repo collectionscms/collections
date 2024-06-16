@@ -16,7 +16,6 @@ type AllowedEnvironmentVariable =
   | 'SERVER_HOST'
   | 'SERVER_PORT'
   | 'ADMIN_PORT'
-  | 'DEFAULT_LOCALE'
 
   // /////////////////////////////////////
   // Storage
@@ -108,7 +107,6 @@ export const defaults: Partial<Record<AllowedEnvironmentVariable, any>> = {
   SERVER_HOST: 'test.com',
   SERVER_PORT: '4000',
   ADMIN_PORT: '4001',
-  DEFAULT_LOCALE: 'en',
 
   // Storage
   STORAGE_DRIVER: 'local',

@@ -6,6 +6,7 @@ CREATE TABLE "Project" (
     "subdomain" VARCHAR(255) NOT NULL,
     "iconUrl" VARCHAR(255),
     "enabled" BOOLEAN NOT NULL DEFAULT true,
+    "defaultLocale" VARCHAR(255) NOT NULL,
     "createdAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMPTZ(6) NOT NULL,
 
@@ -111,7 +112,6 @@ CREATE TABLE "Post" (
     "id" UUID NOT NULL,
     "projectId" UUID NOT NULL DEFAULT (current_setting('app.current_project_id'::text))::uuid,
     "slug" VARCHAR(255) NOT NULL,
-    "defaultLocale" VARCHAR(255) NOT NULL,
     "createdAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMPTZ(6) NOT NULL,
 

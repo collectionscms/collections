@@ -14,7 +14,7 @@ export const createPost = async (
     slug?: string;
     status?: StatusType;
     publishedAt?: Date;
-    defaultLocale?: string;
+    locale?: string;
     version?: number;
     createdById?: string;
   }
@@ -29,7 +29,7 @@ export const createPost = async (
   });
 
   const reviewData =
-    options?.defaultLocale === 'ja'
+    options?.locale === 'ja'
       ? {
           title: `記事を書いた！`,
           body: `「${title}」というタイトルの記事を書いたので、レビューをお願いします`,
@@ -46,7 +46,6 @@ export const createPost = async (
       id: postId,
       projectId,
       slug: options?.slug ?? faker.lorem.slug(),
-      defaultLocale: options?.defaultLocale ?? 'en',
       createdAt: currentTime,
       updatedAt: currentTime,
       contents: {
@@ -55,7 +54,7 @@ export const createPost = async (
           projectId,
           status: options?.status ?? contentStatus.published,
           publishedAt: options?.publishedAt ?? currentTime,
-          locale: options?.defaultLocale ?? 'en',
+          locale: options?.locale ?? 'en',
           version: options?.version ?? 0,
           title: title,
           body: body,

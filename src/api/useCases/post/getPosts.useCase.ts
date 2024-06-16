@@ -13,7 +13,7 @@ export class GetPostsUseCase {
     const records = await this.postRepository.findManyByProjectId(this.prisma);
 
     return records.map((record) => {
-      return record.post.toLocalizedWithContentsResponse(props.locale, record.contents);
+      return record.post.toLocalizedWithContentsResponse(props.defaultLocale, record.contents);
     });
   }
 }
