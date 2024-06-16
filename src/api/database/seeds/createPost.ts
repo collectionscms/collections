@@ -55,7 +55,7 @@ export const createPost = async (
           status: options?.status ?? contentStatus.published,
           publishedAt: options?.publishedAt ?? currentTime,
           locale: options?.locale ?? 'en',
-          version: options?.version ?? 0,
+          version: options?.version ?? 1,
           title: title,
           body: body,
           // todo: add
@@ -87,7 +87,7 @@ export const createPost = async (
               projectId,
               userId: user.id,
               status: options?.status ?? 'published',
-              version: options?.version ?? 0,
+              version: options?.version ?? 1,
               createdAt: currentTime,
             },
           },
