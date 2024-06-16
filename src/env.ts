@@ -93,12 +93,7 @@ type AllowedEnvironmentVariable =
   // /////////////////////////////////////
   | 'EMAIL_TRANSPORT'
   | 'EMAIL_FROM'
-  | 'EMAIL_SENDGRID_API_KEY'
-
-  // /////////////////////////////////////
-  // Other
-  // /////////////////////////////////////
-  | 'WEBPACK_BUNDLE_ANALYZER';
+  | 'EMAIL_SENDGRID_API_KEY';
 
 export const defaults: Partial<Record<AllowedEnvironmentVariable, any>> = {
   // General
