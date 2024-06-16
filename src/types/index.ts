@@ -31,6 +31,7 @@ export type ApiError = {
 export type LocalizedPost = {
   id: string;
   slug: string;
+  contentId: string;
   status: string;
   updatedAt: Date;
   publishedAt?: Date | null;
@@ -41,7 +42,7 @@ export type LocalizedPost = {
   bodyHtml: string;
   locales: string[];
   authorName: string;
-  contents: (Content & { file: UploadFile | null })[];
+  file: UploadFile | null;
   histories: ContentHistory[];
 };
 

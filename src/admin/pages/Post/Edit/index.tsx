@@ -10,7 +10,7 @@ import { enqueueSnackbar } from 'notistack';
 import React, { useRef, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { UploadFile } from '../../../../types/index.js';
 import { logger } from '../../../../utilities/logger.js';
 import { IconButton } from '../../../@extended/components/IconButton/index.js';
@@ -27,31 +27,37 @@ export const EditPostPageImpl: React.FC = () => {
   const { id } = useParams();
   if (!id) throw new Error('id is not defined');
 
-  useHotkeys('Meta+s', async () => ref.current?.click(), [], {
-    preventDefault: true,
-    enableOnFormTags: ['INPUT'],
-  });
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const locale = queryParams.get('locale');
 
-  const ref = React.useRef<HTMLButtonElement>(null);
+  const { getPost, updateContent, createFileImage } = usePost();
+  const { data: post, mutate } = getPost(id, locale);
+  const { trigger } = updateContent(post.contentId);
+
+  // /////////////////////////////////////
+  // Theme
+  // /////////////////////////////////////
 
   const theme = useTheme();
   const bg = theme.palette.background.paper;
 
-  const { getPost, updateContent, createFileImage } = usePost();
-  const { data: post, mutate } = getPost(id);
-  const [locale, setLocale] = useState(post.contentLocale);
-  const content = post.contents.find((content) => content.locale === locale);
+  // /////////////////////////////////////
+  // Save
+  // /////////////////////////////////////
 
-  if (!content) throw new Error('content is not defined');
-
-  const { trigger } = updateContent(content.id ?? '');
+  const ref = React.useRef<HTMLButtonElement>(null);
+  useHotkeys('Meta+s', async () => ref.current?.click(), [], {
+    preventDefault: true,
+    enableOnFormTags: ['INPUT'],
+  });
 
   // /////////////////////////////////////
   // File Image
   // /////////////////////////////////////
 
   const inputRef = useRef<HTMLInputElement>(null);
-  const [uploadFile, setUploadFile] = useState<UploadFile | null>(content.file ?? null);
+  const [uploadFile, setUploadFile] = useState<UploadFile | null>(post.file ?? null);
   const { trigger: createFileImageTrigger } = createFileImage();
 
   const handleUploadThumbnail = async () => {
@@ -180,12 +186,7 @@ export const EditPostPageImpl: React.FC = () => {
   // /////////////////////////////////////
 
   const handleChangeLocale = (locale: string) => {
-    setLocale(locale);
-
-    const content = post.contents.find((content) => content.locale === locale);
-    setPostTitle(content?.title ?? '');
-    setUploadFile(content?.file ?? null);
-    editor?.commands.setContent(toJson(content?.bodyJson));
+    window.location.href = `${window.location.pathname}?locale=${locale}`;
   };
 
   const [openAddLocale, setOpenAddLocale] = useState(false);
@@ -208,7 +209,7 @@ export const EditPostPageImpl: React.FC = () => {
     <>
       <PostHeader
         post={post}
-        currentLocale={locale}
+        currentLocale={post.contentLocale}
         buttonRef={ref}
         onOpenSettings={handleOpenSettings}
         onSaveDraft={handleSaveContent}
@@ -308,8 +309,8 @@ export const EditPostPageImpl: React.FC = () => {
       />
       <PublishSetting
         open={openSettings}
-        contentId={content.id}
-        status={content.status}
+        contentId={post.contentId}
+        status={post.status}
         onClose={() => setOpenSettings(false)}
       />
       <AddLocale

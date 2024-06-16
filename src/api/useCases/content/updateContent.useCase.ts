@@ -50,11 +50,11 @@ export class UpdateContentUseCase {
         // create new version content
         const createdContent = await this.contentRepository.create(this.prisma, entity);
         const history = ContentHistoryEntity.Construct({
-          projectId: content.projectId,
-          contentId: content.id,
-          userId: content.createdById,
-          status: content.status,
-          version: content.version,
+          projectId: entity.projectId,
+          contentId: entity.id,
+          userId: entity.createdById,
+          status: entity.status,
+          version: entity.version,
         });
         await this.contentHistoryRepository.create(this.prisma, history);
 

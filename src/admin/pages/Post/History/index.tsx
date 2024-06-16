@@ -73,7 +73,7 @@ export const History: React.FC<Props> = ({ histories }) => {
                   {history.status === 'published' && ` v${history.version}`}
                 </Typography>
                 <Typography color="textSecondary" variant="subtitle2">
-                  {dayjs(history.createdAt).format('YYYY-MM-DD HH:mm')}・{history.userId}
+                  {dayjs(history.createdAt).format('YYYY-MM-DD HH:mm')}
                 </Typography>
               </TimelineContent>
             </TimelineItem>
@@ -81,14 +81,16 @@ export const History: React.FC<Props> = ({ histories }) => {
         </Timeline>
       </Popover>
       <Tooltip title="履歴" placement="top-start">
-        <IconButton
-          shape="rounded"
-          color="secondary"
-          onClick={handleOpenHistory}
-          disabled={histories.length === 0}
-        >
-          <RiHistoryLine />
-        </IconButton>
+        <span>
+          <IconButton
+            shape="rounded"
+            color="secondary"
+            onClick={handleOpenHistory}
+            disabled={histories.length === 0}
+          >
+            <RiHistoryLine />
+          </IconButton>
+        </span>
       </Tooltip>
     </>
   );
