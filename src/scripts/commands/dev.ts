@@ -2,11 +2,9 @@ import ReactRefreshPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import express from 'express';
 import path from 'path';
 import webpack from 'webpack';
-import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import WebpackDevMiddleware from 'webpack-dev-middleware';
 import WebpackHotMiddleware from 'webpack-hot-middleware';
 import WebpackShellPluginNext from 'webpack-shell-plugin-next';
-import { env } from '../../env.js';
 import { initAdminServer } from '../../express/admin.js';
 import { pathList } from '../../utilities/pathList.js';
 import { adminConfigure } from '../../webpack/adminConfigure.js';
@@ -58,10 +56,6 @@ export const scriptDev = async () => {
     new webpack.HotModuleReplacementPlugin(),
     new ReactRefreshPlugin(),
   ];
-
-  if (env.WEBPACK_BUNDLE_ANALYZER === 'true') {
-    adminConfigure.plugins.push(new BundleAnalyzerPlugin());
-  }
 
   const adminCompiler = webpack(adminConfigure);
   const devMiddleware = WebpackDevMiddleware(adminCompiler, {
