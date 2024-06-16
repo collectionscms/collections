@@ -1,13 +1,16 @@
 import { Content } from '@prisma/client';
 import { ContentEntity } from '../../data/content/content.entity.js';
 import { ContentRepository } from '../../data/content/content.repository.js';
-import { ProjectPrismaType } from '../../database/prisma/client.js';
+import { ContentHistoryEntity } from '../../data/contentHistory/contentHistory.entity.js';
+import { ContentHistoryRepository } from '../../data/contentHistory/contentHistory.repository.js';
+import { ProjectPrismaClient } from '../../database/prisma/client.js';
 import { CreateContentUseCaseSchemaType } from './createContent.schema.js';
 
 export class CreateContentUseCase {
   constructor(
-    private readonly prisma: ProjectPrismaType,
-    private readonly contentRepository: ContentRepository
+    private readonly prisma: ProjectPrismaClient,
+    private readonly contentRepository: ContentRepository,
+    private readonly contentHistoryRepository: ContentHistoryRepository
   ) {}
 
   async execute(props: CreateContentUseCaseSchemaType): Promise<Content> {
@@ -18,8 +21,21 @@ export class CreateContentUseCase {
       createdById: props.userId,
     });
 
-    entity.beforeInsertValidate();
-    const result = await this.contentRepository.create(this.prisma, entity);
-    return result.content.toResponse();
+    const createdContent = await this.prisma.$transaction(async (tx) => {
+      const result = await this.contentRepository.create(this.prisma, entity);
+
+      const contentHistory = ContentHistoryEntity.Construct({
+        projectId: result.content.projectId,
+        contentId: result.content.id,
+        userId: props.userId,
+        status: result.content.status,
+        version: result.content.version,
+      });
+      await this.contentHistoryRepository.create(tx, contentHistory);
+
+      return result;
+    });
+
+    return createdContent.content.toResponse();
   }
 }

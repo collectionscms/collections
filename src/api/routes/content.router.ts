@@ -34,7 +34,8 @@ router.post(
 
     const useCase = new CreateContentUseCase(
       projectPrisma(validated.data.projectId),
-      new ContentRepository()
+      new ContentRepository(),
+      new ContentHistoryRepository()
     );
     const content = await useCase.execute(validated.data);
 
