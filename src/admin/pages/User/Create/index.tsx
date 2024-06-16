@@ -21,7 +21,7 @@ import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/ind
 import {
   FormValues,
   inviteUser as createUserSchema,
-} from '../../../fields/schemas/users/createUser.js';
+} from '../../../fields/validators/users/createUser.js';
 import { useUnsavedChangesPrompt } from '../../../hooks/useUnsavedChangesPrompt.js';
 import { UserContextProvider, useUser } from '../Context/index.js';
 

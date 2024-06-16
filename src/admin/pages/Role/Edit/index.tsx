@@ -15,7 +15,7 @@ import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/ind
 import {
   FormValues,
   updateRole as updateRoleSchema,
-} from '../../../fields/schemas/roles/updateRole.js';
+} from '../../../fields/validators/roles/updateRole.js';
 import { useUnsavedChangesPrompt } from '../../../hooks/useUnsavedChangesPrompt.js';
 import { RoleContextProvider, useRole } from '../Context/index.js';
 

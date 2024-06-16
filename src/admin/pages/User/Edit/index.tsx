@@ -15,7 +15,7 @@ import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/ind
 import {
   FormValues,
   updateUser as updateUserSchema,
-} from '../../../fields/schemas/users/updateUser.js';
+} from '../../../fields/validators/users/updateUser.js';
 import { useUnsavedChangesPrompt } from '../../../hooks/useUnsavedChangesPrompt.js';
 import { UserContextProvider, useUser } from '../Context/index.js';
 

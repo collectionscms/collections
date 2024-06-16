@@ -22,7 +22,7 @@ import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.
 import {
   FormValues,
   resetPassword as resetPasswordSchema,
-} from '../../fields/schemas/authentications/resetPassword.js';
+} from '../../fields/validators/authentications/resetPassword.js';
 import { ResetPasswordContextProvider, useResetPassword } from './Context/index.js';
 
 const ResetPasswordImpl: React.FC = () => {

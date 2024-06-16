@@ -17,7 +17,7 @@ import { Link as RouterLink, useLocation } from 'react-router-dom';
 import { logger } from '../../../utilities/logger.js';
 import { AuthCard } from '../../@extended/components/AuthCard/index.js';
 import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.js';
-import { FormValues, signUpSchema } from '../../fields/schemas/authentications/signUp.js';
+import { FormValues, signUpSchema } from '../../fields/validators/authentications/signUp.js';
 import { SignUpContextProvider, useSignUp } from './Context/index.js';
 
 const SignUpImpl: React.FC = () => {

@@ -13,7 +13,7 @@ import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.
 import {
   FormValues,
   updateProject as updateProjectSchema,
-} from '../../fields/schemas/projects/updateProject.js';
+} from '../../fields/validators/projects/updateProject.js';
 import { useUnsavedChangesPrompt } from '../../hooks/useUnsavedChangesPrompt.js';
 import { ProjectContextProvider, useProject } from './Context/index.js';
 
