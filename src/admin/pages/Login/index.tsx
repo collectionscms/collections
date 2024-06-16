@@ -19,7 +19,7 @@ import { AuthCard } from '../../@extended/components/AuthCard/index.js';
 import { Loader } from '../../components/elements/Loader/index.js';
 import { Logo } from '../../components/elements/Logo/index.js';
 import { useAuth } from '../../components/utilities/Auth/index.js';
-import { FormValues, loginSchema } from '../../fields/schemas/authentications/login.js';
+import { FormValues, loginSchema } from '../../fields/validators/authentications/login.js';
 import lazy from '../../utilities/lazy.js';
 
 const Loading = Loader(lazy(() => import('../../components/elements/Loading/index.js'), 'Loading'));

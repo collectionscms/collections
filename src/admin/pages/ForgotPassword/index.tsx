@@ -22,7 +22,7 @@ import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.
 import {
   FormValues,
   forgotPasswordSchema,
-} from '../../fields/schemas/authentications/forgotPassword.js';
+} from '../../fields/validators/authentications/forgotPassword.js';
 import { ForgotPasswordContextProvider, useForgotPassword } from './Context/index.js';
 import { useTranslation } from 'react-i18next';
 
