@@ -10,11 +10,13 @@ export const createProjects = async (prisma: BypassPrismaType): Promise<void> =>
       {
         id: enProject,
         subdomain: 'en',
+        defaultLocale: 'en',
         name: 'EN Project',
       },
       {
         id: jaProject,
         subdomain: 'ja',
+        defaultLocale: 'ja',
         name: 'JA Project',
       },
     ],

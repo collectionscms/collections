@@ -19,11 +19,11 @@ export type StatusType = (typeof status)[keyof typeof status];
 export class PostEntity extends PrismaBaseEntity<Post> {
   static Construct({
     projectId,
-    defaultLocale,
+    locale,
     createdById,
   }: {
     projectId: string;
-    defaultLocale: string;
+    locale: string;
     createdById: string;
   }): { post: PostEntity; content: ContentEntity } {
     const postId = v4();
@@ -31,7 +31,6 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       id: postId,
       projectId,
       slug: this.GenerateSlug(),
-      defaultLocale,
       createdAt: new Date(),
       updatedAt: new Date(),
     });
@@ -39,7 +38,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     const content = ContentEntity.Construct({
       projectId,
       postId,
-      locale: defaultLocale,
+      locale,
       createdById,
     });
 
@@ -72,12 +71,8 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     return this.projectId;
   }
 
-  get defaultLocale(): string {
-    return this.props.defaultLocale;
-  }
-
   toLocalizedWithContentsResponse(
-    locale: string,
+    defaultLocale: string,
     contents: {
       content: ContentEntity;
       file: FileEntity | null;
@@ -106,9 +101,9 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       )
     );
 
-    // Get localized or default content
-    const localizedOrDefaultContent =
-      latestContentsPerLocale.find((c) => c.content.isSameLocaleContent(locale)) ||
+    // Get content of default locale
+    const defaultLocaleContent =
+      latestContentsPerLocale.find((c) => c.content.locale === defaultLocale) ||
       latestContentsPerLocale[0];
 
     // Get unique locales
@@ -117,22 +112,21 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     return {
       id: this.props.id,
       slug: this.props.slug,
-      defaultLocale: this.props.defaultLocale,
-      status: localizedOrDefaultContent.content.status,
-      updatedAt: localizedOrDefaultContent.content.updatedAt,
-      publishedAt: localizedOrDefaultContent.content.publishedAt,
-      title: localizedOrDefaultContent.content.title ?? '',
-      body: localizedOrDefaultContent.content.body ?? '',
-      bodyJson: localizedOrDefaultContent.content.bodyJson ?? '',
-      bodyHtml: localizedOrDefaultContent.content.bodyHtml ?? '',
-      contentLocale: localizedOrDefaultContent.content.locale || this.props.defaultLocale,
+      status: defaultLocaleContent.content.status,
+      updatedAt: defaultLocaleContent.content.updatedAt,
+      publishedAt: defaultLocaleContent.content.publishedAt,
+      title: defaultLocaleContent.content.title ?? '',
+      body: defaultLocaleContent.content.body ?? '',
+      bodyJson: defaultLocaleContent.content.bodyJson ?? '',
+      bodyHtml: defaultLocaleContent.content.bodyHtml ?? '',
+      contentLocale: defaultLocaleContent.content.locale,
       locales,
-      authorName: localizedOrDefaultContent.createdBy.name,
+      authorName: defaultLocaleContent.createdBy.name,
       contents: contents.map((c) => ({
         ...c.content.toResponse(),
         file: c.file?.toResponseWithUrl() ?? null,
       })),
-      histories: localizedOrDefaultContent.histories.map((history) => history.toResponse()),
+      histories: defaultLocaleContent.histories.map((history) => history.toResponse()),
     };
   }
 }

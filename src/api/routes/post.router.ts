@@ -1,5 +1,4 @@
 import express, { Request, Response } from 'express';
-import { env } from '../../env.js';
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
 import { ContentRepository } from '../data/content/content.repository.js';
 import { ContentHistoryRepository } from '../data/contentHistory/contentHistory.repository.js';
@@ -26,10 +25,9 @@ router.get(
   authenticatedUser,
   validateAccess(['readPost']),
   asyncHandler(async (req: Request, res: Response) => {
-    const locale = req.headers['accept-language'] || env.DEFAULT_LOCALE;
     const validated = getPostsUseCaseSchema.safeParse({
       projectId: res.projectRole?.id,
-      locale,
+      defaultLocale: res.projectRole?.defaultLocale,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
@@ -48,12 +46,10 @@ router.get(
   authenticatedUser,
   validateAccess(['readPost']),
   asyncHandler(async (req: Request, res: Response) => {
-    const locale = req.headers['accept-language'] || env.DEFAULT_LOCALE;
-
     const validated = getPostUseCaseSchema.safeParse({
       projectId: res.projectRole?.id,
       postId: req.params.id,
-      locale,
+      defaultLocale: res.projectRole?.defaultLocale,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
@@ -74,12 +70,10 @@ router.post(
   authenticatedUser,
   validateAccess(['createPost']),
   asyncHandler(async (req: Request, res: Response) => {
-    const locale = req.headers['accept-language'] || env.DEFAULT_LOCALE;
-
     const validated = createPostUseCaseSchema.safeParse({
       projectId: res.projectRole?.id,
       userId: res.user.id,
-      locale,
+      defaultLocale: res.projectRole?.defaultLocale,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
