@@ -15,6 +15,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { LocalizedPost } from '../../../../types/index.js';
 import { IconButton } from '../../../@extended/components/IconButton/index.js';
+import { StatusDot } from '../../../components/elements/StatusDot/index.js';
 import AppBarStyled from './AppBarStyled.js';
 
 export type Props = {
@@ -88,6 +89,7 @@ export const PostHeader: React.FC<Props> = ({
           <IconButton shape="rounded" color="secondary" onClick={navigateToList}>
             <RiArrowLeftLine />
           </IconButton>
+          <StatusDot status={post.status} />
         </Stack>
         <Stack direction="row" sx={{ p: 0.5 }} gap={2}>
           <Button

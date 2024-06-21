@@ -16,6 +16,7 @@ import { buildColumns } from '../../utilities/buildColumns.js';
 import { PostContextProvider, usePost } from './Context/index.js';
 import { RowMenu } from './RowMenu/index.js';
 import { useAuth } from '../../components/utilities/Auth/index.js';
+import { StatusDot } from '../../components/elements/StatusDot/index.js';
 
 export const PostPageImpl: React.FC = () => {
   const { hasPermission } = useAuth();
@@ -90,6 +91,8 @@ export const PostPageImpl: React.FC = () => {
         ) : (
           defaultCell
         );
+      case 'status':
+        return <StatusDot status={row.status} />;
       case 'action':
         return (
           <IconButton
