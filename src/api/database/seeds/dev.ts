@@ -1,5 +1,5 @@
 import { Output } from '../../../utilities/output.js';
-import { status } from '../../data/post/post.entity.js';
+import { contentStatus } from '../../data/content/content.entity.js';
 import { bypassPrisma } from '../prisma/client.js';
 import { createPermissions } from './createPermissions.js';
 import { createPost } from './createPost.js';
@@ -28,25 +28,25 @@ export const seedDev = async (): Promise<void> => {
       for (const project of [enProject, jaProject]) {
         // draft
         await createPost(tx, project, {
-          status: status.draft,
+          status: contentStatus.draft,
           locale: project === enProject ? 'en' : 'ja',
         });
 
         // review
         await createPost(tx, project, {
-          status: status.review,
+          status: contentStatus.review,
           locale: project === enProject ? 'en' : 'ja',
         });
 
         // published
         await createPost(tx, project, {
-          status: status.published,
+          status: contentStatus.published,
           locale: project === enProject ? 'en' : 'ja',
         });
 
         // archived
         await createPost(tx, project, {
-          status: status.archived,
+          status: contentStatus.archived,
           locale: project === enProject ? 'en' : 'ja',
         });
       }

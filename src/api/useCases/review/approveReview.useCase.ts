@@ -1,5 +1,5 @@
 import { Review } from '@prisma/client';
-import { status } from '../../data/post/post.entity.js';
+import { contentStatus } from '../../data/content/content.entity.js';
 import { reviewStatus } from '../../data/review/review.entity.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
 import { ChangeReviewStatusService } from '../../services/changeReviewStatus.service.js';
@@ -18,7 +18,7 @@ export class ApproveReviewUseCase {
         props.reviewId,
         props.userId,
         reviewStatus.Approve,
-        status.published,
+        contentStatus.published,
         hasReadAllReview
       );
 
