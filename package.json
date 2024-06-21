@@ -111,7 +111,7 @@
     "react-router-dom": "6.23.1",
     "react-syntax-highlighter": "15.5.0",
     "rimraf": "5.0.7",
-    "simplebar-react": "3.2.5",
+    "simplebar-react": "3.2.6",
     "style-loader": "4.0.0",
     "swr": "2.2.5",
     "uuid": "10.0.0",
