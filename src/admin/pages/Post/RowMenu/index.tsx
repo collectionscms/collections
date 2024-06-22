@@ -1,11 +1,9 @@
-import { DeleteOutlined, MinusCircleOutlined } from '@ant-design/icons';
-import { ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
-import { RiBookOpenLine } from '@remixicon/react';
+import { DeleteOutlined, StopOutlined, UploadOutlined } from '@ant-design/icons';
+import { Menu, MenuItem, Typography, useTheme } from '@mui/material';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { logger } from '../../../../utilities/logger.js';
 import { BaseDialog } from '../../../components/elements/BaseDialog/index.js';
-import { DeleteDocument } from '../../../components/elements/DeleteDocument/index.js';
 import { useAuth } from '../../../components/utilities/Auth/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
 import { PostContextProvider, usePost } from '../Context/index.js';
@@ -14,34 +12,40 @@ type Props = {
   postId: string;
   status: string;
   menu: any;
-  onDeleteSuccess: (postId: string) => void;
   onArchiveSuccess: (postId: string) => void;
   onPublishSuccess: (postId: string) => void;
+  onTrashSuccess: (postId: string) => void;
   onClose: () => void;
 };
 
 export const RowMenuImpl: React.FC<Props> = (props) => {
+  const theme = useTheme();
   const { hasPermission } = useAuth();
-  const { postId, status, menu, onDeleteSuccess, onClose, onArchiveSuccess, onPublishSuccess } =
+  const { postId, status, menu, onTrashSuccess, onClose, onArchiveSuccess, onPublishSuccess } =
     props;
-  const [openDelete, setOpenDelete] = useState(false);
+  const [openTrash, setOpenTrash] = useState(false);
   const [openArchive, setOpenArchive] = useState(false);
-  const [openPublish, setOpenPublish] = useState(false);
 
   const { t } = useTranslation();
-  const { changeStatus } = usePost();
+  const { changeStatus, trashPost } = usePost();
   const { trigger: changeStatusTrigger } = changeStatus(postId);
+  const { trigger: trashTrigger } = trashPost(postId);
 
   const handleClose = () => {
-    setOpenDelete(false);
+    setOpenTrash(false);
     setOpenArchive(false);
-    setOpenPublish(false);
     onClose();
   };
 
-  const handleDeleteSuccess = () => {
-    setOpenDelete(false);
-    onDeleteSuccess(postId);
+  // move to trash
+  const handleTrash = async () => {
+    try {
+      await trashTrigger();
+      onTrashSuccess(postId);
+      setOpenTrash(false);
+    } catch (error) {
+      logger.error(error);
+    }
   };
 
   // publish to archive
@@ -63,7 +67,6 @@ export const RowMenuImpl: React.FC<Props> = (props) => {
       await changeStatusTrigger({
         status: 'published',
       });
-      setOpenPublish(false);
       onPublishSuccess(postId);
     } catch (error) {
       logger.error(error);
@@ -72,13 +75,6 @@ export const RowMenuImpl: React.FC<Props> = (props) => {
 
   return (
     <>
-      <DeleteDocument
-        id={postId}
-        slug={'posts'}
-        openState={openDelete}
-        onSuccess={handleDeleteSuccess}
-        onClose={handleClose}
-      />
       <BaseDialog
         open={openArchive}
         title={t('dialog.confirm_post_archive_title')}
@@ -87,10 +83,10 @@ export const RowMenuImpl: React.FC<Props> = (props) => {
         cancel={{ label: t('cancel'), action: handleClose }}
       />
       <BaseDialog
-        open={openPublish}
-        title={t('dialog.confirm_post_publish_title')}
-        body={t('dialog.confirm_post_publish')}
-        confirm={{ label: t('publish'), action: handlePublish }}
+        open={openTrash}
+        title={t('dialog.confirm_post_trash_title')}
+        body={t('dialog.confirm_post_trash')}
+        confirm={{ label: t('move_to_trash'), action: handleTrash }}
         cancel={{ label: t('cancel'), action: handleClose }}
       />
       <Menu
@@ -105,30 +101,26 @@ export const RowMenuImpl: React.FC<Props> = (props) => {
         }}
         open={Boolean(menu)}
         onClose={handleClose}
-        sx={{ zIndex: 1 }}
+        sx={{
+          zIndex: 1,
+        }}
       >
         {status === 'published' && hasPermission('archivePost') && (
           <MenuItem onClick={() => setOpenArchive(true)}>
-            <ListItemIcon>
-              <MinusCircleOutlined style={{ fontSize: 18 }} />
-            </ListItemIcon>
-            <ListItemText>{t('archive')}</ListItemText>
+            <StopOutlined style={{ fontSize: 16, paddingRight: 8 }} />
+            <Typography>{t('archive')}</Typography>
           </MenuItem>
         )}
         {status === 'archived' && hasPermission('publishPost') && (
-          <MenuItem onClick={() => setOpenPublish(true)}>
-            <ListItemIcon>
-              <RiBookOpenLine size={18} />
-            </ListItemIcon>
-            <ListItemText>{t('publishing')}</ListItemText>
+          <MenuItem onClick={handlePublish}>
+            <UploadOutlined style={{ fontSize: 16, paddingRight: 8 }} />
+            <Typography>{t('publishing')}</Typography>
           </MenuItem>
         )}
-        {status !== 'published' && hasPermission('deletePost') && (
-          <MenuItem onClick={() => setOpenDelete(true)}>
-            <ListItemIcon>
-              <DeleteOutlined style={{ fontSize: 18 }} />
-            </ListItemIcon>
-            <ListItemText>{t('delete')}</ListItemText>
+        {status !== 'published' && hasPermission('trashPost') && (
+          <MenuItem onClick={() => setOpenTrash(true)} sx={{ color: theme.palette.error.main }}>
+            <DeleteOutlined style={{ fontSize: 16, paddingRight: 8 }} />
+            <Typography>{t('move_to_trash')}</Typography>
           </MenuItem>
         )}
       </Menu>

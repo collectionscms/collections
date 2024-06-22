@@ -1,4 +1,9 @@
-import { DeleteOutlined, EllipsisOutlined, LeftOutlined, PlusOutlined } from '@ant-design/icons';
+import {
+  ArrowLeftOutlined,
+  DeleteOutlined,
+  EllipsisOutlined,
+  PlusOutlined,
+} from '@ant-design/icons';
 import {
   AppBarProps,
   Button,
@@ -111,7 +116,7 @@ export const PostHeader: React.FC<Props> = ({
       <Toolbar>
         <Stack direction="row" sx={{ flexGrow: 1 }} gap={2}>
           <IconButton shape="rounded" color="secondary" onClick={navigateToList}>
-            <LeftOutlined style={{ fontSize: 20 }} />
+            <ArrowLeftOutlined style={{ fontSize: 20 }} />
           </IconButton>
           <StatusDot status={post.status} />
         </Stack>

@@ -11,12 +11,12 @@ import { changeStatusUseCaseSchema } from '../useCases/post/changeStatus.schema.
 import { ChangeStatusUseCase } from '../useCases/post/changeStatus.useCase.js';
 import { createPostUseCaseSchema } from '../useCases/post/createPost.schema.js';
 import { CreatePostUseCase } from '../useCases/post/createPost.useCase.js';
-import { deletePostUseCaseSchema } from '../useCases/post/deletePost.schema.js';
-import { DeletePostUseCase } from '../useCases/post/deletePost.useCase.js';
 import { getPostUseCaseSchema } from '../useCases/post/getPost.schema.js';
 import { GetPostUseCase } from '../useCases/post/getPost.useCase.js';
 import { getPostsUseCaseSchema } from '../useCases/post/getPosts.schema.js';
 import { GetPostsUseCase } from '../useCases/post/getPosts.useCase.js';
+import { trashPostUseCaseSchema } from '../useCases/post/trashPost.schema.js';
+import { TrashPostUseCase } from '../useCases/post/trashPost.useCase.js';
 
 const router = express.Router();
 
@@ -94,17 +94,17 @@ router.post(
 );
 
 router.delete(
-  '/posts/:id',
+  '/posts/:id/trash',
   authenticatedUser,
-  validateAccess(['deletePost']),
+  validateAccess(['trashPost']),
   asyncHandler(async (req: Request, res: Response) => {
-    const validated = deletePostUseCaseSchema.safeParse({
+    const validated = trashPostUseCaseSchema.safeParse({
       id: req.params.id,
       projectId: res.projectRole?.id,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
-    const useCase = new DeletePostUseCase(
+    const useCase = new TrashPostUseCase(
       projectPrisma(validated.data.projectId),
       new PostRepository()
     );

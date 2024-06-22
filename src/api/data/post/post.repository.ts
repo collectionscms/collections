@@ -132,11 +132,13 @@ export class PostRepository {
     return PostEntity.Reconstruct<Post, PostEntity>(record);
   }
 
-  async delete(prisma: ProjectPrismaType, projectId: string, id: string): Promise<PostEntity> {
-    const record = await prisma.post.delete({
+  async updateStatus(prisma: ProjectPrismaType, postEntity: PostEntity): Promise<PostEntity> {
+    const record = await prisma.post.update({
       where: {
-        id,
-        projectId,
+        id: postEntity.id,
+      },
+      data: {
+        status: postEntity.status,
       },
     });
 

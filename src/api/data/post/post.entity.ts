@@ -70,6 +70,14 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     return this.projectId;
   }
 
+  get status(): string {
+    return this.props.status;
+  }
+
+  changeStatus(status: PostStatusType) {
+    this.props.status = status;
+  }
+
   toLocalizedWithContentsResponse(
     locale: string,
     contents: {
