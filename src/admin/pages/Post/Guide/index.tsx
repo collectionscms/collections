@@ -3,6 +3,7 @@ import { RiQuestionMark } from '@remixicon/react';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { IconButton } from '../../../@extended/components/IconButton/index.js';
+import { QuestionOutlined } from '@ant-design/icons';
 
 export const Guide: React.FC = () => {
   const { t } = useTranslation();
@@ -83,7 +84,7 @@ export const Guide: React.FC = () => {
       </Popover>
       <Tooltip title={t('editor.guide')} placement="top-start">
         <IconButton shape="rounded" color="secondary" onClick={handleOpenEditorGuide}>
-          <RiQuestionMark />
+          <QuestionOutlined style={{ fontSize: 16 }} />
         </IconButton>
       </Tooltip>
     </>

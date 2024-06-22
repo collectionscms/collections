@@ -1,4 +1,4 @@
-import { RiMore2Line } from '@remixicon/react';
+import { MoreOutlined } from '@ant-design/icons';
 import { enqueueSnackbar } from 'notistack';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -8,15 +8,15 @@ import { IconButton } from '../../@extended/components/IconButton/index.js';
 import { MainCard } from '../../@extended/components/MainCard/index.js';
 import { CreateNewButton } from '../../components/elements/CreateNewButton/index.js';
 import { Link } from '../../components/elements/Link/index.js';
+import { StatusDot } from '../../components/elements/StatusDot/index.js';
 import { Cell } from '../../components/elements/Table/Cell/index.js';
 import { cells } from '../../components/elements/Table/Cell/types.js';
 import { Table } from '../../components/elements/Table/index.js';
+import { useAuth } from '../../components/utilities/Auth/index.js';
 import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.js';
 import { buildColumns } from '../../utilities/buildColumns.js';
 import { PostContextProvider, usePost } from './Context/index.js';
 import { RowMenu } from './RowMenu/index.js';
-import { useAuth } from '../../components/utilities/Auth/index.js';
-import { StatusDot } from '../../components/elements/StatusDot/index.js';
 
 export const PostPageImpl: React.FC = () => {
   const { hasPermission } = useAuth();
@@ -101,7 +101,7 @@ export const PostPageImpl: React.FC = () => {
             size="small"
             onClick={(e) => handleOpenMenu(e.currentTarget, row)}
           >
-            <RiMore2Line />
+            <MoreOutlined style={{ fontSize: 16 }} />
           </IconButton>
         );
       default:
