@@ -3,11 +3,11 @@ import { RiCloseLine, RiImageLine } from '@remixicon/react';
 import { Extension } from '@tiptap/core';
 import CharacterCount from '@tiptap/extension-character-count';
 import Placeholder from '@tiptap/extension-placeholder';
-import { Underline } from '@tiptap/extension-underline';
+import Underline from '@tiptap/extension-underline';
 import { useEditor } from '@tiptap/react';
 import { StarterKit } from '@tiptap/starter-kit';
 import { enqueueSnackbar } from 'notistack';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useParams } from 'react-router-dom';
@@ -49,13 +49,13 @@ export const EditPostPageImpl: React.FC = () => {
   const bg = theme.palette.background.paper;
 
   // /////////////////////////////////////
-  // Save
+  // Short cut
   // /////////////////////////////////////
 
   const ref = React.useRef<HTMLButtonElement>(null);
   useHotkeys('Meta+s', async () => ref.current?.click(), [], {
     preventDefault: true,
-    enableOnFormTags: ['INPUT'],
+    enableOnFormTags: ['INPUT', 'TEXTAREA'],
   });
 
   // /////////////////////////////////////
