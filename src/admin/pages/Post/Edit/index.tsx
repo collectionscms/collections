@@ -36,6 +36,11 @@ export const EditPostPageImpl: React.FC = () => {
   const { trigger } = updateContent(post.contentId);
   const { trigger: trashTrigger } = trashContent(post.contentId);
 
+  useEffect(() => {
+    setPostTitle(post.title);
+    editor?.commands.setContent(toJson(post.bodyJson));
+  }, [post]);
+
   // /////////////////////////////////////
   // Theme
   // /////////////////////////////////////
