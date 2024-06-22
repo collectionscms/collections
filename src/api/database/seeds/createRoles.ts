@@ -16,7 +16,7 @@ export const createRoles = async (prisma: BypassPrismaType): Promise<void> => {
     'readPost',
     'createPost',
     'updatePost',
-    'deletePost',
+    'trashPost',
     'publishPost',
     'archivePost',
     'trashContent',
