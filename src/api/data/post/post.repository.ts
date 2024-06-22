@@ -27,6 +27,11 @@ export class PostRepository {
             createdBy: true,
             contentHistories: true,
           },
+          where: {
+            status: {
+              not: 'trashed',
+            },
+          },
         },
       },
       orderBy: {
@@ -87,6 +92,11 @@ export class PostRepository {
             file: true,
             createdBy: true,
             contentHistories: true,
+          },
+          where: {
+            status: {
+              not: 'trashed',
+            },
           },
           orderBy: {
             version: 'desc',
