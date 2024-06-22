@@ -26,6 +26,7 @@ type PostContext = {
   createContent: (postId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
   changeStatus: (postId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
   updateContent: (contentId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
+  trashContent: (contentId: string) => SWRMutationResponse<void, any, string>;
   requestReview: (contentId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
   publish: (contentId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
   createFileImage: () => SWRMutationResponse<
@@ -86,6 +87,11 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       }
     );
 
+  const trashContent = (contentId: string) =>
+    useSWRMutation(`/contents/${contentId}/trash`, async (url: string) => {
+      return api.delete(url).then((res) => res.data);
+    });
+
   const requestReview = (contentId: string) =>
     useSWRMutation(
       `/contents/${contentId}/requestReview`,
@@ -112,9 +118,9 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       getPosts,
       getPost,
       createPost,
-      // updatePost,
       createContent,
       updateContent,
+      trashContent,
       changeStatus,
       requestReview,
       publish,
@@ -124,9 +130,9 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       getPosts,
       getPost,
       createPost,
-      // updatePost,
       createContent,
       updateContent,
+      trashContent,
       changeStatus,
       requestReview,
       publish,

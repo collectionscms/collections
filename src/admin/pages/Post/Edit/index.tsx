@@ -31,9 +31,10 @@ export const EditPostPageImpl: React.FC = () => {
   const queryParams = new URLSearchParams(location.search);
   const locale = queryParams.get('locale');
 
-  const { getPost, updateContent, createFileImage } = usePost();
+  const { getPost, updateContent, trashContent, createFileImage } = usePost();
   const { data: post, mutate } = getPost(id, locale);
   const { trigger } = updateContent(post.contentId);
+  const { trigger: trashTrigger } = trashContent(post.contentId);
 
   // /////////////////////////////////////
   // Theme
@@ -147,6 +148,20 @@ export const EditPostPageImpl: React.FC = () => {
   };
 
   // /////////////////////////////////////
+  // Trash draft content
+  // /////////////////////////////////////
+
+  const handleTrashContent = async () => {
+    try {
+      await trashTrigger();
+      mutate();
+      enqueueSnackbar(t('toast.move_to_trash'), { variant: 'success' });
+    } catch (error) {
+      logger.error(error);
+    }
+  };
+
+  // /////////////////////////////////////
   // Editor
   // /////////////////////////////////////
 
@@ -215,6 +230,7 @@ export const EditPostPageImpl: React.FC = () => {
         onSaveDraft={handleSaveContent}
         onChangeLocale={handleChangeLocale}
         onOpenAddLocale={handleOpenAddLocale}
+        onTrashContent={handleTrashContent}
       />
       <Box component="main" sx={{ minHeight: '100vh', backgroundColor: bg }}>
         <Toolbar sx={{ mt: 0 }} />
