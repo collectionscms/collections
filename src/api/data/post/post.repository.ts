@@ -34,6 +34,11 @@ export class PostRepository {
           },
         },
       },
+      where: {
+        status: {
+          not: 'trashed',
+        },
+      },
       orderBy: {
         createdAt: 'desc',
       },
