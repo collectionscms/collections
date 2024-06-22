@@ -144,6 +144,7 @@
   "check_email_to_reset_password": "We have sent you an email with a link to reset your password.",
   "approve_and_publish": "Approve and publish",
   "close_without_publish": "Close without publish",
+  "delete_draft": "Delete draft",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",
@@ -165,7 +166,8 @@
     "archived_successfully": "Archived successfully.",
     "published_successfully": "Published successfully.",
     "invited_successfully": "Invited successfully",
-    "joined_project": "Joined the project"
+    "joined_project": "Joined the project",
+    "move_to_trash": "Move to trash"
   },
   "create": {
     "user": "Create User",

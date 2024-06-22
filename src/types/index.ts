@@ -1,4 +1,4 @@
-import { Content, ContentHistory, File, Permission, Project, Role } from '@prisma/client';
+import { ContentHistory, File, Permission, Project, Role } from '@prisma/client';
 
 export type UserProfile = {
   id: string;

@@ -1,3 +1,4 @@
+import { HistoryOutlined } from '@ant-design/icons';
 import {
   Timeline,
   TimelineConnector,
@@ -9,7 +10,6 @@ import {
 } from '@mui/lab';
 import { Popover, Tooltip, Typography } from '@mui/material';
 import { ContentHistory } from '@prisma/client';
-import { RiHistoryLine } from '@remixicon/react';
 import dayjs from 'dayjs';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -88,7 +88,7 @@ export const History: React.FC<Props> = ({ histories }) => {
             onClick={handleOpenHistory}
             disabled={histories.length === 0}
           >
-            <RiHistoryLine />
+            <HistoryOutlined style={{ fontSize: 16 }} />
           </IconButton>
         </span>
       </Tooltip>

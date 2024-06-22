@@ -1,5 +1,10 @@
+import {
+  BoldOutlined,
+  ItalicOutlined,
+  StrikethroughOutlined,
+  UnderlineOutlined,
+} from '@ant-design/icons';
 import { Paper, Stack } from '@mui/material';
-import { RiBold, RiItalic, RiStrikethrough, RiUnderline } from '@remixicon/react';
 import { BubbleMenu, Editor, EditorContent } from '@tiptap/react';
 import React from 'react';
 import { IconButton } from '../../../@extended/components/IconButton/index.js';
@@ -29,28 +34,28 @@ export const WYSIWYG: React.FC<Props> = ({ editor }) => {
                 color="secondary"
                 size="small"
               >
-                <RiBold size={18} />
+                <BoldOutlined style={{ fontSize: 16 }} />
               </IconButton>
               <IconButton
                 onClick={() => editor.chain().focus().toggleItalic().run()}
                 color="secondary"
                 size="small"
               >
-                <RiItalic size={18} />
+                <ItalicOutlined style={{ fontSize: 16 }} />
               </IconButton>
               <IconButton
                 onClick={() => editor.chain().focus().toggleUnderline().run()}
                 color="secondary"
                 size="small"
               >
-                <RiUnderline size={18} />
+                <UnderlineOutlined style={{ fontSize: 16 }} />
               </IconButton>
               <IconButton
                 onClick={() => editor.chain().focus().toggleStrike().run()}
                 color="secondary"
                 size="small"
               >
-                <RiStrikethrough size={18} />
+                <StrikethroughOutlined style={{ fontSize: 16 }} />
               </IconButton>
             </Stack>
           </Paper>

@@ -3,6 +3,7 @@ import { BypassPrismaType } from '../prisma/client.js';
 export const createPermissions = async (prisma: BypassPrismaType): Promise<void> => {
   const actions = {
     post: ['readPost', 'createPost', 'updatePost', 'deletePost', 'publishPost', 'archivePost'],
+    content: ['trashContent'],
     project: ['readProject', 'updateProject'],
     role: ['readRole', 'createRole', 'updateRole', 'deleteRole'],
     user: ['readUser', 'updateUser', 'deleteUser'],

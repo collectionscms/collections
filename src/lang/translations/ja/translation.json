@@ -144,6 +144,7 @@
   "check_email_to_reset_password": "パスワードをリセットするためのリンクをメールでお送りしました。",
   "approve_and_publish": "承認して公開",
   "close_without_publish": "公開せずに終了",
+  "delete_draft": "下書きを削除",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",
@@ -165,7 +166,8 @@
     "archived_successfully": "非公開にしました",
     "published_successfully": "公開にしました",
     "invited_successfully": "招待しました",
-    "joined_project": "プロジェクトに参加しました"
+    "joined_project": "プロジェクトに参加しました",
+    "move_to_trash": "ゴミ箱へ移動しました"
   },
   "create": {
     "user": "ユーザー 新規登録",

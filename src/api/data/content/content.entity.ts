@@ -8,6 +8,7 @@ export const contentStatus = {
   review: 'review',
   published: 'published',
   archived: 'archived',
+  trashed: 'trashed',
 } as const;
 export type ContentStatusType = (typeof contentStatus)[keyof typeof contentStatus];
 

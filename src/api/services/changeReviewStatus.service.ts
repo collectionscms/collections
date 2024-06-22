@@ -1,8 +1,8 @@
 import { UnexpectedException } from '../../exceptions/unexpected.js';
+import { ContentStatusType } from '../data/content/content.entity.js';
 import { ContentRepository } from '../data/content/content.repository.js';
 import { ContentHistoryEntity } from '../data/contentHistory/contentHistory.entity.js';
 import { ContentHistoryRepository } from '../data/contentHistory/contentHistory.repository.js';
-import { StatusType } from '../data/post/post.entity.js';
 import { ReviewEntity, ReviewStatusType, reviewStatus } from '../data/review/review.entity.js';
 import { ReviewRepository } from '../data/review/review.repository';
 import { ProjectPrismaType } from '../database/prisma/client';
@@ -19,7 +19,7 @@ export class ChangeReviewStatusService {
     reviewId: string,
     userId: string,
     reviewStatusType: ReviewStatusType,
-    statusType: StatusType,
+    statusType: ContentStatusType,
     hasReadAllReview: boolean
   ): Promise<ReviewEntity> {
     const review = hasReadAllReview

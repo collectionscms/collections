@@ -1,13 +1,13 @@
+import { CameraOutlined, CloseOutlined } from '@ant-design/icons';
 import { Box, Button, Container, Stack, TextField, Toolbar, alpha, useTheme } from '@mui/material';
-import { RiCloseLine, RiImageLine } from '@remixicon/react';
 import { Extension } from '@tiptap/core';
 import CharacterCount from '@tiptap/extension-character-count';
 import Placeholder from '@tiptap/extension-placeholder';
-import { Underline } from '@tiptap/extension-underline';
+import Underline from '@tiptap/extension-underline';
 import { useEditor } from '@tiptap/react';
 import { StarterKit } from '@tiptap/starter-kit';
 import { enqueueSnackbar } from 'notistack';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useParams } from 'react-router-dom';
@@ -31,9 +31,15 @@ export const EditPostPageImpl: React.FC = () => {
   const queryParams = new URLSearchParams(location.search);
   const locale = queryParams.get('locale');
 
-  const { getPost, updateContent, createFileImage } = usePost();
+  const { getPost, updateContent, trashContent, createFileImage } = usePost();
   const { data: post, mutate } = getPost(id, locale);
   const { trigger } = updateContent(post.contentId);
+  const { trigger: trashTrigger } = trashContent(post.contentId);
+
+  useEffect(() => {
+    setPostTitle(post.title);
+    editor?.commands.setContent(toJson(post.bodyJson));
+  }, [post]);
 
   // /////////////////////////////////////
   // Theme
@@ -43,13 +49,13 @@ export const EditPostPageImpl: React.FC = () => {
   const bg = theme.palette.background.paper;
 
   // /////////////////////////////////////
-  // Save
+  // Short cut
   // /////////////////////////////////////
 
   const ref = React.useRef<HTMLButtonElement>(null);
   useHotkeys('Meta+s', async () => ref.current?.click(), [], {
     preventDefault: true,
-    enableOnFormTags: ['INPUT'],
+    enableOnFormTags: ['INPUT', 'TEXTAREA'],
   });
 
   // /////////////////////////////////////
@@ -147,6 +153,20 @@ export const EditPostPageImpl: React.FC = () => {
   };
 
   // /////////////////////////////////////
+  // Trash draft content
+  // /////////////////////////////////////
+
+  const handleTrashContent = async () => {
+    try {
+      await trashTrigger();
+      mutate();
+      enqueueSnackbar(t('toast.move_to_trash'), { variant: 'success' });
+    } catch (error) {
+      logger.error(error);
+    }
+  };
+
+  // /////////////////////////////////////
   // Editor
   // /////////////////////////////////////
 
@@ -215,6 +235,7 @@ export const EditPostPageImpl: React.FC = () => {
         onSaveDraft={handleSaveContent}
         onChangeLocale={handleChangeLocale}
         onOpenAddLocale={handleOpenAddLocale}
+        onTrashContent={handleTrashContent}
       />
       <Box component="main" sx={{ minHeight: '100vh', backgroundColor: bg }}>
         <Toolbar sx={{ mt: 0 }} />
@@ -238,7 +259,7 @@ export const EditPostPageImpl: React.FC = () => {
                     }}
                     onClick={handleDeleteThumbnail}
                   >
-                    <RiCloseLine />
+                    <CloseOutlined />
                   </IconButton>
                   <img
                     src={uploadFile.url}
@@ -252,7 +273,7 @@ export const EditPostPageImpl: React.FC = () => {
                 <Button
                   variant="text"
                   color="secondary"
-                  startIcon={<RiImageLine size={22} />}
+                  startIcon={<CameraOutlined />}
                   component="label"
                 >
                   {t('add_thumbnail')}
