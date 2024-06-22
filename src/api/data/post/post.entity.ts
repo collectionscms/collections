@@ -8,6 +8,12 @@ import { FileEntity } from '../file/file.entity.js';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 import { UserEntity } from '../user/user.entity.js';
 
+export const postStatus = {
+  open: 'open',
+  trashed: 'trashed',
+} as const;
+export type PostStatusType = (typeof postStatus)[keyof typeof postStatus];
+
 export class PostEntity extends PrismaBaseEntity<Post> {
   static Construct({
     projectId,
@@ -23,6 +29,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       id: postId,
       projectId,
       slug: this.GenerateSlug(),
+      status: postStatus.open,
       createdAt: new Date(),
       updatedAt: new Date(),
     });
@@ -61,6 +68,14 @@ export class PostEntity extends PrismaBaseEntity<Post> {
 
   get projectId(): string {
     return this.projectId;
+  }
+
+  get status(): string {
+    return this.props.status;
+  }
+
+  changeStatus(status: PostStatusType) {
+    this.props.status = status;
   }
 
   toLocalizedWithContentsResponse(

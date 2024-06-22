@@ -145,6 +145,7 @@
   "approve_and_publish": "承認して公開",
   "close_without_publish": "公開せずに終了",
   "delete_draft": "下書きを削除",
+  "move_to_trash": "ごみ箱にいれる",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",
@@ -154,8 +155,8 @@
     "discard_changes": "変更を破棄",
     "confirm_post_archive_title": "非公開の確認",
     "confirm_post_archive": "記事を非公開にしますか？",
-    "confirm_post_publish_title": "公開の確認",
-    "confirm_post_publish": "記事を公開しますか？",
+    "confirm_post_trash_title": "ごみ箱にいれますか？",
+    "confirm_post_trash": "ごみ箱の記事はあとでもどすことができます。",
     "confirm_removal_user_from_project": "ユーザーをプロジェクトから削除します。よろしいですか？"
   },
   "toast": {

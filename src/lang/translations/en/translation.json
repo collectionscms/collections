@@ -145,6 +145,7 @@
   "approve_and_publish": "Approve and publish",
   "close_without_publish": "Close without publish",
   "delete_draft": "Delete draft",
+  "move_to_trash": "Move to trash",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",
@@ -154,8 +155,8 @@
     "discard_changes": "Discard Changes",
     "confirm_post_archive_title": "Confirm archive",
     "confirm_post_archive": "Are you sure you want to archive it?",
-    "confirm_post_publish_title": "Confirm publish",
-    "confirm_post_publish": "Are you sure you want to publish it?",
+    "confirm_post_trash_title": "Confirm trash",
+    "confirm_post_trash": "Articles in the dustbin can be returned to later.",
     "confirm_removal_user_from_project": "Are you sure you want to remove user from project?"
   },
   "toast": {

@@ -39,9 +39,9 @@ export const PostPageImpl: React.FC = () => {
     { field: 'action', label: '', type: cells.text() },
   ];
 
-  const handleDeleteSuccess = (postId: string) => {
-    const deletedPost = posts.filter((post) => post.id !== postId);
-    mutate(deletedPost);
+  const handleTrashSuccess = (postId: string) => {
+    const trashedPost = posts.filter((post) => post.id !== postId);
+    mutate(trashedPost);
     setMenu(null);
   };
 
@@ -116,7 +116,7 @@ export const PostPageImpl: React.FC = () => {
           postId={selectedPost.id}
           status={selectedPost.status}
           menu={menu}
-          onDeleteSuccess={handleDeleteSuccess}
+          onTrashSuccess={handleTrashSuccess}
           onArchiveSuccess={handleArchiveSuccess}
           onPublishSuccess={handlePublishSuccess}
           onClose={() => setMenu(null)}

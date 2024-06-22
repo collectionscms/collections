@@ -1,4 +1,4 @@
--- Enable Row Level Security
+-- This is an empty migration.-- Enable Row Level Security
 ALTER TABLE "Project" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE "UserProject" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE "Role" ENABLE ROW LEVEL SECURITY;
