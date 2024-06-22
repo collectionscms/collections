@@ -14,6 +14,8 @@ import { publishUseCaseSchema } from '../useCases/content/publish.schema.js';
 import { PublishUseCase } from '../useCases/content/publish.useCase.js';
 import { requestReviewUseCaseSchema } from '../useCases/content/requestReview.schema.js';
 import { RequestReviewUseCase } from '../useCases/content/requestReview.useCase.js';
+import { trashContentUseCaseSchema } from '../useCases/content/trashContent.schema.js';
+import { TrashContentUseCase } from '../useCases/content/trashContent.useCase.js';
 import { updateContentUseCaseSchema } from '../useCases/content/updateContent.schema.js';
 import { UpdateContentUseCase } from '../useCases/content/updateContent.useCase.js';
 
@@ -113,6 +115,29 @@ router.patch(
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
     const useCase = new PublishUseCase(
+      projectPrisma(validated.data.projectId),
+      new ContentRepository(),
+      new ContentHistoryRepository()
+    );
+    await useCase.execute(validated.data);
+
+    res.status(204).send();
+  })
+);
+
+router.delete(
+  '/contents/:id/trash',
+  authenticatedUser,
+  validateAccess(['trashContent']),
+  asyncHandler(async (req: Request, res: Response) => {
+    const validated = trashContentUseCaseSchema.safeParse({
+      id: req.params.id,
+      projectId: res.projectRole?.id,
+      userId: res.user.id,
+    });
+    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
+
+    const useCase = new TrashContentUseCase(
       projectPrisma(validated.data.projectId),
       new ContentRepository(),
       new ContentHistoryRepository()
