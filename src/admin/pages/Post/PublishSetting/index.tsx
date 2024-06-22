@@ -1,3 +1,4 @@
+import { CloseOutlined } from '@ant-design/icons';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   AppBarProps,
@@ -18,7 +19,6 @@ import {
   useTheme,
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
-import { RiCloseLine } from '@remixicon/react';
 import { enqueueSnackbar } from 'notistack';
 import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
@@ -103,7 +103,7 @@ export const PublishSetting: React.FC<Props> = ({ open, contentId, status, onClo
           <Toolbar>
             <Stack direction="row" sx={{ flexGrow: 1 }} alignItems="center">
               <IconButton shape="rounded" color="secondary" onClick={onClose}>
-                <RiCloseLine />
+                <CloseOutlined style={{ fontSize: '20px' }} />
               </IconButton>
             </Stack>
             <Button variant="contained" type="submit">

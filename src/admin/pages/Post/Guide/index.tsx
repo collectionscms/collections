@@ -1,9 +1,8 @@
+import { QuestionOutlined } from '@ant-design/icons';
 import { List, ListItem, Popover, Tooltip, Typography } from '@mui/material';
-import { RiQuestionMark } from '@remixicon/react';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { IconButton } from '../../../@extended/components/IconButton/index.js';
-import { QuestionOutlined } from '@ant-design/icons';
 
 export const Guide: React.FC = () => {
   const { t } = useTranslation();

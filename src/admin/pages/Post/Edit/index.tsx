@@ -1,5 +1,5 @@
+import { CameraOutlined, CloseOutlined } from '@ant-design/icons';
 import { Box, Button, Container, Stack, TextField, Toolbar, alpha, useTheme } from '@mui/material';
-import { RiCloseLine, RiImageLine } from '@remixicon/react';
 import { Extension } from '@tiptap/core';
 import CharacterCount from '@tiptap/extension-character-count';
 import Placeholder from '@tiptap/extension-placeholder';
@@ -259,7 +259,7 @@ export const EditPostPageImpl: React.FC = () => {
                     }}
                     onClick={handleDeleteThumbnail}
                   >
-                    <RiCloseLine />
+                    <CloseOutlined />
                   </IconButton>
                   <img
                     src={uploadFile.url}
@@ -273,7 +273,7 @@ export const EditPostPageImpl: React.FC = () => {
                 <Button
                   variant="text"
                   color="secondary"
-                  startIcon={<RiImageLine size={22} />}
+                  startIcon={<CameraOutlined />}
                   component="label"
                 >
                   {t('add_thumbnail')}

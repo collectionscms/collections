@@ -1,5 +1,6 @@
+import { DeleteOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
-import { RiBookOpenLine, RiDeleteBinLine, RiForbid2Line } from '@remixicon/react';
+import { RiBookOpenLine } from '@remixicon/react';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { logger } from '../../../../utilities/logger.js';
@@ -109,7 +110,7 @@ export const RowMenuImpl: React.FC<Props> = (props) => {
         {status === 'published' && hasPermission('archivePost') && (
           <MenuItem onClick={() => setOpenArchive(true)}>
             <ListItemIcon>
-              <RiForbid2Line size={18} />
+              <MinusCircleOutlined style={{ fontSize: 18 }} />
             </ListItemIcon>
             <ListItemText>{t('archive')}</ListItemText>
           </MenuItem>
@@ -125,7 +126,7 @@ export const RowMenuImpl: React.FC<Props> = (props) => {
         {status !== 'published' && hasPermission('deletePost') && (
           <MenuItem onClick={() => setOpenDelete(true)}>
             <ListItemIcon>
-              <RiDeleteBinLine size={18} />
+              <DeleteOutlined style={{ fontSize: 18 }} />
             </ListItemIcon>
             <ListItemText>{t('delete')}</ListItemText>
           </MenuItem>
