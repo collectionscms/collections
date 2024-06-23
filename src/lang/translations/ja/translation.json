@@ -146,6 +146,7 @@
   "close_without_publish": "公開せずに終了",
   "delete_draft": "下書きを消す",
   "move_to_trash": "ごみ箱にいれる",
+  "trash": "ごみ箱",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",
