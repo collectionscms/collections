@@ -54,7 +54,7 @@ export const createPost = async (
           id: v4(),
           projectId,
           status: options?.status ?? contentStatus.published,
-          publishedAt: options?.publishedAt ?? currentTime,
+          publishedAt: options?.publishedAt,
           locale: options?.locale ?? 'en',
           version: options?.version ?? 1,
           title: title,
