@@ -92,7 +92,14 @@ export const PostPageImpl: React.FC = () => {
           defaultCell
         );
       case 'status':
-        return <StatusDot status={row.status} />;
+        return row.publishedAt && row.status !== 'published' ? (
+          <>
+            <StatusDot status="published" />
+            <StatusDot status={row.status} />
+          </>
+        ) : (
+          <StatusDot status={row.status} />
+        );
       case 'action':
         return (
           <IconButton

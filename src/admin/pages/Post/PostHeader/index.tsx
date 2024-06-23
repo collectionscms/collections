@@ -7,6 +7,7 @@ import {
 import {
   AppBarProps,
   Button,
+  Divider,
   Menu,
   MenuItem,
   Stack,
@@ -23,6 +24,8 @@ import { LocalizedPost } from '../../../../types/index.js';
 import { IconButton } from '../../../@extended/components/IconButton/index.js';
 import { StatusDot } from '../../../components/elements/StatusDot/index.js';
 import AppBarStyled from './AppBarStyled.js';
+import { post } from '../../../../api/routes/post.router.js';
+import Separator from 'inquirer/lib/objects/separator.js';
 
 export type Props = {
   post: LocalizedPost;
@@ -118,7 +121,15 @@ export const PostHeader: React.FC<Props> = ({
           <IconButton shape="rounded" color="secondary" onClick={navigateToList}>
             <ArrowLeftOutlined style={{ fontSize: 20 }} />
           </IconButton>
-          <StatusDot status={post.status} />
+          {post.publishedAt && post.status !== 'published' ? (
+            <>
+              <StatusDot status="published" />
+              <Divider orientation="vertical" flexItem variant="middle" />
+              <StatusDot status={post.status} />
+            </>
+          ) : (
+            <StatusDot status={post.status} />
+          )}
         </Stack>
         <Stack direction="row" alignItems="center" gap={1.5}>
           <Button

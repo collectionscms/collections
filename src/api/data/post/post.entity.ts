@@ -2,7 +2,7 @@ import { Post } from '@prisma/client';
 import { v4 } from 'uuid';
 import { UnexpectedException } from '../../../exceptions/unexpected.js';
 import { LocalizedPost } from '../../../types/index.js';
-import { ContentEntity } from '../content/content.entity.js';
+import { ContentEntity, contentStatus } from '../content/content.entity.js';
 import { ContentHistoryEntity } from '../contentHistory/contentHistory.entity.js';
 import { FileEntity } from '../file/file.entity.js';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
@@ -107,7 +107,8 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       contentId: localeContent.content.id,
       status: localeContent.content.status,
       updatedAt: localeContent.content.updatedAt,
-      publishedAt: localeContent.content.publishedAt,
+      publishedAt:
+        localeContents.filter((c) => c.content.publishedAt)[0]?.content.publishedAt ?? null,
       title: localeContent.content.title ?? '',
       body: localeContent.content.body ?? '',
       bodyJson: localeContent.content.bodyJson ?? '',
