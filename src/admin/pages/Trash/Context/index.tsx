@@ -18,7 +18,7 @@ const Context = createContext({} as TrashContext);
 export const TrashContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const getTrashedPosts = () =>
     useSWR(
-      '/trashedPosts',
+      '/posts?status=trashed',
       (url) => api.get<{ posts: Post[] }>(url).then((res) => res.data.posts),
       {
         suspense: true,
