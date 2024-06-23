@@ -7,6 +7,7 @@ import {
 import {
   AppBarProps,
   Button,
+  Divider,
   Menu,
   MenuItem,
   Stack,
@@ -118,7 +119,15 @@ export const PostHeader: React.FC<Props> = ({
           <IconButton shape="rounded" color="secondary" onClick={navigateToList}>
             <ArrowLeftOutlined style={{ fontSize: 20 }} />
           </IconButton>
-          <StatusDot status={post.status} />
+          {post.publishedAt && post.status !== 'published' ? (
+            <>
+              <StatusDot status="published" />
+              <Divider orientation="vertical" flexItem variant="middle" />
+              <StatusDot status={post.status} />
+            </>
+          ) : (
+            <StatusDot status={post.status} />
+          )}
         </Stack>
         <Stack direction="row" alignItems="center" gap={1.5}>
           <Button
@@ -165,7 +174,7 @@ export const PostHeader: React.FC<Props> = ({
         open={contentMenuOpen}
         onClose={handleCloseContent}
       >
-        {post.status === 'draft' && (
+        {post.publishedAt && post.status === 'draft' && (
           <MenuItem onClick={handleTrashContent}>
             <DeleteOutlined />
             <Typography sx={{ pl: 1 }}>{t('delete_draft')}</Typography>

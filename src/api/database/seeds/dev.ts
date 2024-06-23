@@ -42,6 +42,7 @@ export const seedDev = async (): Promise<void> => {
         await createPost(tx, project, {
           status: contentStatus.published,
           locale: project === enProject ? 'en' : 'ja',
+          publishedAt: new Date(),
         });
 
         // archived
