@@ -147,6 +147,7 @@
   "delete_draft": "下書きを消す",
   "move_to_trash": "ごみ箱にいれる",
   "trash": "ごみ箱",
+  "restore": "元に戻す",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",
@@ -158,7 +159,9 @@
     "confirm_post_archive": "記事を非公開にしますか？",
     "confirm_post_trash_title": "ごみ箱にいれますか？",
     "confirm_post_trash": "ごみ箱の記事はあとでもどすことができます。",
-    "confirm_removal_user_from_project": "ユーザーをプロジェクトから削除します。よろしいですか？"
+    "confirm_removal_user_from_project": "ユーザーをプロジェクトから削除します。よろしいですか？",
+    "confirm_post_restore_title": "元にもどしますか？",
+    "confirm_post_restore": "記事を元に戻そうとしています。よろしいですか？"
   },
   "toast": {
     "created_successfully": "登録しました",
@@ -169,7 +172,8 @@
     "published_successfully": "公開しました",
     "invited_successfully": "招待しました",
     "joined_project": "プロジェクトに参加しました",
-    "move_to_trash": "ごみ箱へ移動しました"
+    "move_to_trash": "ごみ箱へ移動しました",
+    "post_restored": "記事を復元しました"
   },
   "create": {
     "user": "ユーザー 新規登録",

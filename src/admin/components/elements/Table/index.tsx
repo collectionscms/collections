@@ -38,7 +38,12 @@ export const Table: React.FC<Props> = ({ columns, rows }) => {
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
                   {columns.map((col, i) => (
-                    <TableCell key={`cell-${col.field.field}`} component="th" scope="row">
+                    <TableCell
+                      key={`cell-${col.field.field}`}
+                      component="th"
+                      scope="row"
+                      width={col.field.width}
+                    >
                       {col.customRenderCell ? (
                         col.customRenderCell(i, row, row[col.field.field])
                       ) : (

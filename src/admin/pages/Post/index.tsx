@@ -36,7 +36,7 @@ export const PostPageImpl: React.FC = () => {
     { field: 'authorName', label: t('author'), type: cells.text() },
     { field: 'updatedAt', label: t('updated_at'), type: cells.date() },
     { field: 'publishedAt', label: t('published_at'), type: cells.date() },
-    { field: 'action', label: '', type: cells.text() },
+    { field: 'action', label: '', type: cells.text(), width: 80 },
   ];
 
   const handleTrashSuccess = (postId: string) => {
