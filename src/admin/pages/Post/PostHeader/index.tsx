@@ -24,8 +24,6 @@ import { LocalizedPost } from '../../../../types/index.js';
 import { IconButton } from '../../../@extended/components/IconButton/index.js';
 import { StatusDot } from '../../../components/elements/StatusDot/index.js';
 import AppBarStyled from './AppBarStyled.js';
-import { post } from '../../../../api/routes/post.router.js';
-import Separator from 'inquirer/lib/objects/separator.js';
 
 export type Props = {
   post: LocalizedPost;
@@ -176,7 +174,7 @@ export const PostHeader: React.FC<Props> = ({
         open={contentMenuOpen}
         onClose={handleCloseContent}
       >
-        {post.status === 'draft' && (
+        {post.publishedAt && post.status === 'draft' && (
           <MenuItem onClick={handleTrashContent}>
             <DeleteOutlined />
             <Typography sx={{ pl: 1 }}>{t('delete_draft')}</Typography>
