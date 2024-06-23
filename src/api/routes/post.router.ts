@@ -15,6 +15,8 @@ import { getPostUseCaseSchema } from '../useCases/post/getPost.schema.js';
 import { GetPostUseCase } from '../useCases/post/getPost.useCase.js';
 import { getPostsUseCaseSchema } from '../useCases/post/getPosts.schema.js';
 import { GetPostsUseCase } from '../useCases/post/getPosts.useCase.js';
+import { getTrashedPostsUseCaseSchema } from '../useCases/post/getTrashedPosts.schema.js';
+import { GetTrashedPostsUseCase } from '../useCases/post/getTrashedPosts.useCase.js';
 import { trashPostUseCaseSchema } from '../useCases/post/trashPost.schema.js';
 import { TrashPostUseCase } from '../useCases/post/trashPost.useCase.js';
 
@@ -63,6 +65,29 @@ router.get(
 
     res.json({
       post,
+    });
+  })
+);
+
+router.get(
+  '/trashedPosts',
+  authenticatedUser,
+  validateAccess(['trashPost']),
+  asyncHandler(async (req: Request, res: Response) => {
+    const validated = getTrashedPostsUseCaseSchema.safeParse({
+      projectId: res.projectRole?.id,
+      defaultLocale: res.projectRole?.defaultLocale,
+    });
+    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
+
+    const useCase = new GetTrashedPostsUseCase(
+      projectPrisma(validated.data.projectId),
+      new PostRepository()
+    );
+    const posts = await useCase.execute(validated.data);
+
+    res.json({
+      posts,
     });
   })
 );
