@@ -166,10 +166,10 @@
     "deleted_successfully": "削除しました",
     "imported_successfully": "インポートしました",
     "archived_successfully": "非公開にしました",
-    "published_successfully": "公開にしました",
+    "published_successfully": "公開しました",
     "invited_successfully": "招待しました",
     "joined_project": "プロジェクトに参加しました",
-    "move_to_trash": "ゴミ箱へ移動しました"
+    "move_to_trash": "ごみ箱へ移動しました"
   },
   "create": {
     "user": "ユーザー 新規登録",

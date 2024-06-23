@@ -160,7 +160,7 @@ export const EditPostPageImpl: React.FC = () => {
     try {
       await trashTrigger();
       mutate();
-      enqueueSnackbar(t('toast.move_to_trash'), { variant: 'success' });
+      enqueueSnackbar(t('toast.deleted_successfully'), { variant: 'success' });
     } catch (error) {
       logger.error(error);
     }

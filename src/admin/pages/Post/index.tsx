@@ -43,6 +43,7 @@ export const PostPageImpl: React.FC = () => {
     const trashedPost = posts.filter((post) => post.id !== postId);
     mutate(trashedPost);
     setMenu(null);
+    enqueueSnackbar(t('toast.move_to_trash'), { variant: 'success' });
   };
 
   const handleArchiveSuccess = (postId: string) => {
