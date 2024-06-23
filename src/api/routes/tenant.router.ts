@@ -7,6 +7,7 @@ import { post } from './post.router.js';
 import { project } from './project.router.js';
 import { review } from './review.router.js';
 import { role } from './role.router.js';
+import { trash } from './trash.router.js';
 import { user } from './user.router.js';
 
 export const tenantApiRouter = express.Router();
@@ -18,6 +19,7 @@ tenantApiRouter.use(project);
 tenantApiRouter.use(me);
 tenantApiRouter.use(file);
 tenantApiRouter.use(post);
+tenantApiRouter.use(trash);
 tenantApiRouter.use(content);
 tenantApiRouter.use(invitation);
 tenantApiRouter.use(review);
