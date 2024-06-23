@@ -146,6 +146,8 @@
   "close_without_publish": "Close without publish",
   "delete_draft": "Delete draft",
   "move_to_trash": "Move to trash",
+  "trash": "Trash",
+  "restore": "Restore",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",

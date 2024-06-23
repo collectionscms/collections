@@ -1,5 +1,6 @@
 import { DeleteOutlined, StopOutlined, UploadOutlined } from '@ant-design/icons';
 import { Menu, MenuItem, Typography, useTheme } from '@mui/material';
+import { enqueueSnackbar } from 'notistack';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { logger } from '../../../../utilities/logger.js';
@@ -41,8 +42,8 @@ export const RowMenuImpl: React.FC<Props> = (props) => {
   const handleTrash = async () => {
     try {
       await trashTrigger();
-      onTrashSuccess(postId);
       setOpenTrash(false);
+      onTrashSuccess(postId);
     } catch (error) {
       logger.error(error);
     }

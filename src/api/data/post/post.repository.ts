@@ -129,6 +129,48 @@ export class PostRepository {
     };
   }
 
+  async findManyTrashedByProjectId(prisma: ProjectPrismaType): Promise<
+    {
+      post: PostEntity;
+      contents: {
+        content: ContentEntity;
+      }[];
+    }[]
+  > {
+    const records = await prisma.post.findMany({
+      include: {
+        contents: {
+          where: {
+            status: {
+              not: 'trashed',
+            },
+          },
+        },
+      },
+      where: {
+        status: 'trashed',
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+    return records.map((record) => {
+      const post = PostEntity.Reconstruct<Post, PostEntity>(record);
+      const contents = [];
+      for (const content of record.contents) {
+        contents.push({
+          content: ContentEntity.Reconstruct<Content, ContentEntity>(content),
+        });
+      }
+
+      return {
+        post,
+        contents,
+      };
+    });
+  }
+
   async create(prisma: ProjectPrismaType, postEntity: PostEntity): Promise<PostEntity> {
     const record = await prisma.post.create({
       data: postEntity.toPersistence(),

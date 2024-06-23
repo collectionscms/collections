@@ -9,6 +9,7 @@ import { useAuth } from '../../utilities/Auth/index.js';
 
 const PostPage = Loader(lazy(() => import('../../../pages/Post/index.js'), 'PostPage'));
 const ReviewPage = Loader(lazy(() => import('../../../pages/Review/index.js'), 'ReviewPage'));
+const TrashPage = Loader(lazy(() => import('../../../pages/Trash/index.js'), 'TrashPage'));
 
 export const TenantRootRoutes = () => {
   const { t } = useTranslation();
@@ -33,6 +34,17 @@ export const TenantRootRoutes = () => {
       element: (
         <MainHeader label={t('review')}>
           <ReviewPage />
+        </MainHeader>
+      ),
+    });
+  }
+
+  if (hasPermission('trashPost')) {
+    children.push({
+      path: 'trashed',
+      element: (
+        <MainHeader label={t('trash')}>
+          <TrashPage />
         </MainHeader>
       ),
     });

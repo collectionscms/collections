@@ -36,13 +36,14 @@ export const PostPageImpl: React.FC = () => {
     { field: 'authorName', label: t('author'), type: cells.text() },
     { field: 'updatedAt', label: t('updated_at'), type: cells.date() },
     { field: 'publishedAt', label: t('published_at'), type: cells.date() },
-    { field: 'action', label: '', type: cells.text() },
+    { field: 'action', label: '', type: cells.text(), width: 80 },
   ];
 
   const handleTrashSuccess = (postId: string) => {
     const trashedPost = posts.filter((post) => post.id !== postId);
     mutate(trashedPost);
     setMenu(null);
+    enqueueSnackbar(t('toast.move_to_trash'), { variant: 'success' });
   };
 
   const handleArchiveSuccess = (postId: string) => {

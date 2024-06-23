@@ -1,4 +1,5 @@
 import {
+  DeleteOutlined,
   EditOutlined,
   InboxOutlined,
   LogoutOutlined,
@@ -57,6 +58,14 @@ export const postNavItems = (): Group => {
       label: 'review',
       href: `${path}/reviews`,
       icon: InboxOutlined,
+    });
+  }
+
+  if (hasPermission('trashPost')) {
+    items.push({
+      label: 'trash',
+      href: `${path}/trashed`,
+      icon: DeleteOutlined,
     });
   }
 

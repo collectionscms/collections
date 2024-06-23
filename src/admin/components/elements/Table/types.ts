@@ -11,6 +11,7 @@ export type ColumnField = {
   field: string;
   label: string;
   type: CellType;
+  width?: number;
 };
 
 export type Props = {
