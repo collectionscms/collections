@@ -58,7 +58,7 @@
     "@mui/lab": "5.0.0-alpha.170",
     "@mui/material": "5.15.20",
     "@pmmmwh/react-refresh-webpack-plugin": "0.5.15",
-    "@prisma/client": "5.15.1",
+    "@prisma/client": "5.16.1",
     "@prisma/migrate": "5.14.0",
     "@remixicon/react": "4.2.0",
     "@tiptap/extension-character-count": "2.4.0",
