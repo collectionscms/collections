@@ -31,10 +31,11 @@ export class ProjectRepository {
       where: { id },
       data: {
         name: record.name,
+        defaultLocale: record.defaultLocale,
         description: record.description,
       },
     });
 
-    return ProjectEntity.Reconstruct<Project, ProjectEntity>(record);
+    return ProjectEntity.Reconstruct<Project, ProjectEntity>(result);
   }
 }
