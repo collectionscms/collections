@@ -39,7 +39,8 @@ router.patch(
   asyncHandler(async (req: Request, res: Response) => {
     const validated = updateProjectUseCaseSchema.safeParse({
       id: res.projectRole?.id,
-      ...req.body,
+      name: req.body.name,
+      defaultLocale: req.body.defaultLocale,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
@@ -47,8 +48,10 @@ router.patch(
       projectPrisma(validated.data.id),
       new ProjectRepository()
     );
-    await projectUseCase.execute(validated.data.id, {
+    await projectUseCase.execute({
+      id: validated.data.id,
       name: validated.data.name,
+      defaultLocale: validated.data.defaultLocale,
     });
 
     res.status(204).end();
