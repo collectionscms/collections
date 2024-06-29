@@ -133,6 +133,8 @@
   "characters": "文字",
   "saved": "保存しました",
   "add_localized_content": "ローカライズコンテンツの追加",
+  "default_language": "デフォルト言語",
+  "change_default_language": "デフォルト言語の変更",
   "add_to": "追加する",
   "add_thumbnail": "サムネイル画像を追加",
   "invite": "招待",
@@ -148,6 +150,7 @@
   "move_to_trash": "ごみ箱にいれる",
   "trash": "ごみ箱",
   "restore": "元に戻す",
+  "edit_locale": "編集する",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",
@@ -173,7 +176,8 @@
     "invited_successfully": "招待しました",
     "joined_project": "プロジェクトに参加しました",
     "move_to_trash": "ごみ箱へ移動しました",
-    "post_restored": "記事を復元しました"
+    "post_restored": "記事を復元しました",
+    "updated_default_locale": "デフォルト言語を変更しました"
   },
   "create": {
     "user": "ユーザー 新規登録",
@@ -186,6 +190,10 @@
     "role": "ロール 編集",
     "data_model": "データモデル 編集",
     "custom": "{{page}} 編集"
+  },
+  "locale": {
+    "en": "英語",
+    "ja": "日本語"
   },
   "editor": {
     "guide": "エディターガイド",

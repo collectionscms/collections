@@ -133,6 +133,8 @@
   "characters": "characters",
   "saved": "Saved",
   "add_localized_content": "Add localized content",
+  "default_language": "Default Language",
+  "change_default_language": "Change default language",
   "add_to": "Add",
   "add_thumbnail": "Add thumbnail image",
   "invite": "Invite",
@@ -148,6 +150,7 @@
   "move_to_trash": "Move to trash",
   "trash": "Trash",
   "restore": "Restore",
+  "edit_locale": "Edit",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",
@@ -170,7 +173,8 @@
     "published_successfully": "Published successfully.",
     "invited_successfully": "Invited successfully",
     "joined_project": "Joined the project",
-    "move_to_trash": "Move to trash"
+    "move_to_trash": "Move to trash",
+    "updated_default_locale": "UPdated default language"
   },
   "create": {
     "user": "Create User",
@@ -183,6 +187,10 @@
     "role": "Edit Role",
     "data_model": "Edit Data Model",
     "custom": "Edit {{page}}"
+  },
+  "locale": {
+    "en": "English",
+    "ja": "Japanese"
   },
   "editor": {
     "guide": "Editor Guide",

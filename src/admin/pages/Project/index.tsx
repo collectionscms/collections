@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button, FormHelperText, InputLabel, Stack, TextField } from '@mui/material';
+import { Button, FormHelperText, InputLabel, Stack, TextField, Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { useSnackbar } from 'notistack';
 import React from 'react';
@@ -16,13 +16,16 @@ import {
 } from '../../fields/validators/projects/updateProject.js';
 import { useUnsavedChangesPrompt } from '../../hooks/useUnsavedChangesPrompt.js';
 import { ProjectContextProvider, useProject } from './Context/index.js';
+import { LocaleSelection } from './LocaleSelection/index.js';
 
 const ProjectImpl: React.FC = () => {
   const { hasPermission } = useAuth();
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
+  const [showSelection, setShowSelection] = React.useState(false);
+
   const { getProject, updateProject } = useProject();
-  const { data: project } = getProject();
+  const { data: project, mutate } = getProject();
   const { trigger, isMutating } = updateProject();
   const {
     reset,
@@ -47,8 +50,20 @@ const ProjectImpl: React.FC = () => {
     }
   };
 
+  const handleUpdateLocale = async () => {
+    await mutate();
+    setShowSelection(false);
+    enqueueSnackbar(t('toast.updated_default_locale'), { variant: 'success' });
+  };
+
   return (
     <>
+      <LocaleSelection
+        currentLocale={project.defaultLocale}
+        open={showSelection}
+        onClose={() => setShowSelection(false)}
+        onAdded={() => handleUpdateLocale()}
+      />
       <ConfirmDiscardDialog open={showPrompt} onDiscard={proceed} onKeepEditing={stay} />
       <Grid container spacing={2.5}>
         <Grid xs={12} lg={8}>
@@ -73,6 +88,19 @@ const ProjectImpl: React.FC = () => {
                       )}
                     />
                     <FormHelperText error>{errors.name?.message}</FormHelperText>
+                  </Stack>
+                </Grid>
+                <Grid xs={12} sm={6}>
+                  <Stack spacing={1}>
+                    <InputLabel htmlFor="projectName">{t('default_language')}</InputLabel>
+                    <Stack spacing={1} direction="row" alignItems="center">
+                      <Typography>
+                        {t(`locale.${project.defaultLocale}` as unknown as TemplateStringsArray)}
+                      </Typography>
+                      <Button size="small" variant="text" onClick={() => setShowSelection(true)}>
+                        {t('edit_locale')}
+                      </Button>
+                    </Stack>
                   </Stack>
                 </Grid>
                 {hasPermission('updateProject') && (
