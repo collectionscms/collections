@@ -8,7 +8,7 @@ type Props = {
   variable: 'profile' | 'tenant';
 };
 
-export const SidebarLayout: React.FC<Props> = ({ variable }) => {
+export const NavContentLayout: React.FC<Props> = ({ variable }) => {
   const [open, setOpen] = useState(true);
   const theme = useTheme();
   const lgDown = useMediaQuery(theme.breakpoints.down('lg'));

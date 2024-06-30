@@ -4,7 +4,7 @@ import { Navigate } from 'react-router-dom';
 import lazy from '../../../utilities/lazy.js';
 import { Loader } from '../../elements/Loader/index.js';
 import { MainHeader } from '../../elements/MainHeader/index.js';
-import { SidebarLayout } from '../../layouts/Sidebar/index.js';
+import { NavContentLayout } from '../../layouts/NavContentLayout/index.js';
 import { useAuth } from '../../utilities/Auth/index.js';
 
 const Project = Loader(lazy(() => import('../../../pages/Project/index.js'), 'Project'));
@@ -120,7 +120,7 @@ export const SettingRoutes = () => {
 
   return {
     path: '/admin/settings',
-    element: <SidebarLayout variable="tenant" />,
+    element: <NavContentLayout variable="tenant" />,
     children,
   };
 };
