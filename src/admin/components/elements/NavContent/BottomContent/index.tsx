@@ -1,18 +1,10 @@
 import { UserOutlined } from '@ant-design/icons';
-import {
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  Popover,
-  Stack,
-  Tooltip,
-} from '@mui/material';
+import { List, ListItem, ListItemButton, ListItemIcon, Popover, Stack } from '@mui/material';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Avatar } from '../../../../@extended/components/Avatar/index.js';
-import { getMeUrl } from '../../../../utilities/urlGenerator.js';
 import { IconButton } from '../../../../@extended/components/IconButton/index.js';
+import { getMeUrl } from '../../../../utilities/urlGenerator.js';
 
 export const BottomContent: React.FC = () => {
   const { t } = useTranslation();
