@@ -21,7 +21,7 @@ export const NotFound: React.FC = () => {
           <Typography color="textSecondary" align="center" sx={{ width: { xs: '73%', sm: '61%' } }}>
             {t('not_found')}
           </Typography>
-          <Button component={RouterLink} to="/admin/posts" variant="contained">
+          <Button component={RouterLink} to="/admin" variant="contained">
             {t('back_to_home')}
           </Button>
         </Stack>
