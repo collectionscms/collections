@@ -5,8 +5,8 @@ import {
   profileNavItems,
   settingsGroupNavItems,
 } from '../../../utilities/groupNavItems.js';
+import { ActivityBar } from '../ActivityBar/index.js';
 import { NavContent } from '../NavContent/index.js';
-import { Sidebar } from '../Sidebar/index.js';
 import { MinimalStyled } from './minimal.js';
 
 type Props = {
@@ -28,7 +28,7 @@ export const Nav: React.FC<Props> = ({ window, open, variable, toggleDrawer }) =
   const sidebar = useMemo(
     () => (
       <Stack direction="row">
-        <Sidebar />
+        <ActivityBar />
         {variable === 'profile' && (
           <Box sx={{ width: 240 }}>
             <NavContent navGroupItems={profileGroups} />

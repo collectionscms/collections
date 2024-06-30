@@ -9,7 +9,7 @@ import { Link } from '../Link/index.js';
 import { BottomContent } from '../NavContent/BottomContent/index.js';
 import { t } from 'i18next';
 
-export const Sidebar: React.FC = () => {
+export const ActivityBar: React.FC = () => {
   const theme = useTheme();
   const { currentProjectRole, projects } = useAuth();
   const bottomContent = useMemo(() => <BottomContent />, []);
