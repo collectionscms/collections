@@ -1,9 +1,19 @@
 import { Project } from '@prisma/client';
 import React, { createContext, useContext, useMemo } from 'react';
-import useSWR from 'swr';
-import useSWRMutation from 'swr/mutation';
+import useSWR, { SWRResponse } from 'swr';
+import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
 import { api } from '../../../utilities/api.js';
-import { ProjectContext } from './types';
+
+type ProjectContext = {
+  getProject: () => SWRResponse<
+    Project,
+    Error,
+    {
+      suspense: true;
+    }
+  >;
+  updateProject: () => SWRMutationResponse<void, any, string, Record<string, any>>;
+};
 
 const Context = createContext({} as ProjectContext);
 
