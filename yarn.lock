@@ -1640,13 +1640,6 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
-"@ljharb/through@^2.3.13":
-  version "2.3.13"
-  resolved "https://registry.yarnpkg.com/@ljharb/through/-/through-2.3.13.tgz#b7e4766e0b65aa82e529be945ab078de79874edc"
-  integrity sha512-/gKJun8NNiWGZJkGzI/Ragc53cOdcLNdzjLaIa+GEjguQs0ulsurx8WN0jijdK9yPqDvziX995sMRLyLt1uZMQ==
-  dependencies:
-    call-bind "^1.0.7"
-
 "@mui/base@5.0.0-beta.40":
   version "5.0.0-beta.40"
   resolved "https://registry.yarnpkg.com/@mui/base/-/base-5.0.0-beta.40.tgz#1f8a782f1fbf3f84a961e954c8176b187de3dae2"
@@ -6400,21 +6393,18 @@ ini@4.1.1:
   resolved "https://registry.yarnpkg.com/ini/-/ini-4.1.1.tgz#d95b3d843b1e906e56d6747d5447904ff50ce7a1"
   integrity sha512-QQnnxNyfvmHFIsj7gkPcYymR8Jdw/o7mp5ZFihxn6h8Ci6fh3Dx4E1gPjpQEpIuPo9XVNY/ZUwh4BPMjGyL01g==
 
-inquirer@9.2.23:
-  version "9.2.23"
-  resolved "https://registry.yarnpkg.com/inquirer/-/inquirer-9.2.23.tgz#cd2fe34edca12315b624fbc3c8cb99b1c4f61f90"
-  integrity sha512-kod5s+FBPIDM2xiy9fu+6wdU/SkK5le5GS9lh4FEBjBHqiMgD9lLFbCbuqFNAjNL2ZOy9Wd9F694IOzN9pZHBA==
+inquirer@9.3.1:
+  version "9.3.1"
+  resolved "https://registry.yarnpkg.com/inquirer/-/inquirer-9.3.1.tgz#71482e4fd283deebe9d175dc7c78b12fb5ff6a7c"
+  integrity sha512-A5IdVr1I04XqPlwrGgTJMKmzRg5ropqNpSeqo0vj1ZmluSCNSFaPZz4eazdPrhVcZfej7fCEYvD2NYa1KjkTJA==
   dependencies:
     "@inquirer/figures" "^1.0.3"
-    "@ljharb/through" "^2.3.13"
     ansi-escapes "^4.3.2"
-    chalk "^5.3.0"
-    cli-cursor "^3.1.0"
     cli-width "^4.1.0"
     external-editor "^3.1.0"
-    lodash "^4.17.21"
     mute-stream "1.0.0"
     ora "^5.4.1"
+    picocolors "^1.0.1"
     run-async "^3.0.0"
     rxjs "^7.8.1"
     string-width "^4.2.3"
@@ -8354,12 +8344,7 @@ pgpass@1.x:
   dependencies:
     split2 "^4.1.0"
 
-picocolors@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.npmjs.org/picocolors/-/picocolors-1.0.0.tgz"
-  integrity sha512-1fygroTLlHu66zi26VoTDv8yRgm0Fccecssto+MhsZ0D/DGW2sm8E8AjW7NU5VVTRt5GxbeZ5qBuJr+HyLYkjQ==
-
-picocolors@^1.0.1:
+picocolors@^1.0.0, picocolors@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/picocolors/-/picocolors-1.0.1.tgz#a8ad579b571952f0e5d25892de5445bcfe25aaa1"
   integrity sha512-anP1Z8qwhkbmu7MFP5iTt+wQKXgwzf7zTyGlcdzabySa9vd0Xt392U0rVmz9poOaBj0uHJKyyo9/upk0HrEQew==
