@@ -5,6 +5,13 @@ export const getLoginUrl = () => {
   );
 };
 
+export const getAddNewProjectUrl = () => {
+  return generateUrlWithCurrentDomain(
+    '/admin/projects/create',
+    process.env.PUBLIC_PORTAL_SUBDOMAIN as string
+  );
+};
+
 export const getMeUrl = () => {
   return generateUrlWithCurrentDomain('/admin/me', process.env.PUBLIC_PORTAL_SUBDOMAIN as string);
 };

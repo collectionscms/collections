@@ -151,6 +151,7 @@
   "trash": "ごみ箱",
   "restore": "元に戻す",
   "edit_locale": "編集する",
+  "add_project": "プロジェクトを作成",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",

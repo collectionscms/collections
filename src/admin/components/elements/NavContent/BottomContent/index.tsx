@@ -1,16 +1,9 @@
 import { UserOutlined } from '@ant-design/icons';
-import {
-  IconButton,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  Popover,
-  Stack,
-} from '@mui/material';
+import { List, ListItem, ListItemButton, ListItemIcon, Popover, Stack } from '@mui/material';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Avatar } from '../../../../@extended/components/Avatar/index.js';
+import { IconButton } from '../../../../@extended/components/IconButton/index.js';
 import { getMeUrl } from '../../../../utilities/urlGenerator.js';
 
 export const BottomContent: React.FC = () => {
@@ -34,7 +27,7 @@ export const BottomContent: React.FC = () => {
 
   return (
     <>
-      <IconButton color="inherit" onClick={handleMenuOpen}>
+      <IconButton shape="rounded" color="secondary" onClick={handleMenuOpen}>
         <Stack
           direction="row"
           gap={1}
@@ -59,14 +52,6 @@ export const BottomContent: React.FC = () => {
         }}
       >
         <List sx={{ width: '100%' }}>
-          {/* <ListItem disablePadding>
-            <ListItemButton onClick={handleLogout}>
-              <ListItemIcon>
-                <LogoutOutlined />
-              </ListItemIcon>
-              {t('logout')}
-            </ListItemButton>
-          </ListItem> */}
           <ListItem disablePadding>
             <ListItemButton onClick={handleProfile}>
               <ListItemIcon>

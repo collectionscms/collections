@@ -1,7 +1,7 @@
 import React from 'react';
 import lazy from '../../../utilities/lazy.js';
 import { Loader } from '../../elements/Loader/index.js';
-import { SidebarLayout } from '../../layouts/Sidebar/index.js';
+import { ActivityBarLayout } from '../../layouts/ActivityBarLayout/index.js';
 
 const ProjectListPage = Loader(
   lazy(() => import('../../../pages/ProjectList/index.js'), 'ProjectListPage')
@@ -10,7 +10,7 @@ const ProjectListPage = Loader(
 export const PortalRootRoutes = () => {
   return {
     path: '/admin',
-    element: <SidebarLayout variable="portal" />,
+    element: <ActivityBarLayout />,
     children: [
       {
         path: '',
