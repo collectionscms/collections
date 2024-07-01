@@ -88,7 +88,7 @@
     "i18next": "23.11.5",
     "i18next-browser-languagedetector": "8.0.0",
     "image-size": "1.1.1",
-    "inquirer": "9.2.23",
+    "inquirer": "9.3.2",
     "joi": "17.13.3",
     "js-cookie": "^3.0.5",
     "mime-types": "2.1.35",
