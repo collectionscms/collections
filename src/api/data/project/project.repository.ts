@@ -11,14 +11,17 @@ export class ProjectRepository {
     return ProjectEntity.Reconstruct<Project, ProjectEntity>(record);
   }
 
-  async findOneBySubdomain(prisma: BypassPrismaType, subdomain: string): Promise<ProjectEntity> {
-    const record = await prisma.project.findFirstOrThrow({
+  async findOneBySubdomain(
+    prisma: BypassPrismaType,
+    subdomain: string
+  ): Promise<ProjectEntity | null> {
+    const record = await prisma.project.findFirst({
       where: {
         subdomain: subdomain,
       },
     });
 
-    return ProjectEntity.Reconstruct<Project, ProjectEntity>(record);
+    return record ? ProjectEntity.Reconstruct<Project, ProjectEntity>(record) : null;
   }
 
   async update(
