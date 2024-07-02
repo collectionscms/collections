@@ -31,6 +31,10 @@ export class RoleEntity extends PrismaBaseEntity<Role> {
     return this.props.isAdmin;
   }
 
+  changeToAdmin = () => {
+    this.props.isAdmin = true;
+  };
+
   update = (params: { name: string; description: string | null }) => {
     this.props.name = params.name;
 

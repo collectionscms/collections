@@ -47,7 +47,6 @@
   "required_at_creation": "Require value at creation",
   "is_active": "Active",
   "hidden_for_security": "Hidden for security",
-  "admin_access": "Admin Access",
   "allow": "Allow",
   "not_allow": "Not Allow",
   "admin_has_all_permissions": "Admin has all permissions",
@@ -151,6 +150,13 @@
   "trash": "Trash",
   "restore": "Restore",
   "edit_locale": "Edit",
+  "add_project": "Add project",
+  "next": "Next",
+  "select_default_language": "Select default language",
+  "project_created": "Project created!",
+  "go_to_project_home": "Go to project home",
+  "admin": "Admin",
+  "admin_description": "The admin has all permissions.",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",
@@ -180,13 +186,12 @@
     "user": "Create User",
     "role": "Create Role",
     "data_model": "Create Data Model",
-    "custom": "Create {{page}}"
+    "project": "Create Project"
   },
   "edit": {
     "user": "Edit User",
     "role": "Edit Role",
-    "data_model": "Edit Data Model",
-    "custom": "Edit {{page}}"
+    "data_model": "Edit Data Model"
   },
   "locale": {
     "en": "English",
@@ -210,7 +215,7 @@
     "forbidden": "You don't have permission to access this.",
     "already_registered_email": "Already registered email.",
     "already_registered_name": "Already registered.",
-    "already_registered_model": "Already registered data model.",
+    "already_registered_project_id": "Already registered project ID.",
     "unregistered_email_address": "Unregistered email address.",
     "token_invalid_or_expired": "Token is either invalid or has expired.",
     "record_not_found": "Record not found.",

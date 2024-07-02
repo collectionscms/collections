@@ -11,14 +11,27 @@ export class ProjectRepository {
     return ProjectEntity.Reconstruct<Project, ProjectEntity>(record);
   }
 
-  async findOneBySubdomain(prisma: BypassPrismaType, subdomain: string): Promise<ProjectEntity> {
-    const record = await prisma.project.findFirstOrThrow({
+  async findOneBySubdomain(
+    prisma: BypassPrismaType,
+    subdomain: string
+  ): Promise<ProjectEntity | null> {
+    const record = await prisma.project.findFirst({
       where: {
         subdomain: subdomain,
       },
     });
 
-    return ProjectEntity.Reconstruct<Project, ProjectEntity>(record);
+    return record ? ProjectEntity.Reconstruct<Project, ProjectEntity>(record) : null;
+  }
+
+  async create(prisma: ProjectPrismaType, entity: ProjectEntity): Promise<ProjectEntity> {
+    entity.beforeInsertValidate();
+
+    const result = await prisma.project.create({
+      data: entity.toPersistence(),
+    });
+
+    return ProjectEntity.Reconstruct<Project, ProjectEntity>(result);
   }
 
   async update(
@@ -26,13 +39,13 @@ export class ProjectRepository {
     id: string,
     entity: ProjectEntity
   ): Promise<ProjectEntity> {
-    const record = entity.toPersistence();
+    entity.beforeUpdateValidate();
+
     const result = await prisma.project.update({
       where: { id },
       data: {
-        name: record.name,
-        defaultLocale: record.defaultLocale,
-        description: record.description,
+        name: entity.name,
+        defaultLocale: entity.defaultLocale,
       },
     });
 

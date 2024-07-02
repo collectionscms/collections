@@ -1,6 +1,6 @@
 export const Locale = {
-  ja: 'ja',
   en: 'en',
+  ja: 'ja',
 } as const;
 
 export type LocaleType = keyof typeof Locale;

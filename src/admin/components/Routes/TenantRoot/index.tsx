@@ -4,7 +4,7 @@ import { Navigate } from 'react-router-dom';
 import lazy from '../../../utilities/lazy.js';
 import { Loader } from '../../elements/Loader/index.js';
 import { MainHeader } from '../../elements/MainHeader/index.js';
-import { SidebarLayout } from '../../layouts/Sidebar/index.js';
+import { NavContentLayout } from '../../layouts/NavContentLayout/index.js';
 import { useAuth } from '../../utilities/Auth/index.js';
 
 const PostPage = Loader(lazy(() => import('../../../pages/Post/index.js'), 'PostPage'));
@@ -52,7 +52,7 @@ export const TenantRootRoutes = () => {
 
   return {
     path: '/admin',
-    element: <SidebarLayout variable="tenant" />,
+    element: <NavContentLayout variable="tenant" />,
     children,
   };
 };

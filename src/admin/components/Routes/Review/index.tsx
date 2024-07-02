@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import lazy from '../../../utilities/lazy.js';
 import { Loader } from '../../elements/Loader/index.js';
 import { MainHeader } from '../../elements/MainHeader/index.js';
-import { SidebarLayout } from '../../layouts/Sidebar/index.js';
+import { NavContentLayout } from '../../layouts/NavContentLayout/index.js';
 import { useAuth } from '../../utilities/Auth/index.js';
 
 const ReviewDetailPage = Loader(
@@ -30,7 +30,7 @@ export const ReviewRoutes = () => {
 
   return {
     path: '/admin/reviews',
-    element: <SidebarLayout variable="tenant" />,
+    element: <NavContentLayout variable="tenant" />,
     children,
   };
 };
