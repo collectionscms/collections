@@ -29,13 +29,13 @@ export class ProjectRepository {
     id: string,
     entity: ProjectEntity
   ): Promise<ProjectEntity> {
-    const record = entity.toPersistence();
+    entity.beforeUpdateValidate();
+
     const result = await prisma.project.update({
       where: { id },
       data: {
-        name: record.name,
-        defaultLocale: record.defaultLocale,
-        description: record.description,
+        name: entity.name,
+        defaultLocale: entity.defaultLocale,
       },
     });
 
