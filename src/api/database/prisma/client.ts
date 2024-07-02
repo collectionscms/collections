@@ -36,12 +36,9 @@ const forProject = (projectId: string) => {
   );
 };
 
-// Access to tables with no row-level security
-export const prisma = new PrismaClient();
-export type PrismaType = PrismaClient | Prisma.TransactionClient;
-
 // Access to tables with row-level security
-export const projectPrisma = (projectId: string) => prisma.$extends(forProject(projectId));
+export const projectPrisma = (projectId: string) =>
+  new PrismaClient().$extends(forProject(projectId));
 export type ProjectPrismaClient = ReturnType<typeof projectPrisma>;
 export type ProjectTransactionClient = Parameters<
   Parameters<ProjectPrismaClient['$transaction']>[0]

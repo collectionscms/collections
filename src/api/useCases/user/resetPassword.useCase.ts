@@ -1,11 +1,11 @@
 import { User } from '@prisma/client';
 import { UserRepository } from '../../data/user/user.repository.js';
-import { PrismaType } from '../../database/prisma/client.js';
+import { BypassPrismaType } from '../../database/prisma/client.js';
 import { ResetPasswordUseCaseSchemaType } from './resetPassword.schema.js';
 
 export class ResetPasswordUseCase {
   constructor(
-    private readonly prisma: PrismaType,
+    private readonly prisma: BypassPrismaType,
     private readonly userRepository: UserRepository
   ) {}
 

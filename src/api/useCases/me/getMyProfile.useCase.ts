@@ -1,10 +1,10 @@
 import { User } from '@prisma/client';
 import { UserRepository } from '../../data/user/user.repository.js';
-import { PrismaType } from '../../database/prisma/client.js';
+import { BypassPrismaType } from '../../database/prisma/client.js';
 
 export class GetMyProfileUseCase {
   constructor(
-    private readonly prisma: PrismaType,
+    private readonly prisma: BypassPrismaType,
     private readonly userRepository: UserRepository
   ) {}
 

@@ -2,7 +2,7 @@ import { User } from '@auth/express';
 import { Permission, Project, Role } from '@prisma/client';
 import { RecordNotUniqueException } from '../../../exceptions/database/recordNotUnique.js';
 import { InvalidCredentialsException } from '../../../exceptions/invalidCredentials.js';
-import { BypassPrismaType, PrismaType, ProjectPrismaType } from '../../database/prisma/client.js';
+import { BypassPrismaType, ProjectPrismaType } from '../../database/prisma/client.js';
 import { comparePasswords } from '../../utilities/comparePasswords.js';
 import { PermissionEntity } from '../permission/permission.entity.js';
 import { ProjectEntity } from '../project/project.entity.js';
@@ -27,7 +27,7 @@ export class UserRepository {
     return UserEntity.Reconstruct<User, UserEntity>(user);
   }
 
-  async findOneById(prisma: PrismaType, userId: string): Promise<UserEntity> {
+  async findOneById(prisma: BypassPrismaType, userId: string): Promise<UserEntity> {
     const record = await prisma.user.findFirstOrThrow({
       where: {
         id: userId,
@@ -37,7 +37,7 @@ export class UserRepository {
     return UserEntity.Reconstruct<User, UserEntity>(record);
   }
 
-  async findOneByEmail(prisma: PrismaType, email: string): Promise<UserEntity | null> {
+  async findOneByEmail(prisma: BypassPrismaType, email: string): Promise<UserEntity | null> {
     const user = await prisma.user.findFirst({
       where: {
         email,
@@ -47,7 +47,10 @@ export class UserRepository {
     return user ? UserEntity.Reconstruct<User, UserEntity>(user) : null;
   }
 
-  async findOneByConfirmationToken(prisma: PrismaType, token: string): Promise<UserEntity | null> {
+  async findOneByConfirmationToken(
+    prisma: BypassPrismaType,
+    token: string
+  ): Promise<UserEntity | null> {
     const user = await prisma.user.findFirst({
       where: {
         confirmationToken: token,
@@ -142,7 +145,7 @@ export class UserRepository {
     };
   }
 
-  async checkUniqueEmail(prisma: PrismaType, email: string, ownId?: string) {
+  async checkUniqueEmail(prisma: BypassPrismaType, email: string, ownId?: string) {
     const user = await prisma.user.findFirst({
       where: {
         email,
@@ -155,7 +158,7 @@ export class UserRepository {
     }
   }
 
-  async verified(prisma: PrismaType, entity: UserEntity): Promise<UserEntity> {
+  async verified(prisma: BypassPrismaType, entity: UserEntity): Promise<UserEntity> {
     const user = await prisma.user.update({
       where: {
         id: entity.id,
@@ -169,7 +172,7 @@ export class UserRepository {
     return UserEntity.Reconstruct<User, UserEntity>(user);
   }
 
-  async findOneByResetToken(prisma: PrismaType, token: string): Promise<UserEntity> {
+  async findOneByResetToken(prisma: BypassPrismaType, token: string): Promise<UserEntity> {
     const user = await prisma.user.findFirst({
       where: {
         resetPasswordToken: token,
@@ -184,7 +187,7 @@ export class UserRepository {
     return UserEntity.Reconstruct<User, UserEntity>(user);
   }
 
-  async updatePassword(prisma: PrismaType, entity: UserEntity): Promise<UserEntity> {
+  async updatePassword(prisma: BypassPrismaType, entity: UserEntity): Promise<UserEntity> {
     const updatedUser = await prisma.user.update({
       where: {
         id: entity.id,
@@ -198,7 +201,10 @@ export class UserRepository {
     return UserEntity.Reconstruct<User, UserEntity>(updatedUser);
   }
 
-  async updateResetPasswordToken(prisma: PrismaType, entity: UserEntity): Promise<UserEntity> {
+  async updateResetPasswordToken(
+    prisma: BypassPrismaType,
+    entity: UserEntity
+  ): Promise<UserEntity> {
     const user = await prisma.user.update({
       where: {
         id: entity.id,
@@ -224,7 +230,7 @@ export class UserRepository {
     return UserEntity.Reconstruct<User, UserEntity>(user);
   }
 
-  async updateProfile(prisma: PrismaType, user: UserEntity): Promise<UserEntity> {
+  async updateProfile(prisma: BypassPrismaType, user: UserEntity): Promise<UserEntity> {
     const updatedUser = await prisma.user.update({
       where: {
         id: user.id,
