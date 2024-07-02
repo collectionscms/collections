@@ -24,6 +24,16 @@ export class ProjectRepository {
     return record ? ProjectEntity.Reconstruct<Project, ProjectEntity>(record) : null;
   }
 
+  async create(prisma: ProjectPrismaType, entity: ProjectEntity): Promise<ProjectEntity> {
+    entity.beforeInsertValidate();
+
+    const result = await prisma.project.create({
+      data: entity.toPersistence(),
+    });
+
+    return ProjectEntity.Reconstruct<Project, ProjectEntity>(result);
+  }
+
   async update(
     prisma: ProjectPrismaType,
     id: string,
