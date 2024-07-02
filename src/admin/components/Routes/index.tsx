@@ -14,12 +14,14 @@ import { PostRoutes } from './Post/index.js';
 import { SettingRoutes } from './Setting/index.js';
 import { TenantRootRoutes } from './TenantRoot/index.js';
 import { ReviewRoutes } from './Review/index.js';
+import { ProjectRoutes } from './Project/index.js';
 
 export const Routes: React.FC = () => {
   const { me } = useAuth();
 
   const portalRouter = createBrowserRouter([
     PortalRootRoutes(),
+    ProjectRoutes(),
     MeRoutes(),
     AuthRoutes(),
     InvitationRoutes(),
