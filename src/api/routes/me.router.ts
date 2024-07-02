@@ -3,7 +3,7 @@ import express, { Request, Response } from 'express';
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
 import { authConfig } from '../configs/auth.js';
 import { UserRepository } from '../data/user/user.repository.js';
-import { bypassPrisma, prisma } from '../database/prisma/client.js';
+import { bypassPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';
 import { ResetPasswordMailService } from '../services/resetPasswordMail.service.js';
@@ -39,7 +39,7 @@ router.get(
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
-    const useCase = new GetMyProfileUseCase(prisma, new UserRepository());
+    const useCase = new GetMyProfileUseCase(bypassPrisma, new UserRepository());
     const user = await useCase.execute(validated.data.userId);
 
     return res.json({ user });
@@ -73,7 +73,7 @@ router.patch(
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
-    const useCase = new UpdateProfileUseCase(prisma, new UserRepository());
+    const useCase = new UpdateProfileUseCase(bypassPrisma, new UserRepository());
     await useCase.execute(validated.data);
 
     res.status(204).end();
@@ -89,7 +89,7 @@ router.post(
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
-    const useCase = new ResetPasswordUseCase(prisma, new UserRepository());
+    const useCase = new ResetPasswordUseCase(bypassPrisma, new UserRepository());
     await useCase.execute(validated.data);
 
     res.status(204).end();
@@ -105,7 +105,7 @@ router.post(
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
     const useCase = new ForgotPasswordUseCase(
-      prisma,
+      bypassPrisma,
       new UserRepository(),
       new ResetPasswordMailService()
     );

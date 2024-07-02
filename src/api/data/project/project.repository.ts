@@ -1,5 +1,5 @@
 import { Project } from '@prisma/client';
-import { PrismaType, ProjectPrismaType } from '../../database/prisma/client.js';
+import { BypassPrismaType, ProjectPrismaType } from '../../database/prisma/client.js';
 import { ProjectEntity } from './project.entity.js';
 
 export class ProjectRepository {
@@ -11,7 +11,7 @@ export class ProjectRepository {
     return ProjectEntity.Reconstruct<Project, ProjectEntity>(record);
   }
 
-  async findOneBySubdomain(prisma: PrismaType, subdomain: string): Promise<ProjectEntity> {
+  async findOneBySubdomain(prisma: BypassPrismaType, subdomain: string): Promise<ProjectEntity> {
     const record = await prisma.project.findFirstOrThrow({
       where: {
         subdomain: subdomain,

@@ -1,4 +1,3 @@
-import { PrismaClient } from '@prisma/client';
 import { InvalidTokenException } from '../../../exceptions/invalidToken.js';
 import { Me } from '../../../types/index.js';
 import { InvitationRepository } from '../../data/invitation/invitation.repository.js';
@@ -13,8 +12,7 @@ import { SignUpUseCaseSchemaType } from './signUp.schema.js';
 
 export class SignUpUseCase {
   constructor(
-    private readonly prisma: PrismaClient,
-    private readonly bypassPrisma: BypassPrismaClient,
+    private readonly prisma: BypassPrismaClient,
     private readonly userRepository: UserRepository,
     private readonly invitationRepository: InvitationRepository,
     private readonly userProjectRepository: UserProjectRepository,
@@ -37,13 +35,13 @@ export class SignUpUseCase {
     entity.generateConfirmationToken();
 
     const invitation = props.token
-      ? await this.invitationRepository.findOneByToken(this.bypassPrisma, props.token)
+      ? await this.invitationRepository.findOneByToken(this.prisma, props.token)
       : null;
     if (invitation && (invitation.email !== props.email || invitation.isAccepted())) {
       throw new InvalidTokenException();
     }
 
-    const result = await this.bypassPrisma.$transaction(async (tx) => {
+    const result = await this.prisma.$transaction(async (tx) => {
       const user = await this.userRepository.upsert(tx, entity);
 
       // with accept invitation

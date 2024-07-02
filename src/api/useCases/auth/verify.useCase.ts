@@ -1,13 +1,13 @@
-import { PrismaClient } from '@prisma/client';
+import { ConflictException } from '../../../exceptions/conflict.js';
 import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
 import { Me } from '../../../types/index.js';
 import { UserRepository } from '../../data/user/user.repository.js';
+import { BypassPrismaClient } from '../../database/prisma/client.js';
 import { VerifyUseCaseSchemaType } from './verify.schema.js';
-import { ConflictException } from '../../../exceptions/conflict.js';
 
 export class VerifyUseCase {
   constructor(
-    private readonly prisma: PrismaClient,
+    private readonly prisma: BypassPrismaClient,
     private readonly userRepository: UserRepository
   ) {}
 

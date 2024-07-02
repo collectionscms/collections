@@ -1,10 +1,10 @@
 import { Project } from '@prisma/client';
 import { ProjectRepository } from '../../data/project/project.repository.js';
-import { PrismaType } from '../../database/prisma/client.js';
+import { BypassPrismaType } from '../../database/prisma/client.js';
 
 export class GetProjectFromSubdomainUseCase {
   constructor(
-    private readonly prisma: PrismaType,
+    private readonly prisma: BypassPrismaType,
     private readonly projectRepository: ProjectRepository
   ) {}
 
