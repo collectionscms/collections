@@ -1,5 +1,6 @@
 import { Project } from '@prisma/client';
 import { RecordNotUniqueException } from '../../../exceptions/database/recordNotUnique.js';
+import i18n from '../../../lang/translations/config.js';
 import { ProjectEntity } from '../../data/project/project.entity.js';
 import { ProjectRepository } from '../../data/project/project.repository.js';
 import { RoleEntity } from '../../data/role/role.entity.js';
@@ -23,6 +24,8 @@ export class CreateProjectUseCase {
     defaultLocale,
     subdomain,
   }: CreateProjectUseCaseSchemaType): Promise<Project> {
+    const t = await i18n.changeLanguage(defaultLocale);
+
     const project = await this.projectRepository.findOneBySubdomain(this.prisma, subdomain);
     if (project) {
       throw new RecordNotUniqueException('already_registered_project_id');
@@ -36,8 +39,8 @@ export class CreateProjectUseCase {
 
     const roleEntity = RoleEntity.Construct({
       projectId: projectEntity.id,
-      name: 'Admin',
-      description: '',
+      name: t('admin'),
+      description: t('admin_description'),
     });
     roleEntity.changeToAdmin();
 

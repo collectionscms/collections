@@ -47,7 +47,6 @@
   "required_at_creation": "Require value at creation",
   "is_active": "Active",
   "hidden_for_security": "Hidden for security",
-  "admin_access": "Admin Access",
   "allow": "Allow",
   "not_allow": "Not Allow",
   "admin_has_all_permissions": "Admin has all permissions",
@@ -156,6 +155,8 @@
   "select_default_language": "Select default language",
   "project_created": "Project created!",
   "go_to_project_home": "Go to project home",
+  "admin": "Admin",
+  "admin_description": "The admin has all permissions.",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",

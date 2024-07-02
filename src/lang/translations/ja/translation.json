@@ -47,7 +47,6 @@
   "required_at_creation": "登録時に入力が必須",
   "is_active": "有効にする",
   "hidden_for_security": "セキュリティのため非表示",
-  "admin_access": "管理者権限",
   "allow": "許可",
   "not_allow": "許可しない",
   "admin_has_all_permissions": "管理者は全ての権限を持っています",
@@ -156,6 +155,8 @@
   "select_default_language": "デフォルト言語の選択",
   "project_created": "プロジェクトを作成しました！",
   "go_to_project_home": "プロジェクトホームへ",
+  "admin": "管理者",
+  "admin_description": "管理者は全ての権限を持っています。",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",
