@@ -5,7 +5,7 @@ import { UnknownException } from '../../exceptions/storage/unknown.js';
 import { logger } from '../../utilities/logger.js';
 import { FileRepository } from '../data/file/file.repository.js';
 import { ProjectRepository } from '../data/project/project.repository.js';
-import { prisma, projectPrisma } from '../database/prisma/client.js';
+import { bypassPrisma, projectPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { getDataUseCaseSchema } from '../useCases/asset/getData.schema.js';
 import { GetDataUseCase } from '../useCases/asset/getData.useCase.js';
@@ -29,7 +29,10 @@ router.get(
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
-    const projectUseCase = new GetProjectFromSubdomainUseCase(prisma, new ProjectRepository());
+    const projectUseCase = new GetProjectFromSubdomainUseCase(
+      bypassPrisma,
+      new ProjectRepository()
+    );
     const project = await projectUseCase.execute(validated.data.subdomain);
 
     const useCase = new GetDataUseCase(projectPrisma(project.id), new FileRepository());

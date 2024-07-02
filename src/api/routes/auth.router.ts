@@ -5,7 +5,7 @@ import { UnknownException } from '../../exceptions/storage/unknown.js';
 import { InvitationRepository } from '../data/invitation/invitation.repository.js';
 import { UserRepository } from '../data/user/user.repository.js';
 import { UserProjectRepository } from '../data/userProject/userProject.repository.js';
-import { bypassPrisma, prisma } from '../database/prisma/client.js';
+import { bypassPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { SignUpMailService } from '../services/signUpMail.service.js';
 import { signInErrorUseCaseSchema } from '../useCases/auth/signInError.schema.js';
@@ -27,7 +27,6 @@ router.post(
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
     const useCase = new SignUpUseCase(
-      prisma,
       bypassPrisma,
       new UserRepository(),
       new InvitationRepository(),
@@ -50,7 +49,7 @@ router.post(
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
-    const useCase = new VerifyUseCase(prisma, new UserRepository());
+    const useCase = new VerifyUseCase(bypassPrisma, new UserRepository());
     const me = await useCase.execute(validated.data);
 
     return res.json({

@@ -1,12 +1,12 @@
 import { User } from '@prisma/client';
 import { UserRepository } from '../../data/user/user.repository.js';
-import { PrismaType } from '../../database/prisma/client.js';
+import { BypassPrismaType } from '../../database/prisma/client.js';
 import { oneWayHash } from '../../utilities/oneWayHash.js';
 import { UpdateProfileUseCaseSchemaType } from './updateProfile.schema.js';
 
 export class UpdateProfileUseCase {
   constructor(
-    private readonly prisma: PrismaType,
+    private readonly prisma: BypassPrismaType,
     private readonly userRepository: UserRepository
   ) {}
 
