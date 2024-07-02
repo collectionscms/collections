@@ -12,6 +12,7 @@ type ProjectContext = {
       suspense: true;
     }
   >;
+  createProject: () => SWRMutationResponse<Project, any, string, Record<string, any>>;
   updateProject: () => SWRMutationResponse<void, any, string, Record<string, any>>;
 };
 
@@ -25,6 +26,11 @@ export const ProjectContextProvider: React.FC<{ children: React.ReactNode }> = (
       { suspense: true }
     );
 
+  const createProject = () =>
+    useSWRMutation('/projects', async (url: string, { arg }: { arg: Record<string, any> }) => {
+      return api.post(url, arg).then((res) => res.data);
+    });
+
   const updateProject = () =>
     useSWRMutation('/projects', async (url: string, { arg }: { arg: Record<string, any> }) => {
       return api.patch(url, arg).then((res) => res.data);
@@ -33,9 +39,10 @@ export const ProjectContextProvider: React.FC<{ children: React.ReactNode }> = (
   const value = useMemo(
     () => ({
       getProject,
+      createProject,
       updateProject,
     }),
-    [getProject, updateProject]
+    [getProject, createProject, updateProject]
   );
 
   return <Context.Provider value={value}>{children}</Context.Provider>;
