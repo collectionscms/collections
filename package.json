@@ -1,6 +1,6 @@
 {
   "name": "@collectionscms/collections",
-  "version": "2.0.0-alpha.1",
+  "version": "2.0.0-alpha.3",
   "description": "Drag and drop to import WordPress contents, Open source Headless CMS built with React, Node.js, RDB.",
   "license": "MIT",
   "type": "module",
