@@ -13,7 +13,9 @@ export const resources = {
   },
 } as const;
 
-const domain = window.location.hostname.split('.').slice(-2).join('.');
+const domain = process.env.PUBLIC_SERVER_ORIGIN
+  ? new URL(process.env.PUBLIC_SERVER_ORIGIN).hostname.split('.').slice(-2).join('.')
+  : '';
 
 i18next
   .use(LanguageDetector)
