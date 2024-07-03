@@ -38,7 +38,6 @@ type AllowedEnvironmentVariable =
   | 'DB_HOST'
   | 'DB_PORT'
   | 'DB_SSL'
-  | 'MIGRATE_EXTENSIONS'
   | 'DATABASE_URL'
 
   // /////////////////////////////////////
@@ -106,9 +105,6 @@ export const defaults: Partial<Record<AllowedEnvironmentVariable, any>> = {
   // Storage
   STORAGE_DRIVER: 'local',
   STORAGE_LOCAL_ROOT: 'uploads',
-
-  // Database
-  MIGRATE_EXTENSIONS: '.ts',
 
   // Express
   REQ_LIMIT: '4mb',

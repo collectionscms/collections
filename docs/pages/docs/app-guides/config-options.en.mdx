@@ -15,7 +15,6 @@ Collections attempts to read the `.env` file setting as an environment Variable.
 ```
 DB_CLIENT="sqlite3"
 DB_FILENAME="./data.db"
-MIGRATE_EXTENSIONS=".js"
 ```
 
 ## General
@@ -40,17 +39,16 @@ MIGRATE_EXTENSIONS=".js"
 
 ## Database
 
-| Variable           | Description                                | Default Value        |
-| :----------------- | :----------------------------------------- | :------------------- |
-| DB_CLIENT          | Database Client                            | --                   |
-| DB_FILENAME        | Path to Database file(SQLite)              | --                   |
-| DB_USER            | Database Database User Information         | --                   |
-| DB_PASSWORD        | Database Password                          | --                   |
-| DB_DATABASE        | Database Database name                     | --                   |
-| DB_HOST            | Database Host                              | --                   |
-| DB_PORT            | Database POrt                              | --                   |
-| DB_SSL             | Database SSL(PostgreSQL / `true`, `false`) | --                   |
-| MIGRATE_EXTENSIONS | File extensions to treat as migrations     | `.js` (unchangeable) |
+| Variable    | Description                                | Default Value |
+| :---------- | :----------------------------------------- | :------------ |
+| DB_CLIENT   | Database Client                            | --            |
+| DB_FILENAME | Path to Database file(SQLite)              | --            |
+| DB_USER     | Database Database User Information         | --            |
+| DB_PASSWORD | Database Password                          | --            |
+| DB_DATABASE | Database Database name                     | --            |
+| DB_HOST     | Database Host                              | --            |
+| DB_PORT     | Database POrt                              | --            |
+| DB_SSL      | Database SSL(PostgreSQL / `true`, `false`) | --            |
 
 ## Express
 
