@@ -1,4 +1,6 @@
 import { MoreOutlined } from '@ant-design/icons';
+import { Stack } from '@mui/material';
+import Chip from '@mui/material/Chip';
 import { enqueueSnackbar } from 'notistack';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -87,10 +89,28 @@ export const PostPageImpl: React.FC = () => {
 
     switch (fields[i].field) {
       case 'title':
-        return hasPermission('updatePost') ? (
-          <Link href={`${row.id}`}>{defaultCell}</Link>
-        ) : (
-          defaultCell
+        return (
+          <Stack direction="row" alignItems="center">
+            {hasPermission('updatePost') ? (
+              <Link href={`${row.id}`}>{defaultCell}</Link>
+            ) : (
+              defaultCell
+            )}
+            {row.version > 1 && (
+              <Chip
+                variant="combined"
+                color="secondary"
+                label={`V${row.version}`}
+                size="small"
+                sx={{
+                  ml: 1,
+                  fontSize: '0.725rem',
+                  height: 16,
+                  '& .MuiChip-label': { px: 0.5 },
+                }}
+              />
+            )}
+          </Stack>
         );
       case 'status':
         return row.publishedAt && row.status !== 'published' ? (
