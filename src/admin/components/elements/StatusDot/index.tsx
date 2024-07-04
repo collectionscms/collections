@@ -14,7 +14,7 @@ export const StatusDot: React.FC<Props> = ({ status }) => {
   let statusConfig: { color: ColorProps; text: string };
   switch (status) {
     case 'draft':
-      statusConfig = { color: 'default', text: t('draft') };
+      statusConfig = { color: 'secondary', text: t('draft') };
       break;
     case 'review':
       statusConfig = { color: 'warning', text: t('review') };
