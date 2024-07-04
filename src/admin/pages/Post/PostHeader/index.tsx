@@ -1,5 +1,6 @@
 import {
   ArrowLeftOutlined,
+  CloseOutlined,
   DeleteOutlined,
   EllipsisOutlined,
   PlusOutlined,
@@ -24,6 +25,8 @@ import { LocalizedPost } from '../../../../types/index.js';
 import { IconButton } from '../../../@extended/components/IconButton/index.js';
 import { StatusDot } from '../../../components/elements/StatusDot/index.js';
 import AppBarStyled from './AppBarStyled.js';
+import { Avatar } from '../../../@extended/components/Avatar/index.js';
+import { text } from 'express';
 
 export type Props = {
   post: LocalizedPost;
@@ -116,9 +119,9 @@ export const PostHeader: React.FC<Props> = ({
     <AppBarStyled open={true} {...appBar}>
       <Toolbar>
         <Stack direction="row" sx={{ flexGrow: 1 }} gap={2}>
-          <IconButton shape="rounded" color="secondary" onClick={navigateToList}>
-            <ArrowLeftOutlined style={{ fontSize: 20 }} />
-          </IconButton>
+          <Avatar variant="rounded" size="md" color="secondary" type="filled">
+            <Typography variant="h5">v{post.version}</Typography>
+          </Avatar>
           {post.publishedAt && post.status !== 'published' ? (
             <>
               <StatusDot status="published" />
@@ -159,6 +162,9 @@ export const PostHeader: React.FC<Props> = ({
             <Button variant="contained" onClick={onOpenSettings}>
               {t('publish_settings')}
             </Button>
+            <IconButton shape="rounded" color="secondary" onClick={navigateToList}>
+              <CloseOutlined style={{ fontSize: 20 }} />
+            </IconButton>
           </>
         </Stack>
       </Toolbar>
