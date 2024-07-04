@@ -151,7 +151,9 @@ export const PostHeader: React.FC<Props> = ({
           <>
             <Tooltip title="⌘ + S" placement="top-start">
               <Button ref={buttonRef} variant="outlined" color="secondary" onClick={onSaveDraft}>
-                {post.status === 'published' ? t('save_draft_new_ver') : t('save_draft')}
+                {post.status === 'published'
+                  ? t('save_draft_new_ver', { version: post.version + 1 })
+                  : t('save_draft')}
               </Button>
             </Tooltip>
             <Button variant="contained" onClick={onOpenSettings}>

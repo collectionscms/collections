@@ -70,7 +70,7 @@ export const History: React.FC<Props> = ({ histories }) => {
               <TimelineContent>
                 <Typography variant="h6" component="span">
                   {t(`${history.status}` as unknown as TemplateStringsArray)}
-                  {history.status === 'published' && ` v${history.version}`}
+                  {history.status === 'published' && ` V${history.version}`}
                 </Typography>
                 <Typography color="textSecondary" variant="subtitle2">
                   {dayjs(history.createdAt).format('YYYY-MM-DD HH:mm')}
