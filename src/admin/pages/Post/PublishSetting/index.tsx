@@ -101,18 +101,24 @@ export const PublishSetting: React.FC<Props> = ({ open, contentId, status, onClo
       <form onSubmit={handleSubmit(onSubmit)}>
         <AppBarStyled open={true} {...appBar}>
           <Toolbar>
-            <Stack direction="row" sx={{ flexGrow: 1 }} alignItems="center">
+            <Stack
+              direction="row"
+              sx={{ flexGrow: 1 }}
+              justifyContent="flex-end"
+              alignItems="center"
+              gap={1.5}
+            >
+              <Button variant="contained" type="submit">
+                {status === 'published'
+                  ? t('updating')
+                  : watch('status') === 'review'
+                    ? t('publish_for_review')
+                    : t('publishing')}
+              </Button>
               <IconButton shape="rounded" color="secondary" onClick={onClose}>
                 <CloseOutlined style={{ fontSize: '20px' }} />
               </IconButton>
             </Stack>
-            <Button variant="contained" type="submit">
-              {status === 'published'
-                ? t('updating')
-                : watch('status') === 'review'
-                  ? t('publish_for_review')
-                  : t('publishing')}
-            </Button>
           </Toolbar>
         </AppBarStyled>
         <Box component="main" sx={{ minHeight: '100vh' }}>

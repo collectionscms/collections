@@ -121,7 +121,7 @@
   "published_at": "Published At",
   "author": "Author",
   "publish_settings": "Publish Settings",
-  "save_draft_new_ver": "Save Draft(New Ver)",
+  "save_draft_new_ver": "Save Draft (V{{version}})",
   "save_draft": "Save Draft",
   "publish": "Publish",
   "review": "Review",
