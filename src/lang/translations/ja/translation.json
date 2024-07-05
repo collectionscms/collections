@@ -32,7 +32,7 @@
   "cancel": "キャンセル",
   "search_by": "{{field_name}}で検索",
   "name": "名前",
-  "status": "状態",
+  "status": "ステータス",
   "updated_at": "更新日時",
   "valid": "有効",
   "invalid": "無効",
