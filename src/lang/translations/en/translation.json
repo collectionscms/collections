@@ -194,8 +194,8 @@
     "data_model": "Edit Data Model"
   },
   "locale": {
-    "en": "English",
-    "ja": "Japanese"
+    "en": "English (en)",
+    "ja": "Japanese (ja)"
   },
   "editor": {
     "guide": "Editor Guide",
