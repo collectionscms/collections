@@ -1,4 +1,4 @@
-import { MoreOutlined } from '@ant-design/icons';
+import { EllipsisOutlined } from '@ant-design/icons';
 import { Stack } from '@mui/material';
 import Chip from '@mui/material/Chip';
 import { enqueueSnackbar } from 'notistack';
@@ -129,7 +129,7 @@ export const PostPageImpl: React.FC = () => {
             size="small"
             onClick={(e) => handleOpenMenu(e.currentTarget, row)}
           >
-            <MoreOutlined style={{ fontSize: 16 }} />
+            <EllipsisOutlined style={{ fontSize: 16 }} />
           </IconButton>
         );
       default:
