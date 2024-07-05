@@ -93,11 +93,17 @@ const ProjectImpl: React.FC = () => {
                 <Grid xs={12} sm={6}>
                   <Stack spacing={1}>
                     <InputLabel htmlFor="projectName">{t('default_language')}</InputLabel>
-                    <Stack spacing={1} direction="row" alignItems="center">
+                    <Stack spacing={1.5} direction="row" alignItems="center">
                       <Typography>
                         {t(`locale.${project.defaultLocale}` as unknown as TemplateStringsArray)}
                       </Typography>
-                      <Button size="small" variant="text" onClick={() => setShowSelection(true)}>
+                      <Button
+                        size="small"
+                        variant="text"
+                        color="inherit"
+                        sx={{ textDecoration: 'underline' }}
+                        onClick={() => setShowSelection(true)}
+                      >
                         {t('edit_locale')}
                       </Button>
                     </Stack>
