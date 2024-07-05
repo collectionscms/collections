@@ -6,12 +6,16 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormControlLabel,
   FormHelperText,
-  TextField,
+  Radio,
+  RadioGroup,
+  Stack,
 } from '@mui/material';
 import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { Locale } from '../../../../constant.js';
 import { LocalizedPost } from '../../../../types/index.js';
 import { logger } from '../../../../utilities/logger.js';
 import { FormValues, addContent } from '../../../fields/validators/post/addContent.js';
@@ -56,21 +60,34 @@ export const AddLocale: React.FC<Props> = ({ open, post, onClose, onAdded }) => 
         <DialogTitle>{t('add_localized_content')}</DialogTitle>
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogContent>
-            <Controller
-              name="locale"
-              control={control}
-              render={({ field }) => (
-                <TextField {...field} id="locale" type="text" error={errors.locale !== undefined} />
-              )}
-            />
-            <FormHelperText error>{errors.locale?.message}</FormHelperText>
+            <Stack spacing={1} direction="column">
+              <Controller
+                name="locale"
+                control={control}
+                render={({ field }) => (
+                  <RadioGroup value={field.value} name="radio-buttons-group" row>
+                    {Object.values(Locale).map((locale) => (
+                      <FormControlLabel
+                        {...field}
+                        key={locale}
+                        value={locale}
+                        disabled={post.locales.includes(locale)}
+                        control={<Radio />}
+                        label={t(`locale.${locale}`)}
+                      />
+                    ))}
+                  </RadioGroup>
+                )}
+              />
+              <FormHelperText error>{errors.locale?.message}</FormHelperText>
+            </Stack>
           </DialogContent>
           <DialogActions>
             <Button color="secondary" variant="outlined" onClick={onClose}>
               {t('cancel')}
             </Button>
             <Button variant="contained" type="submit">
-              {t('save')}
+              {t('add')}
             </Button>
           </DialogActions>
         </form>
