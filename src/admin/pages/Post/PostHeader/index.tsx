@@ -1,10 +1,4 @@
-import {
-  ArrowLeftOutlined,
-  CloseOutlined,
-  DeleteOutlined,
-  EllipsisOutlined,
-  PlusOutlined,
-} from '@ant-design/icons';
+import { CloseOutlined, DeleteOutlined, EllipsisOutlined, PlusOutlined } from '@ant-design/icons';
 import {
   AppBarProps,
   Button,
@@ -22,11 +16,10 @@ import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { LocalizedPost } from '../../../../types/index.js';
+import { Avatar } from '../../../@extended/components/Avatar/index.js';
 import { IconButton } from '../../../@extended/components/IconButton/index.js';
 import { StatusDot } from '../../../components/elements/StatusDot/index.js';
 import AppBarStyled from './AppBarStyled.js';
-import { Avatar } from '../../../@extended/components/Avatar/index.js';
-import { text } from 'express';
 
 export type Props = {
   post: LocalizedPost;

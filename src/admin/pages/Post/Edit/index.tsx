@@ -10,7 +10,7 @@ import { enqueueSnackbar } from 'notistack';
 import React, { useEffect, useRef, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useTranslation } from 'react-i18next';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { UploadFile } from '../../../../types/index.js';
 import { logger } from '../../../../utilities/logger.js';
 import { IconButton } from '../../../@extended/components/IconButton/index.js';
@@ -24,6 +24,7 @@ import { PublishSetting } from '../PublishSetting/index.js';
 
 export const EditPostPageImpl: React.FC = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const { id } = useParams();
   if (!id) throw new Error('id is not defined');
 
@@ -206,7 +207,7 @@ export const EditPostPageImpl: React.FC = () => {
   // /////////////////////////////////////
 
   const handleChangeLocale = (locale: string) => {
-    window.location.href = `${window.location.pathname}?locale=${locale}`;
+    navigate(`${window.location.pathname}?locale=${locale}`, { replace: true });
   };
 
   const [openAddLocale, setOpenAddLocale] = useState(false);
