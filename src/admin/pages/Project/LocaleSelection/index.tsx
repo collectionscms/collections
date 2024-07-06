@@ -20,8 +20,8 @@ import { logger } from '../../../../utilities/logger.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
 import {
   FormValues,
-  updateDefaultLocale,
-} from '../../../fields/validators/projects/updateDefaultLocale.js';
+  updatePrimaryLocale,
+} from '../../../fields/validators/projects/updatePrimaryLocale.js';
 import { ProjectContextProvider, useProject } from '../Context/index.js';
 
 export type Props = {
@@ -43,16 +43,16 @@ const LocaleSelectionImpl: React.FC<Props> = ({ currentLocale, open, onClose, on
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
-      defaultLocale: currentLocale,
+      primaryLocale: currentLocale,
     },
-    resolver: yupResolver(updateDefaultLocale()),
+    resolver: yupResolver(updatePrimaryLocale()),
   });
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
       reset(form);
       await trigger(form);
-      onAdded(form.defaultLocale);
+      onAdded(form.primaryLocale);
     } catch (error) {
       logger.error(error);
     }
@@ -62,11 +62,11 @@ const LocaleSelectionImpl: React.FC<Props> = ({ currentLocale, open, onClose, on
     <Dialog open={open} onClose={onClose}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Box sx={{ p: 1, py: 1.5 }}>
-          <DialogTitle>{t('change_default_language')}</DialogTitle>
+          <DialogTitle>{t('change_primary_language')}</DialogTitle>
           <DialogContent>
             <FormControl component="fieldset">
               <Controller
-                name="defaultLocale"
+                name="primaryLocale"
                 control={control}
                 render={({ field }) => (
                   <RadioGroup value={field.value} name="radio-buttons-group" row>
@@ -82,7 +82,7 @@ const LocaleSelectionImpl: React.FC<Props> = ({ currentLocale, open, onClose, on
                   </RadioGroup>
                 )}
               />
-              <FormHelperText error>{errors.defaultLocale?.message}</FormHelperText>
+              <FormHelperText error>{errors.primaryLocale?.message}</FormHelperText>
             </FormControl>
           </DialogContent>
           <DialogActions>

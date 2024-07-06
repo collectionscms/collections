@@ -19,7 +19,7 @@ router.get(
   asyncHandler(async (req: Request, res: Response) => {
     const validated = getTrashedPostsUseCaseSchema.safeParse({
       projectId: res.projectRole?.id,
-      defaultLocale: res.projectRole?.defaultLocale,
+      primaryLocale: res.projectRole?.primaryLocale,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 

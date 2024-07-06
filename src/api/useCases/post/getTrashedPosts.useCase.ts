@@ -14,12 +14,12 @@ export class GetTrashedPostsUseCase {
   ) {}
 
   async execute({
-    defaultLocale,
+    primaryLocale,
   }: GetTrashedPostsUseCaseSchemaType): Promise<GetTrashedPostsUseCaseResponse[]> {
     const records = await this.postRepository.findManyTrashedByProjectId(this.prisma);
 
     return records.map((record) => {
-      const localeContents = record.contents.filter((c) => c.content.locale === defaultLocale);
+      const localeContents = record.contents.filter((c) => c.content.locale === primaryLocale);
       const localeContent = localeContents.sort((a, b) => b.content.version - a.content.version)[0];
 
       return {

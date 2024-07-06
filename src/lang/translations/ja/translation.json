@@ -133,8 +133,8 @@
   "characters": "文字",
   "saved": "保存しました",
   "add_localized_content": "ローカライズコンテンツの追加",
-  "default_language": "デフォルト言語",
-  "change_default_language": "デフォルト言語の変更",
+  "primary_language": "プライマリー言語",
+  "change_primary_language": "プライマリー言語の変更",
   "add_to": "追加する",
   "add_thumbnail": "サムネイル画像を追加",
   "invite": "招待",
@@ -153,7 +153,7 @@
   "edit_locale": "変更する",
   "add_project": "プロジェクトを作成する",
   "next": "次へ",
-  "select_default_language": "デフォルト言語の選択",
+  "select_primary_language": "プライマリー言語の選択",
   "project_created": "プロジェクトを作成しました！",
   "go_to_project_home": "プロジェクトホームへ",
   "admin": "管理者",
@@ -186,7 +186,7 @@
     "joined_project": "プロジェクトに参加しました",
     "move_to_trash": "ごみ箱へ移動しました",
     "post_restored": "記事を復元しました",
-    "updated_default_locale": "デフォルト言語を変更しました"
+    "updated_primary_locale": "プライマリー言語を変更しました"
   },
   "create": {
     "user": "ユーザー 新規登録",

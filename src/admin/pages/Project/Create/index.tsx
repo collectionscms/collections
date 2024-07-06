@@ -6,7 +6,7 @@ import { MainCard } from '../../../@extended/components/MainCard/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
 import { getUrlForTenant } from '../../../utilities/urlGenerator.js';
 import { ProjectContextProvider } from '../Context/index.js';
-import { DefaultLocaleData, DefaultLocaleForm } from './DefaultLocaleForm.js';
+import { PrimaryLocaleData, PrimaryLocaleForm } from './PrimaryLocaleForm.js';
 import { ProjectData, ProjectSettingsForm } from './ProjectSettingsForm.js';
 
 const getStepContent = (
@@ -14,9 +14,9 @@ const getStepContent = (
   handleNext: () => void,
   handleBack: () => void,
   projectData: ProjectData,
-  defaultLocaleData: DefaultLocaleData,
+  primaryLocaleData: PrimaryLocaleData,
   setProjectData: (p: ProjectData) => void,
-  setDefaultLocaleData: (l: DefaultLocaleData) => void
+  setPrimaryLocaleData: (l: PrimaryLocaleData) => void
 ) => {
   switch (step) {
     case 0:
@@ -29,12 +29,12 @@ const getStepContent = (
       );
     case 1:
       return (
-        <DefaultLocaleForm
+        <PrimaryLocaleForm
           handleNext={handleNext}
           handleBack={handleBack}
           projectData={projectData}
-          defaultLocaleData={defaultLocaleData}
-          setDefaultLocaleData={setDefaultLocaleData}
+          primaryLocaleData={primaryLocaleData}
+          setPrimaryLocaleData={setPrimaryLocaleData}
         />
       );
     default:
@@ -48,15 +48,15 @@ const CreateProjectPageImpl: React.FC = () => {
   // /////////////////////////////////////
   // Stepper
   // /////////////////////////////////////
-  const steps = [t('project_setting'), t('select_default_language')];
+  const steps = [t('project_setting'), t('select_primary_language')];
 
   const [activeStep, setActiveStep] = useState(0);
   const [projectData, setProjectData] = useState<ProjectData>({
     name: '',
     subdomain: '',
   });
-  const [defaultLocaleData, setDefaultLocaleData] = useState<DefaultLocaleData>({
-    defaultLocale: '',
+  const [primaryLocaleData, setPrimaryLocaleData] = useState<PrimaryLocaleData>({
+    primaryLocale: '',
   });
 
   const handleNext = () => {
@@ -101,9 +101,9 @@ const CreateProjectPageImpl: React.FC = () => {
                   handleNext,
                   handleBack,
                   projectData,
-                  defaultLocaleData,
+                  primaryLocaleData,
                   setProjectData,
-                  setDefaultLocaleData
+                  setPrimaryLocaleData
                 )}
               </>
             )}

@@ -6,18 +6,18 @@ import { UnexpectedException } from '../../../exceptions/unexpected.js';
 export class ProjectEntity extends PrismaBaseEntity<Project> {
   static Construct({
     name,
-    defaultLocale,
+    primaryLocale,
     subdomain,
   }: {
     name: string;
-    defaultLocale: string;
+    primaryLocale: string;
     description?: string;
     subdomain: string;
   }): ProjectEntity {
     return new ProjectEntity({
       id: v4(),
       name,
-      defaultLocale,
+      primaryLocale,
       description: null,
       subdomain,
       enabled: true,
@@ -49,21 +49,21 @@ export class ProjectEntity extends PrismaBaseEntity<Project> {
     return this.props.name;
   }
 
-  get defaultLocale(): string {
-    return this.props.defaultLocale;
+  get primaryLocale(): string {
+    return this.props.primaryLocale;
   }
 
   get subdomain(): string {
     return this.props.subdomain;
   }
 
-  updateProject(name?: string, defaultLocale?: string) {
+  updateProject(name?: string, primaryLocale?: string) {
     if (name) {
       this.props.name = name;
     }
 
-    if (defaultLocale) {
-      this.props.defaultLocale = defaultLocale;
+    if (primaryLocale) {
+      this.props.primaryLocale = primaryLocale;
     }
   }
 }

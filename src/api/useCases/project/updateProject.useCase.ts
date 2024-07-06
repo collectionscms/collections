@@ -9,9 +9,9 @@ export class UpdateProjectUseCase {
     private readonly projectRepository: ProjectRepository
   ) {}
 
-  async execute({ id, name, defaultLocale }: UpdateProjectUseCaseSchemaType): Promise<Project> {
+  async execute({ id, name, primaryLocale }: UpdateProjectUseCaseSchemaType): Promise<Project> {
     const project = await this.projectRepository.findOneById(this.prisma, id);
-    project.updateProject(name, defaultLocale);
+    project.updateProject(name, primaryLocale);
 
     const entity = await this.projectRepository.update(this.prisma, id, project);
     return entity.toResponse();

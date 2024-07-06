@@ -27,7 +27,7 @@ router.get(
   asyncHandler(async (req: Request, res: Response) => {
     const validated = getPostsUseCaseSchema.safeParse({
       projectId: res.projectRole?.id,
-      defaultLocale: res.projectRole?.defaultLocale,
+      primaryLocale: res.projectRole?.primaryLocale,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
@@ -46,7 +46,7 @@ router.get(
   authenticatedUser,
   validateAccess(['readPost']),
   asyncHandler(async (req: Request, res: Response) => {
-    const locale = req.query.locale || res.projectRole?.defaultLocale;
+    const locale = req.query.locale || res.projectRole?.primaryLocale;
 
     const validated = getPostUseCaseSchema.safeParse({
       projectId: res.projectRole?.id,
@@ -75,7 +75,7 @@ router.post(
     const validated = createPostUseCaseSchema.safeParse({
       projectId: res.projectRole?.id,
       userId: res.user.id,
-      defaultLocale: res.projectRole?.defaultLocale,
+      primaryLocale: res.projectRole?.primaryLocale,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
