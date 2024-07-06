@@ -53,13 +53,13 @@ const ProjectImpl: React.FC = () => {
   const handleUpdateLocale = async () => {
     await mutate();
     setShowSelection(false);
-    enqueueSnackbar(t('toast.updated_default_locale'), { variant: 'success' });
+    enqueueSnackbar(t('toast.updated_primary_locale'), { variant: 'success' });
   };
 
   return (
     <>
       <LocaleSelection
-        currentLocale={project.defaultLocale}
+        currentLocale={project.primaryLocale}
         open={showSelection}
         onClose={() => setShowSelection(false)}
         onAdded={() => handleUpdateLocale()}
@@ -92,10 +92,10 @@ const ProjectImpl: React.FC = () => {
                 </Grid>
                 <Grid xs={12} sm={6}>
                   <Stack spacing={1}>
-                    <InputLabel htmlFor="projectName">{t('default_language')}</InputLabel>
+                    <InputLabel htmlFor="projectName">{t('primary_language')}</InputLabel>
                     <Stack spacing={1.5} direction="row" alignItems="center">
                       <Typography>
-                        {t(`locale.${project.defaultLocale}` as unknown as TemplateStringsArray)}
+                        {t(`locale.${project.primaryLocale}` as unknown as TemplateStringsArray)}
                       </Typography>
                       <Button
                         size="small"

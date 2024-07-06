@@ -3,7 +3,7 @@ import { z } from 'zod';
 export const createProjectUseCaseSchema = z.object({
   userId: z.string(),
   name: z.string(),
-  defaultLocale: z.string(),
+  primaryLocale: z.string(),
   subdomain: z.string(),
 });
 

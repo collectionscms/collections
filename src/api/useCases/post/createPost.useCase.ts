@@ -16,11 +16,11 @@ export class CreatePostUseCase {
   ) {}
 
   async execute(props: CreatePostUseCaseSchemaType): Promise<LocalizedPost> {
-    const { userId, projectId, defaultLocale } = props;
+    const { userId, projectId, primaryLocale } = props;
 
     const { post, content } = PostEntity.Construct({
       projectId: projectId,
-      locale: defaultLocale,
+      locale: primaryLocale,
       createdById: userId,
     });
 
@@ -53,6 +53,6 @@ export class CreatePostUseCase {
       };
     });
 
-    return result.post.toLocalizedWithContentsResponse(defaultLocale, result.contents);
+    return result.post.toLocalizedWithContentsResponse(primaryLocale, result.contents);
   }
 }

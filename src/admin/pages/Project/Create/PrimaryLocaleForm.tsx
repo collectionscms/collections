@@ -14,8 +14,8 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { Locale } from '../../../../constant.js';
 import {
   FormValues,
-  selectDefaultLocale as selectDefaultLocaleValidator,
-} from '../../../fields/validators/projects/selectDefaultLocale.js';
+  selectPrimaryLocale,
+} from '../../../fields/validators/projects/selectPrimaryLocale.js';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { enqueueSnackbar } from 'notistack';
@@ -26,19 +26,19 @@ import { useUnsavedChangesPrompt } from '../../../hooks/useUnsavedChangesPrompt.
 import { useProject } from '../Context/index.js';
 import { ProjectData } from './ProjectSettingsForm.js';
 
-export type DefaultLocaleData = { defaultLocale: string };
+export type PrimaryLocaleData = { primaryLocale: string };
 type Props = {
   projectData: ProjectData;
-  defaultLocaleData: DefaultLocaleData;
-  setDefaultLocaleData: (l: DefaultLocaleData) => void;
+  primaryLocaleData: PrimaryLocaleData;
+  setPrimaryLocaleData: (l: PrimaryLocaleData) => void;
   handleNext: () => void;
   handleBack: () => void;
 };
 
-export const DefaultLocaleForm: React.FC<Props> = ({
+export const PrimaryLocaleForm: React.FC<Props> = ({
   projectData,
-  defaultLocaleData,
-  setDefaultLocaleData,
+  primaryLocaleData,
+  setPrimaryLocaleData,
   handleNext,
   handleBack,
 }) => {
@@ -52,18 +52,18 @@ export const DefaultLocaleForm: React.FC<Props> = ({
     formState: { isDirty, errors },
   } = useForm<FormValues>({
     defaultValues: {
-      defaultLocale: defaultLocaleData.defaultLocale,
+      primaryLocale: primaryLocaleData.primaryLocale,
     },
-    resolver: yupResolver(selectDefaultLocaleValidator()),
+    resolver: yupResolver(selectPrimaryLocale()),
   });
   const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
-      setDefaultLocaleData(form);
+      setPrimaryLocaleData(form);
       await trigger({
         ...projectData,
-        defaultLocale: form.defaultLocale,
+        primaryLocale: form.primaryLocale,
       });
       handleNext();
       enqueueSnackbar(t('toast.created_successfully'), { variant: 'success' });
@@ -75,17 +75,17 @@ export const DefaultLocaleForm: React.FC<Props> = ({
   return (
     <>
       <Typography variant="h5" gutterBottom sx={{ mb: 2 }}>
-        {t('select_default_language')}
+        {t('select_primary_language')}
       </Typography>
       <ConfirmDiscardDialog open={showPrompt} onDiscard={proceed} onKeepEditing={stay} />
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={3}>
           <Grid xs={12}>
             <Stack spacing={1}>
-              <InputLabel htmlFor="projectName">{t('default_language')}</InputLabel>
+              <InputLabel htmlFor="projectName">{t('primary_language')}</InputLabel>
               <Stack spacing={1} direction="column">
                 <Controller
-                  name="defaultLocale"
+                  name="primaryLocale"
                   control={control}
                   render={({ field }) => (
                     <RadioGroup value={field.value} name="radio-buttons-group" row>
@@ -101,7 +101,7 @@ export const DefaultLocaleForm: React.FC<Props> = ({
                     </RadioGroup>
                   )}
                 />
-                <FormHelperText error>{errors.defaultLocale?.message}</FormHelperText>
+                <FormHelperText error>{errors.primaryLocale?.message}</FormHelperText>
               </Stack>
             </Stack>
           </Grid>

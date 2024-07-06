@@ -2,11 +2,11 @@ import { ObjectSchema } from 'yup';
 import { yup } from '../../yup.js';
 
 export type FormValues = {
-  defaultLocale: string;
+  primaryLocale: string;
 };
 
-export const selectDefaultLocale = (): ObjectSchema<FormValues> => {
+export const updatePrimaryLocale = (): ObjectSchema<FormValues> => {
   return yup.object().shape({
-    defaultLocale: yup.string().required(),
+    primaryLocale: yup.string().required(),
   });
 };

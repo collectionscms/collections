@@ -133,8 +133,8 @@
   "characters": "characters",
   "saved": "Saved",
   "add_localized_content": "Add localized content",
-  "default_language": "Default Language",
-  "change_default_language": "Change default language",
+  "primary_language": "Primary Language",
+  "change_primary_language": "Change primary language",
   "add_to": "Add",
   "add_thumbnail": "Add thumbnail image",
   "invite": "Invite",
@@ -153,7 +153,7 @@
   "edit_locale": "Edit",
   "add_project": "Add project",
   "next": "Next",
-  "select_default_language": "Select default language",
+  "select_primary_language": "Select primary language",
   "project_created": "Project created!",
   "go_to_project_home": "Go to project home",
   "admin": "Admin",
@@ -183,7 +183,7 @@
     "invited_successfully": "Invited successfully",
     "joined_project": "Joined the project",
     "move_to_trash": "Move to trash",
-    "updated_default_locale": "UPdated default language"
+    "updated_primary_locale": "Updated primary language"
   },
   "create": {
     "user": "Create User",

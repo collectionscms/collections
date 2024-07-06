@@ -8,7 +8,7 @@ declare namespace Express {
       id: string;
       subdomain: string;
       enabled: boolean;
-      defaultLocale: string;
+      primaryLocale: string;
       role: {
         isAdmin: boolean;
         permissions: {
