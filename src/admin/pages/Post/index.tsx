@@ -1,11 +1,10 @@
 import { EllipsisOutlined } from '@ant-design/icons';
-import { Stack } from '@mui/material';
-import Chip from '@mui/material/Chip';
+import { Divider, Stack, Typography } from '@mui/material';
 import { enqueueSnackbar } from 'notistack';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { LocalizedPost } from '../../../types/index.js';
+import { PostItem } from '../../../types/index.js';
 import { IconButton } from '../../@extended/components/IconButton/index.js';
 import { MainCard } from '../../@extended/components/MainCard/index.js';
 import { CreateNewButton } from '../../components/elements/CreateNewButton/index.js';
@@ -19,6 +18,7 @@ import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.
 import { buildColumns } from '../../utilities/buildColumns.js';
 import { PostContextProvider, usePost } from './Context/index.js';
 import { RowMenu } from './RowMenu/index.js';
+import dayjs from 'dayjs';
 
 export const PostPageImpl: React.FC = () => {
   const { hasPermission } = useAuth();
@@ -29,15 +29,13 @@ export const PostPageImpl: React.FC = () => {
   const { trigger } = createPost();
 
   const [menu, setMenu] = useState<EventTarget | null>(null);
-  const [selectedPost, setSelectedPost] = useState<LocalizedPost | undefined>();
+  const [selectedPost, setSelectedPost] = useState<PostItem | undefined>();
 
   const fields = [
     { field: 'title', label: t('title'), type: cells.text() },
-    { field: 'status', label: t('status'), type: cells.text() },
-    { field: 'locales', label: t('language'), type: cells.array() },
-    { field: 'authorName', label: t('author'), type: cells.text() },
+    { field: 'slug', label: t('slug'), type: cells.text() },
+    { field: 'status', label: `${t('language')} / ${t('status')}`, type: cells.text() },
     { field: 'updatedAt', label: t('updated_at'), type: cells.date() },
-    { field: 'publishedAt', label: t('published_at'), type: cells.date() },
     { field: 'action', label: '', type: cells.text(), width: 80 },
   ];
 
@@ -48,78 +46,53 @@ export const PostPageImpl: React.FC = () => {
     enqueueSnackbar(t('toast.move_to_trash'), { variant: 'success' });
   };
 
-  const handleArchiveSuccess = (postId: string) => {
-    const archivedPost = posts.map((post) => {
-      if (post.id == postId) {
-        return { ...post, status: 'archived' };
-      } else {
-        return post;
-      }
-    });
-    mutate(archivedPost);
-    setMenu(null);
-    enqueueSnackbar(t('toast.archived_successfully'), { variant: 'success' });
-  };
-
-  const handlePublishSuccess = (postId: string) => {
-    const publishedPost = posts.map((post) => {
-      if (post.id == postId) {
-        return { ...post, status: 'published' };
-      } else {
-        return post;
-      }
-    });
-    mutate(publishedPost);
-    setMenu(null);
-    enqueueSnackbar(t('toast.published_successfully'), { variant: 'success' });
-  };
-
   const handleCreatePost = async () => {
     const post = await trigger();
     navigate(`${post.id}`);
   };
 
-  const handleOpenMenu = (currentTarget: EventTarget, post: LocalizedPost) => {
+  const handleOpenMenu = (currentTarget: EventTarget, post: PostItem) => {
     setSelectedPost(post);
     setMenu(currentTarget);
   };
 
-  const columns = buildColumns(fields, (i: number, row: LocalizedPost, data: any) => {
+  const columns = buildColumns(fields, (i: number, row: PostItem, data: any) => {
     const defaultCell = <Cell colIndex={i} type={fields[i].type} cellData={data} />;
 
     switch (fields[i].field) {
       case 'title':
-        return (
-          <Stack direction="row" alignItems="center">
-            {hasPermission('updatePost') ? (
-              <Link href={`${row.id}`}>{defaultCell}</Link>
-            ) : (
-              defaultCell
-            )}
-            {row.version > 1 && (
-              <Chip
-                variant="combined"
-                color="secondary"
-                label={`V${row.version}`}
-                size="small"
-                sx={{
-                  ml: 1,
-                  fontSize: '0.725rem',
-                  height: 16,
-                  '& .MuiChip-label': { px: 0.5 },
-                }}
-              />
-            )}
-          </Stack>
+        return hasPermission('updatePost') ? (
+          <Link href={`${row.id}`}>{defaultCell}</Link>
+        ) : (
+          defaultCell
         );
       case 'status':
-        return row.publishedAt && row.status !== 'published' ? (
-          <>
-            <StatusDot status="published" />
-            <StatusDot status={row.status} />
-          </>
-        ) : (
-          <StatusDot status={row.status} />
+        return (
+          <Stack gap={0.5}>
+            {row.localeStatues.map(({ locale, statuses }) => {
+              return (
+                <Stack key={locale} direction="row" gap={1}>
+                  <Typography sx={{ width: 30 }}>{locale}</Typography>
+                  {statuses[0] !== 'published' && statuses.includes('published') && (
+                    <>
+                      <StatusDot status="published" isShowText={false} />
+                      <Divider orientation="vertical" flexItem variant="middle" />
+                    </>
+                  )}
+                  <StatusDot status={statuses[0]} />
+                </Stack>
+              );
+            })}
+          </Stack>
+        );
+      case 'updatedAt':
+        return (
+          <Stack direction="row" gap={1}>
+            <Typography>{dayjs(row.updatedAt).format('YYYY-MM-DD')}</Typography>
+            <Typography>
+              {t('updater')}: {row.updatedByName}
+            </Typography>
+          </Stack>
         );
       case 'action':
         return (
@@ -142,11 +115,8 @@ export const PostPageImpl: React.FC = () => {
       {selectedPost && (
         <RowMenu
           postId={selectedPost.id}
-          status={selectedPost.status}
           menu={menu}
           onTrashSuccess={handleTrashSuccess}
-          onArchiveSuccess={handleArchiveSuccess}
-          onPublishSuccess={handlePublishSuccess}
           onClose={() => setMenu(null)}
         />
       )}
