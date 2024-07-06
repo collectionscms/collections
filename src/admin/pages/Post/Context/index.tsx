@@ -1,12 +1,12 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWR, { SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
-import { LocalizedPost, UploadFile } from '../../../../types/index.js';
+import { LocalizedPost, PostItem, UploadFile } from '../../../../types/index.js';
 import { api } from '../../../utilities/api.js';
 
 type PostContext = {
   getPosts: () => SWRResponse<
-    LocalizedPost[],
+    PostItem[],
     Error,
     {
       suspense: true;
@@ -42,13 +42,9 @@ const Context = createContext({} as PostContext);
 
 export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const getPosts = () =>
-    useSWR(
-      '/posts',
-      (url) => api.get<{ posts: LocalizedPost[] }>(url).then((res) => res.data.posts),
-      {
-        suspense: true,
-      }
-    );
+    useSWR('/posts', (url) => api.get<{ posts: PostItem[] }>(url).then((res) => res.data.posts), {
+      suspense: true,
+    });
 
   const getPost = (id: string, locale: string | null) =>
     useSWR(

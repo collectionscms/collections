@@ -1,7 +1,7 @@
 import { Post } from '@prisma/client';
 import { v4 } from 'uuid';
 import { UnexpectedException } from '../../../exceptions/unexpected.js';
-import { LocalizedPost } from '../../../types/index.js';
+import { LocalizedPost, PostItem } from '../../../types/index.js';
 import { ContentEntity } from '../content/content.entity.js';
 import { ContentHistoryEntity } from '../contentHistory/contentHistory.entity.js';
 import { FileEntity } from '../file/file.entity.js';
@@ -13,6 +13,12 @@ export const postStatus = {
   trashed: 'trashed',
 } as const;
 export type PostStatusType = (typeof postStatus)[keyof typeof postStatus];
+
+type LocaleStatus = {
+  locale: string;
+  statuses: string[];
+  publishedAt: Date | null;
+};
 
 export class PostEntity extends PrismaBaseEntity<Post> {
   static Construct({
@@ -67,7 +73,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
   }
 
   get projectId(): string {
-    return this.projectId;
+    return this.props.projectId;
   }
 
   get status(): string {
@@ -78,28 +84,80 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     this.props.status = status;
   }
 
+  toPostItemResponse(
+    locale: string,
+    contents: {
+      content: ContentEntity;
+      updatedBy: UserEntity;
+    }[]
+  ): PostItem {
+    const sortedContents = contents.sort((a, b) => b.content.version - a.content.version);
+
+    // Get content of locale
+    const localeContent = sortedContents.filter((c) => c.content.locale === locale)[0];
+
+    // Get locale with statuses
+    const localeStatues: {
+      [locale: string]: LocaleStatus;
+    } = contents.reduce(
+      (acc: { [locale: string]: LocaleStatus }, { content }) => {
+        const { locale, status, publishedAt } = content;
+        if (!acc[locale]) {
+          acc[locale] = {
+            locale,
+            statuses: [status],
+            publishedAt: null,
+          };
+        } else {
+          acc[locale].statuses.push(status);
+        }
+
+        if (publishedAt && !acc[locale].publishedAt) {
+          acc[locale].publishedAt = publishedAt;
+        }
+
+        return acc;
+      },
+      {} as { [locale: string]: LocaleStatus }
+    );
+
+    return {
+      id: this.props.id,
+      contentId: localeContent.content.id,
+      title: localeContent.content.title ?? '',
+      slug: this.props.slug,
+      updatedByName: localeContent.updatedBy.name,
+      updatedAt: this.props.updatedAt,
+      localeStatues: Object.entries(localeStatues).map(([locale, value]) => ({
+        locale,
+        statuses: value.statuses,
+        publishedAt: value.publishedAt,
+      })),
+    };
+  }
+
   toLocalizedWithContentsResponse(
     locale: string,
     contents: {
       content: ContentEntity;
       file: FileEntity | null;
-      createdBy: UserEntity;
       histories: ContentHistoryEntity[];
     }[]
   ): LocalizedPost {
-    const localeContents = contents.filter((c) => c.content.locale === locale);
+    const sortedContents = contents.sort((a, b) => b.content.version - a.content.version);
 
     // Get content of locale
-    const localeContent = localeContents.sort((a, b) => b.content.version - a.content.version)[0];
-
-    // Get unique locales
-    const locales = [...new Set(contents.map((c) => c.content.locale))];
+    const localeContents = sortedContents.filter((c) => c.content.locale === locale);
+    const localeContent = localeContents[0];
 
     // Get history of locale
     const histories = localeContents.reduce(
       (acc: ContentHistoryEntity[], c) => acc.concat(c.histories),
       []
     );
+
+    // Get unique locales
+    const locales = [...new Set(contents.map((c) => c.content.locale))];
 
     return {
       id: this.props.id,
@@ -116,7 +174,6 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       contentLocale: localeContent.content.locale,
       version: localeContent.content.version,
       locales,
-      authorName: localeContent.createdBy.name,
       file: localeContent.file?.toResponseWithUrl() ?? null,
       histories: histories.map((history) => history.toResponse()),
     };
