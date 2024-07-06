@@ -28,6 +28,16 @@ export type ApiError = {
   };
 };
 
+export type PostItem = {
+  id: string;
+  contentId: string;
+  title: string;
+  slug: string;
+  localeStatues: { locale: string; statuses: string[]; publishedAt: Date | null }[];
+  updatedByName: string;
+  updatedAt: Date;
+};
+
 export type LocalizedPost = {
   id: string;
   slug: string;
@@ -42,7 +52,6 @@ export type LocalizedPost = {
   bodyJson: string;
   bodyHtml: string;
   locales: string[];
-  authorName: string;
   file: UploadFile | null;
   histories: ContentHistory[];
 };

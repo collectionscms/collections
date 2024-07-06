@@ -80,7 +80,7 @@ export const History: React.FC<Props> = ({ histories }) => {
           ))}
         </Timeline>
       </Popover>
-      <Tooltip title="履歴" placement="top-start">
+      <Tooltip title={t('history')} placement="top-start">
         <span>
           <IconButton
             shape="rounded"

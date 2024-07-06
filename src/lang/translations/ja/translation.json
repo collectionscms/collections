@@ -32,8 +32,9 @@
   "cancel": "キャンセル",
   "search_by": "{{field_name}}で検索",
   "name": "名前",
-  "status": "状態",
-  "updated_at": "更新日時",
+  "status": "ステータス",
+  "updated_at": "更新日",
+  "updater": "更新者",
   "valid": "有効",
   "invalid": "無効",
   "description": "説明",
@@ -149,7 +150,7 @@
   "move_to_trash": "ごみ箱にいれる",
   "trash": "ごみ箱",
   "restore": "元に戻す",
-  "edit_locale": "編集する",
+  "edit_locale": "変更する",
   "add_project": "プロジェクトを作成する",
   "next": "次へ",
   "select_default_language": "デフォルト言語の選択",
@@ -157,6 +158,8 @@
   "go_to_project_home": "プロジェクトホームへ",
   "admin": "管理者",
   "admin_description": "管理者は全ての権限を持っています。",
+  "slug": "スラッグ",
+  "history": "履歴",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",
@@ -197,8 +200,8 @@
     "data_model": "データモデル 編集"
   },
   "locale": {
-    "en": "英語",
-    "ja": "日本語"
+    "en": "英語 (en)",
+    "ja": "日本語 (ja)"
   },
   "editor": {
     "guide": "エディターガイド",

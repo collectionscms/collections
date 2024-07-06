@@ -34,6 +34,7 @@
   "name": "Name",
   "status": "Status",
   "updated_at": "Updated Date",
+  "updater": "Updater",
   "valid": "Valid",
   "invalid": "Invalid",
   "description": "Description",
@@ -157,6 +158,8 @@
   "go_to_project_home": "Go to project home",
   "admin": "Admin",
   "admin_description": "The admin has all permissions.",
+  "slug": "Slug",
+  "history": "履歴",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",
@@ -194,8 +197,8 @@
     "data_model": "Edit Data Model"
   },
   "locale": {
-    "en": "English",
-    "ja": "Japanese"
+    "en": "English (en)",
+    "ja": "Japanese (ja)"
   },
   "editor": {
     "guide": "Editor Guide",
