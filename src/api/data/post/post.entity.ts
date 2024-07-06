@@ -94,7 +94,8 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     const sortedContents = contents.sort((a, b) => b.content.version - a.content.version);
 
     // Get content of locale
-    const localeContent = sortedContents.filter((c) => c.content.locale === locale)[0];
+    const localeContent =
+      sortedContents.filter((c) => c.content.locale === locale)[0] || sortedContents[0];
 
     // Get locale with statuses
     const localeStatues: {
@@ -146,9 +147,9 @@ export class PostEntity extends PrismaBaseEntity<Post> {
   ): LocalizedPost {
     const sortedContents = contents.sort((a, b) => b.content.version - a.content.version);
 
-    // Get content of locale
+    // Get content of locale. If locale is not found, get the first content.
     const localeContents = sortedContents.filter((c) => c.content.locale === locale);
-    const localeContent = localeContents[0];
+    const localeContent = localeContents[0] || sortedContents[0];
 
     // Get history of locale
     const histories = localeContents.reduce(
