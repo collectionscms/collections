@@ -34,6 +34,7 @@
   "name": "Name",
   "status": "Status",
   "updated_at": "Updated Date",
+  "updater": "Updater",
   "valid": "Valid",
   "invalid": "Invalid",
   "description": "Description",
