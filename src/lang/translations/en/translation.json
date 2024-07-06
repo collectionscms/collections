@@ -158,6 +158,7 @@
   "go_to_project_home": "Go to project home",
   "admin": "Admin",
   "admin_description": "The admin has all permissions.",
+  "slug": "Slug",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",
