@@ -14,7 +14,7 @@ export class PostRepository {
       contents: {
         content: ContentEntity;
         file: FileEntity | null;
-        createdBy: UserEntity;
+        updatedBy: UserEntity;
         histories: ContentHistoryEntity[];
       }[];
     }[]
@@ -24,7 +24,7 @@ export class PostRepository {
         contents: {
           include: {
             file: true,
-            createdBy: true,
+            updatedBy: true,
             contentHistories: true,
           },
           where: {
@@ -51,7 +51,7 @@ export class PostRepository {
         contents.push({
           content: ContentEntity.Reconstruct<Content, ContentEntity>(content),
           file: content.file ? FileEntity.Reconstruct<File, FileEntity>(content.file) : null,
-          createdBy: UserEntity.Reconstruct<User, UserEntity>(content.createdBy),
+          updatedBy: UserEntity.Reconstruct<User, UserEntity>(content.updatedBy),
           histories: content.contentHistories.map((history) =>
             ContentHistoryEntity.Reconstruct<ContentHistory, ContentHistoryEntity>(history)
           ),
