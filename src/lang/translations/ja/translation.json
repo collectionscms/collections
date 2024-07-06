@@ -159,6 +159,7 @@
   "admin": "管理者",
   "admin_description": "管理者は全ての権限を持っています。",
   "slug": "スラッグ",
+  "history": "履歴",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",
