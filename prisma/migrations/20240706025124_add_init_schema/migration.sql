@@ -6,7 +6,7 @@ CREATE TABLE "Project" (
     "subdomain" VARCHAR(255) NOT NULL,
     "iconUrl" VARCHAR(255),
     "enabled" BOOLEAN NOT NULL DEFAULT true,
-    "defaultLocale" VARCHAR(255) NOT NULL,
+    "primaryLocale" VARCHAR(255) NOT NULL,
     "createdAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMPTZ(6) NOT NULL,
 
