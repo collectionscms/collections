@@ -6,9 +6,10 @@ import { ColorProps } from '../../../@extended/types/extended.js';
 
 type Props = {
   status: string;
+  isShowText?: boolean;
 };
 
-export const StatusDot: React.FC<Props> = ({ status }) => {
+export const StatusDot: React.FC<Props> = ({ status, isShowText = true }) => {
   const { t } = useTranslation();
 
   let statusConfig: { color: ColorProps; text: string };
@@ -29,8 +30,8 @@ export const StatusDot: React.FC<Props> = ({ status }) => {
   return (
     <>
       <Stack direction="row" gap={1} alignItems="center">
-        <Dot color={statusConfig.color} size={12} />
-        <Typography>{statusConfig.text}</Typography>
+        <Dot color={statusConfig.color} />
+        {isShowText && <Typography>{statusConfig.text}</Typography>}
       </Stack>
     </>
   );
