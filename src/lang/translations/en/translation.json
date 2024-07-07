@@ -159,7 +159,8 @@
   "admin": "Admin",
   "admin_description": "The admin has all permissions.",
   "slug": "Slug",
-  "history": "履歴",
+  "history": "History",
+  "delete_locale_content": "Delete {{locale}} only",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",
@@ -169,8 +170,9 @@
     "discard_changes": "Discard Changes",
     "confirm_post_archive_title": "Confirm archive",
     "confirm_post_archive": "Are you sure you want to archive it?",
-    "confirm_post_trash_title": "Confirm trash",
-    "confirm_post_trash": "Articles in the dustbin can be returned to later.",
+    "confirm_content_trash_title": "Do you want to move the {{locale}} post to the trash?",
+    "confirm_post_trash_title": "Do you want to move to the trash?",
+    "confirm_post_trash": "Articles in the trash can be returned to later.",
     "confirm_removal_user_from_project": "Are you sure you want to remove user from project?"
   },
   "toast": {

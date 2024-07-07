@@ -68,7 +68,7 @@ export const RowMenuImpl: React.FC<Props> = (props) => {
       >
         {hasPermission('trashPost') && (
           <MenuItem onClick={() => setOpenTrash(true)} sx={{ color: theme.palette.error.main }}>
-            <DeleteOutlined style={{ fontSize: 16, paddingRight: 8 }} />
+            <DeleteOutlined style={{ paddingRight: 8 }} />
             <Typography>{t('move_to_trash')}</Typography>
           </MenuItem>
         )}
