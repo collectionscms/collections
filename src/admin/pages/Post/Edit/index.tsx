@@ -162,7 +162,7 @@ export const EditPostPageImpl: React.FC = () => {
     try {
       await trashContentTrigger();
       mutate();
-      enqueueSnackbar(t('toast.deleted_successfully'), { variant: 'success' });
+      enqueueSnackbar(t('toast.move_to_trash'), { variant: 'success' });
     } catch (error) {
       logger.error(error);
     }
@@ -171,7 +171,7 @@ export const EditPostPageImpl: React.FC = () => {
   const handleTrashPost = async () => {
     try {
       await trashPostTrigger();
-      enqueueSnackbar(t('toast.deleted_successfully'), { variant: 'success' });
+      enqueueSnackbar(t('toast.move_to_trash'), { variant: 'success' });
       navigate('/admin/posts');
     } catch (error) {
       logger.error(error);
