@@ -162,6 +162,7 @@
   "history": "History",
   "delete_locale_content": "Delete {{locale}} only",
   "delete_post": "Delete post",
+  "revert_previous_version": "Revert previous version",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",
@@ -171,10 +172,12 @@
     "discard_changes": "Discard Changes",
     "confirm_post_archive_title": "Confirm archive",
     "confirm_post_archive": "Are you sure you want to archive it?",
-    "confirm_content_trash_title": "Do you want to move the {{locale}} post to the trash?",
+    "confirm_revert_previous_version": "Do you want to trash the V{{version}} post?",
     "confirm_post_trash_title": "Do you want to move to the trash?",
     "confirm_post_trash": "Articles in the trash can be returned to later.",
-    "confirm_removal_user_from_project": "Are you sure you want to remove user from project?"
+    "confirm_removal_user_from_project": "Are you sure you want to remove user from project?",
+    "confirm_post_restore_title": "Do you want to restore it?",
+    "confirm_post_restore": "Are you sure you want to restore the post."
   },
   "toast": {
     "created_successfully": "Created successfully.",
@@ -186,6 +189,7 @@
     "invited_successfully": "Invited successfully",
     "joined_project": "Joined the project",
     "move_to_trash": "Move to trash",
+    "post_restored": "Restored post",
     "updated_primary_locale": "Updated primary language"
   },
   "create": {

@@ -155,10 +155,10 @@ export const EditPostPageImpl: React.FC = () => {
   };
 
   // /////////////////////////////////////
-  // Trash
+  // Content actions
   // /////////////////////////////////////
 
-  const handleTrashContent = async () => {
+  const handleRevertContent = async () => {
     try {
       await trashContentTrigger();
       mutate();
@@ -247,7 +247,7 @@ export const EditPostPageImpl: React.FC = () => {
         onSaveDraft={handleSaveContent}
         onChangeLocale={handleChangeLocale}
         onOpenAddLocale={handleOpenAddLocale}
-        onTrashContent={handleTrashContent}
+        onRevertContent={handleRevertContent}
         onTrashPost={handleTrashPost}
       />
       <Box component="main" sx={{ minHeight: '100vh', backgroundColor: bg }}>

@@ -1,4 +1,10 @@
-import { CloseOutlined, DeleteOutlined, EllipsisOutlined, PlusOutlined } from '@ant-design/icons';
+import {
+  CloseOutlined,
+  DeleteOutlined,
+  EllipsisOutlined,
+  PlusOutlined,
+  UndoOutlined,
+} from '@ant-design/icons';
 import {
   AppBarProps,
   Button,
@@ -30,7 +36,7 @@ export type Props = {
   onSaveDraft: () => void;
   onChangeLocale: (locale: string) => void;
   onOpenAddLocale: () => void;
-  onTrashContent: () => void;
+  onRevertContent: () => void;
   onTrashPost: () => void;
 };
 
@@ -42,13 +48,13 @@ export const PostHeader: React.FC<Props> = ({
   onSaveDraft,
   onChangeLocale,
   onOpenAddLocale,
-  onTrashContent,
+  onRevertContent,
   onTrashPost,
 }) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const [openContentTrash, setOpenContentTrash] = useState(false);
+  const [openRevert, setOpenRevert] = useState(false);
   const [openPostTrash, setOpenPostTrash] = useState(false);
 
   const appBar: AppBarProps = {
@@ -82,9 +88,9 @@ export const PostHeader: React.FC<Props> = ({
     setContentMenuOpen(false);
   };
 
-  const handleTrashContent = () => {
-    onTrashContent();
-    setOpenContentTrash(false);
+  const handleRevert = () => {
+    onRevertContent();
+    setOpenRevert(false);
     setContentMenuOpen(false);
   };
 
@@ -123,13 +129,13 @@ export const PostHeader: React.FC<Props> = ({
   return (
     <>
       <BaseDialog
-        open={openContentTrash}
-        title={t('dialog.confirm_content_trash_title', {
-          locale: t(`locale.${post.contentLocale}` as unknown as TemplateStringsArray),
+        open={openRevert}
+        title={t('dialog.confirm_revert_previous_version', {
+          version: post.version,
         })}
         body={t('dialog.confirm_post_trash')}
-        confirm={{ label: t('move_to_trash'), action: handleTrashContent }}
-        cancel={{ label: t('cancel'), action: () => setOpenContentTrash(false) }}
+        confirm={{ label: t('move_to_trash'), action: handleRevert }}
+        cancel={{ label: t('cancel'), action: () => setOpenRevert(false) }}
       />
       <BaseDialog
         open={openPostTrash}
@@ -204,21 +210,17 @@ export const PostHeader: React.FC<Props> = ({
           open={contentMenuOpen}
           onClose={handleCloseContent}
         >
-          {/* Content trash */}
-          {post.locales.length > 1 && (
-            <MenuItem
-              onClick={() => setOpenContentTrash(true)}
-              sx={{ color: theme.palette.error.main }}
-            >
-              <DeleteOutlined />
-              <Typography sx={{ pl: 1 }}>
-                {t('delete_locale_content', {
-                  locale: t(`locale.${post.contentLocale}` as unknown as TemplateStringsArray),
-                })}
-              </Typography>
-            </MenuItem>
+          {/* Revert previous version */}
+          {post.version > 1 && (
+            <>
+              <MenuItem onClick={() => setOpenRevert(true)}>
+                <UndoOutlined />
+                <Typography sx={{ pl: 1 }}>{t('revert_previous_version')}</Typography>
+              </MenuItem>
+              <Divider />
+            </>
           )}
-          {/* Post trash */}
+          {/* Delete all content */}
           <MenuItem onClick={() => setOpenPostTrash(true)} sx={{ color: theme.palette.error.main }}>
             <DeleteOutlined />
             <Typography sx={{ pl: 1 }}>{t('delete_post')}</Typography>
