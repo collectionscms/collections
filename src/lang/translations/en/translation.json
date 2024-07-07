@@ -161,6 +161,7 @@
   "slug": "Slug",
   "history": "History",
   "delete_locale_content": "Delete {{locale}} only",
+  "delete_post": "Delete post",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",

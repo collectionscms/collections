@@ -161,6 +161,7 @@
   "slug": "スラッグ",
   "history": "履歴",
   "delete_locale_content": "{{locale}} だけ削除する",
+  "delete_post": "記事を削除する",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",

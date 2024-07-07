@@ -1,10 +1,4 @@
-import {
-  CloseOutlined,
-  DeleteOutlined,
-  EllipsisOutlined,
-  PlusOutlined,
-  UndoOutlined,
-} from '@ant-design/icons';
+import { CloseOutlined, DeleteOutlined, EllipsisOutlined, PlusOutlined } from '@ant-design/icons';
 import {
   AppBarProps,
   Button,
@@ -37,6 +31,7 @@ export type Props = {
   onChangeLocale: (locale: string) => void;
   onOpenAddLocale: () => void;
   onTrashContent: () => void;
+  onTrashPost: () => void;
 };
 
 export const PostHeader: React.FC<Props> = ({
@@ -48,6 +43,7 @@ export const PostHeader: React.FC<Props> = ({
   onChangeLocale,
   onOpenAddLocale,
   onTrashContent,
+  onTrashPost,
 }) => {
   const theme = useTheme();
   const navigate = useNavigate();
@@ -92,6 +88,12 @@ export const PostHeader: React.FC<Props> = ({
     setContentMenuOpen(false);
   };
 
+  const handleTrashPost = () => {
+    onTrashPost();
+    setOpenPostTrash(false);
+    setContentMenuOpen(false);
+  };
+
   // /////////////////////////////////////
   // Locale Menu
   // /////////////////////////////////////
@@ -133,7 +135,7 @@ export const PostHeader: React.FC<Props> = ({
         open={openPostTrash}
         title={t('dialog.confirm_post_trash_title')}
         body={t('dialog.confirm_post_trash')}
-        confirm={{ label: t('move_to_trash'), action: () => console.log('delete post') }}
+        confirm={{ label: t('move_to_trash'), action: handleTrashPost }}
         cancel={{ label: t('cancel'), action: () => setOpenPostTrash(false) }}
       />
       <AppBarStyled open={true} {...appBar}>
@@ -202,16 +204,6 @@ export const PostHeader: React.FC<Props> = ({
           open={contentMenuOpen}
           onClose={handleCloseContent}
         >
-          {/* Revert to previous version */}
-          {post.publishedAt && (post.status === 'draft' || post.status === 'review') && (
-            <>
-              <MenuItem onClick={() => console.log('')}>
-                <UndoOutlined />
-                <Typography sx={{ pl: 1 }}>revert</Typography>
-              </MenuItem>
-              <Divider />
-            </>
-          )}
           {/* Content trash */}
           {post.locales.length > 1 && (
             <MenuItem
@@ -229,7 +221,7 @@ export const PostHeader: React.FC<Props> = ({
           {/* Post trash */}
           <MenuItem onClick={() => setOpenPostTrash(true)} sx={{ color: theme.palette.error.main }}>
             <DeleteOutlined />
-            <Typography sx={{ pl: 1 }}>delete post</Typography>
+            <Typography sx={{ pl: 1 }}>{t('delete_post')}</Typography>
           </MenuItem>
         </Menu>
         {/* Locale menu */}
