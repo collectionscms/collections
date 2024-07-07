@@ -32,10 +32,11 @@ export const EditPostPageImpl: React.FC = () => {
   const queryParams = new URLSearchParams(location.search);
   const locale = queryParams.get('locale');
 
-  const { getPost, updateContent, trashContent, createFileImage } = usePost();
+  const { getPost, updateContent, trashPost, trashContent, createFileImage } = usePost();
   const { data: post, mutate } = getPost(id, locale);
   const { trigger } = updateContent(post.contentId);
-  const { trigger: trashTrigger } = trashContent(post.contentId);
+  const { trigger: trashPostTrigger } = trashPost(post.id);
+  const { trigger: trashContentTrigger } = trashContent(post.contentId);
 
   useEffect(() => {
     setPostTitle(post.title);
@@ -154,14 +155,24 @@ export const EditPostPageImpl: React.FC = () => {
   };
 
   // /////////////////////////////////////
-  // Trash draft content
+  // Content actions
   // /////////////////////////////////////
 
-  const handleTrashContent = async () => {
+  const handleRevertContent = async () => {
     try {
-      await trashTrigger();
+      await trashContentTrigger();
       mutate();
-      enqueueSnackbar(t('toast.deleted_successfully'), { variant: 'success' });
+      enqueueSnackbar(t('toast.move_to_trash'), { variant: 'success' });
+    } catch (error) {
+      logger.error(error);
+    }
+  };
+
+  const handleTrashPost = async () => {
+    try {
+      await trashPostTrigger();
+      enqueueSnackbar(t('toast.move_to_trash'), { variant: 'success' });
+      navigate('/admin/posts');
     } catch (error) {
       logger.error(error);
     }
@@ -236,7 +247,8 @@ export const EditPostPageImpl: React.FC = () => {
         onSaveDraft={handleSaveContent}
         onChangeLocale={handleChangeLocale}
         onOpenAddLocale={handleOpenAddLocale}
-        onTrashContent={handleTrashContent}
+        onRevertContent={handleRevertContent}
+        onTrashPost={handleTrashPost}
       />
       <Box component="main" sx={{ minHeight: '100vh', backgroundColor: bg }}>
         <Toolbar sx={{ mt: 0 }} />

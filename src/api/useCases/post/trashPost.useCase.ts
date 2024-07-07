@@ -1,20 +1,25 @@
-import { Post } from '@prisma/client';
-import { postStatus } from '../../data/post/post.entity.js';
-import { PostRepository } from '../../data/post/post.repository.js';
+import { Content } from '@prisma/client';
+import { contentStatus } from '../../data/content/content.entity.js';
+import { ContentRepository } from '../../data/content/content.repository.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
 import { TrashPostUseCaseSchemaType } from './trashPost.schema.js';
 
 export class TrashPostUseCase {
   constructor(
     private readonly prisma: ProjectPrismaClient,
-    private readonly postRepository: PostRepository
+    private readonly contentRepository: ContentRepository
   ) {}
 
-  async execute({ id }: TrashPostUseCaseSchemaType): Promise<Post> {
-    const post = await this.postRepository.findOneById(this.prisma, id);
-    post.changeStatus(postStatus.trashed);
+  async execute({ id }: TrashPostUseCaseSchemaType): Promise<Content[]> {
+    const contents = await this.contentRepository.findManyByPostId(this.prisma, id);
 
-    const result = await this.postRepository.updateStatus(this.prisma, post);
-    return result.toResponse();
+    await this.prisma.$transaction(async (tx) => {
+      for (const content of contents) {
+        content.changeStatus(contentStatus.trashed);
+        await this.contentRepository.updateStatus(tx, content);
+      }
+    });
+
+    return contents.map((content) => content.toResponse());
   }
 }

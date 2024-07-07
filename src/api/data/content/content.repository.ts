@@ -14,6 +14,16 @@ export class ContentRepository {
     return ContentEntity.Reconstruct<Content, ContentEntity>(record);
   }
 
+  async findManyByPostId(prisma: ProjectPrismaType, postId: string): Promise<ContentEntity[]> {
+    const records = await prisma.content.findMany({
+      where: {
+        postId,
+      },
+    });
+
+    return records.map((record) => ContentEntity.Reconstruct<Content, ContentEntity>(record));
+  }
+
   async create(
     prisma: ProjectPrismaType,
     contentEntity: ContentEntity
