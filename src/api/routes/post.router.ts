@@ -106,7 +106,7 @@ router.delete(
 
     const useCase = new TrashPostUseCase(
       projectPrisma(validated.data.projectId),
-      new PostRepository()
+      new ContentRepository()
     );
     await useCase.execute(validated.data);
 

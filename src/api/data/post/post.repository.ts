@@ -34,17 +34,13 @@ export class PostRepository {
           },
         },
       },
-      where: {
-        status: {
-          not: 'trashed',
-        },
-      },
       orderBy: {
         createdAt: 'desc',
       },
     });
 
-    return records.map((record) => {
+    const filteredRecords = records.filter((record) => record.contents.length > 0);
+    return filteredRecords.map((record) => {
       const post = PostEntity.Reconstruct<Post, PostEntity>(record);
       const contents = [];
       for (const content of record.contents) {

@@ -171,7 +171,6 @@ export const EditPostPageImpl: React.FC = () => {
   const handleTrashPost = async () => {
     try {
       await trashPostTrigger();
-      mutate();
       enqueueSnackbar(t('toast.deleted_successfully'), { variant: 'success' });
       navigate('/admin/posts');
     } catch (error) {
