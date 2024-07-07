@@ -11,6 +11,8 @@ import {
   FormHelperText,
   Radio,
   RadioGroup,
+  Stack,
+  Typography,
 } from '@mui/material';
 import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
@@ -76,7 +78,14 @@ const LocaleSelectionImpl: React.FC<Props> = ({ currentLocale, open, onClose, on
                         key={locale}
                         value={locale}
                         control={<Radio />}
-                        label={t(`locale.${locale}`)}
+                        label={
+                          <Stack direction="row">
+                            <Typography>{t(`locale.${locale}`)}</Typography>
+                            <Typography variant="caption" color="textSecondary" sx={{ ml: '8px' }}>
+                              ({currentLocale})
+                            </Typography>
+                          </Stack>
+                        }
                       />
                     ))}
                   </RadioGroup>

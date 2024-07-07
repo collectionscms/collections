@@ -3,6 +3,7 @@ import {
   DeleteOutlined,
   EllipsisOutlined,
   PlusOutlined,
+  SettingOutlined,
   UndoOutlined,
 } from '@ant-design/icons';
 import {
@@ -27,6 +28,7 @@ import { IconButton } from '../../../@extended/components/IconButton/index.js';
 import { BaseDialog } from '../../../components/elements/BaseDialog/index.js';
 import { StatusDot } from '../../../components/elements/StatusDot/index.js';
 import AppBarStyled from './AppBarStyled.js';
+import { project } from '../../../../api/routes/project.router.js';
 
 export type Props = {
   post: LocalizedPost;
@@ -168,7 +170,12 @@ export const PostHeader: React.FC<Props> = ({
               startIcon={<RiEarthLine size={22} />}
               onClick={handleLocaleOpen}
             >
-              {t(`locale.${currentLocale}` as unknown as TemplateStringsArray)}
+              <Typography>
+                {t(`locale.${currentLocale}` as unknown as TemplateStringsArray)}
+              </Typography>
+              <Typography variant="caption" color="textSecondary" sx={{ ml: '8px' }}>
+                ({currentLocale})
+              </Typography>
             </Button>
             <IconButton
               ref={anchorContentRef}
@@ -246,13 +253,14 @@ export const PostHeader: React.FC<Props> = ({
               selected={currentLocale === locale}
               key={locale}
             >
-              <Typography sx={{ pl: 1 }}>
-                {t(`locale.${locale}` as unknown as TemplateStringsArray)}
+              <Typography>{t(`locale.${locale}` as unknown as TemplateStringsArray)}</Typography>
+              <Typography variant="caption" color="textSecondary" sx={{ ml: '8px' }}>
+                ({locale})
               </Typography>
             </MenuItem>
           ))}
           <MenuItem onClick={handleAddLocale}>
-            <PlusOutlined size={20} />
+            <SettingOutlined />
             <Typography sx={{ pl: 1 }}>{t('add_to')}</Typography>
           </MenuItem>
         </Menu>

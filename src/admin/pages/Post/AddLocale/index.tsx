@@ -11,6 +11,7 @@ import {
   Radio,
   RadioGroup,
   Stack,
+  Typography,
 } from '@mui/material';
 import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
@@ -20,6 +21,7 @@ import { LocalizedPost } from '../../../../types/index.js';
 import { logger } from '../../../../utilities/logger.js';
 import { FormValues, addContent } from '../../../fields/validators/post/addContent.js';
 import { usePost } from '../Context/index.js';
+import { locale } from 'dayjs';
 
 export type Props = {
   open: boolean;
@@ -66,16 +68,29 @@ export const AddLocale: React.FC<Props> = ({ open, post, onClose, onAdded }) => 
                 control={control}
                 render={({ field }) => (
                   <RadioGroup value={field.value} name="radio-buttons-group" row>
-                    {Object.values(Locale).map((locale) => (
-                      <FormControlLabel
-                        {...field}
-                        key={locale}
-                        value={locale}
-                        disabled={post.locales.includes(locale)}
-                        control={<Radio />}
-                        label={t(`locale.${locale}`)}
-                      />
-                    ))}
+                    {Object.values(Locale).map((locale) => {
+                      return (
+                        <FormControlLabel
+                          {...field}
+                          key={locale}
+                          value={locale}
+                          disabled={post.locales.includes(locale)}
+                          control={<Radio />}
+                          label={
+                            <Stack direction="row">
+                              <Typography>{t(`locale.${locale}`)}</Typography>
+                              <Typography
+                                variant="caption"
+                                color="textSecondary"
+                                sx={{ ml: '8px' }}
+                              >
+                                ({locale})
+                              </Typography>
+                            </Stack>
+                          }
+                        />
+                      );
+                    })}
                   </RadioGroup>
                 )}
               />
