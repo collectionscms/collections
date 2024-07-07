@@ -168,7 +168,7 @@ export const PostHeader: React.FC<Props> = ({
               startIcon={<RiEarthLine size={22} />}
               onClick={handleLocaleOpen}
             >
-              {currentLocale}
+              {t(`locale.${currentLocale}` as unknown as TemplateStringsArray)}
             </Button>
             <IconButton
               ref={anchorContentRef}
@@ -246,7 +246,9 @@ export const PostHeader: React.FC<Props> = ({
               selected={currentLocale === locale}
               key={locale}
             >
-              <Typography sx={{ pl: 1 }}>{locale}</Typography>
+              <Typography sx={{ pl: 1 }}>
+                {t(`locale.${locale}` as unknown as TemplateStringsArray)}
+              </Typography>
             </MenuItem>
           ))}
           <MenuItem onClick={handleAddLocale}>
