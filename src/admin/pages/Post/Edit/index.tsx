@@ -230,11 +230,12 @@ export const EditPostPageImpl: React.FC = () => {
     setOpenAddLocale(false);
   };
 
-  const handleAddedLocale = (locale: string) => {
+  const handleChangedLocale = (locales: string[]) => {
     setOpenAddLocale(false);
-    mutate();
-    handleChangeLocale(locale);
-    enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
+    mutate({
+      ...post,
+      locales,
+    });
   };
 
   return (
@@ -351,7 +352,7 @@ export const EditPostPageImpl: React.FC = () => {
         open={openAddLocale}
         post={post}
         onClose={handleCloseAddLocale}
-        onAdded={handleAddedLocale}
+        onChanged={(locales) => handleChangedLocale(locales)}
       />
     </>
   );

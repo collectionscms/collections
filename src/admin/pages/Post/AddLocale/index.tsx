@@ -8,11 +8,11 @@ import {
   DialogTitle,
   FormControlLabel,
   FormHelperText,
-  Radio,
-  RadioGroup,
   Stack,
+  Switch,
   Typography,
 } from '@mui/material';
+import { enqueueSnackbar } from 'notistack';
 import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -21,92 +21,106 @@ import { LocalizedPost } from '../../../../types/index.js';
 import { logger } from '../../../../utilities/logger.js';
 import { FormValues, addContent } from '../../../fields/validators/post/addContent.js';
 import { usePost } from '../Context/index.js';
-import { locale } from 'dayjs';
 
 export type Props = {
   open: boolean;
   post: LocalizedPost;
   onClose: () => void;
-  onAdded: (locale: string) => void;
+  onChanged: (locales: string[]) => void;
 };
 
-export const AddLocale: React.FC<Props> = ({ open, post, onClose, onAdded }) => {
-  const { createContent } = usePost();
+export const AddLocale: React.FC<Props> = ({ open, post, onClose, onChanged }) => {
+  const { createBulkContent } = usePost();
   const { t } = useTranslation();
-  const { trigger } = createContent(post.id);
+  const { trigger: createBulkContentTrigger } = createBulkContent(post.id);
+
   const {
-    reset,
+    watch,
     control,
     handleSubmit,
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
-      locale: '',
+      locales: post.locales,
     },
     resolver: yupResolver(addContent()),
   });
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
-      reset(form);
-      await trigger(form);
-      onAdded(form.locale);
+      await createBulkContentTrigger(form);
+      onChanged(form.locales);
+      enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
     } catch (error) {
       logger.error(error);
     }
   };
 
   return (
-    <Dialog open={open} onClose={onClose}>
-      <Box sx={{ p: 1, py: 1.5 }}>
-        <DialogTitle>{t('add_localized_content')}</DialogTitle>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <DialogContent>
-            <Stack spacing={1} direction="column">
-              <Controller
-                name="locale"
-                control={control}
-                render={({ field }) => (
-                  <RadioGroup value={field.value} name="radio-buttons-group" row>
-                    {Object.values(Locale).map((locale) => {
-                      return (
-                        <FormControlLabel
-                          {...field}
-                          key={locale}
-                          value={locale}
-                          disabled={post.locales.includes(locale)}
-                          control={<Radio />}
-                          label={
-                            <Stack direction="row">
-                              <Typography>{t(`locale.${locale}`)}</Typography>
-                              <Typography
-                                variant="caption"
-                                color="textSecondary"
-                                sx={{ ml: '8px' }}
-                              >
-                                ({locale})
-                              </Typography>
-                            </Stack>
-                          }
-                        />
-                      );
-                    })}
-                  </RadioGroup>
-                )}
-              />
-              <FormHelperText error>{errors.locale?.message}</FormHelperText>
-            </Stack>
-          </DialogContent>
-          <DialogActions>
-            <Button color="secondary" variant="outlined" onClick={onClose}>
-              {t('cancel')}
-            </Button>
-            <Button variant="contained" type="submit">
-              {t('add')}
-            </Button>
-          </DialogActions>
-        </form>
-      </Box>
-    </Dialog>
+    <>
+      <Dialog open={open} onClose={onClose}>
+        <Box sx={{ p: 1, py: 1.5 }}>
+          <DialogTitle>{t('localized_content_settings')}</DialogTitle>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <DialogContent>
+              <Stack spacing={1} direction="column">
+                <Controller
+                  name="locales"
+                  control={control}
+                  render={({ field }) => (
+                    <Stack>
+                      {Object.values(Locale).map((locale) => {
+                        return (
+                          <FormControlLabel
+                            {...field}
+                            key={locale}
+                            value={locale}
+                            control={
+                              <Switch
+                                {...field}
+                                checked={watch('locales').includes(locale)}
+                                onChange={() => {
+                                  if (!field.value.includes(locale)) {
+                                    field.onChange([...field.value, locale]);
+                                    return;
+                                  }
+                                  const newTopics = field.value.filter((topic) => topic !== locale);
+                                  field.onChange(newTopics);
+                                }}
+                              />
+                            }
+                            label={
+                              <Stack direction="row">
+                                <Typography>{t(`locale.${locale}`)}</Typography>
+                                <Typography
+                                  variant="caption"
+                                  color="textSecondary"
+                                  sx={{ ml: '8px' }}
+                                >
+                                  ({locale})
+                                </Typography>
+                              </Stack>
+                            }
+                          />
+                        );
+                      })}
+                    </Stack>
+                  )}
+                />
+                <FormHelperText error>{errors.locales?.message}</FormHelperText>
+              </Stack>
+            </DialogContent>
+            <DialogActions>
+              <Button color="secondary" variant="outlined" onClick={onClose}>
+                {t('cancel')}
+              </Button>
+              <Button variant="contained" type="submit">
+                {t('save')}
+              </Button>
+            </DialogActions>
+          </form>
+        </Box>
+      </Dialog>
+    </>
   );
 };

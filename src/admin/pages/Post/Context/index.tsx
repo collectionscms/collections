@@ -25,6 +25,9 @@ type PostContext = {
   createPost: () => SWRMutationResponse<LocalizedPost, any, string>;
   trashPost: (postId: string) => SWRMutationResponse<void, any, string>;
   createContent: (postId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
+  createBulkContent: (
+    postId: string
+  ) => SWRMutationResponse<void, any, string, Record<string, any>>;
   changeStatus: (postId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
   updateContent: (contentId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
   trashContent: (contentId: string) => SWRMutationResponse<void, any, string>;
@@ -68,6 +71,14 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
   const createContent = (postId: string) =>
     useSWRMutation(
       `/posts/${postId}/contents`,
+      async (url: string, { arg }: { arg: Record<string, any> }) => {
+        return api.post(url, arg).then((res) => res.data);
+      }
+    );
+
+  const createBulkContent = (postId: string) =>
+    useSWRMutation(
+      `/posts/${postId}/contents/bulk`,
       async (url: string, { arg }: { arg: Record<string, any> }) => {
         return api.post(url, arg).then((res) => res.data);
       }
@@ -124,6 +135,7 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       createContent,
       updateContent,
       trashContent,
+      createBulkContent,
       changeStatus,
       requestReview,
       publish,
@@ -137,6 +149,7 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       createContent,
       updateContent,
       trashContent,
+      createBulkContent,
       changeStatus,
       requestReview,
       publish,

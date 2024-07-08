@@ -2,7 +2,6 @@ import {
   CloseOutlined,
   DeleteOutlined,
   EllipsisOutlined,
-  PlusOutlined,
   SettingOutlined,
   UndoOutlined,
 } from '@ant-design/icons';
@@ -18,7 +17,7 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { RiEarthLine } from '@remixicon/react';
+import { RiTranslate2 } from '@remixicon/react';
 import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -28,7 +27,6 @@ import { IconButton } from '../../../@extended/components/IconButton/index.js';
 import { BaseDialog } from '../../../components/elements/BaseDialog/index.js';
 import { StatusDot } from '../../../components/elements/StatusDot/index.js';
 import AppBarStyled from './AppBarStyled.js';
-import { project } from '../../../../api/routes/project.router.js';
 
 export type Props = {
   post: LocalizedPost;
@@ -167,7 +165,7 @@ export const PostHeader: React.FC<Props> = ({
               variant="text"
               color="secondary"
               ref={anchorRef}
-              startIcon={<RiEarthLine size={22} />}
+              startIcon={<RiTranslate2 size={20} />}
               onClick={handleLocaleOpen}
             >
               <Typography>
@@ -261,7 +259,7 @@ export const PostHeader: React.FC<Props> = ({
           ))}
           <MenuItem onClick={handleAddLocale}>
             <SettingOutlined />
-            <Typography sx={{ pl: 1 }}>{t('add_to')}</Typography>
+            <Typography sx={{ pl: 1 }}>{t('setting')}</Typography>
           </MenuItem>
         </Menu>
       </AppBarStyled>

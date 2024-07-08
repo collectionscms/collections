@@ -2,11 +2,11 @@ import { ObjectSchema } from 'yup';
 import { yup } from '../../yup.js';
 
 export type FormValues = {
-  locale: string;
+  locales: string[];
 };
 
 export const addContent = (): ObjectSchema<FormValues> => {
   return yup.object().shape({
-    locale: yup.string().required(),
+    locales: yup.array().of(yup.string().required()).min(1).required(),
   });
 };
