@@ -8,8 +8,6 @@ import { projectPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';
 import { validateAccess } from '../middlewares/validateAccess.js';
-import { createContentUseCaseSchema } from '../useCases/content/createContent.schema.js';
-import { CreateContentUseCase } from '../useCases/content/createContent.useCase.js';
 import { publishUseCaseSchema } from '../useCases/content/publish.schema.js';
 import { PublishUseCase } from '../useCases/content/publish.useCase.js';
 import { requestReviewUseCaseSchema } from '../useCases/content/requestReview.schema.js';
@@ -20,32 +18,6 @@ import { updateContentUseCaseSchema } from '../useCases/content/updateContent.sc
 import { UpdateContentUseCase } from '../useCases/content/updateContent.useCase.js';
 
 const router = express.Router();
-
-router.post(
-  '/posts/:id/contents',
-  authenticatedUser,
-  validateAccess(['createPost']),
-  asyncHandler(async (req: Request, res: Response) => {
-    const validated = createContentUseCaseSchema.safeParse({
-      projectId: res.projectRole?.id,
-      id: req.params.id,
-      locale: req.body.locale,
-      userId: res.user.id,
-    });
-    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
-
-    const useCase = new CreateContentUseCase(
-      projectPrisma(validated.data.projectId),
-      new ContentRepository(),
-      new ContentHistoryRepository()
-    );
-    const content = await useCase.execute(validated.data);
-
-    res.json({
-      content,
-    });
-  })
-);
 
 router.patch(
   '/contents/:id',
