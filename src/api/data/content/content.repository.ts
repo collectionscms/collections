@@ -18,6 +18,9 @@ export class ContentRepository {
     const records = await prisma.content.findMany({
       where: {
         postId,
+        status: {
+          not: 'trashed',
+        },
       },
     });
 
