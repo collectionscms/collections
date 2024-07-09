@@ -132,7 +132,7 @@
   "write_the_text": "本文を書く",
   "characters": "文字",
   "saved": "保存しました",
-  "add_localized_content": "ローカライズコンテンツの追加",
+  "localized_content_settings": "ローカライズコンテンツの設定",
   "primary_language": "プライマリー言語",
   "change_primary_language": "プライマリー言語の変更",
   "add_to": "追加する",
@@ -204,8 +204,8 @@
     "data_model": "データモデル 編集"
   },
   "locale": {
-    "en": "英語 (en)",
-    "ja": "日本語 (ja)"
+    "en": "英語",
+    "ja": "日本語"
   },
   "editor": {
     "guide": "エディターガイド",
@@ -284,9 +284,9 @@
       "no_unknown": "オブジェクトシェイプで指定されていないキーを含めることはできません"
     },
     "array": {
-      "length": "{{length}}の項目数が必要です",
-      "min": "少なくとも{{min}}の項目が必要です",
-      "max": "{{max}}以下の項目が必要です"
+      "length": "{{length}}つの項目数が必要です",
+      "min": "少なくとも{{min}}つの項目が必要です",
+      "max": "{{max}}つ以下の項目が必要です"
     },
     "boolean": {
       "is_value": "{{value}}でなければなりません"

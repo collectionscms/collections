@@ -2,7 +2,7 @@ import {
   CloseOutlined,
   DeleteOutlined,
   EllipsisOutlined,
-  PlusOutlined,
+  SettingOutlined,
   UndoOutlined,
 } from '@ant-design/icons';
 import {
@@ -17,7 +17,7 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { RiEarthLine } from '@remixicon/react';
+import { RiTranslate2 } from '@remixicon/react';
 import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -165,10 +165,15 @@ export const PostHeader: React.FC<Props> = ({
               variant="text"
               color="secondary"
               ref={anchorRef}
-              startIcon={<RiEarthLine size={22} />}
+              startIcon={<RiTranslate2 size={20} />}
               onClick={handleLocaleOpen}
             >
-              {currentLocale}
+              <Typography>
+                {t(`locale.${currentLocale}` as unknown as TemplateStringsArray)}
+              </Typography>
+              <Typography variant="caption" color="textSecondary" sx={{ ml: '8px' }}>
+                ({currentLocale})
+              </Typography>
             </Button>
             <IconButton
               ref={anchorContentRef}
@@ -246,12 +251,15 @@ export const PostHeader: React.FC<Props> = ({
               selected={currentLocale === locale}
               key={locale}
             >
-              <Typography sx={{ pl: 1 }}>{locale}</Typography>
+              <Typography>{t(`locale.${locale}` as unknown as TemplateStringsArray)}</Typography>
+              <Typography variant="caption" color="textSecondary" sx={{ ml: '8px' }}>
+                ({locale})
+              </Typography>
             </MenuItem>
           ))}
           <MenuItem onClick={handleAddLocale}>
-            <PlusOutlined size={20} />
-            <Typography sx={{ pl: 1 }}>{t('add_to')}</Typography>
+            <SettingOutlined />
+            <Typography sx={{ pl: 1 }}>{t('setting')}</Typography>
           </MenuItem>
         </Menu>
       </AppBarStyled>

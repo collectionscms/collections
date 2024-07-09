@@ -95,7 +95,18 @@ export const PrimaryLocaleForm: React.FC<Props> = ({
                           key={locale}
                           value={locale}
                           control={<Radio />}
-                          label={t(`locale.${locale}`)}
+                          label={
+                            <Stack direction="row">
+                              <Typography>{t(`locale.${locale}`)}</Typography>
+                              <Typography
+                                variant="caption"
+                                color="textSecondary"
+                                sx={{ ml: '8px' }}
+                              >
+                                ({locale})
+                              </Typography>
+                            </Stack>
+                          }
                         />
                       ))}
                     </RadioGroup>
