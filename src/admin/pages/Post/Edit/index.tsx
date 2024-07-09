@@ -16,8 +16,8 @@ import { logger } from '../../../../utilities/logger.js';
 import { IconButton } from '../../../@extended/components/IconButton/index.js';
 import { WYSIWYG } from '../../../components/elements/WYSIWYG/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
-import { LocalizedContent } from '../LocalizedContent/index.js';
 import { PostContextProvider, usePost } from '../Context/index.js';
+import { LocalizedContent } from '../LocalizedContent/index.js';
 import { PostFooter } from '../PostFooter/index.js';
 import { PostHeader } from '../PostHeader/index.js';
 import { PublishSetting } from '../PublishSetting/index.js';
@@ -236,6 +236,9 @@ export const EditPostPageImpl: React.FC = () => {
       ...post,
       locales,
     });
+    handleChangeLocale(
+      locales.find((locale) => locale !== post.contentLocale) ?? post.contentLocale
+    );
   };
 
   return (
