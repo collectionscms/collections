@@ -15,4 +15,15 @@ export class ContentHistoryRepository {
 
     return ContentHistoryEntity.Reconstruct<ContentHistory, ContentHistoryEntity>(record);
   }
+
+  async createMany(
+    prisma: ProjectPrismaType,
+    entities: ContentHistoryEntity[]
+  ): Promise<ContentHistoryEntity[]> {
+    await prisma.contentHistory.createMany({
+      data: entities.map((entity) => entity.toPersistence()),
+    });
+
+    return entities;
+  }
 }

@@ -1,5 +1,13 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button, FormHelperText, InputLabel, Stack, TextField, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  FormHelperText,
+  InputLabel,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { useSnackbar } from 'notistack';
 import React from 'react';
@@ -17,6 +25,7 @@ import {
 import { useUnsavedChangesPrompt } from '../../hooks/useUnsavedChangesPrompt.js';
 import { ProjectContextProvider, useProject } from './Context/index.js';
 import { LocaleSelection } from './LocaleSelection/index.js';
+import { project } from '../../../api/routes/project.router.js';
 
 const ProjectImpl: React.FC = () => {
   const { hasPermission } = useAuth();
@@ -94,9 +103,14 @@ const ProjectImpl: React.FC = () => {
                   <Stack spacing={1}>
                     <InputLabel htmlFor="projectName">{t('primary_language')}</InputLabel>
                     <Stack spacing={1.5} direction="row" alignItems="center">
-                      <Typography>
-                        {t(`locale.${project.primaryLocale}` as unknown as TemplateStringsArray)}
-                      </Typography>
+                      <Stack direction="row">
+                        <Typography>
+                          {t(`locale.${project.primaryLocale}` as unknown as TemplateStringsArray)}
+                        </Typography>
+                        <Typography variant="caption" color="textSecondary" sx={{ ml: '8px' }}>
+                          ({project.primaryLocale})
+                        </Typography>
+                      </Stack>
                       <Button
                         size="small"
                         variant="text"

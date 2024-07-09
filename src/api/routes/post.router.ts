@@ -7,6 +7,9 @@ import { projectPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';
 import { validateAccess } from '../middlewares/validateAccess.js';
+import { createBulkContentUseCaseSchema } from '../useCases/content/createBulkContent.schema.js';
+import { createContentUseCaseSchema } from '../useCases/content/createContent.schema.js';
+import { CreateContentUseCase } from '../useCases/content/createContent.useCase.js';
 import { changeStatusUseCaseSchema } from '../useCases/post/changeStatus.schema.js';
 import { ChangeStatusUseCase } from '../useCases/post/changeStatus.useCase.js';
 import { createPostUseCaseSchema } from '../useCases/post/createPost.schema.js';
@@ -17,6 +20,7 @@ import { getPostsUseCaseSchema } from '../useCases/post/getPosts.schema.js';
 import { GetPostsUseCase } from '../useCases/post/getPosts.useCase.js';
 import { trashPostUseCaseSchema } from '../useCases/post/trashPost.schema.js';
 import { TrashPostUseCase } from '../useCases/post/trashPost.useCase.js';
+import { CreateBulkContentUseCase } from '../useCases/content/createBulkContent.useCase.js';
 
 const router = express.Router();
 
@@ -90,6 +94,55 @@ router.post(
     res.json({
       post,
     });
+  })
+);
+
+router.post(
+  '/posts/:id/contents',
+  authenticatedUser,
+  validateAccess(['createPost']),
+  asyncHandler(async (req: Request, res: Response) => {
+    const validated = createContentUseCaseSchema.safeParse({
+      projectId: res.projectRole?.id,
+      id: req.params.id,
+      locale: req.body.locale,
+      userId: res.user.id,
+    });
+    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
+
+    const useCase = new CreateContentUseCase(
+      projectPrisma(validated.data.projectId),
+      new ContentRepository(),
+      new ContentHistoryRepository()
+    );
+    const content = await useCase.execute(validated.data);
+
+    res.json({
+      content,
+    });
+  })
+);
+
+router.post(
+  '/posts/:id/contents/bulk',
+  authenticatedUser,
+  validateAccess(['createPost']),
+  asyncHandler(async (req: Request, res: Response) => {
+    const validated = createBulkContentUseCaseSchema.safeParse({
+      postId: req.params.id,
+      projectId: res.projectRole?.id,
+      userId: res.user.id,
+      locales: req.body.locales,
+    });
+    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
+
+    const useCase = new CreateBulkContentUseCase(
+      projectPrisma(validated.data.projectId),
+      new ContentRepository(),
+      new ContentHistoryRepository()
+    );
+    await useCase.execute(validated.data);
+    res.status(204).send();
   })
 );
 

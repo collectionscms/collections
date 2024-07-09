@@ -132,7 +132,7 @@
   "write_the_text": "Write the text",
   "characters": "characters",
   "saved": "Saved",
-  "add_localized_content": "Add localized content",
+  "localized_content_settings": "Localized content settings",
   "primary_language": "Primary Language",
   "change_primary_language": "Change primary language",
   "add_to": "Add",
@@ -204,8 +204,8 @@
     "data_model": "Edit Data Model"
   },
   "locale": {
-    "en": "English (en)",
-    "ja": "Japanese (ja)"
+    "en": "English",
+    "ja": "Japanese"
   },
   "editor": {
     "guide": "Editor Guide",
