@@ -152,7 +152,7 @@
     "prettier": "3.3.2",
     "prisma": "5.16.2",
     "react-refresh": "0.14.2",
-    "ts-jest": "29.2.0",
+    "ts-jest": "29.2.2",
     "ts-loader": "9.4.4",
     "ts-node": "10.9.2",
     "typescript": "5.5.3"
