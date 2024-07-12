@@ -47,12 +47,12 @@
   "dependencies": {
     "@ant-design/icons": "5.3.7",
     "@auth/express": "0.5.6",
-    "@aws-sdk/client-s3": "3.609.0",
+    "@aws-sdk/client-s3": "3.614.0",
     "@emotion/react": "11.11.4",
     "@emotion/styled": "11.11.5",
     "@hookform/resolvers": "3.9.0",
     "@mui/lab": "5.0.0-alpha.172",
-    "@mui/material": "5.16.0",
+    "@mui/material": "5.16.1",
     "@pmmmwh/react-refresh-webpack-plugin": "0.5.15",
     "@prisma/client": "5.16.2",
     "@remixicon/react": "4.2.0",
@@ -152,7 +152,7 @@
     "prettier": "3.3.2",
     "prisma": "5.16.2",
     "react-refresh": "0.14.2",
-    "ts-jest": "29.2.0",
+    "ts-jest": "29.2.2",
     "ts-loader": "9.4.4",
     "ts-node": "10.9.2",
     "typescript": "5.5.3"
