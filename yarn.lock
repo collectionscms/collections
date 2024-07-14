@@ -1690,7 +1690,7 @@
     csstype "^3.1.3"
     prop-types "^15.8.1"
 
-"@mui/system@^5.16.0", "@mui/system@^5.16.1":
+"@mui/system@^5.16.1":
   version "5.16.1"
   resolved "https://registry.yarnpkg.com/@mui/system/-/system-5.16.1.tgz#c08fddba592511d6916c6a70da292a7658551ccb"
   integrity sha512-VaFcClC+uhvIEzhzcNmh9FRBvrG9IPjsOokhj6U1HPZsFnLzHV7AD7dJcT6LxWoiIZj9Ej0GK+MGh/b8+BtSlQ==
@@ -1709,7 +1709,7 @@
   resolved "https://registry.yarnpkg.com/@mui/types/-/types-7.2.15.tgz#dadd232fe9a70be0d526630675dff3b110f30b53"
   integrity sha512-nbo7yPhtKJkdf9kcVOF8JZHPZTmqXjJ/tI0bdWgHg5tp9AnIN4Y7f7wm9T+0SyGYJk76+GYZ8Q5XaTYAsUHN0Q==
 
-"@mui/utils@^5.15.14", "@mui/utils@^5.16.0", "@mui/utils@^5.16.1":
+"@mui/utils@^5.15.14", "@mui/utils@^5.16.1":
   version "5.16.1"
   resolved "https://registry.yarnpkg.com/@mui/utils/-/utils-5.16.1.tgz#068ddc236c10f71768133c144b3286d2cc815f5f"
   integrity sha512-4UQzK46tAEYs2xZv79hRiIc3GxZScd00kGPDadNrGztAEZlmSaUY8cb9ITd2xCiTfzsx5AN6DH8aaQ8QEKJQeQ==
@@ -8248,10 +8248,10 @@ prelude-ls@^1.2.1:
   resolved "https://registry.npmjs.org/prelude-ls/-/prelude-ls-1.2.1.tgz"
   integrity sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==
 
-prettier@3.3.2:
-  version "3.3.2"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-3.3.2.tgz#03ff86dc7c835f2d2559ee76876a3914cec4a90a"
-  integrity sha512-rAVeHYMcv8ATV5d508CFdn+8/pHPpXeIid1DdrPwXnaAdH7cqjVbpJaT5eq4yRAFU/lsbwYwSF/n5iNrdJHPQA==
+prettier@3.3.3:
+  version "3.3.3"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-3.3.3.tgz#30c54fe0be0d8d12e6ae61dbb10109ea00d53105"
+  integrity sha512-i2tDNA0O5IrMO757lfrdQZCc2jPNDVntV0m/+4whiDfWaTKfMNgR7Qz0NAeGz/nRqF4m5/6CLzbP4/liHt12Ew==
 
 pretty-error@^4.0.0:
   version "4.0.0"
@@ -8642,11 +8642,6 @@ react-is@^16.12.0, react-is@^16.13.1, react-is@^16.7.0:
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
 react-is@^18.0.0, react-is@^18.3.1:
-  version "18.3.1"
-  resolved "https://registry.yarnpkg.com/react-is/-/react-is-18.3.1.tgz#e83557dc12eae63a99e003a46388b1dcbb44db7e"
-  integrity sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==
-
-react-is@^18.3.1:
   version "18.3.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-18.3.1.tgz#e83557dc12eae63a99e003a46388b1dcbb44db7e"
   integrity sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==
