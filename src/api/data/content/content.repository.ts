@@ -18,9 +18,7 @@ export class ContentRepository {
     const records = await prisma.content.findMany({
       where: {
         postId,
-        status: {
-          not: 'trashed',
-        },
+        deletedAt: null,
       },
     });
 
@@ -71,6 +69,7 @@ export class ContentRepository {
       data: {
         status: contentEntity.status,
         publishedAt: contentEntity.publishedAt,
+        deletedAt: contentEntity.deletedAt,
       },
     });
 

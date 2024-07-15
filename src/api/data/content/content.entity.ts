@@ -8,7 +8,6 @@ export const contentStatus = {
   review: 'review',
   published: 'published',
   archived: 'archived',
-  trashed: 'trashed',
 } as const;
 export type ContentStatusType = (typeof contentStatus)[keyof typeof contentStatus];
 
@@ -101,6 +100,10 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     return this.props.publishedAt;
   }
 
+  get deletedAt(): Date | null {
+    return this.props.deletedAt;
+  }
+
   get version(): number {
     return this.props.version;
   }
@@ -119,6 +122,10 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     if (status === contentStatus.published) {
       this.props.publishedAt = new Date();
     }
+  }
+
+  delete() {
+    this.props.deletedAt = new Date();
   }
 
   hasNewVersion(contents: ContentEntity[]): boolean {

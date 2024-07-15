@@ -28,9 +28,7 @@ export class PostRepository {
             contentHistories: true,
           },
           where: {
-            status: {
-              not: 'trashed',
-            },
+            deletedAt: null,
           },
         },
       },
@@ -95,9 +93,7 @@ export class PostRepository {
             contentHistories: true,
           },
           where: {
-            status: {
-              not: 'trashed',
-            },
+            deletedAt: null,
           },
           orderBy: {
             version: 'desc',
@@ -137,9 +133,7 @@ export class PostRepository {
       include: {
         contents: {
           where: {
-            status: {
-              not: 'trashed',
-            },
+            deletedAt: null,
           },
         },
       },

@@ -25,7 +25,7 @@ export class CreateBulkContentUseCase {
       // delete contents
       const excludedContents = contents.filter((content) => !locales.includes(content.locale));
       for (const content of excludedContents) {
-        content.changeStatus(contentStatus.trashed);
+        content.delete();
 
         const result = await this.contentRepository.updateStatus(tx, content);
         updatedContents.push(result);

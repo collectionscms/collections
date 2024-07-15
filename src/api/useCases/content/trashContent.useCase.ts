@@ -1,5 +1,4 @@
 import { Content } from '@prisma/client';
-import { contentStatus } from '../../data/content/content.entity.js';
 import { ContentRepository } from '../../data/content/content.repository.js';
 import { ContentHistoryEntity } from '../../data/contentHistory/contentHistory.entity.js';
 import { ContentHistoryRepository } from '../../data/contentHistory/contentHistory.repository.js';
@@ -17,7 +16,7 @@ export class TrashContentUseCase {
     const { projectId, id, userId } = props;
 
     const content = await this.contentRepository.findOneById(this.prisma, id);
-    content.changeStatus(contentStatus.trashed);
+    content.delete();
 
     const updatedContent = await this.prisma.$transaction(async (tx) => {
       const result = await this.contentRepository.updateStatus(tx, content);
