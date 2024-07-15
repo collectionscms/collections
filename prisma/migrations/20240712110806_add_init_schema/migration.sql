@@ -150,6 +150,7 @@ CREATE TABLE "Content" (
     "status" VARCHAR(255) NOT NULL,
     "version" INTEGER NOT NULL DEFAULT 1,
     "publishedAt" TIMESTAMPTZ(6),
+    "deletedAt" TIMESTAMPTZ(6),
     "createdById" UUID NOT NULL,
     "updatedById" UUID NOT NULL,
     "createdAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,

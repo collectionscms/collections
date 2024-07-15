@@ -171,6 +171,7 @@ model Content {
   status           String           @db.VarChar(255)
   version          Int              @default(1)
   publishedAt      DateTime?        @db.Timestamptz(6)
+  deletedAt        DateTime?        @db.Timestamptz(6)
   createdById      String           @db.Uuid
   updatedById      String           @db.Uuid
   createdAt        DateTime         @default(now()) @db.Timestamptz(6)

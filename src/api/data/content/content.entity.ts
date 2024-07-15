@@ -41,6 +41,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
       version: version || 1,
       createdById,
       updatedById: createdById,
+      deletedAt: null,
       createdAt: new Date(),
       updatedAt: new Date(),
     });
