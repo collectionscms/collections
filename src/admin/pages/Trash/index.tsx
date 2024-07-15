@@ -11,8 +11,8 @@ import { RestoreButton } from './RestoreButton/index.js';
 
 const TrashPageImpl: React.FC = () => {
   const { t } = useTranslation();
-  const { getTrashedPosts } = useTrash();
-  const { data, mutate } = getTrashedPosts();
+  const { getTrashedContents } = useTrash();
+  const { data, mutate } = getTrashedContents();
 
   const fields = [
     { field: 'title', label: t('title'), type: cells.text() },

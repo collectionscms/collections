@@ -25,6 +25,21 @@ export class ContentRepository {
     return records.map((record) => ContentEntity.Reconstruct<Content, ContentEntity>(record));
   }
 
+  async findManyTrashed(prisma: ProjectPrismaType): Promise<ContentEntity[]> {
+    const records = await prisma.content.findMany({
+      where: {
+        deletedAt: {
+          not: null,
+        },
+      },
+      orderBy: {
+        deletedAt: 'desc',
+      },
+    });
+
+    return records.map((record) => ContentEntity.Reconstruct<Content, ContentEntity>(record));
+  }
+
   async create(
     prisma: ProjectPrismaType,
     contentEntity: ContentEntity

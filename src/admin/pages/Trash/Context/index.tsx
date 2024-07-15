@@ -1,12 +1,12 @@
-import { Post } from '@prisma/client';
+import { Content } from '@prisma/client';
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWR, { SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
 import { api } from '../../../utilities/api.js';
 
 type TrashContext = {
-  getTrashedPosts: () => SWRResponse<
-    Post[],
+  getTrashedContents: () => SWRResponse<
+    Content[],
     Error,
     {
       suspense: true;
@@ -18,26 +18,26 @@ type TrashContext = {
 const Context = createContext({} as TrashContext);
 
 export const TrashContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const getTrashedPosts = () =>
+  const getTrashedContents = () =>
     useSWR(
-      '/trashedPosts',
-      (url) => api.get<{ posts: Post[] }>(url).then((res) => res.data.posts),
+      '/trashed/contents',
+      (url) => api.get<{ contents: Content[] }>(url).then((res) => res.data.contents),
       {
         suspense: true,
       }
     );
 
-  const restore = (postId: string) =>
-    useSWRMutation(`/trashedPosts/${postId}/restore`, async (url: string) => {
+  const restore = (contentId: string) =>
+    useSWRMutation(`/trashed/contents/${contentId}/restore`, async (url: string) => {
       return api.patch(url).then((res) => res.data);
     });
 
   const value = useMemo(
     () => ({
-      getTrashedPosts,
+      getTrashedContents,
       restore,
     }),
-    [getTrashedPosts, restore]
+    [getTrashedContents, restore]
   );
 
   return <Context.Provider value={value}>{children}</Context.Provider>;

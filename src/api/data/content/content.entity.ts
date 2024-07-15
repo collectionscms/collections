@@ -128,6 +128,10 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     this.props.deletedAt = new Date();
   }
 
+  restore() {
+    this.props.deletedAt = null;
+  }
+
   hasNewVersion(contents: ContentEntity[]): boolean {
     return contents.some(
       (c) => c.props.locale === this.props.locale && c.props.version > this.props.version
