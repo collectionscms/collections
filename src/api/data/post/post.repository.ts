@@ -28,9 +28,7 @@ export class PostRepository {
             contentHistories: true,
           },
           where: {
-            status: {
-              not: 'trashed',
-            },
+            deletedAt: null,
           },
         },
       },
@@ -95,9 +93,7 @@ export class PostRepository {
             contentHistories: true,
           },
           where: {
-            status: {
-              not: 'trashed',
-            },
+            deletedAt: null,
           },
           orderBy: {
             version: 'desc',
@@ -125,64 +121,9 @@ export class PostRepository {
     };
   }
 
-  async findManyTrashedByProjectId(prisma: ProjectPrismaType): Promise<
-    {
-      post: PostEntity;
-      contents: {
-        content: ContentEntity;
-      }[];
-    }[]
-  > {
-    const records = await prisma.post.findMany({
-      include: {
-        contents: {
-          where: {
-            status: {
-              not: 'trashed',
-            },
-          },
-        },
-      },
-      where: {
-        status: 'trashed',
-      },
-      orderBy: {
-        createdAt: 'desc',
-      },
-    });
-
-    return records.map((record) => {
-      const post = PostEntity.Reconstruct<Post, PostEntity>(record);
-      const contents = [];
-      for (const content of record.contents) {
-        contents.push({
-          content: ContentEntity.Reconstruct<Content, ContentEntity>(content),
-        });
-      }
-
-      return {
-        post,
-        contents,
-      };
-    });
-  }
-
   async create(prisma: ProjectPrismaType, postEntity: PostEntity): Promise<PostEntity> {
     const record = await prisma.post.create({
       data: postEntity.toPersistence(),
-    });
-
-    return PostEntity.Reconstruct<Post, PostEntity>(record);
-  }
-
-  async updateStatus(prisma: ProjectPrismaType, postEntity: PostEntity): Promise<PostEntity> {
-    const record = await prisma.post.update({
-      where: {
-        id: postEntity.id,
-      },
-      data: {
-        status: postEntity.status,
-      },
     });
 
     return PostEntity.Reconstruct<Post, PostEntity>(record);

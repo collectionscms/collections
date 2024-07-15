@@ -112,7 +112,6 @@ CREATE TABLE "Post" (
     "id" UUID NOT NULL,
     "projectId" UUID NOT NULL DEFAULT (current_setting('app.current_project_id'::text))::uuid,
     "slug" VARCHAR(255) NOT NULL,
-    "status" VARCHAR(255) NOT NULL,
     "createdAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMPTZ(6) NOT NULL,
 
@@ -150,6 +149,7 @@ CREATE TABLE "Content" (
     "status" VARCHAR(255) NOT NULL,
     "version" INTEGER NOT NULL DEFAULT 1,
     "publishedAt" TIMESTAMPTZ(6),
+    "deletedAt" TIMESTAMPTZ(6),
     "createdById" UUID NOT NULL,
     "updatedById" UUID NOT NULL,
     "createdAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,

@@ -1,54 +1,56 @@
 import express, { Request, Response } from 'express';
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
-import { PostRepository } from '../data/post/post.repository.js';
+import { ContentRepository } from '../data/content/content.repository.js';
 import { projectPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';
 import { validateAccess } from '../middlewares/validateAccess.js';
-import { getTrashedPostsUseCaseSchema } from '../useCases/post/getTrashedPosts.schema.js';
-import { GetTrashedPostsUseCase } from '../useCases/post/getTrashedPosts.useCase.js';
-import { restorePostUseCaseSchema } from '../useCases/post/restorePost.schema.js';
-import { RestorePostUseCase } from '../useCases/post/restorePost.useCase.js';
+import { getTrashedContentsUseCaseSchema } from '../useCases/content/getTrashedContents.schema.js';
+import { GetTrashedContentsUseCase } from '../useCases/content/getTrashedContents.useCase.js';
+import { restoreContentUseCaseSchema } from '../useCases/content/restoreContent.schema.js';
+import { RestoreContentUseCase } from '../useCases/content/restoreContent.useCase.js';
+import { ProjectRepository } from '../data/project/project.repository.js';
+import { PostRepository } from '../data/post/post.repository.js';
 
 const router = express.Router();
 
 router.get(
-  '/trashedPosts',
+  '/trashed/contents',
   authenticatedUser,
   validateAccess(['trashPost']),
   asyncHandler(async (req: Request, res: Response) => {
-    const validated = getTrashedPostsUseCaseSchema.safeParse({
+    const validated = getTrashedContentsUseCaseSchema.safeParse({
       projectId: res.projectRole?.id,
-      primaryLocale: res.projectRole?.primaryLocale,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
-    const useCase = new GetTrashedPostsUseCase(
+    const useCase = new GetTrashedContentsUseCase(
       projectPrisma(validated.data.projectId),
-      new PostRepository()
+      new ContentRepository()
     );
-    const posts = await useCase.execute(validated.data);
+    const contents = await useCase.execute();
 
     res.json({
-      posts,
+      contents,
     });
   })
 );
 
 router.patch(
-  '/trashedPosts/:id/restore',
+  '/trashed/contents/:id/restore',
   authenticatedUser,
   validateAccess(['trashPost']),
   asyncHandler(async (req: Request, res: Response) => {
-    const validated = restorePostUseCaseSchema.safeParse({
+    const validated = restoreContentUseCaseSchema.safeParse({
       id: req.params.id,
       projectId: res.projectRole?.id,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
-    const useCase = new RestorePostUseCase(
+    const useCase = new RestoreContentUseCase(
       projectPrisma(validated.data.projectId),
-      new PostRepository()
+      new PostRepository(),
+      new ContentRepository()
     );
     await useCase.execute(validated.data);
 
@@ -56,4 +58,4 @@ router.patch(
   })
 );
 
-export const trash = router;
+export const trashedContent = router;

@@ -1,7 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { v4 } from 'uuid';
 import { ContentStatusType, contentStatus } from '../../data/content/content.entity.js';
-import { postStatus } from '../../data/post/post.entity.js';
 import { reviewStatus } from '../../data/review/review.entity.js';
 import { BypassPrismaType } from '../prisma/client.js';
 import { adminUser } from './createUsers.js';
@@ -46,7 +45,6 @@ export const createPost = async (
       id: postId,
       projectId,
       slug: options?.slug ?? faker.lorem.slug(),
-      status: postStatus.open,
       createdAt: currentTime,
       updatedAt: currentTime,
       contents: {

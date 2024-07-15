@@ -1,5 +1,5 @@
-import { UndoOutlined } from '@ant-design/icons';
 import { Tooltip } from '@mui/material';
+import { RiArrowGoBackLine } from '@remixicon/react';
 import { enqueueSnackbar } from 'notistack';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -47,7 +47,7 @@ export const RestoreButtonImpl: React.FC<Props> = ({ postId, onRestored }) => {
           size="small"
           onClick={() => setOpenRestore(true)}
         >
-          <UndoOutlined style={{ fontSize: 16 }} />
+          <RiArrowGoBackLine size={16} />
         </IconButton>
       </Tooltip>
     </>

@@ -18,9 +18,22 @@ export class ContentRepository {
     const records = await prisma.content.findMany({
       where: {
         postId,
-        status: {
-          not: 'trashed',
+        deletedAt: null,
+      },
+    });
+
+    return records.map((record) => ContentEntity.Reconstruct<Content, ContentEntity>(record));
+  }
+
+  async findManyTrashed(prisma: ProjectPrismaType): Promise<ContentEntity[]> {
+    const records = await prisma.content.findMany({
+      where: {
+        deletedAt: {
+          not: null,
         },
+      },
+      orderBy: {
+        deletedAt: 'desc',
       },
     });
 
@@ -71,6 +84,34 @@ export class ContentRepository {
       data: {
         status: contentEntity.status,
         publishedAt: contentEntity.publishedAt,
+      },
+    });
+
+    return ContentEntity.Reconstruct<Content, ContentEntity>(record);
+  }
+
+  async delete(prisma: ProjectPrismaType, contentEntity: ContentEntity): Promise<ContentEntity> {
+    contentEntity.beforeUpdateValidate();
+    const record = await prisma.content.update({
+      where: {
+        id: contentEntity.id,
+      },
+      data: {
+        deletedAt: contentEntity.deletedAt,
+      },
+    });
+
+    return ContentEntity.Reconstruct<Content, ContentEntity>(record);
+  }
+
+  async restore(prisma: ProjectPrismaType, contentEntity: ContentEntity): Promise<ContentEntity> {
+    contentEntity.beforeUpdateValidate();
+    const record = await prisma.content.update({
+      where: {
+        id: contentEntity.id,
+      },
+      data: {
+        deletedAt: contentEntity.deletedAt,
       },
     });
 

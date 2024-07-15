@@ -244,7 +244,8 @@
     "already_invited_email": "すでに招待済みです。",
     "unauthorized_user": "不正なユーザーです。",
     "already_confirmed": "すでに認証済みのユーザーです。",
-    "already_updated_by_another_user": "すでに他のユーザーによって更新されています。"
+    "already_updated_by_another_user": "すでに他のユーザーによって更新されています。",
+    "already_has_same_language_content": "すでに同じ言語のコンテンツがあります。"
   },
   "yup": {
     "mixed": {

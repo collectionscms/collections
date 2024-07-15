@@ -100,7 +100,7 @@ router.patch(
 router.delete(
   '/contents/:id/trash',
   authenticatedUser,
-  validateAccess(['trashContent']),
+  validateAccess(['trashPost']),
   asyncHandler(async (req: Request, res: Response) => {
     const validated = trashContentUseCaseSchema.safeParse({
       id: req.params.id,

@@ -244,7 +244,8 @@
     "already_invited_email": "Already invited.",
     "unauthorized_user": "Unauthorized user.",
     "already_confirmed": "Already confirmed user.",
-    "already_updated_by_another_user": "Already updated by another user."
+    "already_updated_by_another_user": "Already updated by another user.",
+    "already_has_same_language_content": "Already has same language content."
   },
   "yup": {
     "mixed": {
