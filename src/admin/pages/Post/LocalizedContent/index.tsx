@@ -19,6 +19,7 @@ import { useTranslation } from 'react-i18next';
 import { Locale } from '../../../../constant.js';
 import { LocalizedPost } from '../../../../types/index.js';
 import { logger } from '../../../../utilities/logger.js';
+import { useAuth } from '../../../components/utilities/Auth/index.js';
 import { FormValues, addContent } from '../../../fields/validators/post/addContent.js';
 import { usePost } from '../Context/index.js';
 
@@ -30,9 +31,11 @@ export type Props = {
 };
 
 export const LocalizedContent: React.FC<Props> = ({ open, post, onClose, onChanged }) => {
+  const { hasPermission } = useAuth();
   const { createBulkContent } = usePost();
   const { t } = useTranslation();
   const { trigger: createBulkContentTrigger } = createBulkContent(post.id);
+  const hasTrashPost = hasPermission('trashPost');
 
   const {
     watch,
@@ -78,6 +81,7 @@ export const LocalizedContent: React.FC<Props> = ({ open, post, onClose, onChang
                             control={
                               <Switch
                                 {...field}
+                                disabled={!hasTrashPost}
                                 checked={watch('locales').includes(locale)}
                                 onChange={() => {
                                   if (!field.value.includes(locale)) {

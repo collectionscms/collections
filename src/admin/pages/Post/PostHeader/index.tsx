@@ -26,6 +26,7 @@ import { Avatar } from '../../../@extended/components/Avatar/index.js';
 import { IconButton } from '../../../@extended/components/IconButton/index.js';
 import { BaseDialog } from '../../../components/elements/BaseDialog/index.js';
 import { StatusDot } from '../../../components/elements/StatusDot/index.js';
+import { useAuth } from '../../../components/utilities/Auth/index.js';
 import AppBarStyled from './AppBarStyled.js';
 
 export type Props = {
@@ -54,6 +55,7 @@ export const PostHeader: React.FC<Props> = ({
   const theme = useTheme();
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const { hasPermission } = useAuth();
   const [openRevert, setOpenRevert] = useState(false);
   const [openPostTrash, setOpenPostTrash] = useState(false);
 
@@ -226,10 +228,15 @@ export const PostHeader: React.FC<Props> = ({
             </>
           )}
           {/* Delete all content */}
-          <MenuItem onClick={() => setOpenPostTrash(true)} sx={{ color: theme.palette.error.main }}>
-            <DeleteOutlined />
-            <Typography sx={{ pl: 1 }}>{t('delete_post')}</Typography>
-          </MenuItem>
+          {hasPermission('trashPost') && (
+            <MenuItem
+              onClick={() => setOpenPostTrash(true)}
+              sx={{ color: theme.palette.error.main }}
+            >
+              <DeleteOutlined />
+              <Typography sx={{ pl: 1 }}>{t('delete_post')}</Typography>
+            </MenuItem>
+          )}
         </Menu>
         {/* Locale menu */}
         <Menu
