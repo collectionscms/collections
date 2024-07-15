@@ -35,6 +35,19 @@ export const History: React.FC<Props> = ({ histories }) => {
     setOpenHistory(false);
   };
 
+  const getTimelineDotColor = (status: string) => {
+    switch (status) {
+      case 'draft':
+        return 'secondary';
+      case 'review':
+        return 'warning';
+      case 'published':
+        return 'success';
+      case 'archived':
+        return 'error';
+    }
+  };
+
   return (
     <>
       <Popover
@@ -62,9 +75,11 @@ export const History: React.FC<Props> = ({ histories }) => {
           {histories.map((history) => (
             <TimelineItem key={history.id}>
               <TimelineSeparator>
-                {history.status === 'draft' && <TimelineDot variant="outlined" color="secondary" />}
-                {history.status === 'review' && <TimelineDot variant="filled" color="warning" />}
-                {history.status === 'published' && <TimelineDot variant="filled" color="success" />}
+                <TimelineDot
+                  variant="filled"
+                  color={getTimelineDotColor(history.status)}
+                  sx={{ padding: 0.4, borderWidth: 1 }}
+                />
                 <TimelineConnector />
               </TimelineSeparator>
               <TimelineContent>
