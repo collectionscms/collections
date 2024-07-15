@@ -106,7 +106,6 @@ export const EditPostPageImpl: React.FC = () => {
 
   const [openSettings, setOpenSettings] = useState(false);
   const handleOpenSettings = async () => {
-    await saveContent(buildParams());
     setOpenSettings(true);
   };
 
