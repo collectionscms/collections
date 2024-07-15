@@ -46,9 +46,10 @@ export const PublishSetting: React.FC<Props> = ({ open, contentId, status, onClo
   const { t } = useTranslation();
   const navigate = useNavigate();
   const theme = useTheme();
-  const { requestReview, publish } = usePost();
+  const { requestReview, publish, archive } = usePost();
   const { trigger: requestReviewTrigger } = requestReview(contentId);
   const { trigger: publishTrigger } = publish(contentId);
+  const { trigger: archiveTrigger } = archive(contentId);
 
   const appBar: AppBarProps = {
     position: 'fixed',
@@ -78,10 +79,16 @@ export const PublishSetting: React.FC<Props> = ({ open, contentId, status, onClo
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
-      if (form.status === 'review') {
-        await requestReviewTrigger(form);
-      } else {
-        await publishTrigger(form);
+      switch (form.status) {
+        case 'archived':
+          await archiveTrigger(form);
+          break;
+        case 'review':
+          await requestReviewTrigger(form);
+          break;
+        case 'published':
+          await publishTrigger(form);
+          break;
       }
 
       reset(form);
@@ -139,13 +146,22 @@ export const PublishSetting: React.FC<Props> = ({ open, contentId, status, onClo
                   control={control}
                   render={({ field }) => (
                     <RadioGroup value={field.value} name="radio-buttons-group" row>
-                      <FormControlLabel
-                        {...field}
-                        value="review"
-                        disabled={status === 'published'}
-                        control={<Radio />}
-                        label={t('review')}
-                      />
+                      {status === 'published' ? (
+                        <FormControlLabel
+                          {...field}
+                          value="archived"
+                          control={<Radio />}
+                          label={t('archived')}
+                        />
+                      ) : (
+                        <FormControlLabel
+                          {...field}
+                          value="review"
+                          disabled={status === 'published'}
+                          control={<Radio />}
+                          label={t('review')}
+                        />
+                      )}
                       {hasPermission('publishPost') && (
                         <FormControlLabel
                           {...field}

@@ -28,11 +28,11 @@ type PostContext = {
   createBulkContent: (
     postId: string
   ) => SWRMutationResponse<void, any, string, Record<string, any>>;
-  changeStatus: (postId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
   updateContent: (contentId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
   trashContent: (contentId: string) => SWRMutationResponse<void, any, string>;
   requestReview: (contentId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
   publish: (contentId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
+  archive: (contentId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
   createFileImage: () => SWRMutationResponse<
     { files: UploadFile[] },
     any,
@@ -84,14 +84,6 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       }
     );
 
-  const changeStatus = (postId: string) =>
-    useSWRMutation(
-      `/posts/${postId}/changeStatus`,
-      async (url: string, { arg }: { arg: Record<string, any> }) => {
-        return api.patch(url, arg).then((res) => res.data);
-      }
-    );
-
   const updateContent = (contentId: string) =>
     useSWRMutation(
       `/contents/${contentId}`,
@@ -121,6 +113,14 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       }
     );
 
+  const archive = (contentId: string) =>
+    useSWRMutation(
+      `/contents/${contentId}/archive`,
+      async (url: string, { arg }: { arg: Record<string, any> }) => {
+        return api.patch(url, arg).then((res) => res.data);
+      }
+    );
+
   const createFileImage = () =>
     useSWRMutation(`/files`, async (url: string, { arg }: { arg: Record<string, any> }) => {
       return api.post<{ files: UploadFile[] }>(url, arg).then((res) => res.data);
@@ -136,9 +136,9 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       updateContent,
       trashContent,
       createBulkContent,
-      changeStatus,
       requestReview,
       publish,
+      archive,
       createFileImage,
     }),
     [
@@ -150,9 +150,9 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       updateContent,
       trashContent,
       createBulkContent,
-      changeStatus,
       requestReview,
       publish,
+      archive,
       createFileImage,
     ]
   );

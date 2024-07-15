@@ -8,6 +8,8 @@ import { projectPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';
 import { validateAccess } from '../middlewares/validateAccess.js';
+import { archiveUseCaseSchema } from '../useCases/content/archive.schema.js';
+import { ArchiveUseCase } from '../useCases/content/archive.useCase.js';
 import { publishUseCaseSchema } from '../useCases/content/publish.schema.js';
 import { PublishUseCase } from '../useCases/content/publish.useCase.js';
 import { requestReviewUseCaseSchema } from '../useCases/content/requestReview.schema.js';
@@ -87,6 +89,29 @@ router.patch(
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
     const useCase = new PublishUseCase(
+      projectPrisma(validated.data.projectId),
+      new ContentRepository(),
+      new ContentHistoryRepository()
+    );
+    await useCase.execute(validated.data);
+
+    res.status(204).send();
+  })
+);
+
+router.patch(
+  '/contents/:id/archive',
+  authenticatedUser,
+  validateAccess(['archivePost']),
+  asyncHandler(async (req: Request, res: Response) => {
+    const validated = archiveUseCaseSchema.safeParse({
+      id: req.params.id,
+      projectId: res.projectRole?.id,
+      userId: res.user.id,
+    });
+    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
+
+    const useCase = new ArchiveUseCase(
       projectPrisma(validated.data.projectId),
       new ContentRepository(),
       new ContentHistoryRepository()
