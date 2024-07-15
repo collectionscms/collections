@@ -112,7 +112,6 @@ CREATE TABLE "Post" (
     "id" UUID NOT NULL,
     "projectId" UUID NOT NULL DEFAULT (current_setting('app.current_project_id'::text))::uuid,
     "slug" VARCHAR(255) NOT NULL,
-    "status" VARCHAR(255) NOT NULL,
     "createdAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMPTZ(6) NOT NULL,
 
