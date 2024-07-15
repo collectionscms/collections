@@ -347,7 +347,7 @@ export const EditPostPageImpl: React.FC = () => {
       <PublishSetting
         open={openSettings}
         contentId={post.contentId}
-        status={post.status}
+        status={post.currentStatus}
         onClose={() => setOpenSettings(false)}
       />
       <LocalizedContent

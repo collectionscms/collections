@@ -1,5 +1,6 @@
 import { EllipsisOutlined } from '@ant-design/icons';
 import { Divider, Stack, Typography } from '@mui/material';
+import dayjs from 'dayjs';
 import { enqueueSnackbar } from 'notistack';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -18,7 +19,6 @@ import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.
 import { buildColumns } from '../../utilities/buildColumns.js';
 import { PostContextProvider, usePost } from './Context/index.js';
 import { RowMenu } from './RowMenu/index.js';
-import dayjs from 'dayjs';
 
 export const PostPageImpl: React.FC = () => {
   const { hasPermission } = useAuth();
@@ -69,17 +69,17 @@ export const PostPageImpl: React.FC = () => {
       case 'status':
         return (
           <Stack gap={0.5}>
-            {row.localeStatues.map(({ locale, statuses }) => {
+            {row.localeStatues.map(({ locale, currentStatus, prevStatus }) => {
               return (
                 <Stack key={locale} direction="row" gap={1}>
                   <Typography sx={{ width: 30 }}>{locale}</Typography>
-                  {statuses[0] !== 'published' && statuses.includes('published') && (
+                  {prevStatus && (
                     <>
                       <StatusDot status="published" isShowText={false} />
                       <Divider orientation="vertical" flexItem variant="middle" />
                     </>
                   )}
-                  <StatusDot status={statuses[0]} />
+                  <StatusDot status={currentStatus} />
                 </Stack>
               );
             })}
