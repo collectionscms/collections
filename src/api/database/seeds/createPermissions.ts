@@ -8,6 +8,7 @@ export const createPermissions = async (prisma: BypassPrismaType): Promise<void>
     user: ['readUser', 'updateUser', 'deleteUser'],
     invitation: ['inviteUser'],
     review: ['readOwnReview', 'readAllReview', 'createReview', 'approveReview', 'closeReview'],
+    apiKey: ['createApiKey', 'readApiKey', 'updateApiKey', 'deleteApiKey'],
   };
 
   await prisma.permission.createMany({
