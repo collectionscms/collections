@@ -27,7 +27,7 @@ export class CreateBulkContentUseCase {
       for (const content of excludedContents) {
         content.delete();
 
-        const result = await this.contentRepository.updateStatus(tx, content);
+        const result = await this.contentRepository.delete(tx, content);
         updatedContents.push(result);
 
         const contentHistory = ContentHistoryEntity.Construct({

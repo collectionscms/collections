@@ -15,7 +15,7 @@ export class TrashPostUseCase {
     await this.prisma.$transaction(async (tx) => {
       for (const content of contents) {
         content.delete();
-        await this.contentRepository.updateStatus(tx, content);
+        await this.contentRepository.delete(tx, content);
       }
     });
 

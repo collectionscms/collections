@@ -19,7 +19,7 @@ export class TrashContentUseCase {
     content.delete();
 
     const updatedContent = await this.prisma.$transaction(async (tx) => {
-      const result = await this.contentRepository.updateStatus(tx, content);
+      const result = await this.contentRepository.delete(tx, content);
 
       const contentHistory = ContentHistoryEntity.Construct({
         projectId,
