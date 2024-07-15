@@ -103,4 +103,18 @@ export class ContentRepository {
 
     return ContentEntity.Reconstruct<Content, ContentEntity>(record);
   }
+
+  async restore(prisma: ProjectPrismaType, contentEntity: ContentEntity): Promise<ContentEntity> {
+    contentEntity.beforeUpdateValidate();
+    const record = await prisma.content.update({
+      where: {
+        id: contentEntity.id,
+      },
+      data: {
+        deletedAt: contentEntity.deletedAt,
+      },
+    });
+
+    return ContentEntity.Reconstruct<Content, ContentEntity>(record);
+  }
 }

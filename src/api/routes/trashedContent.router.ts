@@ -9,6 +9,8 @@ import { getTrashedContentsUseCaseSchema } from '../useCases/content/getTrashedC
 import { GetTrashedContentsUseCase } from '../useCases/content/getTrashedContents.useCase.js';
 import { restoreContentUseCaseSchema } from '../useCases/content/restoreContent.schema.js';
 import { RestoreContentUseCase } from '../useCases/content/restoreContent.useCase.js';
+import { ProjectRepository } from '../data/project/project.repository.js';
+import { PostRepository } from '../data/post/post.repository.js';
 
 const router = express.Router();
 
@@ -47,6 +49,7 @@ router.patch(
 
     const useCase = new RestoreContentUseCase(
       projectPrisma(validated.data.projectId),
+      new PostRepository(),
       new ContentRepository()
     );
     await useCase.execute(validated.data);

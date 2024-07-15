@@ -1,3 +1,4 @@
+import { Content } from '@prisma/client';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { MainCard } from '../../@extended/components/MainCard/index.js';
@@ -16,22 +17,20 @@ const TrashPageImpl: React.FC = () => {
 
   const fields = [
     { field: 'title', label: t('title'), type: cells.text() },
+    { field: 'locale', label: t('language'), type: cells.text() },
     { field: 'action', label: '', type: cells.text(), width: 80 },
   ];
 
-  const columns = buildColumns(
-    fields,
-    (i: number, row: { id: string; title: string }, data: any) => {
-      const cell = <Cell colIndex={i} type={fields[i].type} cellData={data} />;
+  const columns = buildColumns(fields, (i: number, row: Content, data: any) => {
+    const cell = <Cell colIndex={i} type={fields[i].type} cellData={data} />;
 
-      switch (fields[i].field) {
-        case 'action':
-          return <RestoreButton postId={row.id} onRestored={mutate} />;
-        default:
-          return cell;
-      }
+    switch (fields[i].field) {
+      case 'action':
+        return <RestoreButton postId={row.id} onRestored={mutate} />;
+      default:
+        return cell;
     }
-  );
+  });
 
   return (
     <MainCard content={false} title={<></>} secondary={<></>}>
