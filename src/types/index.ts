@@ -33,7 +33,7 @@ export type PostItem = {
   contentId: string;
   title: string;
   slug: string;
-  localeStatues: { locale: string; statuses: string[]; publishedAt: Date | null }[];
+  localeStatues: { locale: string; currentStatus: string; prevStatus?: string }[];
   updatedByName: string;
   updatedAt: Date;
 };
@@ -42,9 +42,9 @@ export type LocalizedPost = {
   id: string;
   slug: string;
   contentId: string;
-  status: string;
+  currentStatus: string;
+  prevStatus?: string;
   updatedAt: Date;
-  publishedAt?: Date | null;
   contentLocale: string;
   version: number;
   title: string;

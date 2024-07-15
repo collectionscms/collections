@@ -3,7 +3,6 @@ import {
   DeleteOutlined,
   EllipsisOutlined,
   SettingOutlined,
-  UndoOutlined,
 } from '@ant-design/icons';
 import {
   AppBarProps,
@@ -17,7 +16,7 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { RiTranslate2 } from '@remixicon/react';
+import { RiArrowGoBackLine, RiTranslate2 } from '@remixicon/react';
 import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -152,15 +151,13 @@ export const PostHeader: React.FC<Props> = ({
             <Avatar variant="rounded" size="md" color="secondary" type="filled">
               <Typography variant="h5">v{post.version}</Typography>
             </Avatar>
-            {post.publishedAt && post.status !== 'published' ? (
+            {post.prevStatus && (
               <>
                 <StatusDot status="published" />
                 <Divider orientation="vertical" flexItem variant="middle" />
-                <StatusDot status={post.status} />
               </>
-            ) : (
-              <StatusDot status={post.status} />
             )}
+            <StatusDot status={post.currentStatus} />
           </Stack>
           <Stack direction="row" alignItems="center" gap={1.5}>
             <Button
@@ -189,7 +186,7 @@ export const PostHeader: React.FC<Props> = ({
             <>
               <Tooltip title="⌘ + S" placement="top-start">
                 <Button ref={buttonRef} variant="outlined" color="secondary" onClick={onSaveDraft}>
-                  {post.status === 'published'
+                  {post.currentStatus === 'published'
                     ? t('save_draft_new_ver', { version: post.version + 1 })
                     : t('save_draft')}
                 </Button>
@@ -221,7 +218,7 @@ export const PostHeader: React.FC<Props> = ({
           {post.version > 1 && (
             <>
               <MenuItem onClick={() => setOpenRevert(true)}>
-                <UndoOutlined />
+                <RiArrowGoBackLine size={16} />
                 <Typography sx={{ pl: 1 }}>{t('revert_previous_version')}</Typography>
               </MenuItem>
               <Divider />

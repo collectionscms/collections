@@ -83,29 +83,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       sortedContents.filter((c) => c.content.locale === locale)[0] || sortedContents[0];
 
     // Get locale with statuses
-    const localeStatues: {
-      [locale: string]: LocaleStatus;
-    } = contents.reduce(
-      (acc: { [locale: string]: LocaleStatus }, { content }) => {
-        const { locale, status, publishedAt } = content;
-        if (!acc[locale]) {
-          acc[locale] = {
-            locale,
-            statuses: [status],
-            publishedAt: null,
-          };
-        } else {
-          acc[locale].statuses.push(status);
-        }
-
-        if (publishedAt && !acc[locale].publishedAt) {
-          acc[locale].publishedAt = publishedAt;
-        }
-
-        return acc;
-      },
-      {} as { [locale: string]: LocaleStatus }
-    );
+    const localeStatues = this.getLocaleStatues(contents.map((c) => c.content));
 
     return {
       id: this.props.id,
@@ -116,8 +94,8 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       updatedAt: this.props.updatedAt,
       localeStatues: Object.entries(localeStatues).map(([locale, value]) => ({
         locale,
-        statuses: value.statuses,
-        publishedAt: value.publishedAt,
+        currentStatus: value.statuses[0],
+        prevStatus: value.statuses[1],
       })),
     };
   }
@@ -142,17 +120,19 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       []
     );
 
-    // Get unique locales
+    // Get locale statues
+    const localeStatues = this.getLocaleStatues(contents.map((c) => c.content));
+
+    // Filter unique locales
     const locales = [...new Set(contents.map((c) => c.content.locale))];
 
     return {
       id: this.props.id,
       slug: this.props.slug,
       contentId: localeContent.content.id,
-      status: localeContent.content.status,
+      currentStatus: localeStatues[locale].statuses[0],
+      prevStatus: localeStatues[locale].statuses[1],
       updatedAt: localeContent.content.updatedAt,
-      publishedAt:
-        localeContents.filter((c) => c.content.publishedAt)[0]?.content.publishedAt ?? null,
       title: localeContent.content.title ?? '',
       body: localeContent.content.body ?? '',
       bodyJson: localeContent.content.bodyJson ?? '',
@@ -163,5 +143,27 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       file: localeContent.file?.toResponseWithUrl() ?? null,
       histories: histories.map((history) => history.toResponse()),
     };
+  }
+
+  private getLocaleStatues(contents: ContentEntity[]): { [locale: string]: LocaleStatus } {
+    return contents.reduce(
+      (acc: { [locale: string]: LocaleStatus }, content) => {
+        const { locale, status, publishedAt } = content;
+        const localeStatus = acc[locale];
+
+        if (!localeStatus) {
+          acc[locale] = {
+            locale,
+            statuses: [status],
+            publishedAt,
+          };
+        } else if (!localeStatus.publishedAt) {
+          acc[locale].statuses.push(status);
+        }
+
+        return acc;
+      },
+      {} as { [locale: string]: LocaleStatus }
+    );
   }
 }
