@@ -1,5 +1,5 @@
 import { Content } from '@prisma/client';
-import { ContentEntity, contentStatus } from '../../data/content/content.entity.js';
+import { ContentEntity } from '../../data/content/content.entity.js';
 import { ContentRepository } from '../../data/content/content.repository.js';
 import { ContentHistoryEntity } from '../../data/contentHistory/contentHistory.entity.js';
 import { ContentHistoryRepository } from '../../data/contentHistory/contentHistory.repository.js';
@@ -29,15 +29,6 @@ export class CreateBulkContentUseCase {
 
         const result = await this.contentRepository.delete(tx, content);
         updatedContents.push(result);
-
-        const contentHistory = ContentHistoryEntity.Construct({
-          projectId,
-          contentId: content.id,
-          userId,
-          status: content.status,
-          version: content.version,
-        });
-        histories.push(contentHistory);
       }
 
       // create contents

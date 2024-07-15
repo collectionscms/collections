@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
 import { ContentRepository } from '../data/content/content.repository.js';
+import { PostRepository } from '../data/post/post.repository.js';
 import { projectPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';
@@ -9,8 +10,6 @@ import { getTrashedContentsUseCaseSchema } from '../useCases/content/getTrashedC
 import { GetTrashedContentsUseCase } from '../useCases/content/getTrashedContents.useCase.js';
 import { restoreContentUseCaseSchema } from '../useCases/content/restoreContent.schema.js';
 import { RestoreContentUseCase } from '../useCases/content/restoreContent.useCase.js';
-import { ProjectRepository } from '../data/project/project.repository.js';
-import { PostRepository } from '../data/post/post.repository.js';
 
 const router = express.Router();
 
