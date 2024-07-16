@@ -3,12 +3,12 @@ import { yup } from '../../yup.js';
 
 export type FormValues = {
   name: string;
-  key: string;
+  key?: string;
 };
 
 export const updateApiKeySchema = (): ObjectSchema<FormValues> => {
   return yup.object().shape({
     name: yup.string().required().max(60),
-    key: yup.string().required().max(250),
+    key: yup.string().optional().max(250),
   });
 };

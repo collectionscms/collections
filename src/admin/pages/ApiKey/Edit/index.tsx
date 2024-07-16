@@ -1,11 +1,22 @@
+import { SyncOutlined } from '@ant-design/icons';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button, FormHelperText, InputLabel, Stack, TextField } from '@mui/material';
+import {
+  Button,
+  FormHelperText,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  Stack,
+  TextField,
+  Tooltip,
+} from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { useSnackbar } from 'notistack';
 import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
+import { v4 } from 'uuid';
 import { logger } from '../../../../utilities/logger.js';
 import { MainCard } from '../../../@extended/components/MainCard/index.js';
 import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscardDialog/index.js';
@@ -30,13 +41,14 @@ const EditApiKeyPageImpl: React.FC = () => {
 
   const {
     reset,
+    setValue,
     control,
     handleSubmit,
     formState: { isDirty, errors },
   } = useForm<FormValues>({
     defaultValues: {
       name: apiKey.name,
-      key: apiKey.key,
+      key: '',
     },
     resolver: yupResolver(updateApiKeySchema()),
   });
@@ -44,6 +56,10 @@ const EditApiKeyPageImpl: React.FC = () => {
 
   const navigateToList = () => {
     navigate('../api-keys');
+  };
+
+  const handleGenerateApiKey = () => {
+    setValue('key', v4());
   };
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
@@ -93,7 +109,24 @@ const EditApiKeyPageImpl: React.FC = () => {
                         <TextField
                           {...field}
                           type="text"
+                          placeholder={t('hidden_for_security')}
                           fullWidth
+                          InputProps={{
+                            readOnly: true,
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                <Tooltip title={t('generate_api_key')} placement="top">
+                                  <IconButton
+                                    edge="end"
+                                    color="secondary"
+                                    onClick={handleGenerateApiKey}
+                                  >
+                                    <SyncOutlined />
+                                  </IconButton>
+                                </Tooltip>
+                              </InputAdornment>
+                            ),
+                          }}
                           error={errors.key !== undefined}
                         />
                       )}
