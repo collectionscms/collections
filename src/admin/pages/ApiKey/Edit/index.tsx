@@ -142,7 +142,7 @@ const EditApiKeyPageImpl: React.FC = () => {
                     sx={{ width: 1 }}
                   >
                     {hasPermission('deleteApiKey') ? (
-                      <DeleteButton id={id} slug="roles" onSuccess={navigateToList} />
+                      <DeleteButton id={id} slug="api-keys" onSuccess={navigateToList} />
                     ) : (
                       <div />
                     )}
