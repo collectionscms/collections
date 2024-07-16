@@ -25,6 +25,9 @@ const EditUser = Loader(lazy(() => import('../../../pages/User/Edit/index.js'), 
 
 // Api key
 const ApiKey = Loader(lazy(() => import('../../../pages/ApiKey/index.js'), 'ApiKeyPage'));
+const EditApiKey = Loader(
+  lazy(() => import('../../../pages/ApiKey/Edit/index.js'), 'EditApiKeyPage')
+);
 
 const NotFound = Loader(lazy(() => import('../../../pages/NotFound/index.js'), 'NotFound'));
 
@@ -136,6 +139,17 @@ export const SettingRoutes = () => {
       element: (
         <MainHeader label={t('api_key')}>
           <ApiKey />
+        </MainHeader>
+      ),
+    });
+  }
+
+  if (hasPermission('updateApiKey')) {
+    children.push({
+      path: 'api-keys/:id',
+      element: (
+        <MainHeader label={t('edit.api_key')}>
+          <EditApiKey />
         </MainHeader>
       ),
     });
