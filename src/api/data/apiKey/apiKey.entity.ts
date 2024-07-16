@@ -31,6 +31,14 @@ export class ApiKeyEntity extends PrismaBaseEntity<ApiKey> {
     return this.props.id;
   }
 
+  update = (params: { name: string; key?: string }) => {
+    this.props.name = params.name;
+
+    if (params.key) {
+      this.props.key = params.key;
+    }
+  };
+
   private isValid() {
     if (!this.props.id) {
       throw new UnexpectedException({ message: 'id is required' });

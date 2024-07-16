@@ -17,4 +17,18 @@ export class ApiKeyRepository {
     const records = await prisma.apiKey.findMany();
     return records.map((record) => ApiKeyEntity.Reconstruct<ApiKey, ApiKeyEntity>(record));
   }
+
+  async update(prisma: ProjectPrismaType, entity: ApiKeyEntity): Promise<ApiKeyEntity> {
+    const record = entity.toPersistence();
+    const result = await prisma.apiKey.update({
+      where: {
+        id: entity.id,
+      },
+      data: {
+        name: record.name,
+        key: record.key,
+      },
+    });
+    return ApiKeyEntity.Reconstruct<ApiKey, ApiKeyEntity>(result);
+  }
 }
