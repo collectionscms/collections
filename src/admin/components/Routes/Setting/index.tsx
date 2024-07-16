@@ -8,16 +8,24 @@ import { NavContentLayout } from '../../layouts/NavContentLayout/index.js';
 import { useAuth } from '../../utilities/Auth/index.js';
 
 const Project = Loader(lazy(() => import('../../../pages/Project/index.js'), 'Project'));
+
+// Role
 const Role = Loader(lazy(() => import('../../../pages/Role/index.js'), 'RolePage'));
 const CreateRole = Loader(
   lazy(() => import('../../../pages/Role/Create/index.js'), 'CreateRolePage')
 );
 const EditRole = Loader(lazy(() => import('../../../pages/Role/Edit/index.js'), 'EditRolePage'));
+
+// User
 const User = Loader(lazy(() => import('../../../pages/User/index.js'), 'UserPage'));
 const CreateUser = Loader(
   lazy(() => import('../../../pages/User/Create/index.js'), 'CreateUserPage')
 );
 const EditUser = Loader(lazy(() => import('../../../pages/User/Edit/index.js'), 'EditUserPage'));
+
+// Api key
+const ApiKey = Loader(lazy(() => import('../../../pages/ApiKey/index.js'), 'ApiKeyPage'));
+
 const NotFound = Loader(lazy(() => import('../../../pages/NotFound/index.js'), 'NotFound'));
 
 export const SettingRoutes = () => {
@@ -113,6 +121,21 @@ export const SettingRoutes = () => {
       element: (
         <MainHeader label={t('edit.user')}>
           <EditUser />
+        </MainHeader>
+      ),
+    });
+  }
+
+  // /////////////////////////////////////
+  // Api keys
+  // /////////////////////////////////////
+
+  if (hasPermission('readApiKey')) {
+    children.push({
+      path: 'api-keys',
+      element: (
+        <MainHeader label={t('api_key')}>
+          <ApiKey />
         </MainHeader>
       ),
     });

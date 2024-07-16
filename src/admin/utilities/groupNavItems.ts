@@ -109,7 +109,7 @@ export const settingsGroupNavItems = (): Group => {
   if (hasPermission('readApiKey')) {
     items.push({
       label: 'api_key',
-      href: `${path}/apiKeys`,
+      href: `${path}/api-keys`,
       icon: KeyOutlined,
     });
   }
