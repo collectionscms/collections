@@ -33,6 +33,7 @@
   "search_by": "Search by {{field_name}}",
   "name": "Name",
   "status": "Status",
+  "created_at": "Created Date",
   "updated_at": "Updated Date",
   "updater": "Updater",
   "valid": "Valid",

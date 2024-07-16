@@ -33,6 +33,7 @@
   "search_by": "{{field_name}}で検索",
   "name": "名前",
   "status": "ステータス",
+  "created_at": "登録日",
   "updated_at": "更新日",
   "updater": "更新者",
   "valid": "有効",
