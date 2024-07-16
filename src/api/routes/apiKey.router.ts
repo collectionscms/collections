@@ -5,6 +5,8 @@ import { projectPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';
 import { validateAccess } from '../middlewares/validateAccess.js';
+import { deleteApiKeyUseCaseSchema } from '../useCases/apiKey/deleteApiKey.schema.js';
+import { DeleteApiKeyUseCase } from '../useCases/apiKey/deleteApiKey.useCase.js';
 import { getApiKeyUseCaseSchema } from '../useCases/apiKey/getApiKey.schema.js';
 import { GetApiKeyUseCase } from '../useCases/apiKey/getApiKey.useCase.js';
 import { getApiKeysUseCaseSchema } from '../useCases/apiKey/getApiKeys.schema.js';
@@ -75,6 +77,27 @@ router.patch(
       new ApiKeyRepository()
     );
     await useCase.execute(validated.data);
+
+    res.status(204).end();
+  })
+);
+
+router.delete(
+  '/api-keys/:id',
+  authenticatedUser,
+  validateAccess(['deleteApiKey']),
+  asyncHandler(async (req: Request, res: Response) => {
+    const validate = deleteApiKeyUseCaseSchema.safeParse({
+      projectId: res.projectRole?.id,
+      apiKeyId: req.params.id,
+    });
+    if (!validate.success) throw new InvalidPayloadException('bad_request', validate.error);
+
+    const useCase = new DeleteApiKeyUseCase(
+      projectPrisma(validate.data.projectId),
+      new ApiKeyRepository()
+    );
+    await useCase.execute(validate.data);
 
     res.status(204).end();
   })
