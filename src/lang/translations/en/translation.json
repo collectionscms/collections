@@ -165,6 +165,7 @@
   "delete_post": "Delete post",
   "revert_previous_version": "Revert previous version",
   "api_key": "API key",
+  "generate_api_key": "Generate API key",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",

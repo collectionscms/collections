@@ -165,6 +165,7 @@
   "delete_post": "記事を削除する",
   "revert_previous_version": "前のバージョンに戻す",
   "api_key": "APIキー",
+  "generate_api_key": "APIキーを生成",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",
