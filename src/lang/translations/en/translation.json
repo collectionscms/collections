@@ -203,7 +203,7 @@
   "edit": {
     "user": "Edit User",
     "role": "Edit Role",
-    "data_model": "Edit Data Model"
+    "api_key": "Edit Api Key"
   },
   "locale": {
     "en": "English",

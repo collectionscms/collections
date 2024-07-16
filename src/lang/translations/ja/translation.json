@@ -197,13 +197,12 @@
   "create": {
     "user": "ユーザー 新規登録",
     "role": "ロール 新規登録",
-    "data_model": "データモデル 新規登録",
     "project": "プロジェクト 新規登録"
   },
   "edit": {
     "user": "ユーザー 編集",
     "role": "ロール 編集",
-    "data_model": "データモデル 編集"
+    "api_key": "APIキー 編集"
   },
   "locale": {
     "en": "英語",
