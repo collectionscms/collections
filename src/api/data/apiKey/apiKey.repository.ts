@@ -31,4 +31,12 @@ export class ApiKeyRepository {
     });
     return ApiKeyEntity.Reconstruct<ApiKey, ApiKeyEntity>(result);
   }
+
+  async delete(prisma: ProjectPrismaType, entity: ApiKeyEntity): Promise<void> {
+    await prisma.apiKey.delete({
+      where: {
+        id: entity.id,
+      },
+    });
+  }
 }
