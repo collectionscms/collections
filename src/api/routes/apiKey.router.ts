@@ -9,7 +9,8 @@ import { getApiKeyUseCaseSchema } from '../useCases/apiKey/getApiKey.schema.js';
 import { GetApiKeyUseCase } from '../useCases/apiKey/getApiKey.useCase.js';
 import { getApiKeysUseCaseSchema } from '../useCases/apiKey/getApiKeys.schema.js';
 import { GetApiKeysUseCase } from '../useCases/apiKey/getApiKeys.useCase.js';
-import { RecordNotFoundException } from '../../exceptions/database/recordNotFound.js';
+import { updateApiKeyUseCaseSchema } from '../useCases/apiKey/updateApiKey.schema.js';
+import { UpdateApiKeyUseCase } from '../useCases/apiKey/updateApiKey.useCase.js';
 
 const router = express.Router();
 
@@ -53,6 +54,29 @@ router.get(
     const apiKey = await useCase.execute(validated.data);
 
     res.json({ apiKey });
+  })
+);
+
+router.patch(
+  '/api-keys/:id',
+  authenticatedUser,
+  validateAccess(['updateApiKey']),
+  asyncHandler(async (req: Request, res: Response) => {
+    const validated = updateApiKeyUseCaseSchema.safeParse({
+      projectId: res.projectRole?.id,
+      apiKeyId: req.params.id,
+      name: req.body.name,
+      key: req.body.key,
+    });
+    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
+
+    const useCase = new UpdateApiKeyUseCase(
+      projectPrisma(validated.data.projectId),
+      new ApiKeyRepository()
+    );
+    await useCase.execute(validated.data);
+
+    res.status(204).end();
   })
 );
 
