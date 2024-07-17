@@ -11,41 +11,41 @@ export const jaEditorRole = v4();
 export const jaContributorRole = v4();
 export const jaViewerRole = v4();
 
+export const editorPermissions = [
+  'readPost',
+  'createPost',
+  'updatePost',
+  'trashPost',
+  'publishPost',
+  'archivePost',
+  'readProject',
+  'readRole',
+  'createRole',
+  'readUser',
+  'inviteUser',
+  'readOwnReview',
+  'readAllReview',
+  'createReview',
+  'approveReview',
+  'closeReview',
+];
+
+export const contributorPermissions = [
+  'readPost',
+  'createPost',
+  'updatePost',
+  'publishPost',
+  'readProject',
+  'readRole',
+  'readUser',
+  'readOwnReview',
+  'createReview',
+  'closeReview',
+];
+
+export const viewerPermissions = ['readPost'];
+
 export const createRoles = async (prisma: BypassPrismaType): Promise<void> => {
-  const editorPermissions = [
-    'readPost',
-    'createPost',
-    'updatePost',
-    'trashPost',
-    'publishPost',
-    'archivePost',
-    'readProject',
-    'readRole',
-    'createRole',
-    'readUser',
-    'inviteUser',
-    'readOwnReview',
-    'readAllReview',
-    'createReview',
-    'approveReview',
-    'closeReview',
-  ];
-
-  const contributorPermissions = [
-    'readPost',
-    'createPost',
-    'updatePost',
-    'publishPost',
-    'readProject',
-    'readRole',
-    'readUser',
-    'readOwnReview',
-    'createReview',
-    'closeReview',
-  ];
-
-  const viewerPermissions = ['readPost'];
-
   const enProjectRoles = [
     {
       id: enAdminRole,

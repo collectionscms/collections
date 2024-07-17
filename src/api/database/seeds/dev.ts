@@ -1,6 +1,7 @@
 import { Output } from '../../../utilities/output.js';
 import { contentStatus } from '../../data/content/content.entity.js';
 import { bypassPrisma } from '../prisma/client.js';
+import { createApiKeys } from './createApiKeys.js';
 import { createPermissions } from './createPermissions.js';
 import { createPost } from './createPost.js';
 import { createProjects, enProject, jaProject } from './createProjects.js';
@@ -24,6 +25,7 @@ export const seedDev = async (): Promise<void> => {
       await createPermissions(tx);
       await createRoles(tx);
       await createUsers(tx, getUsers());
+      await createApiKeys(tx);
 
       for (const project of [enProject, jaProject]) {
         // draft

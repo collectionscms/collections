@@ -1,0 +1,9 @@
+import { z } from 'zod';
+
+export const createApiKeyUseCaseSchema = z.object({
+  projectId: z.string(),
+  name: z.string(),
+  createdById: z.string(),
+});
+
+export type CreateApiKeyUseCaseSchemaType = z.infer<typeof createApiKeyUseCaseSchema>;
