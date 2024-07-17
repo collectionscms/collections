@@ -18,7 +18,18 @@ export class ApiKeyRepository {
     return records.map((record) => ApiKeyEntity.Reconstruct<ApiKey, ApiKeyEntity>(record));
   }
 
+  async create(prisma: ProjectPrismaType, entity: ApiKeyEntity): Promise<ApiKeyEntity> {
+    entity.beforeInsertValidate();
+
+    const result = await prisma.apiKey.create({
+      data: entity.toPersistence(),
+    });
+    return ApiKeyEntity.Reconstruct<ApiKey, ApiKeyEntity>(result);
+  }
+
   async update(prisma: ProjectPrismaType, entity: ApiKeyEntity): Promise<ApiKeyEntity> {
+    entity.beforeUpdateValidate();
+
     const record = entity.toPersistence();
     const result = await prisma.apiKey.update({
       where: {
