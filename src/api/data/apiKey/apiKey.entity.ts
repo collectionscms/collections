@@ -7,19 +7,17 @@ export class ApiKeyEntity extends PrismaBaseEntity<ApiKey> {
   static Construct({
     projectId,
     name,
-    key,
     createdById,
   }: {
     projectId: string;
     name: string;
-    key: string;
     createdById: string;
   }): ApiKeyEntity {
     return new ApiKeyEntity({
       id: v4(),
       projectId,
       name,
-      key,
+      key: v4(),
       createdById,
       updatedById: createdById,
       createdAt: new Date(),
