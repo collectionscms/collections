@@ -80,7 +80,7 @@ export const Theme = (colors: PalettesProps): PaletteThemeProps => {
     error: {
       lighter: red[0],
       light: red[2],
-      main: red[5],
+      main: red[4],
       dark: red[7],
       darker: red[9],
       contrastText,
