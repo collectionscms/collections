@@ -198,8 +198,8 @@
   "create": {
     "user": "Create User",
     "role": "Create Role",
-    "data_model": "Create Data Model",
-    "project": "Create Project"
+    "project": "Create Project",
+    "api_key": "Create Api Key"
   },
   "edit": {
     "user": "Edit User",
