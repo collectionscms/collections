@@ -5,6 +5,8 @@ import { projectPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';
 import { validateAccess } from '../middlewares/validateAccess.js';
+import { createApiKeyUseCaseSchema } from '../useCases/apiKey/createApiKey.schema.js';
+import { CreateApiKeyUseCase } from '../useCases/apiKey/createApiKey.useCase.js';
 import { deleteApiKeyUseCaseSchema } from '../useCases/apiKey/deleteApiKey.schema.js';
 import { DeleteApiKeyUseCase } from '../useCases/apiKey/deleteApiKey.useCase.js';
 import { getApiKeyUseCaseSchema } from '../useCases/apiKey/getApiKey.schema.js';
@@ -50,6 +52,28 @@ router.get(
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
     const useCase = new GetApiKeyUseCase(
+      projectPrisma(validated.data.projectId),
+      new ApiKeyRepository()
+    );
+    const apiKey = await useCase.execute(validated.data);
+
+    res.json({ apiKey });
+  })
+);
+
+router.post(
+  '/api-keys',
+  authenticatedUser,
+  validateAccess(['createApiKey']),
+  asyncHandler(async (req: Request, res: Response) => {
+    const validated = createApiKeyUseCaseSchema.safeParse({
+      projectId: res.projectRole?.id,
+      name: req.body.name,
+      createdById: res.user?.id,
+    });
+    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
+
+    const useCase = new CreateApiKeyUseCase(
       projectPrisma(validated.data.projectId),
       new ApiKeyRepository()
     );
