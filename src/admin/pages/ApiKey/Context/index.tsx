@@ -19,6 +19,7 @@ type ApiKeyContext = {
       suspense: true;
     }
   >;
+  createApiKey: () => SWRMutationResponse<ApiKey, any, string, Record<string, any>>;
   updateApiKey: (id: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
 };
 
@@ -43,6 +44,11 @@ export const ApiKeyContextProvider: React.FC<{ children: React.ReactNode }> = ({
       }
     );
 
+  const createApiKey = () =>
+    useSWRMutation(`/api-keys`, async (url: string, { arg }: { arg: Record<string, any> }) => {
+      return api.post<{ apiKey: ApiKey }>(url, arg).then((res) => res.data.apiKey);
+    });
+
   const updateApiKey = (id: string) =>
     useSWRMutation(
       `/api-keys/${id}`,
@@ -55,9 +61,10 @@ export const ApiKeyContextProvider: React.FC<{ children: React.ReactNode }> = ({
     () => ({
       getApiKeys,
       getApiKey,
+      createApiKey,
       updateApiKey,
     }),
-    [getApiKeys, getApiKey, updateApiKey]
+    [getApiKeys, getApiKey, createApiKey, updateApiKey]
   );
 
   return <Context.Provider value={value}>{children}</Context.Provider>;
