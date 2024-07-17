@@ -8,6 +8,7 @@ import { UserEntity } from '../user/user.entity.js';
 import { PostEntity } from './post.entity.js';
 
 export class PostRepository {
+  // todo rename to findMany
   async findManyByProjectId(prisma: ProjectPrismaType): Promise<
     {
       post: PostEntity;

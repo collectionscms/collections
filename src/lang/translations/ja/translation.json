@@ -33,6 +33,7 @@
   "search_by": "{{field_name}}で検索",
   "name": "名前",
   "status": "ステータス",
+  "created_at": "登録日",
   "updated_at": "更新日",
   "updater": "更新者",
   "valid": "有効",
@@ -163,6 +164,8 @@
   "delete_locale_content": "{{locale}} だけ削除する",
   "delete_post": "記事を削除する",
   "revert_previous_version": "前のバージョンに戻す",
+  "api_key": "APIキー",
+  "generate_api_key": "APIキーを生成",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",
@@ -195,13 +198,13 @@
   "create": {
     "user": "ユーザー 新規登録",
     "role": "ロール 新規登録",
-    "data_model": "データモデル 新規登録",
-    "project": "プロジェクト 新規登録"
+    "project": "プロジェクト 新規登録",
+    "api_key": "APIキー 新規登録"
   },
   "edit": {
     "user": "ユーザー 編集",
     "role": "ロール 編集",
-    "data_model": "データモデル 編集"
+    "api_key": "APIキー 編集"
   },
   "locale": {
     "en": "英語",

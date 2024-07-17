@@ -8,25 +8,26 @@ datasource db {
 }
 
 model Project {
-  id              String           @id @db.Uuid
-  name            String           @db.VarChar(255)
-  description     String?          @db.VarChar(255)
-  subdomain       String           @unique @db.VarChar(255)
-  iconUrl         String?          @db.VarChar(255)
-  enabled         Boolean          @default(true)
-  primaryLocale   String           @db.VarChar(255)
-  createdAt       DateTime         @default(now()) @db.Timestamptz(6)
-  updatedAt       DateTime         @updatedAt @db.Timestamptz(6)
-  userProjects    UserProject[]
-  files           File[]
-  roles           Role[]
-  posts           Post[]
-  contents        Content[]
-  contentHistory  ContentHistory[]
-  apiKeys         ApiKey[]
-  invitations     Invitation[]
-  rolePermissions RolePermission[]
-  reivews         Review[]
+  id                String             @id @db.Uuid
+  name              String             @db.VarChar(255)
+  description       String?            @db.VarChar(255)
+  subdomain         String             @unique @db.VarChar(255)
+  iconUrl           String?            @db.VarChar(255)
+  enabled           Boolean            @default(true)
+  primaryLocale     String             @db.VarChar(255)
+  createdAt         DateTime           @default(now()) @db.Timestamptz(6)
+  updatedAt         DateTime           @updatedAt @db.Timestamptz(6)
+  userProjects      UserProject[]
+  files             File[]
+  roles             Role[]
+  posts             Post[]
+  contents          Content[]
+  contentHistory    ContentHistory[]
+  apiKeys           ApiKey[]
+  invitations       Invitation[]
+  rolePermissions   RolePermission[]
+  reivews           Review[]
+  apiKeyPermissions ApiKeyPermission[]
 }
 
 model User {
@@ -49,6 +50,8 @@ model User {
   reviewerHasReviews      Review[]         @relation("Reviewer")
   createdByHasContents    Content[]        @relation("CreatedBy")
   updatedByHasContents    Content[]        @relation("UpdatedBy")
+  createdByHasApiKeys     ApiKey[]         @relation("CreatedBy")
+  updatedByHasApiKeys     ApiKey[]         @relation("UpdatedBy")
 }
 
 model UserProject {
@@ -107,10 +110,11 @@ model RolePermission {
 }
 
 model Permission {
-  action          String           @id @db.VarChar(255)
-  group           String           @db.VarChar(255)
-  displayOrder    Int
-  rolePermissions RolePermission[]
+  action            String             @id @db.VarChar(255)
+  group             String             @db.VarChar(255)
+  displayOrder      Int
+  rolePermissions   RolePermission[]
+  apiKeyPermissions ApiKeyPermission[]
 }
 
 model File {
@@ -198,11 +202,28 @@ model ContentHistory {
 }
 
 model ApiKey {
-  id        String   @id @db.Uuid
-  projectId String   @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
-  name      String   @db.VarChar(255)
-  key       String   @db.VarChar(255)
-  createdAt DateTime @default(now()) @db.Timestamptz(6)
-  updatedAt DateTime @updatedAt @db.Timestamptz(6)
-  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  id                String             @id @db.Uuid
+  projectId         String             @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
+  name              String             @db.VarChar(255)
+  key               String             @db.VarChar(255)
+  createdById       String             @db.Uuid
+  updatedById       String             @db.Uuid
+  createdBy         User               @relation(name: "CreatedBy", fields: [createdById], references: [id], onDelete: NoAction)
+  updatedBy         User               @relation(name: "UpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction)
+  createdAt         DateTime           @default(now()) @db.Timestamptz(6)
+  updatedAt         DateTime           @updatedAt @db.Timestamptz(6)
+  project           Project            @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  apiKeyPermissions ApiKeyPermission[]
+}
+
+model ApiKeyPermission {
+  id               String     @id @db.Uuid
+  apiKeyId         String     @db.Uuid
+  projectId        String     @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
+  permissionAction String     @db.VarChar(255)
+  createdAt        DateTime   @default(now()) @db.Timestamptz(6)
+  updatedAt        DateTime   @updatedAt @db.Timestamptz(6)
+  apiKey           ApiKey     @relation(fields: [apiKeyId], references: [id], onDelete: Cascade)
+  project          Project    @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  permission       Permission @relation(fields: [permissionAction], references: [action], onDelete: Cascade)
 }

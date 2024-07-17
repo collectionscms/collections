@@ -33,6 +33,7 @@
   "search_by": "Search by {{field_name}}",
   "name": "Name",
   "status": "Status",
+  "created_at": "Created Date",
   "updated_at": "Updated Date",
   "updater": "Updater",
   "valid": "Valid",
@@ -163,6 +164,8 @@
   "delete_locale_content": "Delete {{locale}} only",
   "delete_post": "Delete post",
   "revert_previous_version": "Revert previous version",
+  "api_key": "API key",
+  "generate_api_key": "Generate API key",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",
@@ -195,13 +198,13 @@
   "create": {
     "user": "Create User",
     "role": "Create Role",
-    "data_model": "Create Data Model",
-    "project": "Create Project"
+    "project": "Create Project",
+    "api_key": "Create Api Key"
   },
   "edit": {
     "user": "Edit User",
     "role": "Edit Role",
-    "data_model": "Edit Data Model"
+    "api_key": "Edit Api Key"
   },
   "locale": {
     "en": "English",

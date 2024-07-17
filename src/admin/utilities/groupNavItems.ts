@@ -2,6 +2,7 @@ import {
   DeleteOutlined,
   EditOutlined,
   InboxOutlined,
+  KeyOutlined,
   LogoutOutlined,
   SafetyOutlined,
   SettingOutlined,
@@ -102,6 +103,14 @@ export const settingsGroupNavItems = (): Group => {
       label: 'user',
       href: `${path}/users`,
       icon: TeamOutlined,
+    });
+  }
+
+  if (hasPermission('readApiKey')) {
+    items.push({
+      label: 'api_key',
+      href: `${path}/api-keys`,
+      icon: KeyOutlined,
     });
   }
 
