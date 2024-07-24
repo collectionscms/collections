@@ -27,6 +27,10 @@ export class ApiKeyPermissionEntity extends PrismaBaseEntity<ApiKeyPermission> {
     return this.props.id;
   }
 
+  get permissionAction(): string {
+    return this.props.permissionAction;
+  }
+
   private isValid() {
     if (!this.props.id) {
       throw new UnexpectedException({ message: 'id is required' });

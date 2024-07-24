@@ -1,4 +1,4 @@
-import { ContentHistory, File, Permission, Project, Role } from '@prisma/client';
+import { ApiKey, ContentHistory, File, Permission, Project, Role } from '@prisma/client';
 
 export type UserProfile = {
   id: string;
@@ -59,3 +59,7 @@ export type LocalizedPost = {
 export type UploadFile = {
   url: string;
 } & File;
+
+export type ApiKeyWithPermissions = {
+  permissions: string[];
+} & ApiKey;

@@ -1,4 +1,4 @@
-import { ApiKey } from '@prisma/client';
+import { ApiKeyWithPermissions } from '../../../types/index.js';
 import { ApiKeyRepository } from '../../data/apiKey/apiKey.repository.js';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
 import { GetApiKeyUseCaseSchemaType } from './getApiKey.schema.js';
@@ -9,9 +9,15 @@ export class GetApiKeyUseCase {
     private readonly apiKeyRepository: ApiKeyRepository
   ) {}
 
-  async execute({ apiKeyId }: GetApiKeyUseCaseSchemaType): Promise<ApiKey> {
-    const apiKey = await this.apiKeyRepository.findOne(this.prisma, apiKeyId);
+  async execute({ apiKeyId }: GetApiKeyUseCaseSchemaType): Promise<ApiKeyWithPermissions> {
+    const { apiKey, permissions } = await this.apiKeyRepository.findOneWithPermissions(
+      this.prisma,
+      apiKeyId
+    );
 
-    return apiKey.toResponse();
+    return {
+      ...apiKey.toResponse(),
+      permissions: permissions.map((permission) => permission.permissionAction),
+    };
   }
 }
