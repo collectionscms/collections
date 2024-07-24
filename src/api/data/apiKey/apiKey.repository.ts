@@ -1,5 +1,6 @@
-import { ApiKey } from '@prisma/client';
+import { ApiKey, ApiKeyPermission } from '@prisma/client';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
+import { ApiKeyPermissionEntity } from '../apiKeyPermission/apiKeyPermission.entity.js';
 import { ApiKeyEntity } from './apiKey.entity.js';
 
 export class ApiKeyRepository {
@@ -11,6 +12,30 @@ export class ApiKeyRepository {
     });
 
     return ApiKeyEntity.Reconstruct<ApiKey, ApiKeyEntity>(record);
+  }
+
+  async findOneWithPermissions(
+    prisma: ProjectPrismaType,
+    id: string
+  ): Promise<{
+    apiKey: ApiKeyEntity;
+    permissions: ApiKeyPermissionEntity[];
+  }> {
+    const record = await prisma.apiKey.findUniqueOrThrow({
+      where: {
+        id,
+      },
+      include: {
+        apiKeyPermissions: true,
+      },
+    });
+
+    return {
+      apiKey: ApiKeyEntity.Reconstruct<ApiKey, ApiKeyEntity>(record),
+      permissions: record.apiKeyPermissions.map((permission) =>
+        ApiKeyPermissionEntity.Reconstruct<ApiKeyPermission, ApiKeyPermissionEntity>(permission)
+      ),
+    };
   }
 
   async findMany(prisma: ProjectPrismaType): Promise<ApiKeyEntity[]> {

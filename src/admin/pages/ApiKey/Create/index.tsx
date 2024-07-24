@@ -1,18 +1,28 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button, FormHelperText, InputLabel, Stack, TextField } from '@mui/material';
+import {
+  Box,
+  Button,
+  Checkbox,
+  FormControlLabel,
+  FormHelperText,
+  InputLabel,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { useSnackbar } from 'notistack';
 import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { logger } from '../../../../utilities/logger.js';
 import { MainCard } from '../../../@extended/components/MainCard/index.js';
 import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscardDialog/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
 import { createApiKeySchema, FormValues } from '../../../fields/validators/apiKeys/createApiKey.js';
 import { useUnsavedChangesPrompt } from '../../../hooks/useUnsavedChangesPrompt.js';
 import { ApiKeyContextProvider, useApiKey } from '../Context/index.js';
+import { logger } from '../../../../utilities/logger.js';
 
 const CreateApiKeyPageImpl: React.FC = () => {
   const { t } = useTranslation();
@@ -20,18 +30,29 @@ const CreateApiKeyPageImpl: React.FC = () => {
   const { enqueueSnackbar } = useSnackbar();
   const { createApiKey } = useApiKey();
   const { trigger, isMutating } = createApiKey();
+
   const {
     reset,
+    watch,
     control,
     handleSubmit,
     formState: { isDirty, errors },
   } = useForm<FormValues>({
     defaultValues: {
       name: '',
+      permissions: [],
     },
     resolver: yupResolver(createApiKeySchema()),
   });
   const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
+  const permissions = [
+    'readPost',
+    'createPost',
+    'updatePost',
+    'trashPost',
+    'publishPost',
+    'archivePost',
+  ];
 
   const navigateToList = () => {
     navigate('../api-keys');
@@ -73,6 +94,56 @@ const CreateApiKeyPageImpl: React.FC = () => {
                     />
                     <FormHelperText error>{errors.name?.message}</FormHelperText>
                   </Stack>
+                </Grid>
+                <Grid xs={12}>
+                  <InputLabel sx={{ my: 1 }}>{t('permission')}</InputLabel>
+                  <Grid container spacing={3}>
+                    <Controller
+                      name="permissions"
+                      control={control}
+                      render={({ field }) => (
+                        <>
+                          {Object.values(permissions).map((permission) => {
+                            return (
+                              <Grid xs={12} sm={6} key={permission}>
+                                <Stack>
+                                  <FormControlLabel
+                                    {...field}
+                                    value={permission}
+                                    control={
+                                      <Checkbox
+                                        {...field}
+                                        checked={watch('permissions').includes(permission)}
+                                        onChange={() => {
+                                          if (!field.value.includes(permission)) {
+                                            field.onChange([...field.value, permission]);
+                                            return;
+                                          }
+                                          const newTopics = field.value.filter(
+                                            (topic) => topic !== permission
+                                          );
+                                          field.onChange(newTopics);
+                                        }}
+                                      />
+                                    }
+                                    label={t(
+                                      `permissions.${permission}` as unknown as TemplateStringsArray
+                                    )}
+                                  />
+                                  <Typography variant="subtitle2" color="secondary" sx={{ ml: 3 }}>
+                                    {t(
+                                      `permissions.${permission}_description` as unknown as TemplateStringsArray
+                                    )}
+                                  </Typography>
+                                </Stack>
+                              </Grid>
+                            );
+                          })}
+                        </>
+                      )}
+                    />
+                  </Grid>
+                  <FormHelperText error>{errors.permissions?.message}</FormHelperText>
                 </Grid>
                 <Grid xs={12}>
                   <Stack direction="row" justifyContent="flex-end" spacing={1}>

@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
 import { ApiKeyRepository } from '../data/apiKey/apiKey.repository.js';
+import { ApiKeyPermissionRepository } from '../data/apiKeyPermission/apiKeyPermission.repository.js';
 import { projectPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';
@@ -70,12 +71,14 @@ router.post(
       projectId: res.projectRole?.id,
       name: req.body.name,
       createdById: res.user?.id,
+      permissions: req.body.permissions,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
     const useCase = new CreateApiKeyUseCase(
       projectPrisma(validated.data.projectId),
-      new ApiKeyRepository()
+      new ApiKeyRepository(),
+      new ApiKeyPermissionRepository()
     );
     const apiKey = await useCase.execute(validated.data);
 

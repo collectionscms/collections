@@ -1,5 +1,6 @@
 import { v4 } from 'uuid';
 import { BypassPrismaType } from '../prisma/client.js';
+import { actions } from './createPermissions.js';
 import { enProject, jaProject } from './createProjects.js';
 
 export const enAdminRole = v4();
@@ -11,41 +12,32 @@ export const jaEditorRole = v4();
 export const jaContributorRole = v4();
 export const jaViewerRole = v4();
 
-export const editorPermissions = [
-  'readPost',
-  'createPost',
-  'updatePost',
-  'trashPost',
-  'publishPost',
-  'archivePost',
-  'readProject',
-  'readRole',
-  'createRole',
-  'readUser',
-  'inviteUser',
-  'readOwnReview',
-  'readAllReview',
-  'createReview',
-  'approveReview',
-  'closeReview',
-];
-
-export const contributorPermissions = [
-  'readPost',
-  'createPost',
-  'updatePost',
-  'publishPost',
-  'readProject',
-  'readRole',
-  'readUser',
-  'readOwnReview',
-  'createReview',
-  'closeReview',
-];
-
-export const viewerPermissions = ['readPost'];
-
 export const createRoles = async (prisma: BypassPrismaType): Promise<void> => {
+  const editorPermissions = [
+    ...actions.post,
+    'readProject',
+    'readRole',
+    'createRole',
+    'readUser',
+    ...actions.invitation,
+    ...actions.review,
+  ];
+
+  const contributorPermissions = [
+    'readPost',
+    'createPost',
+    'updatePost',
+    'publishPost',
+    'readProject',
+    'readRole',
+    'readUser',
+    'readOwnReview',
+    'createReview',
+    'closeReview',
+  ];
+
+  const viewerPermissions = ['readPost'];
+
   const enProjectRoles = [
     {
       id: enAdminRole,

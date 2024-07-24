@@ -2,6 +2,7 @@ import { ApiKey } from '@prisma/client';
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWR, { SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
+import { ApiKeyWithPermissions } from '../../../../types/index.js';
 import { api } from '../../../utilities/api.js';
 
 type ApiKeyContext = {
@@ -13,7 +14,7 @@ type ApiKeyContext = {
     }
   >;
   getApiKey: (id: string) => SWRResponse<
-    ApiKey,
+    ApiKeyWithPermissions,
     Error,
     {
       suspense: true;
@@ -38,7 +39,7 @@ export const ApiKeyContextProvider: React.FC<{ children: React.ReactNode }> = ({
   const getApiKey = (id: string) =>
     useSWR(
       `/api-keys/${id}`,
-      (url) => api.get<{ apiKey: ApiKey }>(url).then((res) => res.data.apiKey),
+      (url) => api.get<{ apiKey: ApiKeyWithPermissions }>(url).then((res) => res.data.apiKey),
       {
         suspense: true,
       }
