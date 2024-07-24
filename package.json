@@ -128,7 +128,7 @@
     "@types/jest": "29.5.12",
     "@types/js-cookie": "^3.0.6",
     "@types/mime-types": "2.1.4",
-    "@types/node": "20.14.10",
+    "@types/node": "20.14.12",
     "@types/nodemailer": "6.4.15",
     "@types/react": "18.3.3",
     "@types/react-copy-to-clipboard": "5.0.7",
