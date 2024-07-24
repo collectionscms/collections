@@ -194,7 +194,8 @@
     "joined_project": "Joined the project",
     "move_to_trash": "Move to trash",
     "post_restored": "Restored post",
-    "updated_primary_locale": "Updated primary language"
+    "updated_primary_locale": "Updated primary language",
+    "copied": "Copied"
   },
   "create": {
     "user": "Create User",

@@ -194,7 +194,8 @@
     "joined_project": "プロジェクトに参加しました",
     "move_to_trash": "ごみ箱へ移動しました",
     "post_restored": "記事を復元しました",
-    "updated_primary_locale": "プライマリー言語を変更しました"
+    "updated_primary_locale": "プライマリー言語を変更しました",
+    "copied": "コピーしました"
   },
   "create": {
     "user": "ユーザー 新規登録",
