@@ -13,7 +13,7 @@
     "lint": "eslint 'src/**/*.ts' --ignore-path .gitignore",
     "lint:fix": "npm run lint -- --fix",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx}\" --ignore-path .gitignore",
-    "prepare": "node ./prepare.mjs",
+    "prepare": "husky install",
     "typecheck": "tsc -p . --noEmit",
     "test:int": "node --loader ts-node/esm --experimental-vm-modules node_modules/jest/bin/jest.js --config=jest.integrations.config.mjs",
     "test:components": "node --loader ts-node/esm --experimental-vm-modules node_modules/jest/bin/jest.js --config=jest.components.config.mjs",
