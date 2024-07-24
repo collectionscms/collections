@@ -1,7 +1,7 @@
 import { v4 } from 'uuid';
 import { BypassPrismaType } from '../prisma/client.js';
+import { actions } from './createPermissions.js';
 import { enProject, jaProject } from './createProjects.js';
-import { editorPermissions } from './createRoles.js';
 import { adminUser } from './createUsers.js';
 
 export const enEditorRole = v4();
@@ -14,7 +14,7 @@ export const createApiKeys = async (prisma: BypassPrismaType): Promise<void> => 
       name: 'Editor',
       isAdmin: false,
       projectId: enProject,
-      permissions: editorPermissions,
+      permissions: actions.post,
     },
   ];
 
@@ -24,7 +24,7 @@ export const createApiKeys = async (prisma: BypassPrismaType): Promise<void> => 
       name: 'エディター',
       isAdmin: false,
       projectId: jaProject,
-      permissions: editorPermissions,
+      permissions: actions.post,
     },
   ];
 

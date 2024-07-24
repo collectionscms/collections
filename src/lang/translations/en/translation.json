@@ -166,6 +166,7 @@
   "revert_previous_version": "Revert previous version",
   "api_key": "API key",
   "generate_api_key": "Generate API key",
+  "permission": "Permissions",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",
@@ -193,7 +194,8 @@
     "joined_project": "Joined the project",
     "move_to_trash": "Move to trash",
     "post_restored": "Restored post",
-    "updated_primary_locale": "Updated primary language"
+    "updated_primary_locale": "Updated primary language",
+    "copied": "Copied"
   },
   "create": {
     "user": "Create User",
@@ -219,6 +221,20 @@
     "quote": "Quote",
     "bold": "Bold",
     "save_draft": "Save Draft"
+  },
+  "permissions": {
+    "read_post": "Read Post",
+    "read_post_description": "A list of posts and details can be retrieved.",
+    "create_post": "Create Post",
+    "create_post_description": "New posts can be created.",
+    "update_post": "Update Post",
+    "update_post_description": "Allows editing of created posts",
+    "trash_post": "Delete Post",
+    "trash_post_description": "Created posts can be deleted by placing them in the recycle bin.",
+    "publish_post": "Publish Post",
+    "publish_post_description": "Review approval is required to publish posts, but with this authorization, posts can be published without review.",
+    "archive_post": "Archive Post",
+    "archive_post_description": "Articles can be archived for publication."
   },
   "error": {
     "invalid_user_credentials": "Invalid user credentials.",

@@ -2,6 +2,8 @@ import { SyncOutlined } from '@ant-design/icons';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Button,
+  Checkbox,
+  FormControlLabel,
   FormHelperText,
   IconButton,
   InputAdornment,
@@ -9,6 +11,7 @@ import {
   Stack,
   TextField,
   Tooltip,
+  Typography,
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { useSnackbar } from 'notistack';
@@ -41,6 +44,7 @@ const EditApiKeyPageImpl: React.FC = () => {
 
   const {
     reset,
+    watch,
     setValue,
     control,
     handleSubmit,
@@ -49,10 +53,19 @@ const EditApiKeyPageImpl: React.FC = () => {
     defaultValues: {
       name: apiKey.name,
       key: '',
+      permissions: apiKey.permissions,
     },
     resolver: yupResolver(updateApiKeySchema()),
   });
   const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
+  const permissions = [
+    'readPost',
+    'createPost',
+    'updatePost',
+    'trashPost',
+    'publishPost',
+    'archivePost',
+  ];
 
   const navigateToList = () => {
     navigate('../api-keys');
@@ -134,28 +147,80 @@ const EditApiKeyPageImpl: React.FC = () => {
                     <FormHelperText error>{errors.key?.message}</FormHelperText>
                   </Stack>
                 </Grid>
+              </Grid>
+              <Grid container spacing={3}>
                 <Grid xs={12}>
-                  <Stack
-                    direction="row"
-                    alignItems="center"
-                    justifyContent="space-between"
-                    sx={{ width: 1 }}
-                  >
-                    {hasPermission('deleteApiKey') ? (
-                      <DeleteButton id={id} slug="api-keys" onSuccess={navigateToList} />
-                    ) : (
-                      <div />
-                    )}
-                    <Stack direction="row" spacing={1}>
-                      <Button variant="outlined" color="secondary" onClick={navigateToList}>
-                        {t('cancel')}
-                      </Button>
-                      <Button variant="contained" type="submit" disabled={isUpdateMutating}>
-                        {t('update')}
-                      </Button>
-                    </Stack>
-                  </Stack>
+                  <InputLabel sx={{ my: 1 }}>{t('permission')}</InputLabel>
                 </Grid>
+              </Grid>
+              <Grid container spacing={3}>
+                <Controller
+                  name="permissions"
+                  control={control}
+                  render={({ field }) => (
+                    <>
+                      {Object.values(permissions).map((permission) => {
+                        return (
+                          <Grid xs={12} sm={6} key={permission}>
+                            <Stack>
+                              <FormControlLabel
+                                {...field}
+                                value={permission}
+                                control={
+                                  <Checkbox
+                                    {...field}
+                                    checked={watch('permissions').includes(permission)}
+                                    onChange={() => {
+                                      if (!field.value.includes(permission)) {
+                                        field.onChange([...field.value, permission]);
+                                        return;
+                                      }
+                                      const newTopics = field.value.filter(
+                                        (topic) => topic !== permission
+                                      );
+                                      field.onChange(newTopics);
+                                    }}
+                                  />
+                                }
+                                label={t(
+                                  `permissions.${permission}` as unknown as TemplateStringsArray
+                                )}
+                              />
+                              <Typography variant="subtitle2" color="secondary" sx={{ ml: 3 }}>
+                                {t(
+                                  `permissions.${permission}_description` as unknown as TemplateStringsArray
+                                )}
+                              </Typography>
+                            </Stack>
+                          </Grid>
+                        );
+                      })}
+                    </>
+                  )}
+                />
+              </Grid>
+              <FormHelperText error>{errors.permissions?.message}</FormHelperText>
+              <Grid xs={12}>
+                <Stack
+                  direction="row"
+                  alignItems="center"
+                  justifyContent="space-between"
+                  sx={{ width: 1 }}
+                >
+                  {hasPermission('deleteApiKey') ? (
+                    <DeleteButton id={id} slug="api-keys" onSuccess={navigateToList} />
+                  ) : (
+                    <div />
+                  )}
+                  <Stack direction="row" spacing={1}>
+                    <Button variant="outlined" color="secondary" onClick={navigateToList}>
+                      {t('cancel')}
+                    </Button>
+                    <Button variant="contained" type="submit" disabled={isUpdateMutating}>
+                      {t('update')}
+                    </Button>
+                  </Stack>
+                </Stack>
               </Grid>
             </form>
           </MainCard>

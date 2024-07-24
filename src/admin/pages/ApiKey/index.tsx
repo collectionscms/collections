@@ -1,6 +1,7 @@
-import { CheckOutlined, CopyOutlined } from '@ant-design/icons';
+import { CopyOutlined } from '@ant-design/icons';
 import { IconButton, Stack, Tooltip } from '@mui/material';
-import React, { useState } from 'react';
+import { useSnackbar } from 'notistack';
+import React from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -22,6 +23,7 @@ const ApiKeyPageImpl: React.FC = () => {
   const navigate = useNavigate();
   const { getApiKeys } = useApiKey();
   const { data } = getApiKeys();
+  const { enqueueSnackbar } = useSnackbar();
 
   const fields = [
     { field: 'name', label: t('name'), type: cells.text() },
@@ -34,13 +36,9 @@ const ApiKeyPageImpl: React.FC = () => {
     return `${'*'.repeat(uuid.length - 4)}${uuid.slice(-4)}`;
   };
 
-  const [copied, setCopied] = useState(false);
   const handleCopy = (result: boolean) => {
     if (!result) return;
-    setCopied(true);
-    setTimeout(() => {
-      setCopied(false);
-    }, 2000);
+    enqueueSnackbar(t('toast.copied'), { variant: 'success' });
   };
 
   const columns = buildColumns(fields, (i: number, row: UserProfile, data: any) => {
@@ -59,7 +57,9 @@ const ApiKeyPageImpl: React.FC = () => {
             {maskUuidExceptLast4(data)}
             <CopyToClipboard text={data} onCopy={(text, result) => handleCopy(result)}>
               <Tooltip title="Copy" placement="bottom">
-                <IconButton>{copied ? <CheckOutlined /> : <CopyOutlined />}</IconButton>
+                <IconButton>
+                  <CopyOutlined />
+                </IconButton>
               </Tooltip>
             </CopyToClipboard>
           </Stack>

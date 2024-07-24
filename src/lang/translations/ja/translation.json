@@ -166,6 +166,7 @@
   "revert_previous_version": "前のバージョンに戻す",
   "api_key": "APIキー",
   "generate_api_key": "APIキーを生成",
+  "permission": "権限",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",
@@ -193,7 +194,8 @@
     "joined_project": "プロジェクトに参加しました",
     "move_to_trash": "ごみ箱へ移動しました",
     "post_restored": "記事を復元しました",
-    "updated_primary_locale": "プライマリー言語を変更しました"
+    "updated_primary_locale": "プライマリー言語を変更しました",
+    "copied": "コピーしました"
   },
   "create": {
     "user": "ユーザー 新規登録",
@@ -219,6 +221,20 @@
     "quote": "引用",
     "bold": "強調",
     "save_draft": "下書き保存"
+  },
+  "permissions": {
+    "readPost": "記事の閲覧",
+    "readPost_description": "記事の一覧、詳細を取得できます。",
+    "createPost": "記事の新規登録",
+    "createPost_description": "記事を新たに作成することができます。",
+    "updatePost": "記事の編集",
+    "updatePost_description": "作成された記事を編集することができます。",
+    "trashPost": "記事の削除",
+    "trashPost_description": "作成された記事をごみ箱にいれて削除することができます。",
+    "publishPost": "記事の公開",
+    "publishPost_description": "記事の公開にはレビューの承認が必要ですが、この権限を持つとレビューなしで記事を公開することができます。",
+    "archivePost": "記事の公開終了",
+    "archivePost_description": "記事を公開終了にすることができます。"
   },
   "error": {
     "invalid_user_credentials": "無効なユーザ認証情報です。",
