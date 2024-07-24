@@ -58,7 +58,7 @@
     "@remixicon/react": "4.2.0",
     "@tiptap/extension-character-count": "2.4.0",
     "@tiptap/extension-placeholder": "2.4.0",
-    "@tiptap/extension-underline": "2.5.1",
+    "@tiptap/extension-underline": "2.5.6",
     "@tiptap/html": "2.4.0",
     "@tiptap/pm": "2.5.6",
     "@tiptap/react": "2.4.0",

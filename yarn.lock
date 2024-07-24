@@ -2480,10 +2480,10 @@
   resolved "https://registry.yarnpkg.com/@tiptap/extension-text/-/extension-text-2.5.6.tgz#f1b7b41ef36fd4507bd62a75dc21fde5392ae491"
   integrity sha512-dJFARnhuxaLrUP/3PhSE7Wfq/OBRKKW73ZMVrIFhGbVxOdmTZxA12d95U0e+5q6mbPSQFNx8ZYhqnStztRAjBw==
 
-"@tiptap/extension-underline@2.5.1":
-  version "2.5.1"
-  resolved "https://registry.yarnpkg.com/@tiptap/extension-underline/-/extension-underline-2.5.1.tgz#e9f10678160cc5e2d42679691c0ba5485b99ca9a"
-  integrity sha512-pC2QVJgTCshk33iTvk2xjJWo3rodRG0AqNC5CLDjcCEHqaCYRpXvHSPvsZidfqa30mH0X0nyjdeSlyXftvPKgw==
+"@tiptap/extension-underline@2.5.6":
+  version "2.5.6"
+  resolved "https://registry.yarnpkg.com/@tiptap/extension-underline/-/extension-underline-2.5.6.tgz#a5a3d31005db50e28122fd5729da89b71f5e3043"
+  integrity sha512-1Bhi/iC3WTKXgUx4ha9cp7Vhds1hHrKnKGuiEWP02yUkwq+iGKPHWGBW/qoXyXSnvt6fXPYdeNIsaBJVtk4c/A==
 
 "@tiptap/html@2.4.0":
   version "2.4.0"
