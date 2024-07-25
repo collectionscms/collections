@@ -1,0 +1,195 @@
+import { ArrowRightOutlined, SendOutlined } from '@ant-design/icons';
+import { yupResolver } from '@hookform/resolvers/yup';
+import {
+  Box,
+  Button,
+  Drawer,
+  FormControl,
+  Link,
+  MenuItem,
+  Select,
+  Stack,
+  Tab,
+  Tabs,
+  TextField,
+  Tooltip,
+  Typography,
+} from '@mui/material';
+import { ApiKey } from '@prisma/client';
+import { AxiosError } from 'axios';
+import React, { useState } from 'react';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { IconButton } from '../../../@extended/components/IconButton/index.js';
+import { MainCard } from '../../../@extended/components/MainCard/index.js';
+import { SyntaxHighlighter } from '../../../@extended/components/SyntaxHighlighter/index.js';
+import { ScrollBar } from '../../../components/elements/ScrollBar/index.js';
+import { FormValues, getDataSchema } from '../../../fields/validators/apiPreview/getData.js';
+import { api } from '../../../utilities/api.js';
+import { TabPanel } from '../TabPanel/index.js';
+
+type Props = {
+  path: string;
+  apiKeys: ApiKey[];
+};
+
+export const ApiPreview: React.FC<Props> = ({ path, apiKeys }) => {
+  const [open, setOpen] = useState(false);
+  const [tabIndex] = useState(0);
+  const [content, setContent] = useState<string | undefined>();
+  const { t } = useTranslation();
+  const [apiKey, setApiKey] = useState<string | undefined>(apiKeys[0]?.key);
+
+  const {
+    control,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<FormValues>({
+    resolver: yupResolver(getDataSchema),
+    defaultValues: {
+      path,
+    },
+  });
+
+  const basePath = `${window.location.origin}/api`;
+  const curlCodeString = `curl "${basePath}/${watch('path')}" -H "Authorization: Bearer ${apiKey}"`;
+
+  const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
+    if (
+      event.type === 'keydown' &&
+      ((event as React.KeyboardEvent).key === 'Tab' ||
+        (event as React.KeyboardEvent).key === 'Shift')
+    ) {
+      return;
+    }
+
+    setOpen(open);
+  };
+
+  const onSubmit: SubmitHandler<FormValues> = async (form: FormValues, event) => {
+    event?.preventDefault();
+
+    try {
+      const requestUrl = `${form.path}`;
+      const result = await api.get(requestUrl, {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + apiKey,
+        },
+      });
+      setContent(JSON.stringify(result.data, null, '\t'));
+    } catch (e) {
+      if (e instanceof AxiosError && e.response?.data) {
+        setContent(JSON.stringify(e.response.data, null, '\t'));
+      } else {
+        setContent(JSON.stringify(e, null, '\t'));
+      }
+    }
+  };
+
+  return (
+    <>
+      <Stack>
+        <Drawer
+          anchor="right"
+          open={open}
+          onClose={toggleDrawer(false)}
+          PaperProps={{
+            sx: {
+              width: { xs: 340, md: 660 },
+            },
+          }}
+        >
+          <ScrollBar
+            sx={{
+              '& .simplebar-content': {
+                display: 'flex',
+                flexDirection: 'column',
+              },
+            }}
+          >
+            <Stack sx={{ px: 3 }} rowGap={1}>
+              <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                <Tabs value={tabIndex}>
+                  <Tab label="cURL" iconPosition="start" />
+                </Tabs>
+              </Box>
+              <TabPanel value={tabIndex} index={0}>
+                <MainCard codeHighlight codeString={curlCodeString}>
+                  <Stack
+                    component="form"
+                    onSubmit={handleSubmit(onSubmit)}
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="space-between"
+                    spacing={1}
+                  >
+                    <Controller
+                      name="path"
+                      control={control}
+                      render={({ field }) => (
+                        <TextField
+                          {...field}
+                          placeholder="API Path"
+                          type="text"
+                          fullWidth
+                          InputProps={{
+                            startAdornment: `${basePath}/`,
+                          }}
+                          error={errors.path !== undefined}
+                        />
+                      )}
+                    />
+                    <Button variant="contained" type="submit" size="medium">
+                      {t('fetch')}
+                    </Button>
+                  </Stack>
+                  <Stack spacing={0.5} sx={{ mt: 3 }}>
+                    <Typography color="secondary">{t('api_key')}</Typography>
+                    {apiKey ? (
+                      <FormControl fullWidth>
+                        <Select
+                          labelId="demo-simple-select-label"
+                          id="demo-simple-select"
+                          value={apiKey}
+                          placeholder="Age"
+                          onChange={(e) => setApiKey(e.target.value)}
+                        >
+                          {apiKeys.map((apiKey) => (
+                            <MenuItem key={apiKey.key} value={apiKey.key}>
+                              {apiKey.name}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+                    ) : (
+                      <Link href="/admin/settings/api-keys">
+                        <ArrowRightOutlined style={{ marginRight: 2 }} />
+                        {t('go_to_registration')}
+                      </Link>
+                    )}
+                  </Stack>
+                </MainCard>
+              </TabPanel>
+            </Stack>
+            <Box sx={{ p: 3 }}>
+              <MainCard codeHighlight content={false}>
+                <SyntaxHighlighter language="json" codeString={content || 'No data'} />
+              </MainCard>
+            </Box>
+          </ScrollBar>
+        </Drawer>
+      </Stack>
+
+      {/* Button */}
+      <Tooltip title={t('api_preview')} arrow placement="top">
+        <IconButton color="secondary" onClick={toggleDrawer(true)}>
+          <SendOutlined style={{ fontSize: 16 }} />
+        </IconButton>
+      </Tooltip>
+    </>
+  );
+};
