@@ -1,12 +1,13 @@
 import { NextFunction, Request, Response } from 'express';
 import { ForbiddenException } from '../../exceptions/forbidden.js';
 import { InvalidTokenException } from '../../exceptions/invalidToken.js';
+import { errorHandler } from './errorHandler.js';
 
 export const validateAccess =
   (actions: string[]) => async (req: Request, res: Response, next: NextFunction) => {
     const projectRole = res.projectRole;
     if (!projectRole) {
-      return next(new InvalidTokenException());
+      return errorHandler(new InvalidTokenException(), req, res, next);
     }
 
     if (projectRole.isAdmin) {
@@ -17,5 +18,5 @@ export const validateAccess =
       return next();
     }
 
-    return next(new ForbiddenException('forbidden'));
+    return errorHandler(new ForbiddenException('forbidden'), req, res, next);
   };
