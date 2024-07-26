@@ -35,7 +35,7 @@ router.get(
       new ReviewRepository()
     );
 
-    const permissions = res.projectRole?.role.permissions ?? [];
+    const permissions = res.projectRole?.permissions ?? [];
     const hasReadAllReview = permissions.map((p) => p.action).includes('readAllReview');
     const reviews = await useCase.execute(validated.data, hasReadAllReview);
 
@@ -62,7 +62,7 @@ router.get(
       new ReviewRepository()
     );
 
-    const permissions = res.projectRole?.role.permissions ?? [];
+    const permissions = res.projectRole?.permissions ?? [];
     const hasReadAllReview = permissions.map((p) => p.action).includes('readAllReview');
     const review = await useCase.execute(validated.data, hasReadAllReview);
 
@@ -93,7 +93,7 @@ router.patch(
       )
     );
 
-    const permissions = res.projectRole?.role.permissions ?? [];
+    const permissions = res.projectRole?.permissions ?? [];
     const hasReadAllReview = permissions.map((p) => p.action).includes('readAllReview');
     await useCase.execute(validated.data, hasReadAllReview);
 
@@ -122,7 +122,7 @@ router.patch(
       )
     );
 
-    const permissions = res.projectRole?.role.permissions ?? [];
+    const permissions = res.projectRole?.permissions ?? [];
     const hasReadAllReview = permissions.map((p) => p.action).includes('readAllReview');
     await useCase.execute(validated.data, hasReadAllReview);
 

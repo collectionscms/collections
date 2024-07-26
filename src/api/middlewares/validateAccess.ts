@@ -9,11 +9,11 @@ export const validateAccess =
       return next(new InvalidTokenException());
     }
 
-    if (projectRole.role.isAdmin) {
+    if (projectRole.isAdmin) {
       return next();
     }
 
-    if (projectRole.role.permissions.some((p) => actions.includes(p.action))) {
+    if (projectRole.permissions.some((p) => actions.includes(p.action))) {
       return next();
     }
 

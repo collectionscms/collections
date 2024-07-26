@@ -1,3 +1,4 @@
+import { ApiKey } from '@prisma/client';
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWR, { SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
@@ -39,6 +40,7 @@ type PostContext = {
     string,
     Record<string, any>
   >;
+  getApiKeys: () => SWRMutationResponse<ApiKey[], Error>;
 };
 
 const Context = createContext({} as PostContext);
@@ -126,6 +128,11 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       return api.post<{ files: UploadFile[] }>(url, arg).then((res) => res.data);
     });
 
+  const getApiKeys = () =>
+    useSWRMutation(`/api-keys`, async (url: string) => {
+      return api.get<{ apiKeys: ApiKey[] }>(url).then((res) => res.data.apiKeys);
+    });
+
   const value = useMemo(
     () => ({
       getPosts,
@@ -140,6 +147,7 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       publish,
       archive,
       createFileImage,
+      getApiKeys,
     }),
     [
       getPosts,
@@ -154,6 +162,7 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       publish,
       archive,
       createFileImage,
+      getApiKeys,
     ]
   );
 
