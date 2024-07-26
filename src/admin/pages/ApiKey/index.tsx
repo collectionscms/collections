@@ -74,7 +74,7 @@ const ApiKeyPageImpl: React.FC = () => {
       content={false}
       title={<></>}
       secondary={
-        hasPermission('inviteUser') && <CreateNewButton onClick={() => navigate('create')} />
+        hasPermission('createApiKey') && <CreateNewButton onClick={() => navigate('create')} />
       }
     >
       <Table columns={columns} rows={data} />
