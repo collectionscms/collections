@@ -167,6 +167,7 @@
   "api_key": "API key",
   "generate_api_key": "Generate API key",
   "permission": "Permissions",
+  "no_permissions": "No Permissions",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",
