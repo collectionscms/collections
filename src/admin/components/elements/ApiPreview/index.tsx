@@ -17,7 +17,7 @@ import {
 } from '@mui/material';
 import { ApiKey } from '@prisma/client';
 import { AxiosError } from 'axios';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { IconButton } from '../../../@extended/components/IconButton/index.js';
@@ -25,7 +25,7 @@ import { MainCard } from '../../../@extended/components/MainCard/index.js';
 import { SyntaxHighlighter } from '../../../@extended/components/SyntaxHighlighter/index.js';
 import { ScrollBar } from '../../../components/elements/ScrollBar/index.js';
 import { FormValues, getDataSchema } from '../../../fields/validators/apiPreview/getData.js';
-import { api } from '../../../utilities/api.js';
+import { useAuth } from '../../utilities/Auth/index.js';
 import { TabPanel } from '../TabPanel/index.js';
 
 type Props = {
@@ -34,11 +34,12 @@ type Props = {
 };
 
 export const ApiPreview: React.FC<Props> = ({ path, apiKeys }) => {
+  const { hasPermission } = useAuth();
   const [open, setOpen] = useState(false);
   const [tabIndex] = useState(0);
   const [content, setContent] = useState<string | undefined>();
   const { t } = useTranslation();
-  const [apiKey, setApiKey] = useState<string | undefined>(apiKeys[0]?.key);
+  const [apiKey, setApiKey] = useState<string | undefined>();
 
   const {
     control,
@@ -51,6 +52,10 @@ export const ApiPreview: React.FC<Props> = ({ path, apiKeys }) => {
       path,
     },
   });
+
+  useEffect(() => {
+    setApiKey(apiKeys[0]?.key);
+  }, [apiKeys]);
 
   const basePath = `${window.location.origin}/api`;
   const curlCodeString = `curl "${basePath}/${watch('path')}" -H "Authorization: Bearer ${apiKey}"`;
@@ -71,16 +76,18 @@ export const ApiPreview: React.FC<Props> = ({ path, apiKeys }) => {
     event?.preventDefault();
 
     try {
-      const requestUrl = `${form.path}`;
-      const result = await api.get(requestUrl, {
+      const requestUrl = `${basePath}/${form.path}`;
+      const response = await fetch(requestUrl, {
         method: 'GET',
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
           Authorization: 'Bearer ' + apiKey,
         },
+        credentials: 'omit',
       });
-      setContent(JSON.stringify(result.data, null, '\t'));
+      const result = await response.json();
+      setContent(JSON.stringify(result, null, '\t'));
     } catch (e) {
       if (e instanceof AxiosError && e.response?.data) {
         setContent(JSON.stringify(e.response.data, null, '\t'));
@@ -149,27 +156,33 @@ export const ApiPreview: React.FC<Props> = ({ path, apiKeys }) => {
                   </Stack>
                   <Stack spacing={0.5} sx={{ mt: 3 }}>
                     <Typography color="secondary">{t('api_key')}</Typography>
-                    {apiKey ? (
-                      <FormControl fullWidth>
-                        <Select
-                          labelId="demo-simple-select-label"
-                          id="demo-simple-select"
-                          value={apiKey}
-                          placeholder="Age"
-                          onChange={(e) => setApiKey(e.target.value)}
-                        >
-                          {apiKeys.map((apiKey) => (
-                            <MenuItem key={apiKey.key} value={apiKey.key}>
-                              {apiKey.name}
-                            </MenuItem>
-                          ))}
-                        </Select>
-                      </FormControl>
+                    {!hasPermission('readApiKey') ? (
+                      <>{t('no_permissions')}</>
                     ) : (
-                      <Link href="/admin/settings/api-keys">
-                        <ArrowRightOutlined style={{ marginRight: 2 }} />
-                        {t('go_to_registration')}
-                      </Link>
+                      <>
+                        {apiKey ? (
+                          <FormControl fullWidth>
+                            <Select
+                              labelId="demo-simple-select-label"
+                              id="demo-simple-select"
+                              value={apiKey}
+                              placeholder="Age"
+                              onChange={(e) => setApiKey(e.target.value)}
+                            >
+                              {apiKeys.map((apiKey) => (
+                                <MenuItem key={apiKey.key} value={apiKey.key}>
+                                  {apiKey.name}
+                                </MenuItem>
+                              ))}
+                            </Select>
+                          </FormControl>
+                        ) : (
+                          <Link href="/admin/settings/api-keys">
+                            <ArrowRightOutlined style={{ marginRight: 2 }} />
+                            {t('go_to_registration')}
+                          </Link>
+                        )}
+                      </>
                     )}
                   </Stack>
                 </MainCard>

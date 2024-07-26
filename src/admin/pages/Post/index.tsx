@@ -1,8 +1,9 @@
 import { EllipsisOutlined } from '@ant-design/icons';
 import { Divider, Stack, Typography } from '@mui/material';
+import { ApiKey } from '@prisma/client';
 import dayjs from 'dayjs';
 import { enqueueSnackbar } from 'notistack';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { PostItem } from '../../../types/index.js';
@@ -27,8 +28,20 @@ export const PostPageImpl: React.FC = () => {
   const navigate = useNavigate();
   const { getPosts, createPost, getApiKeys } = usePost();
   const { data: posts, mutate } = getPosts();
-  const { data: apiKeys } = getApiKeys();
+  const { trigger: getApiKeyTrigger } = getApiKeys();
   const { trigger } = createPost();
+
+  const [apiKeys, setApiKeys] = useState<ApiKey[]>([]);
+  useEffect(() => {
+    const fetchApiKeys = async () => {
+      const apiKeys = await getApiKeyTrigger();
+      setApiKeys(apiKeys);
+    };
+
+    if (hasPermission('readApiKey')) {
+      fetchApiKeys();
+    }
+  }, []);
 
   const [menu, setMenu] = useState<EventTarget | null>(null);
   const [selectedPost, setSelectedPost] = useState<PostItem | undefined>();

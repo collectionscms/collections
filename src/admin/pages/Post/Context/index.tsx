@@ -40,13 +40,7 @@ type PostContext = {
     string,
     Record<string, any>
   >;
-  getApiKeys: () => SWRResponse<
-    ApiKey[],
-    Error,
-    {
-      suspense: true;
-    }
-  >;
+  getApiKeys: () => SWRMutationResponse<ApiKey[], Error>;
 };
 
 const Context = createContext({} as PostContext);
@@ -135,13 +129,9 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
     });
 
   const getApiKeys = () =>
-    useSWR(
-      '/api-keys',
-      (url) => api.get<{ apiKeys: ApiKey[] }>(url).then((res) => res.data.apiKeys),
-      {
-        suspense: true,
-      }
-    );
+    useSWRMutation(`/api-keys`, async (url: string) => {
+      return api.get<{ apiKeys: ApiKey[] }>(url).then((res) => res.data.apiKeys);
+    });
 
   const value = useMemo(
     () => ({
