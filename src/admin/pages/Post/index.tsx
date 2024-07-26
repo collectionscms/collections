@@ -141,7 +141,7 @@ export const PostPageImpl: React.FC = () => {
         secondary={
           <Stack direction="row" alignItems="center" spacing={1}>
             <ApiPreview path="posts" apiKeys={apiKeys} />
-            <CreateNewButton onClick={handleCreatePost} />
+            {hasPermission('createPost') && <CreateNewButton onClick={handleCreatePost} />}
           </Stack>
         }
       >
