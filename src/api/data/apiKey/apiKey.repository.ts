@@ -1,6 +1,7 @@
-import { ApiKey, ApiKeyPermission } from '@prisma/client';
-import { ProjectPrismaType } from '../../database/prisma/client.js';
+import { ApiKey, ApiKeyPermission, Project } from '@prisma/client';
+import { BypassPrismaType, ProjectPrismaType } from '../../database/prisma/client.js';
 import { ApiKeyPermissionEntity } from '../apiKeyPermission/apiKeyPermission.entity.js';
+import { ProjectEntity } from '../project/project.entity.js';
 import { ApiKeyEntity } from './apiKey.entity.js';
 
 export class ApiKeyRepository {
@@ -12,6 +13,27 @@ export class ApiKeyRepository {
     });
 
     return ApiKeyEntity.Reconstruct<ApiKey, ApiKeyEntity>(record);
+  }
+
+  async findOneWithProjectByKey(
+    prisma: BypassPrismaType,
+    key: string
+  ): Promise<{ apiKey: ApiKeyEntity; project: ProjectEntity } | null> {
+    const record = await prisma.apiKey.findFirst({
+      where: {
+        key,
+      },
+      include: {
+        project: true,
+      },
+    });
+
+    return record
+      ? {
+          apiKey: ApiKeyEntity.Reconstruct<ApiKey, ApiKeyEntity>(record),
+          project: ProjectEntity.Reconstruct<Project, ProjectEntity>(record.project),
+        }
+      : null;
   }
 
   async findOneWithPermissions(
