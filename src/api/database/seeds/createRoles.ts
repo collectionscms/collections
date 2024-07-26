@@ -21,6 +21,8 @@ export const createRoles = async (prisma: BypassPrismaType): Promise<void> => {
     'readUser',
     ...actions.invitation,
     ...actions.review,
+    'createApiKey',
+    'readApiKey',
   ];
 
   const contributorPermissions = [
