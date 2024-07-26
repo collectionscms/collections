@@ -5,6 +5,7 @@ import vhost from 'vhost';
 import { currentSession } from '../api/middlewares/auth.js';
 import { corsMiddleware } from '../api/middlewares/cors.js';
 import { errorHandler } from '../api/middlewares/errorHandler.js';
+import { extractToken } from '../api/middlewares/extractToken.js';
 import { asset } from '../api/routes/asset.router.js';
 import { portalApiRouter } from '../api/routes/portal.router.js';
 import { tenantApiRouter } from '../api/routes/tenant.router.js';
@@ -25,7 +26,9 @@ export const initApiServer = async (app: Express) => {
   app.use(express.json({ limit: env.REQ_LIMIT }));
   app.use(express.urlencoded({ limit: env.REQ_LIMIT, extended: true }));
   app.use(expressLogger);
+  app.use(extractToken);
   app.use(currentSession);
+  app.use(errorHandler);
 
   // api
   const portalApp = express();
@@ -37,7 +40,6 @@ export const initApiServer = async (app: Express) => {
   app.use(vhost('*.*.*', tenantApp));
 
   app.use('/', asset);
-  app.use(errorHandler);
 
   app
     .listen(port, () => {

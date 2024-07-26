@@ -1,13 +1,15 @@
 import { EllipsisOutlined } from '@ant-design/icons';
 import { Divider, Stack, Typography } from '@mui/material';
+import { ApiKey } from '@prisma/client';
 import dayjs from 'dayjs';
 import { enqueueSnackbar } from 'notistack';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { PostItem } from '../../../types/index.js';
 import { IconButton } from '../../@extended/components/IconButton/index.js';
 import { MainCard } from '../../@extended/components/MainCard/index.js';
+import { ApiPreview } from '../../components/elements/ApiPreview/index.js';
 import { CreateNewButton } from '../../components/elements/CreateNewButton/index.js';
 import { Link } from '../../components/elements/Link/index.js';
 import { StatusDot } from '../../components/elements/StatusDot/index.js';
@@ -24,9 +26,22 @@ export const PostPageImpl: React.FC = () => {
   const { hasPermission } = useAuth();
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { getPosts, createPost } = usePost();
+  const { getPosts, createPost, getApiKeys } = usePost();
   const { data: posts, mutate } = getPosts();
+  const { trigger: getApiKeyTrigger } = getApiKeys();
   const { trigger } = createPost();
+
+  const [apiKeys, setApiKeys] = useState<ApiKey[]>([]);
+  useEffect(() => {
+    const fetchApiKeys = async () => {
+      const apiKeys = await getApiKeyTrigger();
+      setApiKeys(apiKeys);
+    };
+
+    if (hasPermission('readApiKey')) {
+      fetchApiKeys();
+    }
+  }, []);
 
   const [menu, setMenu] = useState<EventTarget | null>(null);
   const [selectedPost, setSelectedPost] = useState<PostItem | undefined>();
@@ -123,7 +138,12 @@ export const PostPageImpl: React.FC = () => {
       <MainCard
         content={false}
         title={<></>}
-        secondary={hasPermission('createPost') && <CreateNewButton onClick={handleCreatePost} />}
+        secondary={
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <ApiPreview path="posts" apiKeys={apiKeys} />
+            <CreateNewButton onClick={handleCreatePost} />
+          </Stack>
+        }
       >
         <Table columns={columns} rows={posts} />
       </MainCard>

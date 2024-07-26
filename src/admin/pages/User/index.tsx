@@ -59,14 +59,7 @@ const UserPageImpl: React.FC = () => {
       content={false}
       title={<></>}
       secondary={
-        hasPermission('inviteUser') && (
-          <CreateNewButton
-            options={{
-              subject: t('add'),
-            }}
-            onClick={() => navigate('create')}
-          />
-        )
+        hasPermission('inviteUser') && <CreateNewButton onClick={() => navigate('create')} />
       }
     >
       <Table columns={columns} rows={data} />

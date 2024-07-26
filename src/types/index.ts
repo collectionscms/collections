@@ -63,3 +63,10 @@ export type UploadFile = {
 export type ApiKeyWithPermissions = {
   permissions: string[];
 } & ApiKey;
+
+export type ProjectWithRole = Project & {
+  isAdmin: boolean;
+  permissions: {
+    action: string;
+  }[];
+};
