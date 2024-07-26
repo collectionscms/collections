@@ -36,7 +36,7 @@ export const AuthRoutes = () => {
         element: <ResetPassword />,
       },
       {
-        path: 'signUp',
+        path: 'sign-up',
         element: <SignUp />,
       },
       {

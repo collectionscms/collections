@@ -17,7 +17,7 @@ import { VerifyUseCase } from '../useCases/auth/verify.useCase.js';
 const router = express.Router();
 
 router.post(
-  '/signUp',
+  '/sign-up',
   asyncHandler(async (req: Request, res: Response) => {
     const validated = signUpUseCaseSchema.safeParse({
       email: req.body.email,

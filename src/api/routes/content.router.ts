@@ -51,7 +51,7 @@ router.patch(
 );
 
 router.patch(
-  '/contents/:id/requestReview',
+  '/contents/:id/request-review',
   authenticatedUser,
   validateAccess(['updatePost']),
   asyncHandler(async (req: Request, res: Response) => {

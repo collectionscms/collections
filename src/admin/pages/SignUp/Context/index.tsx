@@ -11,7 +11,7 @@ const Context = createContext({} as SignUpContext);
 
 export const SignUpContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const signUp = () =>
-    useSWRMutation('/signUp', async (url: string, { arg }: { arg: Record<string, any> }) => {
+    useSWRMutation('/sign-up', async (url: string, { arg }: { arg: Record<string, any> }) => {
       return api.post<{ me: Me }>(url, arg).then((res) => res.data.me);
     });
 

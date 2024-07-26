@@ -101,7 +101,7 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
 
   const requestReview = (contentId: string) =>
     useSWRMutation(
-      `/contents/${contentId}/requestReview`,
+      `/contents/${contentId}/request-review`,
       async (url: string, { arg }: { arg: Record<string, any> }) => {
         return api.patch(url, arg).then((res) => res.data);
       }
