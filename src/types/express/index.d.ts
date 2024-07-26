@@ -13,12 +13,10 @@ declare namespace Express {
       subdomain: string;
       enabled: boolean;
       primaryLocale: string;
-      role: {
-        isAdmin: boolean;
-        permissions: {
-          action: string;
-        }[];
-      };
+      isAdmin: boolean;
+      permissions: {
+        action: string;
+      }[];
     };
   }
 }

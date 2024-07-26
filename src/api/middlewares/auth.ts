@@ -31,7 +31,14 @@ export const authenticatedUser = async (req: Request, res: Response, next: NextF
       return next(new InvalidTokenException());
     }
 
-    res.projectRole = projectRoles[subdomain];
+    res.projectRole = {
+      id: projectRole.id,
+      subdomain: projectRole.subdomain,
+      enabled: projectRole.enabled,
+      primaryLocale: projectRole.primaryLocale,
+      isAdmin: projectRole.role.isAdmin,
+      permissions: projectRole.role.permissions,
+    };
   }
 
   return next();
