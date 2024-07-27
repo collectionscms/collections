@@ -166,7 +166,7 @@
   "revert_previous_version": "Revert previous version",
   "api_key": "API key",
   "generate_api_key": "Generate API key",
-  "permission": "Permissions",
+  "post_permission": "Post Permissions",
   "no_permissions": "No Permissions",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
@@ -224,18 +224,22 @@
     "save_draft": "Save Draft"
   },
   "permissions": {
-    "read_post": "Read Post",
-    "read_post_description": "A list of posts and details can be retrieved.",
-    "create_post": "Create Post",
-    "create_post_description": "New posts can be created.",
-    "update_post": "Update Post",
-    "update_post_description": "Allows editing of created posts",
-    "trash_post": "Delete Post",
-    "trash_post_description": "Created posts can be deleted by placing them in the recycle bin.",
-    "publish_post": "Publish Post",
-    "publish_post_description": "Review approval is required to publish posts, but with this authorization, posts can be published without review.",
-    "archive_post": "Archive Post",
-    "archive_post_description": "Articles can be archived for publication."
+    "action": {
+      "readPost": "Read",
+      "createPost": "Create",
+      "updatePost": "Update",
+      "trashPost": "Delete",
+      "publishPost": "Publish",
+      "archivePost": "Archive"
+    },
+    "description": {
+      "readPost": "A list of posts and details can be retrieved.",
+      "createPost": "New posts can be created.",
+      "updatePost": "Allows editing of created posts",
+      "trashPost": "Created posts can be deleted by placing them in the recycle bin.",
+      "publishPost": "Review approval is required to publish posts, but with this authorization, posts can be published without review.",
+      "archivePost": "Articles can be archived for publication."
+    }
   },
   "error": {
     "invalid_user_credentials": "Invalid user credentials.",

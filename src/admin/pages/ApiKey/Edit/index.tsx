@@ -145,7 +145,7 @@ const EditApiKeyPageImpl: React.FC = () => {
               {/* Post permissions */}
               <Grid container spacing={3}>
                 <Grid xs={12}>
-                  <InputLabel sx={{ my: 1 }}>{t('permission')}</InputLabel>
+                  <InputLabel sx={{ my: 1 }}>{t('post_permission')}</InputLabel>
                 </Grid>
               </Grid>
               <Grid container spacing={3}>
@@ -178,12 +178,12 @@ const EditApiKeyPageImpl: React.FC = () => {
                                   />
                                 }
                                 label={t(
-                                  `permissions.${permission}` as unknown as TemplateStringsArray
+                                  `permissions.action.${permission}` as unknown as TemplateStringsArray
                                 )}
                               />
                               <Typography variant="subtitle2" color="secondary" sx={{ ml: 3 }}>
                                 {t(
-                                  `permissions.${permission}_description` as unknown as TemplateStringsArray
+                                  `permissions.description.${permission}` as unknown as TemplateStringsArray
                                 )}
                               </Typography>
                             </Stack>
