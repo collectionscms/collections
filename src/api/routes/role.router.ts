@@ -97,12 +97,14 @@ router.patch(
       roleId: req.params.id,
       name: req.body.name,
       description: req.body.description,
+      permissions: req.body.permissions,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
     const useCase = new UpdateRoleUseCase(
       projectPrisma(validated.data.projectId),
-      new RoleRepository()
+      new RoleRepository(),
+      new RolePermissionRepository()
     );
     await useCase.execute(validated.data);
 
