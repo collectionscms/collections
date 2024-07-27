@@ -46,7 +46,7 @@ export const postNavItems = (): Group => {
 
   const items = [];
 
-  if (hasPermission('readPost')) {
+  if (hasPermission('readOwnPost') || hasPermission('readAllPost')) {
     items.push({
       label: 'posts',
       href: `${path}/posts`,

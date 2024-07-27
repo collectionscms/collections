@@ -25,7 +25,7 @@ const router = express.Router();
 router.get(
   '/posts',
   authenticatedUser,
-  validateAccess(['readPost']),
+  validateAccess(['readOwnPost', 'readAllPost']),
   asyncHandler(async (req: Request, res: Response) => {
     const validated = getPostsUseCaseSchema.safeParse({
       projectId: res.projectRole?.id,
@@ -46,7 +46,7 @@ router.get(
 router.get(
   '/posts/:id',
   authenticatedUser,
-  validateAccess(['readPost']),
+  validateAccess(['readOwnPost', 'readAllPost']),
   asyncHandler(async (req: Request, res: Response) => {
     const locale = req.query.locale || res.projectRole?.primaryLocale;
 

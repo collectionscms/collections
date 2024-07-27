@@ -231,7 +231,8 @@
   },
   "permissions": {
     "action": {
-      "readPost": "Read",
+      "readOwnPost": "Read (Own)",
+      "readAllPost": "Read (All users)",
       "createPost": "Create",
       "updatePost": "Update",
       "trashPost": "Delete",

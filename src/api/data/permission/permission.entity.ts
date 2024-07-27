@@ -2,7 +2,15 @@ import { Permission } from '@prisma/client';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 
 export const actions = {
-  post: ['readPost', 'createPost', 'updatePost', 'trashPost', 'publishPost', 'archivePost'],
+  post: [
+    'readOwnPost',
+    'readAllPost',
+    'createPost',
+    'updatePost',
+    'trashPost',
+    'publishPost',
+    'archivePost',
+  ],
   project: ['readProject', 'updateProject'],
   role: ['readRole', 'createRole', 'updateRole', 'deleteRole'],
   user: ['readUser', 'updateUser', 'deleteUser'],
