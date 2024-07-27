@@ -20,6 +20,7 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { v4 } from 'uuid';
+import { actions } from '../../../../api/data/permission/permission.entity.js';
 import { logger } from '../../../../utilities/logger.js';
 import { MainCard } from '../../../@extended/components/MainCard/index.js';
 import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscardDialog/index.js';
@@ -58,14 +59,6 @@ const EditApiKeyPageImpl: React.FC = () => {
     resolver: yupResolver(updateApiKeySchema()),
   });
   const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
-  const permissions = [
-    'readPost',
-    'createPost',
-    'updatePost',
-    'trashPost',
-    'publishPost',
-    'archivePost',
-  ];
 
   const navigateToList = () => {
     navigate('../api-keys');
@@ -148,6 +141,8 @@ const EditApiKeyPageImpl: React.FC = () => {
                   </Stack>
                 </Grid>
               </Grid>
+
+              {/* Post permissions */}
               <Grid container spacing={3}>
                 <Grid xs={12}>
                   <InputLabel sx={{ my: 1 }}>{t('permission')}</InputLabel>
@@ -159,7 +154,7 @@ const EditApiKeyPageImpl: React.FC = () => {
                   control={control}
                   render={({ field }) => (
                     <>
-                      {Object.values(permissions).map((permission) => {
+                      {Object.values(actions.post).map((permission) => {
                         return (
                           <Grid xs={12} sm={6} key={permission}>
                             <Stack>
@@ -200,6 +195,7 @@ const EditApiKeyPageImpl: React.FC = () => {
                 />
               </Grid>
               <FormHelperText error>{errors.permissions?.message}</FormHelperText>
+
               <Grid xs={12}>
                 <Stack
                   direction="row"
