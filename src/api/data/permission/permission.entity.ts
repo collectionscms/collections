@@ -8,7 +8,7 @@ export const actions = {
   user: ['readUser', 'updateUser', 'deleteUser'],
   invitation: ['inviteUser'],
   review: ['readOwnReview', 'readAllReview', 'createReview', 'approveReview', 'closeReview'],
-  apiKey: ['createApiKey', 'readApiKey', 'updateApiKey', 'deleteApiKey'],
+  apiKey: ['readApiKey', 'createApiKey', 'updateApiKey', 'deleteApiKey'],
 };
 
 export class PermissionEntity extends PrismaBaseEntity<Permission> {

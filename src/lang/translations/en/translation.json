@@ -168,6 +168,11 @@
   "generate_api_key": "Generate API key",
   "post_permission": "Post Permissions",
   "review_permission": "Review Permissions",
+  "invitation_permission": "Invitation Permissions",
+  "project_permission": "Project Settings Permissions",
+  "user_permission": "User Permissions",
+  "role_permission": "Role Permissions",
+  "api_key_permission": "API Key Permissions",
   "no_permissions": "No Permissions",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
@@ -236,7 +241,21 @@
       "readAllReview": "View all reviews",
       "createReview": "Request for new review",
       "approveReview": "Approve",
-      "closeReview": "Close"
+      "closeReview": "Close",
+      "inviteUser": "Invite user",
+      "readProject": "Read",
+      "updateProject": "Update",
+      "readUser": "Read",
+      "updateUser": "Update",
+      "deleteUser": "Delete (Excluded from project)",
+      "readRole": "Read",
+      "createRole": "Create",
+      "updateRole": "Update",
+      "deleteRole": "Delete",
+      "readApiKey": "Read",
+      "createApiKey": "Create",
+      "updateApiKey": "Update",
+      "deleteApiKey": "Delete"
     }
   },
   "error": {

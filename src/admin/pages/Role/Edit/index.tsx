@@ -58,6 +58,11 @@ const EditRolePageImpl: React.FC = () => {
   const formPermissions = [
     { label: t('post_permission'), permissions: actions.post },
     { label: t('review_permission'), permissions: actions.review },
+    { label: t('invitation_permission'), permissions: actions.invitation },
+    { label: t('project_permission'), permissions: actions.project },
+    { label: t('user_permission'), permissions: actions.user },
+    { label: t('role_permission'), permissions: actions.role },
+    { label: t('api_key_permission'), permissions: actions.apiKey },
   ];
 
   const navigateToList = () => {
