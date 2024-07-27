@@ -29,6 +29,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       id: postId,
       projectId,
       slug: this.GenerateSlug(),
+      createdById,
       createdAt: new Date(),
       updatedAt: new Date(),
     });
