@@ -96,12 +96,14 @@ router.patch(
       apiKeyId: req.params.id,
       name: req.body.name,
       key: req.body.key,
+      permissions: req.body.permissions,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
     const useCase = new UpdateApiKeyUseCase(
       projectPrisma(validated.data.projectId),
-      new ApiKeyRepository()
+      new ApiKeyRepository(),
+      new ApiKeyPermissionRepository()
     );
     await useCase.execute(validated.data);
 

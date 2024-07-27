@@ -1,4 +1,4 @@
-import { Role } from '@prisma/client';
+import { RoleWithPermissions } from '../../../types/index.js';
 import { RoleRepository } from '../../data/role/role.repository.js';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
 
@@ -8,9 +8,15 @@ export class GetRoleUseCase {
     private readonly roleRepository: RoleRepository
   ) {}
 
-  async execute(roleId: string): Promise<Role> {
-    const role = await this.roleRepository.findOne(this.prisma, roleId);
+  async execute(roleId: string): Promise<RoleWithPermissions> {
+    const { role, permissions } = await this.roleRepository.findOneWithPermissions(
+      this.prisma,
+      roleId
+    );
 
-    return role.toResponse();
+    return {
+      ...role.toResponse(),
+      permissions: permissions.map((permission) => permission.action),
+    };
   }
 }

@@ -15,4 +15,12 @@ export class ApiKeyPermissionRepository {
     });
     return entities;
   }
+
+  async deleteManyByApiKeyId(prisma: ProjectPrismaType, apiKeyId: string): Promise<void> {
+    await prisma.apiKeyPermission.deleteMany({
+      where: {
+        apiKeyId,
+      },
+    });
+  }
 }

@@ -64,6 +64,10 @@ export type ApiKeyWithPermissions = {
   permissions: string[];
 } & ApiKey;
 
+export type RoleWithPermissions = {
+  permissions: string[];
+} & Role;
+
 export type ProjectWithRole = Project & {
   isAdmin: boolean;
   permissions: {

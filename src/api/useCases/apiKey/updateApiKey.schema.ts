@@ -5,6 +5,7 @@ export const updateApiKeyUseCaseSchema = z.object({
   apiKeyId: z.string(),
   name: z.string(),
   key: z.string().optional(),
+  permissions: z.array(z.string()),
 });
 
 export type UpdateApiKeyUseCaseSchemaType = z.infer<typeof updateApiKeyUseCaseSchema>;

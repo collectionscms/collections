@@ -1,14 +1,5 @@
+import { actions } from '../../data/permission/permission.entity.js';
 import { BypassPrismaType } from '../prisma/client.js';
-
-export const actions = {
-  post: ['readPost', 'createPost', 'updatePost', 'trashPost', 'publishPost', 'archivePost'],
-  project: ['readProject', 'updateProject'],
-  role: ['readRole', 'createRole', 'updateRole', 'deleteRole'],
-  user: ['readUser', 'updateUser', 'deleteUser'],
-  invitation: ['inviteUser'],
-  review: ['readOwnReview', 'readAllReview', 'createReview', 'approveReview', 'closeReview'],
-  apiKey: ['createApiKey', 'readApiKey', 'updateApiKey', 'deleteApiKey'],
-};
 
 export const createPermissions = async (prisma: BypassPrismaType): Promise<void> => {
   await prisma.permission.createMany({

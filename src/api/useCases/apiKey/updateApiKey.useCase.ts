@@ -1,19 +1,37 @@
 import { ApiKey } from '@prisma/client';
 import { ApiKeyRepository } from '../../data/apiKey/apiKey.repository.js';
-import { ProjectPrismaType } from '../../database/prisma/client.js';
+import { ApiKeyPermissionEntity } from '../../data/apiKeyPermission/apiKeyPermission.entity.js';
+import { ApiKeyPermissionRepository } from '../../data/apiKeyPermission/apiKeyPermission.repository.js';
+import { ProjectPrismaClient } from '../../database/prisma/client.js';
 import { UpdateApiKeyUseCaseSchemaType } from './updateApiKey.schema.js';
 
 export class UpdateApiKeyUseCase {
   constructor(
-    private readonly prisma: ProjectPrismaType,
-    private readonly apiKeyRepository: ApiKeyRepository
+    private readonly prisma: ProjectPrismaClient,
+    private readonly apiKeyRepository: ApiKeyRepository,
+    private readonly apiKeyPermissionRepository: ApiKeyPermissionRepository
   ) {}
 
-  async execute(params: UpdateApiKeyUseCaseSchemaType): Promise<ApiKey> {
-    const apiKey = await this.apiKeyRepository.findOne(this.prisma, params.apiKeyId);
+  async execute(props: UpdateApiKeyUseCaseSchemaType): Promise<ApiKey> {
+    const apiKey = await this.apiKeyRepository.findOne(this.prisma, props.apiKeyId);
 
-    apiKey.update(params);
-    const updatedApiKey = await this.apiKeyRepository.update(this.prisma, apiKey);
+    apiKey.update(props);
+
+    const permissions = props.permissions.map((permission) => {
+      return ApiKeyPermissionEntity.Construct({
+        apiKeyId: apiKey.id,
+        projectId: props.projectId,
+        permissionAction: permission,
+      });
+    });
+
+    const updatedApiKey = await this.prisma.$transaction(async (tx) => {
+      const result = await this.apiKeyRepository.update(this.prisma, apiKey);
+      await this.apiKeyPermissionRepository.deleteManyByApiKeyId(tx, props.apiKeyId);
+      await this.apiKeyPermissionRepository.createMany(tx, permissions);
+
+      return result;
+    });
 
     return updatedApiKey.toResponse();
   }

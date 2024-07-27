@@ -1,11 +1,21 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button, FormHelperText, InputLabel, Stack, TextField } from '@mui/material';
+import {
+  Button,
+  Checkbox,
+  FormControlLabel,
+  FormHelperText,
+  InputLabel,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { useSnackbar } from 'notistack';
 import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
+import { actions } from '../../../../api/data/permission/permission.entity.js';
 import { logger } from '../../../../utilities/logger.js';
 import { MainCard } from '../../../@extended/components/MainCard/index.js';
 import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscardDialog/index.js';
@@ -31,6 +41,7 @@ const EditRolePageImpl: React.FC = () => {
   const { data: role } = getRole(id);
   const { trigger: updateRoleTrigger, isMutating: isUpdateRoleMutating } = updateRole(id);
   const {
+    watch,
     reset,
     control,
     handleSubmit,
@@ -39,10 +50,20 @@ const EditRolePageImpl: React.FC = () => {
     defaultValues: {
       name: role.name,
       description: role.description,
+      permissions: role.permissions,
     },
     resolver: yupResolver(updateRoleSchema()),
   });
   const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
+  const formPermissions = [
+    { label: t('post_permission'), permissions: actions.post },
+    { label: t('review_permission'), permissions: actions.review },
+    { label: t('invitation_permission'), permissions: actions.invitation },
+    { label: t('project_permission'), permissions: actions.project },
+    { label: t('user_permission'), permissions: actions.user },
+    { label: t('role_permission'), permissions: actions.role },
+    { label: t('api_key_permission'), permissions: actions.apiKey },
+  ];
 
   const navigateToList = () => {
     navigate('../roles');
@@ -103,6 +124,58 @@ const EditRolePageImpl: React.FC = () => {
                     <FormHelperText error>{errors.description?.message}</FormHelperText>
                   </Stack>
                 </Grid>
+
+                {/* Permissions */}
+                {formPermissions.map((formPermission) => {
+                  return (
+                    <Grid xs={12} key={formPermission.label}>
+                      <InputLabel sx={{ mb: 2 }}>{formPermission.label}</InputLabel>
+                      <Grid container spacing={2}>
+                        <Controller
+                          name="permissions"
+                          control={control}
+                          render={({ field }) => (
+                            <>
+                              {Object.values(formPermission.permissions).map((permission) => {
+                                return (
+                                  <Grid xs={6} sm={4} sx={{ py: 0.5 }} key={permission}>
+                                    <Stack>
+                                      <FormControlLabel
+                                        {...field}
+                                        value={permission}
+                                        control={
+                                          <Checkbox
+                                            {...field}
+                                            checked={watch('permissions').includes(permission)}
+                                            onChange={() => {
+                                              if (!field.value.includes(permission)) {
+                                                field.onChange([...field.value, permission]);
+                                                return;
+                                              }
+                                              const newTopics = field.value.filter(
+                                                (topic) => topic !== permission
+                                              );
+                                              field.onChange(newTopics);
+                                            }}
+                                          />
+                                        }
+                                        label={t(
+                                          `permissions.action.${permission}` as unknown as TemplateStringsArray
+                                        )}
+                                      />
+                                    </Stack>
+                                  </Grid>
+                                );
+                              })}
+                            </>
+                          )}
+                        />
+                      </Grid>
+                      <FormHelperText error>{errors.permissions?.message}</FormHelperText>
+                    </Grid>
+                  );
+                })}
+
                 <Grid xs={12}>
                   <Stack
                     direction="row"

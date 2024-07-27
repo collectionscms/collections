@@ -13,17 +13,17 @@ export class CreateApiKeyUseCase {
     private readonly apiKeyPermissionRepository: ApiKeyPermissionRepository
   ) {}
 
-  async execute(params: CreateApiKeyUseCaseSchemaType): Promise<ApiKey> {
+  async execute(props: CreateApiKeyUseCaseSchemaType): Promise<ApiKey> {
     const apiKey = ApiKeyEntity.Construct({
-      name: params.name,
-      projectId: params.projectId,
-      createdById: params.createdById,
+      name: props.name,
+      projectId: props.projectId,
+      createdById: props.createdById,
     });
 
-    const permissions = params.permissions.map((permission) => {
+    const permissions = props.permissions.map((permission) => {
       return ApiKeyPermissionEntity.Construct({
         apiKeyId: apiKey.id,
-        projectId: params.projectId,
+        projectId: props.projectId,
         permissionAction: permission,
       });
     });

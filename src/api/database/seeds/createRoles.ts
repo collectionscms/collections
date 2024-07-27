@@ -1,6 +1,6 @@
 import { v4 } from 'uuid';
+import { actions } from '../../data/permission/permission.entity.js';
 import { BypassPrismaType } from '../prisma/client.js';
-import { actions } from './createPermissions.js';
 import { enProject, jaProject } from './createProjects.js';
 
 export const enAdminRole = v4();
