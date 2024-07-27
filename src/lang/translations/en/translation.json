@@ -232,14 +232,14 @@
   "permissions": {
     "action": {
       "readOwnPost": "Read (Own)",
-      "readAllPost": "Read (All users)",
+      "readAllPost": "Read (All)",
       "createPost": "Create",
       "updatePost": "Update",
       "trashPost": "Delete",
       "publishPost": "Publish without review",
       "archivePost": "Closing of published posts",
-      "readOwnReview": "Read (Own)",
-      "readAllReview": "Read (All users)",
+      "readOwnReview": "Read (Applicant or reviewer is themselves)",
+      "readAllReview": "Read (All)",
       "createReview": "Request for new review",
       "approveReview": "Approve",
       "closeReview": "Close",
