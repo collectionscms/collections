@@ -9,8 +9,9 @@ export class GetPostsUseCase {
     private readonly postRepository: PostRepository
   ) {}
 
-  async execute(props: GetPostsUseCaseSchemaType): Promise<PostItem[]> {
-    const records = await this.postRepository.findManyByProjectId(this.prisma);
+  async execute(props: GetPostsUseCaseSchemaType, hasReadAllPost: boolean): Promise<PostItem[]> {
+    const options = hasReadAllPost ? undefined : { userId: props.userId };
+    const records = await this.postRepository.findMany(this.prisma, options);
 
     return records.map((record) => {
       return record.post.toPostItemResponse(props.primaryLocale, record.contents);

@@ -45,6 +45,7 @@ export const createPost = async (
       id: postId,
       projectId,
       slug: options?.slug ?? faker.lorem.slug(),
+      createdById: user.id,
       createdAt: currentTime,
       updatedAt: currentTime,
       contents: {

@@ -26,7 +26,7 @@ export const createRoles = async (prisma: BypassPrismaType): Promise<void> => {
   ];
 
   const contributorPermissions = [
-    'readPost',
+    'readOwnPost',
     'createPost',
     'updatePost',
     'publishPost',
@@ -38,7 +38,7 @@ export const createRoles = async (prisma: BypassPrismaType): Promise<void> => {
     'closeReview',
   ];
 
-  const viewerPermissions = ['readPost'];
+  const viewerPermissions = ['readOwnPost'];
 
   const enProjectRoles = [
     {

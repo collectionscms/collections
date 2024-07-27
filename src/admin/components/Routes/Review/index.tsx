@@ -17,7 +17,7 @@ export const ReviewRoutes = () => {
 
   const children = [{ path: '*', element: <NotFound /> }];
 
-  if (hasPermission('readOwnReview')) {
+  if (hasPermission('readOwnReview') || hasPermission('readAllReview')) {
     children.push({
       path: ':id',
       element: (

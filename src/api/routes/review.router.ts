@@ -22,7 +22,7 @@ const router = express.Router();
 router.get(
   '/reviews',
   authenticatedUser,
-  validateAccess(['readOwnReview']),
+  validateAccess(['readOwnReview', 'readAllReview']),
   asyncHandler(async (req: Request, res: Response) => {
     const validated = getReviewsUseCaseSchema.safeParse({
       projectId: res.projectRole?.id,
@@ -48,7 +48,7 @@ router.get(
 router.get(
   '/reviews/:id',
   authenticatedUser,
-  validateAccess(['readOwnReview']),
+  validateAccess(['readOwnReview', 'readAllReview']),
   asyncHandler(async (req: Request, res: Response) => {
     const validated = getReviewUseCaseSchema.safeParse({
       projectId: res.projectRole?.id,

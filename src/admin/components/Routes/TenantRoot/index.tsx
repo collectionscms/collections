@@ -17,7 +17,7 @@ export const TenantRootRoutes = () => {
 
   const children = [{ path: '', element: <Navigate to="/admin/posts" replace /> }];
 
-  if (hasPermission('readPost')) {
+  if (hasPermission('readOwnPost') || hasPermission('readAllPost')) {
     children.push({
       path: 'posts',
       element: (
@@ -28,7 +28,7 @@ export const TenantRootRoutes = () => {
     });
   }
 
-  if (hasPermission('readOwnReview')) {
+  if (hasPermission('readOwnReview') || hasPermission('readAllReview')) {
     children.push({
       path: 'reviews',
       element: (
