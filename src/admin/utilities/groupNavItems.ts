@@ -54,7 +54,7 @@ export const postNavItems = (): Group => {
     });
   }
 
-  if (hasPermission('readOwnReview')) {
+  if (hasPermission('readOwnReview') || hasPermission('readAllReview')) {
     items.push({
       label: 'review',
       href: `${path}/reviews`,

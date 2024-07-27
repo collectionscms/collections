@@ -28,7 +28,7 @@ export const TenantRootRoutes = () => {
     });
   }
 
-  if (hasPermission('readOwnReview')) {
+  if (hasPermission('readOwnReview') || hasPermission('readAllReview')) {
     children.push({
       path: 'reviews',
       element: (
