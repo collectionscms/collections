@@ -18,6 +18,7 @@ import { GetRolesUseCase } from '../useCases/role/getRoles.useCase.js';
 import { updateRoleUseCaseSchema } from '../useCases/role/updateRole.schema.js';
 import { UpdateRoleUseCase } from '../useCases/role/updateRole.useCase.js';
 import { validateAccess } from '../middlewares/validateAccess.js';
+import { RolePermissionRepository } from '../data/rolePermission/rolePermission.repository.js';
 
 const router = express.Router();
 
@@ -71,12 +72,14 @@ router.post(
       projectId: res.projectRole?.id,
       name: req.body.name,
       description: req.body.description,
+      permissions: req.body.permissions,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
     const useCase = new CreateRoleUseCase(
       projectPrisma(validated.data.projectId),
-      new RoleRepository()
+      new RoleRepository(),
+      new RolePermissionRepository()
     );
     const role = await useCase.execute(validated.data);
 
