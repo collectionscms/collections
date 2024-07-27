@@ -2,6 +2,7 @@ import { Role } from '@prisma/client';
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWR, { SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
+import { RoleWithPermissions } from '../../../../types/index.js';
 import { api } from '../../../utilities/api.js';
 
 type RoleContext = {
@@ -13,7 +14,7 @@ type RoleContext = {
     }
   >;
   getRole: (id: string) => SWRResponse<
-    Role,
+    RoleWithPermissions,
     Error,
     {
       suspense: true;
@@ -32,9 +33,13 @@ export const RoleContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
     });
 
   const getRole = (id: string) =>
-    useSWR(`/roles/${id}`, (url) => api.get<{ role: Role }>(url).then((res) => res.data.role), {
-      suspense: true,
-    });
+    useSWR(
+      `/roles/${id}`,
+      (url) => api.get<{ role: RoleWithPermissions }>(url).then((res) => res.data.role),
+      {
+        suspense: true,
+      }
+    );
 
   const createRole = () =>
     useSWRMutation(`/roles`, async (url: string, { arg }: { arg: Record<string, any> }) => {

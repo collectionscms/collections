@@ -11,4 +11,8 @@ export const actions = {
   apiKey: ['createApiKey', 'readApiKey', 'updateApiKey', 'deleteApiKey'],
 };
 
-export class PermissionEntity extends PrismaBaseEntity<Permission> {}
+export class PermissionEntity extends PrismaBaseEntity<Permission> {
+  get action(): string {
+    return this.props.action;
+  }
+}
