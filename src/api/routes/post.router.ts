@@ -30,6 +30,7 @@ router.get(
     const validated = getPostsUseCaseSchema.safeParse({
       projectId: res.projectRole?.id,
       primaryLocale: res.projectRole?.primaryLocale,
+      userId: res.user.id,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
@@ -37,7 +38,10 @@ router.get(
       projectPrisma(validated.data.projectId),
       new PostRepository()
     );
-    const posts = await useCase.execute(validated.data);
+
+    const permissions = res.projectRole?.permissions ?? [];
+    const hasReadAllPost = permissions.map((p) => p.action).includes('readAllPost');
+    const posts = await useCase.execute(validated.data, hasReadAllPost);
 
     res.json({ posts });
   })
@@ -53,6 +57,7 @@ router.get(
     const validated = getPostUseCaseSchema.safeParse({
       projectId: res.projectRole?.id,
       postId: req.params.id,
+      userId: res.user.id,
       locale: locale,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
@@ -61,7 +66,10 @@ router.get(
       projectPrisma(validated.data.projectId),
       new PostRepository()
     );
-    const post = await useCase.execute(validated.data);
+
+    const permissions = res.projectRole?.permissions ?? [];
+    const hasReadAllPost = permissions.map((p) => p.action).includes('readAllPost');
+    const post = await useCase.execute(validated.data, hasReadAllPost);
 
     res.json({
       post,

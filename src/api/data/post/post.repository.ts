@@ -8,8 +8,12 @@ import { UserEntity } from '../user/user.entity.js';
 import { PostEntity } from './post.entity.js';
 
 export class PostRepository {
-  // todo rename to findMany
-  async findManyByProjectId(prisma: ProjectPrismaType): Promise<
+  async findMany(
+    prisma: ProjectPrismaType,
+    options?: {
+      userId?: string;
+    }
+  ): Promise<
     {
       post: PostEntity;
       contents: {
@@ -32,6 +36,9 @@ export class PostRepository {
             deletedAt: null,
           },
         },
+      },
+      where: {
+        createdById: options?.userId,
       },
       orderBy: {
         createdAt: 'desc',
@@ -72,7 +79,10 @@ export class PostRepository {
 
   async findOneWithContentsById(
     prisma: ProjectPrismaType,
-    id: string
+    id: string,
+    options?: {
+      userId?: string;
+    }
   ): Promise<{
     post: PostEntity;
     contents: {
@@ -85,6 +95,7 @@ export class PostRepository {
     const record = await prisma.post.findFirstOrThrow({
       where: {
         id,
+        createdById: options?.userId,
       },
       include: {
         contents: {

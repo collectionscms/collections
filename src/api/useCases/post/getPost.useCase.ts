@@ -9,8 +9,13 @@ export class GetPostUseCase {
     private readonly postRepository: PostRepository
   ) {}
 
-  async execute(props: GetPostUseCaseSchemaType): Promise<LocalizedPost> {
-    const record = await this.postRepository.findOneWithContentsById(this.prisma, props.postId);
+  async execute(props: GetPostUseCaseSchemaType, hasReadAllPost: boolean): Promise<LocalizedPost> {
+    const options = hasReadAllPost ? undefined : { userId: props.userId };
+    const record = await this.postRepository.findOneWithContentsById(
+      this.prisma,
+      props.postId,
+      options
+    );
 
     return record.post.toLocalizedWithContentsResponse(props.locale, record.contents);
   }
