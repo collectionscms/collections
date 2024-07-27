@@ -167,6 +167,7 @@
   "api_key": "APIキー",
   "generate_api_key": "APIキーを生成",
   "post_permission": "記事の権限",
+  "review_permission": "レビューの権限",
   "no_permissions": "権限がありません",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
@@ -229,16 +230,13 @@
       "createPost": "新規登録",
       "updatePost": "編集",
       "trashPost": "削除",
-      "publishPost": "公開",
-      "archivePost": "公開終了"
-    },
-    "description": {
-      "readPost": "記事の一覧、詳細を取得できます。",
-      "createPost": "記事を新たに作成することができます。",
-      "updatePost": "作成された記事を編集することができます。",
-      "trashPost": "作成された記事をごみ箱にいれて削除することができます。",
-      "publishPost": "記事の公開にはレビューの承認が必要ですが、この権限はレビューなしで記事を公開することができます。",
-      "archivePost": "記事を公開終了にすることができます。"
+      "publishPost": "レビューなしで公開",
+      "archivePost": "公開済み記事の終了",
+      "readOwnReview": "自分のレビューの閲覧",
+      "readAllReview": "全てのレビューの閲覧",
+      "createReview": "新規レビューの申請",
+      "approveReview": "承認",
+      "closeReview": "取り下げ"
     }
   },
   "error": {

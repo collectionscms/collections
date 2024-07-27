@@ -167,6 +167,7 @@
   "api_key": "API key",
   "generate_api_key": "Generate API key",
   "post_permission": "Post Permissions",
+  "review_permission": "Review Permissions",
   "no_permissions": "No Permissions",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
@@ -229,16 +230,13 @@
       "createPost": "Create",
       "updatePost": "Update",
       "trashPost": "Delete",
-      "publishPost": "Publish",
-      "archivePost": "Archive"
-    },
-    "description": {
-      "readPost": "A list of posts and details can be retrieved.",
-      "createPost": "New posts can be created.",
-      "updatePost": "Allows editing of created posts",
-      "trashPost": "Created posts can be deleted by placing them in the recycle bin.",
-      "publishPost": "Review approval is required to publish posts, but with this authorization, posts can be published without review.",
-      "archivePost": "Articles can be archived for publication."
+      "publishPost": "Publish without review",
+      "archivePost": "Closing of published posts",
+      "readOwnReview": "View your reviews",
+      "readAllReview": "View all reviews",
+      "createReview": "Request for new review",
+      "approveReview": "Approve",
+      "closeReview": "Close"
     }
   },
   "error": {
