@@ -8,8 +8,8 @@ export class DeleteApiKeyUseCase {
     private readonly apiKeyRepository: ApiKeyRepository
   ) {}
 
-  async execute(params: DeleteApiKeyUseCaseSchemaType): Promise<void> {
-    const apiKey = await this.apiKeyRepository.findOne(this.prisma, params.apiKeyId);
+  async execute(props: DeleteApiKeyUseCaseSchemaType): Promise<void> {
+    const apiKey = await this.apiKeyRepository.findOne(this.prisma, props.apiKeyId);
     await this.apiKeyRepository.delete(this.prisma, apiKey);
   }
 }
