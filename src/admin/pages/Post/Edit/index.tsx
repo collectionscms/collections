@@ -257,7 +257,7 @@ export const EditPostPageImpl: React.FC = () => {
         <Toolbar sx={{ mt: 0 }} />
         <Container maxWidth="sm">
           <Box sx={{ p: 10 }}>
-            <Box sx={{ mb: 1 }}>
+            <Box sx={{ mb: 2 }}>
               {uploadFile ? (
                 <Box
                   sx={{
@@ -320,6 +320,9 @@ export const EditPostPageImpl: React.FC = () => {
                   '.MuiOutlinedInput-root': {
                     padding: 0,
                     lineHeight: 1.85,
+                  },
+                  '.MuiOutlinedInput-input': {
+                    color: theme.palette.text.primary,
                   },
                   '.Mui-focused': {
                     boxShadow: 'none !important',
