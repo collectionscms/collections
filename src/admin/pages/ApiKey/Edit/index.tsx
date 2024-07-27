@@ -140,83 +140,76 @@ const EditApiKeyPageImpl: React.FC = () => {
                     <FormHelperText error>{errors.key?.message}</FormHelperText>
                   </Stack>
                 </Grid>
-              </Grid>
 
-              {/* Post permissions */}
-              <Grid container spacing={3}>
+                {/* Permissions */}
                 <Grid xs={12}>
-                  <InputLabel sx={{ my: 1 }}>{t('post_permission')}</InputLabel>
-                </Grid>
-              </Grid>
-              <Grid container spacing={3}>
-                <Controller
-                  name="permissions"
-                  control={control}
-                  render={({ field }) => (
-                    <>
-                      {Object.values(actions.post).map((permission) => {
-                        return (
-                          <Grid xs={12} sm={6} key={permission}>
-                            <Stack>
-                              <FormControlLabel
-                                {...field}
-                                value={permission}
-                                control={
-                                  <Checkbox
+                  <InputLabel sx={{ mb: 2 }}>{t('post_permission')}</InputLabel>
+                  <Grid container spacing={2}>
+                    <Controller
+                      name="permissions"
+                      control={control}
+                      render={({ field }) => (
+                        <>
+                          {Object.values(actions.post).map((permission) => {
+                            return (
+                              <Grid xs={6} sm={4} sx={{ py: 0.5 }} key={permission}>
+                                <Stack>
+                                  <FormControlLabel
                                     {...field}
-                                    checked={watch('permissions').includes(permission)}
-                                    onChange={() => {
-                                      if (!field.value.includes(permission)) {
-                                        field.onChange([...field.value, permission]);
-                                        return;
-                                      }
-                                      const newTopics = field.value.filter(
-                                        (topic) => topic !== permission
-                                      );
-                                      field.onChange(newTopics);
-                                    }}
+                                    value={permission}
+                                    control={
+                                      <Checkbox
+                                        {...field}
+                                        checked={watch('permissions').includes(permission)}
+                                        onChange={() => {
+                                          if (!field.value.includes(permission)) {
+                                            field.onChange([...field.value, permission]);
+                                            return;
+                                          }
+                                          const newTopics = field.value.filter(
+                                            (topic) => topic !== permission
+                                          );
+                                          field.onChange(newTopics);
+                                        }}
+                                      />
+                                    }
+                                    label={t(
+                                      `permissions.action.${permission}` as unknown as TemplateStringsArray
+                                    )}
                                   />
-                                }
-                                label={t(
-                                  `permissions.action.${permission}` as unknown as TemplateStringsArray
-                                )}
-                              />
-                              <Typography variant="subtitle2" color="secondary" sx={{ ml: 3 }}>
-                                {t(
-                                  `permissions.description.${permission}` as unknown as TemplateStringsArray
-                                )}
-                              </Typography>
-                            </Stack>
-                          </Grid>
-                        );
-                      })}
-                    </>
-                  )}
-                />
-              </Grid>
-              <FormHelperText error>{errors.permissions?.message}</FormHelperText>
+                                </Stack>
+                              </Grid>
+                            );
+                          })}
+                        </>
+                      )}
+                    />
+                  </Grid>
+                  <FormHelperText error>{errors.permissions?.message}</FormHelperText>
+                </Grid>
 
-              <Grid xs={12}>
-                <Stack
-                  direction="row"
-                  alignItems="center"
-                  justifyContent="space-between"
-                  sx={{ width: 1 }}
-                >
-                  {hasPermission('deleteApiKey') ? (
-                    <DeleteButton id={id} slug="api-keys" onSuccess={navigateToList} />
-                  ) : (
-                    <div />
-                  )}
-                  <Stack direction="row" spacing={1}>
-                    <Button variant="outlined" color="secondary" onClick={navigateToList}>
-                      {t('cancel')}
-                    </Button>
-                    <Button variant="contained" type="submit" disabled={isUpdateMutating}>
-                      {t('update')}
-                    </Button>
+                <Grid xs={12}>
+                  <Stack
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="space-between"
+                    sx={{ width: 1 }}
+                  >
+                    {hasPermission('deleteApiKey') ? (
+                      <DeleteButton id={id} slug="api-keys" onSuccess={navigateToList} />
+                    ) : (
+                      <div />
+                    )}
+                    <Stack direction="row" spacing={1}>
+                      <Button variant="outlined" color="secondary" onClick={navigateToList}>
+                        {t('cancel')}
+                      </Button>
+                      <Button variant="contained" type="submit" disabled={isUpdateMutating}>
+                        {t('update')}
+                      </Button>
+                    </Stack>
                   </Stack>
-                </Stack>
+                </Grid>
               </Grid>
             </form>
           </MainCard>

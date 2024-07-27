@@ -88,10 +88,10 @@ const CreateApiKeyPageImpl: React.FC = () => {
                   </Stack>
                 </Grid>
 
-                {/* Post permissions */}
+                {/* Permissions */}
                 <Grid xs={12}>
-                  <InputLabel sx={{ my: 1 }}>{t('post_permission')}</InputLabel>
-                  <Grid container spacing={3}>
+                  <InputLabel sx={{ mb: 2 }}>{t('post_permission')}</InputLabel>
+                  <Grid container spacing={2}>
                     <Controller
                       name="permissions"
                       control={control}
@@ -99,7 +99,7 @@ const CreateApiKeyPageImpl: React.FC = () => {
                         <>
                           {Object.values(actions.post).map((permission) => {
                             return (
-                              <Grid xs={12} sm={6} key={permission}>
+                              <Grid xs={6} sm={4} sx={{ py: 0.5 }} key={permission}>
                                 <Stack>
                                   <FormControlLabel
                                     {...field}
@@ -124,11 +124,6 @@ const CreateApiKeyPageImpl: React.FC = () => {
                                       `permissions.action.${permission}` as unknown as TemplateStringsArray
                                     )}
                                   />
-                                  <Typography variant="subtitle2" color="secondary" sx={{ ml: 3 }}>
-                                    {t(
-                                      `permissions.description.${permission}` as unknown as TemplateStringsArray
-                                    )}
-                                  </Typography>
                                 </Stack>
                               </Grid>
                             );
@@ -139,6 +134,7 @@ const CreateApiKeyPageImpl: React.FC = () => {
                   </Grid>
                   <FormHelperText error>{errors.permissions?.message}</FormHelperText>
                 </Grid>
+
                 <Grid xs={12}>
                   <Stack direction="row" justifyContent="flex-end" spacing={1}>
                     <Button variant="outlined" color="secondary" onClick={navigateToList}>
