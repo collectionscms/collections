@@ -1,5 +1,5 @@
 import { Tooltip } from '@mui/material';
-import { RiArrowGoBackLine } from '@remixicon/react';
+import { Undo2 } from 'lucide-react';
 import { enqueueSnackbar } from 'notistack';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -47,7 +47,7 @@ export const RestoreButtonImpl: React.FC<Props> = ({ postId, onRestored }) => {
           size="small"
           onClick={() => setOpenRestore(true)}
         >
-          <RiArrowGoBackLine size={16} />
+          <Undo2 size={18} />
         </IconButton>
       </Tooltip>
     </>

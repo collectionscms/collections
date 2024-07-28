@@ -16,7 +16,7 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { RiArrowGoBackLine, RiTranslate2 } from '@remixicon/react';
+import { Languages, Undo2 } from 'lucide-react';
 import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -164,7 +164,7 @@ export const PostHeader: React.FC<Props> = ({
               variant="text"
               color="secondary"
               ref={anchorRef}
-              startIcon={<RiTranslate2 size={20} />}
+              startIcon={<Languages size={16} />}
               onClick={handleLocaleOpen}
             >
               <Typography>
@@ -218,7 +218,7 @@ export const PostHeader: React.FC<Props> = ({
           {post.version > 1 && (
             <>
               <MenuItem onClick={() => setOpenRevert(true)}>
-                <RiArrowGoBackLine size={16} />
+                <Undo2 size={16} />
                 <Typography sx={{ pl: 1 }}>{t('revert_previous_version')}</Typography>
               </MenuItem>
               <Divider />
