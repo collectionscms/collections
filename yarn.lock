@@ -2493,10 +2493,10 @@
   dependencies:
     zeed-dom "^0.10.9"
 
-"@tiptap/pm@2.5.6":
-  version "2.5.6"
-  resolved "https://registry.yarnpkg.com/@tiptap/pm/-/pm-2.5.6.tgz#320e24950cdcd81d18339ec3528094e4d60dd795"
-  integrity sha512-0ysx5eXyF5XXfBmo/krMWKvZh6iBnqJ0YVPO/NsGzZcdjBix9lYYDh6nswLvv2mjhPbMEmcMW1ctj3myOwoUbw==
+"@tiptap/pm@2.5.7":
+  version "2.5.7"
+  resolved "https://registry.yarnpkg.com/@tiptap/pm/-/pm-2.5.7.tgz#9661d508fe34f7616b1078becc049baeff75d677"
+  integrity sha512-4Eb4vA4e4vesBAUmZgx+n3xjgJ58uRKKtnhFDJ3Gg+dfpXvtF8FcEwSIjHJsTlNJ8mSrzX/I7S157qPc5wZXVw==
   dependencies:
     prosemirror-changeset "^2.2.1"
     prosemirror-collab "^1.3.1"
