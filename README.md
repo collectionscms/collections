@@ -1,6 +1,6 @@
 ## ⭐ What is Collections
 
-Collections is a headless CMS that offers AI-powered automatic translation and seamless multilingual delivery. We provide the best writing and developer experience for global websites.
+Collections is an open source headless CMS that makes multilingual delivery easy with AI. We provide the comfortable writing and developer experience for global websites.
 
 <hr/>
 <h4>
@@ -10,9 +10,10 @@ Collections is a headless CMS that offers AI-powered automatic translation and s
 
 ### Features
 
-- 🌐 Making content multilingual
-- 🖊 Intuitive editor
-- 🛡 Detailed permission management
+- 🌐 Multilingual distribution by AI
+- 🖊 Notion-like editor
+- 🛡 Fine-grained permission
+- 🔒 Multi-tenancy project
 
 ## 📚 Usage & Documentation
 
