@@ -1,19 +1,13 @@
 import { Paper, Stack } from '@mui/material';
-import {
-  RiBold,
-  RiCodeLine,
-  RiCodeSSlashLine,
-  RiItalic,
-  RiStrikethrough,
-  RiUnderline,
-} from '@remixicon/react';
 import { BubbleMenu, Editor, EditorContent } from '@tiptap/react';
+import { Bold, Code, CodeXml, Italic, Strikethrough, Underline } from 'lucide-react';
 import React from 'react';
-import { IconButton } from '../../../@extended/components/IconButton/index.js';
 import { useColorMode } from '../../utilities/ColorMode/index.js';
+import { LinkMenu } from './menus/LinkMenu.js';
+import { ToolbarButton } from './ToolbarButton/index.js';
 
 export type Props = {
-  editor: Editor | null;
+  editor: Editor;
 };
 
 export const WYSIWYG: React.FC<Props> = ({ editor }) => {
@@ -31,54 +25,41 @@ export const WYSIWYG: React.FC<Props> = ({ editor }) => {
         <BubbleMenu className="bubble-menu" tippyOptions={{ duration: 100 }} editor={editor}>
           <Paper elevation={1} sx={{ p: 0.4, borderRadius: 2 }}>
             <Stack direction="row" gap={0.5}>
-              <IconButton
+              {/* tooltip を含めたコンポーネントとしてあとで纏める */}
+              <ToolbarButton
+                shortcuts={['Mod', 'B']}
                 onClick={() => editor.chain().focus().toggleBold().run()}
-                color="secondary"
-                size="small"
-                sx={{ borderRadius: 1.5 }}
               >
-                <RiBold size={18} />
-              </IconButton>
-              <IconButton
+                <Bold size={16} />
+              </ToolbarButton>
+              <ToolbarButton
+                shortcuts={['Mod', 'I']}
                 onClick={() => editor.chain().focus().toggleItalic().run()}
-                color="secondary"
-                size="small"
-                sx={{ borderRadius: 1.5 }}
               >
-                <RiItalic size={18} />
-              </IconButton>
-              <IconButton
+                <Italic size={16} />
+              </ToolbarButton>
+              <ToolbarButton
+                shortcuts={['Mod', 'U']}
                 onClick={() => editor.chain().focus().toggleUnderline().run()}
-                color="secondary"
-                size="small"
-                sx={{ borderRadius: 1.5 }}
               >
-                <RiUnderline size={18} />
-              </IconButton>
-              <IconButton
+                <Underline size={16} />
+              </ToolbarButton>
+              <ToolbarButton
+                shortcuts={['Mod', 'Shift', 'S']}
                 onClick={() => editor.chain().focus().toggleStrike().run()}
-                color="secondary"
-                size="small"
-                sx={{ borderRadius: 1.5 }}
               >
-                <RiStrikethrough size={18} />
-              </IconButton>
-              <IconButton
+                <Strikethrough size={16} />
+              </ToolbarButton>
+              <ToolbarButton
+                shortcuts={['Mod', 'E']}
                 onClick={() => editor.chain().focus().toggleCode().run()}
-                color="secondary"
-                size="small"
-                sx={{ borderRadius: 1.5 }}
               >
-                <RiCodeLine size={18} />
-              </IconButton>
-              <IconButton
-                onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-                color="secondary"
-                size="small"
-                sx={{ borderRadius: 1.5 }}
-              >
-                <RiCodeSSlashLine size={18} />
-              </IconButton>
+                <Code size={16} />
+              </ToolbarButton>
+              <ToolbarButton onClick={() => editor.chain().focus().toggleCodeBlock().run()}>
+                <CodeXml size={16} />
+              </ToolbarButton>
+              <LinkMenu editor={editor} />
             </Stack>
           </Paper>
         </BubbleMenu>

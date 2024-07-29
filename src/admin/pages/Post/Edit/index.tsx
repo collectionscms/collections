@@ -2,6 +2,7 @@ import { CameraOutlined, CloseOutlined } from '@ant-design/icons';
 import { Box, Button, Container, Stack, TextField, Toolbar, alpha, useTheme } from '@mui/material';
 import { Extension } from '@tiptap/core';
 import CharacterCount from '@tiptap/extension-character-count';
+import TiptapLink from '@tiptap/extension-link';
 import Placeholder from '@tiptap/extension-placeholder';
 import Underline from '@tiptap/extension-underline';
 import { useEditor } from '@tiptap/react';
@@ -195,6 +196,11 @@ export const EditPostPageImpl: React.FC = () => {
     Underline,
     CharacterCount,
     Placeholder.configure({ placeholder: t('write_the_text') }),
+    TiptapLink.configure({
+      openOnClick: false,
+      autolink: true,
+      defaultProtocol: 'https',
+    }),
     Extension.create({
       addKeyboardShortcuts() {
         return {
@@ -339,7 +345,7 @@ export const EditPostPageImpl: React.FC = () => {
                 onKeyDown={handleKeyDown}
               />
             </Stack>
-            <WYSIWYG editor={editor} />
+            {editor && <WYSIWYG editor={editor} />}
           </Box>
         </Container>
       </Box>
