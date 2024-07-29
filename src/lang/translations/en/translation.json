@@ -174,6 +174,8 @@
   "role_permission": "Role Permissions",
   "api_key_permission": "API Key Permissions",
   "no_permissions": "No Permissions",
+  "open_in_new_tab": "Open in new tab",
+  "remove_link": "Remove link",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",

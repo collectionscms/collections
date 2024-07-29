@@ -1,6 +1,7 @@
-import { FileTextOutlined, RightOutlined } from '@ant-design/icons';
+import { FileTextOutlined } from '@ant-design/icons';
 import { Button, Stack, Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
+import { ChevronRight } from 'lucide-react';
 import { enqueueSnackbar } from 'notistack';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -52,9 +53,9 @@ const ReviewDetailPageImpl: React.FC = () => {
           <MainCard>
             <Grid container spacing={3}>
               <Grid xs={12}>
-                <Stack direction="row" spacing={1} sx={{ mb: 1 }}>
+                <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 1 }}>
                   <FileTextOutlined />
-                  <RightOutlined />
+                  <ChevronRight size={18} />
                   <Link href={`/admin/posts/${review.postId}`}>{review.postId}</Link>
                 </Stack>
                 <Stack spacing={1}>
