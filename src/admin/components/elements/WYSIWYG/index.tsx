@@ -1,4 +1,4 @@
-import { Divider, Paper, Stack } from '@mui/material';
+import { Paper, Stack } from '@mui/material';
 import { BubbleMenu, Editor, EditorContent } from '@tiptap/react';
 import { Bold, Code, CodeXml, Italic, Strikethrough, Underline } from 'lucide-react';
 import React from 'react';
@@ -26,43 +26,44 @@ export const WYSIWYG: React.FC<Props> = ({ editor }) => {
           <Paper elevation={1} sx={{ p: 0.4, borderRadius: 2 }}>
             <Stack direction="row" gap={0.5}>
               <ToolbarButton
-                shortcuts={['Mod', 'B']}
-                onClick={() => editor.chain().focus().toggleBold().run()}
-              >
-                <Bold size={16} />
-              </ToolbarButton>
-              <Divider orientation="vertical" />
-              <ToolbarButton
+                tooltip="Bold"
                 shortcuts={['Mod', 'B']}
                 onClick={() => editor.chain().focus().toggleBold().run()}
               >
                 <Bold size={16} />
               </ToolbarButton>
               <ToolbarButton
+                tooltip="Italic"
                 shortcuts={['Mod', 'I']}
                 onClick={() => editor.chain().focus().toggleItalic().run()}
               >
                 <Italic size={16} />
               </ToolbarButton>
               <ToolbarButton
+                tooltip="Underline"
                 shortcuts={['Mod', 'U']}
                 onClick={() => editor.chain().focus().toggleUnderline().run()}
               >
                 <Underline size={16} />
               </ToolbarButton>
               <ToolbarButton
+                tooltip="Strike-through"
                 shortcuts={['Mod', 'Shift', 'S']}
                 onClick={() => editor.chain().focus().toggleStrike().run()}
               >
                 <Strikethrough size={16} />
               </ToolbarButton>
               <ToolbarButton
+                tooltip="Code"
                 shortcuts={['Mod', 'E']}
                 onClick={() => editor.chain().focus().toggleCode().run()}
               >
                 <Code size={16} />
               </ToolbarButton>
-              <ToolbarButton onClick={() => editor.chain().focus().toggleCodeBlock().run()}>
+              <ToolbarButton
+                tooltip="Code Block"
+                onClick={() => editor.chain().focus().toggleCodeBlock().run()}
+              >
                 <CodeXml size={16} />
               </ToolbarButton>
               <LinkMenu editor={editor} />
