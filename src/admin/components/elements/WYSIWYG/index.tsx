@@ -1,9 +1,9 @@
-import { Paper, Stack } from '@mui/material';
+import { Divider, Paper, Stack } from '@mui/material';
 import { BubbleMenu, Editor, EditorContent } from '@tiptap/react';
 import { Bold, Code, CodeXml, Italic, Strikethrough, Underline } from 'lucide-react';
 import React from 'react';
 import { useColorMode } from '../../utilities/ColorMode/index.js';
-import { LinkMenu } from './menus/LinkMenu.js';
+import { LinkMenu } from './menus/LinkMenu/index.js';
 import { ToolbarButton } from './ToolbarButton/index.js';
 
 export type Props = {
@@ -25,7 +25,13 @@ export const WYSIWYG: React.FC<Props> = ({ editor }) => {
         <BubbleMenu className="bubble-menu" tippyOptions={{ duration: 100 }} editor={editor}>
           <Paper elevation={1} sx={{ p: 0.4, borderRadius: 2 }}>
             <Stack direction="row" gap={0.5}>
-              {/* tooltip を含めたコンポーネントとしてあとで纏める */}
+              <ToolbarButton
+                shortcuts={['Mod', 'B']}
+                onClick={() => editor.chain().focus().toggleBold().run()}
+              >
+                <Bold size={16} />
+              </ToolbarButton>
+              <Divider orientation="vertical" />
               <ToolbarButton
                 shortcuts={['Mod', 'B']}
                 onClick={() => editor.chain().focus().toggleBold().run()}

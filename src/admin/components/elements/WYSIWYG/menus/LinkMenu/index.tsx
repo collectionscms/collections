@@ -21,8 +21,6 @@ export const LinkMenu: React.FC<Props> = ({ editor }) => {
     setAnchorEl(event.currentTarget);
   };
 
-  console.log('LinkMenu', link, target);
-
   return (
     <>
       <IconButton onClick={handleClick} color="secondary" size="small" sx={{ borderRadius: 1.5 }}>
