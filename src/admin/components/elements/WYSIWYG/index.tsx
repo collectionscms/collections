@@ -3,6 +3,8 @@ import { BubbleMenu, Editor, EditorContent } from '@tiptap/react';
 import { Bold, Code, CodeXml, Italic, Strikethrough, Underline } from 'lucide-react';
 import React from 'react';
 import { useColorMode } from '../../utilities/ColorMode/index.js';
+import { useTextMenuContentTypes } from './hooks/useTextMenuContentTypes.js';
+import { ContentTypeMenu } from './menus/ContentTypeMenu/index.js';
 import { LinkMenu } from './menus/LinkMenu/index.js';
 import { ToolbarButton } from './ToolbarButton/index.js';
 
@@ -18,6 +20,8 @@ export const WYSIWYG: React.FC<Props> = ({ editor }) => {
     require('./dark.css');
   }
 
+  const blockOptions = useTextMenuContentTypes(editor);
+
   return (
     <>
       <EditorContent editor={editor} />
@@ -25,6 +29,7 @@ export const WYSIWYG: React.FC<Props> = ({ editor }) => {
         <BubbleMenu className="bubble-menu" tippyOptions={{ duration: 100 }} editor={editor}>
           <Paper elevation={1} sx={{ p: 0.4, borderRadius: 2 }}>
             <Stack direction="row" gap={0.5}>
+              <ContentTypeMenu options={blockOptions} />
               <ToolbarButton
                 tooltip="Bold"
                 shortcuts={['Mod', 'B']}
