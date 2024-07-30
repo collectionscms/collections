@@ -5,7 +5,7 @@ type Props = {
   children: React.ReactNode;
   tooltip?: string;
   shortcuts?: string[];
-  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
 const isMac = typeof window !== 'undefined' ? /Mac/i.test(navigator.userAgent) : false;
