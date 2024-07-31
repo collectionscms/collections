@@ -12,7 +12,7 @@ const MemoLinkMenu = memo(LinkMenu);
 const MemoContentTypeMenu = memo(ContentTypeMenu);
 
 export type Props = {
-  editor: Editor;
+  editor: Editor | null;
 };
 
 export const BlockEditor: React.FC<Props> = ({ editor }) => {
@@ -23,11 +23,11 @@ export const BlockEditor: React.FC<Props> = ({ editor }) => {
     require('./dark.css');
   }
 
-  const blockOptions = useTextMenuContentTypes(editor);
-
   if (!editor) {
     return null;
   }
+
+  const blockOptions = useTextMenuContentTypes(editor);
 
   return (
     <Box sx={{ position: 'relative' }}>
