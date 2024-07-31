@@ -3,35 +3,40 @@ import React from 'react';
 
 type Props = {
   children: React.ReactNode;
+  tooltip?: string;
   shortcuts?: string[];
-  onClick: () => void;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
-const isMac =
-  typeof window !== 'undefined' ? navigator.platform.toUpperCase().indexOf('MAC') >= 0 : false;
+const isMac = typeof window !== 'undefined' ? /Mac/i.test(navigator.userAgent) : false;
 
 export const ShortcutKey: React.FC<{ shortcut: string }> = ({ shortcut }) => {
   if (shortcut === 'Mod') {
-    return <Typography component="span">{isMac ? '⌘' : 'Ctrl'}</Typography>;
+    return <Typography>{isMac ? '⌘' : 'Ctrl'}</Typography>;
   }
 
   if (shortcut === 'Shift') {
-    return <Typography component="span">⇧</Typography>;
+    return <Typography>⇧</Typography>;
   }
 
-  return <Typography component="span">{shortcut}</Typography>;
+  return <Typography>{shortcut}</Typography>;
 };
 
-export const ToolbarButton: React.FC<Props> = ({ children, shortcuts, onClick }) => {
+export const ToolbarButton: React.FC<Props> = ({ children, tooltip, shortcuts, onClick }) => {
   return (
     <>
-      {shortcuts ? (
+      {tooltip ? (
         <Tooltip
           title={
-            <Stack gap={0.5} direction="row">
-              {shortcuts.map((shortcut, index) => (
-                <ShortcutKey shortcut={shortcut} key={index} />
-              ))}
+            <Stack gap={1} direction="row">
+              <Typography>{tooltip}</Typography>
+              {shortcuts && (
+                <Stack gap={0.5} direction="row">
+                  {shortcuts.map((shortcut, index) => (
+                    <ShortcutKey shortcut={shortcut} key={index} />
+                  ))}
+                </Stack>
+              )}
             </Stack>
           }
           placement="top"

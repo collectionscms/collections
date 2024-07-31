@@ -222,6 +222,7 @@
     "ja": "日本語"
   },
   "editor": {
+    "text": "テキスト",
     "guide": "エディターガイド",
     "headline": "見出し",
     "subtitle": "小見出し",

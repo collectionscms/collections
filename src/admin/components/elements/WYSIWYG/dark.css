@@ -24,8 +24,29 @@
     line-height: 1.1;
   }
 
+  h2,
+  h3 {
+    font-weight: normal;
+    font-size: 1.15em;
+    line-height: 1.7;
+  }
+
+  h2 {
+    border-bottom: 1px solid;
+    border-color: #434343;
+    padding: 0.45em 0;
+  }
+
+  h3 {
+    margin-top: 1em;
+  }
+
   h2 + * {
-    margin-top: 1.5em !important;
+    margin-top: 1.5em;
+  }
+
+  h3 + * {
+    margin-top: 3em;
   }
 
   p {
@@ -79,27 +100,5 @@
     float: left;
     height: 0;
     pointer-events: none;
-  }
-
-  h2,
-  h3 {
-    font-weight: normal;
-    font-size: 1.15em;
-    line-height: 1.7;
-  }
-
-  h2.heading {
-    padding: 0.45em 0;
-    border-bottom: 1px solid;
-    border-color: #434343;
-    font-weight: normal;
-  }
-
-  h3.heading + h3.heading {
-    margin-top: 1em;
-  }
-
-  .heading {
-    margin: 3em 0 0;
   }
 }

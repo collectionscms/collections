@@ -3,6 +3,7 @@ import { Editor } from '@tiptap/react';
 import { Link } from 'lucide-react';
 import React, { useCallback, useState } from 'react';
 import { EditLinkPopover } from './EditLinkPopover.js';
+import { ToolbarButton } from '../../ToolbarButton/index.js';
 
 type Props = {
   editor: Editor;
@@ -21,13 +22,11 @@ export const LinkMenu: React.FC<Props> = ({ editor }) => {
     setAnchorEl(event.currentTarget);
   };
 
-  console.log('LinkMenu', link, target);
-
   return (
     <>
-      <IconButton onClick={handleClick} color="secondary" size="small" sx={{ borderRadius: 1.5 }}>
+      <ToolbarButton tooltip="Link" onClick={handleClick}>
         <Link size={16} />
-      </IconButton>
+      </ToolbarButton>
       <EditLinkPopover
         anchorEl={anchorEl}
         shouldShow={shouldShow()}
