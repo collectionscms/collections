@@ -15,7 +15,7 @@ export type Props = {
   editor: Editor;
 };
 
-export const WYSIWYG: React.FC<Props> = ({ editor }) => {
+export const BlockEditor: React.FC<Props> = ({ editor }) => {
   const { mode } = useColorMode();
   if (mode === 'light') {
     require('./light.css');

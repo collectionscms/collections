@@ -17,7 +17,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { UploadFile } from '../../../../types/index.js';
 import { logger } from '../../../../utilities/logger.js';
 import { IconButton } from '../../../@extended/components/IconButton/index.js';
-import { WYSIWYG } from '../../../components/elements/WYSIWYG/index.js';
+import { BlockEditor } from '../../../components/elements/BlockEditor/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
 import { PostContextProvider, usePost } from '../Context/index.js';
 import { LocalizedContent } from '../LocalizedContent/index.js';
@@ -355,7 +355,7 @@ export const EditPostPageImpl: React.FC = () => {
                 onKeyDown={handleKeyDown}
               />
             </Stack>
-            {editor && <WYSIWYG editor={editor} />}
+            {editor && <BlockEditor editor={editor} />}
           </Box>
         </Container>
       </Box>
