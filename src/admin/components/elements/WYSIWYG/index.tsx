@@ -8,6 +8,7 @@ import { ContentTypeMenu } from './menus/ContentTypeMenu/index.js';
 import { LinkMenu } from './menus/LinkMenu/index.js';
 import { ToolbarButton } from './ToolbarButton/index.js';
 
+const MemoLinkMenu = memo(LinkMenu);
 const MemoContentTypeMenu = memo(ContentTypeMenu);
 
 export type Props = {
@@ -81,7 +82,7 @@ export const WYSIWYG: React.FC<Props> = ({ editor }) => {
             >
               <CodeXml size={16} />
             </ToolbarButton>
-            <LinkMenu editor={editor} />
+            <MemoLinkMenu editor={editor} />
           </Stack>
         </Paper>
       </BubbleMenu>

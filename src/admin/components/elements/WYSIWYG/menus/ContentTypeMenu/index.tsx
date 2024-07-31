@@ -1,4 +1,4 @@
-import { Button, IconButton, Paper, Stack } from '@mui/material';
+import { Button, Paper, Stack } from '@mui/material';
 import * as Dropdown from '@radix-ui/react-dropdown-menu';
 import { CaseSensitive, ChevronDown, icons } from 'lucide-react';
 import React, { useMemo } from 'react';
@@ -23,31 +23,33 @@ export const ContentTypeMenu: React.FC<Props> = ({ options }) => {
   return (
     <Dropdown.Root>
       <Dropdown.Trigger asChild>
-        <IconButton>
+        <Button variant="text" color="secondary">
           <Stack gap={0.5} direction="row" alignItems="center">
             <ActiveItemIcon size={16} />
             <ChevronDown size={8} />
           </Stack>
-        </IconButton>
+        </Button>
       </Dropdown.Trigger>
       <Dropdown.Content>
-        <Paper elevation={1} sx={{ p: 0.5, borderRadius: 2 }}>
+        <Paper elevation={1} sx={{ p: 1, borderRadius: 2 }}>
           <Stack>
             {options.map((option) => {
               const Icon = icons[option.icon];
 
               return (
-                <Button
-                  variant="text"
-                  key={option.id}
-                  onClick={option.onClick}
-                  sx={{ justifyContent: 'left' }}
-                >
-                  <Stack direction="row" alignItems="center" gap={1}>
-                    {option.icon && <Icon size={16} />}
-                    {option.label}
-                  </Stack>
-                </Button>
+                <Dropdown.Item key={option.id}>
+                  <Button
+                    variant="text"
+                    color="secondary"
+                    onClick={option.onClick}
+                    sx={{ justifyContent: 'left', width: '100%' }}
+                  >
+                    <Stack direction="row" alignItems="center" gap={1}>
+                      {option.icon && <Icon size={16} />}
+                      {option.label}
+                    </Stack>
+                  </Button>
+                </Dropdown.Item>
               );
             })}
           </Stack>
