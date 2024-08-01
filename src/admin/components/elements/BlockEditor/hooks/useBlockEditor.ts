@@ -8,6 +8,7 @@ import Underline from '@tiptap/extension-underline';
 import { Content, useEditor } from '@tiptap/react';
 import { StarterKit } from '@tiptap/starter-kit';
 import { useTranslation } from 'react-i18next';
+import { SlashCommand } from '../extensions/SlashCommand/index.js';
 export { Heading } from '@tiptap/extension-heading';
 export { TaskItem } from '@tiptap/extension-task-item';
 
@@ -44,6 +45,7 @@ export const useBlockEditor = ({
       TaskItem.configure({
         nested: true,
       }),
+      SlashCommand,
       Extension.create({
         addKeyboardShortcuts() {
           return {
