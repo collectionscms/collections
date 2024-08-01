@@ -7,6 +7,7 @@ import { useTextMenuContentTypes } from './hooks/useTextMenuContentTypes.js';
 import { ContentTypeMenu } from './menus/ContentTypeMenu/index.js';
 import { LinkMenu } from './menus/LinkMenu/index.js';
 import { ToolbarButton } from './ToolbarButton/index.js';
+import './styles/index.css';
 
 const MemoLinkMenu = memo(LinkMenu);
 const MemoContentTypeMenu = memo(ContentTypeMenu);
