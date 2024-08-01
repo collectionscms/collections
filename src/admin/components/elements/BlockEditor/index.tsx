@@ -18,9 +18,9 @@ export type Props = {
 export const BlockEditor: React.FC<Props> = ({ editor }) => {
   const { mode } = useColorMode();
   if (mode === 'light') {
-    require('./light.css');
+    require('./styles/light.css');
   } else {
-    require('./dark.css');
+    require('./styles/dark.css');
   }
 
   if (!editor) {
