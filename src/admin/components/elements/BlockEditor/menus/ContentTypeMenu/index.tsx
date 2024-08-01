@@ -2,6 +2,7 @@ import { Button, Paper, Stack } from '@mui/material';
 import * as Dropdown from '@radix-ui/react-dropdown-menu';
 import { CaseSensitive, ChevronDown, icons } from 'lucide-react';
 import React, { useMemo } from 'react';
+import { Icon } from '../../ui/Icon/index.js';
 
 export type ContentTypePickerOption = {
   label: string;
@@ -34,20 +35,16 @@ export const ContentTypeMenu: React.FC<Props> = ({ options }) => {
         <Paper elevation={1} sx={{ p: 1, borderRadius: 2 }}>
           <Stack>
             {options.map((option) => {
-              const Icon = icons[option.icon];
-
               return (
                 <Dropdown.Item key={option.id}>
                   <Button
                     variant="text"
                     color="secondary"
                     onClick={option.onClick}
+                    startIcon={<Icon name={option.icon} size={16} />}
                     sx={{ justifyContent: 'left', width: '100%' }}
                   >
-                    <Stack direction="row" alignItems="center" gap={1}>
-                      {option.icon && <Icon size={16} />}
-                      {option.label}
-                    </Stack>
+                    {option.label}
                   </Button>
                 </Dropdown.Item>
               );
