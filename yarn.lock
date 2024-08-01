@@ -7518,10 +7518,10 @@ lru-cache@^7.5.1:
   resolved "https://registry.npmjs.org/lru-cache/-/lru-cache-7.18.3.tgz"
   integrity sha512-jumlc0BIUrS3qJGgIkWZsyfAM7NCWiBcCDhnd+3NNM5KbBmLTgHVfWBcg6W+rLUsIpzpERPsvwUP7CckAQSOoA==
 
-lucide-react@^0.418.0:
-  version "0.418.0"
-  resolved "https://registry.yarnpkg.com/lucide-react/-/lucide-react-0.418.0.tgz#52c9d9498859ff9edde4ff1c72a77aa7f1c269e9"
-  integrity sha512-7TSd4CLfvT/U9504MSJ+e03pgAvqZQ5WbML4Pm+axjCbYBLTWuDu68bebFr/e51Z32uHMY7MO+SpaHX8NubveA==
+lucide-react@^0.419.0:
+  version "0.419.0"
+  resolved "https://registry.yarnpkg.com/lucide-react/-/lucide-react-0.419.0.tgz#1f30469e4cab4e61c8499534902c852dbe2d2d60"
+  integrity sha512-YkOHuc1uGH2A4G0NRZyeCW6mMFGb8z3amep0fARuKIri68nveAT5C8OuXOPJXpb/iIgSfsjdMjjII7bnEtGkvw==
 
 make-dir@^3.0.0:
   version "3.1.0"
