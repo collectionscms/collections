@@ -88,26 +88,16 @@ export const groups = (t: TFunction): Group[] => [
           editor.chain().focus().setCodeBlock().run();
         },
       },
-      // {
-      //   name: 'table',
-      //   label: 'Table',
-      //   iconName: 'Table',
-      //   description: 'Insert a table',
-      //   shouldBeHidden: (editor) => editor.isActive('columns'),
-      //   action: (editor) => {
-      //     editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: false }).run();
-      //   },
-      // },
-      // {
-      //   name: 'image',
-      //   label: 'Image',
-      //   iconName: 'Image',
-      //   description: 'Insert an image',
-      //   aliases: ['img'],
-      //   action: (editor) => {
-      //     editor.chain().focus().setImageUpload().run();
-      //   },
-      // },
+      {
+        name: 'image',
+        label: t('editor.image'),
+        iconName: 'Image',
+        description: 'Insert an image',
+        aliases: ['img'],
+        action: (editor) => {
+          editor.chain().focus().setImageUpload().run();
+        },
+      },
       {
         name: 'horizontalRule',
         label: t('editor.divider'),
