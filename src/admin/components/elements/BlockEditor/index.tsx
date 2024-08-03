@@ -2,32 +2,35 @@ import { Box, Paper, Stack } from '@mui/material';
 import { BubbleMenu, Editor, EditorContent } from '@tiptap/react';
 import { Bold, Code, CodeXml, Italic, Strikethrough, Underline } from 'lucide-react';
 import React, { memo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useColorMode } from '../../utilities/ColorMode/index.js';
 import { useTextMenuContentTypes } from './hooks/useTextMenuContentTypes.js';
 import { ContentTypeMenu } from './menus/ContentTypeMenu/index.js';
 import { LinkMenu } from './menus/LinkMenu/index.js';
+import './styles/index.css';
 import { ToolbarButton } from './ToolbarButton/index.js';
 
 const MemoLinkMenu = memo(LinkMenu);
 const MemoContentTypeMenu = memo(ContentTypeMenu);
 
 export type Props = {
-  editor: Editor;
+  editor: Editor | null;
 };
 
-export const WYSIWYG: React.FC<Props> = ({ editor }) => {
+export const BlockEditor: React.FC<Props> = ({ editor }) => {
+  const { t } = useTranslation();
   const { mode } = useColorMode();
   if (mode === 'light') {
-    require('./light.css');
+    require('./styles/light.css');
   } else {
-    require('./dark.css');
+    require('./styles/dark.css');
   }
-
-  const blockOptions = useTextMenuContentTypes(editor);
 
   if (!editor) {
     return null;
   }
+
+  const blockOptions = useTextMenuContentTypes(editor);
 
   return (
     <Box sx={{ position: 'relative' }}>
@@ -42,42 +45,42 @@ export const WYSIWYG: React.FC<Props> = ({ editor }) => {
           <Stack direction="row" gap={0.5} alignItems="center">
             <MemoContentTypeMenu options={blockOptions} />
             <ToolbarButton
-              tooltip="Bold"
+              tooltip={`${t('editor.bold')}`}
               shortcuts={['Mod', 'B']}
               onClick={() => editor.chain().focus().toggleBold().run()}
             >
               <Bold size={16} />
             </ToolbarButton>
             <ToolbarButton
-              tooltip="Italic"
+              tooltip={`${t('editor.italic')}`}
               shortcuts={['Mod', 'I']}
               onClick={() => editor.chain().focus().toggleItalic().run()}
             >
               <Italic size={16} />
             </ToolbarButton>
             <ToolbarButton
-              tooltip="Underline"
+              tooltip={`${t('editor.underline')}`}
               shortcuts={['Mod', 'U']}
               onClick={() => editor.chain().focus().toggleUnderline().run()}
             >
               <Underline size={16} />
             </ToolbarButton>
             <ToolbarButton
-              tooltip="Strike-through"
+              tooltip={`${t('editor.strike_through')}`}
               shortcuts={['Mod', 'Shift', 'S']}
               onClick={() => editor.chain().focus().toggleStrike().run()}
             >
               <Strikethrough size={16} />
             </ToolbarButton>
             <ToolbarButton
-              tooltip="Code"
+              tooltip={`${t('editor.code')}`}
               shortcuts={['Mod', 'E']}
               onClick={() => editor.chain().focus().toggleCode().run()}
             >
               <Code size={16} />
             </ToolbarButton>
             <ToolbarButton
-              tooltip="Code Block"
+              tooltip={`${t('editor.code_block')}`}
               onClick={() => editor.chain().focus().toggleCodeBlock().run()}
             >
               <CodeXml size={16} />

@@ -1,14 +1,5 @@
 import { CameraOutlined, CloseOutlined } from '@ant-design/icons';
 import { Box, Button, Container, Stack, TextField, Toolbar, alpha, useTheme } from '@mui/material';
-import { Extension } from '@tiptap/core';
-import CharacterCount from '@tiptap/extension-character-count';
-import Heading from '@tiptap/extension-heading';
-import TiptapLink from '@tiptap/extension-link';
-import Placeholder from '@tiptap/extension-placeholder';
-import TaskItem from '@tiptap/extension-task-item';
-import Underline from '@tiptap/extension-underline';
-import { useEditor } from '@tiptap/react';
-import { StarterKit } from '@tiptap/starter-kit';
 import { enqueueSnackbar } from 'notistack';
 import React, { useEffect, useRef, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
@@ -17,15 +8,14 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { UploadFile } from '../../../../types/index.js';
 import { logger } from '../../../../utilities/logger.js';
 import { IconButton } from '../../../@extended/components/IconButton/index.js';
-import { WYSIWYG } from '../../../components/elements/WYSIWYG/index.js';
+import { useBlockEditor } from '../../../components/elements/BlockEditor/hooks/useBlockEditor.js';
+import { BlockEditor } from '../../../components/elements/BlockEditor/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
 import { PostContextProvider, usePost } from '../Context/index.js';
 import { LocalizedContent } from '../LocalizedContent/index.js';
 import { PostFooter } from '../PostFooter/index.js';
 import { PostHeader } from '../PostHeader/index.js';
 import { PublishSetting } from '../PublishSetting/index.js';
-export { Heading } from '@tiptap/extension-heading';
-export { TaskItem } from '@tiptap/extension-task-item';
 
 export const EditPostPageImpl: React.FC = () => {
   const { t } = useTranslation();
@@ -43,6 +33,18 @@ export const EditPostPageImpl: React.FC = () => {
   const { trigger: trashPostTrigger } = trashPost(post.id);
   const { trigger: trashContentTrigger } = trashContent(post.contentId);
 
+  // /////////////////////////////////////
+  // Editor
+  // /////////////////////////////////////
+
+  const [postTitle, setPostTitle] = useState(post.title);
+
+  const ref = React.useRef<HTMLButtonElement>(null);
+  const { editor } = useBlockEditor({
+    initialContent: post.bodyJson,
+    ref: ref,
+  });
+
   useEffect(() => {
     setPostTitle(post.title);
     editor?.commands.setContent(toJson(post.bodyJson));
@@ -59,7 +61,6 @@ export const EditPostPageImpl: React.FC = () => {
   // Short cut
   // /////////////////////////////////////
 
-  const ref = React.useRef<HTMLButtonElement>(null);
   useHotkeys('Meta+s', async () => ref.current?.click(), [], {
     preventDefault: true,
     enableOnFormTags: ['INPUT', 'TEXTAREA'],
@@ -181,52 +182,6 @@ export const EditPostPageImpl: React.FC = () => {
       logger.error(error);
     }
   };
-
-  // /////////////////////////////////////
-  // Editor
-  // /////////////////////////////////////
-
-  const [postTitle, setPostTitle] = useState(post.title);
-
-  const extensions = [
-    StarterKit.configure({
-      heading: {
-        levels: [2, 3],
-        HTMLAttributes: {
-          class: 'heading',
-        },
-      },
-    }),
-    Underline,
-    CharacterCount,
-    Placeholder.configure({ placeholder: t('write_the_text') }),
-    TiptapLink.configure({
-      openOnClick: false,
-      autolink: true,
-      defaultProtocol: 'https',
-    }),
-    Heading.configure({
-      levels: [1, 2, 3, 4, 5, 6],
-    }),
-    TaskItem.configure({
-      nested: true,
-    }),
-    Extension.create({
-      addKeyboardShortcuts() {
-        return {
-          'Mod-s': () => {
-            ref.current?.click();
-            return true;
-          },
-        };
-      },
-    }),
-  ];
-
-  const editor = useEditor({
-    extensions,
-    content: toJson(post.bodyJson),
-  });
 
   // /////////////////////////////////////
   // Locale
@@ -355,7 +310,7 @@ export const EditPostPageImpl: React.FC = () => {
                 onKeyDown={handleKeyDown}
               />
             </Stack>
-            {editor && <WYSIWYG editor={editor} />}
+            <BlockEditor editor={editor} />
           </Box>
         </Container>
       </Box>
