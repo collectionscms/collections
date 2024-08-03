@@ -230,6 +230,12 @@
     "numbered_list": "Numbered List",
     "quote": "Quote",
     "bold": "Bold",
+    "italic": "Italic",
+    "underline": "Underline",
+    "strike_through": "Strike-through",
+    "code": "Code",
+    "code_block": "Code Block",
+    "divider": "Divider",
     "save_draft": "Save Draft"
   },
   "permissions": {

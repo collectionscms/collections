@@ -230,6 +230,12 @@
     "numbered_list": "番号付きリスト",
     "quote": "引用",
     "bold": "強調",
+    "italic": "斜体",
+    "underline": "下線",
+    "strike_through": "取り消し線",
+    "code": "コード",
+    "code_block": "コードブロック",
+    "divider": "区切り線",
     "save_draft": "下書き保存"
   },
   "permissions": {
