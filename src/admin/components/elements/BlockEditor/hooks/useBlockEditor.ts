@@ -1,7 +1,7 @@
 import { Extension } from '@tiptap/core';
 import CharacterCount from '@tiptap/extension-character-count';
 import Heading from '@tiptap/extension-heading';
-import TiptapLink from '@tiptap/extension-link';
+import Link from '@tiptap/extension-link';
 import Placeholder from '@tiptap/extension-placeholder';
 import TaskItem from '@tiptap/extension-task-item';
 import Underline from '@tiptap/extension-underline';
@@ -34,7 +34,7 @@ export const useBlockEditor = ({
       Underline,
       CharacterCount,
       Placeholder.configure({ placeholder: t('write_the_text') }),
-      TiptapLink.configure({
+      Link.configure({
         openOnClick: false,
         autolink: true,
         defaultProtocol: 'https',
@@ -45,7 +45,7 @@ export const useBlockEditor = ({
       TaskItem.configure({
         nested: true,
       }),
-      SlashCommand,
+      SlashCommand(t),
       Extension.create({
         addKeyboardShortcuts() {
           return {

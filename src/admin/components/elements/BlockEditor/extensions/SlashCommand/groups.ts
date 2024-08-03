@@ -1,4 +1,5 @@
 import { Editor } from '@tiptap/core';
+import { TFunction } from 'i18next';
 import { icons } from 'lucide-react';
 
 export interface Command {
@@ -23,14 +24,14 @@ export interface Group {
   commands: Command[];
 }
 
-export const groups: Group[] = [
+export const groups = (t: TFunction): Group[] => [
   {
     name: 'format',
     title: 'Format',
     commands: [
       {
         name: 'heading2',
-        label: 'Heading 2',
+        label: t('editor.headline'),
         iconName: 'Heading2',
         description: 'Medium priority section title',
         aliases: ['h2'],
@@ -40,7 +41,7 @@ export const groups: Group[] = [
       },
       {
         name: 'heading3',
-        label: 'Heading 3',
+        label: t('editor.subtitle'),
         iconName: 'Heading3',
         description: 'Low priority section title',
         aliases: ['h3'],
@@ -50,7 +51,7 @@ export const groups: Group[] = [
       },
       {
         name: 'bulletList',
-        label: 'Bullet List',
+        label: t('editor.list'),
         iconName: 'List',
         description: 'Unordered list of items',
         aliases: ['ul'],
@@ -60,7 +61,7 @@ export const groups: Group[] = [
       },
       {
         name: 'numberedList',
-        label: 'Numbered List',
+        label: t('editor.numbered_list'),
         iconName: 'ListOrdered',
         description: 'Ordered list of items',
         aliases: ['ol'],
@@ -68,28 +69,18 @@ export const groups: Group[] = [
           editor.chain().focus().toggleOrderedList().run();
         },
       },
-      // {
-      //   name: 'taskList',
-      //   label: 'Task List',
-      //   iconName: 'ListTodo',
-      //   description: 'Task list with todo items',
-      //   aliases: ['todo'],
-      //   action: (editor) => {
-      //     editor.chain().focus().toggleTaskList().run();
-      //   },
-      // },
-      // {
-      //   name: 'blockquote',
-      //   label: 'Blockquote',
-      //   iconName: 'Quote',
-      //   description: 'Element for quoting',
-      //   action: (editor) => {
-      //     editor.chain().focus().setBlockquote().run();
-      //   },
-      // },
+      {
+        name: 'blockquote',
+        label: t('editor.quote'),
+        iconName: 'Quote',
+        description: 'Element for quoting',
+        action: (editor) => {
+          editor.chain().focus().setBlockquote().run();
+        },
+      },
       {
         name: 'codeBlock',
-        label: 'Code Block',
+        label: t('editor.code_block'),
         iconName: 'SquareCode',
         description: 'Code block with syntax highlighting',
         shouldBeHidden: (editor) => editor.isActive('columns'),
@@ -97,42 +88,36 @@ export const groups: Group[] = [
           editor.chain().focus().setCodeBlock().run();
         },
       },
+      // {
+      //   name: 'table',
+      //   label: 'Table',
+      //   iconName: 'Table',
+      //   description: 'Insert a table',
+      //   shouldBeHidden: (editor) => editor.isActive('columns'),
+      //   action: (editor) => {
+      //     editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: false }).run();
+      //   },
+      // },
+      // {
+      //   name: 'image',
+      //   label: 'Image',
+      //   iconName: 'Image',
+      //   description: 'Insert an image',
+      //   aliases: ['img'],
+      //   action: (editor) => {
+      //     editor.chain().focus().setImageUpload().run();
+      //   },
+      // },
+      {
+        name: 'horizontalRule',
+        label: t('editor.divider'),
+        iconName: 'Minus',
+        description: 'Insert a horizontal divider',
+        aliases: ['hr'],
+        action: (editor) => {
+          editor.chain().focus().setHorizontalRule().run();
+        },
+      },
     ],
   },
-  // {
-  //   name: 'insert',
-  //   title: 'Insert',
-  //   commands: [
-  //     {
-  //       name: 'table',
-  //       label: 'Table',
-  //       iconName: 'Table',
-  //       description: 'Insert a table',
-  //       shouldBeHidden: (editor) => editor.isActive('columns'),
-  //       action: (editor) => {
-  //         editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: false }).run();
-  //       },
-  //     },
-  //     {
-  //       name: 'image',
-  //       label: 'Image',
-  //       iconName: 'Image',
-  //       description: 'Insert an image',
-  //       aliases: ['img'],
-  //       action: (editor) => {
-  //         editor.chain().focus().setImageUpload().run();
-  //       },
-  //     },
-  //     {
-  //       name: 'horizontalRule',
-  //       label: 'Horizontal Rule',
-  //       iconName: 'Minus',
-  //       description: 'Insert a horizontal divider',
-  //       aliases: ['hr'],
-  //       action: (editor) => {
-  //         editor.chain().focus().setHorizontalRule().run();
-  //       },
-  //     },
-  //   ],
-  // },
 ];
