@@ -2614,10 +2614,10 @@
   resolved "https://registry.yarnpkg.com/@tiptap/extension-bold/-/extension-bold-2.5.8.tgz#97fcfb3b1bada5d0469f12624a2d188fcc523f03"
   integrity sha512-4vEn+U7Y8B4e8izcL7QuEKYJ9thCSdo+UF1K3TOqQWuJTzTrJLPMwTZ4vYOHzvuq5uIXyPLnWzLgnRLgy5mJRg==
 
-"@tiptap/extension-bubble-menu@^2.5.7":
-  version "2.5.7"
-  resolved "https://registry.yarnpkg.com/@tiptap/extension-bubble-menu/-/extension-bubble-menu-2.5.7.tgz#24c3f41d93022ed4bebe3610124bb114333c834d"
-  integrity sha512-gkuBuVGm5YPDRUG5Bscj6IYjDbzM7iJ2aXBGCM1rzuIiwT04twY51dKMIeseXa49uk/AQs/mqt3kGQjgSdSFAw==
+"@tiptap/extension-bubble-menu@^2.5.8":
+  version "2.5.8"
+  resolved "https://registry.yarnpkg.com/@tiptap/extension-bubble-menu/-/extension-bubble-menu-2.5.8.tgz#e39b176c574b9fd2f59c6457724f3f22a22fb1b8"
+  integrity sha512-COmd1Azudu7i281emZFIESECe7FnvWiRoBoQBVjjWSyq5PVzwJaA3PAlnU7GyNZKtVXMZ4xbrckdyNQfDeVQDA==
   dependencies:
     tippy.js "^6.3.7"
 
@@ -2651,10 +2651,10 @@
   resolved "https://registry.yarnpkg.com/@tiptap/extension-dropcursor/-/extension-dropcursor-2.5.8.tgz#5860cfe51c6573d5f317d44cd20bb398f76378b8"
   integrity sha512-xPmIfTYqurFF8RukCPlHd8mT8I7hDinWrgq7CQTRROxcJ3DNw8PooWrKWaBYs9HXHe1pbiQ5EK0uOsNvQ1bcDg==
 
-"@tiptap/extension-floating-menu@^2.5.7":
-  version "2.5.7"
-  resolved "https://registry.yarnpkg.com/@tiptap/extension-floating-menu/-/extension-floating-menu-2.5.7.tgz#b97101d82629335f47663bb4ddbc9231985a2b80"
-  integrity sha512-tQjNNx0gPb7GxMiozcQ4R1Tl1znmlx/ZkbCF9rqxTzPTD4fnCliqBQAWjtHl98+D8+yEJBcB2DimtP7ztkv2mg==
+"@tiptap/extension-floating-menu@^2.5.8":
+  version "2.5.8"
+  resolved "https://registry.yarnpkg.com/@tiptap/extension-floating-menu/-/extension-floating-menu-2.5.8.tgz#6af3fa169bf293ab79a671a7b60b5199992a9154"
+  integrity sha512-qsM6tCyRlXnI/gADrkO/2p0Tldu5aY96CnsXpZMaflMgsO577qhcXD0ReGg17uLXBzJa5xmV8qOik0Ptq3WEWg==
   dependencies:
     tippy.js "^6.3.7"
 
@@ -2682,6 +2682,11 @@
   version "2.5.8"
   resolved "https://registry.yarnpkg.com/@tiptap/extension-horizontal-rule/-/extension-horizontal-rule-2.5.8.tgz#3570fe64c2b97d6e44dd95d7b76cc3fef2e34bda"
   integrity sha512-L8Is73WGaP6VNdKrIry+lCIM9W1KaL/Tw2Z6DGMVMU5mr1lLx0xq7nWEStqD7e4zh+n4+3PV15cZSA2F34DZrg==
+
+"@tiptap/extension-image@2.5.8":
+  version "2.5.8"
+  resolved "https://registry.yarnpkg.com/@tiptap/extension-image/-/extension-image-2.5.8.tgz#c5178addb703777cf82aea250ccc75b17d492f3e"
+  integrity sha512-xlF3dqzXSN/6vWdmGOaIz0YVUO/B69mPw9vUITg7bQdc4X2pc52tvTGhpAzAc/kbwSVrW33icxAsXx8XH9Bkkg==
 
 "@tiptap/extension-italic@^2.5.8":
   version "2.5.8"
@@ -2766,13 +2771,13 @@
     prosemirror-transform "^1.9.0"
     prosemirror-view "^1.33.9"
 
-"@tiptap/react@2.5.7":
-  version "2.5.7"
-  resolved "https://registry.yarnpkg.com/@tiptap/react/-/react-2.5.7.tgz#0de723c468a37cf69bb1a9d7a38815137f156c71"
-  integrity sha512-QRMbo6eDtYHBwZ7ATFgKFWLlRZ/Q7NJrBS/Z6FW2lFhr1eM8UhOG6HMEMt/kibMJDJVi1FpXEavgaT75oe2BJg==
+"@tiptap/react@2.5.8":
+  version "2.5.8"
+  resolved "https://registry.yarnpkg.com/@tiptap/react/-/react-2.5.8.tgz#d6bc68710f084fe0f02855376cf869f8ca2cf6fd"
+  integrity sha512-twUMm8HV7scUgR/E1hYS9N6JDtKPl7cgDiPjxTynNHc5S5f5Ecv4ns/BZRq3TMZ/JDrp4rghLvgq+ImQsLvPOA==
   dependencies:
-    "@tiptap/extension-bubble-menu" "^2.5.7"
-    "@tiptap/extension-floating-menu" "^2.5.7"
+    "@tiptap/extension-bubble-menu" "^2.5.8"
+    "@tiptap/extension-floating-menu" "^2.5.8"
     "@types/use-sync-external-store" "^0.0.6"
     use-sync-external-store "^1.2.2"
 
