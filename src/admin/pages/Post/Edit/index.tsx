@@ -17,6 +17,10 @@ import { PostFooter } from '../PostFooter/index.js';
 import { PostHeader } from '../PostHeader/index.js';
 import { PublishSetting } from '../PublishSetting/index.js';
 
+const toJson = (value?: string | null) => {
+  return value ? JSON.parse(value) : '';
+};
+
 export const EditPostPageImpl: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -33,6 +37,8 @@ export const EditPostPageImpl: React.FC = () => {
   const { trigger: trashPostTrigger } = trashPost(post.id);
   const { trigger: trashContentTrigger } = trashContent(post.contentId);
 
+  if (!post) return <></>;
+
   // /////////////////////////////////////
   // Editor
   // /////////////////////////////////////
@@ -41,13 +47,12 @@ export const EditPostPageImpl: React.FC = () => {
 
   const ref = React.useRef<HTMLButtonElement>(null);
   const { editor } = useBlockEditor({
-    initialContent: post.bodyJson,
+    initialContent: toJson(post.bodyJson),
     ref: ref,
   });
 
   useEffect(() => {
     setPostTitle(post.title);
-    editor?.commands.setContent(toJson(post.bodyJson));
   }, [post]);
 
   // /////////////////////////////////////
@@ -149,10 +154,6 @@ export const EditPostPageImpl: React.FC = () => {
     mutate();
   };
 
-  const toJson = (value?: string | null) => {
-    return value ? JSON.parse(value) : '';
-  };
-
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.nativeEvent.isComposing || e.key !== 'Enter') return;
     e.preventDefault();
@@ -226,8 +227,8 @@ export const EditPostPageImpl: React.FC = () => {
       />
       <Box component="main" sx={{ minHeight: '100vh', backgroundColor: bg }}>
         <Toolbar sx={{ mt: 0 }} />
-        <Container maxWidth="sm">
-          <Box sx={{ p: 10 }}>
+        <Container sx={{ py: 10 }}>
+          <Box sx={{ maxWidth: '42rem', marginLeft: 'auto', marginRight: 'auto' }}>
             <Box sx={{ mb: 2 }}>
               {uploadFile ? (
                 <Box
@@ -310,8 +311,8 @@ export const EditPostPageImpl: React.FC = () => {
                 onKeyDown={handleKeyDown}
               />
             </Stack>
-            <BlockEditor editor={editor} />
           </Box>
+          <BlockEditor editor={editor} />
         </Container>
       </Box>
       <PostFooter
