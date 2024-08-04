@@ -1,13 +1,11 @@
-import { Box, Button, Stack } from '@mui/material';
+import { Box, Button, Stack, Typography } from '@mui/material';
 import React, { ChangeEvent, useCallback } from 'react';
 import { Icon } from '../../ui/Icon/index.js';
-import { useDropZone, useFileUpload, useUploader } from './hooks.js';
-import { ref } from 'yup';
+import { useFileUpload, useUploader } from './hooks.js';
 
 export const ImageUploader = ({ onUpload }: { onUpload: (url: string) => void }) => {
   const { uploadFile } = useUploader({ onUpload });
   const { handleUploadClick, ref } = useFileUpload();
-  const { draggedInside, onDrop, onDragEnter, onDragLeave } = useDropZone({ uploader: uploadFile });
 
   const onFileChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => (e.target.files ? uploadFile(e.target.files[0]) : null),
@@ -15,24 +13,28 @@ export const ImageUploader = ({ onUpload }: { onUpload: (url: string) => void })
   );
 
   return (
-    <Box onDrop={onDrop} onDragOver={onDragEnter} onDragLeave={onDragLeave} gap={2}>
-      <Icon name="Image" />
-      <Stack>
-        <div className="text-sm font-medium text-center text-neutral-400 dark:text-neutral-500">
-          {draggedInside ? 'Drop image here' : 'Drag and drop or'}
-        </div>
-        <Button
-          disabled={draggedInside}
-          onClick={handleUploadClick}
-          startIcon={<Icon name="Upload" size={18} />}
-          color="secondary"
-          variant="contained"
-          size="small"
-        >
-          Upload an image
-        </Button>
-      </Stack>
-      <input hidden ref={ref} type="file" accept="image/*" onChange={onFileChange} />
+    <Box
+      gap={2}
+      sx={{
+        border: 1.5,
+        borderColor: 'divider',
+        borderStyle: 'dashed',
+        borderRadius: 1,
+        cursor: 'pointer',
+      }}
+    >
+      <Button
+        color="secondary"
+        variant="text"
+        onClick={handleUploadClick}
+        sx={{ p: 2, width: '100%', justifyContent: 'flex-start' }}
+      >
+        <Stack gap={1} direction="row" alignItems="center">
+          <Icon name="Image" />
+          <Typography variant="caption">Add an image</Typography>
+        </Stack>
+        <input hidden ref={ref} type="file" accept="image/*" onChange={onFileChange} />
+      </Button>
     </Box>
   );
 };
