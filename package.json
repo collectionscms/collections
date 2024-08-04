@@ -57,7 +57,7 @@
     "@prisma/client": "5.17.0",
     "@radix-ui/react-dropdown-menu": "2.1.1",
     "@tiptap/core": "2.5.8",
-    "@tiptap/extension-character-count": "2.5.6",
+    "@tiptap/extension-character-count": "2.5.8",
     "@tiptap/extension-heading": "2.5.8",
     "@tiptap/extension-image": "2.5.8",
     "@tiptap/extension-link": "2.5.6",
