@@ -1,7 +1,7 @@
 import { Editor } from '@tiptap/react';
 import { Link } from 'lucide-react';
 import React, { useCallback, useState } from 'react';
-import { ToolbarButton } from '../../ToolbarButton/index.js';
+import { ToolbarButton } from '../../ui/ToolbarButton/index.js';
 import { EditLinkPopover } from './EditLinkPopover.js';
 
 type Props = {

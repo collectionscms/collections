@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useTextMenuContentTypes } from '../../hooks/useTextMenuContentTypes.js';
 import { ContentTypeMenu } from '../../menus/ContentTypeMenu/index.js';
 import { LinkMenu } from '../../menus/LinkMenu/index.js';
-import { ToolbarButton } from '../../ToolbarButton/index.js';
+import { ToolbarButton } from '../../ui/ToolbarButton/index.js';
 
 const MemoLinkMenu = memo(LinkMenu);
 const MemoContentTypeMenu = memo(ContentTypeMenu);
