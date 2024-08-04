@@ -10,9 +10,6 @@ package-lock.json
 !.env.defaults
 !.env.sample
 
-# npm
-.npmrc
-
 # Logs
 logs
 *.log
