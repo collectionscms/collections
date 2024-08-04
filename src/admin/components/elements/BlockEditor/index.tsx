@@ -2,6 +2,7 @@ import { Box } from '@mui/material';
 import { Editor, EditorContent } from '@tiptap/react';
 import React from 'react';
 import { useColorMode } from '../../utilities/ColorMode/index.js';
+import { ContentItemMenu } from './menus/ContentItemMenu/index.js';
 import { TextMenu } from './menus/TextMenu/index.js';
 import './styles/index.css';
 
@@ -11,11 +12,12 @@ export type Props = {
 
 export const BlockEditor: React.FC<Props> = ({ editor }) => {
   const { mode } = useColorMode();
-  if (mode === 'light') {
-    require('./styles/light.css');
-  } else {
-    require('./styles/dark.css');
-  }
+  // todo: fix styling
+  // if (mode === 'light') {
+  //   require('./styles/light.css');
+  // } else {
+  //   require('./styles/dark.css');
+  // }
 
   if (!editor) {
     return null;
@@ -24,6 +26,7 @@ export const BlockEditor: React.FC<Props> = ({ editor }) => {
   return (
     <Box sx={{ position: 'relative' }}>
       <EditorContent editor={editor} />
+      <ContentItemMenu editor={editor} />
       <TextMenu editor={editor} />
     </Box>
   );
