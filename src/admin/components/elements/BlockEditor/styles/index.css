@@ -1,40 +1,62 @@
+/* todo: color */
 .ProseMirror {
-  /* Placeholder Styles */
-  .is-empty::before {
-    opacity: 0.4;
-    float: left;
-    height: 0;
-    pointer-events: none;
+  caret-color: black;
+  caret-color: white;
+  outline: 0;
+  z-index: 0;
+
+  & > * {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 42rem;
+  }
+
+  .selection {
+    display: inline;
+  }
+
+  .selection,
+  *::selection {
+    background-color: rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+
+  & > .react-renderer {
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+
+    &:first-child {
+      margin-top: 0;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &.resize-cursor {
+    cursor: col-resize;
+  }
+
+  .ProseMirror-gapcursor {
+    position: relative;
     width: 100%;
-  }
+    max-width: 42rem;
+    margin-left: auto;
+    margin-right: auto;
 
-  &.ProseMirror-focused {
-    /* Slashmenu Placeholder */
-    > p.is-empty::before {
-      content: "Write something, or '/' for commands..";
+    &:after {
+      border-top-color: rgba(0, 0, 0, 0.4);
+      border-top-color: rgba(255, 255, 255, 0.4);
+      width: 100%;
+      top: -1.5em;
+      max-width: 42rem;
+      margin-left: auto;
+      margin-right: auto;
+      left: 0;
+      right: 0;
     }
-
-    > [data-type='columns'] > [data-type='column'] > p.is-empty::before {
-      content: "Write something, or '/' for commands..";
-    }
-  }
-
-  /* Default Placeholder */
-  & > .is-editor-empty::before {
-    content: 'Click here to start writing …';
-  }
-
-  /* Blockquote Placeholder */
-  blockquote .is-empty:not(.is-editor-empty):first-child:last-child::before {
-    content: 'Enter a quote';
-  }
-
-  blockquote + figcaption.is-empty:not(.is-editor-empty)::before {
-    content: 'Author';
-  }
-
-  [data-placeholder][data-suggestion]::before,
-  [data-placeholder][data-suggestion] *::before {
-    content: none !important;
   }
 }
+
+@import './partials/placeholder.css';

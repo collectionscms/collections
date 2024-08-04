@@ -236,6 +236,7 @@
     "code": "Code",
     "code_block": "Code Block",
     "divider": "Divider",
+    "image": "Image",
     "save_draft": "Save Draft"
   },
   "permissions": {
