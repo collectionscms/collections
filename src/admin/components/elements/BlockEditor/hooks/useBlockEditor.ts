@@ -1,11 +1,11 @@
-import { Extension } from '@tiptap/core';
+import { Content, Extension } from '@tiptap/core';
 import CharacterCount from '@tiptap/extension-character-count';
 import Heading from '@tiptap/extension-heading';
 import Link from '@tiptap/extension-link';
 import Placeholder from '@tiptap/extension-placeholder';
 import TaskItem from '@tiptap/extension-task-item';
 import Underline from '@tiptap/extension-underline';
-import { Content, useEditor } from '@tiptap/react';
+import { useEditor } from '@tiptap/react';
 import { StarterKit } from '@tiptap/starter-kit';
 import { useTranslation } from 'react-i18next';
 import { ImageBlock } from '../extensions/ImageBlock/ImageBlock.js';
@@ -24,6 +24,10 @@ export const useBlockEditor = ({
   const { t } = useTranslation();
 
   const editor = useEditor({
+    onCreate: ({ editor }) => {
+      editor.commands.setContent(initialContent);
+      editor.commands.focus('start', { scrollIntoView: true });
+    },
     extensions: [
       StarterKit.configure({
         heading: {
@@ -61,7 +65,6 @@ export const useBlockEditor = ({
         },
       }),
     ],
-    content: initialContent,
   });
 
   return { editor };

@@ -16,10 +16,12 @@ jobs:
   lint:
     name: Lint
     runs-on: ubuntu-latest
+
     strategy:
       fail-fast: false
       matrix:
         node-version: ['20.14.x']
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -28,7 +30,12 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Yarn install
+      - name: Create .npmrc file
+        run: |
+          echo "@tiptap-pro:registry=https://registry.tiptap.dev/" >> .npmrc
+          echo "//registry.tiptap.dev/:_authToken=${{ secrets.TIPTAP_PRO_TOKEN }}" >> .npmrc
+
+      - name: install
         run: yarn install
 
       - name: Type Check

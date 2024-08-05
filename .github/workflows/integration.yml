@@ -9,12 +9,16 @@ jobs:
   integration:
     name: ${{ matrix.database }}
     runs-on: ubuntu-latest
+    env:
+      TIPTAP_PRO_TOKEN: ${{ secrets.TIPTAP_PRO_TOKEN }}
+
     strategy:
       fail-fast: false
       matrix:
         node-version: ['20.14.x']
         database:
           - postgres
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -22,6 +26,11 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+
+      - name: Create .npmrc file
+        run: |
+          echo "@tiptap-pro:registry=https://registry.tiptap.dev/" >> .npmrc
+          echo "//registry.tiptap.dev/:_authToken=${{ secrets.TIPTAP_PRO_TOKEN }}" >> .npmrc
 
       - name: Yarn install
         run: yarn install

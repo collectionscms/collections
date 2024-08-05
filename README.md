@@ -1,6 +1,6 @@
 ## ⭐ What is Collections
 
-Collections is an open source headless CMS that makes multilingual delivery easy with AI. We provide the comfortable writing and developer experience for global websites.
+Collections is an open source headless CMS that makes multilingual content delivery easy with AI. We provide the comfortable writing and developer experience for global websites.
 
 <hr/>
 <h4>
@@ -10,7 +10,7 @@ Collections is an open source headless CMS that makes multilingual delivery easy
 
 ### Features
 
-- 🌐 Multilingual distribution by AI
+- 🌐 Multilingual content by AI
 - 🖊 Notion-like editor
 - 🛡 Fine-grained permission
 - 🔒 Multi-tenancy project
@@ -29,8 +29,11 @@ Easiest way to start using Collections on a local host.
 ```sh
 git clone git@github.com:collectionscms/collections.git
 cd collections
-npm run db:refresh
-npm run dev
+cp .env.sample .env
+vi .env - make it your environment
+yarn install
+yarn db:refresh
+yarn dev
 ```
 
 Add the following lines to the `/etc/hosts`
@@ -42,7 +45,7 @@ Add the following lines to the `/etc/hosts`
 ```
 
 Open [http://app.test.com:4000/admin](http://app.test.com:4000/admin) to view your running app.
-When you're ready for production, run `npm run build` then `npm run start`.
+When you're ready for production, run `yarn build` then `yarn start`.
 
 ## 💬 Community
 

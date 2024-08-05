@@ -237,7 +237,9 @@
     "code_block": "Code Block",
     "divider": "Divider",
     "image": "Image",
-    "save_draft": "Save Draft"
+    "save_draft": "Save Draft",
+    "duplicate": "Duplicate",
+    "copy_to_clipboard": "Copy to clipboard"
   },
   "permissions": {
     "action": {

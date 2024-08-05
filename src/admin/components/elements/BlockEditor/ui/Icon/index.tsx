@@ -13,7 +13,7 @@ export const Icon = memo(({ name, size }: Props) => {
     return null;
   }
 
-  return <IconComponent size={size} />;
+  return <IconComponent size={size} strokeWidth={1.5} />;
 });
 
 Icon.displayName = 'Icon';
