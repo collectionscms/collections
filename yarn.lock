@@ -10633,10 +10633,10 @@ xtend@^4.0.0:
   resolved "https://registry.npmjs.org/xtend/-/xtend-4.0.2.tgz"
   integrity sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==
 
-y-prosemirror@1.2.9:
-  version "1.2.9"
-  resolved "https://registry.yarnpkg.com/y-prosemirror/-/y-prosemirror-1.2.9.tgz#0202b5f6b164fa35d80bdbcdc876d81fe6da7ac2"
-  integrity sha512-fThGIVmSqrqnG/ckywEGlHM9ElfILC4TcMZd5zxWPe/i+UuP97TEr4swsopRKG3Y+KHBVt4Y/5NVBC3AAsUoUg==
+y-prosemirror@1.2.11:
+  version "1.2.11"
+  resolved "https://registry.yarnpkg.com/y-prosemirror/-/y-prosemirror-1.2.11.tgz#0471c93954bc991cb485e4e3ffe259082d2d1dd9"
+  integrity sha512-MUGMYyokOb9DpBRHr4Cadob2KheDCKW2LHceAM2yrWp9dfX+3HZZUNEubEPd4zszq4DF2fGCFhE3N66zOTLoxA==
   dependencies:
     lib0 "^0.2.42"
 
