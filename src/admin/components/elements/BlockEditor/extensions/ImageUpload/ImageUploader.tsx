@@ -1,6 +1,6 @@
 import { Box, Button, Stack, Typography } from '@mui/material';
 import React, { ChangeEvent, useCallback } from 'react';
-import { Icon } from '../../ui/Icon/index.js';
+import { Icon } from '../../../Icon/index.js';
 import { useFileUpload, useUploader } from './hooks.js';
 
 export const ImageUploader = ({ onUpload }: { onUpload: (url: string) => void }) => {

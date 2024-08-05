@@ -2,7 +2,7 @@ import { Button, Paper, Stack } from '@mui/material';
 import * as Dropdown from '@radix-ui/react-dropdown-menu';
 import { CaseSensitive, ChevronDown, icons } from 'lucide-react';
 import React, { useMemo } from 'react';
-import { Icon } from '../../ui/Icon/index.js';
+import { Icon } from '../../../Icon/index.js';
 
 export type ContentTypePickerOption = {
   label: string;
