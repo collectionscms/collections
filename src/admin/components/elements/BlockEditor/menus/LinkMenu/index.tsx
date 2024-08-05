@@ -1,9 +1,8 @@
-import { IconButton } from '@mui/material';
 import { Editor } from '@tiptap/react';
 import { Link } from 'lucide-react';
 import React, { useCallback, useState } from 'react';
+import { ToolbarButton } from '../../ui/ToolbarButton/index.js';
 import { EditLinkPopover } from './EditLinkPopover.js';
-import { ToolbarButton } from '../../ToolbarButton/index.js';
 
 type Props = {
   editor: Editor;
