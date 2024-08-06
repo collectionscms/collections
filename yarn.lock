@@ -2849,10 +2849,10 @@
     "@tiptap/extension-strike" "^2.5.8"
     "@tiptap/extension-text" "^2.5.8"
 
-"@tiptap/suggestion@2.5.8":
-  version "2.5.8"
-  resolved "https://registry.yarnpkg.com/@tiptap/suggestion/-/suggestion-2.5.8.tgz#420a19df48314e1e4b8606f18e52810f07c6178a"
-  integrity sha512-u0emCyGpzSshKR5mIJVwPwycKikP05137fnD0RFI3+nftO6n/2h54rs2yU6BYA8dc01VZRB00cJ/zHO6DsZWEA==
+"@tiptap/suggestion@2.5.9":
+  version "2.5.9"
+  resolved "https://registry.yarnpkg.com/@tiptap/suggestion/-/suggestion-2.5.9.tgz#af54bd41c2146454619fcadf15129a499bb6d05d"
+  integrity sha512-s7UU0j2IRreVXrMMxsFvsNjJnZeTS1SAwsjLkN2YX+/ZQss92s0BLP3HsxEr2oFHlFye8E0qR9xjWZ4vSc9asw==
 
 "@tsconfig/node10@^1.0.7":
   version "1.0.9"

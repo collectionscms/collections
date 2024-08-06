@@ -73,7 +73,7 @@
     "@tiptap/pm": "2.5.8",
     "@tiptap/react": "2.5.8",
     "@tiptap/starter-kit": "2.5.8",
-    "@tiptap/suggestion": "2.5.8",
+    "@tiptap/suggestion": "2.5.9",
     "@types/ms": "0.7.34",
     "argon2": "0.40.3",
     "axios": "1.7.3",
