@@ -1,4 +1,3 @@
-import { CopyOutlined } from '@ant-design/icons';
 import { IconButton, Stack, Tooltip } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import React from 'react';
@@ -8,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { UserProfile } from '../../../types/index.js';
 import { MainCard } from '../../@extended/components/MainCard/index.js';
 import { CreateNewButton } from '../../components/elements/CreateNewButton/index.js';
+import { Icon } from '../../components/elements/Icon/index.js';
 import { Link } from '../../components/elements/Link/index.js';
 import { Cell } from '../../components/elements/Table/Cell/index.js';
 import { cells } from '../../components/elements/Table/Cell/types.js';
@@ -58,7 +58,7 @@ const ApiKeyPageImpl: React.FC = () => {
             <CopyToClipboard text={data} onCopy={(text, result) => handleCopy(result)}>
               <Tooltip title="Copy" placement="bottom">
                 <IconButton>
-                  <CopyOutlined />
+                  <Icon name="Copy" size={16} />
                 </IconButton>
               </Tooltip>
             </CopyToClipboard>

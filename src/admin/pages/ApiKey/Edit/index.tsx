@@ -1,4 +1,3 @@
-import { SyncOutlined } from '@ant-design/icons';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Button,
@@ -11,7 +10,6 @@ import {
   Stack,
   TextField,
   Tooltip,
-  Typography,
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { useSnackbar } from 'notistack';
@@ -25,6 +23,7 @@ import { logger } from '../../../../utilities/logger.js';
 import { MainCard } from '../../../@extended/components/MainCard/index.js';
 import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscardDialog/index.js';
 import { DeleteButton } from '../../../components/elements/DeleteButton/index.js';
+import { Icon } from '../../../components/elements/Icon/index.js';
 import { useAuth } from '../../../components/utilities/Auth/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
 import { FormValues, updateApiKeySchema } from '../../../fields/validators/apiKeys/updateApiKey.js';
@@ -127,7 +126,7 @@ const EditApiKeyPageImpl: React.FC = () => {
                                     color="secondary"
                                     onClick={handleGenerateApiKey}
                                   >
-                                    <SyncOutlined />
+                                    <Icon name="RefreshCw" size={16} />
                                   </IconButton>
                                 </Tooltip>
                               </InputAdornment>

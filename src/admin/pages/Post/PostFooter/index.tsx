@@ -2,7 +2,6 @@ import { Box, Stack, Typography } from '@mui/material';
 import { ContentHistory } from '@prisma/client';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Guide } from '../Guide/index.js';
 import { History } from '../History/index.js';
 
 export type Props = {
@@ -29,7 +28,6 @@ export const PostFooter: React.FC<Props> = ({ histories, characters }) => {
       }}
     >
       <Stack direction="row" gap={2}>
-        <Guide />
         <History histories={sortedHistories} />
       </Stack>
       <Typography color="secondary">

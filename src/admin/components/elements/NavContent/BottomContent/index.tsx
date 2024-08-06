@@ -1,10 +1,10 @@
-import { UserOutlined } from '@ant-design/icons';
 import { List, ListItem, ListItemButton, ListItemIcon, Popover, Stack } from '@mui/material';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Avatar } from '../../../../@extended/components/Avatar/index.js';
 import { IconButton } from '../../../../@extended/components/IconButton/index.js';
 import { getMeUrl } from '../../../../utilities/urlGenerator.js';
+import { Icon } from '../../Icon/index.js';
 
 export const BottomContent: React.FC = () => {
   const { t } = useTranslation();
@@ -34,7 +34,7 @@ export const BottomContent: React.FC = () => {
           sx={{ alignItems: 'center', width: '100%', justifyContent: 'center' }}
         >
           <Avatar size="sm" color="secondary" type="combined">
-            <UserOutlined style={{ fontSize: 16 }} />
+            <Icon name="UserRound" size={18} />
           </Avatar>
         </Stack>
       </IconButton>
@@ -55,7 +55,7 @@ export const BottomContent: React.FC = () => {
           <ListItem disablePadding>
             <ListItemButton onClick={handleProfile}>
               <ListItemIcon>
-                <UserOutlined />
+                <Icon name="UserRound" size={16} />
               </ListItemIcon>
               {t('profile')}
             </ListItemButton>

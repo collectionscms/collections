@@ -1,7 +1,7 @@
-import { DeleteFilled } from '@ant-design/icons';
 import { Button, Dialog, DialogContent, Stack, Typography } from '@mui/material';
 import React from 'react';
 import { Avatar } from '../../../@extended/components/Avatar/index.js';
+import { Icon } from '../Icon/index.js';
 import { Props } from './types.js';
 
 export const DeleteDialog: React.FC<Props> = ({ open, title, body, confirm, cancel }) => {
@@ -10,7 +10,7 @@ export const DeleteDialog: React.FC<Props> = ({ open, title, body, confirm, canc
       <DialogContent sx={{ mt: 2, my: 1 }}>
         <Stack alignItems="center" spacing={3.5}>
           <Avatar color="error" sx={{ width: 72, height: 72, fontSize: '1.75rem' }}>
-            <DeleteFilled />
+            <Icon name="Trash2" size={32} />
           </Avatar>
           <Stack spacing={2}>
             <Typography variant="h4" align="center">

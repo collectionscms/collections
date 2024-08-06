@@ -1,4 +1,3 @@
-import { ArrowRightOutlined, SendOutlined } from '@ant-design/icons';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Box,
@@ -26,6 +25,7 @@ import { SyntaxHighlighter } from '../../../@extended/components/SyntaxHighlight
 import { ScrollBar } from '../../../components/elements/ScrollBar/index.js';
 import { FormValues, getDataSchema } from '../../../fields/validators/apiPreview/getData.js';
 import { useAuth } from '../../utilities/Auth/index.js';
+import { Icon } from '../Icon/index.js';
 import { TabPanel } from '../TabPanel/index.js';
 
 type Props = {
@@ -178,8 +178,10 @@ export const ApiPreview: React.FC<Props> = ({ path, apiKeys }) => {
                           </FormControl>
                         ) : (
                           <Link href="/admin/settings/api-keys">
-                            <ArrowRightOutlined style={{ marginRight: 2 }} />
-                            {t('go_to_registration')}
+                            <Stack alignItems="center" direction="row" gap={0.5}>
+                              <Icon name="ChevronRight" size={18} />
+                              {t('go_to_registration')}
+                            </Stack>
                           </Link>
                         )}
                       </>
@@ -200,7 +202,7 @@ export const ApiPreview: React.FC<Props> = ({ path, apiKeys }) => {
       {/* Button */}
       <Tooltip title={t('api_preview')} arrow placement="top">
         <IconButton color="secondary" onClick={toggleDrawer(true)}>
-          <SendOutlined style={{ fontSize: 16 }} />
+          <Icon name="SendHorizontal" size={18} />
         </IconButton>
       </Tooltip>
     </>

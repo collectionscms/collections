@@ -1,8 +1,8 @@
 import { Paper, Stack } from '@mui/material';
 import { BubbleMenu, Editor } from '@tiptap/react';
-import { Bold, Code, CodeXml, Italic, Strikethrough, Underline } from 'lucide-react';
 import React, { memo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Icon } from '../../../Icon/index.js';
 import { useTextMenuContentTypes } from '../../hooks/useTextMenuContentTypes.js';
 import { ContentTypeMenu } from '../../menus/ContentTypeMenu/index.js';
 import { LinkMenu } from '../../menus/LinkMenu/index.js';
@@ -34,41 +34,41 @@ export const TextMenu: React.FC<Props> = ({ editor }) => {
             shortcuts={['Mod', 'B']}
             onClick={() => editor.chain().focus().toggleBold().run()}
           >
-            <Bold size={16} />
+            <Icon name="Bold" size={16} strokeWidth={2.5} />
           </ToolbarButton>
           <ToolbarButton
             tooltip={`${t('editor.italic')}`}
             shortcuts={['Mod', 'I']}
             onClick={() => editor.chain().focus().toggleItalic().run()}
           >
-            <Italic size={16} />
+            <Icon name="Italic" size={16} strokeWidth={2.5} />
           </ToolbarButton>
           <ToolbarButton
             tooltip={`${t('editor.underline')}`}
             shortcuts={['Mod', 'U']}
             onClick={() => editor.chain().focus().toggleUnderline().run()}
           >
-            <Underline size={16} />
+            <Icon name="Underline" size={16} strokeWidth={2.5} />
           </ToolbarButton>
           <ToolbarButton
             tooltip={`${t('editor.strike_through')}`}
             shortcuts={['Mod', 'Shift', 'S']}
             onClick={() => editor.chain().focus().toggleStrike().run()}
           >
-            <Strikethrough size={16} />
+            <Icon name="Strikethrough" size={16} strokeWidth={2.5} />
           </ToolbarButton>
           <ToolbarButton
             tooltip={`${t('editor.code')}`}
             shortcuts={['Mod', 'E']}
             onClick={() => editor.chain().focus().toggleCode().run()}
           >
-            <Code size={16} />
+            <Icon name="Code" size={16} strokeWidth={2.5} />
           </ToolbarButton>
           <ToolbarButton
             tooltip={`${t('editor.code_block')}`}
             onClick={() => editor.chain().focus().toggleCodeBlock().run()}
           >
-            <CodeXml size={16} />
+            <Icon name="CodeXml" size={16} strokeWidth={2.5} />
           </ToolbarButton>
           <MemoLinkMenu editor={editor} />
         </Stack>

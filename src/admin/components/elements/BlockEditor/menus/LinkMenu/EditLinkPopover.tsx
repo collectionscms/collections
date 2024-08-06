@@ -11,8 +11,8 @@ import {
   TextField,
 } from '@mui/material';
 import { t } from 'i18next';
-import { Link, Trash2 } from 'lucide-react';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { Icon } from '../../../Icon/index.js';
 
 type Props = {
   anchorEl: HTMLButtonElement | null;
@@ -82,7 +82,7 @@ export const EditLinkPopover: React.FC<Props> = ({
                 size="small"
                 placeholder="https://..."
                 InputProps={{
-                  startAdornment: <Link size={16} />,
+                  startAdornment: <Icon name="Link" size={16} />,
                 }}
                 value={url}
                 onChange={onChange}
@@ -115,11 +115,7 @@ export const EditLinkPopover: React.FC<Props> = ({
               variant="text"
               size="small"
               color="inherit"
-              startIcon={
-                <>
-                  <Trash2 size={16} strokeWidth={1.5} />
-                </>
-              }
+              startIcon={<Icon name="Trash2" size={16} />}
               onClick={onRemoveLink}
             >
               {t('remove_link')}

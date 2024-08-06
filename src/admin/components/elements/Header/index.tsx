@@ -1,7 +1,7 @@
-import { MenuOutlined } from '@ant-design/icons';
 import { AppBar, AppBarProps, Toolbar, useMediaQuery, useTheme } from '@mui/material';
 import React, { ReactNode } from 'react';
 import { IconButton } from '../../../@extended/components/IconButton/index.js';
+import { Icon } from '../Icon/index.js';
 import { AppBarStyled } from './styled.js';
 import { Props } from './types.js';
 
@@ -27,7 +27,7 @@ export const Header: React.FC<Props> = ({ open, toggleDrawer }) => {
             ml: { xs: 0, lg: -2 },
           }}
         >
-          {<MenuOutlined />}
+          <Icon name="Menu" size={24} />
         </IconButton>
       ) : (
         <></>

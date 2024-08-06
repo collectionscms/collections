@@ -1,5 +1,6 @@
 import { SvgIconTypeMap } from '@mui/material';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
+import { icons } from 'lucide-react';
 import { ComponentClass, FunctionComponent } from 'react';
 
 export type Props = {
@@ -21,5 +22,5 @@ export type Group = {
 export type GroupItem = {
   label: string;
   href: string;
-  icon: OverrideIcon;
+  icon: keyof typeof icons;
 };

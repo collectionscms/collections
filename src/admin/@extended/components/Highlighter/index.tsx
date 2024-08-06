@@ -1,7 +1,7 @@
-import { CopyOutlined } from '@ant-design/icons';
 import { Box, CardActions, Collapse, Tooltip } from '@mui/material';
 import React from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { Icon } from '../../../components/elements/Icon/index.js';
 import { IconButton } from '../IconButton/index.js';
 import { SyntaxHighlighter } from '../SyntaxHighlighter/index.js';
 
@@ -19,7 +19,7 @@ const Highlighter: React.FC<Props> = ({ language, codeString, codeHighlight }) =
           <CopyToClipboard text={codeString}>
             <Tooltip title="Copy" placement="top-end">
               <IconButton color="secondary" size="small" sx={{ fontSize: '0.875rem' }}>
-                <CopyOutlined />
+                <Icon name="Copy" size={16} />
               </IconButton>
             </Tooltip>
           </CopyToClipboard>

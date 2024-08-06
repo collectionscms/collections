@@ -1,15 +1,4 @@
-import {
-  DeleteOutlined,
-  EditOutlined,
-  InboxOutlined,
-  KeyOutlined,
-  LogoutOutlined,
-  SafetyOutlined,
-  SettingOutlined,
-  TeamOutlined,
-  UserOutlined,
-} from '@ant-design/icons';
-import { Group } from '../components/elements/NavGroup/types.js';
+import { Group, GroupItem } from '../components/elements/NavGroup/types.js';
 import { useAuth } from '../components/utilities/Auth/index.js';
 
 // /////////////////////////////////////
@@ -25,12 +14,12 @@ export const profileNavItems = (): Group => {
       {
         label: 'profile',
         href: `${path}/me`,
-        icon: UserOutlined,
+        icon: 'UserRound',
       },
       {
         label: 'logout',
         href: `${path}/auth/logout`,
-        icon: LogoutOutlined,
+        icon: 'LogOut',
       },
     ],
   };
@@ -44,13 +33,13 @@ export const postNavItems = (): Group => {
   const { hasPermission } = useAuth();
   const path = '/admin';
 
-  const items = [];
+  const items: GroupItem[] = [];
 
   if (hasPermission('readOwnPost') || hasPermission('readAllPost')) {
     items.push({
       label: 'posts',
       href: `${path}/posts`,
-      icon: EditOutlined,
+      icon: 'PencilLine',
     });
   }
 
@@ -58,7 +47,7 @@ export const postNavItems = (): Group => {
     items.push({
       label: 'review',
       href: `${path}/reviews`,
-      icon: InboxOutlined,
+      icon: 'Inbox',
     });
   }
 
@@ -66,7 +55,7 @@ export const postNavItems = (): Group => {
     items.push({
       label: 'trash',
       href: `${path}/trashed`,
-      icon: DeleteOutlined,
+      icon: 'Trash2',
     });
   }
 
@@ -80,13 +69,13 @@ export const settingsGroupNavItems = (): Group => {
   const { hasPermission } = useAuth();
   const path = '/admin/settings';
 
-  const items = [];
+  const items: GroupItem[] = [];
 
   if (hasPermission('readProject')) {
     items.push({
       label: 'project_setting',
       href: `${path}/project`,
-      icon: SettingOutlined,
+      icon: 'Settings',
     });
   }
 
@@ -94,7 +83,7 @@ export const settingsGroupNavItems = (): Group => {
     items.push({
       label: 'role',
       href: `${path}/roles`,
-      icon: SafetyOutlined,
+      icon: 'ShieldCheck',
     });
   }
 
@@ -102,7 +91,7 @@ export const settingsGroupNavItems = (): Group => {
     items.push({
       label: 'user',
       href: `${path}/users`,
-      icon: TeamOutlined,
+      icon: 'UsersRound',
     });
   }
 
@@ -110,7 +99,7 @@ export const settingsGroupNavItems = (): Group => {
     items.push({
       label: 'api_key',
       href: `${path}/api-keys`,
-      icon: KeyOutlined,
+      icon: 'KeyRound',
     });
   }
 

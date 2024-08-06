@@ -1,11 +1,11 @@
 import { Tooltip } from '@mui/material';
-import { Undo2 } from 'lucide-react';
 import { enqueueSnackbar } from 'notistack';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { logger } from '../../../../utilities/logger.js';
 import { IconButton } from '../../../@extended/components/IconButton/index.js';
 import { BaseDialog } from '../../../components/elements/BaseDialog/index.js';
+import { Icon } from '../../../components/elements/Icon/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
 import { TrashContextProvider, useTrash } from '../Context/index.js';
 
@@ -47,7 +47,7 @@ export const RestoreButtonImpl: React.FC<Props> = ({ postId, onRestored }) => {
           size="small"
           onClick={() => setOpenRestore(true)}
         >
-          <Undo2 size={18} />
+          <Icon name="Undo2" size={16} />
         </IconButton>
       </Tooltip>
     </>

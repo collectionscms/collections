@@ -1,6 +1,6 @@
 import { Editor } from '@tiptap/react';
-import { Link } from 'lucide-react';
 import React, { useCallback, useState } from 'react';
+import { Icon } from '../../../Icon/index.js';
 import { ToolbarButton } from '../../ui/ToolbarButton/index.js';
 import { EditLinkPopover } from './EditLinkPopover.js';
 
@@ -24,7 +24,7 @@ export const LinkMenu: React.FC<Props> = ({ editor }) => {
   return (
     <>
       <ToolbarButton tooltip="Link" onClick={handleClick}>
-        <Link size={16} />
+        <Icon name="Link" size={16} strokeWidth={2.5} />
       </ToolbarButton>
       <EditLinkPopover
         anchorEl={anchorEl}
