@@ -1,10 +1,4 @@
 import {
-  CloseOutlined,
-  DeleteOutlined,
-  EllipsisOutlined,
-  SettingOutlined,
-} from '@ant-design/icons';
-import {
   AppBarProps,
   Button,
   Divider,
@@ -16,7 +10,6 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { Languages, Undo2 } from 'lucide-react';
 import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -24,6 +17,7 @@ import { LocalizedPost } from '../../../../types/index.js';
 import { Avatar } from '../../../@extended/components/Avatar/index.js';
 import { IconButton } from '../../../@extended/components/IconButton/index.js';
 import { BaseDialog } from '../../../components/elements/BaseDialog/index.js';
+import { Icon } from '../../../components/elements/Icon/index.js';
 import { StatusDot } from '../../../components/elements/StatusDot/index.js';
 import { useAuth } from '../../../components/utilities/Auth/index.js';
 import AppBarStyled from './AppBarStyled.js';
@@ -164,7 +158,7 @@ export const PostHeader: React.FC<Props> = ({
               variant="text"
               color="secondary"
               ref={anchorRef}
-              startIcon={<Languages size={16} />}
+              startIcon={<Icon name="Languages" size={16} />}
               onClick={handleLocaleOpen}
             >
               <Typography>
@@ -181,7 +175,7 @@ export const PostHeader: React.FC<Props> = ({
               size="small"
               onClick={handleContentMenuOpen}
             >
-              <EllipsisOutlined style={{ fontSize: 20 }} />
+              <Icon name="Ellipsis" size={18} />
             </IconButton>
             <>
               <Tooltip title="⌘ + S" placement="top-start">
@@ -194,8 +188,8 @@ export const PostHeader: React.FC<Props> = ({
               <Button variant="contained" onClick={onOpenSettings}>
                 {t('publish_settings')}
               </Button>
-              <IconButton shape="rounded" color="secondary" onClick={navigateToList}>
-                <CloseOutlined style={{ fontSize: 20 }} />
+              <IconButton shape="rounded" color="secondary" onClick={navigateToList} sx={{ p: 0 }}>
+                <Icon name="X" size={28} strokeWidth={1.5} />
               </IconButton>
             </>
           </Stack>
@@ -218,7 +212,7 @@ export const PostHeader: React.FC<Props> = ({
           {post.version > 1 && (
             <>
               <MenuItem onClick={() => setOpenRevert(true)}>
-                <Undo2 size={16} />
+                <Icon name="Undo2" size={18} />
                 <Typography sx={{ pl: 1 }}>{t('revert_previous_version')}</Typography>
               </MenuItem>
               <Divider />
@@ -230,7 +224,7 @@ export const PostHeader: React.FC<Props> = ({
               onClick={() => setOpenPostTrash(true)}
               sx={{ color: theme.palette.error.main }}
             >
-              <DeleteOutlined />
+              <Icon name="Trash2" size={16} />
               <Typography sx={{ pl: 1 }}>{t('delete_post')}</Typography>
             </MenuItem>
           )}
@@ -262,7 +256,7 @@ export const PostHeader: React.FC<Props> = ({
             </MenuItem>
           ))}
           <MenuItem onClick={handleAddLocale}>
-            <SettingOutlined />
+            <Icon name="Settings" size={16} />
             <Typography sx={{ pl: 1 }}>{t('setting')}</Typography>
           </MenuItem>
         </Menu>

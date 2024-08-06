@@ -1,4 +1,3 @@
-import { HistoryOutlined } from '@ant-design/icons';
 import {
   Timeline,
   TimelineConnector,
@@ -14,6 +13,7 @@ import dayjs from 'dayjs';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { IconButton } from '../../../@extended/components/IconButton/index.js';
+import { Icon } from '../../../components/elements/Icon/index.js';
 
 type Props = {
   histories: ContentHistory[];
@@ -103,7 +103,7 @@ export const History: React.FC<Props> = ({ histories }) => {
             onClick={handleOpenHistory}
             disabled={histories.length === 0}
           >
-            <HistoryOutlined style={{ fontSize: 16 }} />
+            <Icon name="History" size={18} />
           </IconButton>
         </span>
       </Tooltip>

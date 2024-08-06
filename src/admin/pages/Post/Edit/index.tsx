@@ -1,4 +1,3 @@
-import { CameraOutlined, CloseOutlined } from '@ant-design/icons';
 import { Box, Button, Container, Stack, TextField, Toolbar, alpha, useTheme } from '@mui/material';
 import { enqueueSnackbar } from 'notistack';
 import React, { useEffect, useRef, useState } from 'react';
@@ -10,6 +9,7 @@ import { logger } from '../../../../utilities/logger.js';
 import { IconButton } from '../../../@extended/components/IconButton/index.js';
 import { useBlockEditor } from '../../../components/elements/BlockEditor/hooks/useBlockEditor.js';
 import { BlockEditor } from '../../../components/elements/BlockEditor/index.js';
+import { Icon } from '../../../components/elements/Icon/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
 import { PostContextProvider, usePost } from '../Context/index.js';
 import { LocalizedContent } from '../LocalizedContent/index.js';
@@ -247,7 +247,7 @@ export const EditPostPageImpl: React.FC = () => {
                     }}
                     onClick={handleDeleteThumbnail}
                   >
-                    <CloseOutlined />
+                    <Icon name="X" size={20} strokeWidth={1.5} />
                   </IconButton>
                   <img
                     src={uploadFile.url}
@@ -261,7 +261,7 @@ export const EditPostPageImpl: React.FC = () => {
                 <Button
                   variant="text"
                   color="secondary"
-                  startIcon={<CameraOutlined />}
+                  startIcon={<Icon name="Camera" size={16} />}
                   component="label"
                 >
                   {t('add_thumbnail')}

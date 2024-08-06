@@ -1,13 +1,13 @@
-import { PlusOutlined } from '@ant-design/icons';
 import { Box, Stack, Tooltip, useTheme } from '@mui/material';
+import { t } from 'i18next';
 import React, { useMemo } from 'react';
 import { Avatar } from '../../../@extended/components/Avatar/index.js';
 import { IconButton } from '../../../@extended/components/IconButton/index.js';
 import { getAddNewProjectUrl, getUrlForTenant } from '../../../utilities/urlGenerator.js';
 import { useAuth } from '../../utilities/Auth/index.js';
+import { Icon } from '../Icon/index.js';
 import { Link } from '../Link/index.js';
 import { BottomContent } from '../NavContent/BottomContent/index.js';
-import { t } from 'i18next';
 
 export const ActivityBar: React.FC = () => {
   const theme = useTheme();
@@ -77,7 +77,7 @@ export const ActivityBar: React.FC = () => {
             >
               <Tooltip title={t('add_project')} placement="left-start">
                 <IconButton color="secondary" variant="text">
-                  <PlusOutlined />
+                  <Icon name="Plus" size={20} />
                 </IconButton>
               </Tooltip>
             </Link>

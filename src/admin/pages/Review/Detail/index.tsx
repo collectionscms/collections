@@ -1,13 +1,12 @@
-import { FileTextOutlined } from '@ant-design/icons';
 import { Button, Stack, Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
-import { ChevronRight } from 'lucide-react';
 import { enqueueSnackbar } from 'notistack';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { logger } from '../../../../utilities/logger.js';
 import { MainCard } from '../../../@extended/components/MainCard/index.js';
+import { Icon } from '../../../components/elements/Icon/index.js';
 import { Link } from '../../../components/elements/Link/index.js';
 import { useAuth } from '../../../components/utilities/Auth/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
@@ -54,8 +53,8 @@ const ReviewDetailPageImpl: React.FC = () => {
             <Grid container spacing={3}>
               <Grid xs={12}>
                 <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 1 }}>
-                  <FileTextOutlined />
-                  <ChevronRight size={18} />
+                  <Icon name="FileText" size={16} />
+                  <Icon name="ChevronRight" size={16} />
                   <Link href={`/admin/posts/${review.postId}`}>{review.postId}</Link>
                 </Stack>
                 <Stack spacing={1}>

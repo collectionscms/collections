@@ -1,12 +1,7 @@
-import {
-  CheckCircleOutlined,
-  CloseCircleOutlined,
-  InfoCircleOutlined,
-  WarningOutlined,
-} from '@ant-design/icons';
 import { styled } from '@mui/material/styles/index.js';
 import { SnackbarProvider } from 'notistack';
 import React from 'react';
+import { Icon } from '../../elements/Icon/index.js';
 
 // custom styles
 const StyledSnackbarProvider = styled(SnackbarProvider)(({ theme }) => ({
@@ -35,10 +30,10 @@ export const Snackbar = ({ children }: any) => {
       maxSnack={3}
       anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       iconVariant={{
-        success: <CheckCircleOutlined style={style} />,
-        error: <CloseCircleOutlined style={style} />,
-        warning: <WarningOutlined style={style} />,
-        info: <InfoCircleOutlined style={style} />,
+        success: <Icon name="CircleCheck" size={16} classNames={{ marginRight: 4 }} />,
+        error: <Icon name="CircleX" size={16} classNames={{ marginRight: 4 }} />,
+        warning: <Icon name="TriangleAlert" size={16} classNames={{ marginRight: 4 }} />,
+        info: <Icon name="Info" size={16} classNames={{ marginRight: 4 }} />,
       }}
       style={{ boxShadow: 'none' }}
     >

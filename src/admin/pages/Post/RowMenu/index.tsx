@@ -1,9 +1,9 @@
-import { DeleteOutlined } from '@ant-design/icons';
 import { Menu, MenuItem, Typography, useTheme } from '@mui/material';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { logger } from '../../../../utilities/logger.js';
 import { BaseDialog } from '../../../components/elements/BaseDialog/index.js';
+import { Icon } from '../../../components/elements/Icon/index.js';
 import { useAuth } from '../../../components/utilities/Auth/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
 import { PostContextProvider, usePost } from '../Context/index.js';
@@ -68,8 +68,8 @@ export const RowMenuImpl: React.FC<Props> = (props) => {
       >
         {hasPermission('trashPost') && (
           <MenuItem onClick={() => setOpenTrash(true)} sx={{ color: theme.palette.error.main }}>
-            <DeleteOutlined style={{ paddingRight: 8 }} />
-            <Typography>{t('delete_post')}</Typography>
+            <Icon name="Trash2" size={16} />
+            <Typography sx={{ pl: 1 }}>{t('delete_post')}</Typography>
           </MenuItem>
         )}
       </Menu>

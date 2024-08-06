@@ -1,7 +1,7 @@
-import { PlusOutlined } from '@ant-design/icons';
-import { Button } from '@mui/material';
+import { Button, Stack } from '@mui/material';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { Icon } from '../Icon/index.js';
 
 type Props = {
   disabled?: boolean | undefined;
@@ -15,14 +15,11 @@ export const CreateNewButton: React.FC<Props> = ({ disabled, options, onClick })
   const { t } = useTranslation();
 
   return (
-    <Button
-      variant="contained"
-      size="small"
-      disabled={disabled}
-      startIcon={<PlusOutlined style={{ fontSize: '10px' }} />}
-      onClick={onClick}
-    >
-      {options?.subject || t('create_new')}
+    <Button variant="contained" size="small" disabled={disabled} onClick={onClick}>
+      <Stack direction="row" alignItems="center" gap={0.5}>
+        <Icon name="Plus" size={14} />
+        {options?.subject || t('create_new')}
+      </Stack>
     </Button>
   );
 };

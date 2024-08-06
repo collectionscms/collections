@@ -1,6 +1,6 @@
 import { Button, Paper, Stack } from '@mui/material';
 import * as Dropdown from '@radix-ui/react-dropdown-menu';
-import { CaseSensitive, ChevronDown, icons } from 'lucide-react';
+import { icons } from 'lucide-react';
 import React, { useMemo } from 'react';
 import { Icon } from '../../../Icon/index.js';
 
@@ -19,15 +19,15 @@ type Props = {
 
 export const ContentTypeMenu: React.FC<Props> = ({ options }) => {
   const activeItem = useMemo(() => options.find((option) => option.isActive()), [options]);
-  const ActiveItemIcon = activeItem ? icons[activeItem.icon] : CaseSensitive;
+  const activeItemIcon = activeItem ? activeItem.icon : 'CaseSensitive';
 
   return (
     <Dropdown.Root>
       <Dropdown.Trigger asChild>
         <Button variant="text" color="secondary">
           <Stack gap={0.5} direction="row" alignItems="center">
-            <ActiveItemIcon size={16} />
-            <ChevronDown size={8} />
+            <Icon name={activeItemIcon} size={16} />
+            <Icon name="ChevronDown" size={8} strokeWidth={4} />
           </Stack>
         </Button>
       </Dropdown.Trigger>

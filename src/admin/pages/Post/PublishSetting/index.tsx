@@ -1,4 +1,3 @@
-import { CloseOutlined } from '@ant-design/icons';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   AppBarProps,
@@ -26,6 +25,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { logger } from '../../../../utilities/logger.js';
 import { IconButton } from '../../../@extended/components/IconButton/index.js';
+import { Icon } from '../../../components/elements/Icon/index.js';
 import { useAuth } from '../../../components/utilities/Auth/index.js';
 import {
   FormValues,
@@ -122,8 +122,8 @@ export const PublishSetting: React.FC<Props> = ({ open, contentId, status, onClo
                     ? t('publish_for_review')
                     : t('publishing')}
               </Button>
-              <IconButton shape="rounded" color="secondary" onClick={onClose}>
-                <CloseOutlined style={{ fontSize: '20px' }} />
+              <IconButton shape="rounded" color="secondary" onClick={onClose} sx={{ p: 0 }}>
+                <Icon name="X" size={28} strokeWidth={1.5} />
               </IconButton>
             </Stack>
           </Toolbar>

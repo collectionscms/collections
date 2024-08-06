@@ -1,9 +1,9 @@
-import { DeleteOutlined } from '@ant-design/icons';
 import { Tooltip } from '@mui/material';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { IconButton } from '../../../@extended/components/IconButton/index.js';
 import { DeleteDocument } from '../DeleteDocument/index.js';
+import { Icon } from '../Icon/index.js';
 
 type Props = {
   id: string;
@@ -45,7 +45,7 @@ export const DeleteButton: React.FC<Props> = ({ id, slug, disabled, options, onS
       <Tooltip title={t('delete')} arrow placement="top">
         <span>
           <IconButton color="error" disabled={disabled} onClick={handleClickOpen}>
-            <DeleteOutlined />
+            <Icon name="Trash2" size={16} />
           </IconButton>
         </span>
       </Tooltip>

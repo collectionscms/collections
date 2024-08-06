@@ -1,4 +1,3 @@
-import { EllipsisOutlined } from '@ant-design/icons';
 import { Divider, Stack, Typography } from '@mui/material';
 import { ApiKey } from '@prisma/client';
 import dayjs from 'dayjs';
@@ -11,6 +10,7 @@ import { IconButton } from '../../@extended/components/IconButton/index.js';
 import { MainCard } from '../../@extended/components/MainCard/index.js';
 import { ApiPreview } from '../../components/elements/ApiPreview/index.js';
 import { CreateNewButton } from '../../components/elements/CreateNewButton/index.js';
+import { Icon } from '../../components/elements/Icon/index.js';
 import { Link } from '../../components/elements/Link/index.js';
 import { StatusDot } from '../../components/elements/StatusDot/index.js';
 import { Cell } from '../../components/elements/Table/Cell/index.js';
@@ -117,7 +117,7 @@ export const PostPageImpl: React.FC = () => {
             size="small"
             onClick={(e) => handleOpenMenu(e.currentTarget, row)}
           >
-            <EllipsisOutlined style={{ fontSize: 16 }} />
+            <Icon name="Ellipsis" size={16} />
           </IconButton>
         );
       default:
