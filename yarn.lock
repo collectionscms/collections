@@ -2637,10 +2637,10 @@
   resolved "https://registry.tiptap.dev/@tiptap-pro%2fextension-node-range/-/extension-node-range-2.10.7.tgz#9ae4adb4ffcbf9fca9e7ef6526ebe514328badef"
   integrity sha512-dmLkLxLjkRDcs6Y3vjc+C+7Gg3+xojZcOAKnB+wENwtfVZhE8UAjTq/P+h21giaA2tTcpQe+4SROQtTQY4z5Ig==
 
-"@tiptap/core@2.5.8", "@tiptap/core@^2.5.8":
-  version "2.5.8"
-  resolved "https://registry.yarnpkg.com/@tiptap/core/-/core-2.5.8.tgz#58de366b0d2acb0a6e67a4780de64d619ebd90fa"
-  integrity sha512-lkWCKyoAoMTxM137MoEsorG7tZ5MZU6O3wMRuZ0P9fcTRY5vd1NWncWuPzuGSJIpL20gwBQOsS6PaQSfR3xjlA==
+"@tiptap/core@2.5.9", "@tiptap/core@^2.5.8":
+  version "2.5.9"
+  resolved "https://registry.yarnpkg.com/@tiptap/core/-/core-2.5.9.tgz#1deb0b7c748e24ec32613263e0af8d55a3b3c2ca"
+  integrity sha512-PPUR+0tbr+wX2G8RG4FEps4qhbnAPEeXK1FUtirLXSRh8vm+TDgafu3sms7wBc4fAyw9zTO/KNNZ90GBe04guA==
 
 "@tiptap/extension-blockquote@^2.5.8":
   version "2.5.8"
