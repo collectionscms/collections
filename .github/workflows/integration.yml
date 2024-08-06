@@ -9,8 +9,6 @@ jobs:
   integration:
     name: ${{ matrix.database }}
     runs-on: ubuntu-latest
-    env:
-      TIPTAP_PRO_TOKEN: ${{ secrets.TIPTAP_PRO_TOKEN }}
 
     strategy:
       fail-fast: false
