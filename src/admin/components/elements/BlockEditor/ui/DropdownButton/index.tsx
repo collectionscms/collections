@@ -1,9 +1,10 @@
-import { Button, ButtonOwnProps, SxProps, Theme } from '@mui/material';
+import { Button, ButtonOwnProps, SxProps, Theme, useTheme } from '@mui/material';
 import React from 'react';
 
 export const DropdownButton = ({
   children,
   color,
+  isActive,
   onClick,
   disabled,
   sx,
@@ -15,14 +16,18 @@ export const DropdownButton = ({
   disabled?: boolean;
   sx?: SxProps<Theme>;
 }) => {
+  const theme = useTheme();
+
   return (
     <Button
       variant="text"
       color={color || 'secondary'}
       sx={{
+        ...sx,
         p: 1,
         justifyContent: 'flex-start',
-        ...sx,
+        color: isActive ? theme.palette.grey[700] : theme.palette.grey[500],
+        backgroundColor: isActive ? theme.palette.grey[100] : 'transparent',
       }}
       disabled={disabled}
       onClick={onClick}

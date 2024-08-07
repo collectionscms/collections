@@ -224,7 +224,8 @@
   "editor": {
     "text": "テキスト",
     "guide": "エディターガイド",
-    "headline": "見出し",
+    "heading": "見出し",
+    "subheading": "中見出し",
     "subtitle": "小見出し",
     "list": "リスト",
     "numbered_list": "番号付きリスト",

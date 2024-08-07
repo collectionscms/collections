@@ -224,7 +224,8 @@
   "editor": {
     "text": "Text",
     "guide": "Editor Guide",
-    "headline": "Headline",
+    "heading": "Heading",
+    "subheading": "Subheading",
     "subtitle": "Subtitle",
     "list": "List",
     "numbered_list": "Numbered List",
