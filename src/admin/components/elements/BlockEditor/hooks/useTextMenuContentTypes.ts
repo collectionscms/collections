@@ -35,7 +35,7 @@ export const useTextMenuContentTypes = (editor: Editor) => {
         id: 'heading1',
         disabled: () => !editor.can().setHeading({ level: 1 }),
         isActive: () => editor.isActive('heading', { level: 1 }),
-        label: t('editor.headline'),
+        label: t('editor.heading'),
         type: 'option',
       },
       {

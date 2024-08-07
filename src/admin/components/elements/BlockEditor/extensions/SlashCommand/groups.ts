@@ -41,7 +41,7 @@ export const groups = (t: TFunction): Group[] => [
       },
       {
         name: 'heading1',
-        label: t('editor.headline'),
+        label: t('editor.heading'),
         iconName: 'Heading1',
         description: 'High priority section title',
         aliases: ['h1'],
