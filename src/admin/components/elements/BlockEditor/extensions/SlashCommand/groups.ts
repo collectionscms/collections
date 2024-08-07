@@ -26,11 +26,30 @@ export interface Group {
 export const groups = (t: TFunction): Group[] => [
   {
     name: 'format',
-    title: 'Format',
     commands: [
       {
-        name: 'heading2',
+        name: 'text',
+        label: t('editor.text'),
+        iconName: 'CaseSensitive',
+        description: 'Medium priority section title',
+        aliases: ['paragraph'],
+        action: (editor) => {
+          editor.chain().focus().setParagraph().run();
+        },
+      },
+      {
+        name: 'heading1',
         label: t('editor.headline'),
+        iconName: 'Heading1',
+        description: 'High priority section title',
+        aliases: ['h1'],
+        action: (editor) => {
+          editor.chain().focus().setHeading({ level: 1 }).run();
+        },
+      },
+      {
+        name: 'heading2',
+        label: t('editor.subheading'),
         iconName: 'Heading2',
         description: 'Medium priority section title',
         aliases: ['h2'],
