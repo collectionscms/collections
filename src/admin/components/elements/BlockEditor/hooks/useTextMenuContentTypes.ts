@@ -23,6 +23,22 @@ export const useTextMenuContentTypes = (editor: Editor) => {
         type: 'option',
       },
       {
+        icon: 'Heading1',
+        onClick: () =>
+          editor
+            .chain()
+            .focus()
+            .lift('taskItem')
+            .liftListItem('listItem')
+            .setHeading({ level: 1 })
+            .run(),
+        id: 'heading1',
+        disabled: () => !editor.can().setHeading({ level: 1 }),
+        isActive: () => editor.isActive('heading', { level: 1 }),
+        label: t('editor.headline'),
+        type: 'option',
+      },
+      {
         icon: 'Heading2',
         onClick: () =>
           editor
@@ -35,7 +51,7 @@ export const useTextMenuContentTypes = (editor: Editor) => {
         id: 'heading2',
         disabled: () => !editor.can().setHeading({ level: 2 }),
         isActive: () => editor.isActive('heading', { level: 2 }),
-        label: t('editor.headline'),
+        label: t('editor.subheading'),
         type: 'option',
       },
       {
