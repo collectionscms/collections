@@ -1,4 +1,4 @@
-import { mergeAttributes } from '@tiptap/core';
+import { mergeAttributes, Range } from '@tiptap/core';
 import { ReactNodeViewRenderer } from '@tiptap/react';
 import { Image } from '../Image/image.js';
 import { ImageBlockView } from './ImageBlockView.js';
@@ -7,6 +7,7 @@ declare module '@tiptap/core' {
   interface Commands<ReturnType> {
     imageBlock: {
       setImageBlock: (attributes: { src: string }) => ReturnType;
+      setImageBlockAt: (attributes: { src: string; pos: number | Range }) => ReturnType;
     };
   }
 }
@@ -63,6 +64,15 @@ export const ImageBlock = Image.extend({
         (attrs) =>
         ({ commands }) => {
           return commands.insertContent({ type: 'imageBlock', attrs: { src: attrs.src } });
+        },
+
+      setImageBlockAt:
+        (attrs) =>
+        ({ commands }) => {
+          return commands.insertContentAt(attrs.pos, {
+            type: 'imageBlock',
+            attrs: { src: attrs.src },
+          });
         },
     };
   },
