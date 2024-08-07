@@ -20,7 +20,6 @@ export interface MenuListProps {
 
 export interface Group {
   name: string;
-  title: string;
   commands: Command[];
 }
 

@@ -113,7 +113,6 @@ export const MenuList = React.forwardRef((props: MenuListProps, ref) => {
     <Paper elevation={1} sx={{ p: 1, borderRadius: 2 }} ref={scrollContainer}>
       {props.items.map((group, groupIndex: number) => (
         <Stack key={groupIndex}>
-          <Box key={`${group.title}`}>{group.title}</Box>
           {group.commands.map((command: Command, commandIndex: number) => (
             <Button
               key={`${command.label}`}
