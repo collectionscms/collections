@@ -20,12 +20,14 @@ export interface MenuListProps {
 
 export interface Group {
   name: string;
+  title: string;
   commands: Command[];
 }
 
 export const groups = (t: TFunction): Group[] => [
   {
     name: 'format',
+    title: 'FORMAT',
     commands: [
       {
         name: 'text',
@@ -106,6 +108,12 @@ export const groups = (t: TFunction): Group[] => [
           editor.chain().focus().setCodeBlock().run();
         },
       },
+    ],
+  },
+  {
+    name: 'insert',
+    title: 'INSERT',
+    commands: [
       {
         name: 'image',
         label: t('editor.image'),
