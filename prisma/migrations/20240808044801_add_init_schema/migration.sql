@@ -208,6 +208,9 @@ CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 CREATE UNIQUE INDEX "UserProject_userId_projectId_key" ON "UserProject"("userId", "projectId");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Post_projectId_slug_key" ON "Post"("projectId", "slug");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Review_postId_key" ON "Review"("postId");
 
 -- CreateIndex

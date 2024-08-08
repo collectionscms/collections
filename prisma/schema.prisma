@@ -143,6 +143,8 @@ model Post {
   createdBy   User      @relation(name: "CreatedBy", fields: [createdById], references: [id], onDelete: NoAction)
   contents    Content[]
   reviews     Review[]
+
+  @@unique([projectId, slug])
 }
 
 model Review {
