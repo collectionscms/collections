@@ -5,7 +5,6 @@ import {
   Button,
   Container,
   Dialog,
-  Divider,
   FormControl,
   FormControlLabel,
   FormHelperText,
@@ -34,7 +33,7 @@ import {
 } from '../../../fields/validators/content/editContent.js';
 import { usePost } from '../Context/index.js';
 import AppBarStyled from '../PostHeader/AppBarStyled.js';
-import { PostSettings } from './PostSettings/index.js';
+import { SlugSettings } from './SlugSettings/index.js';
 
 export type Props = {
   open: boolean;
@@ -183,11 +182,6 @@ export const PublishSettings: React.FC<Props> = ({ open, contentId, post, onClos
                 />
               </FormControl>
             </Box>
-            {watch('status') === 'published' && (
-              <Container maxWidth="sm" sx={{ mt: 3 }}>
-                <PostSettings postId={post.id} slug={slug} />
-              </Container>
-            )}
             {watch('status') === 'review' && (
               <>
                 <Grid container spacing={3}>
@@ -235,6 +229,11 @@ export const PublishSettings: React.FC<Props> = ({ open, contentId, post, onClos
           </Container>
         </Box>
       </form>
+      {watch('status') === 'published' && (
+        <Container maxWidth="sm" sx={{ mt: 3 }}>
+          <SlugSettings postId={post.id} slug={slug} />
+        </Container>
+      )}
     </Dialog>
   );
 };
