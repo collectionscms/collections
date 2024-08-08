@@ -12,7 +12,7 @@ export class UpdatePostUseCase {
 
   async execute({ postId, slug }: UpdatePostUseCaseSchemaType): Promise<Post> {
     const sameSlugPost = await this.postRepository.findOneBySlug(this.prisma, slug);
-    if (sameSlugPost) {
+    if (sameSlugPost && sameSlugPost.id !== postId) {
       throw new RecordNotUniqueException('already_registered_post_slug');
     }
 
