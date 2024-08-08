@@ -58,8 +58,7 @@ const ReviewDetailPageImpl: React.FC = () => {
                   <Link href={`/admin/posts/${review.postId}`}>{review.postId}</Link>
                 </Stack>
                 <Stack spacing={1}>
-                  <Typography variant="h4">{review.title}</Typography>
-                  <Typography>{review.body}</Typography>
+                  <Typography>{review.comment}</Typography>
                 </Stack>
               </Grid>
               <Grid xs={12}>

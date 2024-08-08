@@ -16,7 +16,7 @@ const ReviewPageImpl: React.FC = () => {
   const { data } = getReviews();
 
   const fields = [
-    { field: 'title', label: t('title'), type: cells.text() },
+    { field: 'comment', label: t('comment'), type: cells.text() },
     { field: 'status', label: t('status'), type: cells.text() },
     { field: 'updatedAt', label: t('updated_at'), type: cells.date() },
   ];

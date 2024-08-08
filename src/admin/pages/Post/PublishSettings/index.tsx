@@ -78,8 +78,7 @@ export const PublishSettings: React.FC<Props> = ({ open, contentId, post, onClos
   } = useForm<FormValues>({
     defaultValues: {
       status: status !== 'published' ? 'review' : 'published',
-      title: '',
-      body: '',
+      comment: '',
     },
     resolver: yupResolver(editContentValidator()),
   });
@@ -187,27 +186,9 @@ export const PublishSettings: React.FC<Props> = ({ open, contentId, post, onClos
                 <Grid container spacing={3}>
                   <Grid xs={12}>
                     <Stack spacing={1}>
-                      <InputLabel required>{t('title')}</InputLabel>
+                      <InputLabel required>{t('comment')}</InputLabel>
                       <Controller
-                        name="title"
-                        control={control}
-                        render={({ field }) => (
-                          <TextField
-                            {...field}
-                            type="text"
-                            fullWidth
-                            error={errors.title !== undefined}
-                          />
-                        )}
-                      />
-                      <FormHelperText error>{errors.title?.message}</FormHelperText>
-                    </Stack>
-                  </Grid>
-                  <Grid xs={12}>
-                    <Stack spacing={1}>
-                      <InputLabel>{t('description')}</InputLabel>
-                      <Controller
-                        name="body"
+                        name="comment"
                         control={control}
                         render={({ field }) => (
                           <TextField
@@ -216,11 +197,11 @@ export const PublishSettings: React.FC<Props> = ({ open, contentId, post, onClos
                             fullWidth
                             multiline
                             rows={4}
-                            error={errors.body !== undefined}
+                            error={errors.comment !== undefined}
                           />
                         )}
                       />
-                      <FormHelperText error>{errors.body?.message}</FormHelperText>
+                      <FormHelperText error>{errors.comment?.message}</FormHelperText>
                     </Stack>
                   </Grid>
                 </Grid>

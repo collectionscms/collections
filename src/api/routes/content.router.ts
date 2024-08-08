@@ -59,8 +59,7 @@ router.patch(
       id: req.params.id,
       projectId: res.projectRole?.id,
       userId: res.user.id,
-      title: req.body.title,
-      body: req.body.body,
+      comment: req.body.comment,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 

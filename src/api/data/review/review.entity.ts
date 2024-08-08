@@ -16,15 +16,13 @@ export class ReviewEntity extends PrismaBaseEntity<Review> {
     postId,
     contentId,
     revieweeId,
-    title,
-    body,
+    comment,
   }: {
     projectId: string;
     postId: string;
     contentId: string;
     revieweeId: string;
-    title: string;
-    body: string | null;
+    comment: string;
   }): ReviewEntity {
     const now = new Date();
     return new ReviewEntity({
@@ -34,8 +32,7 @@ export class ReviewEntity extends PrismaBaseEntity<Review> {
       contentId,
       revieweeId,
       reviewerId: null,
-      title,
-      body,
+      comment,
       status: reviewStatus.Request,
       createdAt: now,
       updatedAt: now,
@@ -50,10 +47,9 @@ export class ReviewEntity extends PrismaBaseEntity<Review> {
     this.props.status = reviewStatus.Approve;
   }
 
-  requestReview(title: string, body?: string): void {
+  requestReview(comment: string): void {
     this.props.status = reviewStatus.Request;
-    this.props.title = title;
-    this.props.body = body || null;
+    this.props.comment = comment;
   }
 
   private isValid() {

@@ -30,12 +30,10 @@ export const createPost = async (
   const reviewData =
     options?.locale === 'ja'
       ? {
-          title: `記事を書いた！`,
-          body: `「${title}」というタイトルの記事を書いたので、レビューをお願いします`,
+          comment: `「${title}」というタイトルの記事を書いたので、レビューをお願いします`,
         }
       : {
-          title: `I wrote a post!`,
-          body: `Please review the post entitled '${title}'`,
+          comment: `Please review the post entitled '${title}'`,
         };
 
   const postId = options?.id ?? v4();
@@ -73,8 +71,7 @@ export const createPost = async (
                     projectId,
                     postId,
                     revieweeId: user.id,
-                    title: reviewData.title,
-                    body: reviewData.body,
+                    comment: reviewData.comment,
                     status: reviewStatus.Request,
                     createdAt: currentTime,
                     updatedAt: currentTime,
