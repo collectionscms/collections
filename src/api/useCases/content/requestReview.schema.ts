@@ -4,8 +4,7 @@ export const requestReviewUseCaseSchema = z.object({
   id: z.string(),
   projectId: z.string(),
   userId: z.string(),
-  title: z.string(),
-  body: z.string().optional(),
+  comment: z.string(),
 });
 
 export type RequestReviewUseCaseSchemaType = z.infer<typeof requestReviewUseCaseSchema>;

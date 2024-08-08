@@ -177,6 +177,7 @@
   "open_in_new_tab": "Open in new tab",
   "remove_link": "Remove link",
   "post_slug": "Post slug",
+  "comment": "Comment",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",
@@ -354,5 +355,8 @@
       "alphanumeric_and_underscore": "Please enter single-byte alphanumeric characters and underscore (_).",
       "alphanumeric_and_underscore_hyphens": "Alphanumeric characters and symbols '-_'."
     }
+  },
+  "seed": {
+    "review_comment": "Please review the post entitled '{{title}}'"
   }
 }

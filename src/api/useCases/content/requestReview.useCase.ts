@@ -17,7 +17,7 @@ export class RequestReviewUseCase {
   ) {}
 
   async execute(props: RequestReviewUseCaseSchemaType): Promise<Content> {
-    const { projectId, id, userId, title, body } = props;
+    const { projectId, id, userId, comment } = props;
 
     const content = await this.contentRepository.findOneById(this.prisma, id);
     content.changeStatus(contentStatus.review);
@@ -27,15 +27,14 @@ export class RequestReviewUseCase {
 
       let review = await this.reviewRepository.findOneByContentId(tx, id);
       if (review) {
-        review.requestReview(title as string, body);
+        review.requestReview(comment);
       } else {
         review = ReviewEntity.Construct({
           projectId,
           postId: content.postId,
           contentId: content.id,
           revieweeId: userId,
-          title: title as string,
-          body: body || null,
+          comment: comment as string,
         });
       }
       this.reviewRepository.upsert(tx, review);
