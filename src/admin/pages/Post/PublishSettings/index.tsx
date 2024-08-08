@@ -141,13 +141,13 @@ export const PublishSettings: React.FC<Props> = ({ open, contentId, post, onClos
           <Container
             maxWidth="sm"
             sx={{
-              py: 4,
+              mt: 4,
             }}
           >
             <Typography variant={'h1'} align="center">
               {t('publish_settings')}
             </Typography>
-            <Box sx={{ pt: 3, display: 'flex', justifyContent: 'center' }}>
+            <Box sx={{ py: 3, display: 'flex', justifyContent: 'center' }}>
               <FormControl component="fieldset">
                 <Controller
                   name="status"
@@ -183,6 +183,11 @@ export const PublishSettings: React.FC<Props> = ({ open, contentId, post, onClos
                 />
               </FormControl>
             </Box>
+            {watch('status') === 'published' && (
+              <Container maxWidth="sm" sx={{ mt: 3 }}>
+                <PostSettings postId={post.id} slug={slug} />
+              </Container>
+            )}
             {watch('status') === 'review' && (
               <>
                 <Grid container spacing={3}>
@@ -230,10 +235,6 @@ export const PublishSettings: React.FC<Props> = ({ open, contentId, post, onClos
           </Container>
         </Box>
       </form>
-      <Container maxWidth="sm">
-        <Divider sx={{ mb: 3 }} />
-        <PostSettings postId={post.id} slug={slug} />
-      </Container>
     </Dialog>
   );
 };
