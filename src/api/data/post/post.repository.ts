@@ -140,4 +140,17 @@ export class PostRepository {
 
     return PostEntity.Reconstruct<Post, PostEntity>(record);
   }
+
+  async updateSlug(prisma: ProjectPrismaType, postEntity: PostEntity): Promise<PostEntity> {
+    const result = await prisma.post.update({
+      where: {
+        id: postEntity.id,
+      },
+      data: {
+        slug: postEntity.slug,
+      },
+    });
+
+    return PostEntity.Reconstruct<Post, PostEntity>(result);
+  }
 }
