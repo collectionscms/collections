@@ -1,9 +1,23 @@
 import { faker } from '@faker-js/faker';
+import i18next from 'i18next';
 import { v4 } from 'uuid';
+import translation_en from '../../../lang/translations/en/translation.json' assert { type: 'json' };
+import translation_ja from '../../../lang/translations/ja/translation.json' assert { type: 'json' };
 import { ContentStatusType, contentStatus } from '../../data/content/content.entity.js';
 import { reviewStatus } from '../../data/review/review.entity.js';
 import { BypassPrismaType } from '../prisma/client.js';
 import { adminUser } from './createUsers.js';
+
+i18next.init({
+  resources: {
+    ja: {
+      translation: translation_ja,
+    },
+    en: {
+      translation: translation_en,
+    },
+  },
+});
 
 export const createPost = async (
   prisma: BypassPrismaType,
@@ -27,14 +41,8 @@ export const createPost = async (
     },
   });
 
-  const reviewData =
-    options?.locale === 'ja'
-      ? {
-          comment: `「${title}」というタイトルの記事を書いたので、レビューをお願いします`,
-        }
-      : {
-          comment: `Please review the post entitled '${title}'`,
-        };
+  i18next.changeLanguage(options?.locale);
+  const reviewComment = i18next.t('seed.review_comment', { title });
 
   const postId = options?.id ?? v4();
 
@@ -71,7 +79,7 @@ export const createPost = async (
                     projectId,
                     postId,
                     revieweeId: user.id,
-                    comment: reviewData.comment,
+                    comment: reviewComment,
                     status: reviewStatus.Request,
                     createdAt: currentTime,
                     updatedAt: currentTime,

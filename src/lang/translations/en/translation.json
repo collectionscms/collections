@@ -355,5 +355,8 @@
       "alphanumeric_and_underscore": "Please enter single-byte alphanumeric characters and underscore (_).",
       "alphanumeric_and_underscore_hyphens": "Alphanumeric characters and symbols '-_'."
     }
+  },
+  "seed": {
+    "review_comment": "Please review the post entitled '{{title}}'"
   }
 }

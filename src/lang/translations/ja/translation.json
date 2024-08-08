@@ -355,5 +355,8 @@
       "alphanumeric_and_underscore": "半角英数字およびアンダースコア（_）で入力してください",
       "alphanumeric_and_underscore_hyphens": "半角英数字および記号「-_」で入力してください"
     }
+  },
+  "seed": {
+    "review_comment": "「{{title}}」の記事を確認してください。"
   }
 }
