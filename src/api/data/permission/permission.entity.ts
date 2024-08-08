@@ -1,7 +1,7 @@
 import { Permission } from '@prisma/client';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 
-export const actions = {
+export const roleActions = {
   post: [
     'readOwnPost',
     'readAllPost',
@@ -17,6 +17,10 @@ export const actions = {
   invitation: ['inviteUser'],
   review: ['readOwnReview', 'readAllReview', 'createReview', 'approveReview', 'closeReview'],
   apiKey: ['readApiKey', 'createApiKey', 'updateApiKey', 'deleteApiKey'],
+};
+
+export const apiKeyActions = {
+  post: ['readPublishedPost'],
 };
 
 export class PermissionEntity extends PrismaBaseEntity<Permission> {

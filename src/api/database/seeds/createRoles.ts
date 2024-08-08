@@ -1,5 +1,5 @@
 import { v4 } from 'uuid';
-import { actions } from '../../data/permission/permission.entity.js';
+import { roleActions } from '../../data/permission/permission.entity.js';
 import { BypassPrismaType } from '../prisma/client.js';
 import { enProject, jaProject } from './createProjects.js';
 
@@ -14,13 +14,13 @@ export const jaViewerRole = v4();
 
 export const createRoles = async (prisma: BypassPrismaType): Promise<void> => {
   const editorPermissions = [
-    ...actions.post,
+    ...roleActions.post,
     'readProject',
     'readRole',
     'createRole',
     'readUser',
-    ...actions.invitation,
-    ...actions.review,
+    ...roleActions.invitation,
+    ...roleActions.review,
     'createApiKey',
     'readApiKey',
   ];

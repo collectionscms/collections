@@ -15,7 +15,7 @@ import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { actions } from '../../../../api/data/permission/permission.entity.js';
+import { roleActions } from '../../../../api/data/permission/permission.entity.js';
 import { logger } from '../../../../utilities/logger.js';
 import { MainCard } from '../../../@extended/components/MainCard/index.js';
 import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscardDialog/index.js';
@@ -49,13 +49,13 @@ const CreateRolePageImpl: React.FC = () => {
   });
   const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
   const formPermissions = [
-    { label: t('post_permission'), permissions: actions.post },
-    { label: t('review_permission'), permissions: actions.review },
-    { label: t('invitation_permission'), permissions: actions.invitation },
-    { label: t('project_permission'), permissions: actions.project },
-    { label: t('user_permission'), permissions: actions.user },
-    { label: t('role_permission'), permissions: actions.role },
-    { label: t('api_key_permission'), permissions: actions.apiKey },
+    { label: t('post_permission'), permissions: roleActions.post },
+    { label: t('review_permission'), permissions: roleActions.review },
+    { label: t('invitation_permission'), permissions: roleActions.invitation },
+    { label: t('project_permission'), permissions: roleActions.project },
+    { label: t('user_permission'), permissions: roleActions.user },
+    { label: t('role_permission'), permissions: roleActions.role },
+    { label: t('api_key_permission'), permissions: roleActions.apiKey },
   ];
   const navigateToList = () => {
     navigate('../roles');

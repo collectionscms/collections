@@ -18,7 +18,7 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { v4 } from 'uuid';
-import { actions } from '../../../../api/data/permission/permission.entity.js';
+import { apiKeyActions } from '../../../../api/data/permission/permission.entity.js';
 import { logger } from '../../../../utilities/logger.js';
 import { MainCard } from '../../../@extended/components/MainCard/index.js';
 import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscardDialog/index.js';
@@ -149,7 +149,7 @@ const EditApiKeyPageImpl: React.FC = () => {
                       control={control}
                       render={({ field }) => (
                         <>
-                          {Object.values(actions.post).map((permission) => {
+                          {Object.values(apiKeyActions.post).map((permission) => {
                             return (
                               <Grid xs={6} sm={4} sx={{ py: 0.5 }} key={permission}>
                                 <Stack>
