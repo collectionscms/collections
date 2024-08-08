@@ -1,7 +1,7 @@
 import { Permission } from '@prisma/client';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 
-export const actions = {
+export const roleActions = {
   post: [
     'readOwnPost',
     'readAllPost',
