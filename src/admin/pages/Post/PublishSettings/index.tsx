@@ -47,7 +47,7 @@ export type Props = {
   onClose: () => void;
 };
 
-export const PublishSetting: React.FC<Props> = ({ open, contentId, post, onClose }) => {
+export const PublishSettings: React.FC<Props> = ({ open, contentId, post, onClose }) => {
   const { hasPermission } = useAuth();
   const { t } = useTranslation();
   const navigate = useNavigate();
