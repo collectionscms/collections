@@ -154,8 +154,7 @@ model Review {
   contentId  String   @unique @db.Uuid
   revieweeId String   @db.Uuid
   reviewerId String?  @db.Uuid
-  title      String   @db.VarChar(255)
-  body       String?
+  comment    String
   status     String   @db.VarChar(255)
   createdAt  DateTime @default(now()) @db.Timestamptz(6)
   updatedAt  DateTime @updatedAt @db.Timestamptz(6)
