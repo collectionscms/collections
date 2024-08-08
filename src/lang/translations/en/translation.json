@@ -177,6 +177,7 @@
   "open_in_new_tab": "Open in new tab",
   "remove_link": "Remove link",
   "post_slug": "Post slug",
+  "comment": "Comment",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",

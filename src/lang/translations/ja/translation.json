@@ -177,6 +177,7 @@
   "open_in_new_tab": "新しいタブで開く",
   "remove_link": "リンクを削除",
   "post_slug": "記事のスラッグ",
+  "comment": "コメント",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",
