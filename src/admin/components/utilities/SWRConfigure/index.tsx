@@ -16,7 +16,7 @@ export const SWRConfigure: React.FC<Props> = ({ children }) => {
         onError: (e) => {
           if (e instanceof AxiosError) {
             const apiError = e.response?.data as ApiError;
-            if (!apiError) {
+            if (!apiError?.code) {
               return enqueueSnackbar(t('error.internal_server_error'), { variant: 'error' });
             }
 
