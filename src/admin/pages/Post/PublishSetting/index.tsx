@@ -5,6 +5,7 @@ import {
   Button,
   Container,
   Dialog,
+  Divider,
   FormControl,
   FormControlLabel,
   FormHelperText,
@@ -33,15 +34,20 @@ import {
 } from '../../../fields/validators/content/editContent.js';
 import { usePost } from '../Context/index.js';
 import AppBarStyled from '../PostHeader/AppBarStyled.js';
+import { PostSettings } from './PostSettings/index.js';
 
 export type Props = {
   open: boolean;
   contentId: string;
-  status: string;
+  post: {
+    id: string;
+    status: string;
+    slug: string;
+  };
   onClose: () => void;
 };
 
-export const PublishSetting: React.FC<Props> = ({ open, contentId, status, onClose }) => {
+export const PublishSetting: React.FC<Props> = ({ open, contentId, post, onClose }) => {
   const { hasPermission } = useAuth();
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -50,6 +56,8 @@ export const PublishSetting: React.FC<Props> = ({ open, contentId, status, onClo
   const { trigger: requestReviewTrigger } = requestReview(contentId);
   const { trigger: publishTrigger } = publish(contentId);
   const { trigger: archiveTrigger } = archive(contentId);
+
+  const { status, slug } = post;
 
   const appBar: AppBarProps = {
     position: 'fixed',
@@ -128,7 +136,7 @@ export const PublishSetting: React.FC<Props> = ({ open, contentId, status, onClo
             </Stack>
           </Toolbar>
         </AppBarStyled>
-        <Box component="main" sx={{ minHeight: '100vh' }}>
+        <Box component="main">
           <Toolbar sx={{ mt: 0 }} />
           <Container
             maxWidth="sm"
@@ -222,6 +230,10 @@ export const PublishSetting: React.FC<Props> = ({ open, contentId, status, onClo
           </Container>
         </Box>
       </form>
+      <Container maxWidth="sm">
+        <Divider sx={{ mb: 3 }} />
+        <PostSettings postId={post.id} slug={slug} />
+      </Container>
     </Dialog>
   );
 };
