@@ -19,6 +19,8 @@ import { getPostsUseCaseSchema } from '../useCases/post/getPosts.schema.js';
 import { GetPostsUseCase } from '../useCases/post/getPosts.useCase.js';
 import { trashPostUseCaseSchema } from '../useCases/post/trashPost.schema.js';
 import { TrashPostUseCase } from '../useCases/post/trashPost.useCase.js';
+import { updatePostUseCaseSchema } from '../useCases/post/updatePost.schema.js';
+import { UpdatePostUseCase } from '../useCases/post/updatePost.useCase.js';
 
 const router = express.Router();
 
@@ -148,6 +150,28 @@ router.post(
       new ContentHistoryRepository()
     );
     await useCase.execute(validated.data);
+    res.status(204).send();
+  })
+);
+
+router.patch(
+  '/posts/:id',
+  authenticatedUser,
+  validateAccess(['updatePost']),
+  asyncHandler(async (req: Request, res: Response) => {
+    const validated = updatePostUseCaseSchema.safeParse({
+      projectId: res.projectRole?.id,
+      postId: req.params.id,
+      slug: req.body.slug,
+    });
+    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
+
+    const useCase = new UpdatePostUseCase(
+      projectPrisma(validated.data.projectId),
+      new PostRepository()
+    );
+    await useCase.execute(validated.data);
+
     res.status(204).send();
   })
 );

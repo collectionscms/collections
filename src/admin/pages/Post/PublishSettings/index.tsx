@@ -33,15 +33,20 @@ import {
 } from '../../../fields/validators/content/editContent.js';
 import { usePost } from '../Context/index.js';
 import AppBarStyled from '../PostHeader/AppBarStyled.js';
+import { SlugSettings } from './SlugSettings/index.js';
 
 export type Props = {
   open: boolean;
   contentId: string;
-  status: string;
+  post: {
+    id: string;
+    status: string;
+    slug: string;
+  };
   onClose: () => void;
 };
 
-export const PublishSetting: React.FC<Props> = ({ open, contentId, status, onClose }) => {
+export const PublishSettings: React.FC<Props> = ({ open, contentId, post, onClose }) => {
   const { hasPermission } = useAuth();
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -50,6 +55,8 @@ export const PublishSetting: React.FC<Props> = ({ open, contentId, status, onClo
   const { trigger: requestReviewTrigger } = requestReview(contentId);
   const { trigger: publishTrigger } = publish(contentId);
   const { trigger: archiveTrigger } = archive(contentId);
+
+  const { status, slug } = post;
 
   const appBar: AppBarProps = {
     position: 'fixed',
@@ -128,18 +135,18 @@ export const PublishSetting: React.FC<Props> = ({ open, contentId, status, onClo
             </Stack>
           </Toolbar>
         </AppBarStyled>
-        <Box component="main" sx={{ minHeight: '100vh' }}>
+        <Box component="main">
           <Toolbar sx={{ mt: 0 }} />
           <Container
             maxWidth="sm"
             sx={{
-              py: 4,
+              mt: 4,
             }}
           >
             <Typography variant={'h1'} align="center">
               {t('publish_settings')}
             </Typography>
-            <Box sx={{ pt: 3, display: 'flex', justifyContent: 'center' }}>
+            <Box sx={{ py: 3, display: 'flex', justifyContent: 'center' }}>
               <FormControl component="fieldset">
                 <Controller
                   name="status"
@@ -222,6 +229,11 @@ export const PublishSetting: React.FC<Props> = ({ open, contentId, status, onClo
           </Container>
         </Box>
       </form>
+      {watch('status') === 'published' && (
+        <Container maxWidth="sm" sx={{ mt: 3 }}>
+          <SlugSettings postId={post.id} slug={slug} />
+        </Container>
+      )}
     </Dialog>
   );
 };

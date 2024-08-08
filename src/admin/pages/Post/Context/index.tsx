@@ -25,6 +25,7 @@ type PostContext = {
   >;
   createPost: () => SWRMutationResponse<LocalizedPost, any, string>;
   trashPost: (postId: string) => SWRMutationResponse<void, any, string>;
+  updatePost: (postId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
   createContent: (postId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
   createBulkContent: (
     postId: string
@@ -69,6 +70,14 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
     useSWRMutation(`/posts/${postId}/trash`, async (url: string) => {
       return api.delete(url).then((res) => res.data);
     });
+
+  const updatePost = (postId: string) =>
+    useSWRMutation(
+      `/posts/${postId}`,
+      async (url: string, { arg }: { arg: Record<string, any> }) => {
+        return api.patch(url, arg).then((res) => res.data);
+      }
+    );
 
   const createContent = (postId: string) =>
     useSWRMutation(
@@ -139,6 +148,7 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       getPost,
       createPost,
       trashPost,
+      updatePost,
       createContent,
       updateContent,
       trashContent,
@@ -154,6 +164,7 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       getPost,
       createPost,
       trashPost,
+      updatePost,
       createContent,
       updateContent,
       trashContent,

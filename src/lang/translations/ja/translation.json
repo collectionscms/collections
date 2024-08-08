@@ -176,6 +176,7 @@
   "no_permissions": "権限がありません",
   "open_in_new_tab": "新しいタブで開く",
   "remove_link": "リンクを削除",
+  "post_slug": "記事のスラッグ",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",
@@ -300,7 +301,8 @@
     "unauthorized_user": "不正なユーザーです。",
     "already_confirmed": "すでに認証済みのユーザーです。",
     "already_updated_by_another_user": "すでに他のユーザーによって更新されています。",
-    "already_has_same_language_content": "すでに同じ言語のコンテンツがあります。"
+    "already_has_same_language_content": "すでに同じ言語のコンテンツがあります。",
+    "already_registered_post_slug": "すでに登録済みのスラッグです。"
   },
   "yup": {
     "mixed": {
@@ -349,7 +351,8 @@
     },
     "custom": {
       "alphanumeric_and_special_character": "半角英数字および記号「@$!%*#?&」で入力してください",
-      "alphanumeric_and_underscore": "半角英数字およびアンダースコア（_）で入力してください"
+      "alphanumeric_and_underscore": "半角英数字およびアンダースコア（_）で入力してください",
+      "alphanumeric_and_underscore_hyphens": "半角英数字および記号「-_」で入力してください"
     }
   }
 }

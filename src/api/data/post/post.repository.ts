@@ -77,6 +77,16 @@ export class PostRepository {
     return PostEntity.Reconstruct<Post, PostEntity>(record);
   }
 
+  async findOneBySlug(prisma: ProjectPrismaType, slug: string): Promise<PostEntity | null> {
+    const record = await prisma.post.findFirst({
+      where: {
+        slug,
+      },
+    });
+
+    return record ? PostEntity.Reconstruct<Post, PostEntity>(record) : null;
+  }
+
   async findOneWithContentsById(
     prisma: ProjectPrismaType,
     id: string,
@@ -139,5 +149,18 @@ export class PostRepository {
     });
 
     return PostEntity.Reconstruct<Post, PostEntity>(record);
+  }
+
+  async updateSlug(prisma: ProjectPrismaType, postEntity: PostEntity): Promise<PostEntity> {
+    const result = await prisma.post.update({
+      where: {
+        id: postEntity.id,
+      },
+      data: {
+        slug: postEntity.slug,
+      },
+    });
+
+    return PostEntity.Reconstruct<Post, PostEntity>(result);
   }
 }

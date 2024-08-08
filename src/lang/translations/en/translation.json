@@ -176,6 +176,7 @@
   "no_permissions": "No Permissions",
   "open_in_new_tab": "Open in new tab",
   "remove_link": "Remove link",
+  "post_slug": "Post slug",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",
@@ -300,7 +301,8 @@
     "unauthorized_user": "Unauthorized user.",
     "already_confirmed": "Already confirmed user.",
     "already_updated_by_another_user": "Already updated by another user.",
-    "already_has_same_language_content": "Already has same language content."
+    "already_has_same_language_content": "Already has same language content.",
+    "already_registered_post_slug": "Already registered slug."
   },
   "yup": {
     "mixed": {
@@ -348,8 +350,9 @@
       "is_value": "Must be {{value}}."
     },
     "custom": {
-      "alphanumeric_and_special_character": "Alphanumeric characters and symbols '@$! %*#?&'.",
-      "alphanumeric_and_underscore": "Please enter single-byte alphanumeric characters and underscore (_)."
+      "alphanumeric_and_special_character": "Alphanumeric characters and symbols '@$!%*#?&'.",
+      "alphanumeric_and_underscore": "Please enter single-byte alphanumeric characters and underscore (_).",
+      "alphanumeric_and_underscore_hyphens": "Alphanumeric characters and symbols '-_'."
     }
   }
 }

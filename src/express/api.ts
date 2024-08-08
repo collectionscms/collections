@@ -28,7 +28,6 @@ export const initApiServer = async (app: Express) => {
   app.use(expressLogger);
   app.use(extractToken);
   app.use(currentSession);
-  app.use(errorHandler);
 
   // api
   const portalApp = express();
@@ -40,6 +39,9 @@ export const initApiServer = async (app: Express) => {
   app.use(vhost('*.*.*', tenantApp));
 
   app.use('/', asset);
+
+  // Description here to handle api errors.
+  app.use(errorHandler);
 
   app
     .listen(port, () => {

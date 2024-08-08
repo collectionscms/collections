@@ -70,6 +70,16 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     return this.props.projectId;
   }
 
+  get slug(): string {
+    return this.props.slug;
+  }
+
+  updatePost({ slug }: { slug?: string }): void {
+    if (slug) {
+      this.props.slug = slug;
+    }
+  }
+
   toPostItemResponse(
     locale: string,
     contents: {

@@ -15,7 +15,7 @@ import { PostContextProvider, usePost } from '../Context/index.js';
 import { LocalizedContent } from '../LocalizedContent/index.js';
 import { PostFooter } from '../PostFooter/index.js';
 import { PostHeader } from '../PostHeader/index.js';
-import { PublishSetting } from '../PublishSetting/index.js';
+import { PublishSettings } from '../PublishSettings/index.js';
 
 const toJson = (value?: string | null) => {
   return value ? JSON.parse(value) : '';
@@ -319,10 +319,14 @@ export const EditPostPageImpl: React.FC = () => {
         histories={post.histories}
         characters={editor?.storage.characterCount.characters() ?? 0}
       />
-      <PublishSetting
+      <PublishSettings
         open={openSettings}
         contentId={post.contentId}
-        status={post.currentStatus}
+        post={{
+          id: post.id,
+          slug: post.slug,
+          status: post.currentStatus,
+        }}
         onClose={() => setOpenSettings(false)}
       />
       <LocalizedContent
