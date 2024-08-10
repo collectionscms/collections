@@ -1,4 +1,5 @@
 import { Post } from '@prisma/client';
+import { locale } from 'dayjs';
 import { v4 } from 'uuid';
 import { UnexpectedException } from '../../../exceptions/unexpected.js';
 import { LocalizedPost, PostItem, PublishedPost } from '../../../types/index.js';
@@ -141,8 +142,8 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       id: this.props.id,
       slug: this.props.slug,
       contentId: localeContent.content.id,
-      currentStatus: localeStatues[locale].statuses[0],
-      prevStatus: localeStatues[locale].statuses[1],
+      currentStatus: localeStatues[localeContent.content.locale].statuses[0],
+      prevStatus: localeStatues[localeContent.content.locale].statuses[1],
       updatedAt: localeContent.content.updatedAt,
       title: localeContent.content.title ?? '',
       body: localeContent.content.body ?? '',
