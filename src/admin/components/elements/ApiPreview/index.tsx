@@ -57,7 +57,7 @@ export const ApiPreview: React.FC<Props> = ({ path, apiKeys }) => {
     setApiKey(apiKeys[0]?.key);
   }, [apiKeys]);
 
-  const basePath = `${window.location.origin}/api`;
+  const basePath = `${window.location.origin}/api/v1`;
   const curlCodeString = `curl "${basePath}/${watch('path')}" -H "Authorization: Bearer ${apiKey}"`;
 
   const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
