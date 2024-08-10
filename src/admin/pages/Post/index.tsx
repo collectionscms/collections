@@ -26,10 +26,11 @@ export const PostPageImpl: React.FC = () => {
   const { hasPermission } = useAuth();
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { getPosts, createPost, getApiKeys } = usePost();
+  const { getPosts, createPost, getApiKeys, getProject } = usePost();
   const { data: posts, mutate } = getPosts();
   const { trigger: getApiKeyTrigger } = getApiKeys();
   const { trigger } = createPost();
+  const { data: project } = getProject();
 
   const [apiKeys, setApiKeys] = useState<ApiKey[]>([]);
   useEffect(() => {
@@ -140,7 +141,7 @@ export const PostPageImpl: React.FC = () => {
         title={<></>}
         secondary={
           <Stack direction="row" alignItems="center" spacing={1}>
-            <ApiPreview path="posts" apiKeys={apiKeys} />
+            <ApiPreview path={`posts/?locale=${project.primaryLocale}`} apiKeys={apiKeys} />
             {hasPermission('createPost') && <CreateNewButton onClick={handleCreatePost} />}
           </Stack>
         }

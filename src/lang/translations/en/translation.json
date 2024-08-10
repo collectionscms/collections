@@ -248,6 +248,7 @@
     "action": {
       "readOwnPost": "Read (Own)",
       "readAllPost": "Read (All)",
+      "readPublishedPost": "Read (Only in published)",
       "createPost": "Create",
       "updatePost": "Update",
       "trashPost": "Delete",

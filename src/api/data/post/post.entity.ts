@@ -1,7 +1,8 @@
 import { Post } from '@prisma/client';
+import { locale } from 'dayjs';
 import { v4 } from 'uuid';
 import { UnexpectedException } from '../../../exceptions/unexpected.js';
-import { LocalizedPost, PostItem } from '../../../types/index.js';
+import { LocalizedPost, PostItem, PublishedPost } from '../../../types/index.js';
 import { ContentEntity } from '../content/content.entity.js';
 import { ContentHistoryEntity } from '../contentHistory/contentHistory.entity.js';
 import { FileEntity } from '../file/file.entity.js';
@@ -141,8 +142,8 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       id: this.props.id,
       slug: this.props.slug,
       contentId: localeContent.content.id,
-      currentStatus: localeStatues[locale].statuses[0],
-      prevStatus: localeStatues[locale].statuses[1],
+      currentStatus: localeStatues[localeContent.content.locale].statuses[0],
+      prevStatus: localeStatues[localeContent.content.locale].statuses[1],
       updatedAt: localeContent.content.updatedAt,
       title: localeContent.content.title ?? '',
       body: localeContent.content.body ?? '',
@@ -153,6 +154,34 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       locales,
       file: localeContent.file?.toResponseWithUrl() ?? null,
       histories: histories.map((history) => history.toResponse()),
+    };
+  }
+
+  toPublishedWithContentsResponse(
+    locale: string | null,
+    primaryLocale: string,
+    contents: {
+      content: ContentEntity;
+      file: FileEntity | null;
+      updatedBy: UserEntity;
+    }[]
+  ): PublishedPost {
+    const sortedContents = contents.sort((a, b) => b.content.version - a.content.version);
+
+    // Get content of locale. If locale is not found, get the primary locale content or first content.
+    const localeContents = sortedContents.filter((c) => c.content.locale === locale);
+    const primaryLocaleContents = sortedContents.filter((c) => c.content.locale === primaryLocale);
+    const localeContent = localeContents[0] || primaryLocaleContents[0] || sortedContents[0];
+
+    return {
+      id: this.props.id,
+      slug: this.props.slug,
+      title: localeContent.content.title ?? '',
+      body: localeContent.content.bodyHtml ?? '',
+      contentLocale: localeContent.content.locale,
+      file: localeContent.file?.toResponseWithUrl() ?? null,
+      updatedAt: localeContent.content.updatedAt,
+      updatedByName: localeContent.updatedBy.name,
     };
   }
 

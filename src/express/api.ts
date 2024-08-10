@@ -9,6 +9,7 @@ import { extractToken } from '../api/middlewares/extractToken.js';
 import { asset } from '../api/routes/asset.router.js';
 import { portalApiRouter } from '../api/routes/portal.router.js';
 import { tenantApiRouter } from '../api/routes/tenant.router.js';
+import { tenantPublicApiRouter } from '../api/routes/tenantPublic.router.js';
 import { env } from '../env.js';
 import { expressLogger } from '../utilities/expressLogger.js';
 import { logger } from '../utilities/logger.js';
@@ -36,6 +37,7 @@ export const initApiServer = async (app: Express) => {
 
   const tenantApp = express();
   tenantApp.use('/api', tenantApiRouter);
+  tenantApp.use('/api/v1', tenantPublicApiRouter);
   app.use(vhost('*.*.*', tenantApp));
 
   app.use('/', asset);
