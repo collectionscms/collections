@@ -67,6 +67,57 @@ export class PostRepository {
     });
   }
 
+  async findManyPublished(prisma: ProjectPrismaType): Promise<
+    {
+      post: PostEntity;
+      contents: {
+        content: ContentEntity;
+        file: FileEntity | null;
+        updatedBy: UserEntity;
+      }[];
+    }[]
+  > {
+    const records = await prisma.post.findMany({
+      include: {
+        contents: {
+          include: {
+            file: true,
+            updatedBy: true,
+            contentHistories: true,
+          },
+          where: {
+            deletedAt: null,
+            status: 'published',
+          },
+          orderBy: {
+            version: 'desc',
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+    const filteredRecords = records.filter((record) => record.contents.length > 0);
+    return filteredRecords.map((record) => {
+      const post = PostEntity.Reconstruct<Post, PostEntity>(record);
+      const contents = [];
+      for (const content of record.contents) {
+        contents.push({
+          content: ContentEntity.Reconstruct<Content, ContentEntity>(content),
+          file: content.file ? FileEntity.Reconstruct<File, FileEntity>(content.file) : null,
+          updatedBy: UserEntity.Reconstruct<User, UserEntity>(content.updatedBy),
+        });
+      }
+
+      return {
+        post,
+        contents,
+      };
+    });
+  }
+
   async findOneById(prisma: ProjectPrismaType, id: string): Promise<PostEntity> {
     const record = await prisma.post.findFirstOrThrow({
       where: {
