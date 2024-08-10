@@ -1,13 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import {
-  Box,
-  Button,
-  FormHelperText,
-  InputLabel,
-  Stack,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Button, FormHelperText, InputLabel, Stack, TextField, Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { useSnackbar } from 'notistack';
 import React from 'react';
@@ -25,7 +17,6 @@ import {
 import { useUnsavedChangesPrompt } from '../../hooks/useUnsavedChangesPrompt.js';
 import { ProjectContextProvider, useProject } from './Context/index.js';
 import { LocaleSelection } from './LocaleSelection/index.js';
-import { project } from '../../../api/routes/project.router.js';
 
 const ProjectImpl: React.FC = () => {
   const { hasPermission } = useAuth();
