@@ -47,11 +47,7 @@ export class CreateBulkContentUseCase {
         updatedContents.push(result.content);
 
         const contentHistory = ContentHistoryEntity.Construct({
-          projectId,
-          contentId: content.id,
-          userId,
-          status: content.status,
-          version: content.version,
+          ...result.content.toResponse(),
         });
         histories.push(contentHistory);
       }

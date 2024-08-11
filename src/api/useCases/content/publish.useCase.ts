@@ -14,7 +14,7 @@ export class PublishUseCase {
   ) {}
 
   async execute(props: PublishUseCaseSchemaType): Promise<Content> {
-    const { projectId, id, userId } = props;
+    const { id } = props;
 
     const content = await this.contentRepository.findOneById(this.prisma, id);
     content.changeStatus(contentStatus.published);
@@ -23,13 +23,20 @@ export class PublishUseCase {
       const result = await this.contentRepository.updateStatus(tx, content);
 
       const contentHistory = ContentHistoryEntity.Construct({
-        projectId,
-        contentId: content.id,
-        userId,
-        status: content.status,
-        version: content.version,
+        ...result.toResponse(),
       });
       await this.contentHistoryRepository.create(tx, contentHistory);
+
+      // hard delete previous contents
+      const previousContent = await this.contentRepository.findOneByPostIdAndLocale(
+        tx,
+        result.id,
+        result.postId,
+        result.locale
+      );
+      if (previousContent) {
+        await this.contentRepository.hardDelete(tx, previousContent);
+      }
 
       return result;
     });

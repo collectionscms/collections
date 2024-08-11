@@ -26,11 +26,11 @@ export class PostRepository {
   > {
     const records = await prisma.post.findMany({
       include: {
+        contentHistories: true,
         contents: {
           include: {
             file: true,
             updatedBy: true,
-            contentHistories: true,
           },
           where: {
             deletedAt: null,
@@ -54,7 +54,7 @@ export class PostRepository {
           content: ContentEntity.Reconstruct<Content, ContentEntity>(content),
           file: content.file ? FileEntity.Reconstruct<File, FileEntity>(content.file) : null,
           updatedBy: UserEntity.Reconstruct<User, UserEntity>(content.updatedBy),
-          histories: content.contentHistories.map((history) =>
+          histories: record.contentHistories.map((history) =>
             ContentHistoryEntity.Reconstruct<ContentHistory, ContentHistoryEntity>(history)
           ),
         });
@@ -79,11 +79,11 @@ export class PostRepository {
   > {
     const records = await prisma.post.findMany({
       include: {
+        contentHistories: true,
         contents: {
           include: {
             file: true,
             updatedBy: true,
-            contentHistories: true,
           },
           where: {
             deletedAt: null,
@@ -159,11 +159,11 @@ export class PostRepository {
         createdById: options?.userId,
       },
       include: {
+        contentHistories: true,
         contents: {
           include: {
             file: true,
             createdBy: true,
-            contentHistories: true,
           },
           where: {
             deletedAt: null,
@@ -182,7 +182,7 @@ export class PostRepository {
         content: ContentEntity.Reconstruct<Content, ContentEntity>(content),
         file: content.file ? FileEntity.Reconstruct<File, FileEntity>(content.file) : null,
         createdBy: UserEntity.Reconstruct<User, UserEntity>(content.createdBy),
-        histories: content.contentHistories.map((history) =>
+        histories: record.contentHistories.map((history) =>
           ContentHistoryEntity.Reconstruct<ContentHistory, ContentHistoryEntity>(history)
         ),
       });

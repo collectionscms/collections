@@ -32,11 +32,7 @@ export class CreatePostUseCase {
       );
 
       const contentHistory = ContentHistoryEntity.Construct({
-        projectId,
-        contentId: createdContent.id,
-        userId,
-        status: content.status,
-        version: createdContent.version,
+        ...createdContent.toResponse(),
       });
       await this.contentHistoryRepository.create(tx, contentHistory);
 

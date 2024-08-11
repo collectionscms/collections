@@ -23,11 +23,7 @@ export class ArchiveUseCase {
       const result = await this.contentRepository.updateStatus(tx, content);
 
       const contentHistory = ContentHistoryEntity.Construct({
-        projectId,
-        contentId: content.id,
-        userId,
-        status: content.status,
-        version: content.version,
+        ...result.toResponse(),
       });
       await this.contentHistoryRepository.create(tx, contentHistory);
 

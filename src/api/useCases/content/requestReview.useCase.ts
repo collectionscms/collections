@@ -40,11 +40,7 @@ export class RequestReviewUseCase {
       this.reviewRepository.upsert(tx, review);
 
       const contentHistory = ContentHistoryEntity.Construct({
-        projectId,
-        contentId: content.id,
-        userId,
-        status: content.status,
-        version: content.version,
+        ...result.toResponse(),
       });
       await this.contentHistoryRepository.create(tx, contentHistory);
 
