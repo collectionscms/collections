@@ -104,6 +104,15 @@ export class ContentRepository {
     return ContentEntity.Reconstruct<Content, ContentEntity>(record);
   }
 
+  async hardDelete(prisma: ProjectPrismaType, contentEntity: ContentEntity): Promise<void> {
+    contentEntity.beforeUpdateValidate();
+    await prisma.content.delete({
+      where: {
+        id: contentEntity.id,
+      },
+    });
+  }
+
   async restore(prisma: ProjectPrismaType, contentEntity: ContentEntity): Promise<ContentEntity> {
     contentEntity.beforeUpdateValidate();
     const record = await prisma.content.update({
