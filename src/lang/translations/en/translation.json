@@ -161,7 +161,6 @@
   "admin_description": "The admin has all permissions.",
   "slug": "Slug",
   "history": "History",
-  "delete_locale_content": "Delete {{locale}} only",
   "delete_post": "Delete post",
   "revert_previous_version": "Revert previous version",
   "api_key": "API key",
@@ -178,6 +177,8 @@
   "remove_link": "Remove link",
   "post_slug": "Post slug",
   "comment": "Comment",
+  "add_locale_content": "Add language",
+  "remove_locale_content": "Remove {{locale}} version",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",
@@ -189,7 +190,9 @@
     "confirm_post_archive": "Are you sure you want to archive it?",
     "confirm_revert_previous_version": "Do you want to trash the V{{version}} post?",
     "confirm_post_trash_title": "Do you want to move to the trash?",
-    "confirm_post_trash": "Articles in the trash can be returned to later.",
+    "confirm_post_trash": "Posts in the trash can be returned to later.",
+    "confirm_content_trash_title": "Do you want to trash {{locale}} version post?",
+    "confirm_content_trash": "Posts in the trash can be returned to later.",
     "confirm_removal_user_from_project": "Are you sure you want to remove user from project?",
     "confirm_post_restore_title": "Do you want to restore it?",
     "confirm_post_restore": "Are you sure you want to restore the post."

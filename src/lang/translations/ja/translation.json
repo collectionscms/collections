@@ -161,7 +161,6 @@
   "admin_description": "管理者は全ての権限を持っています。",
   "slug": "スラッグ",
   "history": "履歴",
-  "delete_locale_content": "{{locale}} だけ削除する",
   "delete_post": "記事を削除する",
   "revert_previous_version": "前のバージョンに戻す",
   "api_key": "APIキー",
@@ -178,6 +177,8 @@
   "remove_link": "リンクを削除",
   "post_slug": "記事のスラッグ",
   "comment": "コメント",
+  "add_locale_content": "言語を追加する",
+  "remove_locale_content": "{{locale}}版を削除する",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",
@@ -190,6 +191,8 @@
     "confirm_revert_previous_version": "V{{version}} の記事をごみ箱にいれますか？",
     "confirm_post_trash_title": "ごみ箱にいれますか？",
     "confirm_post_trash": "ごみ箱の記事はあとでもどすことができます。",
+    "confirm_content_trash_title": "{{locale}}版の記事をごみ箱にいれますか？",
+    "confirm_content_trash": "ごみ箱の記事はあとでもどすことができます。",
     "confirm_removal_user_from_project": "ユーザーをプロジェクトから削除します。よろしいですか？",
     "confirm_post_restore_title": "元にもどしますか？",
     "confirm_post_restore": "記事を元に戻そうとしています。よろしいですか？"
