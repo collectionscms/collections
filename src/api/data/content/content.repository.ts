@@ -27,6 +27,7 @@ export class ContentRepository {
         },
         postId,
         locale,
+        deletedAt: null,
       },
     });
 
@@ -42,6 +43,7 @@ export class ContentRepository {
       where: {
         postId,
         locale,
+        deletedAt: null,
       },
     });
 
