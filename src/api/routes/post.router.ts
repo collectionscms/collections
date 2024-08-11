@@ -209,12 +209,14 @@ router.delete(
     const validated = trashPostUseCaseSchema.safeParse({
       id: req.params.id,
       projectId: res.projectRole?.id,
+      userId: res.user.id,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
     const useCase = new TrashPostUseCase(
       projectPrisma(validated.data.projectId),
-      new ContentRepository()
+      new ContentRepository(),
+      new ContentHistoryRepository()
     );
     await useCase.execute(validated.data);
 
