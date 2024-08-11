@@ -35,7 +35,10 @@ export class ChangeReviewStatusService {
     }
 
     const content = await this.contentRepository.findOneById(prisma, review.contentId);
-    content.changeStatus(statusType);
+    content.changeStatus({
+      status: statusType,
+      updatedById: userId,
+    });
     await this.contentRepository.updateStatus(prisma, content);
 
     const contentHistory = ContentHistoryEntity.Construct({

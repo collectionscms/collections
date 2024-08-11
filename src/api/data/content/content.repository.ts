@@ -120,6 +120,7 @@ export class ContentRepository {
       data: {
         status: contentEntity.status,
         publishedAt: contentEntity.publishedAt,
+        updatedById: contentEntity.updatedById,
       },
     });
 
@@ -158,6 +159,7 @@ export class ContentRepository {
       },
       data: {
         deletedAt: contentEntity.deletedAt,
+        updatedById: contentEntity.updatedById,
       },
     });
 

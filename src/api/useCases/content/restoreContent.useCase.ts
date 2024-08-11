@@ -12,7 +12,7 @@ export class RestoreContentUseCase {
     private readonly contentRepository: ContentRepository
   ) {}
 
-  async execute({ id }: RestoreContentUseCaseSchemaType): Promise<Content> {
+  async execute({ id, userId }: RestoreContentUseCaseSchemaType): Promise<Content> {
     const content = await this.contentRepository.findOneById(this.prisma, id);
     const post = await this.postRepository.findOneWithContentsById(this.prisma, content.postId);
 
@@ -21,7 +21,7 @@ export class RestoreContentUseCase {
       throw new ConflictException('already_has_same_language_content');
     }
 
-    content.restore();
+    content.restore(userId);
 
     const result = await this.contentRepository.restore(this.prisma, content);
     return result.toResponse();
