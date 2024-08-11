@@ -32,6 +32,7 @@ export type Props = {
   onOpenAddLocale: () => void;
   onRevertContent: () => void;
   onTrashPost: () => void;
+  onTrashLocaleContent: (locale: string) => void;
 };
 
 export const PostHeader: React.FC<Props> = ({
@@ -44,6 +45,7 @@ export const PostHeader: React.FC<Props> = ({
   onOpenAddLocale,
   onRevertContent,
   onTrashPost,
+  onTrashLocaleContent,
 }) => {
   const theme = useTheme();
   const navigate = useNavigate();
@@ -51,6 +53,7 @@ export const PostHeader: React.FC<Props> = ({
   const { hasPermission } = useAuth();
   const [openRevert, setOpenRevert] = useState(false);
   const [openPostTrash, setOpenPostTrash] = useState(false);
+  const [openContentTrash, setOpenContentTrash] = useState(false);
 
   const appBar: AppBarProps = {
     position: 'fixed',
@@ -121,6 +124,12 @@ export const PostHeader: React.FC<Props> = ({
     setLocaleOpen(false);
   };
 
+  const handleTrashLocaleContent = () => {
+    onTrashLocaleContent(currentLocale);
+    setOpenContentTrash(false);
+    setContentMenuOpen(false);
+  };
+
   return (
     <>
       <BaseDialog
@@ -139,6 +148,15 @@ export const PostHeader: React.FC<Props> = ({
         confirm={{ label: t('move_to_trash'), action: handleTrashPost }}
         cancel={{ label: t('cancel'), action: () => setOpenPostTrash(false) }}
       />
+      <BaseDialog
+        open={openContentTrash}
+        title={t('dialog.confirm_content_trash_title', {
+          locale: t(`locale.${currentLocale}` as unknown as TemplateStringsArray),
+        })}
+        body={t('dialog.confirm_content_trash')}
+        confirm={{ label: t('move_to_trash'), action: handleTrashLocaleContent }}
+        cancel={{ label: t('cancel'), action: () => setOpenContentTrash(false) }}
+      />
       <AppBarStyled open={true} {...appBar}>
         <Toolbar>
           <Stack direction="row" sx={{ flexGrow: 1 }} gap={2}>
@@ -154,19 +172,13 @@ export const PostHeader: React.FC<Props> = ({
             <StatusDot status={post.currentStatus} />
           </Stack>
           <Stack direction="row" alignItems="center" gap={1.5}>
-            <Button
-              variant="text"
-              color="secondary"
-              ref={anchorRef}
-              startIcon={<Icon name="Languages" size={16} />}
-              onClick={handleLocaleOpen}
-            >
-              <Typography>
-                {t(`locale.${currentLocale}` as unknown as TemplateStringsArray)}
-              </Typography>
-              <Typography variant="caption" color="textSecondary" sx={{ ml: '8px' }}>
-                ({currentLocale})
-              </Typography>
+            <Button variant="text" color="secondary" ref={anchorRef} onClick={handleLocaleOpen}>
+              <Stack direction="row" alignItems="center" gap={1}>
+                <Typography>
+                  {t(`locale.${currentLocale}` as unknown as TemplateStringsArray)}
+                </Typography>
+                <Icon name="ChevronDown" size={14} />
+              </Stack>
             </Button>
             <IconButton
               ref={anchorContentRef}
@@ -209,7 +221,7 @@ export const PostHeader: React.FC<Props> = ({
           onClose={handleCloseContent}
         >
           {/* Revert previous version */}
-          {post.version > 1 && (
+          {post.version > 1 && post.currentStatus !== 'published' && (
             <>
               <MenuItem onClick={() => setOpenRevert(true)}>
                 <Icon name="Undo2" size={18} />
@@ -218,6 +230,26 @@ export const PostHeader: React.FC<Props> = ({
               <Divider />
             </>
           )}
+          {/* Add localized content */}
+          <MenuItem onClick={handleAddLocale}>
+            <Icon name="CirclePlus" size={16} />
+            <Typography sx={{ pl: 1 }}>{t('add_locale_content')}</Typography>
+          </MenuItem>
+          {/* Remove localized content */}
+          {post.locales.length > 1 && (
+            <MenuItem
+              onClick={() => setOpenContentTrash(true)}
+              sx={{ color: theme.palette.error.main }}
+            >
+              <Icon name="CircleMinus" size={16} />
+              <Typography sx={{ pl: 1 }}>
+                {t('remove_locale_content', {
+                  locale: t(`locale.${currentLocale}` as unknown as TemplateStringsArray),
+                })}
+              </Typography>
+            </MenuItem>
+          )}
+          <Divider />
           {/* Delete all content */}
           {hasPermission('trashPost') && (
             <MenuItem
@@ -255,10 +287,6 @@ export const PostHeader: React.FC<Props> = ({
               </Typography>
             </MenuItem>
           ))}
-          <MenuItem onClick={handleAddLocale}>
-            <Icon name="Settings" size={16} />
-            <Typography sx={{ pl: 1 }}>{t('setting')}</Typography>
-          </MenuItem>
         </Menu>
       </AppBarStyled>
     </>
