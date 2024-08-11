@@ -6,7 +6,7 @@ import { Props } from './types.js';
 
 export const DeleteDialog: React.FC<Props> = ({ open, title, body, confirm, cancel }) => {
   return (
-    <Dialog open={open} onClose={cancel.action} keepMounted maxWidth="xs">
+    <Dialog open={open} onClose={cancel.action} maxWidth="xs">
       <DialogContent sx={{ mt: 2, my: 1 }}>
         <Stack alignItems="center" spacing={3.5}>
           <Avatar color="error" sx={{ width: 72, height: 72, fontSize: '1.75rem' }}>
