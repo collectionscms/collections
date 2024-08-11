@@ -11,6 +11,8 @@ import { createBulkContentUseCaseSchema } from '../useCases/content/createBulkCo
 import { CreateBulkContentUseCase } from '../useCases/content/createBulkContent.useCase.js';
 import { createContentUseCaseSchema } from '../useCases/content/createContent.schema.js';
 import { CreateContentUseCase } from '../useCases/content/createContent.useCase.js';
+import { trashLocaleContentUseCaseSchema } from '../useCases/content/trashLocaleContent.schema.js';
+import { TrashLocaleContentUseCase } from '../useCases/content/trashLocaleContent.useCase.js';
 import { createPostUseCaseSchema } from '../useCases/post/createPost.schema.js';
 import { CreatePostUseCase } from '../useCases/post/createPost.useCase.js';
 import { getPostUseCaseSchema } from '../useCases/post/getPost.schema.js';
@@ -154,6 +156,29 @@ router.post(
   })
 );
 
+router.delete(
+  '/posts/:id/locales/:locale',
+  authenticatedUser,
+  validateAccess(['trashPost']),
+  asyncHandler(async (req: Request, res: Response) => {
+    const validated = trashLocaleContentUseCaseSchema.safeParse({
+      postId: req.params.id,
+      projectId: res.projectRole?.id,
+      userId: res.user.id,
+      locale: req.params.locale,
+    });
+    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
+
+    const useCase = new TrashLocaleContentUseCase(
+      projectPrisma(validated.data.projectId),
+      new ContentRepository(),
+      new ContentHistoryRepository()
+    );
+    await useCase.execute(validated.data);
+    res.status(204).send();
+  })
+);
+
 router.patch(
   '/posts/:id',
   authenticatedUser,
@@ -184,12 +209,14 @@ router.delete(
     const validated = trashPostUseCaseSchema.safeParse({
       id: req.params.id,
       projectId: res.projectRole?.id,
+      userId: res.user.id,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
     const useCase = new TrashPostUseCase(
       projectPrisma(validated.data.projectId),
-      new ContentRepository()
+      new ContentRepository(),
+      new ContentHistoryRepository()
     );
     await useCase.execute(validated.data);
 

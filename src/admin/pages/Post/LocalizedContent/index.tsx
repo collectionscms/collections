@@ -36,6 +36,7 @@ export const LocalizedContent: React.FC<Props> = ({ open, post, onClose, onChang
   const { t } = useTranslation();
   const { trigger: createBulkContentTrigger } = createBulkContent(post.id);
   const hasTrashPost = hasPermission('trashPost');
+  const enabledLocales = Object.values(Locale).filter((locale) => !post.locales.includes(locale));
 
   const {
     watch,
@@ -63,7 +64,7 @@ export const LocalizedContent: React.FC<Props> = ({ open, post, onClose, onChang
     <>
       <Dialog open={open} onClose={onClose}>
         <Box sx={{ p: 1, py: 1.5 }}>
-          <DialogTitle>{t('localized_content_settings')}</DialogTitle>
+          <DialogTitle>{t('add_localized_content')}</DialogTitle>
           <form onSubmit={handleSubmit(onSubmit)}>
             <DialogContent>
               <Stack spacing={1} direction="column">
@@ -72,7 +73,8 @@ export const LocalizedContent: React.FC<Props> = ({ open, post, onClose, onChang
                   control={control}
                   render={({ field }) => (
                     <Stack>
-                      {Object.values(Locale).map((locale) => {
+                      {enabledLocales.length === 0 && <>{t('no_additional_languages')}</>}
+                      {enabledLocales.map((locale) => {
                         return (
                           <FormControlLabel
                             {...field}
@@ -118,7 +120,7 @@ export const LocalizedContent: React.FC<Props> = ({ open, post, onClose, onChang
               <Button color="secondary" variant="outlined" onClick={onClose}>
                 {t('cancel')}
               </Button>
-              <Button variant="contained" type="submit">
+              <Button variant="contained" type="submit" disabled={enabledLocales.length === 0}>
                 {t('save')}
               </Button>
             </DialogActions>

@@ -27,10 +27,27 @@ export class ContentRepository {
         },
         postId,
         locale,
+        deletedAt: null,
       },
     });
 
     return record ? ContentEntity.Reconstruct<Content, ContentEntity>(record) : null;
+  }
+
+  async findManyByPostIdAndLocale(
+    prisma: ProjectPrismaType,
+    postId: string,
+    locale: string
+  ): Promise<ContentEntity[]> {
+    const records = await prisma.content.findMany({
+      where: {
+        postId,
+        locale,
+        deletedAt: null,
+      },
+    });
+
+    return records.map((record) => ContentEntity.Reconstruct<Content, ContentEntity>(record));
   }
 
   async findManyByPostId(prisma: ProjectPrismaType, postId: string): Promise<ContentEntity[]> {
@@ -117,6 +134,7 @@ export class ContentRepository {
       },
       data: {
         deletedAt: contentEntity.deletedAt,
+        updatedById: contentEntity.updatedById,
       },
     });
 

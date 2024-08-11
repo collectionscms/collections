@@ -31,11 +31,13 @@ export const EditPostPageImpl: React.FC = () => {
   const queryParams = new URLSearchParams(location.search);
   const locale = queryParams.get('locale');
 
-  const { getPost, updateContent, trashPost, trashContent, createFileImage } = usePost();
+  const { getPost, updateContent, trashPost, trashContent, createFileImage, trashLocaleContent } =
+    usePost();
   const { data: post, mutate } = getPost(id, locale);
   const { trigger } = updateContent(post.contentId);
   const { trigger: trashPostTrigger } = trashPost(post.id);
   const { trigger: trashContentTrigger } = trashContent(post.contentId);
+  const { trigger: trashLocaleContentTrigger } = trashLocaleContent(post.id, post.contentLocale);
 
   if (!post) return <></>;
 
@@ -53,6 +55,7 @@ export const EditPostPageImpl: React.FC = () => {
 
   useEffect(() => {
     setPostTitle(post.title);
+    editor?.commands.setContent(toJson(post.bodyJson));
   }, [post]);
 
   // /////////////////////////////////////
@@ -184,12 +187,22 @@ export const EditPostPageImpl: React.FC = () => {
     }
   };
 
+  const handleTrashLocaleContent = async (locale: string) => {
+    try {
+      await trashLocaleContentTrigger();
+      mutate();
+      enqueueSnackbar(t('toast.move_to_trash'), { variant: 'success' });
+    } catch (error) {
+      logger.error(error);
+    }
+  };
+
   // /////////////////////////////////////
   // Locale
   // /////////////////////////////////////
 
   const handleChangeLocale = (locale: string) => {
-    window.location.href = `${window.location.pathname}?locale=${locale}`;
+    navigate(`${window.location.pathname}?locale=${locale}`);
   };
 
   const [openAddLocale, setOpenAddLocale] = useState(false);
@@ -203,13 +216,13 @@ export const EditPostPageImpl: React.FC = () => {
 
   const handleChangedLocale = (locales: string[]) => {
     setOpenAddLocale(false);
+    handleChangeLocale(
+      locales.find((locale) => locale !== post.contentLocale) ?? post.contentLocale
+    );
     mutate({
       ...post,
       locales,
     });
-    handleChangeLocale(
-      locales.find((locale) => locale !== post.contentLocale) ?? post.contentLocale
-    );
   };
 
   return (
@@ -224,6 +237,7 @@ export const EditPostPageImpl: React.FC = () => {
         onOpenAddLocale={handleOpenAddLocale}
         onRevertContent={handleRevertContent}
         onTrashPost={handleTrashPost}
+        onTrashLocaleContent={handleTrashLocaleContent}
       />
       <Box component="main" sx={{ minHeight: '100vh', backgroundColor: bg }}>
         <Toolbar sx={{ mt: 0 }} />

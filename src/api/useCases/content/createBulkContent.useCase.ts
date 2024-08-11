@@ -22,15 +22,6 @@ export class CreateBulkContentUseCase {
       const updatedContents = [];
       const histories = [];
 
-      // delete contents
-      const excludedContents = contents.filter((content) => !locales.includes(content.locale));
-      for (const content of excludedContents) {
-        content.delete();
-
-        const result = await this.contentRepository.delete(tx, content);
-        updatedContents.push(result);
-      }
-
       // create contents
       const addContents = locales.filter(
         (locale) => !contents.find((content) => content.locale === locale)
