@@ -55,6 +55,7 @@ export const EditPostPageImpl: React.FC = () => {
 
   useEffect(() => {
     setPostTitle(post.title);
+    editor?.commands.setContent(toJson(post.bodyJson));
   }, [post]);
 
   // /////////////////////////////////////
@@ -201,7 +202,7 @@ export const EditPostPageImpl: React.FC = () => {
   // /////////////////////////////////////
 
   const handleChangeLocale = (locale: string) => {
-    window.location.href = `${window.location.pathname}?locale=${locale}`;
+    navigate(`${window.location.pathname}?locale=${locale}`);
   };
 
   const [openAddLocale, setOpenAddLocale] = useState(false);
@@ -215,13 +216,13 @@ export const EditPostPageImpl: React.FC = () => {
 
   const handleChangedLocale = (locales: string[]) => {
     setOpenAddLocale(false);
+    handleChangeLocale(
+      locales.find((locale) => locale !== post.contentLocale) ?? post.contentLocale
+    );
     mutate({
       ...post,
       locales,
     });
-    handleChangeLocale(
-      locales.find((locale) => locale !== post.contentLocale) ?? post.contentLocale
-    );
   };
 
   return (
