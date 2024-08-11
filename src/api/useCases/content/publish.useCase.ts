@@ -28,13 +28,14 @@ export class PublishUseCase {
       await this.contentHistoryRepository.create(tx, contentHistory);
 
       // hard delete previous contents
-      const allContents = await this.contentRepository.findManyByPostId(
-        this.prisma,
-        content.postId
+      const previousContent = await this.contentRepository.findOneByPostIdAndLocale(
+        tx,
+        result.id,
+        result.postId,
+        result.locale
       );
-      const prevContents = allContents.filter((c) => c.id !== result.id);
-      for (const prevContent of prevContents) {
-        await this.contentRepository.hardDelete(tx, prevContent);
+      if (previousContent) {
+        await this.contentRepository.hardDelete(tx, previousContent);
       }
 
       return result;
