@@ -25,11 +25,7 @@ export class CreateContentUseCase {
       const result = await this.contentRepository.create(this.prisma, entity);
 
       const contentHistory = ContentHistoryEntity.Construct({
-        projectId: result.content.projectId,
-        contentId: result.content.id,
-        userId: props.userId,
-        status: result.content.status,
-        version: result.content.version,
+        ...result.content.toResponse(),
       });
       await this.contentHistoryRepository.create(tx, contentHistory);
 

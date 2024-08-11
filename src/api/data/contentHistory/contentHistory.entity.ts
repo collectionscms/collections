@@ -6,24 +6,51 @@ import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 export class ContentHistoryEntity extends PrismaBaseEntity<ContentHistory> {
   static Construct({
     projectId,
-    contentId,
-    userId,
+    postId,
+    fileId,
+    title,
+    body,
+    bodyJson,
+    bodyHtml,
+    publishedAt,
+    locale,
     status,
+    createdById,
+    updatedById,
     version,
+    deletedAt,
   }: {
     projectId: string;
-    contentId: string;
-    userId: string;
+    postId: string;
+    fileId?: string | null;
+    title?: string | null;
+    body?: string | null;
+    bodyJson?: string | null;
+    bodyHtml?: string | null;
+    publishedAt?: Date | null;
+    locale: string;
     status: string;
+    createdById: string;
+    updatedById: string;
     version: number;
+    deletedAt: Date | null;
   }): ContentHistoryEntity {
     return new ContentHistoryEntity({
       id: v4(),
       projectId,
-      contentId,
-      userId,
+      postId,
+      fileId: fileId || null,
+      title: title || null,
+      body: body || null,
+      bodyJson: bodyJson || null,
+      bodyHtml: bodyHtml || null,
+      locale,
       status,
+      publishedAt: publishedAt || null,
       version,
+      createdById,
+      updatedById,
+      deletedAt,
       createdAt: new Date(),
     });
   }
