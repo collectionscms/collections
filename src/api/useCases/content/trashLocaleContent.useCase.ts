@@ -23,7 +23,7 @@ export class TrashLocaleContentUseCase {
     const deletedContents = await this.prisma.$transaction(async (tx) => {
       const result = [];
       for (const content of contents) {
-        content.delete();
+        content.delete(userId);
         const deletedContent = await this.contentRepository.delete(tx, content);
         result.push(deletedContent);
 

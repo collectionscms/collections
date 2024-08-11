@@ -112,6 +112,10 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     return this.props.createdById;
   }
 
+  get updatedById(): string {
+    return this.props.updatedById;
+  }
+
   get updatedAt(): Date {
     return this.props.updatedAt;
   }
@@ -124,8 +128,9 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     }
   }
 
-  delete() {
+  delete(userId: string) {
     this.props.deletedAt = new Date();
+    this.props.updatedById = userId;
   }
 
   restore() {

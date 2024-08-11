@@ -134,6 +134,7 @@ export class ContentRepository {
       },
       data: {
         deletedAt: contentEntity.deletedAt,
+        updatedById: contentEntity.updatedById,
       },
     });
 
