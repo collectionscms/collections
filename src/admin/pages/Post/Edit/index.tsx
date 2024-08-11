@@ -189,7 +189,7 @@ export const EditPostPageImpl: React.FC = () => {
   // /////////////////////////////////////
 
   const handleChangeLocale = (locale: string) => {
-    navigate(`${window.location.pathname}?locale=${locale}`, { replace: true });
+    window.location.href = `${window.location.pathname}?locale=${locale}`;
   };
 
   const [openAddLocale, setOpenAddLocale] = useState(false);
