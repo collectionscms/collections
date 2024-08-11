@@ -20,7 +20,10 @@ export class RequestReviewUseCase {
     const { projectId, id, userId, comment } = props;
 
     const content = await this.contentRepository.findOneById(this.prisma, id);
-    content.changeStatus(contentStatus.review);
+    content.changeStatus({
+      status: contentStatus.review,
+      updatedById: userId,
+    });
 
     const updatedContent = await this.prisma.$transaction(async (tx) => {
       const result = await this.contentRepository.updateStatus(tx, content);

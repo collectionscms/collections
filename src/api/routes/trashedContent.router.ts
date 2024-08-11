@@ -10,6 +10,7 @@ import { getTrashedContentsUseCaseSchema } from '../useCases/content/getTrashedC
 import { GetTrashedContentsUseCase } from '../useCases/content/getTrashedContents.useCase.js';
 import { restoreContentUseCaseSchema } from '../useCases/content/restoreContent.schema.js';
 import { RestoreContentUseCase } from '../useCases/content/restoreContent.useCase.js';
+import { user } from './user.router.js';
 
 const router = express.Router();
 
@@ -43,6 +44,7 @@ router.patch(
     const validated = restoreContentUseCaseSchema.safeParse({
       id: req.params.id,
       projectId: res.projectRole?.id,
+      userId: res.user.id,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
