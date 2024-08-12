@@ -28,7 +28,7 @@ export const ModalDialog: React.FC<Props> = ({ open, title, body, confirm, cance
       <DialogTitle>{title}</DialogTitle>
       <DialogContent>{body}</DialogContent>
       <DialogActions sx={{ px: 3, pb: 2 }}>
-        <Button onClick={cancel.action} autoFocus color="secondary" variant="outlined">
+        <Button onClick={cancel.action} color="secondary" variant="outlined">
           {cancel.label}
         </Button>
         <Button variant="contained" onClick={confirm.action} color={color || 'primary'}>
