@@ -2,7 +2,7 @@ import { Menu, MenuItem, Typography, useTheme } from '@mui/material';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { logger } from '../../../../utilities/logger.js';
-import { BaseDialog } from '../../../components/elements/BaseDialog/index.js';
+import { ModalDialog } from '../../../components/elements/ModalDialog/index.js';
 import { Icon } from '../../../components/elements/Icon/index.js';
 import { useAuth } from '../../../components/utilities/Auth/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
@@ -43,7 +43,7 @@ export const RowMenuImpl: React.FC<Props> = (props) => {
 
   return (
     <>
-      <BaseDialog
+      <ModalDialog
         open={openTrash}
         title={t('dialog.confirm_post_trash_title')}
         body={t('dialog.confirm_post_trash')}
