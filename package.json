@@ -71,7 +71,7 @@
     "@tiptap/extension-task-item": "2.5.8",
     "@tiptap/extension-underline": "2.5.8",
     "@tiptap/html": "2.5.8",
-    "@tiptap/pm": "2.5.8",
+    "@tiptap/pm": "2.5.9",
     "@tiptap/react": "2.5.8",
     "@tiptap/starter-kit": "2.5.8",
     "@tiptap/suggestion": "2.5.8",
