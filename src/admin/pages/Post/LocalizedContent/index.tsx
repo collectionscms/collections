@@ -1,17 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import {
-  Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  FormControlLabel,
-  FormHelperText,
-  Stack,
-  Switch,
-  Typography,
-} from '@mui/material';
+import { FormControlLabel, FormHelperText, Stack, Switch, Typography } from '@mui/material';
 import { enqueueSnackbar } from 'notistack';
 import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
@@ -19,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { Locale } from '../../../../constant.js';
 import { LocalizedPost } from '../../../../types/index.js';
 import { logger } from '../../../../utilities/logger.js';
+import { ModalDialog } from '../../../components/elements/ModalDialog/index.js';
 import { useAuth } from '../../../components/utilities/Auth/index.js';
 import { FormValues, addContent } from '../../../fields/validators/post/addContent.js';
 import { usePost } from '../Context/index.js';
@@ -61,72 +50,66 @@ export const LocalizedContent: React.FC<Props> = ({ open, post, onClose, onChang
   };
 
   return (
-    <>
-      <Dialog open={open} onClose={onClose}>
-        <Box sx={{ p: 1, py: 1.5 }}>
-          <DialogTitle>{t('add_localized_content')}</DialogTitle>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <DialogContent>
-              <Stack spacing={1} direction="column">
-                <Controller
-                  name="locales"
-                  control={control}
-                  render={({ field }) => (
-                    <Stack>
-                      {enabledLocales.length === 0 && <>{t('no_additional_languages')}</>}
-                      {enabledLocales.map((locale) => {
-                        return (
-                          <FormControlLabel
+    <ModalDialog
+      open={open}
+      title={t('add_localized_content')}
+      body={
+        <form>
+          <Stack spacing={1} direction="column">
+            <Controller
+              name="locales"
+              control={control}
+              render={({ field }) => (
+                <Stack>
+                  {enabledLocales.length === 0 && <>{t('no_additional_languages')}</>}
+                  {enabledLocales.map((locale) => {
+                    return (
+                      <FormControlLabel
+                        {...field}
+                        key={locale}
+                        value={locale}
+                        control={
+                          <Switch
                             {...field}
-                            key={locale}
-                            value={locale}
-                            control={
-                              <Switch
-                                {...field}
-                                disabled={!hasTrashPost}
-                                checked={watch('locales').includes(locale)}
-                                onChange={() => {
-                                  if (!field.value.includes(locale)) {
-                                    field.onChange([...field.value, locale]);
-                                    return;
-                                  }
-                                  const newTopics = field.value.filter((topic) => topic !== locale);
-                                  field.onChange(newTopics);
-                                }}
-                              />
-                            }
-                            label={
-                              <Stack direction="row">
-                                <Typography>{t(`locale.${locale}`)}</Typography>
-                                <Typography
-                                  variant="caption"
-                                  color="textSecondary"
-                                  sx={{ ml: '8px' }}
-                                >
-                                  ({locale})
-                                </Typography>
-                              </Stack>
-                            }
+                            disabled={!hasTrashPost}
+                            checked={watch('locales').includes(locale)}
+                            onChange={() => {
+                              if (!field.value.includes(locale)) {
+                                field.onChange([...field.value, locale]);
+                                return;
+                              }
+                              const newTopics = field.value.filter((topic) => topic !== locale);
+                              field.onChange(newTopics);
+                            }}
                           />
-                        );
-                      })}
-                    </Stack>
-                  )}
-                />
-                <FormHelperText error>{errors.locales?.message}</FormHelperText>
-              </Stack>
-            </DialogContent>
-            <DialogActions>
-              <Button color="secondary" variant="outlined" onClick={onClose}>
-                {t('cancel')}
-              </Button>
-              <Button variant="contained" type="submit" disabled={enabledLocales.length === 0}>
-                {t('save')}
-              </Button>
-            </DialogActions>
-          </form>
-        </Box>
-      </Dialog>
-    </>
+                        }
+                        label={
+                          <Stack direction="row">
+                            <Typography>{t(`locale.${locale}`)}</Typography>
+                            <Typography variant="caption" color="textSecondary" sx={{ ml: '8px' }}>
+                              ({locale})
+                            </Typography>
+                          </Stack>
+                        }
+                      />
+                    );
+                  })}
+                </Stack>
+              )}
+            />
+            <FormHelperText error>{errors.locales?.message}</FormHelperText>
+          </Stack>
+        </form>
+      }
+      execute={{
+        action: handleSubmit(onSubmit),
+        label: t('save'),
+      }}
+      cancel={{
+        action: onClose,
+        label: t('cancel'),
+      }}
+      disabled={enabledLocales.length === 0}
+    />
   );
 };
