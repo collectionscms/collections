@@ -14,6 +14,7 @@ import { uploadFile } from '../../../../utilities/api.js';
 import { ImageBlock } from '../extensions/ImageBlock/ImageBlock.js';
 import ImageUpload from '../extensions/ImageUpload/ImageUpload.js';
 import { SlashCommand } from '../extensions/SlashCommand/index.js';
+import { HorizontalRule } from '../extensions/HorizontalRule/index.js';
 
 export const useBlockEditor = ({
   initialContent,
@@ -49,6 +50,7 @@ export const useBlockEditor = ({
       Heading.configure({
         levels: [1, 2, 3],
       }),
+      HorizontalRule,
       TaskItem.configure({
         nested: true,
       }),
