@@ -47,7 +47,7 @@ export const useBlockEditor = ({
         defaultProtocol: 'https',
       }),
       Heading.configure({
-        levels: [1, 2, 3, 4, 5, 6],
+        levels: [1, 2, 3],
       }),
       TaskItem.configure({
         nested: true,
