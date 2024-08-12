@@ -37,7 +37,7 @@ export const RestoreButtonImpl: React.FC<Props> = ({ postId, onRestored }) => {
         open={openRestore}
         title={t('dialog.confirm_post_restore_title')}
         body={t('dialog.confirm_post_restore')}
-        confirm={{ label: t('restore'), action: handleRestore }}
+        execute={{ label: t('restore'), action: handleRestore }}
         cancel={{ label: t('cancel'), action: () => setOpenRestore(false) }}
       />
       <Tooltip title={t('restore')}>

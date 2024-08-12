@@ -17,12 +17,21 @@ export type Props = {
   open: boolean;
   title: string;
   body: ReactNode;
-  confirm: Action;
+  execute: Action;
   cancel: Action;
+  disabled?: boolean;
   color?: ButtonOwnProps['color'];
 };
 
-export const ModalDialog: React.FC<Props> = ({ open, title, body, confirm, cancel, color }) => {
+export const ModalDialog: React.FC<Props> = ({
+  open,
+  title,
+  body,
+  execute: confirm,
+  cancel,
+  disabled = false,
+  color,
+}) => {
   return (
     <Dialog open={open} onClose={cancel.action}>
       <DialogTitle>{title}</DialogTitle>
@@ -31,7 +40,12 @@ export const ModalDialog: React.FC<Props> = ({ open, title, body, confirm, cance
         <Button onClick={cancel.action} color="secondary" variant="outlined">
           {cancel.label}
         </Button>
-        <Button variant="contained" onClick={confirm.action} color={color || 'primary'}>
+        <Button
+          variant="contained"
+          onClick={confirm.action}
+          color={color || 'primary'}
+          disabled={disabled}
+        >
           {confirm.label}
         </Button>
       </DialogActions>

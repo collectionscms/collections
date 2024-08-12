@@ -138,14 +138,14 @@ export const PostHeader: React.FC<Props> = ({
           version: post.version,
         })}
         body={t('dialog.confirm_post_trash')}
-        confirm={{ label: t('move_to_trash'), action: handleRevert }}
+        execute={{ label: t('move_to_trash'), action: handleRevert }}
         cancel={{ label: t('cancel'), action: () => setOpenRevert(false) }}
       />
       <ModalDialog
         open={openPostTrash}
         title={t('dialog.confirm_post_trash_title')}
         body={t('dialog.confirm_post_trash')}
-        confirm={{ label: t('move_to_trash'), action: handleTrashPost }}
+        execute={{ label: t('move_to_trash'), action: handleTrashPost }}
         cancel={{ label: t('cancel'), action: () => setOpenPostTrash(false) }}
       />
       <ModalDialog
@@ -154,7 +154,7 @@ export const PostHeader: React.FC<Props> = ({
           locale: t(`locale.${currentLocale}` as unknown as TemplateStringsArray),
         })}
         body={t('dialog.confirm_content_trash')}
-        confirm={{ label: t('move_to_trash'), action: handleTrashLocaleContent }}
+        execute={{ label: t('move_to_trash'), action: handleTrashLocaleContent }}
         cancel={{ label: t('cancel'), action: () => setOpenContentTrash(false) }}
       />
       <AppBarStyled open={true} {...appBar}>

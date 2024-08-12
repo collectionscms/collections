@@ -47,7 +47,7 @@ export const RowMenuImpl: React.FC<Props> = (props) => {
         open={openTrash}
         title={t('dialog.confirm_post_trash_title')}
         body={t('dialog.confirm_post_trash')}
-        confirm={{ label: t('move_to_trash'), action: handleTrash }}
+        execute={{ label: t('move_to_trash'), action: handleTrash }}
         cancel={{ label: t('cancel'), action: handleClose }}
       />
       <Menu
