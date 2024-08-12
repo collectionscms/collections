@@ -3,8 +3,8 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { logger } from '../../../../utilities/logger.js';
 import { ComposeWrapper } from '../../utilities/ComposeWrapper/index.js';
-import { DeleteDialog } from '../DeleteDialog/index.js';
 import { DocumentContextProvider, useDocument } from '../DeleteDocument/Context/index.js';
+import { ModalDialog } from '../ModalDialog/index.js';
 
 type Props = {
   id: string;
@@ -47,12 +47,13 @@ const DeleteDocumentImpl: React.FC<Props> = ({
   };
 
   return (
-    <DeleteDialog
+    <ModalDialog
       open={openState}
       title={options?.title ?? t('dialog.confirm_deletion_title')}
       body={options?.content ?? t('dialog.confirm_deletion')}
-      confirm={{ label: t('delete'), action: handleDelete }}
+      execute={{ label: t('delete'), action: handleDelete }}
       cancel={{ label: t('cancel'), action: handleClose }}
+      color="error"
     />
   );
 };

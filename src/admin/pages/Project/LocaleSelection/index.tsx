@@ -1,11 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
   FormControl,
   FormControlLabel,
   FormHelperText,
@@ -19,6 +14,7 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Locale } from '../../../../constant.js';
 import { logger } from '../../../../utilities/logger.js';
+import { ModalDialog } from '../../../components/elements/ModalDialog/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
 import {
   FormValues,
@@ -61,11 +57,12 @@ const LocaleSelectionImpl: React.FC<Props> = ({ currentLocale, open, onClose, on
   };
 
   return (
-    <Dialog open={open} onClose={onClose}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Box sx={{ p: 1, py: 1.5 }}>
-          <DialogTitle>{t('change_primary_language')}</DialogTitle>
-          <DialogContent>
+    <ModalDialog
+      open={open}
+      title={t('change_primary_language')}
+      body={
+        <form>
+          <Box sx={{ p: 1, py: 1.5 }}>
             <FormControl component="fieldset">
               <Controller
                 name="primaryLocale"
@@ -93,18 +90,13 @@ const LocaleSelectionImpl: React.FC<Props> = ({ currentLocale, open, onClose, on
               />
               <FormHelperText error>{errors.primaryLocale?.message}</FormHelperText>
             </FormControl>
-          </DialogContent>
-          <DialogActions>
-            <Button color="secondary" variant="outlined" onClick={onClose}>
-              {t('cancel')}
-            </Button>
-            <Button variant="contained" type="submit" disabled={isMutating}>
-              {t('update')}
-            </Button>
-          </DialogActions>
-        </Box>
-      </form>
-    </Dialog>
+          </Box>
+        </form>
+      }
+      execute={{ label: t('update'), action: handleSubmit(onSubmit) }}
+      cancel={{ label: t('cancel'), action: onClose }}
+      disabled={isMutating}
+    />
   );
 };
 

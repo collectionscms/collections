@@ -16,7 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import { LocalizedPost } from '../../../../types/index.js';
 import { Avatar } from '../../../@extended/components/Avatar/index.js';
 import { IconButton } from '../../../@extended/components/IconButton/index.js';
-import { BaseDialog } from '../../../components/elements/BaseDialog/index.js';
+import { ModalDialog } from '../../../components/elements/ModalDialog/index.js';
 import { Icon } from '../../../components/elements/Icon/index.js';
 import { StatusDot } from '../../../components/elements/StatusDot/index.js';
 import { useAuth } from '../../../components/utilities/Auth/index.js';
@@ -132,29 +132,29 @@ export const PostHeader: React.FC<Props> = ({
 
   return (
     <>
-      <BaseDialog
+      <ModalDialog
         open={openRevert}
         title={t('dialog.confirm_revert_previous_version', {
           version: post.version,
         })}
         body={t('dialog.confirm_post_trash')}
-        confirm={{ label: t('move_to_trash'), action: handleRevert }}
+        execute={{ label: t('move_to_trash'), action: handleRevert }}
         cancel={{ label: t('cancel'), action: () => setOpenRevert(false) }}
       />
-      <BaseDialog
+      <ModalDialog
         open={openPostTrash}
         title={t('dialog.confirm_post_trash_title')}
         body={t('dialog.confirm_post_trash')}
-        confirm={{ label: t('move_to_trash'), action: handleTrashPost }}
+        execute={{ label: t('move_to_trash'), action: handleTrashPost }}
         cancel={{ label: t('cancel'), action: () => setOpenPostTrash(false) }}
       />
-      <BaseDialog
+      <ModalDialog
         open={openContentTrash}
         title={t('dialog.confirm_content_trash_title', {
           locale: t(`locale.${currentLocale}` as unknown as TemplateStringsArray),
         })}
         body={t('dialog.confirm_content_trash')}
-        confirm={{ label: t('move_to_trash'), action: handleTrashLocaleContent }}
+        execute={{ label: t('move_to_trash'), action: handleTrashLocaleContent }}
         cancel={{ label: t('cancel'), action: () => setOpenContentTrash(false) }}
       />
       <AppBarStyled open={true} {...appBar}>
