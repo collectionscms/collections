@@ -72,7 +72,7 @@
     "@tiptap/extension-underline": "2.5.8",
     "@tiptap/extension-horizontal-rule": "2.5.8",
     "@tiptap/html": "2.5.8",
-    "@tiptap/pm": "2.5.8",
+    "@tiptap/pm": "2.6.2",
     "@tiptap/react": "2.5.8",
     "@tiptap/starter-kit": "2.5.8",
     "@tiptap/suggestion": "2.5.8",
