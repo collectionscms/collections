@@ -2632,7 +2632,7 @@
   dependencies:
     tippy.js "^6.3.7"
 
-"@tiptap-pro/extension-file-handler@^2.10.9":
+"@tiptap-pro/extension-file-handler@2.10.9":
   version "2.10.9"
   resolved "https://registry.tiptap.dev/@tiptap-pro%2fextension-file-handler/-/extension-file-handler-2.10.9.tgz#908c77274fb30cc0174f3c71446dfe7252ed4dc8"
   integrity sha512-JmWPG+M6I1Lj96b3vUQ1rY80PUQAUwinwA9VivyPVYFCrVML6Yi+Oc0FhZyiSHSs6ep2cEAlAQjScdYfF06ckg==
@@ -2726,7 +2726,7 @@
   resolved "https://registry.yarnpkg.com/@tiptap/extension-history/-/extension-history-2.5.8.tgz#5808cfa5488b7ded1ccadf6180c9574e4d48a50a"
   integrity sha512-5IrZZfp2Rg9Tov/08aYTKhwoiqdun8v3j3vleuqyW5RB7LU/NKLR19EtSSMh9mVkFZVbhab2zDOFmn5ilsEOhw==
 
-"@tiptap/extension-horizontal-rule@^2.5.8":
+"@tiptap/extension-horizontal-rule@2.5.8", "@tiptap/extension-horizontal-rule@^2.5.8":
   version "2.5.8"
   resolved "https://registry.yarnpkg.com/@tiptap/extension-horizontal-rule/-/extension-horizontal-rule-2.5.8.tgz#3570fe64c2b97d6e44dd95d7b76cc3fef2e34bda"
   integrity sha512-L8Is73WGaP6VNdKrIry+lCIM9W1KaL/Tw2Z6DGMVMU5mr1lLx0xq7nWEStqD7e4zh+n4+3PV15cZSA2F34DZrg==

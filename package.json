@@ -70,6 +70,7 @@
     "@tiptap/extension-placeholder": "2.5.8",
     "@tiptap/extension-task-item": "2.5.8",
     "@tiptap/extension-underline": "2.5.8",
+    "@tiptap/extension-horizontal-rule": "2.5.8",
     "@tiptap/html": "2.5.8",
     "@tiptap/pm": "2.5.8",
     "@tiptap/react": "2.5.8",
