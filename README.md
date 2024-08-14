@@ -31,6 +31,10 @@ git clone git@github.com:collectionscms/collections.git
 cd collections
 cp .env.sample .env
 vi .env - make it your environment
+brew install direnv
+vi ~/.zshrc - add `eval "$(direnv hook zsh)"`
+source ~/.zshrc
+direnv allow .
 yarn install
 yarn db:refresh
 yarn dev
