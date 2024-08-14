@@ -32,11 +32,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      # - name: Create .npmrc file
-      #   run: |
-      #     echo "@tiptap-pro:registry=https://registry.tiptap.dev/" >> .npmrc
-      #     echo "//registry.tiptap.dev/:_authToken=${{ secrets.TIPTAP_PRO_TOKEN }}" >> .npmrc
-
       - name: install
         run: yarn install
 
