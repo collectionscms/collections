@@ -12,24 +12,24 @@ import {
 import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Locale } from '../../../../constant.js';
+import { Language } from '../../../../constant.js';
 import { logger } from '../../../../utilities/logger.js';
 import { ModalDialog } from '../../../components/elements/ModalDialog/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
 import {
   FormValues,
-  updatePrimaryLocale,
-} from '../../../fields/validators/projects/updatePrimaryLocale.js';
+  updateSourceLanguage,
+} from '../../../fields/validators/projects/updateSourceLanguage.js';
 import { ProjectContextProvider, useProject } from '../Context/index.js';
 
 export type Props = {
-  currentLocale: string;
+  currentLanguage: string;
   open: boolean;
   onClose: () => void;
-  onAdded: (locale: string) => void;
+  onAdded: (language: string) => void;
 };
 
-const LocaleSelectionImpl: React.FC<Props> = ({ currentLocale, open, onClose, onAdded }) => {
+const LanguageSelectionImpl: React.FC<Props> = ({ currentLanguage, open, onClose, onAdded }) => {
   const { t } = useTranslation();
   const { updateProject } = useProject();
   const { trigger, isMutating } = updateProject();
@@ -41,16 +41,16 @@ const LocaleSelectionImpl: React.FC<Props> = ({ currentLocale, open, onClose, on
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
-      primaryLocale: currentLocale,
+      sourceLanguage: currentLanguage,
     },
-    resolver: yupResolver(updatePrimaryLocale()),
+    resolver: yupResolver(updateSourceLanguage()),
   });
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
       reset(form);
       await trigger(form);
-      onAdded(form.primaryLocale);
+      onAdded(form.sourceLanguage);
     } catch (error) {
       logger.error(error);
     }
@@ -59,27 +59,27 @@ const LocaleSelectionImpl: React.FC<Props> = ({ currentLocale, open, onClose, on
   return (
     <ModalDialog
       open={open}
-      title={t('change_primary_language')}
+      title={t('change_source_language')}
       body={
         <form>
           <Box sx={{ p: 1, py: 1.5 }}>
             <FormControl component="fieldset">
               <Controller
-                name="primaryLocale"
+                name="sourceLanguage"
                 control={control}
                 render={({ field }) => (
                   <RadioGroup value={field.value} name="radio-buttons-group" row>
-                    {Object.values(Locale).map((locale) => (
+                    {Object.values(Language).map((language) => (
                       <FormControlLabel
                         {...field}
-                        key={locale}
-                        value={locale}
+                        key={language}
+                        value={language}
                         control={<Radio />}
                         label={
                           <Stack direction="row">
-                            <Typography>{t(`locale.${locale}`)}</Typography>
+                            <Typography>{t(`languages.${language}`)}</Typography>
                             <Typography variant="caption" color="textSecondary" sx={{ ml: '8px' }}>
-                              ({currentLocale})
+                              ({currentLanguage})
                             </Typography>
                           </Stack>
                         }
@@ -88,7 +88,7 @@ const LocaleSelectionImpl: React.FC<Props> = ({ currentLocale, open, onClose, on
                   </RadioGroup>
                 )}
               />
-              <FormHelperText error>{errors.primaryLocale?.message}</FormHelperText>
+              <FormHelperText error>{errors.sourceLanguage?.message}</FormHelperText>
             </FormControl>
           </Box>
         </form>
@@ -100,6 +100,6 @@ const LocaleSelectionImpl: React.FC<Props> = ({ currentLocale, open, onClose, on
   );
 };
 
-export const LocaleSelection = ComposeWrapper({ context: ProjectContextProvider })(
-  LocaleSelectionImpl
+export const LanguageSelection = ComposeWrapper({ context: ProjectContextProvider })(
+  LanguageSelectionImpl
 );

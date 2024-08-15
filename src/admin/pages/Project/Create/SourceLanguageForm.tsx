@@ -11,11 +11,11 @@ import {
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { Locale } from '../../../../constant.js';
+import { Language } from '../../../../constant.js';
 import {
   FormValues,
-  selectPrimaryLocale,
-} from '../../../fields/validators/projects/selectPrimaryLocale.js';
+  selectSourceLanguage,
+} from '../../../fields/validators/projects/selectSourceLanguage.js';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { enqueueSnackbar } from 'notistack';
@@ -26,19 +26,19 @@ import { useUnsavedChangesPrompt } from '../../../hooks/useUnsavedChangesPrompt.
 import { useProject } from '../Context/index.js';
 import { ProjectData } from './ProjectSettingsForm.js';
 
-export type PrimaryLocaleData = { primaryLocale: string };
+export type SourceLanguageData = { sourceLanguage: string };
 type Props = {
   projectData: ProjectData;
-  primaryLocaleData: PrimaryLocaleData;
-  setPrimaryLocaleData: (l: PrimaryLocaleData) => void;
+  sourceLanguageData: SourceLanguageData;
+  setSourceLanguageData: (l: SourceLanguageData) => void;
   handleNext: () => void;
   handleBack: () => void;
 };
 
-export const PrimaryLocaleForm: React.FC<Props> = ({
+export const SourceLanguageForm: React.FC<Props> = ({
   projectData,
-  primaryLocaleData,
-  setPrimaryLocaleData,
+  sourceLanguageData,
+  setSourceLanguageData,
   handleNext,
   handleBack,
 }) => {
@@ -52,18 +52,18 @@ export const PrimaryLocaleForm: React.FC<Props> = ({
     formState: { isDirty, errors },
   } = useForm<FormValues>({
     defaultValues: {
-      primaryLocale: primaryLocaleData.primaryLocale,
+      sourceLanguage: sourceLanguageData.sourceLanguage,
     },
-    resolver: yupResolver(selectPrimaryLocale()),
+    resolver: yupResolver(selectSourceLanguage()),
   });
   const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
-      setPrimaryLocaleData(form);
+      setSourceLanguageData(form);
       await trigger({
         ...projectData,
-        primaryLocale: form.primaryLocale,
+        sourceLanguage: form.sourceLanguage,
       });
       handleNext();
       enqueueSnackbar(t('toast.created_successfully'), { variant: 'success' });
@@ -75,35 +75,35 @@ export const PrimaryLocaleForm: React.FC<Props> = ({
   return (
     <>
       <Typography variant="h5" gutterBottom sx={{ mb: 2 }}>
-        {t('select_primary_language')}
+        {t('select_source_language')}
       </Typography>
       <ConfirmDiscardDialog open={showPrompt} onDiscard={proceed} onKeepEditing={stay} />
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={3}>
           <Grid xs={12}>
             <Stack spacing={1}>
-              <InputLabel htmlFor="projectName">{t('primary_language')}</InputLabel>
+              <InputLabel htmlFor="projectName">{t('source_language')}</InputLabel>
               <Stack spacing={1} direction="column">
                 <Controller
-                  name="primaryLocale"
+                  name="sourceLanguage"
                   control={control}
                   render={({ field }) => (
                     <RadioGroup value={field.value} name="radio-buttons-group" row>
-                      {Object.values(Locale).map((locale) => (
+                      {Object.values(Language).map((language) => (
                         <FormControlLabel
                           {...field}
-                          key={locale}
-                          value={locale}
+                          key={language}
+                          value={language}
                           control={<Radio />}
                           label={
                             <Stack direction="row">
-                              <Typography>{t(`locale.${locale}`)}</Typography>
+                              <Typography>{t(`languages.${language}`)}</Typography>
                               <Typography
                                 variant="caption"
                                 color="textSecondary"
                                 sx={{ ml: '8px' }}
                               >
-                                ({locale})
+                                ({language})
                               </Typography>
                             </Stack>
                           }
@@ -112,7 +112,7 @@ export const PrimaryLocaleForm: React.FC<Props> = ({
                     </RadioGroup>
                   )}
                 />
-                <FormHelperText error>{errors.primaryLocale?.message}</FormHelperText>
+                <FormHelperText error>{errors.sourceLanguage?.message}</FormHelperText>
               </Stack>
             </Stack>
           </Grid>

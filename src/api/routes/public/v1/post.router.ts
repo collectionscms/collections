@@ -17,8 +17,8 @@ router.get(
   asyncHandler(async (req: Request, res: Response) => {
     const validated = getPublishedPostsUseCaseSchema.safeParse({
       projectId: res.projectRole?.id,
-      locale: req.query?.locale,
-      primaryLocale: res.projectRole?.primaryLocale,
+      sourceLanguage: res.projectRole?.sourceLanguage,
+      language: req.query?.language,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 

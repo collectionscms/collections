@@ -3,21 +3,21 @@ import { ContentRepository } from '../../data/content/content.repository.js';
 import { ContentHistoryEntity } from '../../data/contentHistory/contentHistory.entity.js';
 import { ContentHistoryRepository } from '../../data/contentHistory/contentHistory.repository.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
-import { TrashLocaleContentUseCaseSchemaType } from './trashLocaleContent.schema.js';
+import { TrashLanguageContentUseCaseSchemaType } from './trashLanguageContent.schema.js';
 
-export class TrashLocaleContentUseCase {
+export class TrashLanguageContentUseCase {
   constructor(
     private readonly prisma: ProjectPrismaClient,
     private readonly contentRepository: ContentRepository,
     private readonly contentHistoryRepository: ContentHistoryRepository
   ) {}
 
-  async execute(props: TrashLocaleContentUseCaseSchemaType): Promise<Content[]> {
-    const { postId, projectId, userId, locale } = props;
-    const contents = await this.contentRepository.findManyByPostIdAndLocale(
+  async execute(props: TrashLanguageContentUseCaseSchemaType): Promise<Content[]> {
+    const { postId, userId, language } = props;
+    const contents = await this.contentRepository.findManyByPostIdAndLanguage(
       this.prisma,
       postId,
-      locale
+      language
     );
 
     const deletedContents = await this.prisma.$transaction(async (tx) => {

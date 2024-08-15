@@ -27,7 +27,7 @@ export const createPost = async (
     slug?: string;
     status?: ContentStatusType;
     publishedAt?: Date;
-    locale?: string;
+    language?: string;
     version?: number;
     createdById?: string;
   }
@@ -41,7 +41,7 @@ export const createPost = async (
     },
   });
 
-  i18next.changeLanguage(options?.locale);
+  i18next.changeLanguage(options?.language);
   const reviewComment = i18next.t('seed.review_comment', { title });
 
   const postId = options?.id ?? v4();
@@ -60,7 +60,7 @@ export const createPost = async (
           projectId,
           status: options?.status ?? contentStatus.published,
           publishedAt: options?.publishedAt,
-          locale: options?.locale ?? 'en',
+          language: options?.language ?? 'en',
           version: options?.version ?? 1,
           title: title,
           body: body,
@@ -97,7 +97,7 @@ export const createPost = async (
           status: options?.status ?? contentStatus.published,
           version: options?.version ?? 1,
           createdAt: currentTime,
-          locale: options?.locale ?? 'en',
+          language: options?.language ?? 'en',
         },
       },
     },

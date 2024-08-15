@@ -15,7 +15,7 @@ type PostContext = {
   >;
   getPost: (
     id: string,
-    locale: string | null
+    language: string | null
   ) => SWRResponse<
     LocalizedPost,
     Error,
@@ -30,7 +30,10 @@ type PostContext = {
   createBulkContent: (
     postId: string
   ) => SWRMutationResponse<void, any, string, Record<string, any>>;
-  trashLocaleContent: (postId: string, locale: string) => SWRMutationResponse<void, any, string>;
+  trashLanguageContent: (
+    postId: string,
+    language: string
+  ) => SWRMutationResponse<void, any, string>;
   updateContent: (contentId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
   trashContent: (contentId: string) => SWRMutationResponse<void, any, string>;
   requestReview: (contentId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
@@ -60,9 +63,9 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       suspense: true,
     });
 
-  const getPost = (id: string, locale: string | null) =>
+  const getPost = (id: string, language: string | null) =>
     useSWR(
-      `/posts/${id}${locale ? `?locale=${locale}` : ''}`,
+      `/posts/${id}${language ? `?language=${language}` : ''}`,
       (url) => api.get<{ post: LocalizedPost }>(url).then((res) => res.data.post),
       {
         suspense: true,
@@ -103,8 +106,8 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       }
     );
 
-  const trashLocaleContent = (postId: string, locale: string) =>
-    useSWRMutation(`/posts/${postId}/locales/${locale}`, async (url: string) => {
+  const trashLanguageContent = (postId: string, language: string) =>
+    useSWRMutation(`/posts/${postId}/languages/${language}`, async (url: string) => {
       return api.delete(url).then((res) => res.data);
     });
 
@@ -173,7 +176,7 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       updateContent,
       trashContent,
       createBulkContent,
-      trashLocaleContent,
+      trashLanguageContent,
       requestReview,
       publish,
       archive,
@@ -191,7 +194,7 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       updateContent,
       trashContent,
       createBulkContent,
-      trashLocaleContent,
+      trashLanguageContent,
       requestReview,
       publish,
       archive,

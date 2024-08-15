@@ -134,8 +134,9 @@
   "characters": "characters",
   "saved": "Saved",
   "add_localized_content": "Add localized contents",
-  "primary_language": "Primary Language",
-  "change_primary_language": "Change primary language",
+  "source_language": "Source Language",
+  "select_source_language": "Select source language",
+  "change_source_language": "Change source language",
   "add_to": "Add",
   "add_thumbnail": "Add thumbnail image",
   "invite": "Invite",
@@ -151,10 +152,10 @@
   "move_to_trash": "Move to trash",
   "trash": "Trash",
   "restore": "Restore",
-  "edit_locale": "Edit",
+  "edit_language": "Edit",
   "add_project": "Add project",
   "next": "Next",
-  "select_primary_language": "Select primary language",
+  "back": "Back",
   "project_created": "Project created!",
   "go_to_project_home": "Go to project home",
   "admin": "Admin",
@@ -177,8 +178,8 @@
   "remove_link": "Remove link",
   "post_slug": "Post slug",
   "comment": "Comment",
-  "add_locale_content": "Add language",
-  "remove_locale_content": "Remove {{locale}} version",
+  "add_language_content": "Add language",
+  "remove_language_content": "Remove {{language}} version",
   "no_additional_languages": "No additional languages available",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
@@ -192,7 +193,7 @@
     "confirm_revert_previous_version": "Do you want to trash the V{{version}} post?",
     "confirm_post_trash_title": "Do you want to move to the trash?",
     "confirm_post_trash": "Posts in the trash can be returned to later.",
-    "confirm_content_trash_title": "Do you want to trash {{locale}} version post?",
+    "confirm_content_trash_title": "Do you want to trash {{language}} version post?",
     "confirm_content_trash": "Posts in the trash can be returned to later.",
     "confirm_removal_user_from_project": "Are you sure you want to remove user from project?",
     "confirm_post_restore_title": "Do you want to restore it?",
@@ -209,7 +210,7 @@
     "joined_project": "Joined the project",
     "move_to_trash": "Move to trash",
     "post_restored": "Restored post",
-    "updated_primary_locale": "Updated primary language",
+    "updated_source_language": "Updated source language",
     "copied": "Copied"
   },
   "create": {
@@ -223,7 +224,7 @@
     "role": "Edit Role",
     "api_key": "Edit Api Key"
   },
-  "locale": {
+  "languages": {
     "en": "English",
     "ja": "Japanese"
   },

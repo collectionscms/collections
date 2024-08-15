@@ -17,6 +17,6 @@ export class GetPostUseCase {
       options
     );
 
-    return record.post.toLocalizedWithContentsResponse(props.locale, record.contents);
+    return record.post.toLocalizedWithContentsResponse(props.language, record.contents);
   }
 }

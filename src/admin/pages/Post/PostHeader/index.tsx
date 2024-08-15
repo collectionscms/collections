@@ -16,36 +16,36 @@ import { useNavigate } from 'react-router-dom';
 import { LocalizedPost } from '../../../../types/index.js';
 import { Avatar } from '../../../@extended/components/Avatar/index.js';
 import { IconButton } from '../../../@extended/components/IconButton/index.js';
-import { ModalDialog } from '../../../components/elements/ModalDialog/index.js';
 import { Icon } from '../../../components/elements/Icon/index.js';
+import { ModalDialog } from '../../../components/elements/ModalDialog/index.js';
 import { StatusDot } from '../../../components/elements/StatusDot/index.js';
 import { useAuth } from '../../../components/utilities/Auth/index.js';
 import AppBarStyled from './AppBarStyled.js';
 
 export type Props = {
   post: LocalizedPost;
-  currentLocale: string;
+  currentLanguage: string;
   buttonRef: React.RefObject<HTMLButtonElement>;
   onOpenSettings: () => void;
   onSaveDraft: () => void;
-  onChangeLocale: (locale: string) => void;
-  onOpenAddLocale: () => void;
+  onChangeLanguage: (language: string) => void;
+  onOpenAddLanguage: () => void;
   onRevertContent: () => void;
   onTrashPost: () => void;
-  onTrashLocaleContent: (locale: string) => void;
+  onTrashLanguageContent: (language: string) => void;
 };
 
 export const PostHeader: React.FC<Props> = ({
   post,
-  currentLocale,
+  currentLanguage,
   buttonRef,
   onOpenSettings,
   onSaveDraft,
-  onChangeLocale,
-  onOpenAddLocale,
+  onChangeLanguage,
+  onOpenAddLanguage,
   onRevertContent,
   onTrashPost,
-  onTrashLocaleContent,
+  onTrashLanguageContent,
 }) => {
   const theme = useTheme();
   const navigate = useNavigate();
@@ -99,33 +99,33 @@ export const PostHeader: React.FC<Props> = ({
   };
 
   // /////////////////////////////////////
-  // Locale Menu
+  // Language Menu
   // /////////////////////////////////////
   const anchorRef = useRef<any>(null);
-  const [localeOpen, setLocaleOpen] = useState(false);
-  const handleLocaleOpen = () => {
-    setLocaleOpen((open) => !open);
+  const [languageOpen, setLanguageOpen] = useState(false);
+  const handleLanguageOpen = () => {
+    setLanguageOpen((open) => !open);
   };
 
-  const handleCloseLocale = (event: MouseEvent | TouchEvent) => {
+  const handleCloseLanguage = (event: MouseEvent | TouchEvent) => {
     if (anchorRef.current && anchorRef.current.contains(event.target)) {
       return;
     }
-    setLocaleOpen(false);
+    setLanguageOpen(false);
   };
 
-  const handleChangeLocale = (locale: string) => {
-    onChangeLocale(locale);
-    setLocaleOpen(false);
+  const handleChangeLanguage = (language: string) => {
+    onChangeLanguage(language);
+    setLanguageOpen(false);
   };
 
-  const handleAddLocale = () => {
-    onOpenAddLocale();
-    setLocaleOpen(false);
+  const handleAddLanguage = () => {
+    onOpenAddLanguage();
+    setLanguageOpen(false);
   };
 
-  const handleTrashLocaleContent = () => {
-    onTrashLocaleContent(currentLocale);
+  const handleTrashLanguageContent = () => {
+    onTrashLanguageContent(currentLanguage);
     setOpenContentTrash(false);
     setContentMenuOpen(false);
   };
@@ -151,10 +151,10 @@ export const PostHeader: React.FC<Props> = ({
       <ModalDialog
         open={openContentTrash}
         title={t('dialog.confirm_content_trash_title', {
-          locale: t(`locale.${currentLocale}` as unknown as TemplateStringsArray),
+          language: t(`languages.${currentLanguage}` as unknown as TemplateStringsArray),
         })}
         body={t('dialog.confirm_content_trash')}
-        execute={{ label: t('move_to_trash'), action: handleTrashLocaleContent }}
+        execute={{ label: t('move_to_trash'), action: handleTrashLanguageContent }}
         cancel={{ label: t('cancel'), action: () => setOpenContentTrash(false) }}
       />
       <AppBarStyled open={true} {...appBar}>
@@ -172,10 +172,10 @@ export const PostHeader: React.FC<Props> = ({
             <StatusDot status={post.currentStatus} />
           </Stack>
           <Stack direction="row" alignItems="center" gap={1.5}>
-            <Button variant="text" color="secondary" ref={anchorRef} onClick={handleLocaleOpen}>
+            <Button variant="text" color="secondary" ref={anchorRef} onClick={handleLanguageOpen}>
               <Stack direction="row" alignItems="center" gap={1}>
                 <Typography>
-                  {t(`locale.${currentLocale}` as unknown as TemplateStringsArray)}
+                  {t(`languages.${currentLanguage}` as unknown as TemplateStringsArray)}
                 </Typography>
                 <Icon name="ChevronDown" size={14} />
               </Stack>
@@ -231,20 +231,20 @@ export const PostHeader: React.FC<Props> = ({
             </>
           )}
           {/* Add localized content */}
-          <MenuItem onClick={handleAddLocale}>
+          <MenuItem onClick={handleAddLanguage}>
             <Icon name="CirclePlus" size={16} />
-            <Typography sx={{ pl: 1 }}>{t('add_locale_content')}</Typography>
+            <Typography sx={{ pl: 1 }}>{t('add_language_content')}</Typography>
           </MenuItem>
           {/* Remove localized content */}
-          {post.locales.length > 1 && (
+          {post.languages.length > 1 && (
             <MenuItem
               onClick={() => setOpenContentTrash(true)}
               sx={{ color: theme.palette.error.main }}
             >
               <Icon name="CircleMinus" size={16} />
               <Typography sx={{ pl: 1 }}>
-                {t('remove_locale_content', {
-                  locale: t(`locale.${currentLocale}` as unknown as TemplateStringsArray),
+                {t('remove_language_content', {
+                  language: t(`languages.${currentLanguage}` as unknown as TemplateStringsArray),
                 })}
               </Typography>
             </MenuItem>
@@ -261,7 +261,7 @@ export const PostHeader: React.FC<Props> = ({
             </MenuItem>
           )}
         </Menu>
-        {/* Locale menu */}
+        {/* Language menu */}
         <Menu
           anchorEl={anchorRef.current}
           anchorOrigin={{
@@ -272,18 +272,20 @@ export const PostHeader: React.FC<Props> = ({
             vertical: 'top',
             horizontal: 'center',
           }}
-          open={localeOpen}
-          onClose={handleCloseLocale}
+          open={languageOpen}
+          onClose={handleCloseLanguage}
         >
-          {post.locales.map((locale: string) => (
+          {post.languages.map((language: string) => (
             <MenuItem
-              onClick={() => handleChangeLocale(locale)}
-              selected={currentLocale === locale}
-              key={locale}
+              onClick={() => handleChangeLanguage(language)}
+              selected={currentLanguage === language}
+              key={language}
             >
-              <Typography>{t(`locale.${locale}` as unknown as TemplateStringsArray)}</Typography>
+              <Typography>
+                {t(`languages.${language}` as unknown as TemplateStringsArray)}
+              </Typography>
               <Typography variant="caption" color="textSecondary" sx={{ ml: '8px' }}>
-                ({locale})
+                ({language})
               </Typography>
             </MenuItem>
           ))}

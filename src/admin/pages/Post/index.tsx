@@ -85,10 +85,10 @@ export const PostPageImpl: React.FC = () => {
       case 'status':
         return (
           <Stack gap={0.5}>
-            {row.localeStatues.map(({ locale, currentStatus, prevStatus }) => {
+            {row.languageStatues.map(({ language, currentStatus, prevStatus }) => {
               return (
-                <Stack key={locale} direction="row" gap={1}>
-                  <Typography sx={{ width: 30 }}>{locale}</Typography>
+                <Stack key={language} direction="row" gap={1}>
+                  <Typography sx={{ width: 30 }}>{language}</Typography>
                   {prevStatus && (
                     <>
                       <StatusDot status="published" isShowText={false} />
@@ -141,7 +141,7 @@ export const PostPageImpl: React.FC = () => {
         title={<></>}
         secondary={
           <Stack direction="row" alignItems="center" spacing={1}>
-            <ApiPreview path={`posts/?locale=${project.primaryLocale}`} apiKeys={apiKeys} />
+            <ApiPreview path={`posts/?language=${project.sourceLanguage}`} apiKeys={apiKeys} />
             {hasPermission('createPost') && <CreateNewButton onClick={handleCreatePost} />}
           </Stack>
         }

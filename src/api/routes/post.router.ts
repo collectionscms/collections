@@ -11,8 +11,8 @@ import { createBulkContentUseCaseSchema } from '../useCases/content/createBulkCo
 import { CreateBulkContentUseCase } from '../useCases/content/createBulkContent.useCase.js';
 import { createContentUseCaseSchema } from '../useCases/content/createContent.schema.js';
 import { CreateContentUseCase } from '../useCases/content/createContent.useCase.js';
-import { trashLocaleContentUseCaseSchema } from '../useCases/content/trashLocaleContent.schema.js';
-import { TrashLocaleContentUseCase } from '../useCases/content/trashLocaleContent.useCase.js';
+import { trashLanguageContentUseCaseSchema } from '../useCases/content/trashLanguageContent.schema.js';
+import { TrashLanguageContentUseCase } from '../useCases/content/trashLanguageContent.useCase.js';
 import { createPostUseCaseSchema } from '../useCases/post/createPost.schema.js';
 import { CreatePostUseCase } from '../useCases/post/createPost.useCase.js';
 import { getPostUseCaseSchema } from '../useCases/post/getPost.schema.js';
@@ -33,7 +33,7 @@ router.get(
   asyncHandler(async (req: Request, res: Response) => {
     const validated = getPostsUseCaseSchema.safeParse({
       projectId: res.projectRole?.id,
-      primaryLocale: res.projectRole?.primaryLocale,
+      sourceLanguage: res.projectRole?.sourceLanguage,
       userId: res.user.id,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
@@ -56,13 +56,13 @@ router.get(
   authenticatedUser,
   validateAccess(['readOwnPost', 'readAllPost']),
   asyncHandler(async (req: Request, res: Response) => {
-    const locale = req.query.locale || res.projectRole?.primaryLocale;
+    const language = req.query.language || res.projectRole?.sourceLanguage;
 
     const validated = getPostUseCaseSchema.safeParse({
       projectId: res.projectRole?.id,
       postId: req.params.id,
       userId: res.user.id,
-      locale: locale,
+      language,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
@@ -89,7 +89,7 @@ router.post(
     const validated = createPostUseCaseSchema.safeParse({
       projectId: res.projectRole?.id,
       userId: res.user.id,
-      primaryLocale: res.projectRole?.primaryLocale,
+      sourceLanguage: res.projectRole?.sourceLanguage,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
@@ -115,7 +115,7 @@ router.post(
     const validated = createContentUseCaseSchema.safeParse({
       projectId: res.projectRole?.id,
       id: req.params.id,
-      locale: req.body.locale,
+      language: req.body.language,
       userId: res.user.id,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
@@ -142,7 +142,7 @@ router.post(
       postId: req.params.id,
       projectId: res.projectRole?.id,
       userId: res.user.id,
-      locales: req.body.locales,
+      languages: req.body.languages,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
@@ -157,19 +157,19 @@ router.post(
 );
 
 router.delete(
-  '/posts/:id/locales/:locale',
+  '/posts/:id/languages/:language',
   authenticatedUser,
   validateAccess(['trashPost']),
   asyncHandler(async (req: Request, res: Response) => {
-    const validated = trashLocaleContentUseCaseSchema.safeParse({
+    const validated = trashLanguageContentUseCaseSchema.safeParse({
       postId: req.params.id,
       projectId: res.projectRole?.id,
       userId: res.user.id,
-      locale: req.params.locale,
+      language: req.params.language,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
-    const useCase = new TrashLocaleContentUseCase(
+    const useCase = new TrashLanguageContentUseCase(
       projectPrisma(validated.data.projectId),
       new ContentRepository(),
       new ContentHistoryRepository()

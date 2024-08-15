@@ -31,11 +31,11 @@ export class PublishUseCase {
       await this.contentHistoryRepository.create(tx, contentHistory);
 
       // hard delete previous contents
-      const previousContent = await this.contentRepository.findOneByPostIdAndLocale(
+      const previousContent = await this.contentRepository.findOneByPostIdAndLanguage(
         tx,
         result.id,
         result.postId,
-        result.locale
+        result.language
       );
       if (previousContent) {
         await this.contentRepository.hardDelete(tx, previousContent);

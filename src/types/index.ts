@@ -33,7 +33,7 @@ export type PostItem = {
   contentId: string;
   title: string;
   slug: string;
-  localeStatues: { locale: string; currentStatus: string; prevStatus?: string }[];
+  languageStatues: { language: string; currentStatus: string; prevStatus?: string }[];
   updatedByName: string;
   updatedAt: Date;
 };
@@ -45,13 +45,13 @@ export type LocalizedPost = {
   currentStatus: string;
   prevStatus?: string;
   updatedAt: Date;
-  contentLocale: string;
+  contentLanguage: string;
   version: number;
   title: string;
   body: string;
   bodyJson: string;
   bodyHtml: string;
-  locales: string[];
+  languages: string[];
   file: UploadFile | null;
   histories: ContentHistory[];
 };
@@ -59,7 +59,7 @@ export type LocalizedPost = {
 export type PublishedPost = {
   id: string;
   slug: string;
-  contentLocale: string;
+  contentLanguage: string;
   title: string;
   body: string;
   file: UploadFile | null;

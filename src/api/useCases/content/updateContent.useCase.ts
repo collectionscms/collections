@@ -31,7 +31,7 @@ export class UpdateContentUseCase {
         ? ContentEntity.Construct({
             projectId: content.projectId,
             postId: content.postId,
-            locale: content.locale,
+            language: content.language,
             createdById: userId,
             version: content.version + 1,
           })

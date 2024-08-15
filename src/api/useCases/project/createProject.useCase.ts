@@ -21,10 +21,10 @@ export class CreateProjectUseCase {
   async execute({
     userId,
     name,
-    primaryLocale,
+    sourceLanguage,
     subdomain,
   }: CreateProjectUseCaseSchemaType): Promise<Project> {
-    const t = await i18n.changeLanguage(primaryLocale);
+    const t = await i18n.changeLanguage(sourceLanguage);
 
     const project = await this.projectRepository.findOneBySubdomain(this.prisma, subdomain);
     if (project) {
@@ -33,7 +33,7 @@ export class CreateProjectUseCase {
 
     const projectEntity = ProjectEntity.Construct({
       name,
-      primaryLocale,
+      sourceLanguage,
       subdomain,
     });
 

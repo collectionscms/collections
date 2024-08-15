@@ -45,7 +45,7 @@ export class ProjectRepository {
       where: { id },
       data: {
         name: entity.name,
-        primaryLocale: entity.primaryLocale,
+        sourceLanguage: entity.sourceLanguage,
       },
     });
 

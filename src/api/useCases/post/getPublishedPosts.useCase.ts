@@ -14,8 +14,8 @@ export class GetPublishedPostsUseCase {
 
     return records.map((record) => {
       return record.post.toPublishedWithContentsResponse(
-        props.locale ?? null,
-        props.primaryLocale,
+        props.language ?? null,
+        props.sourceLanguage,
         record.contents
       );
     });

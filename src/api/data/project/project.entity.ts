@@ -1,23 +1,23 @@
 import { Project } from '@prisma/client';
 import { v4 } from 'uuid';
-import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 import { UnexpectedException } from '../../../exceptions/unexpected.js';
+import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 
 export class ProjectEntity extends PrismaBaseEntity<Project> {
   static Construct({
     name,
-    primaryLocale,
+    sourceLanguage,
     subdomain,
   }: {
     name: string;
-    primaryLocale: string;
+    sourceLanguage: string;
     description?: string;
     subdomain: string;
   }): ProjectEntity {
     return new ProjectEntity({
       id: v4(),
       name,
-      primaryLocale,
+      sourceLanguage,
       description: null,
       subdomain,
       enabled: true,
@@ -49,21 +49,21 @@ export class ProjectEntity extends PrismaBaseEntity<Project> {
     return this.props.name;
   }
 
-  get primaryLocale(): string {
-    return this.props.primaryLocale;
+  get sourceLanguage(): string {
+    return this.props.sourceLanguage;
   }
 
   get subdomain(): string {
     return this.props.subdomain;
   }
 
-  updateProject(name?: string, primaryLocale?: string) {
+  updateProject(name?: string, sourceLanguage?: string) {
     if (name) {
       this.props.name = name;
     }
 
-    if (primaryLocale) {
-      this.props.primaryLocale = primaryLocale;
+    if (sourceLanguage) {
+      this.props.sourceLanguage = sourceLanguage;
     }
   }
 }

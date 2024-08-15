@@ -16,7 +16,7 @@ import {
 } from '../../fields/validators/projects/updateProject.js';
 import { useUnsavedChangesPrompt } from '../../hooks/useUnsavedChangesPrompt.js';
 import { ProjectContextProvider, useProject } from './Context/index.js';
-import { LocaleSelection } from './LocaleSelection/index.js';
+import { LanguageSelection } from './LanguageSelection/index.js';
 
 const ProjectImpl: React.FC = () => {
   const { hasPermission } = useAuth();
@@ -50,19 +50,19 @@ const ProjectImpl: React.FC = () => {
     }
   };
 
-  const handleUpdateLocale = async () => {
+  const handleUpdateLanguage = async () => {
     await mutate();
     setShowSelection(false);
-    enqueueSnackbar(t('toast.updated_primary_locale'), { variant: 'success' });
+    enqueueSnackbar(t('toast.updated_source_language'), { variant: 'success' });
   };
 
   return (
     <>
-      <LocaleSelection
-        currentLocale={project.primaryLocale}
+      <LanguageSelection
+        currentLanguage={project.sourceLanguage}
         open={showSelection}
         onClose={() => setShowSelection(false)}
-        onAdded={() => handleUpdateLocale()}
+        onAdded={() => handleUpdateLanguage()}
       />
       <ConfirmDiscardDialog open={showPrompt} onDiscard={proceed} onKeepEditing={stay} />
       <Grid container spacing={2.5}>
@@ -92,14 +92,16 @@ const ProjectImpl: React.FC = () => {
                 </Grid>
                 <Grid xs={12} sm={6}>
                   <Stack spacing={1}>
-                    <InputLabel htmlFor="projectName">{t('primary_language')}</InputLabel>
+                    <InputLabel htmlFor="projectName">{t('source_language')}</InputLabel>
                     <Stack spacing={1.5} direction="row" alignItems="center">
                       <Stack direction="row">
                         <Typography>
-                          {t(`locale.${project.primaryLocale}` as unknown as TemplateStringsArray)}
+                          {t(
+                            `languages.${project.sourceLanguage}` as unknown as TemplateStringsArray
+                          )}
                         </Typography>
                         <Typography variant="caption" color="textSecondary" sx={{ ml: '8px' }}>
-                          ({project.primaryLocale})
+                          ({project.sourceLanguage})
                         </Typography>
                       </Stack>
                       <Button
@@ -109,7 +111,7 @@ const ProjectImpl: React.FC = () => {
                         sx={{ textDecoration: 'underline' }}
                         onClick={() => setShowSelection(true)}
                       >
-                        {t('edit_locale')}
+                        {t('edit_language')}
                       </Button>
                     </Stack>
                   </Stack>
