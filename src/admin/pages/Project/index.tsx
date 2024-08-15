@@ -16,7 +16,7 @@ import {
 } from '../../fields/validators/projects/updateProject.js';
 import { useUnsavedChangesPrompt } from '../../hooks/useUnsavedChangesPrompt.js';
 import { ProjectContextProvider, useProject } from './Context/index.js';
-import { LocaleSelection } from './LocaleSelection/index.js';
+import { LanguageSelection } from './LanguageSelection/index.js';
 
 const ProjectImpl: React.FC = () => {
   const { hasPermission } = useAuth();
@@ -50,7 +50,7 @@ const ProjectImpl: React.FC = () => {
     }
   };
 
-  const handleUpdateLocale = async () => {
+  const handleUpdateLanguage = async () => {
     await mutate();
     setShowSelection(false);
     enqueueSnackbar(t('toast.updated_source_language'), { variant: 'success' });
@@ -58,11 +58,11 @@ const ProjectImpl: React.FC = () => {
 
   return (
     <>
-      <LocaleSelection
-        currentLocale={project.sourceLanguage}
+      <LanguageSelection
+        currentLanguage={project.sourceLanguage}
         open={showSelection}
         onClose={() => setShowSelection(false)}
-        onAdded={() => handleUpdateLocale()}
+        onAdded={() => handleUpdateLanguage()}
       />
       <ConfirmDiscardDialog open={showPrompt} onDiscard={proceed} onKeepEditing={stay} />
       <Grid container spacing={2.5}>
@@ -111,7 +111,7 @@ const ProjectImpl: React.FC = () => {
                         sx={{ textDecoration: 'underline' }}
                         onClick={() => setShowSelection(true)}
                       >
-                        {t('edit_locale')}
+                        {t('edit_language')}
                       </Button>
                     </Stack>
                   </Stack>

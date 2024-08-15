@@ -4,7 +4,7 @@ import { enqueueSnackbar } from 'notistack';
 import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Locale } from '../../../../constant.js';
+import { Language } from '../../../../constant.js';
 import { LocalizedPost } from '../../../../types/index.js';
 import { logger } from '../../../../utilities/logger.js';
 import { ModalDialog } from '../../../components/elements/ModalDialog/index.js';
@@ -16,7 +16,7 @@ export type Props = {
   open: boolean;
   post: LocalizedPost;
   onClose: () => void;
-  onChanged: (locales: string[]) => void;
+  onChanged: (languages: string[]) => void;
 };
 
 export const LocalizedContent: React.FC<Props> = ({ open, post, onClose, onChanged }) => {
@@ -25,7 +25,9 @@ export const LocalizedContent: React.FC<Props> = ({ open, post, onClose, onChang
   const { t } = useTranslation();
   const { trigger: createBulkContentTrigger } = createBulkContent(post.id);
   const hasTrashPost = hasPermission('trashPost');
-  const enabledLocales = Object.values(Locale).filter((locale) => !post.locales.includes(locale));
+  const enabledLanguages = Object.values(Language).filter(
+    (language) => !post.languages.includes(language)
+  );
 
   const {
     watch,
@@ -34,7 +36,7 @@ export const LocalizedContent: React.FC<Props> = ({ open, post, onClose, onChang
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
-      locales: post.locales,
+      languages: post.languages,
     },
     resolver: yupResolver(addContent()),
   });
@@ -42,7 +44,7 @@ export const LocalizedContent: React.FC<Props> = ({ open, post, onClose, onChang
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
       await createBulkContentTrigger(form);
-      onChanged(form.locales);
+      onChanged(form.languages);
       enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
     } catch (error) {
       logger.error(error);
@@ -57,37 +59,37 @@ export const LocalizedContent: React.FC<Props> = ({ open, post, onClose, onChang
         <form>
           <Stack spacing={1} direction="column">
             <Controller
-              name="locales"
+              name="languages"
               control={control}
               render={({ field }) => (
                 <Stack>
-                  {enabledLocales.length === 0 && <>{t('no_additional_languages')}</>}
-                  {enabledLocales.map((locale) => {
+                  {enabledLanguages.length === 0 && <>{t('no_additional_languages')}</>}
+                  {enabledLanguages.map((language) => {
                     return (
                       <FormControlLabel
                         {...field}
-                        key={locale}
-                        value={locale}
+                        key={language}
+                        value={language}
                         control={
                           <Switch
                             {...field}
                             disabled={!hasTrashPost}
-                            checked={watch('locales').includes(locale)}
+                            checked={watch('languages').includes(language)}
                             onChange={() => {
-                              if (!field.value.includes(locale)) {
-                                field.onChange([...field.value, locale]);
+                              if (!field.value.includes(language)) {
+                                field.onChange([...field.value, language]);
                                 return;
                               }
-                              const newTopics = field.value.filter((topic) => topic !== locale);
+                              const newTopics = field.value.filter((topic) => topic !== language);
                               field.onChange(newTopics);
                             }}
                           />
                         }
                         label={
                           <Stack direction="row">
-                            <Typography>{t(`languages.${locale}`)}</Typography>
+                            <Typography>{t(`languages.${language}`)}</Typography>
                             <Typography variant="caption" color="textSecondary" sx={{ ml: '8px' }}>
-                              ({locale})
+                              ({language})
                             </Typography>
                           </Stack>
                         }
@@ -97,7 +99,7 @@ export const LocalizedContent: React.FC<Props> = ({ open, post, onClose, onChang
                 </Stack>
               )}
             />
-            <FormHelperText error>{errors.locales?.message}</FormHelperText>
+            <FormHelperText error>{errors.languages?.message}</FormHelperText>
           </Stack>
         </form>
       }
@@ -109,7 +111,7 @@ export const LocalizedContent: React.FC<Props> = ({ open, post, onClose, onChang
         action: onClose,
         label: t('cancel'),
       }}
-      disabled={enabledLocales.length === 0}
+      disabled={enabledLanguages.length === 0}
     />
   );
 };

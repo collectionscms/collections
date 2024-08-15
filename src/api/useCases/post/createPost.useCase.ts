@@ -20,7 +20,7 @@ export class CreatePostUseCase {
 
     const { post, content } = PostEntity.Construct({
       projectId: projectId,
-      locale: sourceLanguage,
+      language: sourceLanguage,
       createdById: userId,
     });
 

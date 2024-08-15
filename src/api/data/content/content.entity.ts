@@ -15,13 +15,13 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
   static Construct({
     projectId,
     postId,
-    locale,
+    language,
     createdById,
     version,
   }: {
     projectId: string;
     postId: string;
-    locale: string;
+    language: string;
     createdById: string;
     version?: number;
   }): ContentEntity {
@@ -34,7 +34,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
       body: null,
       bodyJson: null,
       bodyHtml: null,
-      locale,
+      language,
       status: contentStatus.draft,
       publishedAt: null,
       version: version || 1,
@@ -88,8 +88,8 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     return this.props.bodyHtml ?? '';
   }
 
-  get locale(): string {
-    return this.props.locale;
+  get language(): string {
+    return this.props.language;
   }
 
   get status(): string {
@@ -144,7 +144,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
 
   hasNewVersion(contents: ContentEntity[]): boolean {
     return contents.some(
-      (c) => c.props.locale === this.props.locale && c.props.version > this.props.version
+      (c) => c.props.language === this.props.language && c.props.version > this.props.version
     );
   }
 
@@ -175,7 +175,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     this.props.updatedById = updatedById;
   }
 
-  isSameLocaleContent(locale: string) {
-    return this.props.locale.toLocaleLowerCase() === locale.toLocaleLowerCase();
+  isSameLanguageContent(language: string) {
+    return this.props.language.toLocaleLowerCase() === language.toLocaleLowerCase();
   }
 }

@@ -13,7 +13,7 @@ export class ContentHistoryEntity extends PrismaBaseEntity<ContentHistory> {
     bodyJson,
     bodyHtml,
     publishedAt,
-    locale,
+    language,
     status,
     createdById,
     updatedById,
@@ -28,7 +28,7 @@ export class ContentHistoryEntity extends PrismaBaseEntity<ContentHistory> {
     bodyJson?: string | null;
     bodyHtml?: string | null;
     publishedAt?: Date | null;
-    locale: string;
+    language: string;
     status: string;
     createdById: string;
     updatedById: string;
@@ -44,7 +44,7 @@ export class ContentHistoryEntity extends PrismaBaseEntity<ContentHistory> {
       body: body || null,
       bodyJson: bodyJson || null,
       bodyHtml: bodyHtml || null,
-      locale,
+      language,
       status,
       publishedAt: publishedAt || null,
       version,

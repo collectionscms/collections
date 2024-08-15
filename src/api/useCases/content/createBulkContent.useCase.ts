@@ -14,7 +14,7 @@ export class CreateBulkContentUseCase {
   ) {}
 
   async execute(props: CreateBulkContentUseCaseSchemaType): Promise<Content[]> {
-    const { projectId, postId, userId, locales } = props;
+    const { projectId, postId, userId, languages } = props;
 
     const contents = await this.contentRepository.findManyByPostId(this.prisma, postId);
 
@@ -23,14 +23,14 @@ export class CreateBulkContentUseCase {
       const histories = [];
 
       // create contents
-      const addContents = locales.filter(
-        (locale) => !contents.find((content) => content.locale === locale)
+      const addContents = languages.filter(
+        (language) => !contents.find((content) => content.language === language)
       );
-      for (const locale of addContents) {
+      for (const language of addContents) {
         const content = ContentEntity.Construct({
           projectId,
           postId,
-          locale,
+          language,
           createdById: userId,
         });
 

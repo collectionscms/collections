@@ -14,11 +14,11 @@ export class ContentRepository {
     return ContentEntity.Reconstruct<Content, ContentEntity>(record);
   }
 
-  async findOneByPostIdAndLocale(
+  async findOneByPostIdAndLanguage(
     prisma: ProjectPrismaType,
     excludeId: string,
     postId: string,
-    locale: string
+    language: string
   ): Promise<ContentEntity | null> {
     const record = await prisma.content.findFirst({
       where: {
@@ -26,7 +26,7 @@ export class ContentRepository {
           not: excludeId,
         },
         postId,
-        locale,
+        language,
         deletedAt: null,
       },
     });
@@ -34,15 +34,15 @@ export class ContentRepository {
     return record ? ContentEntity.Reconstruct<Content, ContentEntity>(record) : null;
   }
 
-  async findManyByPostIdAndLocale(
+  async findManyByPostIdAndLanguage(
     prisma: ProjectPrismaType,
     postId: string,
-    locale: string
+    language: string
   ): Promise<ContentEntity[]> {
     const records = await prisma.content.findMany({
       where: {
         postId,
-        locale,
+        language,
         deletedAt: null,
       },
     });

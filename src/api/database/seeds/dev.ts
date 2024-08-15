@@ -31,26 +31,26 @@ export const seedDev = async (): Promise<void> => {
         // draft
         await createPost(tx, project, {
           status: contentStatus.draft,
-          locale: project === enProject ? 'en' : 'ja',
+          language: project === enProject ? 'en' : 'ja',
         });
 
         // review
         await createPost(tx, project, {
           status: contentStatus.review,
-          locale: project === enProject ? 'en' : 'ja',
+          language: project === enProject ? 'en' : 'ja',
         });
 
         // published
         await createPost(tx, project, {
           status: contentStatus.published,
-          locale: project === enProject ? 'en' : 'ja',
+          language: project === enProject ? 'en' : 'ja',
           publishedAt: new Date(),
         });
 
         // archived
         await createPost(tx, project, {
           status: contentStatus.archived,
-          locale: project === enProject ? 'en' : 'ja',
+          language: project === enProject ? 'en' : 'ja',
         });
       }
     });

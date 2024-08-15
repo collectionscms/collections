@@ -16,8 +16,8 @@ export class RestoreContentUseCase {
     const content = await this.contentRepository.findOneById(this.prisma, id);
     const post = await this.postRepository.findOneWithContentsById(this.prisma, content.postId);
 
-    const sameLocaleContent = post.contents.find((c) => c.content.locale === content.locale);
-    if (sameLocaleContent) {
+    const sameLanguageContent = post.contents.find((c) => c.content.language === content.language);
+    if (sameLanguageContent) {
       throw new ConflictException('already_has_same_language_content');
     }
 

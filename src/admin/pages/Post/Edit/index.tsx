@@ -29,15 +29,18 @@ export const EditPostPageImpl: React.FC = () => {
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const locale = queryParams.get('locale');
+  const language = queryParams.get('language');
 
-  const { getPost, updateContent, trashPost, trashContent, createFileImage, trashLocaleContent } =
+  const { getPost, updateContent, trashPost, trashContent, createFileImage, trashLanguageContent } =
     usePost();
-  const { data: post, mutate } = getPost(id, locale);
+  const { data: post, mutate } = getPost(id, language);
   const { trigger } = updateContent(post.contentId);
   const { trigger: trashPostTrigger } = trashPost(post.id);
   const { trigger: trashContentTrigger } = trashContent(post.contentId);
-  const { trigger: trashLocaleContentTrigger } = trashLocaleContent(post.id, post.contentLocale);
+  const { trigger: trashLanguageContentTrigger } = trashLanguageContent(
+    post.id,
+    post.contentLanguage
+  );
 
   if (!post) return <></>;
 
@@ -187,9 +190,9 @@ export const EditPostPageImpl: React.FC = () => {
     }
   };
 
-  const handleTrashLocaleContent = async (locale: string) => {
+  const handleTrashLanguageContent = async (language: string) => {
     try {
-      await trashLocaleContentTrigger();
+      await trashLanguageContentTrigger();
       mutate();
       enqueueSnackbar(t('toast.move_to_trash'), { variant: 'success' });
     } catch (error) {
@@ -198,30 +201,30 @@ export const EditPostPageImpl: React.FC = () => {
   };
 
   // /////////////////////////////////////
-  // Locale
+  // Language
   // /////////////////////////////////////
 
-  const handleChangeLocale = (locale: string) => {
-    navigate(`${window.location.pathname}?locale=${locale}`);
+  const handleChangeLanguage = (language: string) => {
+    navigate(`${window.location.pathname}?language=${language}`);
   };
 
-  const [openAddLocale, setOpenAddLocale] = useState(false);
-  const handleOpenAddLocale = () => {
-    setOpenAddLocale(true);
+  const [openAddLanguage, setOpenAddLanguage] = useState(false);
+  const handleOpenAddLanguage = () => {
+    setOpenAddLanguage(true);
   };
 
-  const handleCloseAddLocale = () => {
-    setOpenAddLocale(false);
+  const handleCloseAddLanguage = () => {
+    setOpenAddLanguage(false);
   };
 
-  const handleChangedLocale = (locales: string[]) => {
-    setOpenAddLocale(false);
-    handleChangeLocale(
-      locales.find((locale) => locale !== post.contentLocale) ?? post.contentLocale
+  const handleChangedLanguage = (languages: string[]) => {
+    setOpenAddLanguage(false);
+    handleChangeLanguage(
+      languages.find((language) => language !== post.contentLanguage) ?? post.contentLanguage
     );
     mutate({
       ...post,
-      locales,
+      languages,
     });
   };
 
@@ -229,15 +232,15 @@ export const EditPostPageImpl: React.FC = () => {
     <>
       <PostHeader
         post={post}
-        currentLocale={post.contentLocale}
+        currentLanguage={post.contentLanguage}
         buttonRef={ref}
         onOpenSettings={handleOpenSettings}
         onSaveDraft={handleSaveContent}
-        onChangeLocale={handleChangeLocale}
-        onOpenAddLocale={handleOpenAddLocale}
+        onChangeLanguage={handleChangeLanguage}
+        onOpenAddLanguage={handleOpenAddLanguage}
         onRevertContent={handleRevertContent}
         onTrashPost={handleTrashPost}
-        onTrashLocaleContent={handleTrashLocaleContent}
+        onTrashLanguageContent={handleTrashLanguageContent}
       />
       <Box component="main" sx={{ minHeight: '100vh', backgroundColor: bg }}>
         <Toolbar sx={{ mt: 0 }} />
@@ -344,10 +347,10 @@ export const EditPostPageImpl: React.FC = () => {
         onClose={() => setOpenSettings(false)}
       />
       <LocalizedContent
-        open={openAddLocale}
+        open={openAddLanguage}
         post={post}
-        onClose={handleCloseAddLocale}
-        onChanged={(locales) => handleChangedLocale(locales)}
+        onClose={handleCloseAddLanguage}
+        onChanged={(languages) => handleChangedLanguage(languages)}
       />
     </>
   );

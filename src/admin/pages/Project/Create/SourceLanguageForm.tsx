@@ -11,7 +11,7 @@ import {
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { Locale } from '../../../../constant.js';
+import { Language } from '../../../../constant.js';
 import {
   FormValues,
   selectSourceLanguage,
@@ -89,21 +89,21 @@ export const SourceLanguageForm: React.FC<Props> = ({
                   control={control}
                   render={({ field }) => (
                     <RadioGroup value={field.value} name="radio-buttons-group" row>
-                      {Object.values(Locale).map((locale) => (
+                      {Object.values(Language).map((language) => (
                         <FormControlLabel
                           {...field}
-                          key={locale}
-                          value={locale}
+                          key={language}
+                          value={language}
                           control={<Radio />}
                           label={
                             <Stack direction="row">
-                              <Typography>{t(`languages.${locale}`)}</Typography>
+                              <Typography>{t(`languages.${language}`)}</Typography>
                               <Typography
                                 variant="caption"
                                 color="textSecondary"
                                 sx={{ ml: '8px' }}
                               >
-                                ({locale})
+                                ({language})
                               </Typography>
                             </Stack>
                           }

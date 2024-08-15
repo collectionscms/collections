@@ -12,7 +12,7 @@ import {
 import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Locale } from '../../../../constant.js';
+import { Language } from '../../../../constant.js';
 import { logger } from '../../../../utilities/logger.js';
 import { ModalDialog } from '../../../components/elements/ModalDialog/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
@@ -23,13 +23,13 @@ import {
 import { ProjectContextProvider, useProject } from '../Context/index.js';
 
 export type Props = {
-  currentLocale: string;
+  currentLanguage: string;
   open: boolean;
   onClose: () => void;
-  onAdded: (locale: string) => void;
+  onAdded: (language: string) => void;
 };
 
-const LocaleSelectionImpl: React.FC<Props> = ({ currentLocale, open, onClose, onAdded }) => {
+const LanguageSelectionImpl: React.FC<Props> = ({ currentLanguage, open, onClose, onAdded }) => {
   const { t } = useTranslation();
   const { updateProject } = useProject();
   const { trigger, isMutating } = updateProject();
@@ -41,7 +41,7 @@ const LocaleSelectionImpl: React.FC<Props> = ({ currentLocale, open, onClose, on
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
-      sourceLanguage: currentLocale,
+      sourceLanguage: currentLanguage,
     },
     resolver: yupResolver(updateSourceLanguage()),
   });
@@ -69,17 +69,17 @@ const LocaleSelectionImpl: React.FC<Props> = ({ currentLocale, open, onClose, on
                 control={control}
                 render={({ field }) => (
                   <RadioGroup value={field.value} name="radio-buttons-group" row>
-                    {Object.values(Locale).map((locale) => (
+                    {Object.values(Language).map((language) => (
                       <FormControlLabel
                         {...field}
-                        key={locale}
-                        value={locale}
+                        key={language}
+                        value={language}
                         control={<Radio />}
                         label={
                           <Stack direction="row">
-                            <Typography>{t(`languages.${locale}`)}</Typography>
+                            <Typography>{t(`languages.${language}`)}</Typography>
                             <Typography variant="caption" color="textSecondary" sx={{ ml: '8px' }}>
-                              ({currentLocale})
+                              ({currentLanguage})
                             </Typography>
                           </Stack>
                         }
@@ -100,6 +100,6 @@ const LocaleSelectionImpl: React.FC<Props> = ({ currentLocale, open, onClose, on
   );
 };
 
-export const LocaleSelection = ComposeWrapper({ context: ProjectContextProvider })(
-  LocaleSelectionImpl
+export const LanguageSelection = ComposeWrapper({ context: ProjectContextProvider })(
+  LanguageSelectionImpl
 );

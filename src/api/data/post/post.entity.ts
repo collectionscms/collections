@@ -8,8 +8,8 @@ import { FileEntity } from '../file/file.entity.js';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 import { UserEntity } from '../user/user.entity.js';
 
-type LocaleStatus = {
-  locale: string;
+type LanguageStatus = {
+  language: string;
   statuses: string[];
   publishedAt: Date | null;
 };
@@ -17,11 +17,11 @@ type LocaleStatus = {
 export class PostEntity extends PrismaBaseEntity<Post> {
   static Construct({
     projectId,
-    locale,
+    language,
     createdById,
   }: {
     projectId: string;
-    locale: string;
+    language: string;
     createdById: string;
   }): { post: PostEntity; content: ContentEntity } {
     const postId = v4();
@@ -37,7 +37,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     const content = ContentEntity.Construct({
       projectId,
       postId,
-      locale,
+      language,
       createdById,
     });
 
@@ -81,7 +81,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
   }
 
   toPostItemResponse(
-    locale: string,
+    language: string,
     contents: {
       content: ContentEntity;
       updatedBy: UserEntity;
@@ -89,22 +89,22 @@ export class PostEntity extends PrismaBaseEntity<Post> {
   ): PostItem {
     const sortedContents = contents.sort((a, b) => b.content.version - a.content.version);
 
-    // Get content of locale
-    const localeContent =
-      sortedContents.filter((c) => c.content.locale === locale)[0] || sortedContents[0];
+    // Get content of language
+    const languageContent =
+      sortedContents.filter((c) => c.content.language === language)[0] || sortedContents[0];
 
-    // Get locale with statuses
-    const localeStatues = this.getLocaleStatues(contents.map((c) => c.content));
+    // Get language with statuses
+    const languageStatues = this.getLanguageStatues(contents.map((c) => c.content));
 
     return {
       id: this.props.id,
-      contentId: localeContent.content.id,
-      title: localeContent.content.title ?? '',
+      contentId: languageContent.content.id,
+      title: languageContent.content.title ?? '',
       slug: this.props.slug,
-      updatedByName: localeContent.updatedBy.name,
+      updatedByName: languageContent.updatedBy.name,
       updatedAt: this.props.updatedAt,
-      localeStatues: Object.entries(localeStatues).map(([locale, value]) => ({
-        locale,
+      languageStatues: Object.entries(languageStatues).map(([language, value]) => ({
+        language,
         currentStatus: value.statuses[0],
         prevStatus: value.statuses[1],
       })),
@@ -112,7 +112,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
   }
 
   toLocalizedWithContentsResponse(
-    locale: string,
+    language: string,
     contents: {
       content: ContentEntity;
       file: FileEntity | null;
@@ -121,43 +121,43 @@ export class PostEntity extends PrismaBaseEntity<Post> {
   ): LocalizedPost {
     const sortedContents = contents.sort((a, b) => b.content.version - a.content.version);
 
-    // Get content of locale. If locale is not found, get the first content.
-    const localeContents = sortedContents.filter((c) => c.content.locale === locale);
-    const localeContent = localeContents[0] || sortedContents[0];
+    // Get content of language. If language is not found, get the first content.
+    const languageContents = sortedContents.filter((c) => c.content.language === language);
+    const languageContent = languageContents[0] || sortedContents[0];
 
-    // Get history of locale
-    const histories = localeContents.reduce(
+    // Get history of language
+    const histories = languageContents.reduce(
       (acc: ContentHistoryEntity[], c) => acc.concat(c.histories),
       []
     );
 
-    // Get locale statues
-    const localeStatues = this.getLocaleStatues(contents.map((c) => c.content));
+    // Get language statues
+    const languageStatues = this.getLanguageStatues(contents.map((c) => c.content));
 
-    // Filter unique locales
-    const locales = [...new Set(contents.map((c) => c.content.locale))];
+    // Filter unique languages
+    const languages = [...new Set(contents.map((c) => c.content.language))];
 
     return {
       id: this.props.id,
       slug: this.props.slug,
-      contentId: localeContent.content.id,
-      currentStatus: localeStatues[localeContent.content.locale].statuses[0],
-      prevStatus: localeStatues[localeContent.content.locale].statuses[1],
-      updatedAt: localeContent.content.updatedAt,
-      title: localeContent.content.title ?? '',
-      body: localeContent.content.body ?? '',
-      bodyJson: localeContent.content.bodyJson ?? '',
-      bodyHtml: localeContent.content.bodyHtml ?? '',
-      contentLocale: localeContent.content.locale,
-      version: localeContent.content.version,
-      locales,
-      file: localeContent.file?.toResponseWithUrl() ?? null,
+      contentId: languageContent.content.id,
+      currentStatus: languageStatues[languageContent.content.language].statuses[0],
+      prevStatus: languageStatues[languageContent.content.language].statuses[1],
+      updatedAt: languageContent.content.updatedAt,
+      title: languageContent.content.title ?? '',
+      body: languageContent.content.body ?? '',
+      bodyJson: languageContent.content.bodyJson ?? '',
+      bodyHtml: languageContent.content.bodyHtml ?? '',
+      contentLanguage: languageContent.content.language,
+      version: languageContent.content.version,
+      languages,
+      file: languageContent.file?.toResponseWithUrl() ?? null,
       histories: histories.map((history) => history.toResponse()),
     };
   }
 
   toPublishedWithContentsResponse(
-    locale: string | null,
+    language: string | null,
     sourceLanguage: string,
     contents: {
       content: ContentEntity;
@@ -167,44 +167,44 @@ export class PostEntity extends PrismaBaseEntity<Post> {
   ): PublishedPost {
     const sortedContents = contents.sort((a, b) => b.content.version - a.content.version);
 
-    // Get content of locale. If locale is not found, get the primary locale content or first content.
-    const localeContents = sortedContents.filter((c) => c.content.locale === locale);
+    // Get content of language. If language is not found, get the primary language content or first content.
+    const languageContents = sortedContents.filter((c) => c.content.language === language);
     const sourceLanguageContents = sortedContents.filter(
-      (c) => c.content.locale === sourceLanguage
+      (c) => c.content.language === sourceLanguage
     );
-    const localeContent = localeContents[0] || sourceLanguageContents[0] || sortedContents[0];
+    const languageContent = languageContents[0] || sourceLanguageContents[0] || sortedContents[0];
 
     return {
       id: this.props.id,
       slug: this.props.slug,
-      title: localeContent.content.title ?? '',
-      body: localeContent.content.bodyHtml ?? '',
-      contentLocale: localeContent.content.locale,
-      file: localeContent.file?.toResponseWithUrl() ?? null,
-      updatedAt: localeContent.content.updatedAt,
-      updatedByName: localeContent.updatedBy.name,
+      title: languageContent.content.title ?? '',
+      body: languageContent.content.bodyHtml ?? '',
+      contentLanguage: languageContent.content.language,
+      file: languageContent.file?.toResponseWithUrl() ?? null,
+      updatedAt: languageContent.content.updatedAt,
+      updatedByName: languageContent.updatedBy.name,
     };
   }
 
-  private getLocaleStatues(contents: ContentEntity[]): { [locale: string]: LocaleStatus } {
+  private getLanguageStatues(contents: ContentEntity[]): { [language: string]: LanguageStatus } {
     return contents.reduce(
-      (acc: { [locale: string]: LocaleStatus }, content) => {
-        const { locale, status, publishedAt } = content;
-        const localeStatus = acc[locale];
+      (acc: { [language: string]: LanguageStatus }, content) => {
+        const { language, status, publishedAt } = content;
+        const languageStatus = acc[language];
 
-        if (!localeStatus) {
-          acc[locale] = {
-            locale,
+        if (!languageStatus) {
+          acc[language] = {
+            language,
             statuses: [status],
             publishedAt,
           };
-        } else if (!localeStatus.publishedAt) {
-          acc[locale].statuses.push(status);
+        } else if (!languageStatus.publishedAt) {
+          acc[language].statuses.push(status);
         }
 
         return acc;
       },
-      {} as { [locale: string]: LocaleStatus }
+      {} as { [language: string]: LanguageStatus }
     );
   }
 }

@@ -17,7 +17,7 @@ export class CreateContentUseCase {
     const entity = ContentEntity.Construct({
       projectId: props.projectId,
       postId: props.id,
-      locale: props.locale,
+      language: props.language,
       createdById: props.userId,
     });
 

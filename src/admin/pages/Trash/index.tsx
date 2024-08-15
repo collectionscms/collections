@@ -17,7 +17,7 @@ const TrashPageImpl: React.FC = () => {
 
   const fields = [
     { field: 'title', label: t('title'), type: cells.text() },
-    { field: 'locale', label: t('language'), type: cells.text() },
+    { field: 'language', label: t('language'), type: cells.text() },
     { field: 'action', label: '', type: cells.text(), width: 80 },
   ];
 
