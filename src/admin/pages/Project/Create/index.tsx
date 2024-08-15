@@ -48,7 +48,7 @@ const CreateProjectPageImpl: React.FC = () => {
   // /////////////////////////////////////
   // Stepper
   // /////////////////////////////////////
-  const steps = [t('project_setting'), t('select_primary_language')];
+  const steps = [t('project_setting'), t('select_source_language')];
 
   const [activeStep, setActiveStep] = useState(0);
   const [projectData, setProjectData] = useState<ProjectData>({

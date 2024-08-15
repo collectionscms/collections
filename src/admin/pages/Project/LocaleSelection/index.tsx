@@ -59,7 +59,7 @@ const LocaleSelectionImpl: React.FC<Props> = ({ currentLocale, open, onClose, on
   return (
     <ModalDialog
       open={open}
-      title={t('change_primary_language')}
+      title={t('change_source_language')}
       body={
         <form>
           <Box sx={{ p: 1, py: 1.5 }}>

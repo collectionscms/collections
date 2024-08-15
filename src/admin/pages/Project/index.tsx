@@ -53,7 +53,7 @@ const ProjectImpl: React.FC = () => {
   const handleUpdateLocale = async () => {
     await mutate();
     setShowSelection(false);
-    enqueueSnackbar(t('toast.updated_primary_locale'), { variant: 'success' });
+    enqueueSnackbar(t('toast.updated_source_language'), { variant: 'success' });
   };
 
   return (
@@ -92,7 +92,7 @@ const ProjectImpl: React.FC = () => {
                 </Grid>
                 <Grid xs={12} sm={6}>
                   <Stack spacing={1}>
-                    <InputLabel htmlFor="projectName">{t('primary_language')}</InputLabel>
+                    <InputLabel htmlFor="projectName">{t('source_language')}</InputLabel>
                     <Stack spacing={1.5} direction="row" alignItems="center">
                       <Stack direction="row">
                         <Typography>

@@ -75,14 +75,14 @@ export const SourceLanguageForm: React.FC<Props> = ({
   return (
     <>
       <Typography variant="h5" gutterBottom sx={{ mb: 2 }}>
-        {t('select_primary_language')}
+        {t('select_source_language')}
       </Typography>
       <ConfirmDiscardDialog open={showPrompt} onDiscard={proceed} onKeepEditing={stay} />
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={3}>
           <Grid xs={12}>
             <Stack spacing={1}>
-              <InputLabel htmlFor="projectName">{t('primary_language')}</InputLabel>
+              <InputLabel htmlFor="projectName">{t('source_language')}</InputLabel>
               <Stack spacing={1} direction="column">
                 <Controller
                   name="sourceLanguage"
