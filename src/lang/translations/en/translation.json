@@ -223,7 +223,7 @@
     "role": "Edit Role",
     "api_key": "Edit Api Key"
   },
-  "locale": {
+  "languages": {
     "en": "English",
     "ja": "Japanese"
   },

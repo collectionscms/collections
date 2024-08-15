@@ -223,7 +223,7 @@
     "role": "ロール 編集",
     "api_key": "APIキー 編集"
   },
-  "locale": {
+  "languages": {
     "en": "英語",
     "ja": "日本語"
   },

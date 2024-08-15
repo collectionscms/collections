@@ -77,7 +77,7 @@ const LocaleSelectionImpl: React.FC<Props> = ({ currentLocale, open, onClose, on
                         control={<Radio />}
                         label={
                           <Stack direction="row">
-                            <Typography>{t(`locale.${locale}`)}</Typography>
+                            <Typography>{t(`languages.${locale}`)}</Typography>
                             <Typography variant="caption" color="textSecondary" sx={{ ml: '8px' }}>
                               ({currentLocale})
                             </Typography>

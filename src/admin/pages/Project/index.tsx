@@ -96,10 +96,12 @@ const ProjectImpl: React.FC = () => {
                     <Stack spacing={1.5} direction="row" alignItems="center">
                       <Stack direction="row">
                         <Typography>
-                          {t(`locale.${project.primaryLocale}` as unknown as TemplateStringsArray)}
+                          {t(
+                            `languages.${project.sourceLanguage}` as unknown as TemplateStringsArray
+                          )}
                         </Typography>
                         <Typography variant="caption" color="textSecondary" sx={{ ml: '8px' }}>
-                          ({project.primaryLocale})
+                          ({project.sourceLanguage})
                         </Typography>
                       </Stack>
                       <Button

@@ -151,7 +151,7 @@ export const PostHeader: React.FC<Props> = ({
       <ModalDialog
         open={openContentTrash}
         title={t('dialog.confirm_content_trash_title', {
-          locale: t(`locale.${currentLocale}` as unknown as TemplateStringsArray),
+          locale: t(`languages.${currentLocale}` as unknown as TemplateStringsArray),
         })}
         body={t('dialog.confirm_content_trash')}
         execute={{ label: t('move_to_trash'), action: handleTrashLocaleContent }}
@@ -175,7 +175,7 @@ export const PostHeader: React.FC<Props> = ({
             <Button variant="text" color="secondary" ref={anchorRef} onClick={handleLocaleOpen}>
               <Stack direction="row" alignItems="center" gap={1}>
                 <Typography>
-                  {t(`locale.${currentLocale}` as unknown as TemplateStringsArray)}
+                  {t(`languages.${currentLocale}` as unknown as TemplateStringsArray)}
                 </Typography>
                 <Icon name="ChevronDown" size={14} />
               </Stack>
@@ -244,7 +244,7 @@ export const PostHeader: React.FC<Props> = ({
               <Icon name="CircleMinus" size={16} />
               <Typography sx={{ pl: 1 }}>
                 {t('remove_locale_content', {
-                  locale: t(`locale.${currentLocale}` as unknown as TemplateStringsArray),
+                  locale: t(`languages.${currentLocale}` as unknown as TemplateStringsArray),
                 })}
               </Typography>
             </MenuItem>
@@ -281,7 +281,7 @@ export const PostHeader: React.FC<Props> = ({
               selected={currentLocale === locale}
               key={locale}
             >
-              <Typography>{t(`locale.${locale}` as unknown as TemplateStringsArray)}</Typography>
+              <Typography>{t(`languages.${locale}` as unknown as TemplateStringsArray)}</Typography>
               <Typography variant="caption" color="textSecondary" sx={{ ml: '8px' }}>
                 ({locale})
               </Typography>
