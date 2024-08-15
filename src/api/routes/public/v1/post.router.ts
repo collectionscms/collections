@@ -18,7 +18,7 @@ router.get(
     const validated = getPublishedPostsUseCaseSchema.safeParse({
       projectId: res.projectRole?.id,
       locale: req.query?.locale,
-      primaryLocale: res.projectRole?.primaryLocale,
+      sourceLanguage: res.projectRole?.sourceLanguage,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 

@@ -85,7 +85,7 @@ export const LocalizedContent: React.FC<Props> = ({ open, post, onClose, onChang
                         }
                         label={
                           <Stack direction="row">
-                            <Typography>{t(`locale.${locale}`)}</Typography>
+                            <Typography>{t(`languages.${locale}`)}</Typography>
                             <Typography variant="caption" color="textSecondary" sx={{ ml: '8px' }}>
                               ({locale})
                             </Typography>

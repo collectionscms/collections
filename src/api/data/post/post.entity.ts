@@ -1,5 +1,4 @@
 import { Post } from '@prisma/client';
-import { locale } from 'dayjs';
 import { v4 } from 'uuid';
 import { UnexpectedException } from '../../../exceptions/unexpected.js';
 import { LocalizedPost, PostItem, PublishedPost } from '../../../types/index.js';
@@ -159,7 +158,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
 
   toPublishedWithContentsResponse(
     locale: string | null,
-    primaryLocale: string,
+    sourceLanguage: string,
     contents: {
       content: ContentEntity;
       file: FileEntity | null;
@@ -170,8 +169,10 @@ export class PostEntity extends PrismaBaseEntity<Post> {
 
     // Get content of locale. If locale is not found, get the primary locale content or first content.
     const localeContents = sortedContents.filter((c) => c.content.locale === locale);
-    const primaryLocaleContents = sortedContents.filter((c) => c.content.locale === primaryLocale);
-    const localeContent = localeContents[0] || primaryLocaleContents[0] || sortedContents[0];
+    const sourceLanguageContents = sortedContents.filter(
+      (c) => c.content.locale === sourceLanguage
+    );
+    const localeContent = localeContents[0] || sourceLanguageContents[0] || sortedContents[0];
 
     return {
       id: this.props.id,

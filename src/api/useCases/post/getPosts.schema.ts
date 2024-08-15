@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 export const getPostsUseCaseSchema = z.object({
   projectId: z.string(),
-  primaryLocale: z.string(),
+  sourceLanguage: z.string(),
   userId: z.string(),
 });
 

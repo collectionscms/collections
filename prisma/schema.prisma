@@ -14,7 +14,7 @@ model Project {
   subdomain         String             @unique @db.VarChar(255)
   iconUrl           String?            @db.VarChar(255)
   enabled           Boolean            @default(true)
-  primaryLocale     String             @db.VarChar(255)
+  sourceLanguage    String             @db.VarChar(255)
   createdAt         DateTime           @default(now()) @db.Timestamptz(6)
   updatedAt         DateTime           @updatedAt @db.Timestamptz(6)
   userProjects      UserProject[]

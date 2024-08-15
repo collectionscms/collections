@@ -14,7 +14,7 @@ export class GetPostsUseCase {
     const records = await this.postRepository.findMany(this.prisma, options);
 
     return records.map((record) => {
-      return record.post.toPostItemResponse(props.primaryLocale, record.contents);
+      return record.post.toPostItemResponse(props.sourceLanguage, record.contents);
     });
   }
 }

@@ -43,7 +43,7 @@ router.post(
     const validated = createProjectUseCaseSchema.safeParse({
       userId: res.user.id,
       name: req.body.name,
-      primaryLocale: req.body.primaryLocale,
+      sourceLanguage: req.body.sourceLanguage,
       subdomain: req.body.subdomain,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
@@ -68,7 +68,7 @@ router.patch(
     const validated = updateProjectUseCaseSchema.safeParse({
       id: res.projectRole?.id,
       name: req.body.name,
-      primaryLocale: req.body.primaryLocale,
+      sourceLanguage: req.body.sourceLanguage,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
@@ -79,7 +79,7 @@ router.patch(
     await projectUseCase.execute({
       id: validated.data.id,
       name: validated.data.name,
-      primaryLocale: validated.data.primaryLocale,
+      sourceLanguage: validated.data.sourceLanguage,
     });
 
     res.status(204).end();

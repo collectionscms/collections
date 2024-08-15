@@ -18,8 +18,8 @@ import { ModalDialog } from '../../../components/elements/ModalDialog/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
 import {
   FormValues,
-  updatePrimaryLocale,
-} from '../../../fields/validators/projects/updatePrimaryLocale.js';
+  updateSourceLanguage,
+} from '../../../fields/validators/projects/updateSourceLanguage.js';
 import { ProjectContextProvider, useProject } from '../Context/index.js';
 
 export type Props = {
@@ -41,16 +41,16 @@ const LocaleSelectionImpl: React.FC<Props> = ({ currentLocale, open, onClose, on
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
-      primaryLocale: currentLocale,
+      sourceLanguage: currentLocale,
     },
-    resolver: yupResolver(updatePrimaryLocale()),
+    resolver: yupResolver(updateSourceLanguage()),
   });
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
       reset(form);
       await trigger(form);
-      onAdded(form.primaryLocale);
+      onAdded(form.sourceLanguage);
     } catch (error) {
       logger.error(error);
     }
@@ -65,7 +65,7 @@ const LocaleSelectionImpl: React.FC<Props> = ({ currentLocale, open, onClose, on
           <Box sx={{ p: 1, py: 1.5 }}>
             <FormControl component="fieldset">
               <Controller
-                name="primaryLocale"
+                name="sourceLanguage"
                 control={control}
                 render={({ field }) => (
                   <RadioGroup value={field.value} name="radio-buttons-group" row>
@@ -88,7 +88,7 @@ const LocaleSelectionImpl: React.FC<Props> = ({ currentLocale, open, onClose, on
                   </RadioGroup>
                 )}
               />
-              <FormHelperText error>{errors.primaryLocale?.message}</FormHelperText>
+              <FormHelperText error>{errors.sourceLanguage?.message}</FormHelperText>
             </FormControl>
           </Box>
         </form>

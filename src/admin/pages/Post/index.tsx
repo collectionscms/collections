@@ -141,7 +141,7 @@ export const PostPageImpl: React.FC = () => {
         title={<></>}
         secondary={
           <Stack direction="row" alignItems="center" spacing={1}>
-            <ApiPreview path={`posts/?locale=${project.primaryLocale}`} apiKeys={apiKeys} />
+            <ApiPreview path={`posts/?locale=${project.sourceLanguage}`} apiKeys={apiKeys} />
             {hasPermission('createPost') && <CreateNewButton onClick={handleCreatePost} />}
           </Stack>
         }

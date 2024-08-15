@@ -59,7 +59,7 @@ const ProjectImpl: React.FC = () => {
   return (
     <>
       <LocaleSelection
-        currentLocale={project.primaryLocale}
+        currentLocale={project.sourceLanguage}
         open={showSelection}
         onClose={() => setShowSelection(false)}
         onAdded={() => handleUpdateLocale()}
