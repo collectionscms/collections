@@ -1,7 +1,7 @@
 import { v4 } from 'uuid';
 import { roleActions } from '../../data/permission/permission.entity.js';
 import { BypassPrismaType } from '../prisma/client.js';
-import { enProject, jaProject } from './createProjects.js';
+import { usaProject, jpProject } from './createProjects.js';
 
 export const enAdminRole = v4();
 export const enEditorRole = v4();
@@ -46,7 +46,7 @@ export const createRoles = async (prisma: BypassPrismaType): Promise<void> => {
       name: 'Administrator',
       description: 'Administrator role with all permissions.',
       isAdmin: true,
-      projectId: enProject,
+      projectId: usaProject,
       permissions: [],
     },
     {
@@ -54,7 +54,7 @@ export const createRoles = async (prisma: BypassPrismaType): Promise<void> => {
       name: 'Editor',
       description: 'Editor role with permission to edit and publish posts.',
       isAdmin: false,
-      projectId: enProject,
+      projectId: usaProject,
       permissions: editorPermissions,
     },
     {
@@ -62,7 +62,7 @@ export const createRoles = async (prisma: BypassPrismaType): Promise<void> => {
       name: 'ContributorRole',
       description: 'ContributorRole role with permission to create posts.',
       isAdmin: false,
-      projectId: enProject,
+      projectId: usaProject,
       permissions: contributorPermissions,
     },
     {
@@ -70,7 +70,7 @@ export const createRoles = async (prisma: BypassPrismaType): Promise<void> => {
       name: 'Viewer',
       description: 'Viewer role with permission to read posts.',
       isAdmin: false,
-      projectId: enProject,
+      projectId: usaProject,
       permissions: viewerPermissions,
     },
   ];
@@ -81,7 +81,7 @@ export const createRoles = async (prisma: BypassPrismaType): Promise<void> => {
       name: '管理者',
       description: 'すべての権限をもつ管理者ロール',
       isAdmin: true,
-      projectId: jaProject,
+      projectId: jpProject,
       permissions: [],
     },
     {
@@ -89,7 +89,7 @@ export const createRoles = async (prisma: BypassPrismaType): Promise<void> => {
       name: 'エディター',
       description: '記事の編集・公開権限をもつ編集者ロール',
       isAdmin: false,
-      projectId: jaProject,
+      projectId: jpProject,
       permissions: editorPermissions,
     },
     {
@@ -97,7 +97,7 @@ export const createRoles = async (prisma: BypassPrismaType): Promise<void> => {
       name: '投稿者',
       description: '記事の作成権限をもつ投稿者ロール',
       isAdmin: false,
-      projectId: jaProject,
+      projectId: jpProject,
       permissions: contributorPermissions,
     },
     {
@@ -105,7 +105,7 @@ export const createRoles = async (prisma: BypassPrismaType): Promise<void> => {
       name: 'ビューアー',
       description: '記事の閲覧権限をもつビューアーロール',
       isAdmin: false,
-      projectId: jaProject,
+      projectId: jpProject,
       permissions: viewerPermissions,
     },
   ];

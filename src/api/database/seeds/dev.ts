@@ -4,7 +4,7 @@ import { bypassPrisma } from '../prisma/client.js';
 import { createApiKeys } from './createApiKeys.js';
 import { createPermissions } from './createPermissions.js';
 import { createPost } from './createPost.js';
-import { createProjects, enProject, jaProject } from './createProjects.js';
+import { createProjects, usaProject, jpProject } from './createProjects.js';
 import {
   createRoles,
   enAdminRole,
@@ -27,30 +27,30 @@ export const seedDev = async (): Promise<void> => {
       await createUsers(tx, getUsers());
       await createApiKeys(tx);
 
-      for (const project of [enProject, jaProject]) {
+      for (const project of [usaProject, jpProject]) {
         // draft
         await createPost(tx, project, {
           status: contentStatus.draft,
-          language: project === enProject ? 'en' : 'ja',
+          language: project === usaProject ? 'en' : 'ja',
         });
 
         // review
         await createPost(tx, project, {
           status: contentStatus.review,
-          language: project === enProject ? 'en' : 'ja',
+          language: project === usaProject ? 'en' : 'ja',
         });
 
         // published
         await createPost(tx, project, {
           status: contentStatus.published,
-          language: project === enProject ? 'en' : 'ja',
+          language: project === usaProject ? 'en' : 'ja',
           publishedAt: new Date(),
         });
 
         // archived
         await createPost(tx, project, {
           status: contentStatus.archived,
-          language: project === enProject ? 'en' : 'ja',
+          language: project === usaProject ? 'en' : 'ja',
         });
       }
     });
@@ -70,11 +70,11 @@ function getUsers() {
       password: 'password',
       userProjects: [
         {
-          projectId: enProject,
+          projectId: usaProject,
           roleId: enAdminRole,
         },
         {
-          projectId: jaProject,
+          projectId: jpProject,
           roleId: jaAdminRole,
         },
       ],
@@ -85,11 +85,11 @@ function getUsers() {
       password: 'password',
       userProjects: [
         {
-          projectId: enProject,
+          projectId: usaProject,
           roleId: enEditorRole,
         },
         {
-          projectId: jaProject,
+          projectId: jpProject,
           roleId: jaEditorRole,
         },
       ],
@@ -100,11 +100,11 @@ function getUsers() {
       password: 'password',
       userProjects: [
         {
-          projectId: enProject,
+          projectId: usaProject,
           roleId: enContributorRole,
         },
         {
-          projectId: jaProject,
+          projectId: jpProject,
           roleId: jaContributorRole,
         },
       ],
@@ -115,11 +115,11 @@ function getUsers() {
       password: 'password',
       userProjects: [
         {
-          projectId: enProject,
+          projectId: usaProject,
           roleId: enViewerRole,
         },
         {
-          projectId: jaProject,
+          projectId: jpProject,
           roleId: jaViewerRole,
         },
       ],

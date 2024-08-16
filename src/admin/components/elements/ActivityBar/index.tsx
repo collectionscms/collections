@@ -46,7 +46,11 @@ export const ActivityBar: React.FC = () => {
                     sx={{ opacity: currentProjectRole?.project.id === project.id ? '1' : '0.5' }}
                   >
                     {project.iconUrl ? (
-                      <img src={project.iconUrl} alt={project.name} />
+                      <Avatar
+                        variant="square"
+                        sx={{ borderRadius: 1, objectFit: 'cover', width: 36, height: 36 }}
+                        src={project.iconUrl}
+                      />
                     ) : (
                       <Avatar
                         size="sm"
