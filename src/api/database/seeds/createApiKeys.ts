@@ -1,5 +1,5 @@
 import { v4 } from 'uuid';
-import { roleActions } from '../../data/permission/permission.entity.js';
+import { apiKeyActions } from '../../data/permission/permission.entity.js';
 import { BypassPrismaType } from '../prisma/client.js';
 import { enProject, jaProject } from './createProjects.js';
 import { adminUser } from './createUsers.js';
@@ -8,39 +8,36 @@ export const enEditorRole = v4();
 export const jaEditorRole = v4();
 
 export const createApiKeys = async (prisma: BypassPrismaType): Promise<void> => {
-  const enProjectApiKeys = [
+  const apiKeys = [
     {
       id: enEditorRole,
-      name: 'Editor',
+      name: 'default',
       isAdmin: false,
       projectId: enProject,
-      permissions: roleActions.post,
+      permissions: apiKeyActions.post,
     },
-  ];
-
-  const jaProjectApiKeys = [
     {
       id: jaEditorRole,
-      name: 'エディター',
+      name: 'default',
       isAdmin: false,
       projectId: jaProject,
-      permissions: roleActions.post,
+      permissions: apiKeyActions.post,
     },
   ];
 
-  for (const role of [...enProjectApiKeys, ...jaProjectApiKeys]) {
+  for (const apiKey of apiKeys) {
     await prisma.apiKey.create({
       data: {
         key: v4(),
-        id: role.id,
-        name: role.name,
-        projectId: role.projectId,
+        id: apiKey.id,
+        name: apiKey.name,
+        projectId: apiKey.projectId,
         createdById: adminUser,
         updatedById: adminUser,
         apiKeyPermissions: {
-          create: role.permissions.map((permission) => ({
+          create: apiKey.permissions.map((permission) => ({
             id: v4(),
-            projectId: role.projectId,
+            projectId: apiKey.projectId,
             permissionAction: permission,
           })),
         },
