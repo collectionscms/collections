@@ -1,3 +1,4 @@
+import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Button,
   FormControlLabel,
@@ -9,19 +10,17 @@ import {
   Typography,
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
+import { enqueueSnackbar } from 'notistack';
 import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { Language } from '../../../../constant.js';
+import { useTranslation } from 'react-i18next';
+import { languages } from '../../../../constatns/languages.js';
+import { logger } from '../../../../utilities/logger.js';
+import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscardDialog/index.js';
 import {
   FormValues,
   selectSourceLanguage,
 } from '../../../fields/validators/projects/selectSourceLanguage.js';
-
-import { yupResolver } from '@hookform/resolvers/yup';
-import { enqueueSnackbar } from 'notistack';
-import { useTranslation } from 'react-i18next';
-import { logger } from '../../../../utilities/logger.js';
-import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscardDialog/index.js';
 import { useUnsavedChangesPrompt } from '../../../hooks/useUnsavedChangesPrompt.js';
 import { useProject } from '../Context/index.js';
 import { ProjectData } from './ProjectSettingsForm.js';
@@ -89,21 +88,23 @@ export const SourceLanguageForm: React.FC<Props> = ({
                   control={control}
                   render={({ field }) => (
                     <RadioGroup value={field.value} name="radio-buttons-group" row>
-                      {Object.values(Language).map((language) => (
+                      {languages.map((language) => (
                         <FormControlLabel
                           {...field}
-                          key={language}
-                          value={language}
+                          key={language.code}
+                          value={language.code}
                           control={<Radio />}
                           label={
                             <Stack direction="row">
-                              <Typography>{t(`languages.${language}`)}</Typography>
+                              <Typography>
+                                {t(`languages.${language.code}` as unknown as TemplateStringsArray)}
+                              </Typography>
                               <Typography
                                 variant="caption"
                                 color="textSecondary"
                                 sx={{ ml: '8px' }}
                               >
-                                ({language})
+                                ({language.code})
                               </Typography>
                             </Stack>
                           }
@@ -119,7 +120,7 @@ export const SourceLanguageForm: React.FC<Props> = ({
           <Grid xs={12}>
             <Stack direction="row" justifyContent="space-between">
               <Button onClick={handleBack}>{t('back')}</Button>
-              <Button variant="contained" type="submit">
+              <Button variant="contained" type="submit" disabled={isMutating}>
                 {t('add_project')}
               </Button>
             </Stack>

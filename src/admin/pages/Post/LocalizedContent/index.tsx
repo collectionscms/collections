@@ -4,7 +4,7 @@ import { enqueueSnackbar } from 'notistack';
 import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Language } from '../../../../constant.js';
+import { languages } from '../../../../constatns/languages.js';
 import { LocalizedPost } from '../../../../types/index.js';
 import { logger } from '../../../../utilities/logger.js';
 import { ModalDialog } from '../../../components/elements/ModalDialog/index.js';
@@ -25,9 +25,9 @@ export const LocalizedContent: React.FC<Props> = ({ open, post, onClose, onChang
   const { t } = useTranslation();
   const { trigger: createBulkContentTrigger } = createBulkContent(post.id);
   const hasTrashPost = hasPermission('trashPost');
-  const enabledLanguages = Object.values(Language).filter(
-    (language) => !post.languages.includes(language)
-  );
+  const enabledLanguages = languages
+    .filter((language) => !post.languages.includes(language.code))
+    .map((language) => language.code);
 
   const {
     watch,
@@ -87,7 +87,9 @@ export const LocalizedContent: React.FC<Props> = ({ open, post, onClose, onChang
                         }
                         label={
                           <Stack direction="row">
-                            <Typography>{t(`languages.${language}`)}</Typography>
+                            <Typography>
+                              {t(`languages.${language}` as unknown as TemplateStringsArray)}
+                            </Typography>
                             <Typography variant="caption" color="textSecondary" sx={{ ml: '8px' }}>
                               ({language})
                             </Typography>
