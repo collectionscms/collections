@@ -3,11 +3,7 @@ import {
   Autocomplete,
   Box,
   Button,
-  FormControlLabel,
   FormHelperText,
-  InputLabel,
-  Radio,
-  RadioGroup,
   Stack,
   TextField,
   Typography,
@@ -15,7 +11,7 @@ import {
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { enqueueSnackbar } from 'notistack';
 import React from 'react';
-import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { languages } from '../../../../constatns/languages.js';
 import { logger } from '../../../../utilities/logger.js';

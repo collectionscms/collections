@@ -226,7 +226,10 @@
   },
   "languages": {
     "en": "English",
-    "ja": "Japanese"
+    "es": "Spanish",
+    "ja": "Japanese",
+    "pt": "Portuguese",
+    "zh": "Chinese"
   },
   "editor": {
     "text": "Text",
