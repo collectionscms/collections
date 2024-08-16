@@ -102,13 +102,15 @@ const ProjectImpl: React.FC = () => {
                       autoHighlight
                       isOptionEqualToValue={(option, value) => option.code === value?.code}
                       getOptionLabel={(option) =>
-                        `${t(`languages.${option.code}` as unknown as TemplateStringsArray)} (${option.code})`
+                        `${t(
+                          `languages.${option.code}` as unknown as TemplateStringsArray
+                        )} (${option.code.toUpperCase()})`
                       }
                       renderOption={(props, option) => (
                         <Box component="li" {...props}>
                           {t(`languages.${option.code}` as unknown as TemplateStringsArray)}
                           <Typography variant="caption" color="text.secondary" sx={{ ml: 1 }}>
-                            ({option.code})
+                            ({option.code.toUpperCase()})
                           </Typography>
                           {option.isSourceLanguage && (
                             <Typography variant="caption" color="text.secondary" sx={{ ml: 1 }}>
