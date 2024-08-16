@@ -1,5 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
+  Autocomplete,
+  Box,
   Button,
   FormControlLabel,
   FormHelperText,
@@ -7,6 +9,7 @@ import {
   Radio,
   RadioGroup,
   Stack,
+  TextField,
   Typography,
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
@@ -46,7 +49,8 @@ export const SourceLanguageForm: React.FC<Props> = ({
   const { trigger, isMutating } = createProject();
 
   const {
-    control,
+    watch,
+    setValue,
     handleSubmit,
     formState: { isDirty, errors },
   } = useForm<FormValues>({
@@ -79,42 +83,45 @@ export const SourceLanguageForm: React.FC<Props> = ({
       <ConfirmDiscardDialog open={showPrompt} onDiscard={proceed} onKeepEditing={stay} />
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={3}>
-          <Grid xs={12}>
-            <Stack spacing={1}>
-              <InputLabel htmlFor="projectName">{t('source_language')}</InputLabel>
-              <Stack spacing={1} direction="column">
-                <Controller
-                  name="sourceLanguage"
-                  control={control}
-                  render={({ field }) => (
-                    <RadioGroup value={field.value} name="radio-buttons-group" row>
-                      {languages.map((language) => (
-                        <FormControlLabel
-                          {...field}
-                          key={language.code}
-                          value={language.code}
-                          control={<Radio />}
-                          label={
-                            <Stack direction="row">
-                              <Typography>
-                                {t(`languages.${language.code}` as unknown as TemplateStringsArray)}
-                              </Typography>
-                              <Typography
-                                variant="caption"
-                                color="textSecondary"
-                                sx={{ ml: '8px' }}
-                              >
-                                ({language.code})
-                              </Typography>
-                            </Stack>
-                          }
-                        />
-                      ))}
-                    </RadioGroup>
-                  )}
-                />
-                <FormHelperText error>{errors.sourceLanguage?.message}</FormHelperText>
-              </Stack>
+          <Grid xs={12} sm={6}>
+            <Stack spacing={1} direction="column">
+              <Autocomplete
+                fullWidth
+                onChange={(event, newValue) => {
+                  setValue('sourceLanguage', newValue === null ? '' : newValue.code);
+                }}
+                options={languages}
+                autoHighlight
+                isOptionEqualToValue={(option, value) => option.code === value?.code}
+                getOptionLabel={(option) =>
+                  `${t(`languages.${option.code}` as unknown as TemplateStringsArray)} (${option.code})`
+                }
+                renderOption={(props, option) => (
+                  <Box component="li" {...props}>
+                    {t(`languages.${option.code}` as unknown as TemplateStringsArray)}
+                    <Typography variant="caption" color="text.secondary" sx={{ ml: 1 }}>
+                      ({option.code})
+                    </Typography>
+                    {option.isSourceLanguage && (
+                      <Typography variant="caption" color="text.secondary" sx={{ ml: 1 }}>
+                        - {t('translatable')}
+                      </Typography>
+                    )}
+                  </Box>
+                )}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    placeholder={t('choose_language')}
+                    name="language"
+                    inputProps={{
+                      ...params.inputProps,
+                      autoComplete: 'off',
+                    }}
+                  />
+                )}
+              />
+              <FormHelperText error>{errors.sourceLanguage?.message}</FormHelperText>
             </Stack>
           </Grid>
           <Grid xs={12}>
