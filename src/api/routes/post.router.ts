@@ -7,8 +7,6 @@ import { projectPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';
 import { validateAccess } from '../middlewares/validateAccess.js';
-import { createBulkContentUseCaseSchema } from '../useCases/content/createBulkContent.schema.js';
-import { CreateBulkContentUseCase } from '../useCases/content/createBulkContent.useCase.js';
 import { createContentUseCaseSchema } from '../useCases/content/createContent.schema.js';
 import { CreateContentUseCase } from '../useCases/content/createContent.useCase.js';
 import { trashLanguageContentUseCaseSchema } from '../useCases/content/trashLanguageContent.schema.js';
@@ -130,29 +128,6 @@ router.post(
     res.json({
       content,
     });
-  })
-);
-
-router.post(
-  '/posts/:id/contents/bulk',
-  authenticatedUser,
-  validateAccess(['createPost']),
-  asyncHandler(async (req: Request, res: Response) => {
-    const validated = createBulkContentUseCaseSchema.safeParse({
-      postId: req.params.id,
-      projectId: res.projectRole?.id,
-      userId: res.user.id,
-      languages: req.body.languages,
-    });
-    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
-
-    const useCase = new CreateBulkContentUseCase(
-      projectPrisma(validated.data.projectId),
-      new ContentRepository(),
-      new ContentHistoryRepository()
-    );
-    await useCase.execute(validated.data);
-    res.status(204).send();
   })
 );
 

@@ -217,14 +217,12 @@ export const EditPostPageImpl: React.FC = () => {
     setOpenAddLanguage(false);
   };
 
-  const handleChangedLanguage = (languages: string[]) => {
+  const handleChangedLanguage = (language: string) => {
     setOpenAddLanguage(false);
-    handleChangeLanguage(
-      languages.find((language) => language !== post.contentLanguage) ?? post.contentLanguage
-    );
+    handleChangeLanguage(language);
     mutate({
       ...post,
-      languages,
+      languages: [...post.languages, language],
     });
   };
 
@@ -350,7 +348,7 @@ export const EditPostPageImpl: React.FC = () => {
         open={openAddLanguage}
         post={post}
         onClose={handleCloseAddLanguage}
-        onChanged={(languages) => handleChangedLanguage(languages)}
+        onChanged={(language) => handleChangedLanguage(language)}
       />
     </>
   );
