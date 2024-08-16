@@ -1,27 +1,25 @@
+import { yupResolver } from '@hookform/resolvers/yup';
 import {
+  Autocomplete,
+  Box,
   Button,
-  FormControlLabel,
   FormHelperText,
-  InputLabel,
-  Radio,
-  RadioGroup,
   Stack,
+  TextField,
   Typography,
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
+import { enqueueSnackbar } from 'notistack';
 import React from 'react';
-import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { Language } from '../../../../constant.js';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { languages } from '../../../../constatns/languages.js';
+import { logger } from '../../../../utilities/logger.js';
+import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscardDialog/index.js';
 import {
   FormValues,
   selectSourceLanguage,
 } from '../../../fields/validators/projects/selectSourceLanguage.js';
-
-import { yupResolver } from '@hookform/resolvers/yup';
-import { enqueueSnackbar } from 'notistack';
-import { useTranslation } from 'react-i18next';
-import { logger } from '../../../../utilities/logger.js';
-import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscardDialog/index.js';
 import { useUnsavedChangesPrompt } from '../../../hooks/useUnsavedChangesPrompt.js';
 import { useProject } from '../Context/index.js';
 import { ProjectData } from './ProjectSettingsForm.js';
@@ -47,7 +45,8 @@ export const SourceLanguageForm: React.FC<Props> = ({
   const { trigger, isMutating } = createProject();
 
   const {
-    control,
+    watch,
+    setValue,
     handleSubmit,
     formState: { isDirty, errors },
   } = useForm<FormValues>({
@@ -80,46 +79,51 @@ export const SourceLanguageForm: React.FC<Props> = ({
       <ConfirmDiscardDialog open={showPrompt} onDiscard={proceed} onKeepEditing={stay} />
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={3}>
-          <Grid xs={12}>
-            <Stack spacing={1}>
-              <InputLabel htmlFor="projectName">{t('source_language')}</InputLabel>
-              <Stack spacing={1} direction="column">
-                <Controller
-                  name="sourceLanguage"
-                  control={control}
-                  render={({ field }) => (
-                    <RadioGroup value={field.value} name="radio-buttons-group" row>
-                      {Object.values(Language).map((language) => (
-                        <FormControlLabel
-                          {...field}
-                          key={language}
-                          value={language}
-                          control={<Radio />}
-                          label={
-                            <Stack direction="row">
-                              <Typography>{t(`languages.${language}`)}</Typography>
-                              <Typography
-                                variant="caption"
-                                color="textSecondary"
-                                sx={{ ml: '8px' }}
-                              >
-                                ({language})
-                              </Typography>
-                            </Stack>
-                          }
-                        />
-                      ))}
-                    </RadioGroup>
-                  )}
-                />
-                <FormHelperText error>{errors.sourceLanguage?.message}</FormHelperText>
-              </Stack>
+          <Grid xs={12} sm={6}>
+            <Stack spacing={1} direction="column">
+              <Autocomplete
+                fullWidth
+                onChange={(event, newValue) => {
+                  setValue('sourceLanguage', newValue === null ? '' : newValue.code);
+                }}
+                options={languages}
+                autoHighlight
+                isOptionEqualToValue={(option, value) => option.code === value?.code}
+                getOptionLabel={(option) =>
+                  `${t(`languages.${option.code}` as unknown as TemplateStringsArray)} (${option.code})`
+                }
+                renderOption={(props, option) => (
+                  <Box component="li" {...props}>
+                    {t(`languages.${option.code}` as unknown as TemplateStringsArray)}
+                    <Typography variant="caption" color="text.secondary" sx={{ ml: 1 }}>
+                      ({option.code})
+                    </Typography>
+                    {option.isSourceLanguage && (
+                      <Typography variant="caption" color="text.secondary" sx={{ ml: 1 }}>
+                        - {t('translatable')}
+                      </Typography>
+                    )}
+                  </Box>
+                )}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    placeholder={t('choose_language')}
+                    name="language"
+                    inputProps={{
+                      ...params.inputProps,
+                      autoComplete: 'off',
+                    }}
+                  />
+                )}
+              />
+              <FormHelperText error>{errors.sourceLanguage?.message}</FormHelperText>
             </Stack>
           </Grid>
           <Grid xs={12}>
             <Stack direction="row" justifyContent="space-between">
-              <Button onClick={handleBack}>Back</Button>
-              <Button variant="contained" type="submit">
+              <Button onClick={handleBack}>{t('back')}</Button>
+              <Button variant="contained" type="submit" disabled={isMutating}>
                 {t('add_project')}
               </Button>
             </Stack>

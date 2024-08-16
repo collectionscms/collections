@@ -27,9 +27,6 @@ type PostContext = {
   trashPost: (postId: string) => SWRMutationResponse<void, any, string>;
   updatePost: (postId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
   createContent: (postId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
-  createBulkContent: (
-    postId: string
-  ) => SWRMutationResponse<void, any, string, Record<string, any>>;
   trashLanguageContent: (
     postId: string,
     language: string
@@ -93,14 +90,6 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
   const createContent = (postId: string) =>
     useSWRMutation(
       `/posts/${postId}/contents`,
-      async (url: string, { arg }: { arg: Record<string, any> }) => {
-        return api.post(url, arg).then((res) => res.data);
-      }
-    );
-
-  const createBulkContent = (postId: string) =>
-    useSWRMutation(
-      `/posts/${postId}/contents/bulk`,
       async (url: string, { arg }: { arg: Record<string, any> }) => {
         return api.post(url, arg).then((res) => res.data);
       }
@@ -175,7 +164,6 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       createContent,
       updateContent,
       trashContent,
-      createBulkContent,
       trashLanguageContent,
       requestReview,
       publish,
@@ -193,7 +181,6 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       createContent,
       updateContent,
       trashContent,
-      createBulkContent,
       trashLanguageContent,
       requestReview,
       publish,

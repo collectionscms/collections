@@ -133,10 +133,8 @@
   "write_the_text": "本文を書く",
   "characters": "文字",
   "saved": "保存しました",
-  "add_localized_content": "ローカライズコンテンツの追加",
-  "source_language": "記事の基準言語",
-  "select_source_language": "記事の基準言語を選択",
-  "change_source_language": "記事の基準言語を変更",
+  "source_language": "記事の原文言語",
+  "select_source_language": "記事の原文言語を選択",
   "add_to": "追加する",
   "add_thumbnail": "サムネイル画像を追加",
   "invite": "招待",
@@ -181,6 +179,8 @@
   "add_language_content": "言語を追加する",
   "remove_language_content": "{{language}}版を削除する",
   "no_additional_languages": "追加できる言語はありません",
+  "choose_language": "言語を選択してください",
+  "translatable": "翻訳可能",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",
@@ -210,7 +210,6 @@
     "joined_project": "プロジェクトに参加しました",
     "move_to_trash": "ごみ箱へ移動しました",
     "post_restored": "記事を復元しました",
-    "updated_source_language": "原文言語を変更しました",
     "copied": "コピーしました"
   },
   "create": {
@@ -226,7 +225,10 @@
   },
   "languages": {
     "en": "英語",
-    "ja": "日本語"
+    "es": "スペイン語",
+    "ja": "日本語",
+    "pt": "ポルトガル語",
+    "zh": "中国語"
   },
   "editor": {
     "text": "テキスト",
