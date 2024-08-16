@@ -118,7 +118,7 @@ export const SourceLanguageForm: React.FC<Props> = ({
           </Grid>
           <Grid xs={12}>
             <Stack direction="row" justifyContent="space-between">
-              <Button onClick={handleBack}>Back</Button>
+              <Button onClick={handleBack}>{t('back')}</Button>
               <Button variant="contained" type="submit">
                 {t('add_project')}
               </Button>
