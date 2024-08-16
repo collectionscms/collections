@@ -1,10 +1,20 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button, FormHelperText, InputLabel, Stack, TextField, Typography } from '@mui/material';
+import {
+  Autocomplete,
+  Box,
+  Button,
+  FormHelperText,
+  InputLabel,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { useSnackbar } from 'notistack';
 import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { languages } from '../../../constatns/languages.js';
 import { logger } from '../../../utilities/logger.js';
 import { MainCard } from '../../@extended/components/MainCard/index.js';
 import { ConfirmDiscardDialog } from '../../components/elements/ConfirmDiscardDialog/index.js';
@@ -16,25 +26,26 @@ import {
 } from '../../fields/validators/projects/updateProject.js';
 import { useUnsavedChangesPrompt } from '../../hooks/useUnsavedChangesPrompt.js';
 import { ProjectContextProvider, useProject } from './Context/index.js';
-import { LanguageSelection } from './LanguageSelection/index.js';
 
 const ProjectImpl: React.FC = () => {
   const { hasPermission } = useAuth();
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
-  const [showSelection, setShowSelection] = React.useState(false);
 
   const { getProject, updateProject } = useProject();
-  const { data: project, mutate } = getProject();
+  const { data: project } = getProject();
   const { trigger, isMutating } = updateProject();
   const {
+    watch,
     reset,
+    setValue,
     control,
     handleSubmit,
     formState: { isDirty, errors },
   } = useForm<FormValues>({
     defaultValues: {
       name: project.name,
+      sourceLanguage: project.sourceLanguage,
     },
     resolver: yupResolver(updateProjectSchema()),
   });
@@ -50,20 +61,8 @@ const ProjectImpl: React.FC = () => {
     }
   };
 
-  const handleUpdateLanguage = async () => {
-    await mutate();
-    setShowSelection(false);
-    enqueueSnackbar(t('toast.updated_source_language'), { variant: 'success' });
-  };
-
   return (
     <>
-      <LanguageSelection
-        currentLanguage={project.sourceLanguage}
-        open={showSelection}
-        onClose={() => setShowSelection(false)}
-        onAdded={() => handleUpdateLanguage()}
-      />
       <ConfirmDiscardDialog open={showPrompt} onDiscard={proceed} onKeepEditing={stay} />
       <Grid container spacing={2.5}>
         <Grid xs={12} lg={8}>
@@ -93,27 +92,44 @@ const ProjectImpl: React.FC = () => {
                 <Grid xs={12} sm={6}>
                   <Stack spacing={1}>
                     <InputLabel htmlFor="projectName">{t('source_language')}</InputLabel>
-                    <Stack spacing={1.5} direction="row" alignItems="center">
-                      <Stack direction="row">
-                        <Typography>
-                          {t(
-                            `languages.${project.sourceLanguage}` as unknown as TemplateStringsArray
+                    <Autocomplete
+                      fullWidth
+                      value={languages.find((item) => item.code === watch('sourceLanguage'))}
+                      onChange={(event, newValue) => {
+                        setValue('sourceLanguage', newValue === null ? '' : newValue.code);
+                      }}
+                      options={languages}
+                      autoHighlight
+                      isOptionEqualToValue={(option, value) => option.code === value?.code}
+                      getOptionLabel={(option) =>
+                        `${t(`languages.${option.code}` as unknown as TemplateStringsArray)} (${option.code})`
+                      }
+                      renderOption={(props, option) => (
+                        <Box component="li" {...props}>
+                          {t(`languages.${option.code}` as unknown as TemplateStringsArray)}
+                          <Typography variant="caption" color="text.secondary" sx={{ ml: 1 }}>
+                            ({option.code})
+                          </Typography>
+                          {option.isSourceLanguage && (
+                            <Typography variant="caption" color="text.secondary" sx={{ ml: 1 }}>
+                              - {t('translatable')}
+                            </Typography>
                           )}
-                        </Typography>
-                        <Typography variant="caption" color="textSecondary" sx={{ ml: '8px' }}>
-                          ({project.sourceLanguage})
-                        </Typography>
-                      </Stack>
-                      <Button
-                        size="small"
-                        variant="text"
-                        color="inherit"
-                        sx={{ textDecoration: 'underline' }}
-                        onClick={() => setShowSelection(true)}
-                      >
-                        {t('edit_language')}
-                      </Button>
-                    </Stack>
+                        </Box>
+                      )}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          placeholder={t('choose_language')}
+                          name="language"
+                          inputProps={{
+                            ...params.inputProps,
+                            autoComplete: 'off',
+                          }}
+                        />
+                      )}
+                    />
+                    <FormHelperText error>{errors.sourceLanguage?.message}</FormHelperText>
                   </Stack>
                 </Grid>
                 {hasPermission('updateProject') && (
