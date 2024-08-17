@@ -1,27 +1,15 @@
 import { faker } from '@faker-js/faker';
-import i18next from 'i18next';
+import { i18n } from 'i18next';
 import { v4 } from 'uuid';
-import translation_en from '../../../lang/translations/en/translation.json' assert { type: 'json' };
-import translation_ja from '../../../lang/translations/ja/translation.json' assert { type: 'json' };
 import { ContentStatusType, contentStatus } from '../../data/content/content.entity.js';
 import { reviewStatus } from '../../data/review/review.entity.js';
 import { BypassPrismaType } from '../prisma/client.js';
 import { adminUser } from './createUsers.js';
 
-i18next.init({
-  resources: {
-    ja: {
-      translation: translation_ja,
-    },
-    en: {
-      translation: translation_en,
-    },
-  },
-});
-
 export const createPost = async (
   prisma: BypassPrismaType,
   projectId: string,
+  i18next: i18n,
   options?: {
     id?: string;
     slug?: string;
