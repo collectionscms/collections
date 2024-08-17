@@ -4,12 +4,11 @@ import DragHandle from '@tiptap-pro/extension-drag-handle-react';
 import { Editor } from '@tiptap/react';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { DropdownButton } from '../../ui/DropdownButton/index.js';
 import { Icon } from '../../../Icon/index.js';
+import { DropdownButton } from '../../ui/DropdownButton/index.js';
 import { ToolbarButton } from '../../ui/ToolbarButton/index.js';
 import { useContentItemActions } from './hooks/useContentItemActions.js';
 import { useData } from './hooks/useData.js';
-import './styles/index.css';
 
 export type Props = {
   editor: Editor;
