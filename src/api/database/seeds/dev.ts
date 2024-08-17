@@ -2,7 +2,6 @@ import i18next from 'i18next';
 import translation_en from '../../../lang/translations/en/translation.json' assert { type: 'json' };
 import translation_ja from '../../../lang/translations/ja/translation.json' assert { type: 'json' };
 import { Output } from '../../../utilities/output.js';
-import { contentStatus } from '../../data/content/content.entity.js';
 import { bypassPrisma } from '../prisma/client.js';
 import { createApiKeys } from './createApiKeys.js';
 import { createPermissions } from './createPermissions.js';
@@ -10,6 +9,7 @@ import { createPost } from './createPost.js';
 import { createProjects, jpProject, usaProject } from './createProjects.js';
 import { createRoles, projectRoles } from './createRoles.js';
 import { adminUser, contributorUser, createUsers, editorUser, viewerUser } from './createUsers.js';
+import { posts } from './data/posts.js';
 
 i18next.init({
   resources: {
@@ -30,33 +30,8 @@ export const seedDev = async (): Promise<void> => {
       await createRoles(tx, i18next);
       await createUsers(tx, getUsers());
       await createApiKeys(tx);
-
-      for (const project of [usaProject, jpProject]) {
-        // draft
-        await createPost(tx, project, i18next, {
-          status: contentStatus.draft,
-          language: project === usaProject ? 'en' : 'ja',
-        });
-
-        // review
-        await createPost(tx, project, i18next, {
-          status: contentStatus.review,
-          language: project === usaProject ? 'en' : 'ja',
-        });
-
-        // published
-        await createPost(tx, project, i18next, {
-          status: contentStatus.published,
-          language: project === usaProject ? 'en' : 'ja',
-          publishedAt: new Date(),
-        });
-
-        // archived
-        await createPost(tx, project, i18next, {
-          status: contentStatus.archived,
-          language: project === usaProject ? 'en' : 'ja',
-        });
-      }
+      await createPost(tx, usaProject, 'what-is-collections', posts);
+      await createPost(tx, jpProject, 'what-is-collections', posts);
     });
 
     process.exit(0);
