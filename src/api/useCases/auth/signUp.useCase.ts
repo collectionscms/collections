@@ -1,10 +1,10 @@
 import { InvalidTokenException } from '../../../exceptions/invalidToken.js';
 import { Me } from '../../../types/index.js';
-import { InvitationRepository } from '../../data/invitation/invitation.repository.js';
-import { UserEntity } from '../../data/user/user.entity.js';
-import { UserRepository } from '../../data/user/user.repository.js';
-import { UserProjectEntity } from '../../data/userProject/userProject.entity.js';
-import { UserProjectRepository } from '../../data/userProject/userProject.repository.js';
+import { InvitationRepository } from '../../persistences/invitation/invitation.repository.js';
+import { UserEntity } from '../../persistences/user/user.entity.js';
+import { UserRepository } from '../../persistences/user/user.repository.js';
+import { UserProjectEntity } from '../../persistences/userProject/userProject.entity.js';
+import { UserProjectRepository } from '../../persistences/userProject/userProject.repository.js';
 import { BypassPrismaClient } from '../../database/prisma/client.js';
 import { SignUpMailService } from '../../services/signUpMail.service.js';
 import { oneWayHash } from '../../utilities/oneWayHash.js';

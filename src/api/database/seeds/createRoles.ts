@@ -1,6 +1,6 @@
 import { i18n } from 'i18next';
 import { v4 } from 'uuid';
-import { roleActions } from '../../data/permission/permission.entity.js';
+import { roleActions } from '../../persistences/permission/permission.entity.js';
 import { BypassPrismaType } from '../prisma/client.js';
 import { jpProject, usaProject } from './createProjects.js';
 

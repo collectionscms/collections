@@ -1,10 +1,10 @@
 import { Content } from '@prisma/client';
-import { contentStatus } from '../../data/content/content.entity.js';
-import { ContentRepository } from '../../data/content/content.repository.js';
-import { ContentHistoryEntity } from '../../data/contentHistory/contentHistory.entity.js';
-import { ContentHistoryRepository } from '../../data/contentHistory/contentHistory.repository.js';
-import { ReviewEntity } from '../../data/review/review.entity.js';
-import { ReviewRepository } from '../../data/review/review.repository.js';
+import { contentStatus } from '../../persistences/content/content.entity.js';
+import { ContentRepository } from '../../persistences/content/content.repository.js';
+import { ContentHistoryEntity } from '../../persistences/contentHistory/contentHistory.entity.js';
+import { ContentHistoryRepository } from '../../persistences/contentHistory/contentHistory.repository.js';
+import { ReviewEntity } from '../../persistences/review/review.entity.js';
+import { ReviewRepository } from '../../persistences/review/review.repository.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
 import { RequestReviewUseCaseSchemaType } from './requestReview.schema.js';
 

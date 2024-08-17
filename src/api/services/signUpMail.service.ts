@@ -1,5 +1,5 @@
 import { env } from '../../env.js';
-import { UserEntity } from '../data/user/user.entity.js';
+import { UserEntity } from '../persistences/user/user.entity.js';
 import { MailService } from './mail.service.js';
 
 export class SignUpMailService extends MailService {

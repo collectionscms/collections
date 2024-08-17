@@ -1,6 +1,6 @@
 import { Review } from '@prisma/client';
-import { contentStatus } from '../../data/content/content.entity.js';
-import { reviewStatus } from '../../data/review/review.entity.js';
+import { contentStatus } from '../../persistences/content/content.entity.js';
+import { reviewStatus } from '../../persistences/review/review.entity.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
 import { ChangeReviewStatusService } from '../../services/changeReviewStatus.service.js';
 import { ApproveReviewUseCaseSchemaType } from './approveReview.schema.js';

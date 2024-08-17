@@ -1,5 +1,5 @@
 import { env } from '../../env.js';
-import { InvitationEntity } from '../data/invitation/invitation.entity.js';
+import { InvitationEntity } from '../persistences/invitation/invitation.entity.js';
 import { MailService } from './mail.service.js';
 
 export class InvitationMailService extends MailService {

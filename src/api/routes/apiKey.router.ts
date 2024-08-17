@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
-import { ApiKeyRepository } from '../data/apiKey/apiKey.repository.js';
-import { ApiKeyPermissionRepository } from '../data/apiKeyPermission/apiKeyPermission.repository.js';
+import { ApiKeyRepository } from '../persistences/apiKey/apiKey.repository.js';
+import { ApiKeyPermissionRepository } from '../persistences/apiKeyPermission/apiKeyPermission.repository.js';
 import { projectPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';

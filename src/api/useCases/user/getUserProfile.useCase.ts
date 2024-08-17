@@ -1,5 +1,5 @@
 import { UserProfile } from '../../../types/index.js';
-import { UserRepository } from '../../data/user/user.repository.js';
+import { UserRepository } from '../../persistences/user/user.repository.js';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
 
 export class GetUserProfileUseCase {

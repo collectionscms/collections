@@ -1,5 +1,5 @@
 import { v4 } from 'uuid';
-import { apiKeyActions } from '../../data/permission/permission.entity.js';
+import { apiKeyActions } from '../../persistences/permission/permission.entity.js';
 import { BypassPrismaType } from '../prisma/client.js';
 import { usaProject, jpProject } from './createProjects.js';
 import { adminUser } from './createUsers.js';

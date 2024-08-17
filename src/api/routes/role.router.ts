@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
-import { RoleRepository } from '../data/role/role.repository.js';
-import { UserProjectRepository } from '../data/userProject/userProject.repository.js';
+import { RoleRepository } from '../persistences/role/role.repository.js';
+import { UserProjectRepository } from '../persistences/userProject/userProject.repository.js';
 import { projectPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';
@@ -18,7 +18,7 @@ import { GetRolesUseCase } from '../useCases/role/getRoles.useCase.js';
 import { updateRoleUseCaseSchema } from '../useCases/role/updateRole.schema.js';
 import { UpdateRoleUseCase } from '../useCases/role/updateRole.useCase.js';
 import { validateAccess } from '../middlewares/validateAccess.js';
-import { RolePermissionRepository } from '../data/rolePermission/rolePermission.repository.js';
+import { RolePermissionRepository } from '../persistences/rolePermission/rolePermission.repository.js';
 
 const router = express.Router();
 

@@ -1,6 +1,6 @@
 import { UnprocessableEntityException } from '../../../exceptions/unprocessableEntity.js';
-import { RoleRepository } from '../../data/role/role.repository.js';
-import { UserProjectRepository } from '../../data/userProject/userProject.repository.js';
+import { RoleRepository } from '../../persistences/role/role.repository.js';
+import { UserProjectRepository } from '../../persistences/userProject/userProject.repository.js';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
 
 export class DeleteRoleUseCase {

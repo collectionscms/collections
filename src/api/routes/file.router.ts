@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
-import { FileEntity } from '../data/file/file.entity.js';
-import { FileRepository } from '../data/file/file.repository.js';
+import { FileEntity } from '../persistences/file/file.entity.js';
+import { FileRepository } from '../persistences/file/file.repository.js';
 import { projectPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';

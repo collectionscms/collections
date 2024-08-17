@@ -1,5 +1,5 @@
 import { v4 } from 'uuid';
-import { contentStatus } from '../../data/content/content.entity.js';
+import { contentStatus } from '../../persistences/content/content.entity.js';
 import { BypassPrismaType } from '../prisma/client.js';
 import { adminUser } from './createUsers.js';
 
