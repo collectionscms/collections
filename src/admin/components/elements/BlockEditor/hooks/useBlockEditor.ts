@@ -11,10 +11,10 @@ import { StarterKit } from '@tiptap/starter-kit';
 import { useTranslation } from 'react-i18next';
 import { logger } from '../../../../../utilities/logger.js';
 import { uploadFile } from '../../../../utilities/api.js';
+import { HorizontalRule } from '../extensions/HorizontalRule/index.js';
 import { ImageBlock } from '../extensions/ImageBlock/ImageBlock.js';
 import ImageUpload from '../extensions/ImageUpload/ImageUpload.js';
 import { SlashCommand } from '../extensions/SlashCommand/index.js';
-import { HorizontalRule } from '../extensions/HorizontalRule/index.js';
 
 export const useBlockEditor = ({
   initialContent,
@@ -31,14 +31,6 @@ export const useBlockEditor = ({
       editor.commands.focus('start', { scrollIntoView: true });
     },
     extensions: [
-      StarterKit.configure({
-        heading: {
-          levels: [2, 3],
-          HTMLAttributes: {
-            class: 'heading',
-          },
-        },
-      }),
       Underline,
       CharacterCount,
       Placeholder.configure({ placeholder: t('write_the_text') }),
@@ -51,6 +43,10 @@ export const useBlockEditor = ({
         levels: [1, 2, 3],
       }),
       HorizontalRule,
+      StarterKit.configure({
+        heading: false,
+        horizontalRule: false,
+      }),
       TaskItem.configure({
         nested: true,
       }),
