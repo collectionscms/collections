@@ -35,6 +35,8 @@ export type Props = {
   onTrashLanguageContent: (language: string) => void;
 };
 
+const isMac = typeof window !== 'undefined' ? /Mac/i.test(navigator.userAgent) : false;
+
 export const PostHeader: React.FC<Props> = ({
   post,
   currentLanguage,
@@ -190,7 +192,7 @@ export const PostHeader: React.FC<Props> = ({
               <Icon name="Ellipsis" size={18} />
             </IconButton>
             <>
-              <Tooltip title="⌘ + S" placement="top-start">
+              <Tooltip title={`${isMac ? '⌘' : 'Ctrl'} S`} placement="top">
                 <Button ref={buttonRef} variant="outlined" color="secondary" onClick={onSaveDraft}>
                   {post.currentStatus === 'published'
                     ? t('save_draft_new_ver', { version: post.version + 1 })
