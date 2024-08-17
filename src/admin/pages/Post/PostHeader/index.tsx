@@ -222,14 +222,12 @@ export const PostHeader: React.FC<Props> = ({
         >
           {/* Revert previous version */}
           {post.version > 1 && post.currentStatus !== 'published' && (
-            <>
-              <MenuItem onClick={() => setOpenRevert(true)}>
-                <Icon name="Undo2" size={18} />
-                <Typography sx={{ pl: 1 }}>{t('revert_previous_version')}</Typography>
-              </MenuItem>
-              <Divider />
-            </>
+            <MenuItem onClick={() => setOpenRevert(true)}>
+              <Icon name="Undo2" size={18} />
+              <Typography sx={{ pl: 1 }}>{t('revert_previous_version')}</Typography>
+            </MenuItem>
           )}
+          {post.version > 1 && post.currentStatus !== 'published' && <Divider />}
           {/* Add localized content */}
           <MenuItem onClick={handleAddLanguage}>
             <Icon name="CirclePlus" size={16} />
