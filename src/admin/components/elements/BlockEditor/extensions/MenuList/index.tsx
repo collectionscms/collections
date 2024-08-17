@@ -1,4 +1,4 @@
-import { Paper, Stack, Typography, useTheme } from '@mui/material';
+import { Box, Paper, Stack, Typography, useTheme } from '@mui/material';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Icon } from '../../../Icon/index.js';
 import { DropdownButton } from '../../ui/DropdownButton/index.js';
@@ -128,10 +128,9 @@ export const MenuList = React.forwardRef((props: MenuListProps, ref) => {
       ref={scrollContainer}
     >
       {props.items.map((group, groupIndex: number) => (
-        <>
+        <Box key={`${group.title}`}>
           <Typography
             variant="subtitle2"
-            key={`${group.title}`}
             color={theme.palette.text.secondary}
             sx={{
               mx: 1,
@@ -159,7 +158,7 @@ export const MenuList = React.forwardRef((props: MenuListProps, ref) => {
               </DropdownButton>
             ))}
           </Stack>
-        </>
+        </Box>
       ))}
     </Paper>
   );
