@@ -1,7 +1,7 @@
 import { UserProject } from '@prisma/client';
 import { InvalidPayloadException } from '../../../exceptions/invalidPayload.js';
 import { UnprocessableEntityException } from '../../../exceptions/unprocessableEntity.js';
-import { UserProjectRepository } from '../../data/userProject/userProject.repository.js';
+import { UserProjectRepository } from '../../persistences/userProject/userProject.repository.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
 import { UpdateUserUseCaseSchemaType } from './updateUser.schema.js';
 

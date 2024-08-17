@@ -1,6 +1,6 @@
 import { File } from '@prisma/client';
 import { Buffer } from 'buffer';
-import { FileRepository } from '../../data/file/file.repository.js';
+import { FileRepository } from '../../persistences/file/file.repository.js';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
 import { getStorage } from '../../storages/storage.js';
 

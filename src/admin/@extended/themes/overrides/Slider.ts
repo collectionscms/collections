@@ -1,6 +1,6 @@
-import { Theme } from "@mui/material";
-import { ExtendedStyleProps } from "../../types/extended.js";
-import { getColors } from "../../utilities/getColors.js";
+import { Theme } from '@mui/material';
+import { ExtendedStyleProps } from '../../types/extended.js';
+import { getColors } from '../../utilities/getColors.js';
 
 const getColorStyle = ({ color, theme }: ExtendedStyleProps) => {
   const colors = getColors(theme, color);
@@ -16,44 +16,44 @@ export const Slider = (theme: Theme) => {
     MuiSlider: {
       styleOverrides: {
         track: {
-          height: "1px",
+          height: '1px',
         },
         thumb: {
           width: 14,
           height: 14,
           border: `2px solid ${theme.palette.primary.main}`,
           backgroundColor: theme.palette.background.paper,
-          "&.MuiSlider-thumbColorPrimary": getColorStyle({
-            color: "primary",
+          '&.MuiSlider-thumbColorPrimary': getColorStyle({
+            color: 'primary',
             theme,
           }),
-          "&.MuiSlider-thumbColorSecondary": getColorStyle({
-            color: "secondary",
+          '&.MuiSlider-thumbColorSecondary': getColorStyle({
+            color: 'secondary',
             theme,
           }),
-          "&.MuiSlider-thumbColorSuccess": getColorStyle({
-            color: "success",
+          '&.MuiSlider-thumbColorSuccess': getColorStyle({
+            color: 'success',
             theme,
           }),
-          "&.MuiSlider-thumbColorWarning": getColorStyle({
-            color: "warning",
+          '&.MuiSlider-thumbColorWarning': getColorStyle({
+            color: 'warning',
             theme,
           }),
-          "&.MuiSlider-thumbColorInfo": getColorStyle({ color: "info", theme }),
-          "&.MuiSlider-thumbColorError": getColorStyle({
-            color: "error",
+          '&.MuiSlider-thumbColorInfo': getColorStyle({ color: 'info', theme }),
+          '&.MuiSlider-thumbColorError': getColorStyle({
+            color: 'error',
             theme,
           }),
         },
         mark: {
           width: 4,
           height: 4,
-          borderRadius: "50%",
+          borderRadius: '50%',
           border: `1px solid ${theme.palette.secondary.light}`,
           backgroundColor: theme.palette.background.paper,
-          "&.MuiSlider-markActive": {
+          '&.MuiSlider-markActive': {
             opacity: 1,
-            borderColor: "inherit",
+            borderColor: 'inherit',
             borderWidth: 2,
           },
         },
@@ -61,14 +61,14 @@ export const Slider = (theme: Theme) => {
           color: theme.palette.secondary.light,
         },
         root: {
-          "&.Mui-disabled": {
-            ".MuiSlider-rail": {
+          '&.Mui-disabled': {
+            '.MuiSlider-rail': {
               opacity: 0.25,
             },
-            ".MuiSlider-track": {
+            '.MuiSlider-track': {
               color: theme.palette.secondary.lighter,
             },
-            ".MuiSlider-thumb": {
+            '.MuiSlider-thumb': {
               border: `2px solid ${theme.palette.secondary.lighter}`,
             },
           },

@@ -1,8 +1,8 @@
 import { Invitation } from '@prisma/client';
 import { RecordNotUniqueException } from '../../../exceptions/database/recordNotUnique.js';
-import { InvitationEntity } from '../../data/invitation/invitation.entity.js';
-import { InvitationRepository } from '../../data/invitation/invitation.repository.js';
-import { UserProjectRepository } from '../../data/userProject/userProject.repository.js';
+import { InvitationEntity } from '../../persistences/invitation/invitation.entity.js';
+import { InvitationRepository } from '../../persistences/invitation/invitation.repository.js';
+import { UserProjectRepository } from '../../persistences/userProject/userProject.repository.js';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
 import { InvitationMailService } from '../../services/invitationMail.service.js';
 import { InviteUserUseCaseSchemaType } from './inviteUser.schema.js';

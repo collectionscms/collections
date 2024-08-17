@@ -1,14 +1,14 @@
-import { Theme, createTheme } from "@mui/material";
-import { ThemeMode } from "../types/config";
-import { CustomShadowProps } from "../types/theme.js";
-import { componentsOverrides } from "./overrides/index.js";
-import { CustomShadows } from "./shadows.js";
-import { themeDark } from "./theme/Dark/index.js";
-import { themeLight } from "./theme/Default/index.js";
-import { Typography } from "./typography.js";
+import { Theme, createTheme } from '@mui/material';
+import { ThemeMode } from '../types/config';
+import { CustomShadowProps } from '../types/theme.js';
+import { componentsOverrides } from './overrides/index.js';
+import { CustomShadows } from './shadows.js';
+import { themeDark } from './theme/Dark/index.js';
+import { themeLight } from './theme/Default/index.js';
+import { Typography } from './typography.js';
 
 export const createCustomTheme = (mode: ThemeMode): Theme => {
-  const theme: Theme = mode === "dark" ? themeDark : themeLight;
+  const theme: Theme = mode === 'dark' ? themeDark : themeLight;
 
   const themeCustomShadows: CustomShadowProps = CustomShadows(mode, theme);
   const themeTypography = Typography();

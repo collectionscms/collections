@@ -1,15 +1,15 @@
-import { Theme } from "@mui/material";
+import { Theme } from '@mui/material';
 
 export const TableCell = (theme: Theme) => {
   const commonCell = {
-    "&:not(:last-of-type)": {
-      position: "relative",
-      "&:after": {
-        position: "absolute",
+    '&:not(:last-of-type)': {
+      position: 'relative',
+      '&:after': {
+        position: 'absolute',
         content: '""',
         backgroundColor: theme.palette.divider,
         width: 1,
-        height: "calc(100% - 30px)",
+        height: 'calc(100% - 30px)',
         right: 0,
         top: 16,
       },
@@ -20,7 +20,7 @@ export const TableCell = (theme: Theme) => {
     MuiTableCell: {
       styleOverrides: {
         root: {
-          fontSize: "0.875rem",
+          fontSize: '0.875rem',
           padding: 12,
           borderColor: theme.palette.divider,
         },
@@ -28,14 +28,14 @@ export const TableCell = (theme: Theme) => {
           padding: 8,
         },
         head: {
-          fontSize: "0.75rem",
+          fontSize: '0.75rem',
           fontWeight: 700,
-          textTransform: "uppercase",
+          textTransform: 'uppercase',
           ...commonCell,
         },
         footer: {
-          fontSize: "0.75rem",
-          textTransform: "uppercase",
+          fontSize: '0.75rem',
+          textTransform: 'uppercase',
           ...commonCell,
         },
       },

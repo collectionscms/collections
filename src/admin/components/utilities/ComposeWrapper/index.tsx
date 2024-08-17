@@ -28,12 +28,15 @@ export const ComposeWrapper = <CW,>(wrappers: ComposedWrappers<CW>) => {
 
       return (
         <>
-          {keys.reduceRight((children, currentKey) => {
-            const CurrentWrapper = wrappers[currentKey as keyof CW];
-            const currentWrapperProps = restProps?.[currentKey] ?? {};
+          {keys.reduceRight(
+            (children, currentKey) => {
+              const CurrentWrapper = wrappers[currentKey as keyof CW];
+              const currentWrapperProps = restProps?.[currentKey] ?? {};
 
-            return <CurrentWrapper {...currentWrapperProps}>{children}</CurrentWrapper>;
-          }, <Component {...props} ref={ref} />)}
+              return <CurrentWrapper {...currentWrapperProps}>{children}</CurrentWrapper>;
+            },
+            <Component {...props} ref={ref} />
+          )}
         </>
       );
     });

@@ -3,7 +3,7 @@ export const DialogTitle = () => {
     MuiDialogTitle: {
       styleOverrides: {
         root: {
-          fontSize: "1rem",
+          fontSize: '1rem',
           fontWeight: 500,
         },
       },

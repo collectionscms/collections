@@ -1,28 +1,28 @@
-import { Theme } from "@mui/material";
+import { Theme } from '@mui/material';
 
 export const getShadow = (theme: Theme, shadow: string) => {
   switch (shadow) {
-    case "secondary":
+    case 'secondary':
       return theme.customShadows.secondary;
-    case "error":
+    case 'error':
       return theme.customShadows.error;
-    case "warning":
+    case 'warning':
       return theme.customShadows.warning;
-    case "info":
+    case 'info':
       return theme.customShadows.info;
-    case "success":
+    case 'success':
       return theme.customShadows.success;
-    case "primaryButton":
+    case 'primaryButton':
       return theme.customShadows.primaryButton;
-    case "secondaryButton":
+    case 'secondaryButton':
       return theme.customShadows.secondaryButton;
-    case "errorButton":
+    case 'errorButton':
       return theme.customShadows.errorButton;
-    case "warningButton":
+    case 'warningButton':
       return theme.customShadows.warningButton;
-    case "infoButton":
+    case 'infoButton':
       return theme.customShadows.infoButton;
-    case "successButton":
+    case 'successButton':
       return theme.customShadows.successButton;
     default:
       return theme.customShadows.primary;

@@ -1,6 +1,6 @@
 import { File } from '@prisma/client';
-import { FileEntity } from '../../data/file/file.entity.js';
-import { FileRepository } from '../../data/file/file.repository.js';
+import { FileEntity } from '../../persistences/file/file.entity.js';
+import { FileRepository } from '../../persistences/file/file.repository.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
 
 type CreateFileUseCaseResponse = {

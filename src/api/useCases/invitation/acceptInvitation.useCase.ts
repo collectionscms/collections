@@ -1,9 +1,9 @@
 import { Permission, Project, Role } from '@prisma/client';
 import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
 import { InvalidTokenException } from '../../../exceptions/invalidToken.js';
-import { InvitationRepository } from '../../data/invitation/invitation.repository.js';
-import { UserProjectEntity } from '../../data/userProject/userProject.entity.js';
-import { UserProjectRepository } from '../../data/userProject/userProject.repository.js';
+import { InvitationRepository } from '../../persistences/invitation/invitation.repository.js';
+import { UserProjectEntity } from '../../persistences/userProject/userProject.entity.js';
+import { UserProjectRepository } from '../../persistences/userProject/userProject.repository.js';
 import { BypassPrismaType, projectPrisma } from '../../database/prisma/client.js';
 import { AcceptInvitationUseCaseSchemaType } from './acceptInvitation.schema.js';
 

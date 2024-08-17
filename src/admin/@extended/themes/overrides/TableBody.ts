@@ -1,8 +1,8 @@
-import { Theme } from "@mui/material";
+import { Theme } from '@mui/material';
 
 export const TableBody = (theme: Theme) => {
   const hoverStyle = {
-    "&:hover": {
+    '&:hover': {
       backgroundColor: theme.palette.secondary.lighter,
     },
   };
@@ -11,13 +11,13 @@ export const TableBody = (theme: Theme) => {
     MuiTableBody: {
       styleOverrides: {
         root: {
-          "&.striped .MuiTableRow-root": {
-            "&:nth-of-type(even)": {
+          '&.striped .MuiTableRow-root': {
+            '&:nth-of-type(even)': {
               backgroundColor: theme.palette.grey[50],
             },
             ...hoverStyle,
           },
-          "& .MuiTableRow-root": {
+          '& .MuiTableRow-root': {
             ...hoverStyle,
           },
         },

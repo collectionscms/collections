@@ -1,15 +1,12 @@
-import { Theme, alpha } from "@mui/material";
-import { ThemeMode } from "../types/config.js";
-import { CustomShadowProps } from "../types/theme.js";
+import { Theme, alpha } from '@mui/material';
+import { ThemeMode } from '../types/config.js';
+import { CustomShadowProps } from '../types/theme.js';
 
-export const CustomShadows = (
-  mode: ThemeMode,
-  theme: Theme
-): CustomShadowProps => ({
-  button: mode === "dark" ? `0 2px 0 rgb(0 0 0 / 5%)` : `0 2px #0000000b`,
+export const CustomShadows = (mode: ThemeMode, theme: Theme): CustomShadowProps => ({
+  button: mode === 'dark' ? `0 2px 0 rgb(0 0 0 / 5%)` : `0 2px #0000000b`,
   text: `0 -1px 0 rgb(0 0 0 / 12%)`,
   z1:
-    mode === "dark"
+    mode === 'dark'
       ? `0px 1px 1px rgb(0 0 0 / 14%), 0px 2px 1px rgb(0 0 0 / 12%), 0px 1px 3px rgb(0 0 0 / 20%)`
       : `0px 1px 4px ${alpha(theme.palette.grey[900], 0.08)}`,
   primary: `0 0 0 2px ${alpha(theme.palette.primary.main, 0.2)}`,

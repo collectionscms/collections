@@ -1,13 +1,13 @@
-import { Theme } from "@mui/material";
-import { ExtendedStyleProps } from "../../types/extended.js";
-import { getColors } from "../../utilities/getColors.js";
+import { Theme } from '@mui/material';
+import { ExtendedStyleProps } from '../../types/extended.js';
+import { getColors } from '../../utilities/getColors.js';
 
 const getColor = ({ color, theme }: ExtendedStyleProps) => {
   const colors = getColors(theme, color);
   const { dark } = colors;
 
   return {
-    "&.Mui-focusVisible": {
+    '&.Mui-focusVisible': {
       outline: `2px solid ${dark}`,
       outlineOffset: 2,
     },
@@ -22,9 +22,9 @@ const getColorStyle = ({ color, theme }: ExtendedStyleProps) => {
     color: main,
     backgroundColor: lighter,
     borderColor: light,
-    "& .MuiChip-deleteIcon": {
+    '& .MuiChip-deleteIcon': {
       color: main,
-      "&:hover": {
+      '&:hover': {
         color: light,
       },
     },
@@ -32,57 +32,57 @@ const getColorStyle = ({ color, theme }: ExtendedStyleProps) => {
 };
 
 export const Chip = (theme: Theme) => {
-  const defaultLightChip = getColorStyle({ color: "secondary", theme });
+  const defaultLightChip = getColorStyle({ color: 'secondary', theme });
   return {
     MuiChip: {
       styleOverrides: {
         root: {
           borderRadius: 4,
-          "&:active": {
-            boxShadow: "none",
+          '&:active': {
+            boxShadow: 'none',
           },
-          "&.MuiChip-colorPrimary": getColor({ color: "primary", theme }),
-          "&.MuiChip-colorSecondary": getColor({ color: "secondary", theme }),
-          "&.MuiChip-colorError": getColor({ color: "error", theme }),
-          "&.MuiChip-colorInfo": getColor({ color: "info", theme }),
-          "&.MuiChip-colorSuccess": getColor({ color: "success", theme }),
-          "&.MuiChip-colorWarning": getColor({ color: "warning", theme }),
+          '&.MuiChip-colorPrimary': getColor({ color: 'primary', theme }),
+          '&.MuiChip-colorSecondary': getColor({ color: 'secondary', theme }),
+          '&.MuiChip-colorError': getColor({ color: 'error', theme }),
+          '&.MuiChip-colorInfo': getColor({ color: 'info', theme }),
+          '&.MuiChip-colorSuccess': getColor({ color: 'success', theme }),
+          '&.MuiChip-colorWarning': getColor({ color: 'warning', theme }),
         },
         sizeLarge: {
-          fontSize: "1rem",
+          fontSize: '1rem',
           height: 40,
         },
         light: {
           ...defaultLightChip,
-          "&.MuiChip-lightPrimary": getColorStyle({ color: "primary", theme }),
-          "&.MuiChip-lightSecondary": getColorStyle({
-            color: "secondary",
+          '&.MuiChip-lightPrimary': getColorStyle({ color: 'primary', theme }),
+          '&.MuiChip-lightSecondary': getColorStyle({
+            color: 'secondary',
             theme,
           }),
-          "&.MuiChip-lightError": getColorStyle({ color: "error", theme }),
-          "&.MuiChip-lightInfo": getColorStyle({ color: "info", theme }),
-          "&.MuiChip-lightSuccess": getColorStyle({ color: "success", theme }),
-          "&.MuiChip-lightWarning": getColorStyle({ color: "warning", theme }),
+          '&.MuiChip-lightError': getColorStyle({ color: 'error', theme }),
+          '&.MuiChip-lightInfo': getColorStyle({ color: 'info', theme }),
+          '&.MuiChip-lightSuccess': getColorStyle({ color: 'success', theme }),
+          '&.MuiChip-lightWarning': getColorStyle({ color: 'warning', theme }),
         },
         combined: {
-          border: "1px solid",
+          border: '1px solid',
           ...defaultLightChip,
-          "&.MuiChip-combinedPrimary": getColorStyle({
-            color: "primary",
+          '&.MuiChip-combinedPrimary': getColorStyle({
+            color: 'primary',
             theme,
           }),
-          "&.MuiChip-combinedSecondary": getColorStyle({
-            color: "secondary",
+          '&.MuiChip-combinedSecondary': getColorStyle({
+            color: 'secondary',
             theme,
           }),
-          "&.MuiChip-combinedError": getColorStyle({ color: "error", theme }),
-          "&.MuiChip-combinedInfo": getColorStyle({ color: "info", theme }),
-          "&.MuiChip-combinedSuccess": getColorStyle({
-            color: "success",
+          '&.MuiChip-combinedError': getColorStyle({ color: 'error', theme }),
+          '&.MuiChip-combinedInfo': getColorStyle({ color: 'info', theme }),
+          '&.MuiChip-combinedSuccess': getColorStyle({
+            color: 'success',
             theme,
           }),
-          "&.MuiChip-combinedWarning": getColorStyle({
-            color: "warning",
+          '&.MuiChip-combinedWarning': getColorStyle({
+            color: 'warning',
             theme,
           }),
         },

@@ -1,5 +1,5 @@
 import { File } from '@prisma/client';
-import { FileRepository } from '../../data/file/file.repository.js';
+import { FileRepository } from '../../persistences/file/file.repository.js';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
 
 type GetFileUseCaseResponse = {

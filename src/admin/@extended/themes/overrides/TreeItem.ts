@@ -6,8 +6,8 @@ export const TreeItem = () => {
           padding: 8,
         },
         iconContainer: {
-          "& svg": {
-            fontSize: "0.625rem",
+          '& svg': {
+            fontSize: '0.625rem',
           },
         },
       },

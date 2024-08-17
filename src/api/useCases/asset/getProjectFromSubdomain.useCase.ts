@@ -1,6 +1,6 @@
 import { Project } from '@prisma/client';
 import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
-import { ProjectRepository } from '../../data/project/project.repository.js';
+import { ProjectRepository } from '../../persistences/project/project.repository.js';
 import { BypassPrismaType } from '../../database/prisma/client.js';
 
 export class GetProjectFromSubdomainUseCase {

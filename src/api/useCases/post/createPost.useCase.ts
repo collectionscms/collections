@@ -1,9 +1,9 @@
 import { LocalizedPost } from '../../../types/index.js';
-import { ContentRepository } from '../../data/content/content.repository.js';
-import { ContentHistoryEntity } from '../../data/contentHistory/contentHistory.entity.js';
-import { ContentHistoryRepository } from '../../data/contentHistory/contentHistory.repository.js';
-import { PostEntity } from '../../data/post/post.entity.js';
-import { PostRepository } from '../../data/post/post.repository.js';
+import { ContentRepository } from '../../persistences/content/content.repository.js';
+import { ContentHistoryEntity } from '../../persistences/contentHistory/contentHistory.entity.js';
+import { ContentHistoryRepository } from '../../persistences/contentHistory/contentHistory.repository.js';
+import { PostEntity } from '../../persistences/post/post.entity.js';
+import { PostRepository } from '../../persistences/post/post.repository.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
 import { CreatePostUseCaseSchemaType } from './createPost.schema.js';
 

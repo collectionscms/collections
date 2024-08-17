@@ -1,20 +1,13 @@
-import { IconButtonProps, alpha, styled, useTheme } from "@mui/material";
-import MuiIconButton from "@mui/material/IconButton/IconButton.js";
-import React, {
-  ReactChild,
-  ReactFragment,
-  ReactNode,
-  ReactPortal,
-  Ref,
-  forwardRef,
-} from "react";
+import { IconButtonProps, alpha, styled, useTheme } from '@mui/material';
+import MuiIconButton from '@mui/material/IconButton/IconButton.js';
+import React, { ReactChild, ReactFragment, ReactNode, ReactPortal, Ref, forwardRef } from 'react';
 import {
   ButtonVariantProps,
   ExtendedStyleProps,
   IconButtonShapeProps,
-} from "../../types/extended.js";
-import { getColors } from "../../utilities/getColors.js";
-import { getShadow } from "../../utilities/getShadow.js";
+} from '../../types/extended.js';
+import { getColors } from '../../utilities/getColors.js';
+import { getShadow } from '../../utilities/getShadow.js';
 
 interface IconButtonStyleProps extends ExtendedStyleProps {
   variant?: ButtonVariantProps;
@@ -28,70 +21,70 @@ function getColorStyle({ variant, theme, color }: IconButtonStyleProps) {
   const shadows = getShadow(theme, buttonShadow);
 
   const commonShadow = {
-    "&::after": {
+    '&::after': {
       boxShadow: `0 0 6px 6px ${alpha(main, 0.9)}`,
     },
-    "&:active::after": {
+    '&:active::after': {
       boxShadow: `0 0 0 0 ${alpha(main, 0.9)}`,
     },
-    "&:focus-visible": {
+    '&:focus-visible': {
       outline: `2px solid ${dark}`,
       outlineOffset: 2,
     },
   };
 
   switch (variant) {
-    case "contained":
+    case 'contained':
       return {
         color: contrastText,
         backgroundColor: main,
-        "&:hover": {
+        '&:hover': {
           backgroundColor: dark,
         },
         ...commonShadow,
       };
-    case "light":
+    case 'light':
       return {
         color: main,
         backgroundColor: lighter,
-        "&:hover": {
+        '&:hover': {
           backgroundColor: light,
         },
         ...commonShadow,
       };
-    case "shadow":
+    case 'shadow':
       return {
         boxShadow: shadows,
         color: contrastText,
         backgroundColor: main,
-        "&:hover": {
-          boxShadow: "none",
+        '&:hover': {
+          boxShadow: 'none',
           backgroundColor: dark,
         },
         ...commonShadow,
       };
-    case "outlined":
+    case 'outlined':
       return {
-        "&:hover": {
-          backgroundColor: "transparent",
+        '&:hover': {
+          backgroundColor: 'transparent',
           color: dark,
           borderColor: dark,
         },
         ...commonShadow,
       };
-    case "dashed":
+    case 'dashed':
       return {
         backgroundColor: lighter,
-        "&:hover": {
+        '&:hover': {
           color: dark,
           borderColor: dark,
         },
         ...commonShadow,
       };
-    case "text":
+    case 'text':
     default:
       return {
-        "&:hover": {
+        '&:hover': {
           color: dark,
           backgroundColor: lighter,
         },
@@ -105,43 +98,43 @@ interface StyleProps extends IconButtonStyleProps {
 }
 
 const IconButtonStyle = styled(MuiIconButton, {
-  shouldForwardProp: (prop) => prop !== "variant" && prop !== "shape",
+  shouldForwardProp: (prop) => prop !== 'variant' && prop !== 'shape',
 })(({ theme, variant, shape, color }: StyleProps) => ({
-  position: "relative",
-  "::after": {
+  position: 'relative',
+  '::after': {
     content: '""',
-    display: "block",
-    position: "absolute",
+    display: 'block',
+    position: 'absolute',
     left: 0,
     top: 0,
-    width: "100%",
-    height: "100%",
-    borderRadius: shape === "rounded" ? "50%" : 4,
+    width: '100%',
+    height: '100%',
+    borderRadius: shape === 'rounded' ? '50%' : 4,
     opacity: 0,
-    transition: "all 0.5s",
+    transition: 'all 0.5s',
   },
 
-  ":active::after": {
-    position: "absolute",
-    borderRadius: shape === "rounded" ? "50%" : 4,
+  ':active::after': {
+    position: 'absolute',
+    borderRadius: shape === 'rounded' ? '50%' : 4,
     left: 0,
     top: 0,
     opacity: 1,
-    transition: "0s",
+    transition: '0s',
   },
-  ...(shape === "rounded" && {
-    borderRadius: "50%",
+  ...(shape === 'rounded' && {
+    borderRadius: '50%',
   }),
-  ...(variant === "outlined" && {
-    border: "1px solid",
-    borderColor: "inherit",
+  ...(variant === 'outlined' && {
+    border: '1px solid',
+    borderColor: 'inherit',
   }),
-  ...(variant === "dashed" && {
-    border: "1px dashed",
-    borderColor: "inherit",
+  ...(variant === 'dashed' && {
+    border: '1px dashed',
+    borderColor: 'inherit',
   }),
-  ...(variant !== "text" && {
-    "&.Mui-disabled": {
+  ...(variant !== 'text' && {
+    '&.Mui-disabled': {
       backgroundColor: theme.palette.grey[200],
     },
   }),
@@ -157,14 +150,7 @@ export interface Props extends IconButtonProps {
 
 export const IconButton = forwardRef(
   (
-    {
-      variant = "text",
-      shape = "square",
-      children,
-      color = "primary",
-      tooltip,
-      ...others
-    }: Props,
+    { variant = 'text', shape = 'square', children, color = 'primary', tooltip, ...others }: Props,
     ref: Ref<HTMLButtonElement>
   ) => {
     const theme = useTheme();
@@ -185,4 +171,4 @@ export const IconButton = forwardRef(
   }
 );
 
-IconButton.displayName = "IconButton";
+IconButton.displayName = 'IconButton';
