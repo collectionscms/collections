@@ -156,8 +156,6 @@
   "back": "Back",
   "project_created": "Project created!",
   "go_to_project_home": "Go to project home",
-  "admin": "Admin",
-  "admin_description": "The admin has all permissions.",
   "slug": "Slug",
   "history": "History",
   "delete_post": "Delete post",
@@ -365,6 +363,16 @@
     }
   },
   "seed": {
-    "review_comment": "Please review the post entitled '{{title}}'"
+    "review_comment": "Please review the post entitled '{{title}}'",
+    "role": {
+      "admin": "Administrator",
+      "admin_description": "Administrator role with all permissions.",
+      "editor": "Editor",
+      "editor_description": "Editor role with permission to create, edit and publish posts.",
+      "contributor": "Contributor",
+      "contributor_description": "Contributor role with permission to create posts.",
+      "viewer": "Viewer",
+      "viewer_description": "Viewer role with viewing posts only."
+    }
   }
 }

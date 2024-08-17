@@ -1,104 +1,78 @@
-import { faker } from '@faker-js/faker';
-import i18next from 'i18next';
 import { v4 } from 'uuid';
-import translation_en from '../../../lang/translations/en/translation.json' assert { type: 'json' };
-import translation_ja from '../../../lang/translations/ja/translation.json' assert { type: 'json' };
-import { ContentStatusType, contentStatus } from '../../data/content/content.entity.js';
-import { reviewStatus } from '../../data/review/review.entity.js';
+import { contentStatus } from '../../data/content/content.entity.js';
 import { BypassPrismaType } from '../prisma/client.js';
 import { adminUser } from './createUsers.js';
-
-i18next.init({
-  resources: {
-    ja: {
-      translation: translation_ja,
-    },
-    en: {
-      translation: translation_en,
-    },
-  },
-});
 
 export const createPost = async (
   prisma: BypassPrismaType,
   projectId: string,
+  slug: string,
+  contents: {
+    language: string;
+    title: string;
+    body: string;
+    bodyJson: string;
+    bodyHtml: string;
+    status: string;
+  }[],
   options?: {
-    id?: string;
-    slug?: string;
-    status?: ContentStatusType;
-    publishedAt?: Date;
-    language?: string;
-    version?: number;
+    postId?: string;
     createdById?: string;
   }
 ): Promise<void> => {
   const currentTime = new Date();
-  const title = faker.music.songName();
-  const body = faker.lorem.lines(3);
   const user = await prisma.user.findFirstOrThrow({
     where: {
       id: options?.createdById ?? adminUser,
     },
   });
+  const postId = options?.postId ?? v4();
 
-  i18next.changeLanguage(options?.language);
-  const reviewComment = i18next.t('seed.review_comment', { title });
+  const postContents = [];
+  const postContentHistories = [];
+  for (const content of contents) {
+    postContents.push({
+      id: v4(),
+      projectId,
+      status: content.status,
+      publishedAt: content.status === contentStatus.published ? currentTime : null,
+      language: content.language,
+      version: 1,
+      title: content.title,
+      body: content.body,
+      bodyJson: content.bodyJson,
+      bodyHtml: content.bodyHtml,
+      createdById: user.id,
+      updatedById: user.id,
+      createdAt: currentTime,
+      updatedAt: currentTime,
+    });
 
-  const postId = options?.id ?? v4();
+    postContentHistories.push({
+      id: v4(),
+      projectId,
+      createdById: user.id,
+      updatedById: user.id,
+      status: content.status,
+      language: content.language,
+      version: 1,
+      createdAt: currentTime,
+    });
+  }
 
   await prisma.post.create({
     data: {
       id: postId,
       projectId,
-      slug: options?.slug ?? faker.lorem.slug(),
+      slug: slug,
       createdById: user.id,
       createdAt: currentTime,
       updatedAt: currentTime,
       contents: {
-        create: {
-          id: v4(),
-          projectId,
-          status: options?.status ?? contentStatus.published,
-          publishedAt: options?.publishedAt,
-          language: options?.language ?? 'en',
-          version: options?.version ?? 1,
-          title: title,
-          body: body,
-          // todo: add
-          bodyJson: '{}',
-          bodyHtml: `<p>${body}</p>`,
-          createdById: user.id,
-          updatedById: user.id,
-          createdAt: currentTime,
-          updatedAt: currentTime,
-          review:
-            options?.status === contentStatus.review
-              ? {
-                  create: {
-                    id: v4(),
-                    projectId,
-                    postId,
-                    revieweeId: user.id,
-                    comment: reviewComment,
-                    status: reviewStatus.Request,
-                    createdAt: currentTime,
-                    updatedAt: currentTime,
-                  },
-                }
-              : {},
-        },
+        create: postContents,
       },
       contentHistories: {
-        create: {
-          id: v4(),
-          projectId,
-          createdById: user.id,
-          updatedById: user.id,
-          status: options?.status ?? contentStatus.published,
-          version: options?.version ?? 1,
-          createdAt: currentTime,
-          language: options?.language ?? 'en',
-        },
+        create: postContentHistories,
       },
     },
   });

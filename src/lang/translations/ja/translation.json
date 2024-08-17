@@ -156,8 +156,6 @@
   "back": "戻る",
   "project_created": "プロジェクトを作成しました！",
   "go_to_project_home": "プロジェクトホームへ",
-  "admin": "管理者",
-  "admin_description": "管理者は全ての権限を持っています。",
   "slug": "スラッグ",
   "history": "履歴",
   "delete_post": "記事を削除する",
@@ -365,6 +363,16 @@
     }
   },
   "seed": {
-    "review_comment": "「{{title}}」の記事を確認してください。"
+    "review_comment": "「{{title}}」の記事を確認してください。",
+    "role": {
+      "admin": "管理者",
+      "admin_description": "すべての権限をもつ管理者ロール",
+      "editor": "エディター",
+      "editor_description": "記事の作成・編集・公開ができるエディターロール",
+      "contributor": "投稿者",
+      "contributor_description": "記事の作成ができる投稿者ロール",
+      "viewer": "ビューアー",
+      "viewer_description": "記事の閲覧のみ可能なビューアーロール"
+    }
   }
 }

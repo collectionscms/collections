@@ -1,58 +1,37 @@
+import i18next from 'i18next';
+import translation_en from '../../../lang/translations/en/translation.json' assert { type: 'json' };
+import translation_ja from '../../../lang/translations/ja/translation.json' assert { type: 'json' };
 import { Output } from '../../../utilities/output.js';
-import { contentStatus } from '../../data/content/content.entity.js';
 import { bypassPrisma } from '../prisma/client.js';
 import { createApiKeys } from './createApiKeys.js';
 import { createPermissions } from './createPermissions.js';
 import { createPost } from './createPost.js';
-import { createProjects, enProject, jaProject } from './createProjects.js';
-import {
-  createRoles,
-  enAdminRole,
-  enContributorRole,
-  enEditorRole,
-  enViewerRole,
-  jaAdminRole,
-  jaContributorRole,
-  jaEditorRole,
-  jaViewerRole,
-} from './createRoles.js';
+import { createProjects, jpProject, usaProject } from './createProjects.js';
+import { createRoles, projectRoles } from './createRoles.js';
 import { adminUser, contributorUser, createUsers, editorUser, viewerUser } from './createUsers.js';
+import { posts } from './data/posts.js';
+
+i18next.init({
+  resources: {
+    ja: {
+      translation: translation_ja,
+    },
+    en: {
+      translation: translation_en,
+    },
+  },
+});
 
 export const seedDev = async (): Promise<void> => {
   try {
     await bypassPrisma.$transaction(async (tx) => {
       await createProjects(tx);
       await createPermissions(tx);
-      await createRoles(tx);
+      await createRoles(tx, i18next);
       await createUsers(tx, getUsers());
       await createApiKeys(tx);
-
-      for (const project of [enProject, jaProject]) {
-        // draft
-        await createPost(tx, project, {
-          status: contentStatus.draft,
-          language: project === enProject ? 'en' : 'ja',
-        });
-
-        // review
-        await createPost(tx, project, {
-          status: contentStatus.review,
-          language: project === enProject ? 'en' : 'ja',
-        });
-
-        // published
-        await createPost(tx, project, {
-          status: contentStatus.published,
-          language: project === enProject ? 'en' : 'ja',
-          publishedAt: new Date(),
-        });
-
-        // archived
-        await createPost(tx, project, {
-          status: contentStatus.archived,
-          language: project === enProject ? 'en' : 'ja',
-        });
-      }
+      await createPost(tx, usaProject, 'what-is-collections', posts);
+      await createPost(tx, jpProject, 'what-is-collections', posts);
     });
 
     process.exit(0);
@@ -70,12 +49,12 @@ function getUsers() {
       password: 'password',
       userProjects: [
         {
-          projectId: enProject,
-          roleId: enAdminRole,
+          projectId: usaProject,
+          roleId: projectRoles[usaProject].admin,
         },
         {
-          projectId: jaProject,
-          roleId: jaAdminRole,
+          projectId: jpProject,
+          roleId: projectRoles[jpProject].admin,
         },
       ],
     },
@@ -85,12 +64,12 @@ function getUsers() {
       password: 'password',
       userProjects: [
         {
-          projectId: enProject,
-          roleId: enEditorRole,
+          projectId: usaProject,
+          roleId: projectRoles[usaProject].editor,
         },
         {
-          projectId: jaProject,
-          roleId: jaEditorRole,
+          projectId: jpProject,
+          roleId: projectRoles[jpProject].editor,
         },
       ],
     },
@@ -100,12 +79,12 @@ function getUsers() {
       password: 'password',
       userProjects: [
         {
-          projectId: enProject,
-          roleId: enContributorRole,
+          projectId: usaProject,
+          roleId: projectRoles[usaProject].contributor,
         },
         {
-          projectId: jaProject,
-          roleId: jaContributorRole,
+          projectId: jpProject,
+          roleId: projectRoles[jpProject].contributor,
         },
       ],
     },
@@ -115,12 +94,12 @@ function getUsers() {
       password: 'password',
       userProjects: [
         {
-          projectId: enProject,
-          roleId: enViewerRole,
+          projectId: usaProject,
+          roleId: projectRoles[usaProject].viewer,
         },
         {
-          projectId: jaProject,
-          roleId: jaViewerRole,
+          projectId: jpProject,
+          roleId: projectRoles[jpProject].viewer,
         },
       ],
     },

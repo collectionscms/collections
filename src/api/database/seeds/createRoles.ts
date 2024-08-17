@@ -1,18 +1,27 @@
+import { i18n } from 'i18next';
 import { v4 } from 'uuid';
 import { roleActions } from '../../data/permission/permission.entity.js';
 import { BypassPrismaType } from '../prisma/client.js';
-import { enProject, jaProject } from './createProjects.js';
+import { jpProject, usaProject } from './createProjects.js';
 
-export const enAdminRole = v4();
-export const enEditorRole = v4();
-export const enContributorRole = v4();
-export const enViewerRole = v4();
-export const jaAdminRole = v4();
-export const jaEditorRole = v4();
-export const jaContributorRole = v4();
-export const jaViewerRole = v4();
+export const projectRoles = {
+  [usaProject]: {
+    language: 'en',
+    admin: v4(),
+    editor: v4(),
+    contributor: v4(),
+    viewer: v4(),
+  },
+  [jpProject]: {
+    language: 'ja',
+    admin: v4(),
+    editor: v4(),
+    contributor: v4(),
+    viewer: v4(),
+  },
+};
 
-export const createRoles = async (prisma: BypassPrismaType): Promise<void> => {
+export const createRoles = async (prisma: BypassPrismaType, i18next: i18n): Promise<void> => {
   const editorPermissions = [
     ...roleActions.post,
     'readProject',
@@ -40,77 +49,53 @@ export const createRoles = async (prisma: BypassPrismaType): Promise<void> => {
 
   const viewerPermissions = ['readOwnPost'];
 
-  const enProjectRoles = [
-    {
-      id: enAdminRole,
-      name: 'Administrator',
-      description: 'Administrator role with all permissions.',
-      isAdmin: true,
-      projectId: enProject,
-      permissions: [],
-    },
-    {
-      id: enEditorRole,
-      name: 'Editor',
-      description: 'Editor role with permission to edit and publish posts.',
-      isAdmin: false,
-      projectId: enProject,
-      permissions: editorPermissions,
-    },
-    {
-      id: enContributorRole,
-      name: 'ContributorRole',
-      description: 'ContributorRole role with permission to create posts.',
-      isAdmin: false,
-      projectId: enProject,
-      permissions: contributorPermissions,
-    },
-    {
-      id: enViewerRole,
-      name: 'Viewer',
-      description: 'Viewer role with permission to read posts.',
-      isAdmin: false,
-      projectId: enProject,
-      permissions: viewerPermissions,
-    },
-  ];
+  const roles = [];
+  for (const project of [usaProject, jpProject]) {
+    const projectRole = projectRoles[project];
+    i18next.changeLanguage(projectRole.language);
 
-  const jaProjectRoles = [
-    {
-      id: jaAdminRole,
-      name: '管理者',
-      description: 'すべての権限をもつ管理者ロール',
+    // admin
+    roles.push({
+      id: projectRole.admin,
+      name: i18next.t('seed.role.admin'),
+      description: i18next.t('seed.role.admin_description'),
       isAdmin: true,
-      projectId: jaProject,
+      projectId: project,
       permissions: [],
-    },
-    {
-      id: jaEditorRole,
-      name: 'エディター',
-      description: '記事の編集・公開権限をもつ編集者ロール',
-      isAdmin: false,
-      projectId: jaProject,
-      permissions: editorPermissions,
-    },
-    {
-      id: jaContributorRole,
-      name: '投稿者',
-      description: '記事の作成権限をもつ投稿者ロール',
-      isAdmin: false,
-      projectId: jaProject,
-      permissions: contributorPermissions,
-    },
-    {
-      id: jaViewerRole,
-      name: 'ビューアー',
-      description: '記事の閲覧権限をもつビューアーロール',
-      isAdmin: false,
-      projectId: jaProject,
-      permissions: viewerPermissions,
-    },
-  ];
+    });
 
-  for (const role of [...enProjectRoles, ...jaProjectRoles]) {
+    // editor
+    roles.push({
+      id: projectRole.editor,
+      name: i18next.t('seed.role.editor'),
+      description: i18next.t('seed.role.editor_description'),
+      isAdmin: false,
+      projectId: project,
+      permissions: editorPermissions,
+    });
+
+    // contributor
+    roles.push({
+      id: projectRole.contributor,
+      name: i18next.t('seed.role.contributor'),
+      description: i18next.t('seed.role.contributor_description'),
+      isAdmin: false,
+      projectId: project,
+      permissions: contributorPermissions,
+    });
+
+    // viewer
+    roles.push({
+      id: projectRole.viewer,
+      name: i18next.t('seed.role.viewer'),
+      description: i18next.t('seed.role.viewer_description'),
+      isAdmin: false,
+      projectId: project,
+      permissions: viewerPermissions,
+    });
+  }
+
+  for (const role of roles) {
     await prisma.role.create({
       data: {
         id: role.id,

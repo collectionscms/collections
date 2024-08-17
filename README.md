@@ -1,6 +1,6 @@
 ## ⭐ What is Collections
 
-Collections is an open source headless CMS that makes multilingual content delivery easy with AI. We provide the comfortable writing and developer experience for global websites.
+Collections is headless CMS that simplifies multilingual content delivery with a smooth writing experience, powerful AI-driven translation, and an intuitive API.
 
 <hr/>
 <h4>
@@ -27,14 +27,19 @@ Extended documentation is available on our website.
 Easiest way to start using Collections on a local host.
 
 ```sh
+// clone
 git clone git@github.com:collectionscms/collections.git
 cd collections
+
+// env
 cp .env.sample .env
 vi .env - make it your environment
 brew install direnv
 vi ~/.zshrc - add `eval "$(direnv hook zsh)"`
 source ~/.zshrc
 direnv allow .
+
+// init
 yarn install
 yarn db:refresh
 yarn dev
@@ -44,8 +49,8 @@ Add the following lines to the `/etc/hosts`
 
 ```sh
 127.0.0.1   app.test.com
-127.0.0.1   en.test.com
-127.0.0.1   ja.test.com
+127.0.0.1   usa.test.com
+127.0.0.1   jp.test.com
 ```
 
 Open [http://app.test.com:4000/admin](http://app.test.com:4000/admin) to view your running app.

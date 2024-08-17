@@ -88,7 +88,7 @@ export const PostPageImpl: React.FC = () => {
             {row.languageStatues.map(({ language, currentStatus, prevStatus }) => {
               return (
                 <Stack key={language} direction="row" gap={1}>
-                  <Typography sx={{ width: 30 }}>{language}</Typography>
+                  <Typography sx={{ width: 30 }}>{language.toUpperCase()}</Typography>
                   {prevStatus && (
                     <>
                       <StatusDot status="published" isShowText={false} />
