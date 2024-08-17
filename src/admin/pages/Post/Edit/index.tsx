@@ -240,6 +240,10 @@ export const EditPostPageImpl: React.FC = () => {
         onTrashPost={handleTrashPost}
         onTrashLanguageContent={handleTrashLanguageContent}
       />
+      <PostFooter
+        histories={post.histories}
+        characters={editor?.storage.characterCount.characters() ?? 0}
+      />
       <Box component="main" sx={{ minHeight: '100vh', backgroundColor: bg }}>
         <Toolbar sx={{ mt: 0 }} />
         <Container sx={{ py: 10 }}>
@@ -330,10 +334,6 @@ export const EditPostPageImpl: React.FC = () => {
           <BlockEditor editor={editor} />
         </Container>
       </Box>
-      <PostFooter
-        histories={post.histories}
-        characters={editor?.storage.characterCount.characters() ?? 0}
-      />
       <PublishSettings
         open={openSettings}
         contentId={post.contentId}
