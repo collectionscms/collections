@@ -39,8 +39,8 @@ export class CreateProjectUseCase {
 
     const roleEntity = RoleEntity.Construct({
       projectId: projectEntity.id,
-      name: t('admin'),
-      description: t('admin_description'),
+      name: t('seed.role.admin'),
+      description: t('seed.role.admin_description'),
     });
     roleEntity.changeToAdmin();
 
