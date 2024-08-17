@@ -1,6 +1,6 @@
-import * as Color from "@mui/material";
+import * as Color from '@mui/material';
 
-declare module "@mui/material" {
+declare module '@mui/material' {
   interface Color {
     0?: string;
     A50?: string;

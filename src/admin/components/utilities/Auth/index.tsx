@@ -90,8 +90,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       me,
       projects: projectRoles?.map((projectRole) => projectRole.project) || [],
       currentProjectRole: projectSubdomain
-        ? projectRoles?.find((projectRole) => projectRole.project.subdomain === projectSubdomain) ??
-          null
+        ? (projectRoles?.find(
+            (projectRole) => projectRole.project.subdomain === projectSubdomain
+          ) ?? null)
         : null,
       getCsrfToken,
       login,

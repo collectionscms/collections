@@ -1,4 +1,4 @@
-import { Theme } from "@mui/material";
+import { Theme } from '@mui/material';
 
 export const TableFooter = (theme: Theme) => {
   return {

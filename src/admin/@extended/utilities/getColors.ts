@@ -1,17 +1,17 @@
-import { Theme } from "@mui/material";
-import { ColorProps } from "../types/extended.js";
+import { Theme } from '@mui/material';
+import { ColorProps } from '../types/extended.js';
 
 export const getColors = (theme: Theme, color?: ColorProps) => {
   switch (color!) {
-    case "secondary":
+    case 'secondary':
       return theme.palette.secondary;
-    case "error":
+    case 'error':
       return theme.palette.error;
-    case "warning":
+    case 'warning':
       return theme.palette.warning;
-    case "info":
+    case 'info':
       return theme.palette.info;
-    case "success":
+    case 'success':
       return theme.palette.success;
     default:
       return theme.palette.primary;

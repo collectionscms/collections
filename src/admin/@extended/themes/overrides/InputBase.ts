@@ -3,7 +3,7 @@ export const InputBase = () => {
     MuiInputBase: {
       styleOverrides: {
         sizeSmall: {
-          fontSize: "0.75rem",
+          fontSize: '0.75rem',
         },
       },
     },

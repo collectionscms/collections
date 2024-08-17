@@ -1,6 +1,6 @@
-import * as createPalette from "@mui/material";
+import * as createPalette from '@mui/material';
 
-export declare module "@mui/material" {
+export declare module '@mui/material' {
   interface SimplePaletteColorOptions {
     lighter?: string;
     darker?: string;

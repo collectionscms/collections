@@ -1,6 +1,6 @@
-import { Theme } from "@mui/material";
-import { ExtendedStyleProps } from "../../types/extended.js";
-import { getColors } from "../../utilities/getColors.js";
+import { Theme } from '@mui/material';
+import { ExtendedStyleProps } from '../../types/extended.js';
+import { getColors } from '../../utilities/getColors.js';
 
 const getColorStyle = ({ color, theme }: ExtendedStyleProps) => {
   const colors = getColors(theme, color);
@@ -13,7 +13,7 @@ const getColorStyle = ({ color, theme }: ExtendedStyleProps) => {
 };
 
 export const Badge = (theme: Theme) => {
-  const defaultLightBadge = getColorStyle({ color: "primary", theme });
+  const defaultLightBadge = getColorStyle({ color: 'primary', theme });
 
   return {
     MuiBadge: {
@@ -25,15 +25,15 @@ export const Badge = (theme: Theme) => {
         },
         light: {
           ...defaultLightBadge,
-          "&.MuiBadge-colorPrimary": getColorStyle({ color: "primary", theme }),
-          "&.MuiBadge-colorSecondary": getColorStyle({
-            color: "secondary",
+          '&.MuiBadge-colorPrimary': getColorStyle({ color: 'primary', theme }),
+          '&.MuiBadge-colorSecondary': getColorStyle({
+            color: 'secondary',
             theme,
           }),
-          "&.MuiBadge-colorError": getColorStyle({ color: "error", theme }),
-          "&.MuiBadge-colorInfo": getColorStyle({ color: "info", theme }),
-          "&.MuiBadge-colorSuccess": getColorStyle({ color: "success", theme }),
-          "&.MuiBadge-colorWarning": getColorStyle({ color: "warning", theme }),
+          '&.MuiBadge-colorError': getColorStyle({ color: 'error', theme }),
+          '&.MuiBadge-colorInfo': getColorStyle({ color: 'info', theme }),
+          '&.MuiBadge-colorSuccess': getColorStyle({ color: 'success', theme }),
+          '&.MuiBadge-colorWarning': getColorStyle({ color: 'warning', theme }),
         },
       },
     },

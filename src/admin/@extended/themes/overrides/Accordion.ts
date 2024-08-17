@@ -1,4 +1,4 @@
-import { Theme } from "@mui/material";
+import { Theme } from '@mui/material';
 
 export const Accordion = (theme: Theme) => {
   return {
@@ -11,13 +11,13 @@ export const Accordion = (theme: Theme) => {
       styleOverrides: {
         root: {
           border: `1px solid ${theme.palette.secondary.light}`,
-          "&:not(:last-child)": {
+          '&:not(:last-child)': {
             borderBottom: 0,
           },
-          "&:before": {
-            display: "none",
+          '&:before': {
+            display: 'none',
           },
-          "&.Mui-disabled": {
+          '&.Mui-disabled': {
             backgroundColor: theme.palette.secondary.lighter,
           },
         },

@@ -1,4 +1,4 @@
-import { SimplePaletteColorOptions, PaletteColorOptions } from "@mui/material";
+import { SimplePaletteColorOptions, PaletteColorOptions } from '@mui/material';
 
 export type PaletteThemeProps = {
   primary: SimplePaletteColorOptions;
