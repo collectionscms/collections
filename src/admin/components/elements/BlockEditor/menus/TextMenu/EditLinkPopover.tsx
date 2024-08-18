@@ -1,5 +1,6 @@
 import * as Popover from '@radix-ui/react-popover';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Icon } from '../../../Icon/index.js';
 import { LinkEditorPanel } from '../../panels/LinkEditorPanel/index.js';
 import { ToolbarButton } from '../../ui/ToolbarButton/index.js';
@@ -9,10 +10,12 @@ export type EditLinkPopoverProps = {
 };
 
 export const EditLinkPopover = ({ onSetLink }: EditLinkPopoverProps) => {
+  const { t } = useTranslation();
+
   return (
     <Popover.Root>
       <Popover.Trigger asChild>
-        <ToolbarButton color="inherit" tooltip="Set Link">
+        <ToolbarButton color="inherit" tooltip={t('link')}>
           <Icon name="Link" size={16} />
         </ToolbarButton>
       </Popover.Trigger>
