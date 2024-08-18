@@ -1,3 +1,4 @@
+import { LoadingOutlined } from '@ant-design/icons';
 import {
   AppBarProps,
   Button,
@@ -26,6 +27,8 @@ export type Props = {
   post: LocalizedPost;
   currentLanguage: string;
   buttonRef: React.RefObject<HTMLButtonElement>;
+  isDirty: boolean;
+  isSaving: boolean;
   onOpenSettings: () => void;
   onSaveDraft: () => void;
   onChangeLanguage: (language: string) => void;
@@ -41,6 +44,8 @@ export const PostHeader: React.FC<Props> = ({
   post,
   currentLanguage,
   buttonRef,
+  isDirty,
+  isSaving,
   onOpenSettings,
   onSaveDraft,
   onChangeLanguage,
@@ -75,6 +80,7 @@ export const PostHeader: React.FC<Props> = ({
   // /////////////////////////////////////
   // Content Menu
   // /////////////////////////////////////
+
   const anchorContentRef = useRef<any>(null);
   const [contentMenuOpen, setContentMenuOpen] = useState(false);
   const handleContentMenuOpen = () => {
@@ -103,6 +109,7 @@ export const PostHeader: React.FC<Props> = ({
   // /////////////////////////////////////
   // Language Menu
   // /////////////////////////////////////
+
   const anchorRef = useRef<any>(null);
   const [languageOpen, setLanguageOpen] = useState(false);
   const handleLanguageOpen = () => {
@@ -130,6 +137,26 @@ export const PostHeader: React.FC<Props> = ({
     onTrashLanguageContent(currentLanguage);
     setOpenContentTrash(false);
     setContentMenuOpen(false);
+  };
+
+  // /////////////////////////////////////
+  // Action
+  // /////////////////////////////////////
+
+  const getSaveDraftButtonLabel = () => {
+    if (isSaving) {
+      return t('saving');
+    }
+
+    if (isDirty) {
+      if (post.currentStatus === 'published') {
+        return t('save_draft_new_ver', { version: post.version + 1 });
+      } else {
+        return t('save_draft');
+      }
+    }
+
+    return t('saved');
   };
 
   return (
@@ -193,10 +220,21 @@ export const PostHeader: React.FC<Props> = ({
             </IconButton>
             <>
               <Tooltip title={`${isMac ? '⌘' : 'Ctrl'} S`} placement="top">
-                <Button ref={buttonRef} variant="outlined" color="secondary" onClick={onSaveDraft}>
-                  {post.currentStatus === 'published'
-                    ? t('save_draft_new_ver', { version: post.version + 1 })
-                    : t('save_draft')}
+                <Button
+                  ref={buttonRef}
+                  variant="outlined"
+                  color={isDirty || isSaving ? 'primary' : 'secondary'}
+                  disabled={isSaving}
+                  onClick={onSaveDraft}
+                >
+                  <Stack flexDirection="row" gap={1} alignItems="center">
+                    {isSaving ? (
+                      <LoadingOutlined size={14} />
+                    ) : (
+                      !isDirty && <Icon name="Check" size={14} />
+                    )}
+                    {getSaveDraftButtonLabel()}
+                  </Stack>
                 </Button>
               </Tooltip>
               <Button variant="contained" onClick={onOpenSettings}>

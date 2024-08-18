@@ -9,8 +9,10 @@ import { logger } from '../../../../utilities/logger.js';
 import { IconButton } from '../../../@extended/components/IconButton/index.js';
 import { useBlockEditor } from '../../../components/elements/BlockEditor/hooks/useBlockEditor.js';
 import { BlockEditor } from '../../../components/elements/BlockEditor/index.js';
+import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscardDialog/index.js';
 import { Icon } from '../../../components/elements/Icon/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
+import { useUnsavedChangesPrompt } from '../../../hooks/useUnsavedChangesPrompt.js';
 import { PostContextProvider, usePost } from '../Context/index.js';
 import { LocalizedContent } from '../LocalizedContent/index.js';
 import { PostFooter } from '../PostFooter/index.js';
@@ -34,13 +36,15 @@ export const EditPostPageImpl: React.FC = () => {
   const { getPost, updateContent, trashPost, trashContent, createFileImage, trashLanguageContent } =
     usePost();
   const { data: post, mutate } = getPost(id, language);
-  const { trigger } = updateContent(post.contentId);
+  const { trigger, isMutating: isSaving } = updateContent(post.contentId);
   const { trigger: trashPostTrigger } = trashPost(post.id);
   const { trigger: trashContentTrigger } = trashContent(post.contentId);
   const { trigger: trashLanguageContentTrigger } = trashLanguageContent(
     post.id,
     post.contentLanguage
   );
+  const [isDirty, setIsDirty] = useState(false);
+  const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
 
   if (!post) return <></>;
 
@@ -49,6 +53,10 @@ export const EditPostPageImpl: React.FC = () => {
   // /////////////////////////////////////
 
   const [postTitle, setPostTitle] = useState(post.title);
+  const handleChangeTitle = (value: string) => {
+    setPostTitle(value);
+    setIsDirty(true);
+  };
 
   const ref = React.useRef<HTMLButtonElement>(null);
   const { editor } = useBlockEditor({
@@ -60,6 +68,20 @@ export const EditPostPageImpl: React.FC = () => {
     setPostTitle(post.title);
     editor?.commands.setContent(toJson(post.bodyJson));
   }, [post]);
+
+  useEffect(() => {
+    if (editor) {
+      const handleUpdate = () => {
+        setIsDirty(true);
+      };
+
+      editor.on('update', handleUpdate);
+
+      return () => {
+        editor.off('update', handleUpdate);
+      };
+    }
+  }, [editor]);
 
   // /////////////////////////////////////
   // Theme
@@ -157,6 +179,7 @@ export const EditPostPageImpl: React.FC = () => {
     fileId: string | null;
   }) => {
     await trigger(data);
+    setIsDirty(false);
     mutate();
   };
 
@@ -228,10 +251,13 @@ export const EditPostPageImpl: React.FC = () => {
 
   return (
     <>
+      <ConfirmDiscardDialog open={showPrompt} onDiscard={proceed} onKeepEditing={stay} />
       <PostHeader
         post={post}
         currentLanguage={post.contentLanguage}
         buttonRef={ref}
+        isDirty={isDirty}
+        isSaving={isSaving}
         onOpenSettings={handleOpenSettings}
         onSaveDraft={handleSaveContent}
         onChangeLanguage={handleChangeLanguage}
@@ -303,7 +329,7 @@ export const EditPostPageImpl: React.FC = () => {
                 placeholder={t('title')}
                 value={postTitle}
                 autoFocus
-                onChange={(e) => setPostTitle(e.target.value)}
+                onChange={(e) => handleChangeTitle(e.target.value)}
                 sx={{
                   '.MuiOutlinedInput-notchedOutline': {
                     border: 'none !important',
