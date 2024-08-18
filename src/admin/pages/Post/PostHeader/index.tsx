@@ -226,6 +226,7 @@ export const PostHeader: React.FC<Props> = ({
                   color={isDirty || isSaving ? 'primary' : 'secondary'}
                   disabled={isSaving}
                   onClick={onSaveDraft}
+                  sx={{ transition: 'ease-in-out 0.5s' }}
                 >
                   <Stack flexDirection="row" gap={1} alignItems="center">
                     {isSaving ? (
@@ -233,7 +234,7 @@ export const PostHeader: React.FC<Props> = ({
                     ) : (
                       !isDirty && <Icon name="Check" size={14} />
                     )}
-                    {getSaveDraftButtonLabel()}
+                    <Typography>{getSaveDraftButtonLabel()}</Typography>
                   </Stack>
                 </Button>
               </Tooltip>
