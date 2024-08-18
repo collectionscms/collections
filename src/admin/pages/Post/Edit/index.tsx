@@ -117,7 +117,11 @@ export const EditPostPageImpl: React.FC = () => {
   const [uploadFile, setUploadFile] = useState<UploadFile | null>(post.file ?? null);
   const { trigger: createFileImageTrigger } = createFileImage();
 
-  const handleUploadThumbnail = async () => {
+  useEffect(() => {
+    setUploadFile(post.file ?? null);
+  }, [post]);
+
+  const handleUploadCover = async () => {
     const file = inputRef.current?.files?.[0];
     if (!file) return;
 
@@ -137,7 +141,7 @@ export const EditPostPageImpl: React.FC = () => {
     }
   };
 
-  const handleDeleteThumbnail = async () => {
+  const handleDeleteCover = async () => {
     setUploadFile(null);
     try {
       await saveContent({
@@ -300,7 +304,7 @@ export const EditPostPageImpl: React.FC = () => {
                       right: 8,
                       backgroundColor: alpha('#fff', 0.7),
                     }}
-                    onClick={handleDeleteThumbnail}
+                    onClick={handleDeleteCover}
                   >
                     <Icon name="X" size={20} strokeWidth={1.5} />
                   </IconButton>
@@ -322,7 +326,7 @@ export const EditPostPageImpl: React.FC = () => {
                       ref={inputRef}
                       accept="image/*"
                       type="file"
-                      onChange={handleUploadThumbnail}
+                      onChange={handleUploadCover}
                     />
                   </Stack>
                 </Button>
