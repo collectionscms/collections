@@ -10,11 +10,13 @@ import { StarterKit } from '@tiptap/starter-kit';
 import { useTranslation } from 'react-i18next';
 import { logger } from '../../../../../utilities/logger.js';
 import { uploadFile } from '../../../../utilities/api.js';
-import { HorizontalRule } from '../extensions/HorizontalRule/index.js';
-import { ImageBlock } from '../extensions/ImageBlock/ImageBlock.js';
-import ImageUpload from '../extensions/ImageUpload/ImageUpload.js';
-import Link from '../extensions/Link/index.js';
-import { SlashCommand } from '../extensions/SlashCommand/index.js';
+import {
+  HorizontalRule,
+  ImageBlock,
+  ImageUpload,
+  Link,
+  SlashCommand,
+} from '../extensions/index.js';
 
 export const useBlockEditor = ({
   initialContent,
