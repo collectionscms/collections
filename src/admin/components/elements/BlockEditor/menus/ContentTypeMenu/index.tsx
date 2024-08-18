@@ -1,8 +1,9 @@
-import { Button, Paper, Stack } from '@mui/material';
+import { IconButton, Paper, Stack, Typography } from '@mui/material';
 import * as Dropdown from '@radix-ui/react-dropdown-menu';
 import { icons } from 'lucide-react';
 import React, { useMemo } from 'react';
 import { Icon } from '../../../Icon/index.js';
+import { DropdownButton } from '../../ui/DropdownButton/index.js';
 
 export type ContentTypePickerOption = {
   label: string;
@@ -19,34 +20,35 @@ type Props = {
 
 export const ContentTypeMenu: React.FC<Props> = ({ options }) => {
   const activeItem = useMemo(() => options.find((option) => option.isActive()), [options]);
-  const activeItemIcon = activeItem ? activeItem.icon : 'CaseSensitive';
+  const activeItemIcon = activeItem ? activeItem.icon : 'Pilcrow';
 
   return (
     <Dropdown.Root>
       <Dropdown.Trigger asChild>
-        <Button variant="text" color="secondary">
+        <IconButton size="small" sx={{ px: 3, borderRadius: 1.5 }} color="inherit">
           <Stack gap={0.5} direction="row" alignItems="center">
             <Icon name={activeItemIcon} size={16} />
-            <Icon name="ChevronDown" size={8} strokeWidth={4} />
+            <Icon name="ChevronDown" size={8} />
           </Stack>
-        </Button>
+        </IconButton>
       </Dropdown.Trigger>
       <Dropdown.Content>
-        <Paper elevation={1} sx={{ p: 1, borderRadius: 2 }}>
+        <Paper
+          sx={{
+            borderRadius: 2,
+            border: '1px solid',
+            borderColor: 'divider',
+            padding: 1,
+            boxShadow: '0px 9px 24px rgba(0, 0, 0, 0.1)',
+          }}
+        >
           <Stack>
             {options.map((option) => {
               return (
-                <Dropdown.Item key={option.id}>
-                  <Button
-                    variant="text"
-                    color="secondary"
-                    onClick={option.onClick}
-                    startIcon={<Icon name={option.icon} size={16} />}
-                    sx={{ justifyContent: 'left', width: '100%' }}
-                  >
-                    {option.label}
-                  </Button>
-                </Dropdown.Item>
+                <DropdownButton onClick={option.onClick} key={option.id}>
+                  <Icon name={option.icon} size={16} />
+                  <Typography sx={{ ml: 1 }}>{option.label}</Typography>
+                </DropdownButton>
               );
             })}
           </Stack>

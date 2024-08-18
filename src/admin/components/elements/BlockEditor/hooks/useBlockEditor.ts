@@ -2,7 +2,6 @@ import { FileHandler } from '@tiptap-pro/extension-file-handler';
 import { Content, Extension } from '@tiptap/core';
 import CharacterCount from '@tiptap/extension-character-count';
 import Heading from '@tiptap/extension-heading';
-import Link from '@tiptap/extension-link';
 import Placeholder from '@tiptap/extension-placeholder';
 import TaskItem from '@tiptap/extension-task-item';
 import Underline from '@tiptap/extension-underline';
@@ -14,6 +13,7 @@ import { uploadFile } from '../../../../utilities/api.js';
 import { HorizontalRule } from '../extensions/HorizontalRule/index.js';
 import { ImageBlock } from '../extensions/ImageBlock/ImageBlock.js';
 import ImageUpload from '../extensions/ImageUpload/ImageUpload.js';
+import Link from '../extensions/Link/index.js';
 import { SlashCommand } from '../extensions/SlashCommand/index.js';
 
 export const useBlockEditor = ({
