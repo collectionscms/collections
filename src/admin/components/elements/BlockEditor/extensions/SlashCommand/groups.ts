@@ -32,7 +32,7 @@ export const groups = (t: TFunction): Group[] => [
       {
         name: 'text',
         label: t('editor.text'),
-        iconName: 'CaseSensitive',
+        iconName: 'Pilcrow',
         description: 'Medium priority section title',
         aliases: ['paragraph'],
         action: (editor) => {
