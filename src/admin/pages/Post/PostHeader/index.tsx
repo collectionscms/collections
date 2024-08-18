@@ -222,23 +222,23 @@ export const PostHeader: React.FC<Props> = ({
               <Tooltip title={`${isMac ? '⌘' : 'Ctrl'} S`} placement="top">
                 <Button
                   ref={buttonRef}
-                  variant="outlined"
-                  color={isDirty || isSaving ? 'primary' : 'secondary'}
-                  disabled={isSaving}
+                  variant="contained"
+                  color="secondary"
+                  disabled={!isDirty || isSaving}
                   onClick={onSaveDraft}
-                  sx={{ transition: 'ease-in-out 0.5s' }}
-                >
-                  <Stack flexDirection="row" gap={1} alignItems="center">
-                    {isSaving ? (
+                  startIcon={
+                    isSaving ? (
                       <LoadingOutlined size={14} />
                     ) : (
                       !isDirty && <Icon name="Check" size={14} />
-                    )}
-                    <Typography>{getSaveDraftButtonLabel()}</Typography>
-                  </Stack>
+                    )
+                  }
+                  sx={{ transition: 'ease-in-out 0.5s' }}
+                >
+                  <Typography>{getSaveDraftButtonLabel()}</Typography>
                 </Button>
               </Tooltip>
-              <Button variant="contained" onClick={onOpenSettings}>
+              <Button variant="contained" onClick={onOpenSettings} sx={{ padding: '5px 15px' }}>
                 {t('publish_settings')}
               </Button>
               <IconButton shape="rounded" color="secondary" onClick={navigateToList} sx={{ p: 0 }}>
