@@ -25,6 +25,11 @@
     border-left: 2px solid rgba(#0d0d0d, 0.1);
   }
 
+  .selection,
+  *::selection {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+
   [data-type='horizontalRule'] {
     margin-top: 2em;
     margin-bottom: 2em;

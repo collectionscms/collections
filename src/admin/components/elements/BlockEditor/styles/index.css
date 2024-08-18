@@ -85,12 +85,6 @@
     display: inline;
   }
 
-  .selection,
-  *::selection {
-    background-color: rgba(0, 0, 0, 0.1);
-    background-color: rgba(255, 255, 255, 0.2);
-  }
-
   & > .react-renderer {
     margin-top: 3rem;
     margin-bottom: 3rem;
