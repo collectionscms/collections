@@ -1,4 +1,14 @@
-import { Box, Button, Container, Stack, TextField, Toolbar, alpha, useTheme } from '@mui/material';
+import {
+  Box,
+  Button,
+  Container,
+  Stack,
+  TextField,
+  Toolbar,
+  Typography,
+  alpha,
+  useTheme,
+} from '@mui/material';
 import { enqueueSnackbar } from 'notistack';
 import React, { useEffect, useRef, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
@@ -303,20 +313,18 @@ export const EditPostPageImpl: React.FC = () => {
                   />
                 </Box>
               ) : (
-                <Button
-                  variant="text"
-                  color="secondary"
-                  startIcon={<Icon name="Camera" size={16} />}
-                  component="label"
-                >
-                  {t('add_thumbnail')}
-                  <input
-                    hidden
-                    ref={inputRef}
-                    accept="image/*"
-                    type="file"
-                    onChange={handleUploadThumbnail}
-                  />
+                <Button variant="text" color="secondary" component="label">
+                  <Stack direction="row" alignItems="center" gap={1}>
+                    <Icon name="Image" size={16} />
+                    <Typography variant="button">{t('add_cover')}</Typography>
+                    <input
+                      hidden
+                      ref={inputRef}
+                      accept="image/*"
+                      type="file"
+                      onChange={handleUploadThumbnail}
+                    />
+                  </Stack>
                 </Button>
               )}
             </Box>
