@@ -180,6 +180,7 @@
   "no_additional_languages": "追加できる言語はありません",
   "choose_language": "言語を選択してください",
   "translatable": "翻訳可能",
+  "apply": "適用",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",
