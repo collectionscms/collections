@@ -1,0 +1,65 @@
+.ProseMirror {
+  h1 {
+    margin-bottom: 1.8em;
+    font-size: 1.875em;
+    line-height: 1.25em;
+  }
+
+  h2 {
+    margin-bottom: 1.6em;
+    font-size: 1.5em;
+    line-height: 1.2em;
+  }
+
+  h3 {
+    margin-bottom: 1.6em;
+    font-size: 1.3em;
+    line-height: 1.3em;
+  }
+
+  p {
+    line-height: 1.625em;
+    margin: 1.9em auto;
+  }
+
+  p:first-of-type {
+    margin-top: 0;
+  }
+
+  p:last-of-type {
+    margin-bottom: 0;
+  }
+
+  a.link {
+    color: #8c8c8c;
+    text-decoration: underline dashed 0.5px;
+    text-underline-offset: 0.3em;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  ul,
+  ol {
+    margin: 1.9em auto;
+    padding: 0 1rem;
+    line-height: 1.85;
+
+    li {
+      padding-left: 0.2em;
+      margin: 0.5em 0;
+    }
+
+    p {
+      margin: 0;
+    }
+  }
+
+  hr {
+    margin: 0;
+    height: 0;
+    color: inherit;
+  }
+}
