@@ -26,7 +26,8 @@ export const DropdownButton = ({
         ...sx,
         p: 1,
         justifyContent: 'flex-start',
-        color: theme.palette.grey[700],
+        borderRadius: 1.5,
+        color: 'inherit',
         backgroundColor: isActive ? theme.palette.grey[100] : 'transparent',
       }}
       disabled={disabled}

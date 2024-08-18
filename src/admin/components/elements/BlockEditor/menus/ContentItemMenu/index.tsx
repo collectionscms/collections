@@ -58,7 +58,7 @@ export const ContentItemMenu: React.FC<Props> = ({ editor }) => {
                 boxShadow: '0px 9px 24px rgba(0, 0, 0, 0.1)',
               }}
             >
-              <Stack direction="column" rowGap={0.5}>
+              <Stack>
                 <DropdownButton
                   onClick={() => {
                     setMenuOpen(false);

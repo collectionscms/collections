@@ -5,6 +5,7 @@ type Props = {
   children: React.ReactNode;
   tooltip?: string;
   shortcuts?: string[];
+  color?: 'inherit' | 'primary' | 'secondary' | 'default';
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
@@ -23,13 +24,13 @@ export const ShortcutKey: React.FC<{ shortcut: string }> = ({ shortcut }) => {
 };
 
 export const ToolbarButton = forwardRef<HTMLButtonElement, Props>(
-  ({ children, onClick, shortcuts, tooltip, ...rest }, ref) => {
+  ({ children, onClick, shortcuts, color, tooltip, ...rest }, ref) => {
     const content = (
       <IconButton
         onClick={onClick}
         {...rest}
         ref={ref}
-        color="secondary"
+        color={color || 'default'}
         size="small"
         sx={{ borderRadius: 1.5 }}
       >
