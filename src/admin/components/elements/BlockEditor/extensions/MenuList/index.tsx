@@ -113,9 +113,8 @@ export const MenuList = React.forwardRef((props: MenuListProps, ref) => {
 
   return (
     <Paper
-      elevation={3}
       sx={{
-        borderRadius: 1,
+        borderRadius: 2,
         border: '1px solid',
         borderColor: 'divider',
         overflowY: 'auto',
@@ -124,6 +123,7 @@ export const MenuList = React.forwardRef((props: MenuListProps, ref) => {
         marginBottom: 2,
         padding: 1,
         width: 300,
+        boxShadow: '0px 9px 24px rgba(0, 0, 0, 0.1)',
       }}
       ref={scrollContainer}
     >

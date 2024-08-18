@@ -49,15 +49,23 @@ export const ContentItemMenu: React.FC<Props> = ({ editor }) => {
             </ToolbarButton>
           </Popover.Trigger>
           <Popover.Content side="bottom" align="start">
-            <Paper sx={{ p: 1 }}>
-              <Stack direction="column">
+            <Paper
+              sx={{
+                borderRadius: 2,
+                border: '1px solid',
+                borderColor: 'divider',
+                padding: 1,
+                boxShadow: '0px 9px 24px rgba(0, 0, 0, 0.1)',
+              }}
+            >
+              <Stack direction="column" rowGap={0.5}>
                 <DropdownButton
                   onClick={() => {
                     setMenuOpen(false);
                     actions.duplicateNode();
                   }}
                 >
-                  <Icon name="Copy" size={18} />
+                  <Icon name="Copy" size={16} />
                   <Typography sx={{ ml: 1 }}>{t('editor.duplicate')}</Typography>
                 </DropdownButton>
                 <DropdownButton
@@ -66,7 +74,7 @@ export const ContentItemMenu: React.FC<Props> = ({ editor }) => {
                     actions.copyNodeToClipboard();
                   }}
                 >
-                  <Icon name="Clipboard" size={18} />
+                  <Icon name="Clipboard" size={16} />
                   <Typography sx={{ ml: 1 }}>{t('editor.copy_to_clipboard')}</Typography>
                 </DropdownButton>
                 <DropdownButton
@@ -79,7 +87,7 @@ export const ContentItemMenu: React.FC<Props> = ({ editor }) => {
                     color: 'error.main',
                   }}
                 >
-                  <Icon name="Trash2" size={18} />
+                  <Icon name="Trash2" size={16} />
                   <Typography sx={{ ml: 1 }}>{t('delete')}</Typography>
                 </DropdownButton>
               </Stack>
