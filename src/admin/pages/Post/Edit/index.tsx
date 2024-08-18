@@ -159,6 +159,15 @@ export const EditPostPageImpl: React.FC = () => {
 
   const [openSettings, setOpenSettings] = useState(false);
   const handleOpenSettings = async () => {
+    if (isDirty) {
+      try {
+        await saveContent(buildParams());
+        enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
+      } catch (error) {
+        logger.error(error);
+      }
+    }
+
     setOpenSettings(true);
   };
 
