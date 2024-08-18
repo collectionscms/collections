@@ -374,7 +374,7 @@ export const EditPostPageImpl: React.FC = () => {
         post={{
           id: post.id,
           slug: post.slug,
-          status: post.currentStatus,
+          currentStatus: post.currentStatus,
         }}
         onClose={() => setOpenSettings(false)}
       />
