@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Icon } from '../../../Icon/index.js';
 import { useTextMenuCommands } from '../../hooks/useTextMenuCommands.js';
 import { useTextMenuContentTypes } from '../../hooks/useTextMenuContentTypes.js';
+import { useTextMenuStates } from '../../hooks/useTextMenuStates.js';
 import { ContentTypeMenu } from '../../menus/ContentTypeMenu/index.js';
 import { ToolbarButton } from '../../ui/ToolbarButton/index.js';
 import { EditLinkPopover } from './EditLinkPopover.js';
@@ -19,12 +20,14 @@ export const TextMenu: React.FC<Props> = ({ editor }) => {
   const { t } = useTranslation();
   const commands = useTextMenuCommands(editor);
   const blockOptions = useTextMenuContentTypes(editor);
+  const states = useTextMenuStates(editor);
 
   return (
     <BubbleMenu
       className="bubble-menu"
       tippyOptions={{ popperOptions: { placement: 'top-start' } }}
       editor={editor}
+      shouldShow={states.shouldShow}
       updateDelay={100}
     >
       <Paper
