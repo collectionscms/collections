@@ -1,6 +1,6 @@
 .ProseMirror {
   code {
-    padding: 0.2rem;
+    padding: 0.2rem 0.3rem;
     border-radius: 4px;
     font-size: 85%;
     background: rgba(135, 131, 120, 0.15);
