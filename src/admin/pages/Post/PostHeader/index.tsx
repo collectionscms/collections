@@ -220,23 +220,25 @@ export const PostHeader: React.FC<Props> = ({
             </IconButton>
             <>
               <Tooltip title={`${isMac ? '⌘' : 'Ctrl'} S`} placement="top">
-                <Button
-                  ref={buttonRef}
-                  variant="contained"
-                  color="secondary"
-                  disabled={!isDirty || isSaving}
-                  onClick={onSaveDraft}
-                  startIcon={
-                    isSaving ? (
-                      <LoadingOutlined size={14} />
-                    ) : (
-                      !isDirty && <Icon name="Check" size={14} />
-                    )
-                  }
-                  sx={{ transition: 'ease-in-out 0.5s' }}
-                >
-                  <Typography>{getSaveDraftButtonLabel()}</Typography>
-                </Button>
+                <span>
+                  <Button
+                    ref={buttonRef}
+                    variant="contained"
+                    color="secondary"
+                    disabled={!isDirty || isSaving}
+                    onClick={onSaveDraft}
+                    startIcon={
+                      isSaving ? (
+                        <LoadingOutlined size={14} />
+                      ) : (
+                        !isDirty && <Icon name="Check" size={14} />
+                      )
+                    }
+                    sx={{ transition: 'ease-in-out 0.5s' }}
+                  >
+                    <Typography>{getSaveDraftButtonLabel()}</Typography>
+                  </Button>
+                </span>
               </Tooltip>
               <Button variant="contained" onClick={onOpenSettings} sx={{ padding: '5px 15px' }}>
                 {t('publish_settings')}
