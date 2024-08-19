@@ -374,7 +374,8 @@ export const EditPostPageImpl: React.FC = () => {
                 inputProps={{
                   style: {
                     padding: 0,
-                    fontSize: '20px',
+                    fontSize: '1.875rem',
+                    lineHeight: '2.25rem',
                   },
                 }}
                 onKeyDown={handleKeyDown}
