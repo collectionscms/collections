@@ -10,6 +10,7 @@ export { Placeholder } from '@tiptap/extension-placeholder';
 export { TaskItem } from '@tiptap/extension-task-item';
 export { Underline } from '@tiptap/extension-underline';
 export { StarterKit } from '@tiptap/starter-kit';
+export { CodeBlockLowlight } from '@tiptap/extension-code-block-lowlight';
 
 export { HorizontalRule } from './HorizontalRule/index.js';
 export { ImageBlock } from './ImageBlock/index.js';

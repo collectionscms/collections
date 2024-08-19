@@ -63,6 +63,15 @@
       right: 0;
     }
   }
+
+  [data-type='horizontalRule'] {
+    margin-top: 2em;
+    margin-bottom: 2em;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    transition: all 0.1s ease-in-out;
+    cursor: pointer;
+  }
 }
 
 .ProseMirror > :first-child {

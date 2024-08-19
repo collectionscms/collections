@@ -11,12 +11,11 @@
     caret-color: white;
     background-color: #3f3f46;
     color: white;
-    border-radius: 0.25rem;
+    border-radius: 0.5rem;
     margin: 3rem auto;
     padding: 1rem;
-    border: 1px solid black;
+    border: 1px solid #262626;
     background-color: #171717;
-    border-color: #262626;
 
     *::selection {
       background-color: rgba(255, 255, 255, 0.2);
@@ -27,6 +26,7 @@
       color: inherit;
       padding: 0;
       box-shadow: none;
+      font-size: 1em;
     }
 
     .hljs-comment,

@@ -7,16 +7,19 @@ import TaskItem from '@tiptap/extension-task-item';
 import Underline from '@tiptap/extension-underline';
 import { useEditor } from '@tiptap/react';
 import { StarterKit } from '@tiptap/starter-kit';
+import { common, createLowlight } from 'lowlight';
 import { useTranslation } from 'react-i18next';
 import { logger } from '../../../../../utilities/logger.js';
 import { uploadFile } from '../../../../utilities/api.js';
 import {
+  CodeBlockLowlight,
   HorizontalRule,
   ImageBlock,
   ImageUpload,
   Link,
   SlashCommand,
 } from '../extensions/index.js';
+const lowlight = createLowlight(common);
 
 export const useBlockEditor = ({
   initialContent,
@@ -48,6 +51,10 @@ export const useBlockEditor = ({
       StarterKit.configure({
         heading: false,
         horizontalRule: false,
+        codeBlock: false,
+      }),
+      CodeBlockLowlight.configure({
+        lowlight,
       }),
       TaskItem.configure({
         nested: true,
