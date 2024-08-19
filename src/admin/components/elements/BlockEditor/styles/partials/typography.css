@@ -72,3 +72,47 @@
     color: inherit;
   }
 }
+
+.ProseMirror.darkMode {
+  [data-type='horizontalRule'] {
+    &.ProseMirror-selectednode {
+      background-color: rgba(255, 255, 255, 0.1);
+
+      hr {
+        border-top-color: rgba(255, 255, 255, 0.3);
+      }
+    }
+
+    &:hover:not(.ProseMirror-selectednode) {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    hr {
+      border-width: 1px 0 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      background-color: rgba(255, 255, 255, 0.8);
+    }
+  }
+}
+
+.ProseMirror.lightMode {
+  [data-type='horizontalRule'] {
+    &.ProseMirror-selectednode {
+      background-color: rgba(38, 38, 38, 0.05);
+
+      hr {
+        border-top-color: rgba(38, 38, 38, 0.3);
+      }
+    }
+
+    &:hover:not(.ProseMirror-selectednode) {
+      background-color: rgba(38, 38, 38, 0.05);
+    }
+
+    hr {
+      border-width: 1px 0 0;
+      border-top: 1px solid rgba(38, 38, 38, 0.2);
+      background-color: rgba(38, 38, 38, 0.8);
+    }
+  }
+}

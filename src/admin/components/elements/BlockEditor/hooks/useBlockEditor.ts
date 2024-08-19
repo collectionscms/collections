@@ -24,9 +24,11 @@ const lowlight = createLowlight(common);
 export const useBlockEditor = ({
   initialContent,
   ref,
+  mode,
 }: {
   initialContent: Content;
   ref: React.RefObject<HTMLButtonElement>;
+  mode: string;
 }) => {
   const { t } = useTranslation();
 
@@ -34,6 +36,11 @@ export const useBlockEditor = ({
     onCreate: ({ editor }) => {
       editor.commands.setContent(initialContent);
       editor.commands.focus('start', { scrollIntoView: true });
+    },
+    editorProps: {
+      attributes: {
+        class: `${mode}Mode`,
+      },
     },
     extensions: [
       Underline,

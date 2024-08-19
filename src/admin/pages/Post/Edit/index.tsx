@@ -28,6 +28,7 @@ import { LocalizedContent } from '../LocalizedContent/index.js';
 import { PostFooter } from '../PostFooter/index.js';
 import { PostHeader } from '../PostHeader/index.js';
 import { PublishSettings } from '../PublishSettings/index.js';
+import { useColorMode } from '../../../components/utilities/ColorMode/index.js';
 
 const toJson = (value?: string | null) => {
   return value ? JSON.parse(value) : '';
@@ -68,10 +69,12 @@ export const EditPostPageImpl: React.FC = () => {
     setIsDirty(true);
   };
 
+  const { mode } = useColorMode();
   const ref = React.useRef<HTMLButtonElement>(null);
   const { editor } = useBlockEditor({
     initialContent: toJson(post.bodyJson),
     ref: ref,
+    mode,
   });
 
   useEffect(() => {

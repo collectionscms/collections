@@ -17,10 +17,8 @@ export const BlockEditor: React.FC<Props> = ({ editor }) => {
 
   useEffect(() => {
     if (mode === 'light') {
-      require('./styles/light.css');
       document.body.style.backgroundColor = '#fff';
     } else {
-      require('./styles/dark.css');
       document.body.style.backgroundColor = '#1e1e1e';
     }
 

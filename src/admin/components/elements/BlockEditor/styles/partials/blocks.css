@@ -16,3 +16,15 @@
     --tw-bg-opacity: 0.8;
   }
 }
+
+.ProseMirror.darkMode {
+  blockquote {
+    border-left-color: #d1d5db;
+  }
+}
+
+.ProseMirror.lightMode {
+  blockquote {
+    border-left-color: #374151;
+  }
+}

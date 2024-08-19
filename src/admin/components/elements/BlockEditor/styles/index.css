@@ -1,7 +1,18 @@
+*,
+:after,
+:before {
+  box-sizing: border-box;
+  border: 0 solid #e2e8f0cc;
+}
+
 .ProseMirror {
   outline: 0;
   z-index: 0;
   font-size: 1rem;
+
+  & > :first-child {
+    margin-top: 0;
+  }
 
   & > *:first-child,
   [data-type='column'] > * {
@@ -74,15 +85,18 @@
   }
 }
 
-.ProseMirror > :first-child {
-  margin-top: 0;
+.ProseMirror.darkMode {
+  .selection,
+  *::selection {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
 }
 
-*,
-:after,
-:before {
-  box-sizing: border-box;
-  border: 0 solid #e2e8f0cc;
+.ProseMirror.lightMode {
+  .selection,
+  *::selection {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
 }
 
 @import './partials/placeholder.css';
