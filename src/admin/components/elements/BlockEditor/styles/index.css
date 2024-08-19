@@ -71,3 +71,6 @@
 
 @import './partials/placeholder.css';
 @import './partials/typography.css';
+@import './partials/lists.css';
+@import './partials/code.css';
+@import './partials/blocks.css';

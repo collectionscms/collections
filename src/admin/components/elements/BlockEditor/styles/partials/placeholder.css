@@ -24,15 +24,6 @@
     content: 'Click here to start writing …';
   }
 
-  /* Blockquote Placeholder */
-  blockquote .is-empty:not(.is-editor-empty):first-child:last-child::before {
-    content: 'Enter a quote';
-  }
-
-  blockquote + figcaption.is-empty:not(.is-editor-empty)::before {
-    content: 'Author';
-  }
-
   [data-placeholder][data-suggestion]::before,
   [data-placeholder][data-suggestion] *::before {
     content: none !important;
