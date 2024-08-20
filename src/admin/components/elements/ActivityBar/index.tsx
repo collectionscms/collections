@@ -43,7 +43,7 @@ export const ActivityBar: React.FC = () => {
                 }}
                 key={project.id}
               >
-                <Tooltip title={project.name} placement="left-start">
+                <Tooltip title={project.name} placement="left">
                   <Box
                     sx={{
                       opacity: currentProjectRole?.project.id === project.id ? 1 : 0.5,
@@ -98,7 +98,7 @@ export const ActivityBar: React.FC = () => {
                 },
               }}
             >
-              <Tooltip title={t('add_project')} placement="left-start">
+              <Tooltip title={t('add_project')} placement="left">
                 <IconButton
                   color="secondary"
                   variant="outlined"
