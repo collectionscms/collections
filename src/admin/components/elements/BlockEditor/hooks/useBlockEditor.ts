@@ -2,26 +2,33 @@ import { FileHandler } from '@tiptap-pro/extension-file-handler';
 import { Content, Extension } from '@tiptap/core';
 import CharacterCount from '@tiptap/extension-character-count';
 import Heading from '@tiptap/extension-heading';
-import Link from '@tiptap/extension-link';
 import Placeholder from '@tiptap/extension-placeholder';
 import TaskItem from '@tiptap/extension-task-item';
 import Underline from '@tiptap/extension-underline';
 import { useEditor } from '@tiptap/react';
 import { StarterKit } from '@tiptap/starter-kit';
+import { common, createLowlight } from 'lowlight';
 import { useTranslation } from 'react-i18next';
 import { logger } from '../../../../../utilities/logger.js';
 import { uploadFile } from '../../../../utilities/api.js';
-import { ImageBlock } from '../extensions/ImageBlock/ImageBlock.js';
-import ImageUpload from '../extensions/ImageUpload/ImageUpload.js';
-import { SlashCommand } from '../extensions/SlashCommand/index.js';
-import { HorizontalRule } from '../extensions/HorizontalRule/index.js';
+import {
+  CodeBlockLowlight,
+  HorizontalRule,
+  ImageBlock,
+  ImageUpload,
+  Link,
+  SlashCommand,
+} from '../extensions/index.js';
+const lowlight = createLowlight(common);
 
 export const useBlockEditor = ({
   initialContent,
   ref,
+  mode,
 }: {
   initialContent: Content;
   ref: React.RefObject<HTMLButtonElement>;
+  mode: string;
 }) => {
   const { t } = useTranslation();
 
@@ -30,15 +37,12 @@ export const useBlockEditor = ({
       editor.commands.setContent(initialContent);
       editor.commands.focus('start', { scrollIntoView: true });
     },
+    editorProps: {
+      attributes: {
+        class: `${mode}Mode`,
+      },
+    },
     extensions: [
-      StarterKit.configure({
-        heading: {
-          levels: [2, 3],
-          HTMLAttributes: {
-            class: 'heading',
-          },
-        },
-      }),
       Underline,
       CharacterCount,
       Placeholder.configure({ placeholder: t('write_the_text') }),
@@ -51,6 +55,14 @@ export const useBlockEditor = ({
         levels: [1, 2, 3],
       }),
       HorizontalRule,
+      StarterKit.configure({
+        heading: false,
+        horizontalRule: false,
+        codeBlock: false,
+      }),
+      CodeBlockLowlight.configure({
+        lowlight,
+      }),
       TaskItem.configure({
         nested: true,
       }),

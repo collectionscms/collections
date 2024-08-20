@@ -9,7 +9,7 @@ export const useTextMenuContentTypes = (editor: Editor) => {
   const options = useMemo<ContentTypePickerOption[]>(() => {
     return [
       {
-        icon: 'CaseSensitive',
+        icon: 'Pilcrow',
         onClick: () =>
           editor.chain().focus().lift('taskItem').liftListItem('listItem').setParagraph().run(),
         id: 'paragraph',

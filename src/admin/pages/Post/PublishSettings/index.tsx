@@ -19,7 +19,7 @@ import {
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { enqueueSnackbar } from 'notistack';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -40,7 +40,7 @@ export type Props = {
   contentId: string;
   post: {
     id: string;
-    status: string;
+    currentStatus: string;
     slug: string;
   };
   onClose: () => void;
@@ -56,7 +56,7 @@ export const PublishSettings: React.FC<Props> = ({ open, contentId, post, onClos
   const { trigger: publishTrigger } = publish(contentId);
   const { trigger: archiveTrigger } = archive(contentId);
 
-  const { status, slug } = post;
+  const { currentStatus, slug } = post;
 
   const appBar: AppBarProps = {
     position: 'fixed',
@@ -73,15 +73,20 @@ export const PublishSettings: React.FC<Props> = ({ open, contentId, post, onClos
     watch,
     reset,
     control,
+    setValue,
     handleSubmit,
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
-      status: status !== 'published' ? 'review' : 'published',
+      status: currentStatus === 'published' ? 'published' : 'review',
       comment: '',
     },
     resolver: yupResolver(editContentValidator()),
   });
+
+  useEffect(() => {
+    setValue('status', currentStatus === 'published' ? 'published' : 'review');
+  }, [currentStatus]);
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
@@ -105,6 +110,19 @@ export const PublishSettings: React.FC<Props> = ({ open, contentId, post, onClos
     }
   };
 
+  const getPublishButtonLabel = () => {
+    switch (watch('status')) {
+      case 'archived':
+        return t('archive');
+      case 'review':
+        return t('publish_for_review');
+      case 'published':
+        return t('publishing');
+      default:
+        return '';
+    }
+  };
+
   return (
     <Dialog
       open={open}
@@ -122,11 +140,7 @@ export const PublishSettings: React.FC<Props> = ({ open, contentId, post, onClos
               gap={1.5}
             >
               <Button variant="contained" type="submit">
-                {status === 'published'
-                  ? t('updating')
-                  : watch('status') === 'review'
-                    ? t('publish_for_review')
-                    : t('publishing')}
+                {getPublishButtonLabel()}
               </Button>
               <IconButton shape="rounded" color="secondary" onClick={onClose} sx={{ p: 0 }}>
                 <Icon name="X" size={28} strokeWidth={1.5} />
@@ -152,22 +166,20 @@ export const PublishSettings: React.FC<Props> = ({ open, contentId, post, onClos
                   control={control}
                   render={({ field }) => (
                     <RadioGroup value={field.value} name="radio-buttons-group" row>
-                      {status === 'published' ? (
+                      {currentStatus === 'published' && (
                         <FormControlLabel
                           {...field}
                           value="archived"
                           control={<Radio />}
                           label={t('archived')}
                         />
-                      ) : (
-                        <FormControlLabel
-                          {...field}
-                          value="review"
-                          disabled={status === 'published'}
-                          control={<Radio />}
-                          label={t('review')}
-                        />
                       )}
+                      <FormControlLabel
+                        {...field}
+                        value="review"
+                        control={<Radio />}
+                        label={t('review')}
+                      />
                       {hasPermission('publishPost') && (
                         <FormControlLabel
                           {...field}

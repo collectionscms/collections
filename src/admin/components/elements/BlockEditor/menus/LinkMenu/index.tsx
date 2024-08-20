@@ -1,52 +1,69 @@
-import { Editor } from '@tiptap/react';
+import { BubbleMenu } from '@tiptap/react';
 import React, { useCallback, useState } from 'react';
-import { Icon } from '../../../Icon/index.js';
-import { ToolbarButton } from '../../ui/ToolbarButton/index.js';
-import { EditLinkPopover } from './EditLinkPopover.js';
+import { LinkEditorPanel } from '../../panels/LinkEditorPanel/index.js';
+import { LinkPreviewPanel } from '../../panels/LinkPreviewPanel/index.js';
+import { MenuProps } from '../types.js';
 
-type Props = {
-  editor: Editor;
-};
-
-export const LinkMenu: React.FC<Props> = ({ editor }) => {
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+export const LinkMenu = ({ editor, appendTo }: MenuProps): JSX.Element => {
+  const [showEdit, setShowEdit] = useState(false);
 
   const shouldShow = useCallback(() => {
     const isActive = editor.isActive('link');
     return isActive;
   }, [editor]);
+
   const { href: link, target } = editor.getAttributes('link');
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
+  const handleEdit = useCallback(() => {
+    setShowEdit(true);
+  }, []);
+
+  const onSetLink = useCallback(
+    (url: string, openInNewTab?: boolean) => {
+      editor
+        .chain()
+        .focus()
+        .extendMarkRange('link')
+        .setLink({ href: url, target: openInNewTab ? '_blank' : '' })
+        .run();
+      setShowEdit(false);
+    },
+    [editor]
+  );
+
+  const onUnsetLink = useCallback(() => {
+    editor.chain().focus().extendMarkRange('link').unsetLink().run();
+    setShowEdit(false);
+    return null;
+  }, [editor]);
 
   return (
-    <>
-      <ToolbarButton tooltip="Link" onClick={handleClick}>
-        <Icon name="Link" size={16} strokeWidth={2.5} />
-      </ToolbarButton>
-      <EditLinkPopover
-        anchorEl={anchorEl}
-        shouldShow={shouldShow()}
-        initialUrl={link}
-        initialOpenInNewTab={target === '_blank'}
-        onSetLink={(link, openInNewTab) => {
-          setAnchorEl(null);
-          editor
-            .chain()
-            .focus()
-            .setLink({ href: link, target: openInNewTab ? '_blank' : null })
-            .run();
-        }}
-        onRemoveLink={() => {
-          setAnchorEl(null);
-          editor.chain().focus().unsetLink().run();
-        }}
-        onClose={() => {
-          setAnchorEl(null);
-        }}
-      />
-    </>
+    <BubbleMenu
+      editor={editor}
+      pluginKey="textMenu"
+      shouldShow={shouldShow}
+      updateDelay={0}
+      tippyOptions={{
+        popperOptions: {
+          modifiers: [{ name: 'flip', enabled: false }],
+        },
+        appendTo: () => {
+          return appendTo?.current;
+        },
+        onHidden: () => {
+          setShowEdit(false);
+        },
+      }}
+    >
+      {showEdit ? (
+        <LinkEditorPanel
+          initialUrl={link}
+          initialOpenInNewTab={target === '_blank'}
+          onSetLink={onSetLink}
+        />
+      ) : (
+        <LinkPreviewPanel url={link} onClear={onUnsetLink} onEdit={handleEdit} />
+      )}
+    </BubbleMenu>
   );
 };

@@ -1,0 +1,50 @@
+.ProseMirror {
+  ol {
+    list-style-type: decimal;
+  }
+
+  ul {
+    list-style-type: disc;
+  }
+
+  ul,
+  ol {
+    padding: 0 1.5rem;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.85;
+
+    ul,
+    ol,
+    li {
+      margin-top: 0.25rem;
+      margin-bottom: 0.25rem;
+    }
+
+    li {
+      padding-left: 0.2rem;
+      margin: 0.5em 0;
+    }
+
+    p {
+      margin-top: 0;
+      margin-bottom: 0.25rem;
+    }
+  }
+
+  .parent {
+    > ul,
+    > ol {
+      margin-top: 2rem;
+      margin-bottom: 2rem;
+
+      &:first-child {
+        margin-top: 0;
+      }
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}

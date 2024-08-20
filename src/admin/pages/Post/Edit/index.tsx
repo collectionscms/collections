@@ -1,4 +1,14 @@
-import { Box, Button, Container, Stack, TextField, Toolbar, alpha, useTheme } from '@mui/material';
+import {
+  Box,
+  Button,
+  Container,
+  Stack,
+  TextField,
+  Toolbar,
+  Typography,
+  alpha,
+  useTheme,
+} from '@mui/material';
 import { enqueueSnackbar } from 'notistack';
 import React, { useEffect, useRef, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
@@ -9,13 +19,16 @@ import { logger } from '../../../../utilities/logger.js';
 import { IconButton } from '../../../@extended/components/IconButton/index.js';
 import { useBlockEditor } from '../../../components/elements/BlockEditor/hooks/useBlockEditor.js';
 import { BlockEditor } from '../../../components/elements/BlockEditor/index.js';
+import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscardDialog/index.js';
 import { Icon } from '../../../components/elements/Icon/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
+import { useUnsavedChangesPrompt } from '../../../hooks/useUnsavedChangesPrompt.js';
 import { PostContextProvider, usePost } from '../Context/index.js';
 import { LocalizedContent } from '../LocalizedContent/index.js';
 import { PostFooter } from '../PostFooter/index.js';
 import { PostHeader } from '../PostHeader/index.js';
 import { PublishSettings } from '../PublishSettings/index.js';
+import { useColorMode } from '../../../components/utilities/ColorMode/index.js';
 
 const toJson = (value?: string | null) => {
   return value ? JSON.parse(value) : '';
@@ -34,13 +47,15 @@ export const EditPostPageImpl: React.FC = () => {
   const { getPost, updateContent, trashPost, trashContent, createFileImage, trashLanguageContent } =
     usePost();
   const { data: post, mutate } = getPost(id, language);
-  const { trigger } = updateContent(post.contentId);
+  const { trigger, isMutating: isSaving } = updateContent(post.contentId);
   const { trigger: trashPostTrigger } = trashPost(post.id);
   const { trigger: trashContentTrigger } = trashContent(post.contentId);
   const { trigger: trashLanguageContentTrigger } = trashLanguageContent(
     post.id,
     post.contentLanguage
   );
+  const [isDirty, setIsDirty] = useState(false);
+  const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
 
   if (!post) return <></>;
 
@@ -49,17 +64,37 @@ export const EditPostPageImpl: React.FC = () => {
   // /////////////////////////////////////
 
   const [postTitle, setPostTitle] = useState(post.title);
+  const handleChangeTitle = (value: string) => {
+    setPostTitle(value);
+    setIsDirty(true);
+  };
 
+  const { mode } = useColorMode();
   const ref = React.useRef<HTMLButtonElement>(null);
   const { editor } = useBlockEditor({
     initialContent: toJson(post.bodyJson),
     ref: ref,
+    mode,
   });
 
   useEffect(() => {
     setPostTitle(post.title);
     editor?.commands.setContent(toJson(post.bodyJson));
   }, [post]);
+
+  useEffect(() => {
+    if (editor) {
+      const handleUpdate = () => {
+        setIsDirty(true);
+      };
+
+      editor.on('update', handleUpdate);
+
+      return () => {
+        editor.off('update', handleUpdate);
+      };
+    }
+  }, [editor]);
 
   // /////////////////////////////////////
   // Theme
@@ -85,7 +120,11 @@ export const EditPostPageImpl: React.FC = () => {
   const [uploadFile, setUploadFile] = useState<UploadFile | null>(post.file ?? null);
   const { trigger: createFileImageTrigger } = createFileImage();
 
-  const handleUploadThumbnail = async () => {
+  useEffect(() => {
+    setUploadFile(post.file ?? null);
+  }, [post]);
+
+  const handleUploadCover = async () => {
     const file = inputRef.current?.files?.[0];
     if (!file) return;
 
@@ -105,7 +144,7 @@ export const EditPostPageImpl: React.FC = () => {
     }
   };
 
-  const handleDeleteThumbnail = async () => {
+  const handleDeleteCover = async () => {
     setUploadFile(null);
     try {
       await saveContent({
@@ -123,6 +162,15 @@ export const EditPostPageImpl: React.FC = () => {
 
   const [openSettings, setOpenSettings] = useState(false);
   const handleOpenSettings = async () => {
+    if (isDirty) {
+      try {
+        await saveContent(buildParams());
+        enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
+      } catch (error) {
+        logger.error(error);
+      }
+    }
+
     setOpenSettings(true);
   };
 
@@ -157,6 +205,7 @@ export const EditPostPageImpl: React.FC = () => {
     fileId: string | null;
   }) => {
     await trigger(data);
+    setIsDirty(false);
     mutate();
   };
 
@@ -228,10 +277,13 @@ export const EditPostPageImpl: React.FC = () => {
 
   return (
     <>
+      <ConfirmDiscardDialog open={showPrompt} onDiscard={proceed} onKeepEditing={stay} />
       <PostHeader
         post={post}
         currentLanguage={post.contentLanguage}
         buttonRef={ref}
+        isDirty={isDirty}
+        isSaving={isSaving}
         onOpenSettings={handleOpenSettings}
         onSaveDraft={handleSaveContent}
         onChangeLanguage={handleChangeLanguage}
@@ -239,6 +291,10 @@ export const EditPostPageImpl: React.FC = () => {
         onRevertContent={handleRevertContent}
         onTrashPost={handleTrashPost}
         onTrashLanguageContent={handleTrashLanguageContent}
+      />
+      <PostFooter
+        histories={post.histories}
+        characters={editor?.storage.characterCount.characters() ?? 0}
       />
       <Box component="main" sx={{ minHeight: '100vh', backgroundColor: bg }}>
         <Toolbar sx={{ mt: 0 }} />
@@ -260,7 +316,7 @@ export const EditPostPageImpl: React.FC = () => {
                       right: 8,
                       backgroundColor: alpha('#fff', 0.7),
                     }}
-                    onClick={handleDeleteThumbnail}
+                    onClick={handleDeleteCover}
                   >
                     <Icon name="X" size={20} strokeWidth={1.5} />
                   </IconButton>
@@ -273,20 +329,18 @@ export const EditPostPageImpl: React.FC = () => {
                   />
                 </Box>
               ) : (
-                <Button
-                  variant="text"
-                  color="secondary"
-                  startIcon={<Icon name="Camera" size={16} />}
-                  component="label"
-                >
-                  {t('add_thumbnail')}
-                  <input
-                    hidden
-                    ref={inputRef}
-                    accept="image/*"
-                    type="file"
-                    onChange={handleUploadThumbnail}
-                  />
+                <Button variant="text" color="secondary" component="label">
+                  <Stack direction="row" alignItems="center" gap={1}>
+                    <Icon name="Image" size={16} />
+                    <Typography variant="button">{t('add_cover')}</Typography>
+                    <input
+                      hidden
+                      ref={inputRef}
+                      accept="image/*"
+                      type="file"
+                      onChange={handleUploadCover}
+                    />
+                  </Stack>
                 </Button>
               )}
             </Box>
@@ -299,7 +353,7 @@ export const EditPostPageImpl: React.FC = () => {
                 placeholder={t('title')}
                 value={postTitle}
                 autoFocus
-                onChange={(e) => setPostTitle(e.target.value)}
+                onChange={(e) => handleChangeTitle(e.target.value)}
                 sx={{
                   '.MuiOutlinedInput-notchedOutline': {
                     border: 'none !important',
@@ -320,7 +374,8 @@ export const EditPostPageImpl: React.FC = () => {
                 inputProps={{
                   style: {
                     padding: 0,
-                    fontSize: '20px',
+                    fontSize: '1.875rem',
+                    lineHeight: '2.25rem',
                   },
                 }}
                 onKeyDown={handleKeyDown}
@@ -330,17 +385,13 @@ export const EditPostPageImpl: React.FC = () => {
           <BlockEditor editor={editor} />
         </Container>
       </Box>
-      <PostFooter
-        histories={post.histories}
-        characters={editor?.storage.characterCount.characters() ?? 0}
-      />
       <PublishSettings
         open={openSettings}
         contentId={post.contentId}
         post={{
           id: post.id,
           slug: post.slug,
-          status: post.currentStatus,
+          currentStatus: post.currentStatus,
         }}
         onClose={() => setOpenSettings(false)}
       />

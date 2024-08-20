@@ -1,10 +1,11 @@
 import { IconButton, Stack, Tooltip, Typography } from '@mui/material';
-import React from 'react';
+import React, { forwardRef } from 'react';
 
 type Props = {
   children: React.ReactNode;
   tooltip?: string;
   shortcuts?: string[];
+  color?: 'inherit' | 'primary' | 'secondary' | 'default';
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
@@ -22,10 +23,23 @@ export const ShortcutKey: React.FC<{ shortcut: string }> = ({ shortcut }) => {
   return <Typography>{shortcut}</Typography>;
 };
 
-export const ToolbarButton: React.FC<Props> = ({ children, tooltip, shortcuts, onClick }) => {
-  return (
-    <>
-      {tooltip ? (
+export const ToolbarButton = forwardRef<HTMLButtonElement, Props>(
+  ({ children, onClick, shortcuts, color, tooltip, ...rest }, ref) => {
+    const content = (
+      <IconButton
+        onClick={onClick}
+        {...rest}
+        ref={ref}
+        color={color || 'default'}
+        size="small"
+        sx={{ borderRadius: 1.5 }}
+      >
+        {children}
+      </IconButton>
+    );
+
+    if (tooltip) {
+      return (
         <Tooltip
           title={
             <Stack gap={1} direction="row">
@@ -41,15 +55,13 @@ export const ToolbarButton: React.FC<Props> = ({ children, tooltip, shortcuts, o
           }
           placement="top"
         >
-          <IconButton onClick={onClick} color="secondary" size="small" sx={{ borderRadius: 1.5 }}>
-            {children}
-          </IconButton>
+          {content}
         </Tooltip>
-      ) : (
-        <IconButton onClick={onClick} color="secondary" size="small" sx={{ borderRadius: 1.5 }}>
-          {children}
-        </IconButton>
-      )}
-    </>
-  );
-};
+      );
+    }
+
+    return content;
+  }
+);
+
+ToolbarButton.displayName = 'ToolbarButton';
