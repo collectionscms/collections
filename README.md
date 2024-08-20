@@ -24,7 +24,7 @@ Extended documentation is available on our website.
 
 ## 🚀 Installation
 
-Easiest way to start using Collections on a local host.
+How to start using Collections on localhost.
 
 ```sh
 // clone
@@ -34,6 +34,8 @@ cd collections
 // env
 cp .env.sample .env
 vi .env - make it your environment
+
+// install direnv
 brew install direnv
 vi ~/.zshrc - add `eval "$(direnv hook zsh)"`
 source ~/.zshrc
@@ -49,8 +51,8 @@ Add the following lines to the `/etc/hosts`
 
 ```sh
 127.0.0.1   app.test.com
-127.0.0.1   usa.test.com
-127.0.0.1   jp.test.com
+127.0.0.1   en.test.com
+127.0.0.1   ja.test.com
 ```
 
 Open [http://app.test.com:4000/admin](http://app.test.com:4000/admin) to view your running app.
