@@ -62,7 +62,7 @@
     "@tiptap-pro/extension-file-handler": "2.10.9",
     "@tiptap-pro/extension-node-range": "2.10.11",
     "@tiptap/core": "2.6.2",
-    "@tiptap/extension-character-count": "2.5.8",
+    "@tiptap/extension-character-count": "2.6.2",
     "@tiptap/extension-code-block-lowlight": "2.6.4",
     "@tiptap/extension-collaboration": "2.5.8",
     "@tiptap/extension-heading": "2.5.8",
