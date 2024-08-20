@@ -9,23 +9,16 @@
   }
 
   &.ProseMirror-focused {
-    /* Slashmenu Placeholder */
+    /* Slash Menu Placeholder */
     > p.is-empty::before {
-      content: "Write something, or '/' for commands..";
-    }
-
-    > [data-type='columns'] > [data-type='column'] > p.is-empty::before {
-      content: "Write something, or '/' for commands..";
+      content: "Write something, or '/' for commands …";
     }
   }
 
-  /* Default Placeholder */
-  & > .is-editor-empty::before {
-    content: 'Click here to start writing …';
-  }
-
-  [data-placeholder][data-suggestion]::before,
-  [data-placeholder][data-suggestion] *::before {
-    content: none !important;
+  & > .is-editor-empty:first-child:before {
+    content: attr(data-placeholder);
+    float: left;
+    height: 0;
+    pointer-events: none;
   }
 }
