@@ -2727,10 +2727,10 @@
   resolved "https://registry.yarnpkg.com/@tiptap/extension-horizontal-rule/-/extension-horizontal-rule-2.5.8.tgz#3570fe64c2b97d6e44dd95d7b76cc3fef2e34bda"
   integrity sha512-L8Is73WGaP6VNdKrIry+lCIM9W1KaL/Tw2Z6DGMVMU5mr1lLx0xq7nWEStqD7e4zh+n4+3PV15cZSA2F34DZrg==
 
-"@tiptap/extension-image@2.5.8":
-  version "2.5.8"
-  resolved "https://registry.yarnpkg.com/@tiptap/extension-image/-/extension-image-2.5.8.tgz#c5178addb703777cf82aea250ccc75b17d492f3e"
-  integrity sha512-xlF3dqzXSN/6vWdmGOaIz0YVUO/B69mPw9vUITg7bQdc4X2pc52tvTGhpAzAc/kbwSVrW33icxAsXx8XH9Bkkg==
+"@tiptap/extension-image@2.6.2":
+  version "2.6.2"
+  resolved "https://registry.yarnpkg.com/@tiptap/extension-image/-/extension-image-2.6.2.tgz#5f55a0fb0be1753f7c81d1b7db66e3edf7386b15"
+  integrity sha512-EjA6+cGux4hVG2cyaJDzlWtjn7PEuwFoP5pwmUWZCF8UBuKGswKaFZLSnNmgNBaXZkcfB6lub2Rc+kgvE0M/DA==
 
 "@tiptap/extension-italic@^2.5.8":
   version "2.5.8"
@@ -9664,7 +9664,16 @@ string-length@^4.0.1:
     char-regex "^1.0.2"
     strip-ansi "^6.0.0"
 
-"string-width-cjs@npm:string-width@^4.2.0", string-width@^4.1.0, string-width@^4.2.0, string-width@^4.2.3:
+"string-width-cjs@npm:string-width@^4.2.0":
+  version "4.2.3"
+  resolved "https://registry.npmjs.org/string-width/-/string-width-4.2.3.tgz"
+  integrity sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==
+  dependencies:
+    emoji-regex "^8.0.0"
+    is-fullwidth-code-point "^3.0.0"
+    strip-ansi "^6.0.1"
+
+string-width@^4.1.0, string-width@^4.2.0, string-width@^4.2.3:
   version "4.2.3"
   resolved "https://registry.npmjs.org/string-width/-/string-width-4.2.3.tgz"
   integrity sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==
@@ -9799,7 +9808,14 @@ string.prototype.trimstart@^1.0.8:
     define-properties "^1.2.1"
     es-object-atoms "^1.0.0"
 
-"strip-ansi-cjs@npm:strip-ansi@^6.0.1", strip-ansi@^6.0.0, strip-ansi@^6.0.1:
+"strip-ansi-cjs@npm:strip-ansi@^6.0.1":
+  version "6.0.1"
+  resolved "https://registry.npmjs.org/strip-ansi/-/strip-ansi-6.0.1.tgz"
+  integrity sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==
+  dependencies:
+    ansi-regex "^5.0.1"
+
+strip-ansi@^6.0.0, strip-ansi@^6.0.1:
   version "6.0.1"
   resolved "https://registry.npmjs.org/strip-ansi/-/strip-ansi-6.0.1.tgz"
   integrity sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==
