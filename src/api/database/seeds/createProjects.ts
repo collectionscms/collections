@@ -10,19 +10,17 @@ export const createProjects = async (prisma: BypassPrismaType): Promise<void> =>
     data: [
       {
         id: usaProject,
-        subdomain: 'usa',
+        subdomain: 'en',
         sourceLanguage: 'en',
-        iconUrl:
-          'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Flag_of_the_United_States.svg/100px-Flag_of_the_United_States.svg.png',
-        name: 'USA Project',
+        iconUrl: 'https://cdn.collections.dev/project-one.png',
+        name: 'EN Project',
       },
       {
         id: jpProject,
-        subdomain: 'jp',
+        subdomain: 'ja',
         sourceLanguage: 'ja',
-        iconUrl:
-          'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Flag_of_Japan.svg/100px-Flag_of_Japan.svg.png',
-        name: 'Japan Project',
+        iconUrl: 'https://cdn.collections.dev/project-two.png',
+        name: 'JA Project',
       },
     ],
   });
