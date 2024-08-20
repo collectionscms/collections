@@ -8,9 +8,11 @@ import { useAuth } from '../../utilities/Auth/index.js';
 import { Icon } from '../Icon/index.js';
 import { Link } from '../Link/index.js';
 import { BottomContent } from '../NavContent/BottomContent/index.js';
+import { useColorMode } from '../../utilities/ColorMode/index.js';
 
 export const ActivityBar: React.FC = () => {
   const theme = useTheme();
+  const colorMode = useColorMode();
   const { currentProjectRole, projects } = useAuth();
   const bottomContent = useMemo(() => <BottomContent />, []);
 
@@ -41,14 +43,25 @@ export const ActivityBar: React.FC = () => {
                 }}
                 key={project.id}
               >
-                <Tooltip title={project.name} placement="left-start">
+                <Tooltip title={project.name} placement="left">
                   <Box
-                    sx={{ opacity: currentProjectRole?.project.id === project.id ? '1' : '0.5' }}
+                    sx={{
+                      opacity: currentProjectRole?.project.id === project.id ? 1 : 0.5,
+                      transition: 'opacity 0.3s',
+                      '&:hover': {
+                        opacity: 1,
+                      },
+                    }}
                   >
                     {project.iconUrl ? (
-                      <Avatar
-                        variant="square"
-                        sx={{ borderRadius: 1, objectFit: 'cover', width: 36, height: 36 }}
+                      <Box
+                        component="img"
+                        sx={{
+                          height: 36,
+                          width: 36,
+                          objectFit: 'cover',
+                          borderRadius: '10px',
+                        }}
                         src={project.iconUrl}
                       />
                     ) : (
@@ -57,7 +70,13 @@ export const ActivityBar: React.FC = () => {
                         color="secondary"
                         variant="square"
                         type="filled"
-                        sx={{ borderRadius: 1 }}
+                        sx={{
+                          borderRadius: '10px',
+                          width: 36,
+                          height: 36,
+                          fontWeight: 'bold',
+                          fontSize: 16,
+                        }}
                       >
                         {project.name[0].toUpperCase()}
                       </Avatar>
@@ -79,8 +98,18 @@ export const ActivityBar: React.FC = () => {
                 },
               }}
             >
-              <Tooltip title={t('add_project')} placement="left-start">
-                <IconButton color="secondary" variant="text">
+              <Tooltip title={t('add_project')} placement="left">
+                <IconButton
+                  color="secondary"
+                  variant="outlined"
+                  sx={{
+                    borderRadius: '10px',
+                    color:
+                      colorMode.mode === 'light'
+                        ? theme.palette.grey[400]
+                        : theme.palette.grey[300],
+                  }}
+                >
                   <Icon name="Plus" size={20} />
                 </IconButton>
               </Tooltip>
