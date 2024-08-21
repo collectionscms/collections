@@ -73,16 +73,17 @@ export class PostRepository {
       contents: {
         content: ContentEntity;
         file: FileEntity | null;
+        createdBy: UserEntity;
         updatedBy: UserEntity;
       }[];
     }[]
   > {
     const records = await prisma.post.findMany({
       include: {
-        contentHistories: true,
         contents: {
           include: {
             file: true,
+            createdBy: true,
             updatedBy: true,
           },
           where: {
@@ -102,14 +103,12 @@ export class PostRepository {
     const filteredRecords = records.filter((record) => record.contents.length > 0);
     return filteredRecords.map((record) => {
       const post = PostEntity.Reconstruct<Post, PostEntity>(record);
-      const contents = [];
-      for (const content of record.contents) {
-        contents.push({
-          content: ContentEntity.Reconstruct<Content, ContentEntity>(content),
-          file: content.file ? FileEntity.Reconstruct<File, FileEntity>(content.file) : null,
-          updatedBy: UserEntity.Reconstruct<User, UserEntity>(content.updatedBy),
-        });
-      }
+      const contents = record.contents.map((content) => ({
+        content: ContentEntity.Reconstruct<Content, ContentEntity>(content),
+        file: content.file ? FileEntity.Reconstruct<File, FileEntity>(content.file) : null,
+        createdBy: UserEntity.Reconstruct<User, UserEntity>(content.createdBy),
+        updatedBy: UserEntity.Reconstruct<User, UserEntity>(content.updatedBy),
+      }));
 
       return {
         post,
