@@ -59,12 +59,17 @@ export type LocalizedPost = {
 export type PublishedPost = {
   id: string;
   slug: string;
-  contentLanguage: string;
-  title: string;
-  body: string;
-  file: UploadFile | null;
-  updatedAt: Date;
-  updatedByName: string;
+  contents: {
+    title: string;
+    body: string;
+    bodyHtml: string;
+    language: string;
+    version: number;
+    coverUrl: string | null;
+    createdByName: string;
+    updatedByName: string;
+    updatedAt: Date;
+  }[];
 };
 
 export type UploadFile = {
