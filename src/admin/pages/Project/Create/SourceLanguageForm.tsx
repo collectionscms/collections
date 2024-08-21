@@ -13,7 +13,7 @@ import { enqueueSnackbar } from 'notistack';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { languages } from '../../../../constatns/languages.js';
+import { languages } from '../../../../constants/languages.js';
 import { logger } from '../../../../utilities/logger.js';
 import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscardDialog/index.js';
 import {
