@@ -34,14 +34,14 @@ router.get(
 );
 
 router.get(
-  '/posts/:slug',
+  '/posts/:key',
   authenticatedUser,
   validateAccess(['readPublishedPost']),
   asyncHandler(async (req: Request, res: Response) => {
     const validated = getPublishedPostUseCaseSchema.safeParse({
       projectId: res.projectRole?.id,
       language: req.query?.language,
-      slug: req.params.slug,
+      key: req.params.key,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 

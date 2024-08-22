@@ -1,5 +1,6 @@
 import { User } from '@auth/express';
 import { Content, ContentHistory, File, Post } from '@prisma/client';
+import { validate as isUuid } from 'uuid';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
 import { ContentEntity } from '../content/content.entity.js';
 import { ContentHistoryEntity } from '../contentHistory/contentHistory.entity.js';
@@ -119,7 +120,7 @@ export class PostRepository {
 
   async findOnePublished(
     prisma: ProjectPrismaType,
-    slug: string
+    key: string
   ): Promise<{
     post: PostEntity;
     contents: {
@@ -131,7 +132,7 @@ export class PostRepository {
   } | null> {
     const record = await prisma.post.findFirst({
       where: {
-        slug,
+        OR: [{ id: isUuid(key) ? key : undefined }, { slug: key }],
       },
       include: {
         contents: {

@@ -11,7 +11,7 @@ export class GetPublishedPostUseCase {
   ) {}
 
   async execute(props: GetPublishedPostUseCaseSchemaType): Promise<PublishedPost> {
-    const record = await this.postRepository.findOnePublished(this.prisma, props.slug);
+    const record = await this.postRepository.findOnePublished(this.prisma, props.key);
     if (!record) {
       throw new RecordNotFoundException('record_not_found');
     }
