@@ -117,6 +117,61 @@ export class PostRepository {
     });
   }
 
+  async findOnePublished(
+    prisma: ProjectPrismaType,
+    slug: string
+  ): Promise<{
+    post: PostEntity;
+    contents: {
+      content: ContentEntity;
+      file: FileEntity | null;
+      createdBy: UserEntity;
+      updatedBy: UserEntity;
+    }[];
+  } | null> {
+    const record = await prisma.post.findFirst({
+      where: {
+        slug,
+      },
+      include: {
+        contents: {
+          include: {
+            file: true,
+            createdBy: true,
+            updatedBy: true,
+          },
+          where: {
+            deletedAt: null,
+            status: 'published',
+          },
+          orderBy: {
+            version: 'desc',
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+    if (!record) {
+      return null;
+    }
+
+    const post = PostEntity.Reconstruct<Post, PostEntity>(record);
+    const contents = record.contents.map((content) => ({
+      content: ContentEntity.Reconstruct<Content, ContentEntity>(content),
+      file: content.file ? FileEntity.Reconstruct<File, FileEntity>(content.file) : null,
+      createdBy: UserEntity.Reconstruct<User, UserEntity>(content.createdBy),
+      updatedBy: UserEntity.Reconstruct<User, UserEntity>(content.updatedBy),
+    }));
+
+    return {
+      post,
+      contents,
+    };
+  }
+
   async findOneById(prisma: ProjectPrismaType, id: string): Promise<PostEntity> {
     const record = await prisma.post.findFirstOrThrow({
       where: {
