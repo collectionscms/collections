@@ -56,20 +56,21 @@ export type LocalizedPost = {
   histories: ContentHistory[];
 };
 
+export type PublishedContent = {
+  title: string;
+  body: string;
+  bodyHtml: string;
+  language: string;
+  version: number;
+  coverUrl: string | null;
+};
+
 export type PublishedPost = {
   id: string;
   slug: string;
   contents: {
-    title: string;
-    body: string;
-    bodyHtml: string;
-    language: string;
-    version: number;
-    coverUrl: string | null;
-    createdByName: string;
-    updatedByName: string;
-    updatedAt: Date;
-  }[];
+    [language: string]: PublishedContent;
+  };
 };
 
 export type UploadFile = {

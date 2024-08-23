@@ -1,7 +1,7 @@
 import { Post } from '@prisma/client';
 import { v4 } from 'uuid';
 import { UnexpectedException } from '../../../exceptions/unexpected.js';
-import { LocalizedPost, PostItem, PublishedPost } from '../../../types/index.js';
+import { LocalizedPost, PostItem, PublishedContent, PublishedPost } from '../../../types/index.js';
 import { ContentEntity } from '../content/content.entity.js';
 import { ContentHistoryEntity } from '../contentHistory/contentHistory.entity.js';
 import { FileEntity } from '../file/file.entity.js';
@@ -165,33 +165,21 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       updatedBy: UserEntity;
     }[]
   ): PublishedPost {
-    const filteredLngContents = Object.values(
-      groupBy(
-        contents.sort((a, b) => b.content.version - a.content.version),
-        (c) => c.content.language
-      )
-    )
-      .map((group) => group[0])
-      .filter((c) => !language || c.content.language === language);
+    const groupByLngContents = groupByLanguage(contents.map((c) => c.content));
+    const filteredLngContents = language
+      ? { [language]: groupByLngContents[language] }
+      : groupByLngContents;
 
     return {
       id: this.props.id,
       slug: this.props.slug,
-      contents: filteredLngContents.map((content) => ({
-        title: content.content.title ?? '',
-        body: content.content.body ?? '',
-        bodyHtml: content.content.bodyHtml ?? '',
-        language: content.content.language,
-        version: content.content.version,
-        coverUrl: null,
-        createdByName: content.updatedBy.name,
-        updatedByName: content.updatedBy.name,
-        updatedAt: content.content.updatedAt,
-      })),
+      contents: filteredLngContents,
     };
   }
 
-  private getLanguageStatues(contents: ContentEntity[]): { [language: string]: LanguageStatus } {
+  private getLanguageStatues(contents: ContentEntity[]): {
+    [language: string]: LanguageStatus;
+  } {
     return contents.reduce(
       (acc: { [language: string]: LanguageStatus }, content) => {
         const { language, status, publishedAt } = content;
@@ -214,16 +202,22 @@ export class PostEntity extends PrismaBaseEntity<Post> {
   }
 }
 
-function groupBy<T, K extends keyof any>(array: T[], key: (item: T) => K): Record<K, T[]> {
-  return array.reduce(
-    (result, currentValue) => {
-      const groupKey = key(currentValue);
-      if (!result[groupKey]) {
-        result[groupKey] = [];
+function groupByLanguage(contents: ContentEntity[]): { [language: string]: PublishedContent } {
+  return contents.reduce(
+    (acc, content) => {
+      if (!acc[content.language]) {
+        acc[content.language] = {
+          title: content.title ?? '',
+          body: content.bodyHtml ?? '',
+          bodyHtml: content.bodyHtml ?? '',
+          language: content.language,
+          version: content.version,
+          coverUrl: null,
+        };
       }
-      result[groupKey].push(currentValue);
-      return result;
+
+      return acc;
     },
-    {} as Record<K, T[]>
+    {} as { [language: string]: PublishedContent }
   );
 }
