@@ -1,7 +1,7 @@
 import { Post } from '@prisma/client';
 import { v4 } from 'uuid';
 import { UnexpectedException } from '../../../exceptions/unexpected.js';
-import { LocalizedPost, PostItem, PublishedPost } from '../../../types/index.js';
+import { LocalizedPost, PostItem, PublishedContent, PublishedPost } from '../../../types/index.js';
 import { ContentEntity } from '../content/content.entity.js';
 import { ContentHistoryEntity } from '../contentHistory/contentHistory.entity.js';
 import { FileEntity } from '../file/file.entity.js';
@@ -156,37 +156,35 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     };
   }
 
-  toPublishedWithContentsResponse(
+  /**
+   * Convert entity to published post response
+   * @param language
+   * @param contents
+   * @returns
+   */
+  toPublishedContentsResponse(
     language: string | null,
-    sourceLanguage: string,
     contents: {
       content: ContentEntity;
       file: FileEntity | null;
-      updatedBy: UserEntity;
+      createdBy: UserEntity;
     }[]
   ): PublishedPost {
-    const sortedContents = contents.sort((a, b) => b.content.version - a.content.version);
-
-    // Get content of language. If language is not found, get the primary language content or first content.
-    const languageContents = sortedContents.filter((c) => c.content.language === language);
-    const sourceLanguageContents = sortedContents.filter(
-      (c) => c.content.language === sourceLanguage
-    );
-    const languageContent = languageContents[0] || sourceLanguageContents[0] || sortedContents[0];
+    const groupByLngContents = this.groupByLanguage(contents);
+    const filteredLngContents = language
+      ? { [language]: groupByLngContents[language] }
+      : groupByLngContents;
 
     return {
       id: this.props.id,
       slug: this.props.slug,
-      title: languageContent.content.title ?? '',
-      body: languageContent.content.bodyHtml ?? '',
-      contentLanguage: languageContent.content.language,
-      file: languageContent.file?.toResponseWithUrl() ?? null,
-      updatedAt: languageContent.content.updatedAt,
-      updatedByName: languageContent.updatedBy.name,
+      contents: filteredLngContents,
     };
   }
 
-  private getLanguageStatues(contents: ContentEntity[]): { [language: string]: LanguageStatus } {
+  private getLanguageStatues(contents: ContentEntity[]): {
+    [language: string]: LanguageStatus;
+  } {
     return contents.reduce(
       (acc: { [language: string]: LanguageStatus }, content) => {
         const { language, status, publishedAt } = content;
@@ -205,6 +203,41 @@ export class PostEntity extends PrismaBaseEntity<Post> {
         return acc;
       },
       {} as { [language: string]: LanguageStatus }
+    );
+  }
+
+  private groupByLanguage(
+    contents: {
+      content: ContentEntity;
+      file: FileEntity | null;
+      createdBy: UserEntity;
+    }[]
+  ): { [language: string]: PublishedContent } {
+    return contents.reduce(
+      (acc, c) => {
+        const content = c.content;
+        const createdBy = c.createdBy;
+
+        if (!acc[content.language] && content.publishedAt) {
+          acc[content.language] = {
+            title: content.title ?? '',
+            body: content.bodyHtml ?? '',
+            bodyHtml: content.bodyHtml ?? '',
+            language: content.language,
+            version: content.version,
+            coverUrl: null,
+            publishedAt: content.publishedAt,
+            createdBy: {
+              id: createdBy.id,
+              name: createdBy.name,
+              avatarUrl: null,
+            },
+          };
+        }
+
+        return acc;
+      },
+      {} as { [language: string]: PublishedContent }
     );
   }
 }

@@ -87,6 +87,7 @@ export const ActivityBar: React.FC = () => {
             ))}
             {/* new project button */}
             <Link
+              color="secondary"
               href={getAddNewProjectUrl()}
               sx={{
                 height: 40,
@@ -99,19 +100,9 @@ export const ActivityBar: React.FC = () => {
               }}
             >
               <Tooltip title={t('add_project')} placement="left">
-                <IconButton
-                  color="secondary"
-                  variant="outlined"
-                  sx={{
-                    borderRadius: '10px',
-                    color:
-                      colorMode.mode === 'light'
-                        ? theme.palette.grey[400]
-                        : theme.palette.grey[300],
-                  }}
-                >
+                <Stack width="100%" height="100%" alignItems="center" justifyContent="center">
                   <Icon name="Plus" size={20} />
-                </IconButton>
+                </Stack>
               </Tooltip>
             </Link>
           </Stack>

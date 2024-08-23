@@ -1,10 +1,12 @@
 import express, { Request, Response } from 'express';
 import { InvalidPayloadException } from '../../../../exceptions/invalidPayload.js';
-import { PostRepository } from '../../../persistences/post/post.repository.js';
 import { projectPrisma } from '../../../database/prisma/client.js';
 import { asyncHandler } from '../../../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../../../middlewares/auth.js';
 import { validateAccess } from '../../../middlewares/validateAccess.js';
+import { PostRepository } from '../../../persistences/post/post.repository.js';
+import { getPublishedPostUseCaseSchema } from '../../../useCases/post/getPublishedPost.schema.js';
+import { GetPublishedPostUseCase } from '../../../useCases/post/getPublishedPost.useCase.js';
 import { getPublishedPostsUseCaseSchema } from '../../../useCases/post/getPublishedPosts.schema.js';
 import { GetPublishedPostsUseCase } from '../../../useCases/post/getPublishedPosts.useCase.js';
 
@@ -17,7 +19,6 @@ router.get(
   asyncHandler(async (req: Request, res: Response) => {
     const validated = getPublishedPostsUseCaseSchema.safeParse({
       projectId: res.projectRole?.id,
-      sourceLanguage: res.projectRole?.sourceLanguage,
       language: req.query?.language,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
@@ -29,6 +30,28 @@ router.get(
     const posts = await useCase.execute(validated.data);
 
     res.json({ posts });
+  })
+);
+
+router.get(
+  '/posts/:key',
+  authenticatedUser,
+  validateAccess(['readPublishedPost']),
+  asyncHandler(async (req: Request, res: Response) => {
+    const validated = getPublishedPostUseCaseSchema.safeParse({
+      projectId: res.projectRole?.id,
+      language: req.query?.language,
+      key: req.params.key,
+    });
+    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
+
+    const useCase = new GetPublishedPostUseCase(
+      projectPrisma(validated.data.projectId),
+      new PostRepository()
+    );
+    const post = await useCase.execute(validated.data);
+
+    res.json({ post });
   })
 );
 

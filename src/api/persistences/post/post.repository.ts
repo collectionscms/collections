@@ -1,5 +1,6 @@
 import { User } from '@auth/express';
 import { Content, ContentHistory, File, Post } from '@prisma/client';
+import { validate as isUuid } from 'uuid';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
 import { ContentEntity } from '../content/content.entity.js';
 import { ContentHistoryEntity } from '../contentHistory/contentHistory.entity.js';
@@ -73,17 +74,16 @@ export class PostRepository {
       contents: {
         content: ContentEntity;
         file: FileEntity | null;
-        updatedBy: UserEntity;
+        createdBy: UserEntity;
       }[];
     }[]
   > {
     const records = await prisma.post.findMany({
       include: {
-        contentHistories: true,
         contents: {
           include: {
             file: true,
-            updatedBy: true,
+            createdBy: true,
           },
           where: {
             deletedAt: null,
@@ -102,20 +102,72 @@ export class PostRepository {
     const filteredRecords = records.filter((record) => record.contents.length > 0);
     return filteredRecords.map((record) => {
       const post = PostEntity.Reconstruct<Post, PostEntity>(record);
-      const contents = [];
-      for (const content of record.contents) {
-        contents.push({
-          content: ContentEntity.Reconstruct<Content, ContentEntity>(content),
-          file: content.file ? FileEntity.Reconstruct<File, FileEntity>(content.file) : null,
-          updatedBy: UserEntity.Reconstruct<User, UserEntity>(content.updatedBy),
-        });
-      }
+      const contents = record.contents.map((content) => ({
+        content: ContentEntity.Reconstruct<Content, ContentEntity>(content),
+        file: content.file ? FileEntity.Reconstruct<File, FileEntity>(content.file) : null,
+        createdBy: UserEntity.Reconstruct<User, UserEntity>(content.createdBy),
+      }));
 
       return {
         post,
         contents,
       };
     });
+  }
+
+  async findOnePublished(
+    prisma: ProjectPrismaType,
+    key: string
+  ): Promise<{
+    post: PostEntity;
+    contents: {
+      content: ContentEntity;
+      file: FileEntity | null;
+      createdBy: UserEntity;
+      updatedBy: UserEntity;
+    }[];
+  } | null> {
+    const record = await prisma.post.findFirst({
+      where: {
+        OR: [{ id: isUuid(key) ? key : undefined }, { slug: key }],
+      },
+      include: {
+        contents: {
+          include: {
+            file: true,
+            createdBy: true,
+            updatedBy: true,
+          },
+          where: {
+            deletedAt: null,
+            status: 'published',
+          },
+          orderBy: {
+            version: 'desc',
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+    if (!record) {
+      return null;
+    }
+
+    const post = PostEntity.Reconstruct<Post, PostEntity>(record);
+    const contents = record.contents.map((content) => ({
+      content: ContentEntity.Reconstruct<Content, ContentEntity>(content),
+      file: content.file ? FileEntity.Reconstruct<File, FileEntity>(content.file) : null,
+      createdBy: UserEntity.Reconstruct<User, UserEntity>(content.createdBy),
+      updatedBy: UserEntity.Reconstruct<User, UserEntity>(content.updatedBy),
+    }));
+
+    return {
+      post,
+      contents,
+    };
   }
 
   async findOneById(prisma: ProjectPrismaType, id: string): Promise<PostEntity> {
