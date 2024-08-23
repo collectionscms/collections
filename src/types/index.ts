@@ -63,6 +63,12 @@ export type PublishedContent = {
   language: string;
   version: number;
   coverUrl: string | null;
+  publishedAt: Date;
+  createdBy: {
+    id: string;
+    name: string;
+    avatarUrl: string | null;
+  };
 };
 
 export type PublishedPost = {

@@ -75,7 +75,6 @@ export class PostRepository {
         content: ContentEntity;
         file: FileEntity | null;
         createdBy: UserEntity;
-        updatedBy: UserEntity;
       }[];
     }[]
   > {
@@ -85,7 +84,6 @@ export class PostRepository {
           include: {
             file: true,
             createdBy: true,
-            updatedBy: true,
           },
           where: {
             deletedAt: null,
@@ -108,7 +106,6 @@ export class PostRepository {
         content: ContentEntity.Reconstruct<Content, ContentEntity>(content),
         file: content.file ? FileEntity.Reconstruct<File, FileEntity>(content.file) : null,
         createdBy: UserEntity.Reconstruct<User, UserEntity>(content.createdBy),
-        updatedBy: UserEntity.Reconstruct<User, UserEntity>(content.updatedBy),
       }));
 
       return {

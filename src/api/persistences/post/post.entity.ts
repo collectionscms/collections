@@ -156,16 +156,21 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     };
   }
 
+  /**
+   * Convert entity to published post response
+   * @param language
+   * @param contents
+   * @returns
+   */
   toPublishedContentsResponse(
     language: string | null,
     contents: {
       content: ContentEntity;
       file: FileEntity | null;
       createdBy: UserEntity;
-      updatedBy: UserEntity;
     }[]
   ): PublishedPost {
-    const groupByLngContents = groupByLanguage(contents.map((c) => c.content));
+    const groupByLngContents = this.groupByLanguage(contents);
     const filteredLngContents = language
       ? { [language]: groupByLngContents[language] }
       : groupByLngContents;
@@ -200,24 +205,39 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       {} as { [language: string]: LanguageStatus }
     );
   }
-}
 
-function groupByLanguage(contents: ContentEntity[]): { [language: string]: PublishedContent } {
-  return contents.reduce(
-    (acc, content) => {
-      if (!acc[content.language]) {
-        acc[content.language] = {
-          title: content.title ?? '',
-          body: content.bodyHtml ?? '',
-          bodyHtml: content.bodyHtml ?? '',
-          language: content.language,
-          version: content.version,
-          coverUrl: null,
-        };
-      }
+  private groupByLanguage(
+    contents: {
+      content: ContentEntity;
+      file: FileEntity | null;
+      createdBy: UserEntity;
+    }[]
+  ): { [language: string]: PublishedContent } {
+    return contents.reduce(
+      (acc, c) => {
+        const content = c.content;
+        const createdBy = c.createdBy;
 
-      return acc;
-    },
-    {} as { [language: string]: PublishedContent }
-  );
+        if (!acc[content.language] && content.publishedAt) {
+          acc[content.language] = {
+            title: content.title ?? '',
+            body: content.bodyHtml ?? '',
+            bodyHtml: content.bodyHtml ?? '',
+            language: content.language,
+            version: content.version,
+            coverUrl: null,
+            publishedAt: content.publishedAt,
+            createdBy: {
+              id: createdBy.id,
+              name: createdBy.name,
+              avatarUrl: null,
+            },
+          };
+        }
+
+        return acc;
+      },
+      {} as { [language: string]: PublishedContent }
+    );
+  }
 }
