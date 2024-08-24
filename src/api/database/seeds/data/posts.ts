@@ -9,6 +9,7 @@ export const posts = [
     bodyHtml:
       '<p>Collectionsは、心地よい執筆体験とAIによる強力な翻訳、そして直感的なAPIによって多言語コンテンツ配信をシンプルにします。</p>',
     status: 'published',
+    coverUrl: 'https://cdn.collections.dev/cover.png',
   },
   {
     language: 'en',
@@ -19,6 +20,7 @@ export const posts = [
     bodyHtml:
       '<p>Collections simplifies multilingual content delivery with a smooth writing experience, powerful AI translation, and an intuitive API.</p>',
     status: 'published',
+    coverUrl: 'https://cdn.collections.dev/cover.png',
   },
   {
     language: 'es',
@@ -29,5 +31,6 @@ export const posts = [
     bodyHtml:
       '<p>Collections simplifica la entrega de contenido multilingüe con una experiencia de escritura fluida, una potente traducción automática y una API intuitiva.</p>',
     status: 'published',
+    coverUrl: 'https://cdn.collections.dev/cover.png',
   },
 ];

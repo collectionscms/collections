@@ -14,6 +14,7 @@ export const createPost = async (
     bodyJson: string;
     bodyHtml: string;
     status: string;
+    coverUrl?: string;
   }[],
   options?: {
     postId?: string;
@@ -29,7 +30,6 @@ export const createPost = async (
   const postId = options?.postId ?? v4();
 
   const postContents = [];
-  const postContentHistories = [];
   for (const content of contents) {
     postContents.push({
       id: v4(),
@@ -42,21 +42,9 @@ export const createPost = async (
       body: content.body,
       bodyJson: content.bodyJson,
       bodyHtml: content.bodyHtml,
+      coverUrl: content.coverUrl,
       createdById: user.id,
       updatedById: user.id,
-      createdAt: currentTime,
-      updatedAt: currentTime,
-    });
-
-    postContentHistories.push({
-      id: v4(),
-      projectId,
-      createdById: user.id,
-      updatedById: user.id,
-      status: content.status,
-      language: content.language,
-      version: 1,
-      createdAt: currentTime,
     });
   }
 
@@ -72,7 +60,7 @@ export const createPost = async (
         create: postContents,
       },
       contentHistories: {
-        create: postContentHistories,
+        create: postContents,
       },
     },
   });
