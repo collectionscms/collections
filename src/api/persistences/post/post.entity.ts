@@ -4,7 +4,6 @@ import { UnexpectedException } from '../../../exceptions/unexpected.js';
 import { LocalizedPost, PostItem, PublishedContent, PublishedPost } from '../../../types/index.js';
 import { ContentEntity } from '../content/content.entity.js';
 import { ContentHistoryEntity } from '../contentHistory/contentHistory.entity.js';
-import { FileEntity } from '../file/file.entity.js';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 import { UserEntity } from '../user/user.entity.js';
 
@@ -115,7 +114,6 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     language: string,
     contents: {
       content: ContentEntity;
-      file: FileEntity | null;
       histories: ContentHistoryEntity[];
     }[]
   ): LocalizedPost {
@@ -150,8 +148,8 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       bodyHtml: languageContent.content.bodyHtml ?? '',
       contentLanguage: languageContent.content.language,
       version: languageContent.content.version,
+      coverUrl: languageContent.content.coverUrl,
       languages,
-      file: languageContent.file?.toResponseWithUrl() ?? null,
       histories: histories.map((history) => history.toResponse()),
     };
   }
@@ -166,7 +164,6 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     language: string | null,
     contents: {
       content: ContentEntity;
-      file: FileEntity | null;
       createdBy: UserEntity;
     }[]
   ): PublishedPost {
@@ -209,7 +206,6 @@ export class PostEntity extends PrismaBaseEntity<Post> {
   private groupByLanguage(
     contents: {
       content: ContentEntity;
-      file: FileEntity | null;
       createdBy: UserEntity;
     }[]
   ): { [language: string]: PublishedContent } {
@@ -225,7 +221,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
             bodyHtml: content.bodyHtml ?? '',
             language: content.language,
             version: content.version,
-            coverUrl: null,
+            coverUrl: content.coverUrl,
             publishedAt: content.publishedAt,
             createdBy: {
               id: createdBy.id,

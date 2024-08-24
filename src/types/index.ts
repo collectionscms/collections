@@ -51,8 +51,8 @@ export type LocalizedPost = {
   body: string;
   bodyJson: string;
   bodyHtml: string;
+  coverUrl: string | null;
   languages: string[];
-  file: UploadFile | null;
   histories: ContentHistory[];
 };
 

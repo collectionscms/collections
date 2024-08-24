@@ -1,11 +1,11 @@
 import { Content } from '@prisma/client';
 import { ConflictException } from '../../../exceptions/conflict.js';
+import { ProjectPrismaClient } from '../../database/prisma/client.js';
 import { ContentEntity } from '../../persistences/content/content.entity.js';
 import { ContentRepository } from '../../persistences/content/content.repository.js';
 import { ContentHistoryEntity } from '../../persistences/contentHistory/contentHistory.entity.js';
 import { ContentHistoryRepository } from '../../persistences/contentHistory/contentHistory.repository.js';
 import { PostRepository } from '../../persistences/post/post.repository.js';
-import { ProjectPrismaClient } from '../../database/prisma/client.js';
 import { UpdateContentUseCaseSchemaType } from './updateContent.schema.js';
 
 export class UpdateContentUseCase {
@@ -17,7 +17,7 @@ export class UpdateContentUseCase {
   ) {}
 
   async execute(props: UpdateContentUseCaseSchemaType): Promise<Content> {
-    const { id, userId, fileId, title, body, bodyJson, bodyHtml } = props;
+    const { id, userId, coverUrl, title, body, bodyJson, bodyHtml } = props;
 
     const content = await this.contentRepository.findOneById(this.prisma, id);
     const post = await this.postRepository.findOneWithContentsById(this.prisma, content.postId);
@@ -38,7 +38,7 @@ export class UpdateContentUseCase {
         : ContentEntity.Reconstruct<Content, ContentEntity>(content.toResponse());
 
       entity.updateContent({
-        fileId,
+        coverUrl,
         title,
         body,
         bodyJson,

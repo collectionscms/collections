@@ -1,10 +1,9 @@
 import { User } from '@auth/express';
-import { Content, ContentHistory, File, Post } from '@prisma/client';
+import { Content, ContentHistory, Post } from '@prisma/client';
 import { validate as isUuid } from 'uuid';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
 import { ContentEntity } from '../content/content.entity.js';
 import { ContentHistoryEntity } from '../contentHistory/contentHistory.entity.js';
-import { FileEntity } from '../file/file.entity.js';
 import { UserEntity } from '../user/user.entity.js';
 import { PostEntity } from './post.entity.js';
 
@@ -19,7 +18,6 @@ export class PostRepository {
       post: PostEntity;
       contents: {
         content: ContentEntity;
-        file: FileEntity | null;
         updatedBy: UserEntity;
         histories: ContentHistoryEntity[];
       }[];
@@ -30,7 +28,6 @@ export class PostRepository {
         contentHistories: true,
         contents: {
           include: {
-            file: true,
             updatedBy: true,
           },
           where: {
@@ -53,7 +50,6 @@ export class PostRepository {
       for (const content of record.contents) {
         contents.push({
           content: ContentEntity.Reconstruct<Content, ContentEntity>(content),
-          file: content.file ? FileEntity.Reconstruct<File, FileEntity>(content.file) : null,
           updatedBy: UserEntity.Reconstruct<User, UserEntity>(content.updatedBy),
           histories: record.contentHistories.map((history) =>
             ContentHistoryEntity.Reconstruct<ContentHistory, ContentHistoryEntity>(history)
@@ -73,7 +69,6 @@ export class PostRepository {
       post: PostEntity;
       contents: {
         content: ContentEntity;
-        file: FileEntity | null;
         createdBy: UserEntity;
       }[];
     }[]
@@ -82,7 +77,6 @@ export class PostRepository {
       include: {
         contents: {
           include: {
-            file: true,
             createdBy: true,
           },
           where: {
@@ -104,7 +98,6 @@ export class PostRepository {
       const post = PostEntity.Reconstruct<Post, PostEntity>(record);
       const contents = record.contents.map((content) => ({
         content: ContentEntity.Reconstruct<Content, ContentEntity>(content),
-        file: content.file ? FileEntity.Reconstruct<File, FileEntity>(content.file) : null,
         createdBy: UserEntity.Reconstruct<User, UserEntity>(content.createdBy),
       }));
 
@@ -122,7 +115,6 @@ export class PostRepository {
     post: PostEntity;
     contents: {
       content: ContentEntity;
-      file: FileEntity | null;
       createdBy: UserEntity;
       updatedBy: UserEntity;
     }[];
@@ -134,7 +126,6 @@ export class PostRepository {
       include: {
         contents: {
           include: {
-            file: true,
             createdBy: true,
             updatedBy: true,
           },
@@ -159,7 +150,6 @@ export class PostRepository {
     const post = PostEntity.Reconstruct<Post, PostEntity>(record);
     const contents = record.contents.map((content) => ({
       content: ContentEntity.Reconstruct<Content, ContentEntity>(content),
-      file: content.file ? FileEntity.Reconstruct<File, FileEntity>(content.file) : null,
       createdBy: UserEntity.Reconstruct<User, UserEntity>(content.createdBy),
       updatedBy: UserEntity.Reconstruct<User, UserEntity>(content.updatedBy),
     }));
@@ -200,7 +190,6 @@ export class PostRepository {
     post: PostEntity;
     contents: {
       content: ContentEntity;
-      file: FileEntity | null;
       createdBy: UserEntity;
       histories: ContentHistoryEntity[];
     }[];
@@ -214,7 +203,6 @@ export class PostRepository {
         contentHistories: true,
         contents: {
           include: {
-            file: true,
             createdBy: true,
           },
           where: {
@@ -232,7 +220,6 @@ export class PostRepository {
     for (const content of record.contents) {
       contents.push({
         content: ContentEntity.Reconstruct<Content, ContentEntity>(content),
-        file: content.file ? FileEntity.Reconstruct<File, FileEntity>(content.file) : null,
         createdBy: UserEntity.Reconstruct<User, UserEntity>(content.createdBy),
         histories: record.contentHistories.map((history) =>
           ContentHistoryEntity.Reconstruct<ContentHistory, ContentHistoryEntity>(history)
