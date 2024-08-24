@@ -11,7 +11,7 @@ export const createProjects = async (prisma: BypassPrismaType): Promise<void> =>
       {
         id: usaProject,
         subdomain: 'en',
-        sourceLanguage: 'en',
+        sourceLanguage: 'en-us',
         iconUrl: 'https://cdn.collections.dev/project-one.png',
         name: 'EN Project',
       },

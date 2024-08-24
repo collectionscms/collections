@@ -1,8 +1,10 @@
 export enum LanguageCodes {
-  en = 'en',
+  'en-us' = 'en-us',
+  'en-gb' = 'en-gb',
   es = 'es',
   ja = 'ja',
-  pt = 'pt',
+  'pt-br' = 'pt-br',
+  'pt-pt' = 'pt-pt',
   zh = 'zh',
 }
 
@@ -13,9 +15,11 @@ export type LanguageType = {
 };
 
 export const languages: readonly LanguageType[] = [
-  { code: LanguageCodes.en, isSourceLanguage: true, isTargetLanguage: true },
+  { code: LanguageCodes['en-gb'], isSourceLanguage: true, isTargetLanguage: true },
+  { code: LanguageCodes['en-us'], isSourceLanguage: true, isTargetLanguage: true },
   { code: LanguageCodes.es, isSourceLanguage: true, isTargetLanguage: true },
   { code: LanguageCodes.ja, isSourceLanguage: true, isTargetLanguage: true },
-  { code: LanguageCodes.pt, isSourceLanguage: true, isTargetLanguage: true },
+  { code: LanguageCodes['pt-pt'], isSourceLanguage: true, isTargetLanguage: true },
+  { code: LanguageCodes['pt-br'], isSourceLanguage: true, isTargetLanguage: true },
   { code: LanguageCodes.zh, isSourceLanguage: true, isTargetLanguage: true },
 ];

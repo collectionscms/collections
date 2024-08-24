@@ -102,9 +102,7 @@ const ProjectImpl: React.FC = () => {
                       autoHighlight
                       isOptionEqualToValue={(option, value) => option.code === value?.code}
                       getOptionLabel={(option) =>
-                        `${t(
-                          `languages.${option.code}` as unknown as TemplateStringsArray
-                        )} (${option.code.toUpperCase()})`
+                        t(`languages.${option.code}` as unknown as TemplateStringsArray)
                       }
                       renderOption={(props, option) => (
                         <Box component="li" {...props}>

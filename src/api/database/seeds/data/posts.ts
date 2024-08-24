@@ -12,7 +12,7 @@ export const posts = [
     coverUrl: 'https://cdn.collections.dev/cover.png',
   },
   {
-    language: 'en',
+    language: 'en-us',
     title: 'Simplifying Multilingual Delivery',
     body: 'Collections simplifies multilingual content delivery with a smooth writing experience, powerful AI translation, and an intuitive API.',
     bodyJson:
