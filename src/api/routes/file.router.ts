@@ -1,11 +1,12 @@
 import express, { Request, Response } from 'express';
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
-import { projectPrisma } from '../database/prisma/client.js';
+import { bypassPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';
 import { multipartHandler } from '../middlewares/multipartHandler.js';
 import { FileEntity } from '../persistence/file/file.entity.js';
 import { FileRepository } from '../persistence/file/file.repository.js';
+import { ProjectRepository } from '../persistence/project/project.repository.js';
 import { createFileUseCaseSchema } from '../useCases/file/createFile.schema.js';
 import { CreateFileUseCase } from '../useCases/file/createFile.useCase.js';
 
@@ -25,10 +26,11 @@ router.post(
     if (!files || files.length === 0) throw new InvalidPayloadException('bad_request');
 
     const useCase = new CreateFileUseCase(
-      projectPrisma(validated.data.projectId),
-      new FileRepository()
+      bypassPrisma,
+      new FileRepository(),
+      new ProjectRepository()
     );
-    const response = await useCase.execute(files);
+    const response = await useCase.execute(validated.data.projectId, files);
 
     res.json(response);
   })
