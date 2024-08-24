@@ -1,6 +1,6 @@
 import { UserProfile } from '../../../types/index.js';
-import { InvitationRepository } from '../../persistences/invitation/invitation.repository.js';
-import { UserRepository } from '../../persistences/user/user.repository.js';
+import { InvitationRepository } from '../../persistence/invitation/invitation.repository.js';
+import { UserRepository } from '../../persistence/user/user.repository.js';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
 
 export class GetUserProfilesUseCase {

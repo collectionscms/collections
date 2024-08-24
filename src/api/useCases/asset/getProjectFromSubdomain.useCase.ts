@@ -1,6 +1,6 @@
 import { Project } from '@prisma/client';
 import { BypassPrismaType } from '../../database/prisma/client.js';
-import { ProjectRepository } from '../../persistences/project/project.repository.js';
+import { ProjectRepository } from '../../persistence/project/project.repository.js';
 
 export class GetProjectFromSubdomainUseCase {
   constructor(

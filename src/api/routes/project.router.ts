@@ -1,8 +1,8 @@
 import express, { Request, Response } from 'express';
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
-import { ProjectRepository } from '../persistences/project/project.repository.js';
-import { RoleRepository } from '../persistences/role/role.repository.js';
-import { UserProjectRepository } from '../persistences/userProject/userProject.repository.js';
+import { ProjectRepository } from '../persistence/project/project.repository.js';
+import { RoleRepository } from '../persistence/role/role.repository.js';
+import { UserProjectRepository } from '../persistence/userProject/userProject.repository.js';
 import { bypassPrisma, projectPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';

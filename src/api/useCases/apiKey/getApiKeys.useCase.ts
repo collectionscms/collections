@@ -1,5 +1,5 @@
 import { ApiKey } from '@prisma/client';
-import { ApiKeyRepository } from '../../persistences/apiKey/apiKey.repository.js';
+import { ApiKeyRepository } from '../../persistence/apiKey/apiKey.repository.js';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
 
 export class GetApiKeysUseCase {

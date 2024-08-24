@@ -1,11 +1,11 @@
 import { Content } from '@prisma/client';
 import { ConflictException } from '../../../exceptions/conflict.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
-import { ContentEntity } from '../../persistences/content/content.entity.js';
-import { ContentRepository } from '../../persistences/content/content.repository.js';
-import { ContentHistoryEntity } from '../../persistences/contentHistory/contentHistory.entity.js';
-import { ContentHistoryRepository } from '../../persistences/contentHistory/contentHistory.repository.js';
-import { PostRepository } from '../../persistences/post/post.repository.js';
+import { ContentEntity } from '../../persistence/content/content.entity.js';
+import { ContentRepository } from '../../persistence/content/content.repository.js';
+import { ContentHistoryEntity } from '../../persistence/contentHistory/contentHistory.entity.js';
+import { ContentHistoryRepository } from '../../persistence/contentHistory/contentHistory.repository.js';
+import { PostRepository } from '../../persistence/post/post.repository.js';
 import { UpdateContentUseCaseSchemaType } from './updateContent.schema.js';
 
 export class UpdateContentUseCase {

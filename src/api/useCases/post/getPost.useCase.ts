@@ -1,5 +1,5 @@
 import { LocalizedPost } from '../../../types/index.js';
-import { PostRepository } from '../../persistences/post/post.repository.js';
+import { PostRepository } from '../../persistence/post/post.repository.js';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
 import { GetPostUseCaseSchemaType } from './getPost.schema.js';
 

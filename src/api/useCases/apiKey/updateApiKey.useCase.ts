@@ -1,7 +1,7 @@
 import { ApiKey } from '@prisma/client';
-import { ApiKeyRepository } from '../../persistences/apiKey/apiKey.repository.js';
-import { ApiKeyPermissionEntity } from '../../persistences/apiKeyPermission/apiKeyPermission.entity.js';
-import { ApiKeyPermissionRepository } from '../../persistences/apiKeyPermission/apiKeyPermission.repository.js';
+import { ApiKeyRepository } from '../../persistence/apiKey/apiKey.repository.js';
+import { ApiKeyPermissionEntity } from '../../persistence/apiKeyPermission/apiKeyPermission.entity.js';
+import { ApiKeyPermissionRepository } from '../../persistence/apiKeyPermission/apiKeyPermission.repository.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
 import { UpdateApiKeyUseCaseSchemaType } from './updateApiKey.schema.js';
 

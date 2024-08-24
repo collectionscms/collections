@@ -2,7 +2,7 @@ import { File } from '@prisma/client';
 import { Buffer } from 'buffer';
 import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
 import { BypassPrismaClient } from '../../database/prisma/client.js';
-import { FileRepository } from '../../persistences/file/file.repository.js';
+import { FileRepository } from '../../persistence/file/file.repository.js';
 import { getStorage } from '../../storages/storage.js';
 
 type GetDataUseCaseResponse = {

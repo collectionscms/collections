@@ -4,8 +4,8 @@ import { projectPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';
 import { multipartHandler } from '../middlewares/multipartHandler.js';
-import { FileEntity } from '../persistences/file/file.entity.js';
-import { FileRepository } from '../persistences/file/file.repository.js';
+import { FileEntity } from '../persistence/file/file.entity.js';
+import { FileRepository } from '../persistence/file/file.repository.js';
 import { createFileUseCaseSchema } from '../useCases/file/createFile.schema.js';
 import { CreateFileUseCase } from '../useCases/file/createFile.useCase.js';
 
