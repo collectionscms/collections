@@ -1,7 +1,7 @@
 import { User } from '@prisma/client';
 import { InvalidCredentialsException } from '../../../exceptions/invalidCredentials.js';
 import { UnexpectedException } from '../../../exceptions/unexpected.js';
-import { UserRepository } from '../../persistences/user/user.repository.js';
+import { UserRepository } from '../../persistence/user/user.repository.js';
 import { BypassPrismaType } from '../../database/prisma/client.js';
 import { ResetPasswordMailService } from '../../services/resetPasswordMail.service.js';
 import { ForgotPasswordUseCaseSchemaType } from './forgotPassword.schema.js';

@@ -2,7 +2,7 @@ import { AuthConfig } from '@auth/core';
 import CredentialsProvider from '@auth/express/providers/credentials';
 import { env } from '../../env.js';
 import { logger } from '../../utilities/logger.js';
-import { UserRepository } from '../persistences/user/user.repository.js';
+import { UserRepository } from '../persistence/user/user.repository.js';
 import { bypassPrisma } from '../database/prisma/client.js';
 import { LoginUseCase } from '../useCases/auth/login.useCase.js';
 import { CredentialsSignin } from '@auth/express';

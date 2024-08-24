@@ -95,7 +95,7 @@ CREATE TABLE "Permission" (
 -- CreateTable
 CREATE TABLE "File" (
     "id" UUID NOT NULL,
-    "projectId" UUID NOT NULL DEFAULT (current_setting('app.current_project_id'::text))::uuid,
+    "projectId" UUID DEFAULT (current_setting('app.current_project_id'::text))::uuid,
     "storage" VARCHAR(255) NOT NULL,
     "fileName" VARCHAR(255) NOT NULL,
     "fileNameDisk" VARCHAR(255) NOT NULL,
@@ -140,11 +140,11 @@ CREATE TABLE "Content" (
     "id" UUID NOT NULL,
     "projectId" UUID NOT NULL DEFAULT (current_setting('app.current_project_id'::text))::uuid,
     "postId" UUID NOT NULL,
-    "fileId" UUID,
     "title" VARCHAR(255),
     "body" TEXT,
     "bodyJson" TEXT,
     "bodyHtml" TEXT,
+    "coverUrl" VARCHAR(255),
     "language" VARCHAR(255) NOT NULL,
     "status" VARCHAR(255) NOT NULL,
     "version" INTEGER NOT NULL DEFAULT 1,
@@ -163,11 +163,11 @@ CREATE TABLE "ContentHistory" (
     "id" UUID NOT NULL,
     "projectId" UUID NOT NULL DEFAULT (current_setting('app.current_project_id'::text))::uuid,
     "postId" UUID NOT NULL,
-    "fileId" UUID,
     "title" VARCHAR(255),
     "body" TEXT,
     "bodyJson" TEXT,
     "bodyHtml" TEXT,
+    "coverUrl" VARCHAR(255),
     "language" VARCHAR(255) NOT NULL,
     "status" VARCHAR(255) NOT NULL,
     "version" INTEGER NOT NULL DEFAULT 1,
@@ -291,9 +291,6 @@ ALTER TABLE "Content" ADD CONSTRAINT "Content_createdById_fkey" FOREIGN KEY ("cr
 ALTER TABLE "Content" ADD CONSTRAINT "Content_updatedById_fkey" FOREIGN KEY ("updatedById") REFERENCES "User"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Content" ADD CONSTRAINT "Content_fileId_fkey" FOREIGN KEY ("fileId") REFERENCES "File"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "ContentHistory" ADD CONSTRAINT "ContentHistory_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Project"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -304,9 +301,6 @@ ALTER TABLE "ContentHistory" ADD CONSTRAINT "ContentHistory_createdById_fkey" FO
 
 -- AddForeignKey
 ALTER TABLE "ContentHistory" ADD CONSTRAINT "ContentHistory_updatedById_fkey" FOREIGN KEY ("updatedById") REFERENCES "User"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "ContentHistory" ADD CONSTRAINT "ContentHistory_fileId_fkey" FOREIGN KEY ("fileId") REFERENCES "File"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "ApiKey" ADD CONSTRAINT "ApiKey_createdById_fkey" FOREIGN KEY ("createdById") REFERENCES "User"("id") ON DELETE NO ACTION ON UPDATE CASCADE;

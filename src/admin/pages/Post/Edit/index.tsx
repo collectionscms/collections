@@ -14,13 +14,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { UploadFile } from '../../../../types/index.js';
 import { logger } from '../../../../utilities/logger.js';
 import { IconButton } from '../../../@extended/components/IconButton/index.js';
 import { useBlockEditor } from '../../../components/elements/BlockEditor/hooks/useBlockEditor.js';
 import { BlockEditor } from '../../../components/elements/BlockEditor/index.js';
 import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscardDialog/index.js';
 import { Icon } from '../../../components/elements/Icon/index.js';
+import { useColorMode } from '../../../components/utilities/ColorMode/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
 import { useUnsavedChangesPrompt } from '../../../hooks/useUnsavedChangesPrompt.js';
 import { PostContextProvider, usePost } from '../Context/index.js';
@@ -28,7 +28,6 @@ import { LocalizedContent } from '../LocalizedContent/index.js';
 import { PostFooter } from '../PostFooter/index.js';
 import { PostHeader } from '../PostHeader/index.js';
 import { PublishSettings } from '../PublishSettings/index.js';
-import { useColorMode } from '../../../components/utilities/ColorMode/index.js';
 
 const toJson = (value?: string | null) => {
   return value ? JSON.parse(value) : '';
@@ -117,11 +116,11 @@ export const EditPostPageImpl: React.FC = () => {
   // /////////////////////////////////////
 
   const inputRef = useRef<HTMLInputElement>(null);
-  const [uploadFile, setUploadFile] = useState<UploadFile | null>(post.file ?? null);
+  const [uploadCover, setUploadCover] = useState<string | null>(post.coverUrl);
   const { trigger: createFileImageTrigger } = createFileImage();
 
   useEffect(() => {
-    setUploadFile(post.file ?? null);
+    setUploadCover(post.coverUrl ?? null);
   }, [post]);
 
   const handleUploadCover = async () => {
@@ -132,12 +131,13 @@ export const EditPostPageImpl: React.FC = () => {
     params.append('file', file);
 
     const res = await createFileImageTrigger(params);
-    setUploadFile(res.files[0]);
+    const uploadedFile = res.files[0];
+    setUploadCover(uploadedFile.url);
 
     try {
       await saveContent({
         ...buildParams(),
-        fileId: res.files[0].id,
+        coverUrl: uploadedFile.url,
       });
     } catch (error) {
       logger.error(error);
@@ -145,11 +145,11 @@ export const EditPostPageImpl: React.FC = () => {
   };
 
   const handleDeleteCover = async () => {
-    setUploadFile(null);
+    setUploadCover(null);
     try {
       await saveContent({
         ...buildParams(),
-        fileId: null,
+        coverUrl: null,
       });
     } catch (error) {
       logger.error(error);
@@ -184,7 +184,7 @@ export const EditPostPageImpl: React.FC = () => {
       body: editor?.getText() ?? null,
       bodyJson: JSON.stringify(editor?.getJSON()) ?? null,
       bodyHtml: editor?.getHTML() ?? null,
-      fileId: uploadFile?.id ?? null,
+      coverUrl: uploadCover ?? null,
     };
   };
 
@@ -202,7 +202,7 @@ export const EditPostPageImpl: React.FC = () => {
     body: string | null;
     bodyJson: string | null;
     bodyHtml: string | null;
-    fileId: string | null;
+    coverUrl: string | null;
   }) => {
     await trigger(data);
     setIsDirty(false);
@@ -301,7 +301,7 @@ export const EditPostPageImpl: React.FC = () => {
         <Container sx={{ py: 10 }}>
           <Box sx={{ maxWidth: '42rem', marginLeft: 'auto', marginRight: 'auto' }}>
             <Box sx={{ mb: 2 }}>
-              {uploadFile ? (
+              {uploadCover ? (
                 <Box
                   sx={{
                     position: 'relative',
@@ -321,7 +321,7 @@ export const EditPostPageImpl: React.FC = () => {
                     <Icon name="X" size={20} strokeWidth={1.5} />
                   </IconButton>
                   <img
-                    src={uploadFile.url}
+                    src={uploadCover}
                     style={{
                       width: '100%',
                       objectFit: 'cover',

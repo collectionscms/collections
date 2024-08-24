@@ -1,6 +1,6 @@
 import { Post } from '@prisma/client';
 import { RecordNotUniqueException } from '../../../exceptions/database/recordNotUnique.js';
-import { PostRepository } from '../../persistences/post/post.repository.js';
+import { PostRepository } from '../../persistence/post/post.repository.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
 import { UpdatePostUseCaseSchemaType } from './updatePost.schema.js';
 

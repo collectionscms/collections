@@ -1,7 +1,7 @@
 import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
 import { PublishedPost } from '../../../types/index.js';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
-import { PostRepository } from '../../persistences/post/post.repository.js';
+import { PostRepository } from '../../persistence/post/post.repository.js';
 import { GetPublishedPostUseCaseSchemaType } from './getPublishedPost.schema.js';
 
 export class GetPublishedPostUseCase {
