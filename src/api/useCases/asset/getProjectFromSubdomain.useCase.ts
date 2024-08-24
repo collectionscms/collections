@@ -1,7 +1,6 @@
 import { Project } from '@prisma/client';
-import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
-import { ProjectRepository } from '../../persistences/project/project.repository.js';
 import { BypassPrismaType } from '../../database/prisma/client.js';
+import { ProjectRepository } from '../../persistences/project/project.repository.js';
 
 export class GetProjectFromSubdomainUseCase {
   constructor(
@@ -9,12 +8,9 @@ export class GetProjectFromSubdomainUseCase {
     private readonly projectRepository: ProjectRepository
   ) {}
 
-  async execute(subdomain: string): Promise<Project> {
+  async execute(subdomain: string): Promise<Project | null> {
     const entity = await this.projectRepository.findOneBySubdomain(this.prisma, subdomain);
-    if (!entity) {
-      throw new RecordNotFoundException('record_not_found');
-    }
 
-    return entity.toResponse();
+    return entity ? entity.toResponse() : null;
   }
 }

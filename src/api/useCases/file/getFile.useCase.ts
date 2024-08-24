@@ -1,6 +1,6 @@
 import { File } from '@prisma/client';
 import { FileRepository } from '../../persistences/file/file.repository.js';
-import { ProjectPrismaType } from '../../database/prisma/client.js';
+import { BypassPrismaClient, ProjectPrismaType } from '../../database/prisma/client.js';
 
 type GetFileUseCaseResponse = {
   file: File & { url: string };
@@ -8,12 +8,12 @@ type GetFileUseCaseResponse = {
 
 export class GetFileUseCase {
   constructor(
-    private readonly prisma: ProjectPrismaType,
+    private readonly prisma: BypassPrismaClient,
     private readonly fileRepository: FileRepository
   ) {}
 
-  async execute(fileId: string): Promise<GetFileUseCaseResponse> {
-    const entity = await this.fileRepository.findFile(this.prisma, fileId);
+  async execute(projectId: string | null, fileId: string): Promise<GetFileUseCaseResponse> {
+    const entity = await this.fileRepository.findFile(this.prisma, projectId, fileId);
 
     return {
       file: entity.toResponseWithUrl(),
