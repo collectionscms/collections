@@ -10,11 +10,7 @@ import { FileEntity } from '../persistence/file/file.entity.js';
 import { FileService } from '../services/file.service.js';
 
 export const multipartHandler: RequestHandler = (req, res, next) => {
-  const projectId = res.projectRole?.id;
-  if (!projectId) {
-    return next(new InvalidPayloadException('bad_request'));
-  }
-
+  const projectId = res.projectRole?.id ?? null;
   const busboy = Busboy({ headers: req.headers });
   const service = new FileService();
 
