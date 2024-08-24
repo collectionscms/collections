@@ -6,7 +6,7 @@ import { jpProject, usaProject } from './createProjects.js';
 
 export const projectRoles = {
   [usaProject]: {
-    language: 'en',
+    language: 'en-us',
     admin: v4(),
     editor: v4(),
     contributor: v4(),
