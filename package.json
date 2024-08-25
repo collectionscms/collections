@@ -1,6 +1,6 @@
 {
   "name": "@collectionscms/collections",
-  "version": "2.0.0-beta.1",
+  "version": "2.0.0-beta.2",
   "description": "Open-source headless CMS with automatic translation by AI and seamless multilingual delivery.",
   "license": "MIT",
   "type": "module",
