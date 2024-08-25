@@ -2611,10 +2611,10 @@
     "@smithy/types" "^3.3.0"
     tslib "^2.6.2"
 
-"@tiptap-pro/extension-drag-handle-react@2.10.11":
-  version "2.10.11"
-  resolved "https://registry.tiptap.dev/@tiptap-pro%2fextension-drag-handle-react/-/extension-drag-handle-react-2.10.11.tgz#5f6929c701b962ae4de5cb4c19d57a049dafecda"
-  integrity sha512-rZwNq8gl/EBMjK70sa9YltAHBQEdNEv43oyWo8VCyLTt9/6nB6X54MjEoRoWAVRficbz69CoSrec9EQBv91wwA==
+"@tiptap-pro/extension-drag-handle-react@2.11.1":
+  version "2.11.1"
+  resolved "https://registry.tiptap.dev/@tiptap-pro%2fextension-drag-handle-react/-/extension-drag-handle-react-2.11.1.tgz#7cbf4cdd17bcd9c9e93eef06dabb428347b1ff1f"
+  integrity sha512-2Bw2qt/h+k9MiALjYX72IZP2Z10oNJ7GR7gMvjW0YHO94zn56XzbAyxZpKcd42JiWc2q8J/mkhAX2cCou9ryyw==
 
 "@tiptap-pro/extension-drag-handle@2.10.11":
   version "2.10.11"
