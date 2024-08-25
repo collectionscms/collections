@@ -14,7 +14,7 @@ import { useSnackbar } from 'notistack';
 import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { languages } from '../../../constatns/languages.js';
+import { languages } from '../../../constants/languages.js';
 import { logger } from '../../../utilities/logger.js';
 import { MainCard } from '../../@extended/components/MainCard/index.js';
 import { ConfirmDiscardDialog } from '../../components/elements/ConfirmDiscardDialog/index.js';
@@ -102,9 +102,7 @@ const ProjectImpl: React.FC = () => {
                       autoHighlight
                       isOptionEqualToValue={(option, value) => option.code === value?.code}
                       getOptionLabel={(option) =>
-                        `${t(
-                          `languages.${option.code}` as unknown as TemplateStringsArray
-                        )} (${option.code.toUpperCase()})`
+                        t(`languages.${option.code}` as unknown as TemplateStringsArray)
                       }
                       renderOption={(props, option) => (
                         <Box component="li" {...props}>

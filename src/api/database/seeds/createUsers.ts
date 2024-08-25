@@ -24,7 +24,7 @@ export const createUsers = async (
         id: user.id,
         name: faker.person.firstName() + ' ' + faker.person.lastName(),
         email: user.email,
-        avatarUrl: faker.image.avatar(),
+        avatarUrl: faker.image.avatarGitHub(),
         password: await oneWayHash(user.password),
         isActive: true,
         confirmationToken: v4(),

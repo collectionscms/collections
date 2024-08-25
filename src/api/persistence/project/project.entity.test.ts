@@ -7,7 +7,7 @@ describe('ProjectEntity', () => {
     id: v4(),
     name: 'Formula one project',
     subdomain: 'f1-project',
-    sourceLanguage: 'en',
+    sourceLanguage: 'en-us',
     enabled: true,
     iconUrl: null,
     description: 'This is a formula one project',

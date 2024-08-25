@@ -1,6 +1,6 @@
 import { UnauthorizedException } from '../../../exceptions/unauthorized.js';
 import { ProjectWithRole } from '../../../types/index.js';
-import { ApiKeyRepository } from '../../persistences/apiKey/apiKey.repository.js';
+import { ApiKeyRepository } from '../../persistence/apiKey/apiKey.repository.js';
 import { BypassPrismaType } from '../../database/prisma/client.js';
 
 export class GetApiKeyProjectRolesUseCase {

@@ -4,7 +4,7 @@ Collections is headless CMS that simplifies multilingual content delivery with a
 
 <hr/>
 <h4>
-<a target="_blank" href="https://app.collections.dev/admin/" rel="dofollow"><strong>Try Live Demo</strong></a>
+<a target="_blank" href="https://app.collectionsdemo.live/admin/" rel="dofollow"><strong>Try Live Demo</strong></a>
 </h4>
 <hr/>
 
@@ -24,7 +24,7 @@ Extended documentation is available on our website.
 
 ## 🚀 Installation
 
-Easiest way to start using Collections on a local host.
+How to start using Collections on localhost.
 
 ```sh
 // clone
@@ -34,6 +34,8 @@ cd collections
 // env
 cp .env.sample .env
 vi .env - make it your environment
+
+// install direnv
 brew install direnv
 vi ~/.zshrc - add `eval "$(direnv hook zsh)"`
 source ~/.zshrc
@@ -49,8 +51,8 @@ Add the following lines to the `/etc/hosts`
 
 ```sh
 127.0.0.1   app.test.com
-127.0.0.1   usa.test.com
-127.0.0.1   jp.test.com
+127.0.0.1   en.test.com
+127.0.0.1   ja.test.com
 ```
 
 Open [http://app.test.com:4000/admin](http://app.test.com:4000/admin) to view your running app.

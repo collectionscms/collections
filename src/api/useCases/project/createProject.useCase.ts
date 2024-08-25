@@ -1,12 +1,12 @@
 import { Project } from '@prisma/client';
 import { RecordNotUniqueException } from '../../../exceptions/database/recordNotUnique.js';
 import i18n from '../../../lang/translations/config.js';
-import { ProjectEntity } from '../../persistences/project/project.entity.js';
-import { ProjectRepository } from '../../persistences/project/project.repository.js';
-import { RoleEntity } from '../../persistences/role/role.entity.js';
-import { RoleRepository } from '../../persistences/role/role.repository.js';
-import { UserProjectEntity } from '../../persistences/userProject/userProject.entity.js';
-import { UserProjectRepository } from '../../persistences/userProject/userProject.repository.js';
+import { ProjectEntity } from '../../persistence/project/project.entity.js';
+import { ProjectRepository } from '../../persistence/project/project.repository.js';
+import { RoleEntity } from '../../persistence/role/role.entity.js';
+import { RoleRepository } from '../../persistence/role/role.repository.js';
+import { UserProjectEntity } from '../../persistence/userProject/userProject.entity.js';
+import { UserProjectRepository } from '../../persistence/userProject/userProject.repository.js';
 import { BypassPrismaClient } from '../../database/prisma/client.js';
 import { CreateProjectUseCaseSchemaType } from './createProject.schema.js';
 

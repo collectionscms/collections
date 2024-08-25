@@ -225,10 +225,12 @@
     "api_key": "Edit Api Key"
   },
   "languages": {
-    "en": "English",
+    "en-us": "English (American)",
+    "en-gb": "English (British)",
     "es": "Spanish",
     "ja": "Japanese",
-    "pt": "Portuguese",
+    "pt-pt": "Portuguese (Portugal)",
+    "pt-br": "Portuguese (Brazilian)",
     "zh": "Chinese"
   },
   "editor": {

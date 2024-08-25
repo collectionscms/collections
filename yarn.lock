@@ -2660,10 +2660,10 @@
   resolved "https://registry.yarnpkg.com/@tiptap/extension-bullet-list/-/extension-bullet-list-2.5.8.tgz#fddb0d96ce7902214a1f2cb22f03ebbaae028ce8"
   integrity sha512-Wvf0HWBI0ulssoCsCOguxJB1Ntmj9PtE8b/ieFwFvrNptP+sf25XiWgjMs7H1KQrtmpngBu/Bhh5jJRgAmAgeQ==
 
-"@tiptap/extension-character-count@2.5.8":
-  version "2.5.8"
-  resolved "https://registry.yarnpkg.com/@tiptap/extension-character-count/-/extension-character-count-2.5.8.tgz#ce414de73b1bb015b34b1ce95e79c8cd75ea1b7b"
-  integrity sha512-uu9FNY9yUMkXEVMfBdTovEyPHOJCZWtEdTVuU+nbOIOpaggNFBG6YcVU4W1NC99USSFnbr45SbCsxP3gySmPIA==
+"@tiptap/extension-character-count@2.6.2":
+  version "2.6.2"
+  resolved "https://registry.yarnpkg.com/@tiptap/extension-character-count/-/extension-character-count-2.6.2.tgz#6bb901c740e231ffbaac36ceb58c78e7b4ca66e2"
+  integrity sha512-4qKtX3dA5URvVbCr2hENOgzJdCALb/5l+PqGAsYE+WTuS3s+RNtCsXO70gncocw5agV8fJp/pm5cox+QV8x1jQ==
 
 "@tiptap/extension-code-block-lowlight@2.6.4":
   version "2.6.4"
@@ -2727,10 +2727,10 @@
   resolved "https://registry.yarnpkg.com/@tiptap/extension-horizontal-rule/-/extension-horizontal-rule-2.5.8.tgz#3570fe64c2b97d6e44dd95d7b76cc3fef2e34bda"
   integrity sha512-L8Is73WGaP6VNdKrIry+lCIM9W1KaL/Tw2Z6DGMVMU5mr1lLx0xq7nWEStqD7e4zh+n4+3PV15cZSA2F34DZrg==
 
-"@tiptap/extension-image@2.5.8":
-  version "2.5.8"
-  resolved "https://registry.yarnpkg.com/@tiptap/extension-image/-/extension-image-2.5.8.tgz#c5178addb703777cf82aea250ccc75b17d492f3e"
-  integrity sha512-xlF3dqzXSN/6vWdmGOaIz0YVUO/B69mPw9vUITg7bQdc4X2pc52tvTGhpAzAc/kbwSVrW33icxAsXx8XH9Bkkg==
+"@tiptap/extension-image@2.6.2":
+  version "2.6.2"
+  resolved "https://registry.yarnpkg.com/@tiptap/extension-image/-/extension-image-2.6.2.tgz#5f55a0fb0be1753f7c81d1b7db66e3edf7386b15"
+  integrity sha512-EjA6+cGux4hVG2cyaJDzlWtjn7PEuwFoP5pwmUWZCF8UBuKGswKaFZLSnNmgNBaXZkcfB6lub2Rc+kgvE0M/DA==
 
 "@tiptap/extension-italic@^2.5.8":
   version "2.5.8"
@@ -2769,10 +2769,10 @@
   resolved "https://registry.yarnpkg.com/@tiptap/extension-strike/-/extension-strike-2.5.8.tgz#a52df8adabd88643ae03530abd8b5237504a74a7"
   integrity sha512-uiHhBIEqawX9Up2ofklotVQ5XpGIjwRL6wprZF38s1le3XpsgyhVV7oDnqDkC7ujCsGkOJJfXZtv3LsO3R2nzQ==
 
-"@tiptap/extension-task-item@2.5.8":
-  version "2.5.8"
-  resolved "https://registry.yarnpkg.com/@tiptap/extension-task-item/-/extension-task-item-2.5.8.tgz#609c53cfc6d40e3c58ae17fd0cfbb7a1344feae2"
-  integrity sha512-l20/6ieSs1J658Lj/gfLQZV9HMKp7TS6I+weJSoo+S2Cfm2VUCPp20/TXpdvhFMCF1Sma7Xpxn53289Ae6SHBg==
+"@tiptap/extension-task-item@2.6.2":
+  version "2.6.2"
+  resolved "https://registry.yarnpkg.com/@tiptap/extension-task-item/-/extension-task-item-2.6.2.tgz#643e4000a413a6bd0f62bbbd9463a57699cf094b"
+  integrity sha512-qMTAuXoEcrYHYs8wGmo3dovuLNf2HszN/ChrNqbUEopTnwF9Ea9MWANC+Jm+0oBSO8JGYI9Rbnjdm5iyP371LQ==
 
 "@tiptap/extension-text@^2.5.8":
   version "2.5.8"
@@ -2850,10 +2850,10 @@
     "@tiptap/extension-strike" "^2.5.8"
     "@tiptap/extension-text" "^2.5.8"
 
-"@tiptap/suggestion@2.5.8":
-  version "2.5.8"
-  resolved "https://registry.yarnpkg.com/@tiptap/suggestion/-/suggestion-2.5.8.tgz#420a19df48314e1e4b8606f18e52810f07c6178a"
-  integrity sha512-u0emCyGpzSshKR5mIJVwPwycKikP05137fnD0RFI3+nftO6n/2h54rs2yU6BYA8dc01VZRB00cJ/zHO6DsZWEA==
+"@tiptap/suggestion@2.6.2":
+  version "2.6.2"
+  resolved "https://registry.yarnpkg.com/@tiptap/suggestion/-/suggestion-2.6.2.tgz#de04b9edafcb5a2326932e4437d80a53218450d2"
+  integrity sha512-HlbF6Q+tkg2n09ueds7q3r7xBrynJgsAkoJT+s3Qq1mVfAoHZK/LGoypzHxqG46d+ooLo8T7Z5yvV0uT4wQR2Q==
 
 "@tsconfig/node10@^1.0.7":
   version "1.0.9"
@@ -6375,10 +6375,10 @@ i18next-browser-languagedetector@8.0.0:
   dependencies:
     "@babel/runtime" "^7.23.2"
 
-i18next@23.12.3:
-  version "23.12.3"
-  resolved "https://registry.yarnpkg.com/i18next/-/i18next-23.12.3.tgz#e0b811ef218f6d3fdb0b91f1a1eed099a1f7c48b"
-  integrity sha512-DyigQmrR10V9U2N6pjhbfahW13GY7n8BQD9swN09JuRRropgsksWVi4vRLeex0Qf7zCPnBfIqQfhcBzdZBQBYw==
+i18next@23.14.0:
+  version "23.14.0"
+  resolved "https://registry.yarnpkg.com/i18next/-/i18next-23.14.0.tgz#d415a858390cc849f3db0df539cb2bbfe24a3cdb"
+  integrity sha512-Y5GL4OdA8IU2geRrt2+Uc1iIhsjICdHZzT9tNwQ3TVqdNzgxHToGCKf/TPRP80vTCAP6svg2WbbJL+Gx5MFQVA==
   dependencies:
     "@babel/runtime" "^7.23.2"
 

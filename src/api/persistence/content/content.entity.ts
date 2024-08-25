@@ -29,7 +29,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
       id: v4(),
       projectId,
       postId,
-      fileId: null,
+      coverUrl: null,
       title: null,
       body: null,
       bodyJson: null,
@@ -86,6 +86,10 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
 
   get bodyHtml(): string {
     return this.props.bodyHtml ?? '';
+  }
+
+  get coverUrl(): string {
+    return this.props.coverUrl ?? '';
   }
 
   get language(): string {
@@ -157,21 +161,21 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     body,
     bodyJson,
     bodyHtml,
-    fileId,
+    coverUrl,
     updatedById,
   }: {
     title: string | null;
     body: string | null;
     bodyJson: string | null;
     bodyHtml: string | null;
-    fileId: string | null;
+    coverUrl: string | null;
     updatedById: string;
   }): void {
     this.props.title = title;
     this.props.body = body;
     this.props.bodyJson = bodyJson;
     this.props.bodyHtml = bodyHtml;
-    this.props.fileId = fileId;
+    this.props.coverUrl = coverUrl;
     this.props.updatedById = updatedById;
   }
 

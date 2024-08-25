@@ -4,7 +4,7 @@ import { enqueueSnackbar } from 'notistack';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { languages } from '../../../../constatns/languages.js';
+import { languages } from '../../../../constants/languages.js';
 import { LocalizedPost } from '../../../../types/index.js';
 import { logger } from '../../../../utilities/logger.js';
 import { ModalDialog } from '../../../components/elements/ModalDialog/index.js';
@@ -51,7 +51,7 @@ export const LocalizedContent: React.FC<Props> = ({ open, post, onClose, onChang
       title={t('add_language_content')}
       body={
         <form>
-          <Stack spacing={1} direction="column" sx={{ width: 300 }}>
+          <Stack spacing={1} direction="column" sx={{ width: 400 }}>
             <Autocomplete
               fullWidth
               onChange={(event, newValue) => {
@@ -61,7 +61,7 @@ export const LocalizedContent: React.FC<Props> = ({ open, post, onClose, onChang
               autoHighlight
               isOptionEqualToValue={(option, value) => option.code === value?.code}
               getOptionLabel={(option) =>
-                `${t(`languages.${option.code}` as unknown as TemplateStringsArray)} (${option.code})`
+                `${t(`languages.${option.code}` as unknown as TemplateStringsArray)} (${option.code.toUpperCase()})`
               }
               renderOption={(props, option) => (
                 <Box component="li" {...props}>

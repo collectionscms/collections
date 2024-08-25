@@ -1,13 +1,13 @@
 import express, { Request, Response } from 'express';
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
-import { ContentRepository } from '../persistences/content/content.repository.js';
-import { ContentHistoryRepository } from '../persistences/contentHistory/contentHistory.repository.js';
-import { PostRepository } from '../persistences/post/post.repository.js';
-import { ReviewRepository } from '../persistences/review/review.repository.js';
 import { projectPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';
 import { validateAccess } from '../middlewares/validateAccess.js';
+import { ContentRepository } from '../persistence/content/content.repository.js';
+import { ContentHistoryRepository } from '../persistence/contentHistory/contentHistory.repository.js';
+import { PostRepository } from '../persistence/post/post.repository.js';
+import { ReviewRepository } from '../persistence/review/review.repository.js';
 import { archiveUseCaseSchema } from '../useCases/content/archive.schema.js';
 import { ArchiveUseCase } from '../useCases/content/archive.useCase.js';
 import { publishUseCaseSchema } from '../useCases/content/publish.schema.js';
@@ -30,11 +30,11 @@ router.patch(
       projectId: res.projectRole?.id,
       id: req.params.id,
       userId: res.user.id,
-      fileId: req.body.fileId,
       title: req.body.title,
       body: req.body.body,
       bodyJson: req.body.bodyJson,
       bodyHtml: req.body.bodyHtml,
+      coverUrl: req.body.coverUrl,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 

@@ -1,8 +1,8 @@
 import { Role } from '@prisma/client';
-import { RoleEntity } from '../../persistences/role/role.entity.js';
-import { RoleRepository } from '../../persistences/role/role.repository.js';
-import { RolePermissionEntity } from '../../persistences/rolePermission/rolePermission.entity.js';
-import { RolePermissionRepository } from '../../persistences/rolePermission/rolePermission.repository.js';
+import { RoleEntity } from '../../persistence/role/role.entity.js';
+import { RoleRepository } from '../../persistence/role/role.repository.js';
+import { RolePermissionEntity } from '../../persistence/rolePermission/rolePermission.entity.js';
+import { RolePermissionRepository } from '../../persistence/rolePermission/rolePermission.repository.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
 import { CreateRoleUseCaseSchemaType } from './createRole.schema.js';
 
