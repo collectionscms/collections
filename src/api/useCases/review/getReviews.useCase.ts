@@ -1,5 +1,5 @@
 import { Review } from '@prisma/client';
-import { ReviewRepository } from '../../persistences/review/review.repository.js';
+import { ReviewRepository } from '../../persistence/review/review.repository.js';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
 import { GetReviewsUseCaseSchemaType } from './getReviews.schema.js';
 

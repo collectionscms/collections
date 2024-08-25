@@ -3,10 +3,10 @@ import { Readable } from 'stream';
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
 import { UnknownException } from '../../exceptions/storage/unknown.js';
 import { logger } from '../../utilities/logger.js';
-import { FileRepository } from '../persistences/file/file.repository.js';
-import { ProjectRepository } from '../persistences/project/project.repository.js';
-import { bypassPrisma, projectPrisma } from '../database/prisma/client.js';
+import { bypassPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
+import { FileRepository } from '../persistence/file/file.repository.js';
+import { ProjectRepository } from '../persistence/project/project.repository.js';
 import { getDataUseCaseSchema } from '../useCases/asset/getData.schema.js';
 import { GetDataUseCase } from '../useCases/asset/getData.useCase.js';
 import { GetProjectFromSubdomainUseCase } from '../useCases/asset/getProjectFromSubdomain.useCase.js';
@@ -35,8 +35,8 @@ router.get(
     );
     const project = await projectUseCase.execute(validated.data.subdomain);
 
-    const useCase = new GetDataUseCase(projectPrisma(project.id), new FileRepository());
-    const { file, data } = await useCase.execute(validated.data.fileId);
+    const useCase = new GetDataUseCase(bypassPrisma, new FileRepository());
+    const { file, data } = await useCase.execute(project?.id ?? null, validated.data.fileId);
 
     res.attachment(file.fileName);
     res.setHeader('Content-Type', file.type);

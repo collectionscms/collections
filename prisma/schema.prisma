@@ -120,18 +120,16 @@ model Permission {
 }
 
 model File {
-  id               String           @id @db.Uuid
-  projectId        String           @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
-  storage          String           @db.VarChar(255)
-  fileName         String           @db.VarChar(255)
-  fileNameDisk     String           @db.VarChar(255)
-  type             String           @db.VarChar(255)
-  fileSize         Int?
-  width            Int?
-  height           Int?
-  project          Project          @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  contents         Content[]
-  contentHistories ContentHistory[]
+  id           String   @id @db.Uuid
+  projectId    String?  @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
+  storage      String   @db.VarChar(255)
+  fileName     String   @db.VarChar(255)
+  fileNameDisk String   @db.VarChar(255)
+  type         String   @db.VarChar(255)
+  fileSize     Int?
+  width        Int?
+  height       Int?
+  project      Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
 }
 
 model Post {
@@ -172,11 +170,11 @@ model Content {
   id          String    @id @db.Uuid
   projectId   String    @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
   postId      String    @db.Uuid
-  fileId      String?   @db.Uuid
   title       String?   @db.VarChar(255)
   body        String?
   bodyJson    String?
   bodyHtml    String?
+  coverUrl    String?   @db.VarChar(255)
   language    String    @db.VarChar(255)
   status      String    @db.VarChar(255)
   version     Int       @default(1)
@@ -190,7 +188,6 @@ model Content {
   post        Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
   createdBy   User      @relation(name: "CreatedBy", fields: [createdById], references: [id], onDelete: NoAction)
   updatedBy   User      @relation(name: "UpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction)
-  file        File?     @relation(fields: [fileId], references: [id], onDelete: SetNull)
   review      Review?
 }
 
@@ -198,11 +195,11 @@ model ContentHistory {
   id          String    @id @db.Uuid
   projectId   String    @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
   postId      String    @db.Uuid
-  fileId      String?   @db.Uuid
   title       String?   @db.VarChar(255)
   body        String?
   bodyJson    String?
   bodyHtml    String?
+  coverUrl    String?   @db.VarChar(255)
   language    String    @db.VarChar(255)
   status      String    @db.VarChar(255)
   version     Int       @default(1)
@@ -215,7 +212,6 @@ model ContentHistory {
   post        Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
   createdBy   User      @relation(name: "CreatedBy", fields: [createdById], references: [id], onDelete: NoAction)
   updatedBy   User      @relation(name: "UpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction)
-  file        File?     @relation(fields: [fileId], references: [id], onDelete: SetNull)
 }
 
 model ApiKey {

@@ -1,6 +1,6 @@
 import { InvalidPayloadException } from '../../../exceptions/invalidPayload.js';
 import { UnprocessableEntityException } from '../../../exceptions/unprocessableEntity.js';
-import { UserProjectRepository } from '../../persistences/userProject/userProject.repository.js';
+import { UserProjectRepository } from '../../persistence/userProject/userProject.repository.js';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
 
 export class DeleteUserProjectUserUseCase {

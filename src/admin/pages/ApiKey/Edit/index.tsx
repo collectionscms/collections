@@ -18,7 +18,7 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { v4 } from 'uuid';
-import { apiKeyActions } from '../../../../api/persistences/permission/permission.entity.js';
+import { apiKeyActions } from '../../../../api/persistence/permission/permission.entity.js';
 import { logger } from '../../../../utilities/logger.js';
 import { MainCard } from '../../../@extended/components/MainCard/index.js';
 import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscardDialog/index.js';

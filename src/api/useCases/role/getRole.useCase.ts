@@ -1,5 +1,5 @@
 import { RoleWithPermissions } from '../../../types/index.js';
-import { RoleRepository } from '../../persistences/role/role.repository.js';
+import { RoleRepository } from '../../persistence/role/role.repository.js';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
 
 export class GetRoleUseCase {

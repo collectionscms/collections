@@ -30,7 +30,7 @@ const navigation = {
       name: 'API',
       href: '/reference/api',
     },
-    { name: 'Demo', href: 'https://app.collections.dev/admin/' },
+    { name: 'Demo', href: 'https://app.collectionsdemo.live/admin/' },
   ],
   resource: [
     { name: 'Blog', href: 'https://blog.collections.dev/' },
