@@ -2,7 +2,7 @@ import { getSession } from '@auth/express';
 import express, { Request, Response } from 'express';
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
 import { authConfig } from '../configs/auth.js';
-import { UserRepository } from '../persistences/user/user.repository.js';
+import { UserRepository } from '../persistence/user/user.repository.js';
 import { bypassPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';

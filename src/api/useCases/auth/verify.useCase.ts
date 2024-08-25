@@ -1,7 +1,7 @@
 import { ConflictException } from '../../../exceptions/conflict.js';
 import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
 import { Me } from '../../../types/index.js';
-import { UserRepository } from '../../persistences/user/user.repository.js';
+import { UserRepository } from '../../persistence/user/user.repository.js';
 import { BypassPrismaClient } from '../../database/prisma/client.js';
 import { VerifyUseCaseSchemaType } from './verify.schema.js';
 

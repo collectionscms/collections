@@ -13,7 +13,7 @@ import { enqueueSnackbar } from 'notistack';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { languages } from '../../../../constatns/languages.js';
+import { languages } from '../../../../constants/languages.js';
 import { logger } from '../../../../utilities/logger.js';
 import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscardDialog/index.js';
 import {
@@ -90,7 +90,7 @@ export const SourceLanguageForm: React.FC<Props> = ({
                 autoHighlight
                 isOptionEqualToValue={(option, value) => option.code === value?.code}
                 getOptionLabel={(option) =>
-                  `${t(`languages.${option.code}` as unknown as TemplateStringsArray)} (${option.code.toUpperCase()})`
+                  t(`languages.${option.code}` as unknown as TemplateStringsArray)
                 }
                 renderOption={(props, option) => (
                   <Box component="li" {...props}>

@@ -1,12 +1,12 @@
 import { i18n } from 'i18next';
 import { v4 } from 'uuid';
-import { roleActions } from '../../persistences/permission/permission.entity.js';
+import { roleActions } from '../../persistence/permission/permission.entity.js';
 import { BypassPrismaType } from '../prisma/client.js';
 import { jpProject, usaProject } from './createProjects.js';
 
 export const projectRoles = {
   [usaProject]: {
-    language: 'en',
+    language: 'en-us',
     admin: v4(),
     editor: v4(),
     contributor: v4(),

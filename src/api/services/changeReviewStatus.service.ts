@@ -1,14 +1,14 @@
 import { UnexpectedException } from '../../exceptions/unexpected.js';
-import { ContentStatusType } from '../persistences/content/content.entity.js';
-import { ContentRepository } from '../persistences/content/content.repository.js';
-import { ContentHistoryEntity } from '../persistences/contentHistory/contentHistory.entity.js';
-import { ContentHistoryRepository } from '../persistences/contentHistory/contentHistory.repository.js';
+import { ContentStatusType } from '../persistence/content/content.entity.js';
+import { ContentRepository } from '../persistence/content/content.repository.js';
+import { ContentHistoryEntity } from '../persistence/contentHistory/contentHistory.entity.js';
+import { ContentHistoryRepository } from '../persistence/contentHistory/contentHistory.repository.js';
 import {
   ReviewEntity,
   ReviewStatusType,
   reviewStatus,
-} from '../persistences/review/review.entity.js';
-import { ReviewRepository } from '../persistences/review/review.repository.js';
+} from '../persistence/review/review.entity.js';
+import { ReviewRepository } from '../persistence/review/review.repository.js';
 import { ProjectPrismaType } from '../database/prisma/client';
 
 export class ChangeReviewStatusService {

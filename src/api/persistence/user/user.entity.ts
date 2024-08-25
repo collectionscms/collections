@@ -60,6 +60,10 @@ export class UserEntity extends PrismaBaseEntity<User> {
     return this.props.confirmedAt;
   }
 
+  get avatarUrl(): string | null {
+    return this.props.avatarUrl;
+  }
+
   get resetPasswordToken(): string | null {
     return this.props.resetPasswordToken;
   }

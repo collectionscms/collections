@@ -1,5 +1,6 @@
 import { File } from '@prisma/client';
 import { v4 } from 'uuid';
+import { env } from '../../../env.js';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 
 export class FileEntity extends PrismaBaseEntity<File> {
@@ -13,7 +14,7 @@ export class FileEntity extends PrismaBaseEntity<File> {
     width,
     height,
   }: {
-    projectId: string;
+    projectId: string | null;
     storage: string;
     fileName: string;
     fileNameDisk: string;
@@ -40,6 +41,10 @@ export class FileEntity extends PrismaBaseEntity<File> {
     return this.props.id;
   }
 
+  get projectId(): string | null {
+    return this.props.projectId;
+  }
+
   get storage(): string {
     return this.props.storage;
   }
@@ -48,14 +53,20 @@ export class FileEntity extends PrismaBaseEntity<File> {
     return this.props.fileNameDisk;
   }
 
-  url(): string {
+  path(): string {
     return `/assets/${this.props.id}`;
   }
 
-  toResponseWithUrl(): File & { url: string } {
+  url(subdomain: string): string {
+    const portalUrl = env.PUBLIC_SERVER_ORIGIN;
+    const url = portalUrl.replace(/:\/\/(.*?)\./, `://${subdomain}.`);
+    return `${url}${this.path()}`;
+  }
+
+  toResponseWithUrl(subdomain: string): File & { url: string } {
     return {
       ...this.props,
-      url: this.url(),
+      url: this.url(subdomain),
     };
   }
 }

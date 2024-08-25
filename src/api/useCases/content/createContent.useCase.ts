@@ -1,8 +1,8 @@
 import { Content } from '@prisma/client';
-import { ContentEntity } from '../../persistences/content/content.entity.js';
-import { ContentRepository } from '../../persistences/content/content.repository.js';
-import { ContentHistoryEntity } from '../../persistences/contentHistory/contentHistory.entity.js';
-import { ContentHistoryRepository } from '../../persistences/contentHistory/contentHistory.repository.js';
+import { ContentEntity } from '../../persistence/content/content.entity.js';
+import { ContentRepository } from '../../persistence/content/content.repository.js';
+import { ContentHistoryEntity } from '../../persistence/contentHistory/contentHistory.entity.js';
+import { ContentHistoryRepository } from '../../persistence/contentHistory/contentHistory.repository.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
 import { CreateContentUseCaseSchemaType } from './createContent.schema.js';
 
