@@ -2712,10 +2712,10 @@
   resolved "https://registry.yarnpkg.com/@tiptap/extension-hard-break/-/extension-hard-break-2.5.8.tgz#95288faad3408b91284d925c3e4dbab66029dd98"
   integrity sha512-samZEL0EXzHSmMQ7KyLnfSxdDv3qSjia0JzelfCnFZS6LLcbwjrIjV8ZPxEhJ7UlZqroQdFxPegllkLHZj/MdQ==
 
-"@tiptap/extension-heading@2.5.8", "@tiptap/extension-heading@^2.5.8":
-  version "2.5.8"
-  resolved "https://registry.yarnpkg.com/@tiptap/extension-heading/-/extension-heading-2.5.8.tgz#a5d14d03d812a7dce821fe46b4b821daffde2ad0"
-  integrity sha512-fDQoUkTLN+U8MNQ8PI+syKyshS9qFHlKihxzMLf/+tRisJvP47gzHDur99nffTSbXFDnASDqhavhKjI/2xTWlQ==
+"@tiptap/extension-heading@2.6.2", "@tiptap/extension-heading@^2.5.8":
+  version "2.6.2"
+  resolved "https://registry.yarnpkg.com/@tiptap/extension-heading/-/extension-heading-2.6.2.tgz#6a865c87e01ac73dfb5b55ac3f475ec94bff6c41"
+  integrity sha512-jadSrUCnVi+DEcN5qSiH9FN72FmeQtgeLYNRyNwnbjtsYQ51XUQks2sVafOdCnbQr47Wro1l5rDkpsrRTvPs3Q==
 
 "@tiptap/extension-history@^2.5.8":
   version "2.5.8"
@@ -2759,10 +2759,10 @@
   resolved "https://registry.yarnpkg.com/@tiptap/extension-paragraph/-/extension-paragraph-2.5.8.tgz#5be7e7c4e5c19bd4f512c72d3dfc4e1e6d6dd876"
   integrity sha512-AMfD3lfGSiomfkSE2tUourUjVahLtIfWUQew13NTPuWoxAXaSyoCGO0ULkiou/lO3JVUUUmF9+KJrAHWGIARdA==
 
-"@tiptap/extension-placeholder@2.5.8":
-  version "2.5.8"
-  resolved "https://registry.yarnpkg.com/@tiptap/extension-placeholder/-/extension-placeholder-2.5.8.tgz#80fdf02133d94f41363f6fe28f5fc3ef09ac73c6"
-  integrity sha512-mvRl73OM5jBXVtDRLSTvp8/4+0mS2J2+ZcuiAHjABwEsZRCfJsiqty5NisOxSuy/AQtm8TK2kyt6ZCXQ2VRGig==
+"@tiptap/extension-placeholder@2.6.2":
+  version "2.6.2"
+  resolved "https://registry.yarnpkg.com/@tiptap/extension-placeholder/-/extension-placeholder-2.6.2.tgz#0a1ba668f13ad9f3700c95e87f81d25e68dfaf87"
+  integrity sha512-Aou6lH456j5mpry36jyAdZzINxFx6fjqvmapmmORJKV+9J889P7RN7laRRsosWHez0Oxg4KuWL3FuDexx6ZJOQ==
 
 "@tiptap/extension-strike@^2.5.8":
   version "2.5.8"
@@ -2779,10 +2779,10 @@
   resolved "https://registry.yarnpkg.com/@tiptap/extension-text/-/extension-text-2.5.8.tgz#a9c4de33eec749c8c01d8bd81fb589f581c30dfc"
   integrity sha512-CNkD51jRMdcYCqFVOkrnebqBQ6pCD3ZD5z9kO5bOC5UPZKZBkLsWdlrHGAVwosxcGxdJACbqJ0Nj+fMgIw4tNA==
 
-"@tiptap/extension-underline@2.5.8":
-  version "2.5.8"
-  resolved "https://registry.yarnpkg.com/@tiptap/extension-underline/-/extension-underline-2.5.8.tgz#0f46891e0381417fa0a08ace2586e8c7538a7f4a"
-  integrity sha512-MxtOcYXVSpiYWNE1hzmBNUJELyH70Y/fFNbOyI5VPOoCZT7a3XjtWIbiZhBvN1lIzXYMHDj8Wacxzt6whK5KJw==
+"@tiptap/extension-underline@2.6.2":
+  version "2.6.2"
+  resolved "https://registry.yarnpkg.com/@tiptap/extension-underline/-/extension-underline-2.6.2.tgz#eb7b79525fe50c4afd248513481b4e732cd14bc7"
+  integrity sha512-bwbOsd8TR6Wg41LUYfeaWfxYOgQlpt2c/m4I4HRYillTqS0gi4RNkmqapsBT402Z7O8x5YS0Tcq0JLG3TR3nFg==
 
 "@tiptap/html@2.5.8":
   version "2.5.8"
