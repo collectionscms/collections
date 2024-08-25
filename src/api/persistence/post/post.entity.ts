@@ -223,7 +223,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
             version: content.version,
             coverUrl: content.coverUrl,
             publishedAt: content.publishedAt,
-            createdBy: {
+            author: {
               id: createdBy.id,
               name: createdBy.name,
               avatarUrl: createdBy.avatarUrl,
