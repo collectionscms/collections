@@ -217,13 +217,13 @@ export class PostEntity extends PrismaBaseEntity<Post> {
         if (!acc[content.language] && content.publishedAt) {
           acc[content.language] = {
             title: content.title ?? '',
-            body: content.bodyHtml ?? '',
+            body: content.body ?? '',
             bodyHtml: content.bodyHtml ?? '',
             language: content.language,
             version: content.version,
             coverUrl: content.coverUrl,
             publishedAt: content.publishedAt,
-            createdBy: {
+            author: {
               id: createdBy.id,
               name: createdBy.name,
               avatarUrl: createdBy.avatarUrl,

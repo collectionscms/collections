@@ -64,7 +64,7 @@ export type PublishedContent = {
   version: number;
   coverUrl: string | null;
   publishedAt: Date;
-  createdBy: {
+  author: {
     id: string;
     name: string;
     avatarUrl: string | null;
