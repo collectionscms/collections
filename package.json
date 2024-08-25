@@ -69,7 +69,7 @@
     "@tiptap/extension-horizontal-rule": "2.5.8",
     "@tiptap/extension-image": "2.6.2",
     "@tiptap/extension-link": "2.5.8",
-    "@tiptap/extension-placeholder": "2.5.8",
+    "@tiptap/extension-placeholder": "2.6.2",
     "@tiptap/extension-task-item": "2.6.2",
     "@tiptap/extension-underline": "2.6.2",
     "@tiptap/html": "2.5.8",
