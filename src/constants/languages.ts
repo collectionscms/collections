@@ -4,8 +4,7 @@ export enum LanguageCodes {
   es = 'es',
   ja = 'ja',
   'pt-br' = 'pt-br',
-  'pt-pt' = 'pt-pt',
-  zh = 'zh',
+  'zh-cn' = 'zh-cn',
 }
 
 export type LanguageType = {
@@ -19,7 +18,6 @@ export const languages: readonly LanguageType[] = [
   { code: LanguageCodes['en-us'], isSourceLanguage: true, isTargetLanguage: true },
   { code: LanguageCodes.es, isSourceLanguage: true, isTargetLanguage: true },
   { code: LanguageCodes.ja, isSourceLanguage: true, isTargetLanguage: true },
-  { code: LanguageCodes['pt-pt'], isSourceLanguage: true, isTargetLanguage: true },
   { code: LanguageCodes['pt-br'], isSourceLanguage: true, isTargetLanguage: true },
-  { code: LanguageCodes.zh, isSourceLanguage: true, isTargetLanguage: true },
+  { code: LanguageCodes['zh-cn'], isSourceLanguage: true, isTargetLanguage: true },
 ];
