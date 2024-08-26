@@ -96,7 +96,7 @@ export const SourceLanguageForm: React.FC<Props> = ({
                   <Box component="li" {...props}>
                     {t(`languages.${option.code}` as unknown as TemplateStringsArray)}
                     <Typography variant="caption" color="text.secondary" sx={{ ml: 1 }}>
-                      ({option.code.toUpperCase()})
+                      {option.code.toUpperCase()}
                     </Typography>
                     {option.isSourceLanguage && (
                       <Typography variant="caption" color="text.secondary" sx={{ ml: 1 }}>
