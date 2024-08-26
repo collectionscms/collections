@@ -33,4 +33,26 @@ export const posts = [
     status: 'published',
     coverUrl: 'https://cdn.collections.dev/cover.png',
   },
+  {
+    language: 'pt-br',
+    title: 'Simplificando a entrega multilíngue',
+    body: 'O Collections simplifica o fornecimento de conteúdo multilíngue com uma experiência de escrita tranquila, tradução com IA avançada e uma API intuitiva.',
+    bodyJson:
+      '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"O Collections simplifica o fornecimento de conteúdo multilíngue com uma experiência de escrita tranquila, tradução com IA avançada e uma API intuitiva."}]}]}',
+    bodyHtml:
+      '<p>O Collections simplifica o fornecimento de conteúdo multilíngue com uma experiência de escrita tranquila, tradução com IA avançada e uma API intuitiva.</p>',
+    status: 'published',
+    coverUrl: 'https://cdn.collections.dev/cover.png',
+  },
+  {
+    language: 'zh-cn',
+    title: '简化多语言交付',
+    body: 'Collections 通过流畅的写作体验、强大的人工智能翻译和直观的应用程序接口简化了多语言内容的交付。',
+    bodyJson:
+      '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"Collections 通过流畅的写作体验、强大的人工智能翻译和直观的应用程序接口简化了多语言内容的交付。"}]}]}',
+    bodyHtml:
+      '<p>Collections 通过流畅的写作体验、强大的人工智能翻译和直观的应用程序接口简化了多语言内容的交付。</p>',
+    status: 'published',
+    coverUrl: 'https://cdn.collections.dev/cover.png',
+  },
 ];
