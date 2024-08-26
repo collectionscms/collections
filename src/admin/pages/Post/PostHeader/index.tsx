@@ -326,7 +326,7 @@ export const PostHeader: React.FC<Props> = ({
                 {t(`languages.${language}` as unknown as TemplateStringsArray)}
               </Typography>
               <Typography variant="caption" color="textSecondary" sx={{ ml: '8px' }}>
-                ({language.toUpperCase()})
+                {language.toUpperCase()}
               </Typography>
             </MenuItem>
           ))}
