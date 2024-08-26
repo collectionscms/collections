@@ -4,7 +4,7 @@ Collections is headless CMS that simplifies multilingual content delivery with a
 
 <hr/>
 <h4>
-<a target="_blank" href="https://app.collectionsdemo.live/admin/" rel="dofollow"><strong>Try Live Demo</strong></a>
+<a target="_blank" href="https://app.collectionsdemo.live/admin/" rel="dofollow"><strong>Try Live Demo</strong></a>&nbsp;·&nbsp;<a target="_blank" href="https://collections-cms.vercel.app/" rel="dofollow"><strong>View Demo Site</strong></a>
 </h4>
 <hr/>
 
