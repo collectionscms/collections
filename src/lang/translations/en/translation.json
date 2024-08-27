@@ -184,6 +184,9 @@
   "apply": "Apply",
   "extension": "Extension",
   "template": "Template",
+  "deploy": "Deploy",
+  "view_demo": "View Demo",
+  "nextjs_blog_starter_description": "A multilingual statically generated blog template using Next.js and Collections.",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",
