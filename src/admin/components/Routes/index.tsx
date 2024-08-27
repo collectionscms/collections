@@ -4,6 +4,7 @@ import { getLoginUrl } from '../../utilities/urlGenerator.js';
 import { Loading } from '../elements/Loading/index.js';
 import { useAuth } from '../utilities/Auth/index.js';
 import { AuthRoutes } from './Auth/index.js';
+import { EditPostRoutes } from './EditPost/index.js';
 import { ExtensionsRoutes } from './Extensions/index.js';
 import { GuestRoutes } from './Guest/index.js';
 import { InvitationRoutes } from './Invitation/index.js';
@@ -13,7 +14,6 @@ import { NoRoutes } from './NoRoutes/index.js';
 import { PortalRootRoutes } from './PortalRoot/index.js';
 import { PostRoutes } from './Post/index.js';
 import { ProjectRoutes } from './Project/index.js';
-import { ReviewRoutes } from './Review/index.js';
 import { SettingRoutes } from './Setting/index.js';
 import { TenantRootRoutes } from './TenantRoot/index.js';
 
@@ -28,6 +28,7 @@ export const Routes: React.FC = () => {
     InvitationRoutes(),
     NoRoutes(),
   ]);
+
   const portalGuestRouter = createBrowserRouter([
     AuthRoutes(),
     GuestRoutes(),
@@ -37,7 +38,7 @@ export const Routes: React.FC = () => {
   const tenantRouter = createBrowserRouter([
     TenantRootRoutes(),
     PostRoutes(),
-    ReviewRoutes(),
+    EditPostRoutes(),
     SettingRoutes(),
     ExtensionsRoutes(),
     NoRoutes(),
