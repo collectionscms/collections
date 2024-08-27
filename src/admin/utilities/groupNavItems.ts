@@ -119,7 +119,7 @@ export const extensionsGroupNavItems = (): Group => {
     items.push({
       label: 'template',
       href: `${path}/templates`,
-      icon: 'Blocks',
+      icon: 'LayoutTemplate',
     });
   }
 
