@@ -45,7 +45,6 @@ export const SourceLanguageForm: React.FC<Props> = ({
   const { trigger, isMutating } = createProject();
 
   const {
-    watch,
     setValue,
     handleSubmit,
     formState: { isDirty, errors },
