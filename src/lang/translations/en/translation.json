@@ -182,6 +182,8 @@
   "choose_language": "Choose a language",
   "translatable": "Translatable",
   "apply": "Apply",
+  "extension": "Extension",
+  "template": "Template",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",

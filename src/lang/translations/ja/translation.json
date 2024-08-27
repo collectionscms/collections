@@ -182,6 +182,8 @@
   "choose_language": "言語を選択してください",
   "translatable": "翻訳可能",
   "apply": "適用",
+  "extension": "拡張",
+  "template": "テンプレート",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",
