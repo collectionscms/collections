@@ -170,6 +170,7 @@
   "user_permission": "User Permissions",
   "role_permission": "Role Permissions",
   "api_key_permission": "API Key Permissions",
+  "extension_permission": "Extension Permissions",
   "no_permissions": "No Permissions",
   "open_in_new_tab": "Open in new tab",
   "edit_link": "Edit link",
@@ -287,7 +288,8 @@
       "readApiKey": "Read",
       "createApiKey": "Create",
       "updateApiKey": "Update",
-      "deleteApiKey": "Delete"
+      "deleteApiKey": "Delete",
+      "readTemplate": "Read template"
     }
   },
   "error": {

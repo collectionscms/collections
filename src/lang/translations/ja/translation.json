@@ -170,6 +170,7 @@
   "user_permission": "ユーザーの権限",
   "role_permission": "ロールの権限",
   "api_key_permission": "APIキーの権限",
+  "extension_permission": "拡張の権限",
   "no_permissions": "権限がありません",
   "open_in_new_tab": "新しいタブで開く",
   "edit_link": "リンクを編集",
@@ -287,7 +288,8 @@
       "readApiKey": "閲覧",
       "createApiKey": "新規登録",
       "updateApiKey": "編集",
-      "deleteApiKey": "削除"
+      "deleteApiKey": "削除",
+      "readTemplate": "テンプレートの閲覧"
     }
   },
   "error": {
