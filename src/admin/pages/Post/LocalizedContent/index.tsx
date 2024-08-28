@@ -54,7 +54,7 @@ export const LocalizedContent: React.FC<Props> = ({ open, post, onClose, onChang
           <Stack spacing={1} direction="column" sx={{ width: 400 }}>
             <Autocomplete
               fullWidth
-              onChange={(event, newValue) => {
+              onChange={(_event, newValue) => {
                 setValue('language', newValue === null ? '' : newValue.code);
               }}
               options={enabledLanguages}
@@ -69,7 +69,7 @@ export const LocalizedContent: React.FC<Props> = ({ open, post, onClose, onChang
                   <Typography variant="caption" color="text.secondary" sx={{ ml: 1 }}>
                     {option.code.toUpperCase()}
                   </Typography>
-                  {option.isSourceLanguage && (
+                  {option.sourceLanguageCode && (
                     <Typography variant="caption" color="text.secondary" sx={{ ml: 1 }}>
                       - {t('translatable')}
                     </Typography>

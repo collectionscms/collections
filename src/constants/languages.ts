@@ -5,19 +5,21 @@ export enum LanguageCodes {
   ja = 'ja',
   'pt-br' = 'pt-br',
   'zh-cn' = 'zh-cn',
+  'zh-tw' = 'zh-tw',
 }
 
-export type LanguageType = {
+type LanguageType = {
   code: string;
-  isSourceLanguage: boolean;
-  isTargetLanguage: boolean;
+  sourceLanguageCode: string | null;
+  targetLanguageCode: string | null;
 };
 
 export const languages: readonly LanguageType[] = [
-  { code: LanguageCodes['en-gb'], isSourceLanguage: true, isTargetLanguage: true },
-  { code: LanguageCodes['en-us'], isSourceLanguage: true, isTargetLanguage: true },
-  { code: LanguageCodes.es, isSourceLanguage: true, isTargetLanguage: true },
-  { code: LanguageCodes.ja, isSourceLanguage: true, isTargetLanguage: true },
-  { code: LanguageCodes['pt-br'], isSourceLanguage: true, isTargetLanguage: true },
-  { code: LanguageCodes['zh-cn'], isSourceLanguage: true, isTargetLanguage: true },
+  { code: LanguageCodes['en-gb'], sourceLanguageCode: 'en', targetLanguageCode: 'en-gb' },
+  { code: LanguageCodes['en-us'], sourceLanguageCode: 'en', targetLanguageCode: 'en-us' },
+  { code: LanguageCodes.es, sourceLanguageCode: 'es', targetLanguageCode: 'es' },
+  { code: LanguageCodes.ja, sourceLanguageCode: 'ja', targetLanguageCode: 'ja' },
+  { code: LanguageCodes['pt-br'], sourceLanguageCode: 'pt', targetLanguageCode: 'pt-br' },
+  { code: LanguageCodes['zh-cn'], sourceLanguageCode: 'zh', targetLanguageCode: 'zh' },
+  { code: LanguageCodes['zh-tw'], sourceLanguageCode: null, targetLanguageCode: null },
 ];
