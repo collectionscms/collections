@@ -149,7 +149,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       contentLanguage: languageContent.content.language,
       version: languageContent.content.version,
       coverUrl: languageContent.content.coverUrl,
-      languages,
+      usedLanguages: languages,
       histories: histories.map((history) => history.toResponse()),
     };
   }

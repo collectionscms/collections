@@ -45,14 +45,14 @@ export type LocalizedPost = {
   currentStatus: string;
   prevStatus?: string;
   updatedAt: Date;
-  contentLanguage: string;
   version: number;
   title: string;
   body: string;
   bodyJson: string;
   bodyHtml: string;
   coverUrl: string | null;
-  languages: string[];
+  contentLanguage: string;
+  usedLanguages: string[];
   histories: ContentHistory[];
 };
 

@@ -22,7 +22,9 @@ export const LocalizedContent: React.FC<Props> = ({ open, post, onClose, onChang
   const { createContent } = usePost();
   const { t } = useTranslation();
   const { trigger: createContentTrigger } = createContent(post.id);
-  const enabledLanguages = languages.filter((language) => !post.languages.includes(language.code));
+  const enabledLanguages = languages.filter(
+    (language) => !post.usedLanguages.includes(language.code)
+  );
 
   const {
     setValue,
