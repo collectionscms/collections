@@ -237,7 +237,8 @@
     "ja": "Japanese",
     "pt-pt": "Portuguese (Portugal)",
     "pt-br": "Portuguese (Brazilian)",
-    "zh-cn": "Chinese (Simplified)"
+    "zh-cn": "Chinese (Simplified)",
+    "zh-tw": "Chinese (Traditional)"
   },
   "editor": {
     "text": "Text",

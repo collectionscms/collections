@@ -181,7 +181,7 @@
   "remove_language_content": "{{language}}を削除する",
   "no_additional_languages": "追加できる言語はありません",
   "choose_language": "言語を選択してください",
-  "translatable": "翻訳可能",
+  "translatable": "翻訳可",
   "apply": "適用",
   "extension": "拡張",
   "template": "テンプレート",
@@ -237,7 +237,8 @@
     "ja": "日本語",
     "pt-pt": "ポルトガル語",
     "pt-br": "ポルトガル語（ブラジル）",
-    "zh-cn": "中国語（簡体字）"
+    "zh-cn": "中国語（簡体字）",
+    "zh-tw": "中国語（繁体字）"
   },
   "editor": {
     "text": "テキスト",
