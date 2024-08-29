@@ -1,5 +1,6 @@
 import { Content } from '@prisma/client';
 import { v4 } from 'uuid';
+import { getLanguageCodeType, LanguageCode } from '../../../constants/languages.js';
 import { UnexpectedException } from '../../../exceptions/unexpected.js';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 
@@ -122,6 +123,10 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
 
   get updatedAt(): Date {
     return this.props.updatedAt;
+  }
+
+  get languageCode(): LanguageCode | null {
+    return getLanguageCodeType(this.language);
   }
 
   changeStatus({ status, updatedById }: { status: string; updatedById?: string }) {
