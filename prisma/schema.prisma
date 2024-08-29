@@ -8,26 +8,27 @@ datasource db {
 }
 
 model Project {
-  id                String             @id @db.Uuid
-  name              String             @db.VarChar(255)
-  description       String?            @db.VarChar(255)
-  subdomain         String             @unique @db.VarChar(255)
-  iconUrl           String?            @db.VarChar(255)
-  enabled           Boolean            @default(true)
-  sourceLanguage    String             @db.VarChar(255)
-  createdAt         DateTime           @default(now()) @db.Timestamptz(6)
-  updatedAt         DateTime           @updatedAt @db.Timestamptz(6)
-  userProjects      UserProject[]
-  files             File[]
-  roles             Role[]
-  posts             Post[]
-  contents          Content[]
-  contentHistory    ContentHistory[]
-  apiKeys           ApiKey[]
-  invitations       Invitation[]
-  rolePermissions   RolePermission[]
-  reivews           Review[]
-  apiKeyPermissions ApiKeyPermission[]
+  id                 String             @id @db.Uuid
+  name               String             @db.VarChar(255)
+  description        String?            @db.VarChar(255)
+  subdomain          String             @unique @db.VarChar(255)
+  iconUrl            String?            @db.VarChar(255)
+  enabled            Boolean            @default(true)
+  translationEnabled Boolean            @default(true)
+  sourceLanguage     String             @db.VarChar(255)
+  createdAt          DateTime           @default(now()) @db.Timestamptz(6)
+  updatedAt          DateTime           @updatedAt @db.Timestamptz(6)
+  userProjects       UserProject[]
+  files              File[]
+  roles              Role[]
+  posts              Post[]
+  contents           Content[]
+  contentHistory     ContentHistory[]
+  apiKeys            ApiKey[]
+  invitations        Invitation[]
+  rolePermissions    RolePermission[]
+  reivews            Review[]
+  apiKeyPermissions  ApiKeyPermission[]
 }
 
 model User {
