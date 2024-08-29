@@ -53,6 +53,9 @@ export type LocalizedPost = {
   coverUrl: string | null;
   contentLanguage: string;
   usedLanguages: string[];
+  canTranslate: boolean;
+  sourceLanguageCode: string | null;
+  targetLanguageCode: string | null;
   histories: ContentHistory[];
 };
 

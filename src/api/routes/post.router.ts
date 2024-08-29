@@ -1,12 +1,13 @@
 import express, { Request, Response } from 'express';
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
-import { ContentRepository } from '../persistence/content/content.repository.js';
-import { ContentHistoryRepository } from '../persistence/contentHistory/contentHistory.repository.js';
-import { PostRepository } from '../persistence/post/post.repository.js';
 import { projectPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';
 import { validateAccess } from '../middlewares/validateAccess.js';
+import { ContentRepository } from '../persistence/content/content.repository.js';
+import { ContentHistoryRepository } from '../persistence/contentHistory/contentHistory.repository.js';
+import { PostRepository } from '../persistence/post/post.repository.js';
+import { ProjectRepository } from '../persistence/project/project.repository.js';
 import { createContentUseCaseSchema } from '../useCases/content/createContent.schema.js';
 import { CreateContentUseCase } from '../useCases/content/createContent.useCase.js';
 import { trashLanguageContentUseCaseSchema } from '../useCases/content/trashLanguageContent.schema.js';
@@ -66,6 +67,7 @@ router.get(
 
     const useCase = new GetPostUseCase(
       projectPrisma(validated.data.projectId),
+      new ProjectRepository(),
       new PostRepository()
     );
 
@@ -93,6 +95,7 @@ router.post(
 
     const useCase = new CreatePostUseCase(
       projectPrisma(validated.data.projectId),
+      new ProjectRepository(),
       new PostRepository(),
       new ContentRepository(),
       new ContentHistoryRepository()
