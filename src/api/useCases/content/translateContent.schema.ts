@@ -3,6 +3,7 @@ import { IsoLanguageCode } from '../../../constants/languages.js';
 
 export const translateContentUseCaseSchema = z.object({
   id: z.string(),
+  userId: z.string(),
   projectId: z.string(),
   sourceLanguage: z.nativeEnum(IsoLanguageCode),
   targetLanguage: z.nativeEnum(IsoLanguageCode),

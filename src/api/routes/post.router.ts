@@ -10,6 +10,7 @@ import { ContentRepository } from '../persistence/content/content.repository.js'
 import { ContentHistoryRepository } from '../persistence/contentHistory/contentHistory.repository.js';
 import { PostRepository } from '../persistence/post/post.repository.js';
 import { ProjectRepository } from '../persistence/project/project.repository.js';
+import { TranslationUsageRepository } from '../persistence/translationUsage/translationUsage.repository.js';
 import { createContentUseCaseSchema } from '../useCases/content/createContent.schema.js';
 import { CreateContentUseCase } from '../useCases/content/createContent.useCase.js';
 import { translateContentUseCaseSchema } from '../useCases/content/translateContent.schema.js';
@@ -145,6 +146,7 @@ router.post(
   asyncHandler(async (req: Request, res: Response) => {
     const validated = translateContentUseCaseSchema.safeParse({
       id: req.params.id,
+      userId: res.user.id,
       projectId: res.projectRole?.id,
       sourceLanguage: req.body.sourceLanguage,
       targetLanguage: req.body.targetLanguage,
@@ -154,6 +156,7 @@ router.post(
     const useCase = new TranslateContentUseCase(
       projectPrisma(validated.data.projectId),
       new ContentRepository(),
+      new TranslationUsageRepository(),
       new Translator(env.DEEPL_API_KEY)
     );
     const response = await useCase.execute(validated.data);
