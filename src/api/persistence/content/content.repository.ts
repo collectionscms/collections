@@ -45,6 +45,9 @@ export class ContentRepository {
         language,
         deletedAt: null,
       },
+      orderBy: {
+        version: 'desc',
+      },
     });
 
     return records.map((record) => ContentEntity.Reconstruct<Content, ContentEntity>(record));
