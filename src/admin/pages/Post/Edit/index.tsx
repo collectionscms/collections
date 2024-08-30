@@ -1,3 +1,4 @@
+import { LoadingOutlined } from '@ant-design/icons';
 import {
   Box,
   Button,
@@ -43,8 +44,15 @@ export const EditPostPageImpl: React.FC = () => {
   const queryParams = new URLSearchParams(location.search);
   const language = queryParams.get('language');
 
-  const { getPost, updateContent, trashPost, trashContent, createFileImage, trashLanguageContent } =
-    usePost();
+  const {
+    getPost,
+    updateContent,
+    trashPost,
+    trashContent,
+    createFileImage,
+    trashLanguageContent,
+    translateContent,
+  } = usePost();
   const { data: post, mutate } = getPost(id, language);
   const { trigger, isMutating: isSaving } = updateContent(post.contentId);
   const { trigger: trashPostTrigger } = trashPost(post.id);
@@ -53,6 +61,8 @@ export const EditPostPageImpl: React.FC = () => {
     post.id,
     post.contentLanguage
   );
+  const { trigger: translateTrigger } = translateContent(post.id);
+
   const [isDirty, setIsDirty] = useState(false);
   const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
 
@@ -271,8 +281,28 @@ export const EditPostPageImpl: React.FC = () => {
     handleChangeLanguage(language);
     mutate({
       ...post,
-      languages: [...post.languages, language],
+      usedLanguages: [...post.usedLanguages, language],
     });
+  };
+
+  const [isTranslating, setIsTranslating] = useState(false);
+  const handleTranslate = async () => {
+    try {
+      setIsTranslating(true);
+      const response = await translateTrigger({
+        sourceLanguage: post.sourceLanguageCode,
+        targetLanguage: post.targetLanguageCode,
+      });
+      handleChangeTitle(response.title);
+      editor?.commands.setContent(response.body);
+
+      // handleChangeTitle('タイトル');
+      // editor?.commands.setContent('本文');
+    } catch (error) {
+      logger.error(error);
+    } finally {
+      setIsTranslating(false);
+    }
   };
 
   return (
@@ -300,6 +330,50 @@ export const EditPostPageImpl: React.FC = () => {
         <Toolbar sx={{ mt: 0 }} />
         <Container sx={{ py: 10 }}>
           <Box sx={{ maxWidth: '42rem', marginLeft: 'auto', marginRight: 'auto' }}>
+            {post.body.length === 0 && post.canTranslate && (
+              <Stack direction="row" gap={1} sx={{ mb: 4, alignItems: 'center' }} color="secondary">
+                <Icon name="Languages" size={16} />
+                <Typography>
+                  {t('translate_source_to_target', {
+                    sourceLanguage: t(
+                      `languages.${post.sourceLanguageCode}` as unknown as TemplateStringsArray
+                    ),
+                    targetLanguage: t(
+                      `languages.${post.targetLanguageCode}` as unknown as TemplateStringsArray
+                    ),
+                  })}
+                </Typography>
+                {isTranslating ? (
+                  <>
+                    <Box
+                      width={64}
+                      height={40}
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                    >
+                      <LoadingOutlined size={14} />
+                    </Box>
+                  </>
+                ) : (
+                  <Button
+                    variant="text"
+                    size="small"
+                    color="secondary"
+                    sx={{
+                      width: 40,
+                      height: 40,
+                      textDecoration: 'underline',
+                      textDecorationStyle: 'dotted',
+                      textUnderlineOffset: '0.3rem',
+                    }}
+                    onClick={handleTranslate}
+                  >
+                    {t('i_do')}
+                  </Button>
+                )}
+              </Stack>
+            )}
             <Box sx={{ mb: 2 }}>
               {uploadCover ? (
                 <Box
