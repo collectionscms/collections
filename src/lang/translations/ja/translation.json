@@ -188,6 +188,8 @@
   "deploy": "デプロイ",
   "view_demo": "デモを見る",
   "nextjs_blog_starter_description": "Next.js と Collections を使った多言語の静的生成ブログテンプレート",
+  "translate_source_to_target": "{{sourceLanguage}}から{{targetLanguage}}に翻訳しますか？",
+  "i_do": "する",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",
