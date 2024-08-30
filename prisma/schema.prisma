@@ -8,52 +8,55 @@ datasource db {
 }
 
 model Project {
-  id                String             @id @db.Uuid
-  name              String             @db.VarChar(255)
-  description       String?            @db.VarChar(255)
-  subdomain         String             @unique @db.VarChar(255)
-  iconUrl           String?            @db.VarChar(255)
-  enabled           Boolean            @default(true)
-  sourceLanguage    String             @db.VarChar(255)
-  createdAt         DateTime           @default(now()) @db.Timestamptz(6)
-  updatedAt         DateTime           @updatedAt @db.Timestamptz(6)
-  userProjects      UserProject[]
-  files             File[]
-  roles             Role[]
-  posts             Post[]
-  contents          Content[]
-  contentHistory    ContentHistory[]
-  apiKeys           ApiKey[]
-  invitations       Invitation[]
-  rolePermissions   RolePermission[]
-  reivews           Review[]
-  apiKeyPermissions ApiKeyPermission[]
+  id                 String             @id @db.Uuid
+  name               String             @db.VarChar(255)
+  description        String?            @db.VarChar(255)
+  subdomain          String             @unique @db.VarChar(255)
+  iconUrl            String?            @db.VarChar(255)
+  enabled            Boolean            @default(true)
+  translationEnabled Boolean            @default(true)
+  sourceLanguage     String             @db.VarChar(255)
+  createdAt          DateTime           @default(now()) @db.Timestamptz(6)
+  updatedAt          DateTime           @updatedAt @db.Timestamptz(6)
+  userProjects       UserProject[]
+  files              File[]
+  roles              Role[]
+  posts              Post[]
+  contents           Content[]
+  contentHistory     ContentHistory[]
+  apiKeys            ApiKey[]
+  invitations        Invitation[]
+  rolePermissions    RolePermission[]
+  reivews            Review[]
+  apiKeyPermissions  ApiKeyPermission[]
+  TranslationUsage   TranslationUsage[]
 }
 
 model User {
-  id                           String           @id @db.Uuid
-  name                         String           @db.VarChar(255)
-  email                        String           @unique
-  password                     String           @db.VarChar(255)
-  isActive                     Boolean          @default(true)
-  confirmationToken            String?          @db.VarChar(255)
+  id                           String             @id @db.Uuid
+  name                         String             @db.VarChar(255)
+  email                        String             @unique
+  password                     String             @db.VarChar(255)
+  isActive                     Boolean            @default(true)
+  confirmationToken            String?            @db.VarChar(255)
   confirmedAt                  DateTime?
-  avatarUrl                    String?          @db.VarChar(255)
-  resetPasswordToken           String?          @db.VarChar(255)
+  avatarUrl                    String?            @db.VarChar(255)
+  resetPasswordToken           String?            @db.VarChar(255)
   resetPasswordExpiration      DateTime?
-  createdAt                    DateTime         @default(now()) @db.Timestamptz(6)
-  updatedAt                    DateTime         @updatedAt @db.Timestamptz(6)
+  createdAt                    DateTime           @default(now()) @db.Timestamptz(6)
+  updatedAt                    DateTime           @updatedAt @db.Timestamptz(6)
   userProjects                 UserProject[]
   invitations                  Invitation[]
-  revieweeHasReviews           Review[]         @relation("Reviewee")
-  reviewerHasReviews           Review[]         @relation("Reviewer")
-  createdByHasContents         Content[]        @relation("CreatedBy")
-  updatedByHasContents         Content[]        @relation("UpdatedBy")
-  createdByHasApiKeys          ApiKey[]         @relation("CreatedBy")
-  updatedByHasApiKeys          ApiKey[]         @relation("UpdatedBy")
-  createdByHasPosts            Post[]           @relation("CreatedBy")
-  createdByHasContentHistories ContentHistory[] @relation("CreatedBy")
-  updatedByHasContentHistories ContentHistory[] @relation("UpdatedBy")
+  revieweeHasReviews           Review[]           @relation("Reviewee")
+  reviewerHasReviews           Review[]           @relation("Reviewer")
+  createdByHasContents         Content[]          @relation("CreatedBy")
+  updatedByHasContents         Content[]          @relation("UpdatedBy")
+  createdByHasApiKeys          ApiKey[]           @relation("CreatedBy")
+  updatedByHasApiKeys          ApiKey[]           @relation("UpdatedBy")
+  createdByHasPosts            Post[]             @relation("CreatedBy")
+  createdByHasContentHistories ContentHistory[]   @relation("CreatedBy")
+  updatedByHasContentHistories ContentHistory[]   @relation("UpdatedBy")
+  TranslationUsage             TranslationUsage[]
 }
 
 model UserProject {
@@ -239,4 +242,18 @@ model ApiKeyPermission {
   apiKey           ApiKey     @relation(fields: [apiKeyId], references: [id], onDelete: Cascade)
   project          Project    @relation(fields: [projectId], references: [id], onDelete: Cascade)
   permission       Permission @relation(fields: [permissionAction], references: [action], onDelete: Cascade)
+}
+
+model TranslationUsage {
+  id             String   @id @db.Uuid
+  projectId      String   @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
+  userId         String   @db.Uuid
+  sourceLanguage String   @db.VarChar(255)
+  targetLanguage String   @db.VarChar(255)
+  sourceText     String
+  translatedText String
+  characterCount Int
+  createdAt      DateTime @default(now()) @db.Timestamptz(6)
+  project        Project  @relation(fields: [projectId], references: [id], onDelete: NoAction)
+  user           User     @relation(fields: [userId], references: [id], onDelete: NoAction)
 }

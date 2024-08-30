@@ -95,7 +95,7 @@ const ProjectImpl: React.FC = () => {
                     <Autocomplete
                       fullWidth
                       value={languages.find((item) => item.code === watch('sourceLanguage'))}
-                      onChange={(event, newValue) => {
+                      onChange={(_event, newValue) => {
                         setValue('sourceLanguage', newValue === null ? '' : newValue.code);
                       }}
                       options={languages}
@@ -110,7 +110,7 @@ const ProjectImpl: React.FC = () => {
                           <Typography variant="caption" color="text.secondary" sx={{ ml: 1 }}>
                             {option.code.toUpperCase()}
                           </Typography>
-                          {option.isSourceLanguage && (
+                          {option.sourceLanguageCode && (
                             <Typography variant="caption" color="text.secondary" sx={{ ml: 1 }}>
                               - {t('translatable')}
                             </Typography>

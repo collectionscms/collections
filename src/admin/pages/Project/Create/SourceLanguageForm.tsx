@@ -97,7 +97,7 @@ export const SourceLanguageForm: React.FC<Props> = ({
                     <Typography variant="caption" color="text.secondary" sx={{ ml: 1 }}>
                       {option.code.toUpperCase()}
                     </Typography>
-                    {option.isSourceLanguage && (
+                    {option.sourceLanguageCode && (
                       <Typography variant="caption" color="text.secondary" sx={{ ml: 1 }}>
                         - {t('translatable')}
                       </Typography>

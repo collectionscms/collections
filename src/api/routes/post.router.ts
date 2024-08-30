@@ -1,14 +1,20 @@
 import express, { Request, Response } from 'express';
+import { env } from '../../env.js';
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
-import { ContentRepository } from '../persistence/content/content.repository.js';
-import { ContentHistoryRepository } from '../persistence/contentHistory/contentHistory.repository.js';
-import { PostRepository } from '../persistence/post/post.repository.js';
 import { projectPrisma } from '../database/prisma/client.js';
+import { Translator } from '../integrations/translator.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';
 import { validateAccess } from '../middlewares/validateAccess.js';
+import { ContentRepository } from '../persistence/content/content.repository.js';
+import { ContentHistoryRepository } from '../persistence/contentHistory/contentHistory.repository.js';
+import { PostRepository } from '../persistence/post/post.repository.js';
+import { ProjectRepository } from '../persistence/project/project.repository.js';
+import { TranslationUsageRepository } from '../persistence/translationUsage/translationUsage.repository.js';
 import { createContentUseCaseSchema } from '../useCases/content/createContent.schema.js';
 import { CreateContentUseCase } from '../useCases/content/createContent.useCase.js';
+import { translateContentUseCaseSchema } from '../useCases/content/translateContent.schema.js';
+import { TranslateContentUseCase } from '../useCases/content/translateContent.useCase.js';
 import { trashLanguageContentUseCaseSchema } from '../useCases/content/trashLanguageContent.schema.js';
 import { TrashLanguageContentUseCase } from '../useCases/content/trashLanguageContent.useCase.js';
 import { createPostUseCaseSchema } from '../useCases/post/createPost.schema.js';
@@ -66,6 +72,7 @@ router.get(
 
     const useCase = new GetPostUseCase(
       projectPrisma(validated.data.projectId),
+      new ProjectRepository(),
       new PostRepository()
     );
 
@@ -93,6 +100,7 @@ router.post(
 
     const useCase = new CreatePostUseCase(
       projectPrisma(validated.data.projectId),
+      new ProjectRepository(),
       new PostRepository(),
       new ContentRepository(),
       new ContentHistoryRepository()
@@ -127,6 +135,34 @@ router.post(
 
     res.json({
       content,
+    });
+  })
+);
+
+router.post(
+  '/posts/:id/translate',
+  authenticatedUser,
+  validateAccess(['updatePost']),
+  asyncHandler(async (req: Request, res: Response) => {
+    const validated = translateContentUseCaseSchema.safeParse({
+      id: req.params.id,
+      userId: res.user.id,
+      projectId: res.projectRole?.id,
+      sourceLanguage: req.body.sourceLanguage,
+      targetLanguage: req.body.targetLanguage,
+    });
+    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
+
+    const useCase = new TranslateContentUseCase(
+      projectPrisma(validated.data.projectId),
+      new ContentRepository(),
+      new TranslationUsageRepository(),
+      new Translator(env.DEEPL_API_KEY)
+    );
+    const response = await useCase.execute(validated.data);
+
+    res.json({
+      ...response,
     });
   })
 );

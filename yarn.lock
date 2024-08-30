@@ -3123,6 +3123,13 @@
   dependencies:
     undici-types "~6.18.2"
 
+"@types/node@>=12.0":
+  version "22.5.1"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-22.5.1.tgz#de01dce265f6b99ed32b295962045d10b5b99560"
+  integrity sha512-KkHsxej0j9IW1KKOOAA/XBA0z08UFSrRQHErzEfA3Vgq57eXIMYboIlHJuYIfd+lwCQjtKqUu3UnmKbtUc9yRw==
+  dependencies:
+    undici-types "~6.19.2"
+
 "@types/nodemailer@6.4.15":
   version "6.4.15"
   resolved "https://registry.yarnpkg.com/@types/nodemailer/-/nodemailer-6.4.15.tgz#494be695e11c438f7f5df738fb4ab740312a6ed2"
@@ -3951,6 +3958,15 @@ axios@1.7.3:
     form-data "^4.0.0"
     proxy-from-env "^1.1.0"
 
+axios@^1.7.4:
+  version "1.7.5"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-1.7.5.tgz#21eed340eb5daf47d29b6e002424b3e88c8c54b1"
+  integrity sha512-fZu86yCo+svH3uqJ/yTdQ0QHpQu5oL+/QE+QPSv6BZSkDAoky9vytxp7u5qk83OJFS3kEBcesWni9WTZAv3tSw==
+  dependencies:
+    follow-redirects "^1.15.6"
+    form-data "^4.0.0"
+    proxy-from-env "^1.1.0"
+
 babel-jest@^29.7.0:
   version "29.7.0"
   resolved "https://registry.npmjs.org/babel-jest/-/babel-jest-29.7.0.tgz"
@@ -4770,6 +4786,16 @@ deep-is@^0.1.3:
   version "0.1.4"
   resolved "https://registry.npmjs.org/deep-is/-/deep-is-0.1.4.tgz"
   integrity sha512-oIPzksmTg4/MriiaYGO+okXDT7ztn/w3Eptv/+gSIdMdKsJo0u4CfYNFJPy+4SKMuCqGw2wxnA+URMg3t8a/bQ==
+
+deepl-node@^1.13.1:
+  version "1.13.1"
+  resolved "https://registry.yarnpkg.com/deepl-node/-/deepl-node-1.13.1.tgz#00efe900c64b688f2d5f62ae8563fcbeacb7c18e"
+  integrity sha512-J1Y4+FYNxxTyqKiTM83Vub8Fm6/z6ZlV7yFKJ59Oi5dWXjdILQWd8UR4eiNF+pJtTBH5ObRv1cdUrRyUuN5VDg==
+  dependencies:
+    "@types/node" ">=12.0"
+    axios "^1.7.4"
+    form-data "^3.0.0"
+    loglevel ">=1.6.2"
 
 deepmerge@^4.2.2:
   version "4.3.1"
@@ -5820,6 +5846,15 @@ form-data@^2.5.0:
   dependencies:
     asynckit "^0.4.0"
     combined-stream "^1.0.6"
+    mime-types "^2.1.12"
+
+form-data@^3.0.0:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/form-data/-/form-data-3.0.1.tgz#ebd53791b78356a99af9a300d4282c4d5eb9755f"
+  integrity sha512-RHkBKtLWUVwd7SqRIvCZMEvAMoGUp0XU+seQiZejj0COz3RI3hWP4sCv3gZWWLjJTd7rGwcsF5eKZGii0r/hbg==
+  dependencies:
+    asynckit "^0.4.0"
+    combined-stream "^1.0.8"
     mime-types "^2.1.12"
 
 form-data@^4.0.0:
@@ -7566,6 +7601,11 @@ log-symbols@^6.0.0:
   dependencies:
     chalk "^5.3.0"
     is-unicode-supported "^1.3.0"
+
+loglevel@>=1.6.2:
+  version "1.9.1"
+  resolved "https://registry.yarnpkg.com/loglevel/-/loglevel-1.9.1.tgz#d63976ac9bcd03c7c873116d41c2a85bafff1be7"
+  integrity sha512-hP3I3kCrDIMuRwAwHltphhDM1r8i55H33GgqjXbrisuJhF4kRhW1dNuxsRklp4bXl8DSdLaNLuiL4A/LWRfxvg==
 
 loose-envify@^1.0.0, loose-envify@^1.1.0, loose-envify@^1.4.0:
   version "1.4.0"
@@ -9664,16 +9704,7 @@ string-length@^4.0.1:
     char-regex "^1.0.2"
     strip-ansi "^6.0.0"
 
-"string-width-cjs@npm:string-width@^4.2.0":
-  version "4.2.3"
-  resolved "https://registry.npmjs.org/string-width/-/string-width-4.2.3.tgz"
-  integrity sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==
-  dependencies:
-    emoji-regex "^8.0.0"
-    is-fullwidth-code-point "^3.0.0"
-    strip-ansi "^6.0.1"
-
-string-width@^4.1.0, string-width@^4.2.0, string-width@^4.2.3:
+"string-width-cjs@npm:string-width@^4.2.0", string-width@^4.1.0, string-width@^4.2.0, string-width@^4.2.3:
   version "4.2.3"
   resolved "https://registry.npmjs.org/string-width/-/string-width-4.2.3.tgz"
   integrity sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==
@@ -9808,14 +9839,7 @@ string.prototype.trimstart@^1.0.8:
     define-properties "^1.2.1"
     es-object-atoms "^1.0.0"
 
-"strip-ansi-cjs@npm:strip-ansi@^6.0.1":
-  version "6.0.1"
-  resolved "https://registry.npmjs.org/strip-ansi/-/strip-ansi-6.0.1.tgz"
-  integrity sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==
-  dependencies:
-    ansi-regex "^5.0.1"
-
-strip-ansi@^6.0.0, strip-ansi@^6.0.1:
+"strip-ansi-cjs@npm:strip-ansi@^6.0.1", strip-ansi@^6.0.0, strip-ansi@^6.0.1:
   version "6.0.1"
   resolved "https://registry.npmjs.org/strip-ansi/-/strip-ansi-6.0.1.tgz"
   integrity sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==
@@ -10291,6 +10315,11 @@ undici-types@~6.18.2:
   version "6.18.2"
   resolved "https://registry.yarnpkg.com/undici-types/-/undici-types-6.18.2.tgz#8b678cf939d4fc9ec56be3c68ed69c619dee28b0"
   integrity sha512-5ruQbENj95yDYJNS3TvcaxPMshV7aizdv/hWYjGIKoANWKjhWNBsr2YEuYZKodQulB1b8l7ILOuDQep3afowQQ==
+
+undici-types@~6.19.2:
+  version "6.19.8"
+  resolved "https://registry.yarnpkg.com/undici-types/-/undici-types-6.19.8.tgz#35111c9d1437ab83a7cdc0abae2f26d88eda0a02"
+  integrity sha512-ve2KP6f/JnbPBFyobGHuerC9g1FYGn/F8n1LWTwNxCEzd6IfqTwUQcNXgEtmmQ6DlRrC1hrSrBnCZPokRrDHjw==
 
 unicorn-magic@^0.1.0:
   version "0.1.0"

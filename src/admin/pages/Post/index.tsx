@@ -30,7 +30,6 @@ export const PostPageImpl: React.FC = () => {
   const { data: posts, mutate } = getPosts();
   const { trigger: getApiKeyTrigger } = getApiKeys();
   const { trigger } = createPost();
-  const { data: project } = getProject();
 
   const [apiKeys, setApiKeys] = useState<ApiKey[]>([]);
   useEffect(() => {

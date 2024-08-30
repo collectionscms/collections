@@ -5,6 +5,7 @@ import { LocalizedPost, PostItem, PublishedContent, PublishedPost } from '../../
 import { ContentEntity } from '../content/content.entity.js';
 import { ContentHistoryEntity } from '../contentHistory/contentHistory.entity.js';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
+import { ProjectEntity } from '../project/project.entity.js';
 import { UserEntity } from '../user/user.entity.js';
 
 type LanguageStatus = {
@@ -112,6 +113,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
 
   toLocalizedWithContentsResponse(
     language: string,
+    project: ProjectEntity,
     contents: {
       content: ContentEntity;
       histories: ContentHistoryEntity[];
@@ -133,7 +135,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     const languageStatues = this.getLanguageStatues(contents.map((c) => c.content));
 
     // Filter unique languages
-    const languages = [...new Set(contents.map((c) => c.content.language))];
+    const usedLanguages = [...new Set(contents.map((c) => c.content.language))];
 
     return {
       id: this.props.id,
@@ -149,7 +151,12 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       contentLanguage: languageContent.content.language,
       version: languageContent.content.version,
       coverUrl: languageContent.content.coverUrl,
-      languages,
+      usedLanguages,
+      canTranslate:
+        project.isTranslationEnabled(languageContent.content.language) &&
+        usedLanguages.includes(project.sourceLanguage),
+      sourceLanguageCode: project.sourceLanguageCode?.code ?? null,
+      targetLanguageCode: languageContent.content.languageCode?.code ?? null,
       histories: histories.map((history) => history.toResponse()),
     };
   }

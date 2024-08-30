@@ -188,6 +188,8 @@
   "deploy": "Deploy",
   "view_demo": "View Demo",
   "nextjs_blog_starter_description": "A multilingual statically generated blog template using Next.js and Collections.",
+  "translate_source_to_target": "Do you want to translate from {{sourceLanguage}} to {{targetLanguage}}?",
+  "i_do": "I do.",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",
@@ -237,7 +239,8 @@
     "ja": "Japanese",
     "pt-pt": "Portuguese (Portugal)",
     "pt-br": "Portuguese (Brazilian)",
-    "zh-cn": "Chinese (Simplified)"
+    "zh-cn": "Chinese (Simplified)",
+    "zh-tw": "Chinese (Traditional)"
   },
   "editor": {
     "text": "Text",

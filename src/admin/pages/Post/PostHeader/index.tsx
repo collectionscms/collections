@@ -277,7 +277,7 @@ export const PostHeader: React.FC<Props> = ({
             <Typography sx={{ pl: 1 }}>{t('add_language_content')}</Typography>
           </MenuItem>
           {/* Remove localized content */}
-          {post.languages.length > 1 && (
+          {post.usedLanguages.length > 1 && (
             <MenuItem
               onClick={() => setOpenContentTrash(true)}
               sx={{ color: theme.palette.error.main }}
@@ -316,7 +316,7 @@ export const PostHeader: React.FC<Props> = ({
           open={languageOpen}
           onClose={handleCloseLanguage}
         >
-          {post.languages.map((language: string) => (
+          {post.usedLanguages.map((language: string) => (
             <MenuItem
               onClick={() => handleChangeLanguage(language)}
               selected={currentLanguage === language}
