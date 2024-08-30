@@ -1,5 +1,5 @@
 import { v4 } from 'uuid';
-import { contentStatus } from '../../persistence/content/content.entity.js';
+import { ContentStatus } from '../../persistence/content/content.entity.js';
 import { BypassPrismaType } from '../prisma/client.js';
 import { adminUser } from './createUsers.js';
 
@@ -35,7 +35,7 @@ export const createPost = async (
       id: v4(),
       projectId,
       status: content.status,
-      publishedAt: content.status === contentStatus.published ? currentTime : null,
+      publishedAt: content.status === ContentStatus.published ? currentTime : null,
       language: content.language,
       version: 1,
       title: content.title,

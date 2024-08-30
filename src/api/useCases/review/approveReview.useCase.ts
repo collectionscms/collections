@@ -1,6 +1,6 @@
 import { Review } from '@prisma/client';
-import { contentStatus } from '../../persistence/content/content.entity.js';
-import { reviewStatus } from '../../persistence/review/review.entity.js';
+import { ContentStatus } from '../../persistence/content/content.entity.js';
+import { ReviewStatus } from '../../persistence/review/review.entity.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
 import { ChangeReviewStatusService } from '../../services/changeReviewStatus.service.js';
 import { ApproveReviewUseCaseSchemaType } from './approveReview.schema.js';
@@ -17,8 +17,8 @@ export class ApproveReviewUseCase {
         tx,
         props.reviewId,
         props.userId,
-        reviewStatus.Approve,
-        contentStatus.published,
+        ReviewStatus.Approve,
+        ContentStatus.published,
         hasReadAllReview
       );
 

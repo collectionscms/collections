@@ -6,7 +6,7 @@ import { ContentHistoryRepository } from '../persistence/contentHistory/contentH
 import {
   ReviewEntity,
   ReviewStatusType,
-  reviewStatus,
+  ReviewStatus,
 } from '../persistence/review/review.entity.js';
 import { ReviewRepository } from '../persistence/review/review.repository.js';
 import { ProjectPrismaType } from '../database/prisma/client';
@@ -30,9 +30,9 @@ export class ChangeReviewStatusService {
       ? await this.reviewRepository.findOne(prisma, reviewId)
       : await this.reviewRepository.findOwnOne(prisma, userId, reviewId);
 
-    if (reviewStatusType === reviewStatus.Approve) {
+    if (reviewStatusType === ReviewStatus.Approve) {
       review.approve();
-    } else if (reviewStatusType === reviewStatus.Close) {
+    } else if (reviewStatusType === ReviewStatus.Close) {
       review.close();
     } else {
       throw new UnexpectedException();

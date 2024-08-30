@@ -4,13 +4,13 @@ import { getLanguageCodeType, LanguageCode } from '../../../constants/languages.
 import { UnexpectedException } from '../../../exceptions/unexpected.js';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 
-export const contentStatus = {
+export const ContentStatus = {
   draft: 'draft',
   review: 'review',
   published: 'published',
   archived: 'archived',
 } as const;
-export type ContentStatusType = (typeof contentStatus)[keyof typeof contentStatus];
+export type ContentStatusType = (typeof ContentStatus)[keyof typeof ContentStatus];
 
 export class ContentEntity extends PrismaBaseEntity<Content> {
   static Construct({
@@ -36,7 +36,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
       bodyJson: null,
       bodyHtml: null,
       language,
-      status: contentStatus.draft,
+      status: ContentStatus.draft,
       publishedAt: null,
       version: version || 1,
       createdById,
@@ -132,7 +132,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
   changeStatus({ status, updatedById }: { status: string; updatedById?: string }) {
     this.props.status = status;
 
-    if (status === contentStatus.published) {
+    if (status === ContentStatus.published) {
       this.props.publishedAt = new Date();
     }
 
@@ -158,7 +158,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
   }
 
   isPublished(): boolean {
-    return this.props.status === contentStatus.published;
+    return this.props.status === ContentStatus.published;
   }
 
   updateContent({
