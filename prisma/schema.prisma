@@ -254,6 +254,6 @@ model TranslationUsage {
   translatedText String
   characterCount Int
   createdAt      DateTime @default(now()) @db.Timestamptz(6)
-  project        Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  project        Project  @relation(fields: [projectId], references: [id], onDelete: NoAction)
+  user           User     @relation(fields: [userId], references: [id], onDelete: NoAction)
 }
