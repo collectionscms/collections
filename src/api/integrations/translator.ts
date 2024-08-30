@@ -8,14 +8,14 @@ export class Translator {
   }
 
   async translate(
-    text: string,
-    sourceLang: deepl.SourceLanguageCode | null,
+    texts: string[],
+    sourceLang: deepl.SourceLanguageCode,
     targetLang: deepl.TargetLanguageCode
   ) {
-    let textResult = await this.translator.translateText(text, sourceLang, targetLang, {
+    const textResults = await this.translator.translateText(texts, sourceLang, targetLang, {
       preserveFormatting: true,
     });
 
-    return textResult;
+    return textResults;
   }
 }
