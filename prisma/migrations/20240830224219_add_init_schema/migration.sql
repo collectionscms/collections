@@ -207,6 +207,21 @@ CREATE TABLE "ApiKeyPermission" (
     CONSTRAINT "ApiKeyPermission_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "TranslationUsage" (
+    "id" UUID NOT NULL,
+    "projectId" UUID NOT NULL DEFAULT (current_setting('app.current_project_id'::text))::uuid,
+    "userId" UUID NOT NULL,
+    "sourceLanguage" VARCHAR(255) NOT NULL,
+    "targetLanguage" VARCHAR(255) NOT NULL,
+    "sourceText" TEXT NOT NULL,
+    "translatedText" TEXT NOT NULL,
+    "characterCount" INTEGER NOT NULL,
+    "createdAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "TranslationUsage_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "Project_subdomain_key" ON "Project"("subdomain");
 
@@ -320,3 +335,9 @@ ALTER TABLE "ApiKeyPermission" ADD CONSTRAINT "ApiKeyPermission_projectId_fkey" 
 
 -- AddForeignKey
 ALTER TABLE "ApiKeyPermission" ADD CONSTRAINT "ApiKeyPermission_permissionAction_fkey" FOREIGN KEY ("permissionAction") REFERENCES "Permission"("action") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TranslationUsage" ADD CONSTRAINT "TranslationUsage_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Project"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TranslationUsage" ADD CONSTRAINT "TranslationUsage_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
