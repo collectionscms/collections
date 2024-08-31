@@ -297,6 +297,10 @@
       "readTemplate": "Read template"
     }
   },
+  "date_format": {
+    "short": "MM/DD/YYYY",
+    "long": "MM/DD/YYYY hh:mm A"
+  },
   "error": {
     "invalid_user_credentials": "Invalid user credentials.",
     "incorrect_email_or_password": "Incorrect email address or password.",

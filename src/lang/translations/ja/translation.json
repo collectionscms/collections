@@ -297,6 +297,10 @@
       "readTemplate": "テンプレートの閲覧"
     }
   },
+  "date_format": {
+    "short": "YYYY/MM/DD",
+    "long": "YYYY/MM/DD HH:mm"
+  },
   "error": {
     "invalid_user_credentials": "無効なユーザ認証情報です。",
     "incorrect_email_or_password": "メールアドレスまたはパスワードが正しくありません。",

@@ -103,7 +103,7 @@ export const PostPageImpl: React.FC = () => {
       case 'updatedAt':
         return (
           <Stack direction="row" gap={1}>
-            <Typography>{dayjs(row.updatedAt).format('YYYY-MM-DD')}</Typography>
+            <Typography>{dayjs(row.updatedAt).format(t('date_format.short'))}</Typography>
             <Typography>
               {t('updater')}: {row.updatedByName}
             </Typography>
