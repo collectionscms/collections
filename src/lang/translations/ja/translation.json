@@ -126,7 +126,7 @@
   "publish_settings": "公開設定",
   "save_draft_new_ver": "v{{version}} を保存する",
   "save_draft": "保存する",
-  "saving": "保存中",
+  "saving": "保存中...",
   "saved": "保存済み",
   "publish": "公開",
   "review": "レビュー",
