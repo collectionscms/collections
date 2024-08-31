@@ -54,7 +54,7 @@ export const EditPostPageImpl: React.FC = () => {
     translateContent,
   } = usePost();
   const { data: post, mutate } = getPost(id, language);
-  const { trigger, isMutating: isSaving } = updateContent(post.contentId);
+  const { trigger: updateContentTrigger, isMutating: isSaving } = updateContent(post.contentId);
   const { trigger: trashPostTrigger } = trashPost(post.id);
   const { trigger: trashContentTrigger } = trashContent(post.contentId);
   const { trigger: trashLanguageContentTrigger } = trashLanguageContent(
@@ -173,12 +173,7 @@ export const EditPostPageImpl: React.FC = () => {
   const [openSettings, setOpenSettings] = useState(false);
   const handleOpenSettings = async () => {
     if (isDirty) {
-      try {
-        await saveContent(buildParams());
-        enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
-      } catch (error) {
-        logger.error(error);
-      }
+      await handleSaveContent();
     }
 
     setOpenSettings(true);
@@ -201,7 +196,6 @@ export const EditPostPageImpl: React.FC = () => {
   const handleSaveContent = async () => {
     try {
       await saveContent(buildParams());
-      enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
     } catch (error) {
       logger.error(error);
     }
@@ -214,7 +208,7 @@ export const EditPostPageImpl: React.FC = () => {
     bodyHtml: string | null;
     coverUrl: string | null;
   }) => {
-    await trigger(data);
+    await updateContentTrigger(data);
     setIsDirty(false);
     mutate();
   };
@@ -295,9 +289,6 @@ export const EditPostPageImpl: React.FC = () => {
       });
       handleChangeTitle(response.title);
       editor?.commands.setContent(response.body);
-
-      // handleChangeTitle('タイトル');
-      // editor?.commands.setContent('本文');
     } catch (error) {
       logger.error(error);
     } finally {
@@ -307,15 +298,13 @@ export const EditPostPageImpl: React.FC = () => {
 
   return (
     <>
+      <Button ref={ref} onClick={handleSaveContent} />
       <ConfirmDiscardDialog open={showPrompt} onDiscard={proceed} onKeepEditing={stay} />
       <PostHeader
         post={post}
         currentLanguage={post.contentLanguage}
-        buttonRef={ref}
-        isDirty={isDirty}
         isSaving={isSaving}
         onOpenSettings={handleOpenSettings}
-        onSaveDraft={handleSaveContent}
         onChangeLanguage={handleChangeLanguage}
         onOpenAddLanguage={handleOpenAddLanguage}
         onRevertContent={handleRevertContent}
