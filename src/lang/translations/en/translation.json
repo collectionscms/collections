@@ -35,6 +35,7 @@
   "status": "Status",
   "created_at": "Created Date",
   "updated_at": "Updated Date",
+  "deleted_at": "Deleted Date",
   "updater": "Updater",
   "valid": "Valid",
   "invalid": "Invalid",
@@ -190,6 +191,7 @@
   "nextjs_blog_starter_description": "A multilingual statically generated blog template using Next.js and Collections.",
   "translate_source_to_target": "Do you want to translate from {{sourceLanguage}} to {{targetLanguage}}?",
   "i_do": "I do.",
+  "version": "Version",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",
@@ -294,6 +296,10 @@
       "deleteApiKey": "Delete",
       "readTemplate": "Read template"
     }
+  },
+  "date_format": {
+    "short": "MM/DD/YYYY",
+    "long": "MM/DD/YYYY hh:mm A"
   },
   "error": {
     "invalid_user_credentials": "Invalid user credentials.",

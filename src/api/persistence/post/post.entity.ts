@@ -81,7 +81,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
   }
 
   toPostItemResponse(
-    language: string,
+    sourceLanguage: string,
     contents: {
       content: ContentEntity;
       updatedBy: UserEntity;
@@ -91,10 +91,17 @@ export class PostEntity extends PrismaBaseEntity<Post> {
 
     // Get content of language
     const languageContent =
-      sortedContents.filter((c) => c.content.language === language)[0] || sortedContents[0];
+      sortedContents.filter((c) => c.content.language === sourceLanguage)[0] || sortedContents[0];
 
     // Get language with statuses
     const languageStatues = this.getLanguageStatues(contents.map((c) => c.content));
+    const sortedLanguageStatues = Object.entries(languageStatues)
+      .map(([language, value]) => ({
+        language,
+        currentStatus: value.statuses[0],
+        prevStatus: value.statuses[1],
+      }))
+      .sort((a) => (a.language === sourceLanguage ? -1 : 1));
 
     return {
       id: this.props.id,
@@ -103,11 +110,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       slug: this.props.slug,
       updatedByName: languageContent.updatedBy.name,
       updatedAt: this.props.updatedAt,
-      languageStatues: Object.entries(languageStatues).map(([language, value]) => ({
-        language,
-        currentStatus: value.statuses[0],
-        prevStatus: value.statuses[1],
-      })),
+      languageStatues: sortedLanguageStatues,
     };
   }
 
