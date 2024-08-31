@@ -35,6 +35,7 @@
   "status": "ステータス",
   "created_at": "登録日",
   "updated_at": "更新日",
+  "deleted_at": "削除日",
   "updater": "更新者",
   "valid": "有効",
   "invalid": "無効",
@@ -190,6 +191,7 @@
   "nextjs_blog_starter_description": "Next.js と Collections を使った多言語の静的生成ブログテンプレート",
   "translate_source_to_target": "{{sourceLanguage}}から{{targetLanguage}}に翻訳しますか？",
   "i_do": "する",
+  "version": "バージョン",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",

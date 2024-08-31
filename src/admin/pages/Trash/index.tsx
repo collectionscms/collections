@@ -18,6 +18,8 @@ const TrashPageImpl: React.FC = () => {
   const fields = [
     { field: 'title', label: t('title'), type: cells.text() },
     { field: 'language', label: t('language'), type: cells.text() },
+    { field: 'version', label: t('version'), type: cells.text() },
+    { field: 'deletedAt', label: t('deleted_at'), type: cells.date() },
     { field: 'action', label: '', type: cells.text(), width: 80 },
   ];
 
@@ -25,6 +27,8 @@ const TrashPageImpl: React.FC = () => {
     const cell = <Cell colIndex={i} type={fields[i].type} cellData={data} />;
 
     switch (fields[i].field) {
+      case 'language':
+        return <Cell colIndex={i} type={fields[i].type} cellData={row.language.toUpperCase()} />;
       case 'action':
         return <RestoreButton postId={row.id} onRestored={mutate} />;
       default:
