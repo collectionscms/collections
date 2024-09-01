@@ -69,6 +69,10 @@ export class ContentHistoryEntity extends PrismaBaseEntity<ContentHistory> {
     this.isValid();
   }
 
+  get language(): string {
+    return this.props.language;
+  }
+
   private copyProps(): ContentHistory {
     const copy = {
       ...this.props,

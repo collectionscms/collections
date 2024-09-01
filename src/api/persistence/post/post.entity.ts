@@ -129,7 +129,9 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     const languageContent = languageContents[0] || sortedContents[0];
 
     // Get history of language
-    const histories = languageContent.histories.map((history) => history.toResponse());
+    const histories = languageContent.histories
+      .filter((history) => history.language === language)
+      .map((history) => history.toResponse());
 
     // Get language statues
     const languageStatues = this.getLanguageStatues(contents.map((c) => c.content));
