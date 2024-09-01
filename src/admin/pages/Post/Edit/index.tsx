@@ -68,11 +68,18 @@ export const EditPostPageImpl: React.FC = () => {
 
   if (!post) return <></>;
 
+  useEffect(() => {
+    setPostTitle(post.title);
+    setUploadCover(post.coverUrl ?? null);
+    editor?.commands.setContent(toJson(post.bodyJson));
+  }, [post]);
+
   // /////////////////////////////////////
   // Editor
   // /////////////////////////////////////
 
   const [postTitle, setPostTitle] = useState(post.title);
+
   const handleChangeTitle = (value: string) => {
     setPostTitle(value);
     setIsDirty(true);
@@ -87,9 +94,16 @@ export const EditPostPageImpl: React.FC = () => {
   });
 
   useEffect(() => {
-    setPostTitle(post.title);
-    editor?.commands.setContent(toJson(post.bodyJson));
-  }, [post]);
+    if (isDirty) {
+      // auto save after 5 seconds
+      const timer = setTimeout(async () => {
+        await handleSaveContent();
+        setIsDirty(false);
+      }, 5_000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [isDirty, postTitle, editor?.getText()]);
 
   useEffect(() => {
     if (editor) {
@@ -128,10 +142,6 @@ export const EditPostPageImpl: React.FC = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploadCover, setUploadCover] = useState<string | null>(post.coverUrl);
   const { trigger: createFileImageTrigger } = createFileImage();
-
-  useEffect(() => {
-    setUploadCover(post.coverUrl ?? null);
-  }, [post]);
 
   const handleUploadCover = async () => {
     const file = inputRef.current?.files?.[0];
