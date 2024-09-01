@@ -156,7 +156,7 @@
   "project_created": "Project created!",
   "go_to_project_home": "Go to project home",
   "slug": "Slug",
-  "history": "History",
+  "version_history": "Version History",
   "delete_post": "Delete post",
   "revert_previous_version": "Revert previous version",
   "api_key": "API key",
@@ -198,14 +198,15 @@
     "discard_changes": "Discard Changes",
     "confirm_post_archive_title": "Confirm archive",
     "confirm_post_archive": "Are you sure you want to archive it?",
-    "confirm_revert_previous_version": "Do you want to trash the V{{version}} post?",
     "confirm_post_trash_title": "Do you want to move to the trash?",
     "confirm_post_trash": "Posts in the trash can be returned to later.",
     "confirm_content_trash_title": "Do you want to trash {{language}} post?",
     "confirm_content_trash": "Posts in the trash can be returned to later.",
     "confirm_removal_user_from_project": "Are you sure you want to remove user from project?",
     "confirm_post_restore_title": "Do you want to restore it?",
-    "confirm_post_restore": "Are you sure you want to restore the post."
+    "confirm_post_restore": "Are you sure you want to restore the post.",
+    "confirm_revert_previous_version_title": "Do you want to revert to the previous version?",
+    "confirm_revert_previous_version": "Writings will be moved to the trash."
   },
   "toast": {
     "created_successfully": "Created successfully.",
@@ -218,7 +219,8 @@
     "joined_project": "Joined the project",
     "move_to_trash": "Move to trash",
     "post_restored": "Restored post",
-    "copied": "Copied"
+    "copied": "Copied",
+    "post_reverted": "Restored previous post"
   },
   "create": {
     "user": "Create User",

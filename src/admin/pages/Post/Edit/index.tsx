@@ -48,7 +48,6 @@ export const EditPostPageImpl: React.FC = () => {
     getPost,
     updateContent,
     trashPost,
-    trashContent,
     createFileImage,
     trashLanguageContent,
     translateContent,
@@ -56,7 +55,6 @@ export const EditPostPageImpl: React.FC = () => {
   const { data: post, mutate } = getPost(id, language);
   const { trigger: updateContentTrigger, isMutating: isSaving } = updateContent(post.contentId);
   const { trigger: trashPostTrigger } = trashPost(post.id);
-  const { trigger: trashContentTrigger } = trashContent(post.contentId);
   const { trigger: trashLanguageContentTrigger } = trashLanguageContent(
     post.id,
     post.contentLanguage
@@ -233,16 +231,6 @@ export const EditPostPageImpl: React.FC = () => {
   // Content actions
   // /////////////////////////////////////
 
-  const handleRevertContent = async () => {
-    try {
-      await trashContentTrigger();
-      mutate();
-      enqueueSnackbar(t('toast.move_to_trash'), { variant: 'success' });
-    } catch (error) {
-      logger.error(error);
-    }
-  };
-
   const handleTrashPost = async () => {
     try {
       await trashPostTrigger();
@@ -261,6 +249,10 @@ export const EditPostPageImpl: React.FC = () => {
     } catch (error) {
       logger.error(error);
     }
+  };
+
+  const handleReverted = () => {
+    mutate();
   };
 
   // /////////////////////////////////////
@@ -317,14 +309,11 @@ export const EditPostPageImpl: React.FC = () => {
         onOpenSettings={handleOpenSettings}
         onChangeLanguage={handleChangeLanguage}
         onOpenAddLanguage={handleOpenAddLanguage}
-        onRevertContent={handleRevertContent}
         onTrashPost={handleTrashPost}
         onTrashLanguageContent={handleTrashLanguageContent}
+        onReverted={handleReverted}
       />
-      <PostFooter
-        histories={post.histories}
-        characters={editor?.storage.characterCount.characters() ?? 0}
-      />
+      <PostFooter characters={editor?.storage.characterCount.characters() ?? 0} />
       <Box component="main" sx={{ minHeight: '100vh', backgroundColor: bg }}>
         <Toolbar sx={{ mt: 0 }} />
         <Container sx={{ py: 10 }}>

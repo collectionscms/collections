@@ -156,7 +156,7 @@
   "project_created": "プロジェクトを作成しました！",
   "go_to_project_home": "プロジェクトホームへ",
   "slug": "スラッグ",
-  "history": "履歴",
+  "version_history": "バージョン履歴",
   "delete_post": "記事を削除する",
   "revert_previous_version": "前のバージョンに戻す",
   "api_key": "APIキー",
@@ -198,14 +198,15 @@
     "discard_changes": "変更を破棄",
     "confirm_post_archive_title": "公開終了の確認",
     "confirm_post_archive": "記事を公開終了にしますか？",
-    "confirm_revert_previous_version": "V{{version}} の記事をごみ箱にいれますか？",
     "confirm_post_trash_title": "ごみ箱にいれますか？",
     "confirm_post_trash": "ごみ箱の記事はあとでもどすことができます。",
     "confirm_content_trash_title": "{{language}}の記事をごみ箱にいれますか？",
     "confirm_content_trash": "ごみ箱の記事はあとでもどすことができます。",
     "confirm_removal_user_from_project": "ユーザーをプロジェクトから削除します。よろしいですか？",
     "confirm_post_restore_title": "元にもどしますか？",
-    "confirm_post_restore": "記事を元に戻そうとしています。よろしいですか？"
+    "confirm_post_restore": "記事を元に戻そうとしています。よろしいですか？",
+    "confirm_revert_previous_version_title": "以前のバージョンに戻しますか？",
+    "confirm_revert_previous_version": "書きかけの記事はごみ箱に移動します。"
   },
   "toast": {
     "created_successfully": "登録しました",
@@ -218,7 +219,8 @@
     "joined_project": "プロジェクトに参加しました",
     "move_to_trash": "ごみ箱へ移動しました",
     "post_restored": "記事を復元しました",
-    "copied": "コピーしました"
+    "copied": "コピーしました",
+    "post_reverted": "以前のバージョンに戻しました"
   },
   "create": {
     "user": "ユーザー 新規登録",
