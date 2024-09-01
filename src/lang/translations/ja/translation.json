@@ -156,7 +156,7 @@
   "project_created": "プロジェクトを作成しました！",
   "go_to_project_home": "プロジェクトホームへ",
   "slug": "スラッグ",
-  "history": "履歴",
+  "version_history": "バージョン履歴",
   "delete_post": "記事を削除する",
   "revert_previous_version": "前のバージョンに戻す",
   "api_key": "APIキー",

@@ -156,7 +156,7 @@
   "project_created": "Project created!",
   "go_to_project_home": "Go to project home",
   "slug": "Slug",
-  "history": "History",
+  "version_history": "Version History",
   "delete_post": "Delete post",
   "revert_previous_version": "Revert previous version",
   "api_key": "API key",
