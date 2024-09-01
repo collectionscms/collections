@@ -134,18 +134,18 @@ export const PublishSettings: React.FC<Props> = ({ open, contentId, post, onClos
           <Toolbar>
             <Stack
               direction="row"
-              sx={{ flexGrow: 1 }}
-              justifyContent="flex-end"
+              flexGrow={1}
+              gap={2}
+              justifyContent="flex-between"
               alignItems="center"
-              gap={1.5}
             >
-              <Button variant="contained" type="submit">
-                {getPublishButtonLabel()}
-              </Button>
-              <IconButton shape="rounded" color="secondary" onClick={onClose} sx={{ p: 0 }}>
+              <IconButton color="secondary" onClick={onClose} sx={{ p: 0 }}>
                 <Icon name="X" size={28} strokeWidth={1.5} />
               </IconButton>
             </Stack>
+            <Button variant="contained" type="submit">
+              {getPublishButtonLabel()}
+            </Button>
           </Toolbar>
         </AppBarStyled>
         <Box component="main">

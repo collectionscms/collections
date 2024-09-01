@@ -14,7 +14,6 @@ import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { LocalizedPost } from '../../../../types/index.js';
-import { Avatar } from '../../../@extended/components/Avatar/index.js';
 import { IconButton } from '../../../@extended/components/IconButton/index.js';
 import { Icon } from '../../../components/elements/Icon/index.js';
 import { ModalDialog } from '../../../components/elements/ModalDialog/index.js';
@@ -144,17 +143,19 @@ export const PostHeader: React.FC<Props> = ({
       />
       <AppBarStyled open={true} {...appBar}>
         <Toolbar>
-          <Stack direction="row" sx={{ flexGrow: 1 }} gap={2}>
-            <Avatar variant="rounded" size="md" color="secondary" type="filled">
-              <Typography variant="h5">v{post.version}</Typography>
-            </Avatar>
-            {post.prevStatus && (
-              <>
-                <StatusDot status="published" />
-                <Divider orientation="vertical" flexItem variant="middle" />
-              </>
-            )}
-            <StatusDot status={post.currentStatus} />
+          <Stack direction="row" flexGrow={1} gap={2}>
+            <IconButton color="secondary" onClick={navigateToList} sx={{ p: 0 }}>
+              <Icon name="ArrowLeft" size={28} strokeWidth={1.5} />
+            </IconButton>
+            <Stack direction="row" gap={1.5}>
+              {post.prevStatus && (
+                <>
+                  <StatusDot status="published" />
+                  <Divider orientation="vertical" flexItem variant="middle" />
+                </>
+              )}
+              <StatusDot status={post.currentStatus} />
+            </Stack>
             {isSaving && (
               <Stack flexDirection="row" alignItems="center" gap={1}>
                 <LoadingOutlined style={{ fontSize: 12, color: theme.palette.secondary.light }} />
@@ -177,14 +178,9 @@ export const PostHeader: React.FC<Props> = ({
             <IconButton ref={anchorContentRef} color="secondary" onClick={handleContentMenuOpen}>
               <Icon name="Ellipsis" size={16} />
             </IconButton>
-            <>
-              <Button variant="contained" onClick={onOpenSettings} sx={{ padding: '5px 15px' }}>
-                {t('publish_settings')}
-              </Button>
-              <IconButton color="secondary" onClick={navigateToList} sx={{ p: 0 }}>
-                <Icon name="X" size={28} strokeWidth={1.5} />
-              </IconButton>
-            </>
+            <Button variant="contained" onClick={onOpenSettings} sx={{ padding: '5px 15px' }}>
+              {t('publish_settings')}
+            </Button>
           </Stack>
         </Toolbar>
         {/* Content menu */}
