@@ -204,7 +204,9 @@
     "confirm_content_trash": "ごみ箱の記事はあとでもどすことができます。",
     "confirm_removal_user_from_project": "ユーザーをプロジェクトから削除します。よろしいですか？",
     "confirm_post_restore_title": "元にもどしますか？",
-    "confirm_post_restore": "記事を元に戻そうとしています。よろしいですか？"
+    "confirm_post_restore": "記事を元に戻そうとしています。よろしいですか？",
+    "confirm_revert_previous_version_title": "以前のバージョンに戻しますか？",
+    "confirm_revert_previous_version": "書きかけの記事はごみ箱に移動します。"
   },
   "toast": {
     "created_successfully": "登録しました",
@@ -217,7 +219,8 @@
     "joined_project": "プロジェクトに参加しました",
     "move_to_trash": "ごみ箱へ移動しました",
     "post_restored": "記事を復元しました",
-    "copied": "コピーしました"
+    "copied": "コピーしました",
+    "post_reverted": "以前のバージョンに戻しました"
   },
   "create": {
     "user": "ユーザー 新規登録",

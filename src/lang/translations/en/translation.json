@@ -204,7 +204,9 @@
     "confirm_content_trash": "Posts in the trash can be returned to later.",
     "confirm_removal_user_from_project": "Are you sure you want to remove user from project?",
     "confirm_post_restore_title": "Do you want to restore it?",
-    "confirm_post_restore": "Are you sure you want to restore the post."
+    "confirm_post_restore": "Are you sure you want to restore the post.",
+    "confirm_revert_previous_version_title": "Do you want to revert to the previous version?",
+    "confirm_revert_previous_version": "Writings will be moved to the trash."
   },
   "toast": {
     "created_successfully": "Created successfully.",
@@ -217,7 +219,8 @@
     "joined_project": "Joined the project",
     "move_to_trash": "Move to trash",
     "post_restored": "Restored post",
-    "copied": "Copied"
+    "copied": "Copied",
+    "post_reverted": "Restored previous post"
   },
   "create": {
     "user": "Create User",

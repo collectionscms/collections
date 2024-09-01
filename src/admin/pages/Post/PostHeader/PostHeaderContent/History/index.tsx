@@ -32,7 +32,7 @@ export const History: React.FC<Props> = ({ post, onReverted }) => {
     try {
       await trashContentTrigger();
       onReverted();
-      enqueueSnackbar(t('toast.move_to_trash'), { variant: 'success' });
+      enqueueSnackbar(t('toast.post_reverted'), { variant: 'success' });
       setOpenRevert(false);
     } catch (error) {
       logger.error(error);
@@ -52,8 +52,8 @@ export const History: React.FC<Props> = ({ post, onReverted }) => {
     <>
       <ModalDialog
         open={openRevert}
-        title={t('dialog.confirm_post_restore_title')}
-        body={t('dialog.confirm_post_restore')}
+        title={t('dialog.confirm_revert_previous_version_title')}
+        body={t('dialog.confirm_revert_previous_version')}
         execute={{ label: t('restore'), action: handleRevert }}
         cancel={{ label: t('cancel'), action: () => setOpenRevert(false) }}
       />
