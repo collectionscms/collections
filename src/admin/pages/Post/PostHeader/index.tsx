@@ -21,6 +21,7 @@ import { ModalDialog } from '../../../components/elements/ModalDialog/index.js';
 import { StatusDot } from '../../../components/elements/StatusDot/index.js';
 import { useAuth } from '../../../components/utilities/Auth/index.js';
 import AppBarStyled from './AppBarStyled.js';
+import { History } from './PostHeaderContent/History/index.js';
 
 export type Props = {
   post: LocalizedPost;
@@ -29,9 +30,9 @@ export type Props = {
   onOpenSettings: () => void;
   onChangeLanguage: (language: string) => void;
   onOpenAddLanguage: () => void;
-  onRevertContent: () => void;
   onTrashPost: () => void;
   onTrashLanguageContent: (language: string) => void;
+  onReverted: () => void;
 };
 
 export const PostHeader: React.FC<Props> = ({
@@ -41,15 +42,14 @@ export const PostHeader: React.FC<Props> = ({
   onOpenSettings,
   onChangeLanguage,
   onOpenAddLanguage,
-  onRevertContent,
   onTrashPost,
   onTrashLanguageContent,
+  onReverted,
 }) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { hasPermission } = useAuth();
-  const [openRevert, setOpenRevert] = useState(false);
   const [openPostTrash, setOpenPostTrash] = useState(false);
   const [openContentTrash, setOpenContentTrash] = useState(false);
 
@@ -82,12 +82,6 @@ export const PostHeader: React.FC<Props> = ({
     if (anchorContentRef.current && anchorContentRef.current.contains(event.target)) {
       return;
     }
-    setContentMenuOpen(false);
-  };
-
-  const handleRevert = () => {
-    onRevertContent();
-    setOpenRevert(false);
     setContentMenuOpen(false);
   };
 
@@ -133,15 +127,6 @@ export const PostHeader: React.FC<Props> = ({
   return (
     <>
       <ModalDialog
-        open={openRevert}
-        title={t('dialog.confirm_revert_previous_version', {
-          version: post.version,
-        })}
-        body={t('dialog.confirm_post_trash')}
-        execute={{ label: t('move_to_trash'), action: handleRevert }}
-        cancel={{ label: t('cancel'), action: () => setOpenRevert(false) }}
-      />
-      <ModalDialog
         open={openPostTrash}
         title={t('dialog.confirm_post_trash_title')}
         body={t('dialog.confirm_post_trash')}
@@ -179,7 +164,7 @@ export const PostHeader: React.FC<Props> = ({
               </Stack>
             )}
           </Stack>
-          <Stack direction="row" alignItems="center" gap={1.5}>
+          <Stack direction="row" alignItems="center" gap={1}>
             <Button variant="text" color="secondary" ref={anchorRef} onClick={handleLanguageOpen}>
               <Stack direction="row" alignItems="center" gap={1}>
                 <Typography>
@@ -188,20 +173,15 @@ export const PostHeader: React.FC<Props> = ({
                 <Icon name="ChevronDown" size={14} />
               </Stack>
             </Button>
-            <IconButton
-              ref={anchorContentRef}
-              color="secondary"
-              shape="rounded"
-              size="small"
-              onClick={handleContentMenuOpen}
-            >
-              <Icon name="Ellipsis" size={18} />
+            <History post={post} onReverted={onReverted} />
+            <IconButton ref={anchorContentRef} color="secondary" onClick={handleContentMenuOpen}>
+              <Icon name="Ellipsis" size={16} />
             </IconButton>
             <>
               <Button variant="contained" onClick={onOpenSettings} sx={{ padding: '5px 15px' }}>
                 {t('publish_settings')}
               </Button>
-              <IconButton shape="rounded" color="secondary" onClick={navigateToList} sx={{ p: 0 }}>
+              <IconButton color="secondary" onClick={navigateToList} sx={{ p: 0 }}>
                 <Icon name="X" size={28} strokeWidth={1.5} />
               </IconButton>
             </>
@@ -221,13 +201,6 @@ export const PostHeader: React.FC<Props> = ({
           open={contentMenuOpen}
           onClose={handleCloseContent}
         >
-          {/* Revert previous version */}
-          {post.version > 1 && post.currentStatus !== 'published' && (
-            <MenuItem onClick={() => setOpenRevert(true)}>
-              <Icon name="Undo2" size={18} />
-              <Typography sx={{ pl: 1 }}>{t('revert_previous_version')}</Typography>
-            </MenuItem>
-          )}
           {post.version > 1 && post.currentStatus !== 'published' && <Divider />}
           {/* Add localized content */}
           <MenuItem onClick={handleAddLanguage}>
