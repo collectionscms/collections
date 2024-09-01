@@ -54,7 +54,7 @@ export const EditPostPageImpl: React.FC = () => {
     translateContent,
   } = usePost();
   const { data: post, mutate } = getPost(id, language);
-  const { trigger, isMutating: isSaving } = updateContent(post.contentId);
+  const { trigger: updateContentTrigger, isMutating: isSaving } = updateContent(post.contentId);
   const { trigger: trashPostTrigger } = trashPost(post.id);
   const { trigger: trashContentTrigger } = trashContent(post.contentId);
   const { trigger: trashLanguageContentTrigger } = trashLanguageContent(
@@ -68,11 +68,18 @@ export const EditPostPageImpl: React.FC = () => {
 
   if (!post) return <></>;
 
+  useEffect(() => {
+    setPostTitle(post.title);
+    setUploadCover(post.coverUrl ?? null);
+    editor?.commands.setContent(toJson(post.bodyJson));
+  }, [post]);
+
   // /////////////////////////////////////
   // Editor
   // /////////////////////////////////////
 
   const [postTitle, setPostTitle] = useState(post.title);
+
   const handleChangeTitle = (value: string) => {
     setPostTitle(value);
     setIsDirty(true);
@@ -87,9 +94,16 @@ export const EditPostPageImpl: React.FC = () => {
   });
 
   useEffect(() => {
-    setPostTitle(post.title);
-    editor?.commands.setContent(toJson(post.bodyJson));
-  }, [post]);
+    if (isDirty) {
+      // auto save after 5 seconds
+      const timer = setTimeout(async () => {
+        await handleSaveContent();
+        setIsDirty(false);
+      }, 5_000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [isDirty, postTitle, editor?.getText()]);
 
   useEffect(() => {
     if (editor) {
@@ -128,10 +142,6 @@ export const EditPostPageImpl: React.FC = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploadCover, setUploadCover] = useState<string | null>(post.coverUrl);
   const { trigger: createFileImageTrigger } = createFileImage();
-
-  useEffect(() => {
-    setUploadCover(post.coverUrl ?? null);
-  }, [post]);
 
   const handleUploadCover = async () => {
     const file = inputRef.current?.files?.[0];
@@ -173,12 +183,7 @@ export const EditPostPageImpl: React.FC = () => {
   const [openSettings, setOpenSettings] = useState(false);
   const handleOpenSettings = async () => {
     if (isDirty) {
-      try {
-        await saveContent(buildParams());
-        enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
-      } catch (error) {
-        logger.error(error);
-      }
+      await handleSaveContent();
     }
 
     setOpenSettings(true);
@@ -201,7 +206,6 @@ export const EditPostPageImpl: React.FC = () => {
   const handleSaveContent = async () => {
     try {
       await saveContent(buildParams());
-      enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
     } catch (error) {
       logger.error(error);
     }
@@ -214,7 +218,7 @@ export const EditPostPageImpl: React.FC = () => {
     bodyHtml: string | null;
     coverUrl: string | null;
   }) => {
-    await trigger(data);
+    await updateContentTrigger(data);
     setIsDirty(false);
     mutate();
   };
@@ -295,9 +299,6 @@ export const EditPostPageImpl: React.FC = () => {
       });
       handleChangeTitle(response.title);
       editor?.commands.setContent(response.body);
-
-      // handleChangeTitle('タイトル');
-      // editor?.commands.setContent('本文');
     } catch (error) {
       logger.error(error);
     } finally {
@@ -307,15 +308,13 @@ export const EditPostPageImpl: React.FC = () => {
 
   return (
     <>
+      <Button ref={ref} onClick={handleSaveContent} />
       <ConfirmDiscardDialog open={showPrompt} onDiscard={proceed} onKeepEditing={stay} />
       <PostHeader
         post={post}
         currentLanguage={post.contentLanguage}
-        buttonRef={ref}
-        isDirty={isDirty}
         isSaving={isSaving}
         onOpenSettings={handleOpenSettings}
-        onSaveDraft={handleSaveContent}
         onChangeLanguage={handleChangeLanguage}
         onOpenAddLanguage={handleOpenAddLanguage}
         onRevertContent={handleRevertContent}

@@ -7,7 +7,6 @@ import {
   MenuItem,
   Stack,
   Toolbar,
-  Tooltip,
   Typography,
   useTheme,
 } from '@mui/material';
@@ -26,11 +25,8 @@ import AppBarStyled from './AppBarStyled.js';
 export type Props = {
   post: LocalizedPost;
   currentLanguage: string;
-  buttonRef: React.RefObject<HTMLButtonElement>;
-  isDirty: boolean;
   isSaving: boolean;
   onOpenSettings: () => void;
-  onSaveDraft: () => void;
   onChangeLanguage: (language: string) => void;
   onOpenAddLanguage: () => void;
   onRevertContent: () => void;
@@ -38,16 +34,11 @@ export type Props = {
   onTrashLanguageContent: (language: string) => void;
 };
 
-const isMac = typeof window !== 'undefined' ? /Mac/i.test(navigator.userAgent) : false;
-
 export const PostHeader: React.FC<Props> = ({
   post,
   currentLanguage,
-  buttonRef,
-  isDirty,
   isSaving,
   onOpenSettings,
-  onSaveDraft,
   onChangeLanguage,
   onOpenAddLanguage,
   onRevertContent,
@@ -139,26 +130,6 @@ export const PostHeader: React.FC<Props> = ({
     setContentMenuOpen(false);
   };
 
-  // /////////////////////////////////////
-  // Action
-  // /////////////////////////////////////
-
-  const getSaveDraftButtonLabel = () => {
-    if (isSaving) {
-      return t('saving');
-    }
-
-    if (isDirty) {
-      if (post.currentStatus === 'published') {
-        return t('save_draft_new_ver', { version: post.version + 1 });
-      } else {
-        return t('save_draft');
-      }
-    }
-
-    return t('saved');
-  };
-
   return (
     <>
       <ModalDialog
@@ -199,6 +170,14 @@ export const PostHeader: React.FC<Props> = ({
               </>
             )}
             <StatusDot status={post.currentStatus} />
+            {isSaving && (
+              <Stack flexDirection="row" alignItems="center" gap={1}>
+                <LoadingOutlined style={{ fontSize: 12, color: theme.palette.secondary.light }} />
+                <Typography sx={{ fontSize: 12 }} color="secondary">
+                  {t('saving')}
+                </Typography>
+              </Stack>
+            )}
           </Stack>
           <Stack direction="row" alignItems="center" gap={1.5}>
             <Button variant="text" color="secondary" ref={anchorRef} onClick={handleLanguageOpen}>
@@ -219,27 +198,6 @@ export const PostHeader: React.FC<Props> = ({
               <Icon name="Ellipsis" size={18} />
             </IconButton>
             <>
-              <Tooltip title={`${isMac ? '⌘' : 'Ctrl'} S`} placement="top">
-                <span>
-                  <Button
-                    ref={buttonRef}
-                    variant="contained"
-                    color="secondary"
-                    disabled={!isDirty || isSaving}
-                    onClick={onSaveDraft}
-                    startIcon={
-                      isSaving ? (
-                        <LoadingOutlined size={14} />
-                      ) : (
-                        !isDirty && <Icon name="Check" size={14} />
-                      )
-                    }
-                    sx={{ transition: 'ease-in-out 0.5s' }}
-                  >
-                    <Typography>{getSaveDraftButtonLabel()}</Typography>
-                  </Button>
-                </span>
-              </Tooltip>
               <Button variant="contained" onClick={onOpenSettings} sx={{ padding: '5px 15px' }}>
                 {t('publish_settings')}
               </Button>
