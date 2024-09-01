@@ -198,7 +198,6 @@
     "discard_changes": "変更を破棄",
     "confirm_post_archive_title": "公開終了の確認",
     "confirm_post_archive": "記事を公開終了にしますか？",
-    "confirm_revert_previous_version": "V{{version}} の記事をごみ箱にいれますか？",
     "confirm_post_trash_title": "ごみ箱にいれますか？",
     "confirm_post_trash": "ごみ箱の記事はあとでもどすことができます。",
     "confirm_content_trash_title": "{{language}}の記事をごみ箱にいれますか？",

@@ -198,7 +198,6 @@
     "discard_changes": "Discard Changes",
     "confirm_post_archive_title": "Confirm archive",
     "confirm_post_archive": "Are you sure you want to archive it?",
-    "confirm_revert_previous_version": "Do you want to trash the V{{version}} post?",
     "confirm_post_trash_title": "Do you want to move to the trash?",
     "confirm_post_trash": "Posts in the trash can be returned to later.",
     "confirm_content_trash_title": "Do you want to trash {{language}} post?",
