@@ -200,7 +200,11 @@ export class PostRepository {
         createdById: options?.userId,
       },
       include: {
-        contentHistories: true,
+        contentHistories: {
+          where: {
+            status: 'published',
+          },
+        },
         contents: {
           include: {
             createdBy: true,
