@@ -19,7 +19,7 @@ import { Icon } from '../../../../components/elements/Icon/index.js';
 import { ModalDialog } from '../../../../components/elements/ModalDialog/index.js';
 import { StatusDot } from '../../../../components/elements/StatusDot/index.js';
 import { useAuth } from '../../../../components/utilities/Auth/index.js';
-import AppBarStyled from './AppBarStyled.js';
+import { AppBarStyled } from '../AppBarStyled.js';
 import { PublishSettings } from './PublishSettings/index.js';
 
 export type Props = {

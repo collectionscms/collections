@@ -32,7 +32,7 @@ import {
   editContentValidator,
 } from '../../../../../fields/validators/content/editContent.js';
 import { usePost } from '../../../Context/index.js';
-import AppBarStyled from '../AppBarStyled.js';
+import { AppBarStyled } from '../../AppBarStyled.js';
 import { SlugSettings } from './SlugSettings/index.js';
 
 export type Props = {
