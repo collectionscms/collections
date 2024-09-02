@@ -20,7 +20,6 @@ import { ModalDialog } from '../../../components/elements/ModalDialog/index.js';
 import { StatusDot } from '../../../components/elements/StatusDot/index.js';
 import { useAuth } from '../../../components/utilities/Auth/index.js';
 import AppBarStyled from './AppBarStyled.js';
-import { History } from './PostHeaderContent/History/index.js';
 
 export type Props = {
   post: LocalizedPost;
@@ -43,7 +42,6 @@ export const PostHeader: React.FC<Props> = ({
   onOpenAddLanguage,
   onTrashPost,
   onTrashLanguageContent,
-  onReverted,
 }) => {
   const theme = useTheme();
   const navigate = useNavigate();
@@ -174,7 +172,6 @@ export const PostHeader: React.FC<Props> = ({
                 <Icon name="ChevronDown" size={14} />
               </Stack>
             </Button>
-            <History post={post} onReverted={onReverted} />
             <IconButton ref={anchorContentRef} color="secondary" onClick={handleContentMenuOpen}>
               <Icon name="Ellipsis" size={16} />
             </IconButton>

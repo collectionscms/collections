@@ -313,7 +313,11 @@ export const EditPostPageImpl: React.FC = () => {
         onTrashLanguageContent={handleTrashLanguageContent}
         onReverted={handleReverted}
       />
-      <PostFooter characters={editor?.storage.characterCount.characters() ?? 0} />
+      <PostFooter
+        post={post}
+        onReverted={handleReverted}
+        // characters={editor?.storage.characterCount.characters() ?? 0}
+      />
       <Box component="main" sx={{ minHeight: '100vh', backgroundColor: bg }}>
         <Toolbar sx={{ mt: 0 }} />
         <Container sx={{ py: 10 }}>
