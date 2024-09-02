@@ -26,8 +26,8 @@ import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/ind
 import { useUnsavedChangesPrompt } from '../../../hooks/useUnsavedChangesPrompt.js';
 import { PostContextProvider, usePost } from '../Context/index.js';
 import { LocalizedContent } from '../LocalizedContent/index.js';
-import { PostFooter } from '../PostFooter/index.js';
-import { PostHeader } from '../PostHeader/index.js';
+import { PostFooter } from './PostFooter/index.js';
+import { PostHeader } from './PostHeader/index.js';
 
 const toJson = (value?: string | null) => {
   return value ? JSON.parse(value) : '';

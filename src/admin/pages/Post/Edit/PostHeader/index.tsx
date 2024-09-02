@@ -13,14 +13,14 @@ import {
 import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { LocalizedPost } from '../../../../types/index.js';
-import { IconButton } from '../../../@extended/components/IconButton/index.js';
-import { Icon } from '../../../components/elements/Icon/index.js';
-import { ModalDialog } from '../../../components/elements/ModalDialog/index.js';
-import { StatusDot } from '../../../components/elements/StatusDot/index.js';
-import { useAuth } from '../../../components/utilities/Auth/index.js';
+import { LocalizedPost } from '../../../../../types/index.js';
+import { IconButton } from '../../../../@extended/components/IconButton/index.js';
+import { Icon } from '../../../../components/elements/Icon/index.js';
+import { ModalDialog } from '../../../../components/elements/ModalDialog/index.js';
+import { StatusDot } from '../../../../components/elements/StatusDot/index.js';
+import { useAuth } from '../../../../components/utilities/Auth/index.js';
 import AppBarStyled from './AppBarStyled.js';
-import { PublishSettings } from './PostHeaderContent/PublishSettings/index.js';
+import { PublishSettings } from './PublishSettings/index.js';
 
 export type Props = {
   post: LocalizedPost;
