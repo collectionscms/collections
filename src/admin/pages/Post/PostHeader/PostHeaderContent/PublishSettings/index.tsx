@@ -23,16 +23,16 @@ import React, { useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { logger } from '../../../../utilities/logger.js';
-import { IconButton } from '../../../@extended/components/IconButton/index.js';
-import { Icon } from '../../../components/elements/Icon/index.js';
-import { useAuth } from '../../../components/utilities/Auth/index.js';
+import { logger } from '../../../../../../utilities/logger.js';
+import { IconButton } from '../../../../../@extended/components/IconButton/index.js';
+import { Icon } from '../../../../../components/elements/Icon/index.js';
+import { useAuth } from '../../../../../components/utilities/Auth/index.js';
 import {
   FormValues,
   editContentValidator,
-} from '../../../fields/validators/content/editContent.js';
-import { usePost } from '../Context/index.js';
-import AppBarStyled from '../PostHeader/AppBarStyled.js';
+} from '../../../../../fields/validators/content/editContent.js';
+import { usePost } from '../../../Context/index.js';
+import AppBarStyled from '../../../PostHeader/AppBarStyled.js';
 import { SlugSettings } from './SlugSettings/index.js';
 
 export type Props = {

@@ -12,10 +12,13 @@ import { enqueueSnackbar } from 'notistack';
 import React, { useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { logger } from '../../../../../utilities/logger.js';
-import { Icon } from '../../../../components/elements/Icon/index.js';
-import { FormValues, updateSlugValidator } from '../../../../fields/validators/post/updateSlug.js';
-import { usePost } from '../../Context/index.js';
+import { logger } from '../../../../../../../utilities/logger.js';
+import { Icon } from '../../../../../../components/elements/Icon/index.js';
+import {
+  FormValues,
+  updateSlugValidator,
+} from '../../../../../../fields/validators/post/updateSlug.js';
+import { usePost } from '../../../../Context/index.js';
 
 type Props = {
   postId: string;

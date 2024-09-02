@@ -1,31 +1,36 @@
-import { Box, Typography } from '@mui/material';
+import { Stack, Tooltip } from '@mui/material';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { LocalizedPost } from '../../../../types/index.js';
+import { IconButton } from '../../../@extended/components/IconButton/index.js';
+import { Icon } from '../../../components/elements/Icon/index.js';
+import { History } from './PostFooterContent/History/index.js';
 
 export type Props = {
-  characters: number;
+  post: LocalizedPost;
+  onReverted: () => void;
 };
 
-export const PostFooter: React.FC<Props> = ({ characters }) => {
+export const PostFooter: React.FC<Props> = ({ post, onReverted }) => {
   const { t } = useTranslation();
 
   return (
-    <Box
-      display="flex"
-      justifyContent="flex-end"
-      alignItems="center"
+    <Stack
+      flexDirection="row"
+      justifyContent="space-between"
       sx={{
         width: '100%',
         position: 'fixed',
         bottom: 0,
-        p: 4,
+        p: 3,
       }}
     >
-      <Typography color="secondary">
-        <>
-          {characters} {t('characters')}
-        </>
-      </Typography>
-    </Box>
+      <History post={post} onReverted={onReverted} />
+      <Tooltip title={t('setting')}>
+        <IconButton color="secondary" shape="rounded" variant="outlined">
+          <Icon strokeWidth={2} name="Settings" />
+        </IconButton>
+      </Tooltip>
+    </Stack>
   );
 };

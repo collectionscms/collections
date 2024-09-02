@@ -28,7 +28,6 @@ import { PostContextProvider, usePost } from '../Context/index.js';
 import { LocalizedContent } from '../LocalizedContent/index.js';
 import { PostFooter } from '../PostFooter/index.js';
 import { PostHeader } from '../PostHeader/index.js';
-import { PublishSettings } from '../PublishSettings/index.js';
 
 const toJson = (value?: string | null) => {
   return value ? JSON.parse(value) : '';
@@ -175,19 +174,6 @@ export const EditPostPageImpl: React.FC = () => {
   };
 
   // /////////////////////////////////////
-  // Open settings
-  // /////////////////////////////////////
-
-  const [openSettings, setOpenSettings] = useState(false);
-  const handleOpenSettings = async () => {
-    if (isDirty) {
-      await handleSaveContent();
-    }
-
-    setOpenSettings(true);
-  };
-
-  // /////////////////////////////////////
   // Save content
   // /////////////////////////////////////
 
@@ -306,7 +292,6 @@ export const EditPostPageImpl: React.FC = () => {
         post={post}
         currentLanguage={post.contentLanguage}
         isSaving={isSaving}
-        onOpenSettings={handleOpenSettings}
         onChangeLanguage={handleChangeLanguage}
         onOpenAddLanguage={handleOpenAddLanguage}
         onTrashPost={handleTrashPost}
@@ -451,16 +436,6 @@ export const EditPostPageImpl: React.FC = () => {
           <BlockEditor editor={editor} />
         </Container>
       </Box>
-      <PublishSettings
-        open={openSettings}
-        contentId={post.contentId}
-        post={{
-          id: post.id,
-          slug: post.slug,
-          currentStatus: post.currentStatus,
-        }}
-        onClose={() => setOpenSettings(false)}
-      />
       <LocalizedContent
         open={openAddLanguage}
         post={post}

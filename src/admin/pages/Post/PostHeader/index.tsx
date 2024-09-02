@@ -20,12 +20,12 @@ import { ModalDialog } from '../../../components/elements/ModalDialog/index.js';
 import { StatusDot } from '../../../components/elements/StatusDot/index.js';
 import { useAuth } from '../../../components/utilities/Auth/index.js';
 import AppBarStyled from './AppBarStyled.js';
+import { PublishSettings } from './PostHeaderContent/PublishSettings/index.js';
 
 export type Props = {
   post: LocalizedPost;
   currentLanguage: string;
   isSaving: boolean;
-  onOpenSettings: () => void;
   onChangeLanguage: (language: string) => void;
   onOpenAddLanguage: () => void;
   onTrashPost: () => void;
@@ -37,7 +37,6 @@ export const PostHeader: React.FC<Props> = ({
   post,
   currentLanguage,
   isSaving,
-  onOpenSettings,
   onChangeLanguage,
   onOpenAddLanguage,
   onTrashPost,
@@ -63,6 +62,15 @@ export const PostHeader: React.FC<Props> = ({
 
   const navigateToList = () => {
     navigate('/admin/posts');
+  };
+
+  // /////////////////////////////////////
+  // Open settings
+  // /////////////////////////////////////
+
+  const [openSettings, setOpenSettings] = useState(false);
+  const handleOpenSettings = async () => {
+    setOpenSettings((open) => !open);
   };
 
   // /////////////////////////////////////
@@ -139,6 +147,16 @@ export const PostHeader: React.FC<Props> = ({
         execute={{ label: t('move_to_trash'), action: handleTrashLanguageContent }}
         cancel={{ label: t('cancel'), action: () => setOpenContentTrash(false) }}
       />
+      <PublishSettings
+        open={openSettings}
+        contentId={post.contentId}
+        post={{
+          id: post.id,
+          slug: post.slug,
+          currentStatus: post.currentStatus,
+        }}
+        onClose={() => setOpenSettings(false)}
+      />
       <AppBarStyled open={true} {...appBar}>
         <Toolbar>
           <Stack direction="row" flexGrow={1} gap={2}>
@@ -175,7 +193,7 @@ export const PostHeader: React.FC<Props> = ({
             <IconButton ref={anchorContentRef} color="secondary" onClick={handleContentMenuOpen}>
               <Icon name="Ellipsis" size={16} />
             </IconButton>
-            <Button variant="contained" onClick={onOpenSettings} sx={{ padding: '5px 15px' }}>
+            <Button variant="contained" onClick={handleOpenSettings} sx={{ padding: '5px 15px' }}>
               {t('publish_settings')}
             </Button>
           </Stack>
