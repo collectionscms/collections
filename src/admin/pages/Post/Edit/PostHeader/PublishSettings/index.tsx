@@ -132,33 +132,22 @@ export const PublishSettings: React.FC<Props> = ({ open, contentId, post, onClos
       <form onSubmit={handleSubmit(onSubmit)}>
         <AppBarStyled open={true} {...appBar}>
           <Toolbar>
-            <Stack
-              direction="row"
-              flexGrow={1}
-              gap={2}
-              justifyContent="flex-between"
-              alignItems="center"
-            >
-              <IconButton color="secondary" onClick={onClose} sx={{ p: 0 }}>
-                <Icon name="X" size={28} strokeWidth={1.5} />
-              </IconButton>
-            </Stack>
-            <Button variant="contained" type="submit">
+            <IconButton color="secondary" onClick={onClose} sx={{ p: 0, position: 'absolute' }}>
+              <Icon name="X" size={28} strokeWidth={1.5} />
+            </IconButton>
+            <Box width="100%">
+              <Typography variant="h3" align="center">
+                {t('publish_settings')}
+              </Typography>
+            </Box>
+            <Button variant="contained" type="submit" sx={{ position: 'absolute', right: 24 }}>
               {getPublishButtonLabel()}
             </Button>
           </Toolbar>
         </AppBarStyled>
         <Box component="main">
           <Toolbar sx={{ mt: 0 }} />
-          <Container
-            maxWidth="sm"
-            sx={{
-              mt: 4,
-            }}
-          >
-            <Typography variant={'h1'} align="center">
-              {t('publish_settings')}
-            </Typography>
+          <Container maxWidth="sm">
             <Box sx={{ py: 3, display: 'flex', justifyContent: 'center' }}>
               <FormControl component="fieldset">
                 <Controller
