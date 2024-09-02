@@ -198,11 +198,6 @@ export const PostHeader: React.FC<Props> = ({
           onClose={handleCloseContent}
         >
           {post.version > 1 && post.currentStatus !== 'published' && <Divider />}
-          {/* Add localized content */}
-          <MenuItem onClick={handleAddLanguage}>
-            <Icon name="CirclePlus" size={16} />
-            <Typography sx={{ pl: 1 }}>{t('add_language_content')}</Typography>
-          </MenuItem>
           {/* Remove localized content */}
           {post.usedLanguages.length > 1 && (
             <MenuItem
@@ -257,6 +252,11 @@ export const PostHeader: React.FC<Props> = ({
               </Typography>
             </MenuItem>
           ))}
+          {/* Add localized content */}
+          <MenuItem onClick={handleAddLanguage}>
+            <Icon name="Plus" size={16} />
+            <Typography sx={{ pl: 1 }}>{t('add_to')}</Typography>
+          </MenuItem>
         </Menu>
       </AppBarStyled>
     </>
