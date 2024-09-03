@@ -16,9 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import { LocalizedPost } from '../../../../../types/index.js';
 import { IconButton } from '../../../../@extended/components/IconButton/index.js';
 import { Icon } from '../../../../components/elements/Icon/index.js';
-import { ModalDialog } from '../../../../components/elements/ModalDialog/index.js';
 import { StatusDot } from '../../../../components/elements/StatusDot/index.js';
-import { useAuth } from '../../../../components/utilities/Auth/index.js';
 import { AppBarStyled } from '../AppBarStyled.js';
 import { PublishSettings } from './PublishSettings/index.js';
 
@@ -28,8 +26,6 @@ export type Props = {
   isSaving: boolean;
   onChangeLanguage: (language: string) => void;
   onOpenAddLanguage: () => void;
-  onTrashPost: () => void;
-  onTrashLanguageContent: (language: string) => void;
   onReverted: () => void;
 };
 
@@ -39,15 +35,10 @@ export const PostHeader: React.FC<Props> = ({
   isSaving,
   onChangeLanguage,
   onOpenAddLanguage,
-  onTrashPost,
-  onTrashLanguageContent,
 }) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { hasPermission } = useAuth();
-  const [openPostTrash, setOpenPostTrash] = useState(false);
-  const [openContentTrash, setOpenContentTrash] = useState(false);
 
   const appBar: AppBarProps = {
     position: 'fixed',
@@ -71,29 +62,6 @@ export const PostHeader: React.FC<Props> = ({
   const [openSettings, setOpenSettings] = useState(false);
   const handleOpenSettings = async () => {
     setOpenSettings((open) => !open);
-  };
-
-  // /////////////////////////////////////
-  // Content Menu
-  // /////////////////////////////////////
-
-  const anchorContentRef = useRef<any>(null);
-  const [contentMenuOpen, setContentMenuOpen] = useState(false);
-  const handleContentMenuOpen = () => {
-    setContentMenuOpen((open) => !open);
-  };
-
-  const handleCloseContent = (event: MouseEvent | TouchEvent) => {
-    if (anchorContentRef.current && anchorContentRef.current.contains(event.target)) {
-      return;
-    }
-    setContentMenuOpen(false);
-  };
-
-  const handleTrashPost = () => {
-    onTrashPost();
-    setOpenPostTrash(false);
-    setContentMenuOpen(false);
   };
 
   // /////////////////////////////////////
@@ -123,45 +91,19 @@ export const PostHeader: React.FC<Props> = ({
     setLanguageOpen(false);
   };
 
-  const handleTrashLanguageContent = () => {
-    onTrashLanguageContent(currentLanguage);
-    setOpenContentTrash(false);
-    setContentMenuOpen(false);
-  };
-
   return (
     <>
-      <ModalDialog
-        open={openPostTrash}
-        title={t('dialog.confirm_post_trash_title')}
-        body={t('dialog.confirm_post_trash')}
-        execute={{ label: t('move_to_trash'), action: handleTrashPost }}
-        cancel={{ label: t('cancel'), action: () => setOpenPostTrash(false) }}
-      />
-      <ModalDialog
-        open={openContentTrash}
-        title={t('dialog.confirm_content_trash_title', {
-          language: t(`languages.${currentLanguage}` as unknown as TemplateStringsArray),
-        })}
-        body={t('dialog.confirm_content_trash')}
-        execute={{ label: t('move_to_trash'), action: handleTrashLanguageContent }}
-        cancel={{ label: t('cancel'), action: () => setOpenContentTrash(false) }}
-      />
       <PublishSettings
         open={openSettings}
         contentId={post.contentId}
-        post={{
-          id: post.id,
-          slug: post.slug,
-          currentStatus: post.currentStatus,
-        }}
+        post={post}
         onClose={() => setOpenSettings(false)}
       />
       <AppBarStyled open={true} {...appBar}>
         <Toolbar>
           <Stack direction="row" flexGrow={1} gap={2}>
             <IconButton color="secondary" onClick={navigateToList} sx={{ p: 0 }}>
-              <Icon name="ArrowLeft" size={28} strokeWidth={1.5} />
+              <Icon name="ArrowLeft" size={28} />
             </IconButton>
             <Stack direction="row" gap={1.5}>
               {post.prevStatus && (
@@ -190,55 +132,11 @@ export const PostHeader: React.FC<Props> = ({
                 <Icon name="ChevronDown" size={14} />
               </Stack>
             </Button>
-            <IconButton ref={anchorContentRef} color="secondary" onClick={handleContentMenuOpen}>
-              <Icon name="Ellipsis" size={16} />
-            </IconButton>
             <Button variant="contained" onClick={handleOpenSettings} sx={{ padding: '5px 15px' }}>
               {t('publish_settings')}
             </Button>
           </Stack>
         </Toolbar>
-        {/* Content menu */}
-        <Menu
-          anchorEl={anchorContentRef.current}
-          anchorOrigin={{
-            vertical: 35,
-            horizontal: 'center',
-          }}
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'center',
-          }}
-          open={contentMenuOpen}
-          onClose={handleCloseContent}
-        >
-          {post.version > 1 && post.currentStatus !== 'published' && <Divider />}
-          {/* Remove localized content */}
-          {post.usedLanguages.length > 1 && (
-            <MenuItem
-              onClick={() => setOpenContentTrash(true)}
-              sx={{ color: theme.palette.error.main }}
-            >
-              <Icon name="CircleMinus" size={16} />
-              <Typography sx={{ pl: 1 }}>
-                {t('remove_language_content', {
-                  language: t(`languages.${currentLanguage}` as unknown as TemplateStringsArray),
-                })}
-              </Typography>
-            </MenuItem>
-          )}
-          <Divider />
-          {/* Delete all content */}
-          {hasPermission('trashPost') && (
-            <MenuItem
-              onClick={() => setOpenPostTrash(true)}
-              sx={{ color: theme.palette.error.main }}
-            >
-              <Icon name="Trash2" size={16} />
-              <Typography sx={{ pl: 1 }}>{t('delete_post')}</Typography>
-            </MenuItem>
-          )}
-        </Menu>
         {/* Language menu */}
         <Menu
           anchorEl={anchorRef.current}

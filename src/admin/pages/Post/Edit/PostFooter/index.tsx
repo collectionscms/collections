@@ -9,10 +9,11 @@ import { Settings } from './Settings/index.js';
 
 export type Props = {
   post: LocalizedPost;
+  onTrashed: () => void;
   onReverted: () => void;
 };
 
-export const PostFooter: React.FC<Props> = ({ post, onReverted }) => {
+export const PostFooter: React.FC<Props> = ({ post, onTrashed, onReverted }) => {
   const { t } = useTranslation();
 
   // /////////////////////////////////////
@@ -46,7 +47,15 @@ export const PostFooter: React.FC<Props> = ({ post, onReverted }) => {
           <Icon strokeWidth={2} name="Settings" />
         </IconButton>
       </Tooltip>
-      <Settings post={post} open={openSettings} onClose={handleOpenSettings} />
+      <Settings
+        post={post}
+        open={openSettings}
+        onClose={handleOpenSettings}
+        onTrashed={() => {
+          handleOpenSettings();
+          onTrashed();
+        }}
+      />
     </Stack>
   );
 };

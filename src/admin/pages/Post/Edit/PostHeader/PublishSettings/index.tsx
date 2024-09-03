@@ -23,6 +23,7 @@ import React, { useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { LocalizedPost } from '../../../../../../types/index.js';
 import { logger } from '../../../../../../utilities/logger.js';
 import { IconButton } from '../../../../../@extended/components/IconButton/index.js';
 import { Icon } from '../../../../../components/elements/Icon/index.js';
@@ -38,11 +39,7 @@ import { SlugSettings } from './SlugSettings/index.js';
 export type Props = {
   open: boolean;
   contentId: string;
-  post: {
-    id: string;
-    currentStatus: string;
-    slug: string;
-  };
+  post: LocalizedPost;
   onClose: () => void;
 };
 
@@ -137,7 +134,11 @@ export const PublishSettings: React.FC<Props> = ({ open, contentId, post, onClos
             </IconButton>
             <Box width="100%">
               <Typography variant="h3" align="center">
-                {t('publish_settings')}
+                {t('language_publish_settings', {
+                  language: t(
+                    `languages.${post.contentLanguage}` as unknown as TemplateStringsArray
+                  ),
+                })}
               </Typography>
             </Box>
             <Button variant="contained" type="submit" sx={{ position: 'absolute', right: 24 }}>
