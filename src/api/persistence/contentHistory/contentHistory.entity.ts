@@ -69,8 +69,16 @@ export class ContentHistoryEntity extends PrismaBaseEntity<ContentHistory> {
     this.isValid();
   }
 
+  get version(): number {
+    return this.props.version;
+  }
+
   get language(): string {
     return this.props.language;
+  }
+
+  get createdAt(): Date {
+    return this.props.createdAt;
   }
 
   private copyProps(): ContentHistory {

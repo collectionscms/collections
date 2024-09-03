@@ -10,7 +10,6 @@ import {
   alpha,
   useTheme,
 } from '@mui/material';
-import { enqueueSnackbar } from 'notistack';
 import React, { useEffect, useRef, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useTranslation } from 'react-i18next';
@@ -26,9 +25,8 @@ import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/ind
 import { useUnsavedChangesPrompt } from '../../../hooks/useUnsavedChangesPrompt.js';
 import { PostContextProvider, usePost } from '../Context/index.js';
 import { LocalizedContent } from '../LocalizedContent/index.js';
-import { PostFooter } from '../PostFooter/index.js';
-import { PostHeader } from '../PostHeader/index.js';
-import { PublishSettings } from '../PublishSettings/index.js';
+import { PostFooter } from './PostFooter/index.js';
+import { PostHeader } from './PostHeader/index.js';
 
 const toJson = (value?: string | null) => {
   return value ? JSON.parse(value) : '';
@@ -44,21 +42,9 @@ export const EditPostPageImpl: React.FC = () => {
   const queryParams = new URLSearchParams(location.search);
   const language = queryParams.get('language');
 
-  const {
-    getPost,
-    updateContent,
-    trashPost,
-    createFileImage,
-    trashLanguageContent,
-    translateContent,
-  } = usePost();
+  const { getPost, updateContent, createFileImage, translateContent } = usePost();
   const { data: post, mutate } = getPost(id, language);
   const { trigger: updateContentTrigger, isMutating: isSaving } = updateContent(post.contentId);
-  const { trigger: trashPostTrigger } = trashPost(post.id);
-  const { trigger: trashLanguageContentTrigger } = trashLanguageContent(
-    post.id,
-    post.contentLanguage
-  );
   const { trigger: translateTrigger } = translateContent(post.id);
 
   const [isDirty, setIsDirty] = useState(false);
@@ -175,19 +161,6 @@ export const EditPostPageImpl: React.FC = () => {
   };
 
   // /////////////////////////////////////
-  // Open settings
-  // /////////////////////////////////////
-
-  const [openSettings, setOpenSettings] = useState(false);
-  const handleOpenSettings = async () => {
-    if (isDirty) {
-      await handleSaveContent();
-    }
-
-    setOpenSettings(true);
-  };
-
-  // /////////////////////////////////////
   // Save content
   // /////////////////////////////////////
 
@@ -231,27 +204,7 @@ export const EditPostPageImpl: React.FC = () => {
   // Content actions
   // /////////////////////////////////////
 
-  const handleTrashPost = async () => {
-    try {
-      await trashPostTrigger();
-      enqueueSnackbar(t('toast.move_to_trash'), { variant: 'success' });
-      navigate('/admin/posts');
-    } catch (error) {
-      logger.error(error);
-    }
-  };
-
-  const handleTrashLanguageContent = async (language: string) => {
-    try {
-      await trashLanguageContentTrigger();
-      mutate();
-      enqueueSnackbar(t('toast.move_to_trash'), { variant: 'success' });
-    } catch (error) {
-      logger.error(error);
-    }
-  };
-
-  const handleReverted = () => {
+  const handleMutate = () => {
     mutate();
   };
 
@@ -306,17 +259,14 @@ export const EditPostPageImpl: React.FC = () => {
         post={post}
         currentLanguage={post.contentLanguage}
         isSaving={isSaving}
-        onOpenSettings={handleOpenSettings}
         onChangeLanguage={handleChangeLanguage}
         onOpenAddLanguage={handleOpenAddLanguage}
-        onTrashPost={handleTrashPost}
-        onTrashLanguageContent={handleTrashLanguageContent}
-        onReverted={handleReverted}
+        onReverted={handleMutate}
       />
-      <PostFooter characters={editor?.storage.characterCount.characters() ?? 0} />
+      <PostFooter post={post} onTrashed={handleMutate} onReverted={handleMutate} />
       <Box component="main" sx={{ minHeight: '100vh', backgroundColor: bg }}>
         <Toolbar sx={{ mt: 0 }} />
-        <Container sx={{ py: 10 }}>
+        <Container sx={{ py: 6 }}>
           <Box sx={{ maxWidth: '42rem', marginLeft: 'auto', marginRight: 'auto' }}>
             {post.body.length === 0 && post.canTranslate && (
               <Stack direction="row" gap={1} sx={{ mb: 4, alignItems: 'center' }} color="secondary">
@@ -447,16 +397,6 @@ export const EditPostPageImpl: React.FC = () => {
           <BlockEditor editor={editor} />
         </Container>
       </Box>
-      <PublishSettings
-        open={openSettings}
-        contentId={post.contentId}
-        post={{
-          id: post.id,
-          slug: post.slug,
-          currentStatus: post.currentStatus,
-        }}
-        onClose={() => setOpenSettings(false)}
-      />
       <LocalizedContent
         open={openAddLanguage}
         post={post}

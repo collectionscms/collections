@@ -1,0 +1,8 @@
+.ProseMirror {
+  &.ProseMirror-focused {
+    /* Slash Menu Placeholder */
+    > p.is-empty::before {
+      content: "何かを書くか、コマンドの場合は '/' を入力してください";
+    }
+  }
+}

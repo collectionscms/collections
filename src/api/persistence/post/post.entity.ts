@@ -128,15 +128,17 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     const languageContents = sortedContents.filter((c) => c.content.language === language);
     const languageContent = languageContents[0] || sortedContents[0];
 
-    // Get history of language
-    const histories = languageContent.histories
-      .filter((history) => history.language === language)
-      .map((history) => history.toResponse());
+    // Get the latest history of each version in the same language.
+    const histories = this.getLatestHistoriesByLanguage(
+      language,
+      languageContent.content.version,
+      languageContent.histories
+    );
 
-    // Get language statues
+    // Get language statues.
     const languageStatues = this.getLanguageStatues(contents.map((c) => c.content));
 
-    // Filter unique languages
+    // Filter unique languages.
     const usedLanguages = [...new Set(contents.map((c) => c.content.language))];
 
     return {
@@ -244,5 +246,38 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       },
       {} as { [language: string]: PublishedContent }
     );
+  }
+
+  /**
+   * Get the latest history of each version in the same language.
+   * @param language
+   * @param currentVersion
+   * @param histories
+   * @returns
+   */
+  private getLatestHistoriesByLanguage(
+    language: string,
+    currentVersion: number,
+    histories: ContentHistoryEntity[]
+  ) {
+    const filteredHistories = histories.filter((history) => history.language === language);
+
+    const latestHistories: { [version: number]: ContentHistoryEntity } = filteredHistories.reduce(
+      (acc: { [version: number]: ContentHistoryEntity }, history) => {
+        const version = history.version;
+        if (version > currentVersion) {
+          // Deleted case
+          return acc;
+        }
+
+        if (!acc[version] || acc[version].createdAt < history.createdAt) {
+          acc[version] = history;
+        }
+        return acc;
+      },
+      {}
+    );
+
+    return Object.values(latestHistories).map((history) => history.toResponse());
   }
 }

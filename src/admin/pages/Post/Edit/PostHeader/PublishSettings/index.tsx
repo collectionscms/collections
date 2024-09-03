@@ -23,26 +23,23 @@ import React, { useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { logger } from '../../../../utilities/logger.js';
-import { IconButton } from '../../../@extended/components/IconButton/index.js';
-import { Icon } from '../../../components/elements/Icon/index.js';
-import { useAuth } from '../../../components/utilities/Auth/index.js';
+import { LocalizedPost } from '../../../../../../types/index.js';
+import { logger } from '../../../../../../utilities/logger.js';
+import { IconButton } from '../../../../../@extended/components/IconButton/index.js';
+import { Icon } from '../../../../../components/elements/Icon/index.js';
+import { useAuth } from '../../../../../components/utilities/Auth/index.js';
 import {
   FormValues,
   editContentValidator,
-} from '../../../fields/validators/content/editContent.js';
-import { usePost } from '../Context/index.js';
-import AppBarStyled from '../PostHeader/AppBarStyled.js';
+} from '../../../../../fields/validators/content/editContent.js';
+import { usePost } from '../../../Context/index.js';
+import { AppBarStyled } from '../../AppBarStyled.js';
 import { SlugSettings } from './SlugSettings/index.js';
 
 export type Props = {
   open: boolean;
   contentId: string;
-  post: {
-    id: string;
-    currentStatus: string;
-    slug: string;
-  };
+  post: LocalizedPost;
   onClose: () => void;
 };
 
@@ -132,33 +129,26 @@ export const PublishSettings: React.FC<Props> = ({ open, contentId, post, onClos
       <form onSubmit={handleSubmit(onSubmit)}>
         <AppBarStyled open={true} {...appBar}>
           <Toolbar>
-            <Stack
-              direction="row"
-              sx={{ flexGrow: 1 }}
-              justifyContent="flex-end"
-              alignItems="center"
-              gap={1.5}
-            >
-              <Button variant="contained" type="submit">
-                {getPublishButtonLabel()}
-              </Button>
-              <IconButton shape="rounded" color="secondary" onClick={onClose} sx={{ p: 0 }}>
-                <Icon name="X" size={28} strokeWidth={1.5} />
-              </IconButton>
-            </Stack>
+            <IconButton color="secondary" onClick={onClose} sx={{ p: 0, position: 'absolute' }}>
+              <Icon name="X" size={28} strokeWidth={1.5} />
+            </IconButton>
+            <Box width="100%">
+              <Typography variant="h3" align="center">
+                {t('language_publish_settings', {
+                  language: t(
+                    `languages.${post.contentLanguage}` as unknown as TemplateStringsArray
+                  ),
+                })}
+              </Typography>
+            </Box>
+            <Button variant="contained" type="submit" sx={{ position: 'absolute', right: 24 }}>
+              {getPublishButtonLabel()}
+            </Button>
           </Toolbar>
         </AppBarStyled>
         <Box component="main">
           <Toolbar sx={{ mt: 0 }} />
-          <Container
-            maxWidth="sm"
-            sx={{
-              mt: 4,
-            }}
-          >
-            <Typography variant={'h1'} align="center">
-              {t('publish_settings')}
-            </Typography>
+          <Container maxWidth="sm">
             <Box sx={{ py: 3, display: 'flex', justifyContent: 'center' }}>
               <FormControl component="fieldset">
                 <Controller

@@ -1,0 +1,8 @@
+.ProseMirror {
+  &.ProseMirror-focused {
+    /* Slash Menu Placeholder */
+    > p.is-empty::before {
+      content: "Write something, or '/' for commands …";
+    }
+  }
+}

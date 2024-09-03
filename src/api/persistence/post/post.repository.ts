@@ -202,7 +202,7 @@ export class PostRepository {
       include: {
         contentHistories: {
           where: {
-            status: 'published',
+            deletedAt: null,
           },
         },
         contents: {

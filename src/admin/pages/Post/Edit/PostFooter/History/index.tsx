@@ -58,15 +58,15 @@ export const History: React.FC<Props> = ({ post, onReverted }) => {
         cancel={{ label: t('cancel'), action: () => setOpenRevert(false) }}
       />
       <Tooltip title={t('version_history')}>
-        <IconButton color="secondary" onClick={handleToggle}>
-          <Icon name="Clock9" size={16} />
+        <IconButton color="secondary" shape="rounded" variant="outlined" onClick={handleToggle}>
+          <Icon strokeWidth={2} name="History" />
         </IconButton>
       </Tooltip>
       <Drawer
         sx={{
           zIndex: 1300,
         }}
-        anchor="right"
+        anchor="left"
         variant="temporary"
         onClose={handleToggle}
         open={open}
