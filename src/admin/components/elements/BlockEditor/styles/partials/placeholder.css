@@ -8,13 +8,6 @@
     width: 100%;
   }
 
-  &.ProseMirror-focused {
-    /* Slash Menu Placeholder */
-    > p.is-empty::before {
-      content: "Write something, or '/' for commands …";
-    }
-  }
-
   & > .is-editor-empty:first-child:before {
     content: attr(data-placeholder);
     float: left;
