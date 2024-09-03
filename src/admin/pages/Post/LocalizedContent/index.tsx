@@ -96,7 +96,7 @@ export const LocalizedContent: React.FC<Props> = ({ open, post, onClose, onChang
       }
       execute={{
         action: handleSubmit(onSubmit),
-        label: t('save'),
+        label: t('add_to'),
       }}
       cancel={{
         action: onClose,
