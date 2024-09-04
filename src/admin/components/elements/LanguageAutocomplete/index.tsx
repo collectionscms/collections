@@ -20,7 +20,9 @@ export const LanguageAutocomplete: React.FC<Props> = ({ languages, value, onChan
       options={languages}
       autoHighlight
       onChange={onChange}
-      getOptionLabel={(option) => t(`languages.${option.code}` as unknown as TemplateStringsArray)}
+      getOptionLabel={(option) =>
+        `${t(`languages.${option.code}` as unknown as TemplateStringsArray)} (${option.code.toUpperCase()})`
+      }
       renderOption={(props, option) => (
         <Box component="li" {...props}>
           <Box
