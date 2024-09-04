@@ -12,6 +12,7 @@ import { ApiPreview } from '../../components/elements/ApiPreview/index.js';
 import { CreateNewButton } from '../../components/elements/CreateNewButton/index.js';
 import { Icon } from '../../components/elements/Icon/index.js';
 import { Link } from '../../components/elements/Link/index.js';
+import { NationalFlagIcon } from '../../components/elements/NationalFlagIcon/index.js';
 import { StatusDot } from '../../components/elements/StatusDot/index.js';
 import { Cell } from '../../components/elements/Table/Cell/index.js';
 import { cells } from '../../components/elements/Table/Cell/types.js';
@@ -87,7 +88,7 @@ export const PostPageImpl: React.FC = () => {
             {row.languageStatues.map(({ language, currentStatus, prevStatus }) => {
               return (
                 <Stack key={language} direction="row" gap={1}>
-                  <Typography sx={{ width: 55 }}>{language.toUpperCase()}</Typography>
+                  <NationalFlagIcon code={language} props={{ width: 20, mr: 1 }} />
                   {prevStatus && (
                     <>
                       <StatusDot status="published" isShowText={false} />

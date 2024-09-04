@@ -2,6 +2,7 @@ import { Content } from '@prisma/client';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { MainCard } from '../../@extended/components/MainCard/index.js';
+import { NationalFlagIcon } from '../../components/elements/NationalFlagIcon/index.js';
 import { Cell } from '../../components/elements/Table/Cell/index.js';
 import { cells } from '../../components/elements/Table/Cell/types.js';
 import { Table } from '../../components/elements/Table/index.js';
@@ -28,7 +29,7 @@ const TrashPageImpl: React.FC = () => {
 
     switch (fields[i].field) {
       case 'language':
-        return <Cell colIndex={i} type={fields[i].type} cellData={row.language.toUpperCase()} />;
+        return <NationalFlagIcon code={row.language} props={{ width: 20 }} />;
       case 'action':
         return <RestoreButton postId={row.id} onRestored={mutate} />;
       default:

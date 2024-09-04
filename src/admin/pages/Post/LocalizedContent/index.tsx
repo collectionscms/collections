@@ -56,7 +56,7 @@ export const LocalizedContent: React.FC<Props> = ({ open, post, onClose, onChang
         <form>
           <Stack spacing={1} direction="column" sx={{ width: 400 }}>
             <LanguageAutocomplete
-              languages={languages}
+              languages={enabledLanguages}
               onChange={(_event, newValue) => {
                 setValue('language', newValue === null ? '' : newValue.code);
               }}
