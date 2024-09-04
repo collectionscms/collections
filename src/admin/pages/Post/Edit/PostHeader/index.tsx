@@ -16,6 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import { LocalizedPost } from '../../../../../types/index.js';
 import { IconButton } from '../../../../@extended/components/IconButton/index.js';
 import { Icon } from '../../../../components/elements/Icon/index.js';
+import { NationalFlagIcon } from '../../../../components/elements/NationalFlagIcon/index.js';
 import { StatusDot } from '../../../../components/elements/StatusDot/index.js';
 import { AppBarStyled } from '../AppBarStyled.js';
 import { PublishSettings } from './PublishSettings/index.js';
@@ -123,12 +124,10 @@ export const PostHeader: React.FC<Props> = ({
               </Stack>
             )}
           </Stack>
-          <Stack direction="row" alignItems="center" gap={1}>
+          <Stack direction="row" alignItems="center" gap={2}>
             <Button variant="text" color="secondary" ref={anchorRef} onClick={handleLanguageOpen}>
               <Stack direction="row" alignItems="center" gap={1}>
-                <Typography>
-                  {t(`languages.${currentLanguage}` as unknown as TemplateStringsArray)}
-                </Typography>
+                <NationalFlagIcon code={currentLanguage} props={{ width: 20 }} />
                 <Icon name="ChevronDown" size={14} />
               </Stack>
             </Button>
@@ -157,11 +156,9 @@ export const PostHeader: React.FC<Props> = ({
               selected={currentLanguage === language}
               key={language}
             >
+              <NationalFlagIcon code={language} props={{ width: 20, mr: 1 }} />
               <Typography>
                 {t(`languages.${language}` as unknown as TemplateStringsArray)}
-              </Typography>
-              <Typography variant="caption" color="textSecondary" sx={{ ml: '8px' }}>
-                {language.toUpperCase()}
               </Typography>
             </MenuItem>
           ))}

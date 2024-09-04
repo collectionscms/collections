@@ -23,6 +23,7 @@ import {
 import { useUnsavedChangesPrompt } from '../../../hooks/useUnsavedChangesPrompt.js';
 import { useProject } from '../Context/index.js';
 import { ProjectData } from './ProjectSettingsForm.js';
+import { LanguageAutocomplete } from '../../../components/elements/LanguageAutocomplete/index.js';
 
 export type SourceLanguageData = { sourceLanguage: string };
 type Props = {
@@ -80,41 +81,11 @@ export const SourceLanguageForm: React.FC<Props> = ({
         <Grid container spacing={3}>
           <Grid xs={12} sm={6}>
             <Stack spacing={1} direction="column">
-              <Autocomplete
-                fullWidth
-                onChange={(event, newValue) => {
+              <LanguageAutocomplete
+                languages={languages}
+                onChange={(_event, newValue) => {
                   setValue('sourceLanguage', newValue === null ? '' : newValue.code);
                 }}
-                options={languages}
-                autoHighlight
-                isOptionEqualToValue={(option, value) => option.code === value?.code}
-                getOptionLabel={(option) =>
-                  t(`languages.${option.code}` as unknown as TemplateStringsArray)
-                }
-                renderOption={(props, option) => (
-                  <Box component="li" {...props}>
-                    {t(`languages.${option.code}` as unknown as TemplateStringsArray)}
-                    <Typography variant="caption" color="text.secondary" sx={{ ml: 1 }}>
-                      {option.code.toUpperCase()}
-                    </Typography>
-                    {option.sourceLanguageCode && (
-                      <Typography variant="caption" color="text.secondary" sx={{ ml: 1 }}>
-                        - {t('translatable')}
-                      </Typography>
-                    )}
-                  </Box>
-                )}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    placeholder={t('choose_language')}
-                    name="language"
-                    inputProps={{
-                      ...params.inputProps,
-                      autoComplete: 'off',
-                    }}
-                  />
-                )}
               />
               <FormHelperText error>{errors.sourceLanguage?.message}</FormHelperText>
             </Stack>
