@@ -124,7 +124,7 @@ export const PostHeader: React.FC<Props> = ({
               </Stack>
             )}
           </Stack>
-          <Stack direction="row" alignItems="center" gap={1}>
+          <Stack direction="row" alignItems="center" gap={2}>
             <Button variant="text" color="secondary" ref={anchorRef} onClick={handleLanguageOpen}>
               <Stack direction="row" alignItems="center" gap={1}>
                 <NationalFlagIcon code={currentLanguage} props={{ width: 20 }} />
