@@ -2,6 +2,7 @@ import { Autocomplete, Box, TextField, Typography } from '@mui/material';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { LanguageCode } from '../../../../constants/languages.js';
+import { NationalFlagIcon } from '../NationalFlagIcon/index.js';
 
 type Props = {
   languages: readonly LanguageCode[];
@@ -25,11 +26,7 @@ export const LanguageAutocomplete: React.FC<Props> = ({ languages, value, onChan
       }
       renderOption={(props, option) => (
         <Box component="li" {...props}>
-          <Box
-            component="img"
-            src={`https://cdn.collections.dev/languages/${option.code}.svg`}
-            sx={{ width: 20, mr: 1 }}
-          />
+          <NationalFlagIcon code={option.code} props={{ width: 20, mr: 1 }} />
           {t(`languages.${option.code}` as unknown as TemplateStringsArray)}
           <Typography variant="caption" color="text.secondary" sx={{ ml: 1 }}>
             {option.code.toUpperCase()}
