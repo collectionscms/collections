@@ -236,14 +236,14 @@
     "api_key": "Edit Api Key"
   },
   "languages": {
-    "en-us": "English (American)",
-    "en-gb": "English (British)",
+    "en-us": "English",
+    "en-gb": "English",
     "es": "Spanish",
     "ja": "Japanese",
-    "pt-pt": "Portuguese (Portugal)",
-    "pt-br": "Portuguese (Brazilian)",
-    "zh-cn": "Chinese (Simplified)",
-    "zh-tw": "Chinese (Traditional)"
+    "pt-pt": "Portuguese",
+    "pt-br": "Portuguese",
+    "zh-cn": "Chinese",
+    "zh-tw": "Chinese"
   },
   "editor": {
     "text": "Text",
