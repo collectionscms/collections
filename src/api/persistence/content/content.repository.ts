@@ -34,6 +34,16 @@ export class ContentRepository {
     return record ? ContentEntity.Reconstruct<Content, ContentEntity>(record) : null;
   }
 
+  async findOneBySlug(prisma: ProjectPrismaType, slug: string): Promise<ContentEntity | null> {
+    const record = await prisma.content.findFirst({
+      where: {
+        slug,
+      },
+    });
+
+    return record ? ContentEntity.Reconstruct<Content, ContentEntity>(record) : null;
+  }
+
   async findManyByPostIdAndLanguage(
     prisma: ProjectPrismaType,
     postId: string,

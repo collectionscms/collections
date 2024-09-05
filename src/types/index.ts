@@ -76,7 +76,6 @@ export type PublishedContent = {
 
 export type PublishedPost = {
   id: string;
-  slug: string;
   contents: {
     [language: string]: PublishedContent;
   };

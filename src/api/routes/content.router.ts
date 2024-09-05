@@ -35,6 +35,7 @@ router.patch(
       bodyJson: req.body.bodyJson,
       bodyHtml: req.body.bodyHtml,
       coverUrl: req.body.coverUrl,
+      slug: req.body.slug,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 

@@ -21,16 +21,16 @@ import {
 import { usePost } from '../../../../Context/index.js';
 
 type Props = {
-  postId: string;
+  contentId: string;
   slug: string;
 };
 
-export const SlugSettings: React.FC<Props> = ({ postId, slug }) => {
+export const SlugSettings: React.FC<Props> = ({ contentId, slug }) => {
   const { t } = useTranslation();
   const [isEditingSlug, setIsEditingSlug] = useState(false);
 
-  const { updatePost } = usePost();
-  const { trigger: updatePostTrigger } = updatePost(postId);
+  const { updateContent } = usePost();
+  const { trigger: updateContentTrigger } = updateContent(contentId);
 
   const {
     control,
@@ -45,7 +45,7 @@ export const SlugSettings: React.FC<Props> = ({ postId, slug }) => {
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
-      await updatePostTrigger(form);
+      await updateContentTrigger(form);
       setIsEditingSlug(false);
       enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
     } catch (error) {

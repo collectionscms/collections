@@ -18,6 +18,7 @@ export class CreateContentUseCase {
       projectId: props.projectId,
       postId: props.id,
       language: props.language,
+      slug: ContentEntity.generateSlug(),
       createdById: props.userId,
     });
 

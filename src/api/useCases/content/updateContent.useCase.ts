@@ -1,5 +1,6 @@
 import { Content } from '@prisma/client';
 import { ConflictException } from '../../../exceptions/conflict.js';
+import { RecordNotUniqueException } from '../../../exceptions/database/recordNotUnique.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
 import { ContentEntity } from '../../persistence/content/content.entity.js';
 import { ContentRepository } from '../../persistence/content/content.repository.js';
@@ -17,7 +18,7 @@ export class UpdateContentUseCase {
   ) {}
 
   async execute(props: UpdateContentUseCaseSchemaType): Promise<Content> {
-    const { id, userId, coverUrl, title, body, bodyJson, bodyHtml } = props;
+    const { id, userId, slug } = props;
 
     const content = await this.contentRepository.findOneById(this.prisma, id);
     const post = await this.postRepository.findOneWithContentsById(this.prisma, content.postId);
@@ -26,23 +27,32 @@ export class UpdateContentUseCase {
       throw new ConflictException('already_updated_by_another_user');
     }
 
+    if (slug) {
+      const sameSlugPost = await this.contentRepository.findOneBySlug(this.prisma, slug);
+      if (sameSlugPost && sameSlugPost.id !== id) {
+        throw new RecordNotUniqueException('already_registered_post_slug');
+      }
+    }
+
     const result = await this.prisma.$transaction(async (tx) => {
       let entity = content.isPublished()
         ? ContentEntity.Construct({
             projectId: content.projectId,
             postId: content.postId,
             language: content.language,
+            slug: content.slug,
             createdById: userId,
             version: content.version + 1,
           })
         : ContentEntity.Reconstruct<Content, ContentEntity>(content.toResponse());
 
       entity.updateContent({
-        coverUrl,
-        title,
-        body,
-        bodyJson,
-        bodyHtml,
+        coverUrl: props.coverUrl,
+        title: props.title,
+        body: props.body,
+        bodyJson: props.bodyJson,
+        bodyHtml: props.bodyHtml,
+        slug: props.slug,
         updatedById: userId,
       });
 
