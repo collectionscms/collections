@@ -28,8 +28,8 @@ export class UpdateContentUseCase {
     }
 
     if (slug) {
-      const sameSlugPost = await this.contentRepository.findOneBySlug(this.prisma, slug);
-      if (sameSlugPost && sameSlugPost.id !== id) {
+      const sameSlugContent = await this.contentRepository.findOneBySlug(this.prisma, slug);
+      if (sameSlugContent?.content && sameSlugContent?.content.id !== id) {
         throw new RecordNotUniqueException('already_registered_post_slug');
       }
     }
