@@ -1,8 +1,11 @@
 import { Content } from '@prisma/client';
 import { v4 } from 'uuid';
 import { getLanguageCodeType, LanguageCode } from '../../../constants/languages.js';
+import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
 import { UnexpectedException } from '../../../exceptions/unexpected.js';
+import { PublishedContent } from '../../../types/index.js';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
+import { UserEntity } from '../user/user.entity.js';
 
 export const ContentStatus = {
   draft: 'draft',
@@ -212,5 +215,33 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
 
   isSameLanguageContent(language: string) {
     return this.props.language.toLocaleLowerCase() === language.toLocaleLowerCase();
+  }
+
+  /**
+   * Convert entity to published content response
+   * @param content
+   * @param createdBy
+   * @returns
+   */
+  toPublishedContentResponse(createdBy: UserEntity): PublishedContent {
+    if (!this.props.publishedAt) {
+      throw new RecordNotFoundException('record_not_found');
+    }
+
+    return {
+      slug: this.props.slug,
+      title: this.props.title ?? '',
+      body: this.props.body ?? '',
+      bodyHtml: this.props.bodyHtml ?? '',
+      language: this.props.language,
+      version: this.props.version,
+      coverUrl: this.props.coverUrl,
+      publishedAt: this.props.publishedAt,
+      author: {
+        id: createdBy.id,
+        name: createdBy.name,
+        avatarUrl: createdBy.avatarUrl,
+      },
+    };
   }
 }
