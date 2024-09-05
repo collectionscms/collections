@@ -1,26 +1,26 @@
 /* eslint-disable max-len */
-export const posts = [
-  {
-    language: 'ja',
-    slug: 'what-is-collections',
-    title: '多言語配信をシンプルに',
-    body: 'Collectionsは、心地よい執筆体験とAIによる強力な翻訳、そして直感的なAPIによって多言語コンテンツ配信をシンプルにします。',
-    bodyJson:
-      '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"Collectionsは、心地よい執筆体験とAIによる強力な翻訳、そして直感的なAPIによって多言語コンテンツ配信をシンプルにします。"}]}]}',
-    bodyHtml:
-      '<p>Collectionsは、心地よい執筆体験とAIによる強力な翻訳、そして直感的なAPIによって多言語コンテンツ配信をシンプルにします。</p>',
-    status: 'published',
-    coverUrl: 'https://cdn.collections.dev/cover.png',
-  },
+export const contents = [
   {
     language: 'en-us',
-    slug: 'about-collections',
+    slug: 'what-is-collections',
     title: 'Simplifying Multilingual Delivery',
     body: 'Collections simplifies multilingual content delivery with a smooth writing experience, powerful AI translation, and an intuitive API.',
     bodyJson:
       '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"Collections simplifies multilingual content delivery with a smooth writing experience, powerful AI translation, and an intuitive API."}]}]}',
     bodyHtml:
       '<p>Collections simplifies multilingual content delivery with a smooth writing experience, powerful AI translation, and an intuitive API.</p>',
+    status: 'published',
+    coverUrl: 'https://cdn.collections.dev/cover.png',
+  },
+  {
+    language: 'ja',
+    slug: 'what-is-collections-ja',
+    title: '多言語配信をシンプルに',
+    body: 'Collectionsは、心地よい執筆体験とAIによる強力な翻訳、そして直感的なAPIによって多言語コンテンツ配信をシンプルにします。',
+    bodyJson:
+      '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"Collectionsは、心地よい執筆体験とAIによる強力な翻訳、そして直感的なAPIによって多言語コンテンツ配信をシンプルにします。"}]}]}',
+    bodyHtml:
+      '<p>Collectionsは、心地よい執筆体験とAIによる強力な翻訳、そして直感的なAPIによって多言語コンテンツ配信をシンプルにします。</p>',
     status: 'published',
     coverUrl: 'https://cdn.collections.dev/cover.png',
   },
