@@ -28,7 +28,6 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     const post = new PostEntity({
       id: postId,
       projectId,
-      slug: this.GenerateSlug(),
       createdById,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -38,6 +37,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       projectId,
       postId,
       language,
+      slug: ContentEntity.generateSlug(),
       createdById,
     });
 
@@ -58,26 +58,12 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     this.isValid();
   }
 
-  static GenerateSlug = () => {
-    return v4().trim().replace(/-/g, '').substring(0, 10);
-  };
-
   get id(): string {
     return this.props.id;
   }
 
   get projectId(): string {
     return this.props.projectId;
-  }
-
-  get slug(): string {
-    return this.props.slug;
-  }
-
-  updatePost({ slug }: { slug?: string }): void {
-    if (slug) {
-      this.props.slug = slug;
-    }
   }
 
   toPostItemResponse(
@@ -107,7 +93,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       id: this.props.id,
       contentId: languageContent.content.id,
       title: languageContent.content.title ?? '',
-      slug: this.props.slug,
+      slug: languageContent.content.slug,
       updatedByName: languageContent.updatedBy.name,
       updatedAt: this.props.updatedAt,
       languageStatues: sortedLanguageStatues,
@@ -143,7 +129,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
 
     return {
       id: this.props.id,
-      slug: this.props.slug,
+      slug: languageContent.content.slug,
       contentId: languageContent.content.id,
       currentStatus: languageStatues[languageContent.content.language].statuses[0],
       prevStatus: languageStatues[languageContent.content.language].statuses[1],
@@ -185,7 +171,6 @@ export class PostEntity extends PrismaBaseEntity<Post> {
 
     return {
       id: this.props.id,
-      slug: this.props.slug,
       contents: filteredLngContents,
     };
   }

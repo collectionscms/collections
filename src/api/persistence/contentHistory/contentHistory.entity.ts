@@ -7,6 +7,7 @@ export class ContentHistoryEntity extends PrismaBaseEntity<ContentHistory> {
   static Construct({
     projectId,
     postId,
+    slug,
     coverUrl,
     title,
     body,
@@ -22,6 +23,7 @@ export class ContentHistoryEntity extends PrismaBaseEntity<ContentHistory> {
   }: {
     projectId: string;
     postId: string;
+    slug: string;
     coverUrl?: string | null;
     title?: string | null;
     body?: string | null;
@@ -39,6 +41,7 @@ export class ContentHistoryEntity extends PrismaBaseEntity<ContentHistory> {
       id: v4(),
       projectId,
       postId,
+      slug,
       coverUrl: coverUrl || null,
       title: title || null,
       body: body || null,

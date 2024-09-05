@@ -112,7 +112,6 @@ CREATE TABLE "File" (
 CREATE TABLE "Post" (
     "id" UUID NOT NULL,
     "projectId" UUID NOT NULL DEFAULT (current_setting('app.current_project_id'::text))::uuid,
-    "slug" VARCHAR(255) NOT NULL,
     "createdById" UUID NOT NULL,
     "createdAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMPTZ(6) NOT NULL,
@@ -141,6 +140,7 @@ CREATE TABLE "Content" (
     "id" UUID NOT NULL,
     "projectId" UUID NOT NULL DEFAULT (current_setting('app.current_project_id'::text))::uuid,
     "postId" UUID NOT NULL,
+    "slug" VARCHAR(255) NOT NULL,
     "title" VARCHAR(255),
     "body" TEXT,
     "bodyJson" TEXT,
@@ -164,6 +164,7 @@ CREATE TABLE "ContentHistory" (
     "id" UUID NOT NULL,
     "projectId" UUID NOT NULL DEFAULT (current_setting('app.current_project_id'::text))::uuid,
     "postId" UUID NOT NULL,
+    "slug" VARCHAR(255) NOT NULL,
     "title" VARCHAR(255),
     "body" TEXT,
     "bodyJson" TEXT,
@@ -230,9 +231,6 @@ CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "UserProject_userId_projectId_key" ON "UserProject"("userId", "projectId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Post_projectId_slug_key" ON "Post"("projectId", "slug");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Review_postId_key" ON "Review"("postId");

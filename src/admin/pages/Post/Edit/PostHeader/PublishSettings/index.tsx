@@ -214,7 +214,7 @@ export const PublishSettings: React.FC<Props> = ({ open, contentId, post, onClos
       </form>
       {watch('status') === 'published' && (
         <Container maxWidth="sm" sx={{ mt: 3 }}>
-          <SlugSettings postId={post.id} slug={slug} />
+          <SlugSettings contentId={contentId} slug={slug} />
         </Container>
       )}
     </Dialog>

@@ -12,17 +12,21 @@ export const ContentStatus = {
 } as const;
 export type ContentStatusType = (typeof ContentStatus)[keyof typeof ContentStatus];
 
+export const slugRegex = /^[a-zA-Z0-9-_]+$/;
+
 export class ContentEntity extends PrismaBaseEntity<Content> {
   static Construct({
     projectId,
     postId,
     language,
+    slug,
     createdById,
     version,
   }: {
     projectId: string;
     postId: string;
     language: string;
+    slug: string;
     createdById: string;
     version?: number;
   }): ContentEntity {
@@ -30,6 +34,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
       id: v4(),
       projectId,
       postId,
+      slug,
       coverUrl: null,
       title: null,
       body: null,
@@ -55,10 +60,18 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
 
   public beforeUpdateValidate(): void {
     this.isValid();
+
+    if (!slugRegex.test(this.props.slug)) {
+      throw new UnexpectedException({ message: 'Invalid slug format' });
+    }
   }
 
   public beforeInsertValidate(): void {
     this.isValid();
+
+    if (!slugRegex.test(this.props.slug)) {
+      throw new UnexpectedException({ message: 'Invalid slug format' });
+    }
   }
 
   get id(): string {
@@ -71,6 +84,10 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
 
   get postId(): string {
     return this.props.postId;
+  }
+
+  get slug(): string {
+    return this.props.slug;
   }
 
   get title(): string {
@@ -129,6 +146,10 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     return getLanguageCodeType(this.language);
   }
 
+  static generateSlug = () => {
+    return v4().trim().replace(/-/g, '').substring(0, 10);
+  };
+
   changeStatus({ status, updatedById }: { status: string; updatedById?: string }) {
     this.props.status = status;
 
@@ -167,21 +188,26 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     bodyJson,
     bodyHtml,
     coverUrl,
+    slug,
     updatedById,
   }: {
-    title: string | null;
-    body: string | null;
-    bodyJson: string | null;
-    bodyHtml: string | null;
-    coverUrl: string | null;
+    title?: string | null;
+    body?: string | null;
+    bodyJson?: string | null;
+    bodyHtml?: string | null;
+    coverUrl?: string | null;
+    slug?: string;
     updatedById: string;
   }): void {
-    this.props.title = title;
-    this.props.body = body;
-    this.props.bodyJson = bodyJson;
-    this.props.bodyHtml = bodyHtml;
-    this.props.coverUrl = coverUrl;
-    this.props.updatedById = updatedById;
+    Object.assign(this.props, {
+      ...(title !== undefined && { title }),
+      ...(body !== undefined && { body }),
+      ...(bodyJson !== undefined && { bodyJson }),
+      ...(bodyHtml !== undefined && { bodyHtml }),
+      ...(coverUrl !== undefined && { coverUrl }),
+      ...(slug !== undefined && { slug }),
+      updatedById,
+    });
   }
 
   isSameLanguageContent(language: string) {

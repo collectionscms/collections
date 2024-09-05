@@ -9,7 +9,7 @@ import { createPost } from './createPost.js';
 import { createProjects, jpProject, usaProject } from './createProjects.js';
 import { createRoles, projectRoles } from './createRoles.js';
 import { adminUser, contributorUser, createUsers, editorUser, viewerUser } from './createUsers.js';
-import { posts } from './data/posts.js';
+import { contents } from './data/contents.js';
 
 i18next.init({
   resources: {
@@ -30,8 +30,8 @@ export const seedDev = async (): Promise<void> => {
       await createRoles(tx, i18next);
       await createUsers(tx, getUsers());
       await createApiKeys(tx);
-      await createPost(tx, usaProject, 'what-is-collections', posts);
-      await createPost(tx, jpProject, 'what-is-collections', posts);
+      await createPost(tx, usaProject, contents);
+      await createPost(tx, jpProject, contents);
     });
 
     process.exit(0);
