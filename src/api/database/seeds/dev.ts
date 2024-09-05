@@ -30,8 +30,8 @@ export const seedDev = async (): Promise<void> => {
       await createRoles(tx, i18next);
       await createUsers(tx, getUsers());
       await createApiKeys(tx);
-      await createPost(tx, usaProject, 'what-is-collections', posts);
-      await createPost(tx, jpProject, 'what-is-collections', posts);
+      await createPost(tx, usaProject, posts);
+      await createPost(tx, jpProject, posts);
     });
 
     process.exit(0);
