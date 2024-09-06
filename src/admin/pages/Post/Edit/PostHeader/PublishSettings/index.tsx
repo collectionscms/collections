@@ -124,7 +124,7 @@ export const PublishSettings: React.FC<Props> = ({ open, contentId, post, onClos
     <Dialog
       open={open}
       fullScreen
-      sx={{ '& .MuiDialog-paper': { bgcolor: 'background.paper', backgroundImage: 'none' } }}
+      sx={{ '& .MuiDialog-paper': { bgcolor: 'background.default', backgroundImage: 'none' } }}
     >
       <form onSubmit={handleSubmit(onSubmit)}>
         <AppBarStyled open={true} {...appBar}>

@@ -109,7 +109,7 @@ export const Settings: React.FC<Props> = ({ open, post, onClose, onTrashed }) =>
       <Dialog
         open={open}
         fullScreen
-        sx={{ '& .MuiDialog-paper': { bgcolor: 'background.paper', backgroundImage: 'none' } }}
+        sx={{ '& .MuiDialog-paper': { bgcolor: 'background.default', backgroundImage: 'none' } }}
       >
         <AppBarStyled open={true} {...appBar}>
           <Toolbar>

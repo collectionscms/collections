@@ -108,7 +108,6 @@ export const EditPostPageImpl: React.FC = () => {
   // /////////////////////////////////////
 
   const theme = useTheme();
-  const bg = theme.palette.background.paper;
 
   // /////////////////////////////////////
   // Short cut
@@ -264,7 +263,7 @@ export const EditPostPageImpl: React.FC = () => {
         onReverted={handleMutate}
       />
       <PostFooter post={post} onTrashed={handleMutate} onReverted={handleMutate} />
-      <Box component="main" sx={{ minHeight: '100vh', backgroundColor: bg }}>
+      <Box component="main" sx={{ minHeight: '100vh' }}>
         <Toolbar sx={{ mt: 0 }} />
         <Container sx={{ py: 6 }}>
           <Box sx={{ maxWidth: '42rem', marginLeft: 'auto', marginRight: 'auto' }}>
