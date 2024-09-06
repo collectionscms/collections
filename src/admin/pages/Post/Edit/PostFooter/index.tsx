@@ -5,15 +5,17 @@ import { LocalizedPost } from '../../../../../types/index.js';
 import { IconButton } from '../../../../@extended/components/IconButton/index.js';
 import { Icon } from '../../../../components/elements/Icon/index.js';
 import { History } from './History/index.js';
+import { Information } from './Information/index.js';
 import { Settings } from './Settings/index.js';
 
 export type Props = {
   post: LocalizedPost;
+  characters: number;
   onTrashed: () => void;
   onReverted: () => void;
 };
 
-export const PostFooter: React.FC<Props> = ({ post, onTrashed, onReverted }) => {
+export const PostFooter: React.FC<Props> = ({ post, characters, onTrashed, onReverted }) => {
   const { t } = useTranslation();
 
   // /////////////////////////////////////
@@ -36,7 +38,10 @@ export const PostFooter: React.FC<Props> = ({ post, onTrashed, onReverted }) => 
         p: 3,
       }}
     >
-      <History post={post} onReverted={onReverted} />
+      <Stack flexDirection="row" gap={2}>
+        <History post={post} onReverted={onReverted} />
+        <Information characters={characters} />
+      </Stack>
       <Tooltip title={t('setting')}>
         <IconButton
           color="secondary"
