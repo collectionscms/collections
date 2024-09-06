@@ -26,6 +26,7 @@ import { useNavigate } from 'react-router-dom';
 import { LocalizedPost } from '../../../../../../types/index.js';
 import { logger } from '../../../../../../utilities/logger.js';
 import { IconButton } from '../../../../../@extended/components/IconButton/index.js';
+import { MainCard } from '../../../../../@extended/components/MainCard/index.js';
 import { Icon } from '../../../../../components/elements/Icon/index.js';
 import { useAuth } from '../../../../../components/utilities/Auth/index.js';
 import {
@@ -155,45 +156,46 @@ export const PublishSettings: React.FC<Props> = ({ open, contentId, post, onClos
         <Box component="main">
           <Toolbar sx={{ mt: 0 }} />
           <Container maxWidth="sm">
-            <Box sx={{ py: 3, display: 'flex', justifyContent: 'center' }}>
-              <FormControl component="fieldset">
-                <Controller
-                  name="status"
-                  control={control}
-                  render={({ field }) => (
-                    <RadioGroup value={field.value} name="radio-buttons-group" row>
-                      {post.currentStatus === 'published' && (
+            <MainCard sx={{ mt: 3 }}>
+              <Stack gap={1}>
+                <InputLabel>{t('status')}</InputLabel>
+                <FormControl fullWidth component="fieldset">
+                  <Controller
+                    name="status"
+                    control={control}
+                    render={({ field }) => (
+                      <RadioGroup value={field.value} name="radio-buttons-group" row>
+                        {post.currentStatus === 'published' && (
+                          <FormControlLabel
+                            {...field}
+                            value="archived"
+                            control={<Radio />}
+                            label={t('archived')}
+                          />
+                        )}
                         <FormControlLabel
                           {...field}
-                          value="archived"
+                          value="review"
                           control={<Radio />}
-                          label={t('archived')}
+                          label={t('review')}
                         />
-                      )}
-                      <FormControlLabel
-                        {...field}
-                        value="review"
-                        control={<Radio />}
-                        label={t('review')}
-                      />
-                      {hasPermission('publishPost') && (
-                        <FormControlLabel
-                          {...field}
-                          value="published"
-                          control={<Radio />}
-                          label={t('publish')}
-                        />
-                      )}
-                    </RadioGroup>
-                  )}
-                />
-              </FormControl>
-            </Box>
-            {watch('status') === 'review' && (
-              <>
-                <Grid container spacing={3}>
+                        {hasPermission('publishPost') && (
+                          <FormControlLabel
+                            {...field}
+                            value="published"
+                            control={<Radio />}
+                            label={t('publish')}
+                          />
+                        )}
+                      </RadioGroup>
+                    )}
+                  />
+                </FormControl>
+              </Stack>
+              {watch('status') === 'review' && (
+                <Grid container spacing={3} sx={{ mt: 1 }}>
                   <Grid xs={12}>
-                    <Stack spacing={1}>
+                    <Stack gap={1}>
                       <InputLabel required>{t('comment')}</InputLabel>
                       <Controller
                         name="comment"
@@ -213,18 +215,24 @@ export const PublishSettings: React.FC<Props> = ({ open, contentId, post, onClos
                     </Stack>
                   </Grid>
                 </Grid>
-              </>
-            )}
+              )}
+            </MainCard>
           </Container>
         </Box>
       </form>
+      {/* Slug */}
       {watch('status') === 'published' && (
-        <Container maxWidth="sm" sx={{ mt: 3 }}>
-          <SlugSettings
-            contentId={mutatedPost.contentId}
-            slug={mutatedPost.slug}
-            onUpdated={(slug) => handleUpdatedSlug(slug)}
-          />
+        <Container maxWidth="sm" sx={{ mt: 1 }}>
+          <Stack sx={{ py: 3 }}>
+            <Typography variant={'h4'}>{t('post_slug')}</Typography>
+          </Stack>
+          <MainCard>
+            <SlugSettings
+              contentId={mutatedPost.contentId}
+              slug={mutatedPost.slug}
+              onUpdated={(slug) => handleUpdatedSlug(slug)}
+            />
+          </MainCard>
         </Container>
       )}
     </Dialog>
