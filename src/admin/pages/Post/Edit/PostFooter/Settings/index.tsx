@@ -23,6 +23,7 @@ import { ModalDialog } from '../../../../../components/elements/ModalDialog/inde
 import { useAuth } from '../../../../../components/utilities/Auth/index.js';
 import { usePost } from '../../../Context/index.js';
 import { AppBarStyled } from '../../AppBarStyled.js';
+import { SlugSettings } from '../../PostHeader/PublishSettings/SlugSettings/index.js';
 
 export type Props = {
   open: boolean;
@@ -37,12 +38,13 @@ export const Settings: React.FC<Props> = ({ open, post, onClose, onTrashed }) =>
   const navigate = useNavigate();
 
   const { hasPermission } = useAuth();
-  const { trashPost, trashLanguageContent } = usePost();
+  const { trashPost, trashLanguageContent, getPost } = usePost();
   const { trigger: trashPostTrigger } = trashPost(post.id);
   const { trigger: trashLanguageContentTrigger } = trashLanguageContent(
     post.id,
     post.contentLanguage
   );
+  const { data: mutatedPost, mutate } = getPost(post.id, post.contentLanguage);
 
   const [openContentTrash, setOpenContentTrash] = useState(false);
   const [openPostTrash, setOpenPostTrash] = useState(false);
@@ -88,6 +90,13 @@ export const Settings: React.FC<Props> = ({ open, post, onClose, onTrashed }) =>
     }
   };
 
+  const handleUpdatedSlug = (slug: string) => {
+    mutate({
+      ...post,
+      slug,
+    });
+  };
+
   return (
     <>
       <ModalDialog
@@ -130,10 +139,22 @@ export const Settings: React.FC<Props> = ({ open, post, onClose, onTrashed }) =>
         <Box component="main">
           <Toolbar sx={{ mt: 0 }} />
           <Container maxWidth="sm">
+            {/* Slug */}
+            <Stack sx={{ py: 3 }}>
+              <Typography variant={'h4'}>{t('post_slug')}</Typography>
+            </Stack>
+            <MainCard>
+              <SlugSettings
+                contentId={mutatedPost.contentId}
+                slug={mutatedPost.slug}
+                onUpdated={(slug) => handleUpdatedSlug(slug)}
+              />
+            </MainCard>
+            {/* Trash post */}
             {hasPermission('trashPost') && (
               <>
                 <Stack sx={{ py: 3 }}>
-                  <Typography variant={'h4'}>Danger Zone</Typography>
+                  <Typography variant={'h4'}>{t('danger_zone')}</Typography>
                 </Stack>
                 <MainCard>
                   {post.usedLanguages.length > 1 && (

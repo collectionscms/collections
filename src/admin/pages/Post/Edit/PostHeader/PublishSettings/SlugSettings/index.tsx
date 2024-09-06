@@ -1,13 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import {
-  Button,
-  FormHelperText,
-  IconButton,
-  InputLabel,
-  Stack,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Button, FormHelperText, IconButton, Stack, TextField, Typography } from '@mui/material';
 import { enqueueSnackbar } from 'notistack';
 import React, { useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
@@ -23,9 +15,10 @@ import { usePost } from '../../../../Context/index.js';
 type Props = {
   contentId: string;
   slug: string;
+  onUpdated: (slug: string) => void;
 };
 
-export const SlugSettings: React.FC<Props> = ({ contentId, slug }) => {
+export const SlugSettings: React.FC<Props> = ({ contentId, slug, onUpdated }) => {
   const { t } = useTranslation();
   const [isEditingSlug, setIsEditingSlug] = useState(false);
 
@@ -47,6 +40,7 @@ export const SlugSettings: React.FC<Props> = ({ contentId, slug }) => {
     try {
       await updateContentTrigger(form);
       setIsEditingSlug(false);
+      onUpdated(form.slug);
       enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
     } catch (error) {
       logger.error(error);
@@ -55,7 +49,6 @@ export const SlugSettings: React.FC<Props> = ({ contentId, slug }) => {
 
   return (
     <>
-      <InputLabel sx={{ mb: 1 }}>{t('post_slug')}</InputLabel>
       <form onSubmit={handleSubmit(onSubmit)}>
         {isEditingSlug ? (
           <>
