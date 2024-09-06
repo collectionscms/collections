@@ -71,7 +71,7 @@ export const EditPostPageImpl: React.FC = () => {
 
   const { mode } = useColorMode();
   const ref = React.useRef<HTMLButtonElement>(null);
-  const { editor } = useBlockEditor({
+  const { editor, characterCount } = useBlockEditor({
     initialContent: toJson(post.bodyJson),
     ref: ref,
     mode,
@@ -108,7 +108,6 @@ export const EditPostPageImpl: React.FC = () => {
   // /////////////////////////////////////
 
   const theme = useTheme();
-  const bg = theme.palette.background.paper;
 
   // /////////////////////////////////////
   // Short cut
@@ -263,8 +262,13 @@ export const EditPostPageImpl: React.FC = () => {
         onOpenAddLanguage={handleOpenAddLanguage}
         onReverted={handleMutate}
       />
-      <PostFooter post={post} onTrashed={handleMutate} onReverted={handleMutate} />
-      <Box component="main" sx={{ minHeight: '100vh', backgroundColor: bg }}>
+      <PostFooter
+        post={post}
+        onTrashed={handleMutate}
+        onReverted={handleMutate}
+        characters={characterCount.characters()}
+      />
+      <Box component="main" sx={{ minHeight: '100vh' }}>
         <Toolbar sx={{ mt: 0 }} />
         <Container sx={{ py: 6 }}>
           <Box sx={{ maxWidth: '42rem', marginLeft: 'auto', marginRight: 'auto' }}>
