@@ -193,6 +193,7 @@
   "move_all_lang_content_to_trash": "全ての言語の記事をごみ箱に入れます。",
   "language_post_settings": "{{language}}の記事設定",
   "language_publish_settings": "{{language}}の公開設定",
+  "danger_zone": "Danger Zone",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",
