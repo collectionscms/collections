@@ -225,7 +225,7 @@
     "move_to_trash": "ごみ箱へ移動しました",
     "post_restored": "記事を復元しました",
     "copied": "コピーしました",
-    "post_reverted": "以前のバージョンに戻しました"
+    "post_reverted": "バージョンを戻しました"
   },
   "create": {
     "user": "ユーザー 新規登録",

@@ -225,7 +225,7 @@
     "move_to_trash": "Move to trash",
     "post_restored": "Restored post",
     "copied": "Copied",
-    "post_reverted": "Restored previous post"
+    "post_reverted": "Restored version"
   },
   "create": {
     "user": "Create User",
