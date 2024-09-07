@@ -1,11 +1,21 @@
-import { Divider, Stack, Typography } from '@mui/material';
+import {
+  alpha,
+  Box,
+  Divider,
+  Stack,
+  TableCell,
+  TableRow,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import { ApiKey } from '@prisma/client';
 import dayjs from 'dayjs';
 import { enqueueSnackbar } from 'notistack';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { PostItem } from '../../../types/index.js';
+import { Cell, Row, TableRowProps } from 'react-table';
+import { SourceLanguagePostItem } from '../../../types/index.js';
 import { IconButton } from '../../@extended/components/IconButton/index.js';
 import { MainCard } from '../../@extended/components/MainCard/index.js';
 import { ApiPreview } from '../../components/elements/ApiPreview/index.js';
@@ -13,13 +23,11 @@ import { CreateNewButton } from '../../components/elements/CreateNewButton/index
 import { Icon } from '../../components/elements/Icon/index.js';
 import { Link } from '../../components/elements/Link/index.js';
 import { NationalFlagIcon } from '../../components/elements/NationalFlagIcon/index.js';
+import { ReactTable } from '../../components/elements/ReactTable/index.js';
+import { ScrollX } from '../../components/elements/ScrollX/index.js';
 import { StatusDot } from '../../components/elements/StatusDot/index.js';
-import { Cell } from '../../components/elements/Table/Cell/index.js';
-import { cells } from '../../components/elements/Table/Cell/types.js';
-import { Table } from '../../components/elements/Table/index.js';
 import { useAuth } from '../../components/utilities/Auth/index.js';
 import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.js';
-import { buildColumns } from '../../utilities/buildColumns.js';
 import { PostContextProvider, usePost } from './Context/index.js';
 import { RowMenu } from './RowMenu/index.js';
 
@@ -27,7 +35,7 @@ export const PostPageImpl: React.FC = () => {
   const { hasPermission } = useAuth();
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { getPosts, createPost, getApiKeys, getProject } = usePost();
+  const { getPosts, createPost, getApiKeys } = usePost();
   const { data: posts, mutate } = getPosts();
   const { trigger: getApiKeyTrigger } = getApiKeys();
   const { trigger } = createPost();
@@ -45,18 +53,10 @@ export const PostPageImpl: React.FC = () => {
   }, []);
 
   const [menu, setMenu] = useState<EventTarget | null>(null);
-  const [selectedPost, setSelectedPost] = useState<PostItem | undefined>();
-
-  const fields = [
-    { field: 'title', label: t('title'), type: cells.text() },
-    { field: 'slug', label: t('slug'), type: cells.text() },
-    { field: 'status', label: `${t('language')} / ${t('status')}`, type: cells.text() },
-    { field: 'updatedAt', label: t('updated_at'), type: cells.date() },
-    { field: 'action', label: '', type: cells.text(), width: 80 },
-  ];
+  const [selectedPost, setSelectedPost] = useState<SourceLanguagePostItem | undefined>();
 
   const handleTrashSuccess = (postId: string) => {
-    const trashedPost = posts.filter((post) => post.id !== postId);
+    const trashedPost = posts.filter((post) => post.postId !== postId);
     mutate(trashedPost);
     setMenu(null);
     enqueueSnackbar(t('toast.move_to_trash'), { variant: 'success' });
@@ -67,70 +67,133 @@ export const PostPageImpl: React.FC = () => {
     navigate(`${post.id}`);
   };
 
-  const handleOpenMenu = (currentTarget: EventTarget, post: PostItem) => {
+  const handleOpenMenu = (currentTarget: EventTarget, post: SourceLanguagePostItem) => {
     setSelectedPost(post);
     setMenu(currentTarget);
   };
 
-  const columns = buildColumns(fields, (i: number, row: PostItem, data: any) => {
-    const defaultCell = <Cell colIndex={i} type={fields[i].type} cellData={data} />;
+  const columns = useMemo(
+    () => [
+      {
+        id: 'expander',
+        width: 40,
+        Header: () => null,
+        Cell: ({ row }: { row: Row }) => {
+          const collapseIcon = row.isExpanded ? (
+            <Icon name="ChevronDown" size={20} strokeWidth={2} />
+          ) : (
+            <Icon name="ChevronRight" size={20} strokeWidth={2} />
+          );
+          return (
+            <Box
+              sx={{ display: 'flex', alignItems: 'center', color: 'text.secondary' }}
+              {...row.getToggleRowExpandedProps()}
+            >
+              {collapseIcon}
+            </Box>
+          );
+        },
+        SubCell: () => null,
+      },
+      {
+        id: 'title',
+        Header: t('title'),
+        accessor: 'title',
+        Cell: ({ row }: { row: Row }) => {
+          const post = row.original as SourceLanguagePostItem;
+          return hasPermission('updatePost') ? (
+            <Link href={`${post.postId}?language=${post.language}`}>{post.title}</Link>
+          ) : (
+            <Typography>{post.title}</Typography>
+          );
+        },
+      },
+      {
+        id: 'slug',
+        Header: t('slug'),
+        accessor: 'slug',
+      },
+      {
+        id: 'status',
+        Header: `${t('language')} / ${t('status')}`,
+        accessor: 'status',
+        Cell: ({ row }: { row: Row }) => {
+          const post = row.original as SourceLanguagePostItem;
+          return (
+            <Stack>
+              <Stack direction="row" gap={1}>
+                <NationalFlagIcon code={post.language} props={{ width: 20, mr: 1 }} />
+                {post.status.prevStatus && (
+                  <>
+                    <StatusDot status="published" isShowText={false} />
+                    <Divider orientation="vertical" flexItem variant="middle" />
+                  </>
+                )}
+                <StatusDot status={post.status.currentStatus} />
+              </Stack>
+              {post.localizedContents?.length > 0 && (
+                <Typography variant="caption" color="text.secondary">
+                  {t('other_localized_languages', {
+                    count: post.localizedContents.length,
+                  })}
+                </Typography>
+              )}
+            </Stack>
+          );
+        },
+      },
+      {
+        id: 'updatedAt',
+        Header: t('updated_at'),
+        accessor: 'updatedAt',
+        Cell: ({ row }: { row: Row }) => {
+          const post = row.original as SourceLanguagePostItem;
+          return (
+            <Stack direction="row" gap={1}>
+              <Typography>{dayjs(post.updatedAt).format(t('date_format.short'))}</Typography>
+              <Typography>
+                {t('updater')}: {post.updatedByName}
+              </Typography>
+            </Stack>
+          );
+        },
+      },
+      {
+        id: 'action',
+        accessor: 'id',
+        width: 40,
+        Header: () => null,
+        Cell: ({ row }: { row: Row }) => {
+          const post = row.original as SourceLanguagePostItem;
+          return (
+            <IconButton
+              color="secondary"
+              shape="rounded"
+              size="small"
+              onClick={(e) => handleOpenMenu(e.currentTarget, post)}
+            >
+              <Icon name="Ellipsis" size={16} />
+            </IconButton>
+          );
+        },
+        SubCell: () => null,
+      },
+    ],
+    []
+  );
 
-    switch (fields[i].field) {
-      case 'title':
-        return hasPermission('updatePost') ? (
-          <Link href={`${row.id}`}>{defaultCell}</Link>
-        ) : (
-          defaultCell
-        );
-      case 'status':
-        return (
-          <Stack gap={0.5}>
-            {row.languageStatues.map(({ language, currentStatus, prevStatus }) => {
-              return (
-                <Stack key={language} direction="row" gap={1}>
-                  <NationalFlagIcon code={language} props={{ width: 20, mr: 1 }} />
-                  {prevStatus && (
-                    <>
-                      <StatusDot status="published" isShowText={false} />
-                      <Divider orientation="vertical" flexItem variant="middle" />
-                    </>
-                  )}
-                  <StatusDot status={currentStatus} />
-                </Stack>
-              );
-            })}
-          </Stack>
-        );
-      case 'updatedAt':
-        return (
-          <Stack direction="row" gap={1}>
-            <Typography>{dayjs(row.updatedAt).format(t('date_format.short'))}</Typography>
-            <Typography>
-              {t('updater')}: {row.updatedByName}
-            </Typography>
-          </Stack>
-        );
-      case 'action':
-        return (
-          <IconButton
-            color="secondary"
-            shape="rounded"
-            size="small"
-            onClick={(e) => handleOpenMenu(e.currentTarget, row)}
-          >
-            <Icon name="Ellipsis" size={16} />
-          </IconButton>
-        );
-      default:
-        return defaultCell;
-    }
-  });
+  const renderRowSubComponent = useCallback(
+    ({ row, rowProps }: { row: Row; rowProps: TableRowProps }) => (
+      <SubRows row={row} rowProps={rowProps} />
+    ),
+    []
+  );
 
   return (
     <>
       {selectedPost && (
         <RowMenu
-          postId={selectedPost.id}
+          postId={selectedPost.postId}
           menu={menu}
           onTrashSuccess={handleTrashSuccess}
           onClose={() => setMenu(null)}
@@ -146,10 +209,47 @@ export const PostPageImpl: React.FC = () => {
           </Stack>
         }
       >
-        <Table columns={columns} rows={posts} />
+        <ScrollX>
+          <ReactTable
+            columns={columns}
+            data={posts}
+            renderRowSubComponent={renderRowSubComponent}
+          />
+        </ScrollX>
       </MainCard>
     </>
   );
 };
+
+function SubRows({ row, rowProps }: { row: Row; rowProps: TableRowProps }) {
+  const theme = useTheme();
+
+  const post = row.original as SourceLanguagePostItem;
+
+  return (
+    <>
+      {post.localizedContents.map((localizedContent, i) => (
+        <TableRow
+          {...rowProps}
+          key={`${rowProps.key}-expanded-${i}`}
+          sx={{ bgcolor: alpha(theme.palette.primary.lighter, 0.35) }}
+        >
+          {row.cells.map((cell: Cell<{}, any>) => (
+            <TableCell
+              {...cell.getCellProps([{ className: cell.column.className }])}
+              key={cell.column.id}
+            >
+              {cell.render(cell.column.SubCell ? 'SubCell' : 'Cell', {
+                // @ts-ignore --react-table
+                value: cell.column.accessor && cell.column.accessor(localizedContent, i),
+                row: { ...row, original: localizedContent },
+              })}
+            </TableCell>
+          ))}
+        </TableRow>
+      ))}
+    </>
+  );
+}
 
 export const PostPage = ComposeWrapper({ context: PostContextProvider })(PostPageImpl);
