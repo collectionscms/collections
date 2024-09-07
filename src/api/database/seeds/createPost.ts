@@ -38,7 +38,7 @@ export const createPost = async (
       publishedAt: content.status === ContentStatus.published ? currentTime : null,
       language: content.language,
       version: 1,
-      slug: content.slug,
+      slug: encodeURIComponent(content.slug),
       title: content.title,
       body: content.body,
       bodyJson: content.bodyJson,

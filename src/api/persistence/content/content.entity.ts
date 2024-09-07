@@ -15,43 +15,52 @@ export const ContentStatus = {
 } as const;
 export type ContentStatusType = (typeof ContentStatus)[keyof typeof ContentStatus];
 
-export const slugRegex = /^[a-zA-Z0-9-_]+$/;
+type ContentProps = Omit<
+  Content,
+  | 'id'
+  | 'coverUrl'
+  | 'title'
+  | 'body'
+  | 'bodyJson'
+  | 'bodyHtml'
+  | 'version'
+  | 'status'
+  | 'updatedById'
+  | 'publishedAt'
+  | 'deletedAt'
+  | 'createdAt'
+  | 'updatedAt'
+> & {
+  coverUrl?: string | null;
+  title?: string | null;
+  body?: string | null;
+  bodyJson?: string | null;
+  bodyHtml?: string | null;
+  version?: number;
+};
 
 export class ContentEntity extends PrismaBaseEntity<Content> {
-  static Construct({
-    projectId,
-    postId,
-    language,
-    slug,
-    createdById,
-    version,
-  }: {
-    projectId: string;
-    postId: string;
-    language: string;
-    slug: string;
-    createdById: string;
-    version?: number;
-  }): ContentEntity {
+  static Construct(props: ContentProps): ContentEntity {
+    const now = new Date();
     return new ContentEntity({
       id: v4(),
-      projectId,
-      postId,
-      slug,
-      coverUrl: null,
-      title: null,
-      body: null,
-      bodyJson: null,
-      bodyHtml: null,
-      language,
+      projectId: props.projectId,
+      postId: props.postId,
+      slug: props.slug,
+      coverUrl: props.coverUrl ?? null,
+      title: props.title ?? null,
+      body: props.body ?? null,
+      bodyJson: props.bodyJson ?? null,
+      bodyHtml: props.bodyHtml ?? null,
+      language: props.language,
       status: ContentStatus.draft,
       publishedAt: null,
-      version: version || 1,
-      createdById,
-      updatedById: createdById,
+      version: props.version ?? 1,
+      createdById: props.createdById,
+      updatedById: props.createdById,
       deletedAt: null,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      createdAt: now,
+      updatedAt: now,
     });
   }
 
@@ -64,7 +73,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
   public beforeUpdateValidate(): void {
     this.isValid();
 
-    if (!slugRegex.test(this.props.slug)) {
+    if (!encodeURIComponent(this.props.slug)) {
       throw new UnexpectedException({ message: 'Invalid slug format' });
     }
   }
@@ -72,7 +81,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
   public beforeInsertValidate(): void {
     this.isValid();
 
-    if (!slugRegex.test(this.props.slug)) {
+    if (!encodeURIComponent(this.props.slug)) {
       throw new UnexpectedException({ message: 'Invalid slug format' });
     }
   }
@@ -208,7 +217,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
       ...(bodyJson !== undefined && { bodyJson }),
       ...(bodyHtml !== undefined && { bodyHtml }),
       ...(coverUrl !== undefined && { coverUrl }),
-      ...(slug !== undefined && { slug }),
+      ...(slug !== undefined && { slug: encodeURIComponent(slug) }),
       updatedById,
     });
   }

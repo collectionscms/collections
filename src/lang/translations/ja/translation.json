@@ -195,6 +195,7 @@
   "language_publish_settings": "{{language}}の公開設定",
   "danger_zone": "Danger Zone",
   "post_info": "記事情報",
+  "other_localized_languages": "（他 {{count}} 言語）",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",
@@ -224,7 +225,7 @@
     "move_to_trash": "ごみ箱へ移動しました",
     "post_restored": "記事を復元しました",
     "copied": "コピーしました",
-    "post_reverted": "以前のバージョンに戻しました"
+    "post_reverted": "バージョンを戻しました"
   },
   "create": {
     "user": "ユーザー 新規登録",

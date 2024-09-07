@@ -170,7 +170,7 @@ model Content {
   id          String    @id @db.Uuid
   projectId   String    @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
   postId      String    @db.Uuid
-  slug        String    @db.VarChar(255)
+  slug        String
   title       String?   @db.VarChar(255)
   body        String?
   bodyJson    String?
@@ -196,7 +196,7 @@ model ContentHistory {
   id          String    @id @db.Uuid
   projectId   String    @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
   postId      String    @db.Uuid
-  slug        String    @db.VarChar(255)
+  slug        String
   title       String?   @db.VarChar(255)
   body        String?
   bodyJson    String?

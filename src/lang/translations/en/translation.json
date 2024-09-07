@@ -195,6 +195,7 @@
   "language_publish_settings": "{{language}} Publish Settings",
   "danger_zone": "Danger Zone",
   "post_info": "Post info",
+  "other_localized_languages": "( {{count}} other languages )",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",
@@ -224,7 +225,7 @@
     "move_to_trash": "Move to trash",
     "post_restored": "Restored post",
     "copied": "Copied",
-    "post_reverted": "Restored previous post"
+    "post_reverted": "Restored version"
   },
   "create": {
     "user": "Create User",

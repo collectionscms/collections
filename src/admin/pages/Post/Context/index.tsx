@@ -2,12 +2,12 @@ import { ApiKey, Project } from '@prisma/client';
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWR, { SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
-import { LocalizedPost, PostItem, UploadFile } from '../../../../types/index.js';
+import { LocalizedPost, SourceLanguagePostItem, UploadFile } from '../../../../types/index.js';
 import { api } from '../../../utilities/api.js';
 
 type PostContext = {
   getPosts: () => SWRResponse<
-    PostItem[],
+    SourceLanguagePostItem[],
     Error,
     {
       suspense: true;
@@ -58,9 +58,13 @@ const Context = createContext({} as PostContext);
 
 export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const getPosts = () =>
-    useSWR('/posts', (url) => api.get<{ posts: PostItem[] }>(url).then((res) => res.data.posts), {
-      suspense: true,
-    });
+    useSWR(
+      '/posts',
+      (url) => api.get<{ posts: SourceLanguagePostItem[] }>(url).then((res) => res.data.posts),
+      {
+        suspense: true,
+      }
+    );
 
   const getPost = (id: string, language: string | null) =>
     useSWR(

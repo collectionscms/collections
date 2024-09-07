@@ -28,7 +28,8 @@ export class UpdateContentUseCase {
     }
 
     if (slug) {
-      const sameSlugContent = await this.contentRepository.findOneBySlug(this.prisma, slug);
+      const encodedSlug = encodeURIComponent(slug);
+      const sameSlugContent = await this.contentRepository.findOneBySlug(this.prisma, encodedSlug);
       if (sameSlugContent?.content && sameSlugContent?.content.id !== id) {
         throw new RecordNotUniqueException('already_registered_post_slug');
       }
@@ -37,10 +38,7 @@ export class UpdateContentUseCase {
     const result = await this.prisma.$transaction(async (tx) => {
       let entity = content.isPublished()
         ? ContentEntity.Construct({
-            projectId: content.projectId,
-            postId: content.postId,
-            language: content.language,
-            slug: content.slug,
+            ...content.toResponse(),
             createdById: userId,
             version: content.version + 1,
           })
