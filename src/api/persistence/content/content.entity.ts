@@ -15,8 +15,6 @@ export const ContentStatus = {
 } as const;
 export type ContentStatusType = (typeof ContentStatus)[keyof typeof ContentStatus];
 
-export const slugRegex = /^[a-zA-Z0-9-_]+$/;
-
 export class ContentEntity extends PrismaBaseEntity<Content> {
   static Construct({
     projectId,
@@ -64,7 +62,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
   public beforeUpdateValidate(): void {
     this.isValid();
 
-    if (!slugRegex.test(this.props.slug)) {
+    if (!encodeURIComponent(this.props.slug)) {
       throw new UnexpectedException({ message: 'Invalid slug format' });
     }
   }
@@ -72,7 +70,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
   public beforeInsertValidate(): void {
     this.isValid();
 
-    if (!slugRegex.test(this.props.slug)) {
+    if (!encodeURIComponent(this.props.slug)) {
       throw new UnexpectedException({ message: 'Invalid slug format' });
     }
   }
@@ -208,7 +206,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
       ...(bodyJson !== undefined && { bodyJson }),
       ...(bodyHtml !== undefined && { bodyHtml }),
       ...(coverUrl !== undefined && { coverUrl }),
-      ...(slug !== undefined && { slug }),
+      ...(slug !== undefined && { slug: encodeURI(slug) }),
       updatedById,
     });
   }

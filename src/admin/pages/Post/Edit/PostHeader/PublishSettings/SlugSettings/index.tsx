@@ -33,7 +33,7 @@ export const SlugSettings: React.FC<Props> = ({ contentId, slug, onUpdated }) =>
     defaultValues: {
       slug,
     },
-    resolver: yupResolver(updateSlugValidator(t)),
+    resolver: yupResolver(updateSlugValidator()),
   });
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
@@ -73,7 +73,7 @@ export const SlugSettings: React.FC<Props> = ({ contentId, slug, onUpdated }) =>
           </>
         ) : (
           <Stack direction="row" alignItems="center" gap={1}>
-            <Typography flexGrow={1}>{slug}</Typography>
+            <Typography flexGrow={1}>{decodeURIComponent(slug)}</Typography>
             <IconButton onClick={() => setIsEditingSlug(true)}>
               <Icon name="Pencil" size={16} />
             </IconButton>

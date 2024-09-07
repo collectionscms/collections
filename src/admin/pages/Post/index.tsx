@@ -112,6 +112,9 @@ export const PostPageImpl: React.FC = () => {
         id: 'slug',
         Header: t('slug'),
         accessor: 'slug',
+        Cell: ({ value }: { value: string }) => {
+          return <Typography>{decodeURI(value)}</Typography>;
+        },
       },
       {
         id: 'status',
