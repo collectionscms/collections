@@ -195,7 +195,8 @@ export class PostEntity extends PrismaBaseEntity<Post> {
   private getLanguageStatues(contents: ContentEntity[]): {
     [language: string]: ContentStatus;
   } {
-    const sortedContents = contents.sort((a, b) => a.version - b.version);
+    const sortedContents = contents.sort((a, b) => b.version - a.version);
+
     return sortedContents.reduce(
       (acc: { [language: string]: ContentStatus }, content) => {
         const { language, status } = content;
@@ -205,7 +206,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
           acc[language] = {
             currentStatus: status,
           };
-        } else if (!languageStatus) {
+        } else if (languageStatus) {
           acc[language] = {
             ...acc[language],
             prevStatus: status,
