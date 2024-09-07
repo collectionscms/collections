@@ -195,6 +195,7 @@
   "language_publish_settings": "{{language}}の公開設定",
   "danger_zone": "Danger Zone",
   "post_info": "記事情報",
+  "other_localized_languages": "（他 {{count}} 言語）",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",
