@@ -206,7 +206,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
       ...(bodyJson !== undefined && { bodyJson }),
       ...(bodyHtml !== undefined && { bodyHtml }),
       ...(coverUrl !== undefined && { coverUrl }),
-      ...(slug !== undefined && { slug: encodeURI(slug) }),
+      ...(slug !== undefined && { slug: encodeURIComponent(slug) }),
       updatedById,
     });
   }
