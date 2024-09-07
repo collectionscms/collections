@@ -1,18 +1,19 @@
 import { Post } from '@prisma/client';
 import { v4 } from 'uuid';
 import { UnexpectedException } from '../../../exceptions/unexpected.js';
-import { LocalizedPost, PostItem, PublishedContent, PublishedPost } from '../../../types/index.js';
+import {
+  ContentStatus,
+  LocalizedContentItem,
+  LocalizedPost,
+  PublishedContent,
+  PublishedPost,
+  SourceLanguagePostItem,
+} from '../../../types/index.js';
 import { ContentEntity } from '../content/content.entity.js';
 import { ContentHistoryEntity } from '../contentHistory/contentHistory.entity.js';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 import { ProjectEntity } from '../project/project.entity.js';
 import { UserEntity } from '../user/user.entity.js';
-
-type LanguageStatus = {
-  language: string;
-  statuses: string[];
-  publishedAt: Date | null;
-};
 
 export class PostEntity extends PrismaBaseEntity<Post> {
   static Construct({
@@ -66,37 +67,53 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     return this.props.projectId;
   }
 
-  toPostItemResponse(
+  toSourceLanguagePostItemResponse(
     sourceLanguage: string,
     contents: {
       content: ContentEntity;
       updatedBy: UserEntity;
     }[]
-  ): PostItem {
+  ): SourceLanguagePostItem {
     const sortedContents = contents.sort((a, b) => b.content.version - a.content.version);
 
-    // Get content of language
-    const languageContent =
+    const sourceLngContent =
       sortedContents.filter((c) => c.content.language === sourceLanguage)[0] || sortedContents[0];
+    const otherContents = sortedContents.filter(
+      (c) => c.content.id !== sourceLngContent.content.id && c.content.language !== sourceLanguage
+    );
 
-    // Get language with statuses
     const languageStatues = this.getLanguageStatues(contents.map((c) => c.content));
-    const sortedLanguageStatues = Object.entries(languageStatues)
-      .map(([language, value]) => ({
-        language,
-        currentStatus: value.statuses[0],
-        prevStatus: value.statuses[1],
-      }))
-      .sort((a) => (a.language === sourceLanguage ? -1 : 1));
 
     return {
-      id: this.props.id,
-      contentId: languageContent.content.id,
-      title: languageContent.content.title ?? '',
-      slug: languageContent.content.slug,
-      updatedByName: languageContent.updatedBy.name,
-      updatedAt: this.props.updatedAt,
-      languageStatues: sortedLanguageStatues,
+      ...this.toLocalizedContentItem(
+        sourceLngContent.content,
+        sourceLngContent.updatedBy,
+        languageStatues[sourceLngContent.content.language]
+      ),
+      localizedContents: otherContents.map((otherContent) =>
+        this.toLocalizedContentItem(
+          otherContent.content,
+          otherContent.updatedBy,
+          languageStatues[otherContent.content.language]
+        )
+      ),
+    };
+  }
+
+  private toLocalizedContentItem(
+    content: ContentEntity,
+    updatedBy: UserEntity,
+    contentStatus: ContentStatus
+  ): LocalizedContentItem {
+    return {
+      contentId: content.id,
+      postId: content.postId,
+      title: content.title ?? '',
+      slug: content.slug,
+      language: content.language,
+      status: contentStatus,
+      updatedByName: updatedBy.name,
+      updatedAt: content.updatedAt,
     };
   }
 
@@ -131,8 +148,8 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       id: this.props.id,
       slug: languageContent.content.slug,
       contentId: languageContent.content.id,
-      currentStatus: languageStatues[languageContent.content.language].statuses[0],
-      prevStatus: languageStatues[languageContent.content.language].statuses[1],
+      currentStatus: languageStatues[languageContent.content.language].currentStatus,
+      prevStatus: languageStatues[languageContent.content.language].prevStatus,
       updatedAt: languageContent.content.updatedAt,
       title: languageContent.content.title ?? '',
       body: languageContent.content.body ?? '',
@@ -176,26 +193,28 @@ export class PostEntity extends PrismaBaseEntity<Post> {
   }
 
   private getLanguageStatues(contents: ContentEntity[]): {
-    [language: string]: LanguageStatus;
+    [language: string]: ContentStatus;
   } {
-    return contents.reduce(
-      (acc: { [language: string]: LanguageStatus }, content) => {
-        const { language, status, publishedAt } = content;
+    const sortedContents = contents.sort((a, b) => a.version - b.version);
+    return sortedContents.reduce(
+      (acc: { [language: string]: ContentStatus }, content) => {
+        const { language, status } = content;
         const languageStatus = acc[language];
 
         if (!languageStatus) {
           acc[language] = {
-            language,
-            statuses: [status],
-            publishedAt,
+            currentStatus: status,
           };
-        } else if (!languageStatus.publishedAt) {
-          acc[language].statuses.push(status);
+        } else if (!languageStatus) {
+          acc[language] = {
+            ...acc[language],
+            prevStatus: status,
+          };
         }
 
         return acc;
       },
-      {} as { [language: string]: LanguageStatus }
+      {} as { [language: string]: ContentStatus }
     );
   }
 

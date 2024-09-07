@@ -28,14 +28,24 @@ export type ApiError = {
   };
 };
 
-export type PostItem = {
-  id: string;
+export type ContentStatus = {
+  currentStatus: string;
+  prevStatus?: string;
+};
+
+export type LocalizedContentItem = {
+  postId: string;
   contentId: string;
   title: string;
   slug: string;
-  languageStatues: { language: string; currentStatus: string; prevStatus?: string }[];
+  status: ContentStatus;
+  language: string;
   updatedByName: string;
   updatedAt: Date;
+};
+
+export type SourceLanguagePostItem = LocalizedContentItem & {
+  localizedContents: LocalizedContentItem[];
 };
 
 export type LocalizedPost = {
