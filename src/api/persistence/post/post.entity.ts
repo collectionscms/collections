@@ -67,6 +67,12 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     return this.props.projectId;
   }
 
+  /**
+   * Convert entity to source language post item response
+   * @param sourceLanguage
+   * @param contents
+   * @returns
+   */
   toSourceLanguagePostItemResponse(
     sourceLanguage: string,
     contents: {
@@ -78,8 +84,23 @@ export class PostEntity extends PrismaBaseEntity<Post> {
 
     const sourceLngContent =
       sortedContents.filter((c) => c.content.language === sourceLanguage)[0] || sortedContents[0];
-    const otherContents = sortedContents.filter(
-      (c) => c.content.id !== sourceLngContent.content.id && c.content.language !== sourceLanguage
+
+    // Filter for latest ver content in other languages
+    const otherLngContents = Object.values(
+      sortedContents.reduce(
+        (acc, c) => {
+          if (
+            c.content.id !== sourceLngContent.content.id &&
+            c.content.language !== sourceLanguage
+          ) {
+            if (!acc[c.content.language]) {
+              acc[c.content.language] = c;
+            }
+          }
+          return acc;
+        },
+        {} as Record<string, (typeof sortedContents)[0]>
+      )
     );
 
     const languageStatues = this.getLanguageStatues(contents.map((c) => c.content));
@@ -90,11 +111,11 @@ export class PostEntity extends PrismaBaseEntity<Post> {
         sourceLngContent.updatedBy,
         languageStatues[sourceLngContent.content.language]
       ),
-      localizedContents: otherContents.map((otherContent) =>
+      localizedContents: otherLngContents.map((otherLngContent) =>
         this.toLocalizedContentItem(
-          otherContent.content,
-          otherContent.updatedBy,
-          languageStatues[otherContent.content.language]
+          otherLngContent.content,
+          otherLngContent.updatedBy,
+          languageStatues[otherLngContent.content.language]
         )
       ),
     };
