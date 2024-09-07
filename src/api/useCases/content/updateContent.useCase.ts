@@ -38,10 +38,7 @@ export class UpdateContentUseCase {
     const result = await this.prisma.$transaction(async (tx) => {
       let entity = content.isPublished()
         ? ContentEntity.Construct({
-            projectId: content.projectId,
-            postId: content.postId,
-            language: content.language,
-            slug: content.slug,
+            ...content.toResponse(),
             createdById: userId,
             version: content.version + 1,
           })
