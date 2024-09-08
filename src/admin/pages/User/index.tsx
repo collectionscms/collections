@@ -1,17 +1,17 @@
-import { Chip } from '@mui/material';
-import React from 'react';
+import { Chip, Stack, Typography } from '@mui/material';
+import { Role } from '@prisma/client';
+import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { Row } from 'react-table';
 import { UserProfile } from '../../../types/index.js';
 import { MainCard } from '../../@extended/components/MainCard/index.js';
 import { CreateNewButton } from '../../components/elements/CreateNewButton/index.js';
 import { Link } from '../../components/elements/Link/index.js';
-import { Cell } from '../../components/elements/Table/Cell/index.js';
-import { cells } from '../../components/elements/Table/Cell/types.js';
-import { Table } from '../../components/elements/Table/index.js';
+import { ReactTable } from '../../components/elements/ReactTable/index.js';
+import { ScrollX } from '../../components/elements/ScrollX/index.js';
 import { useAuth } from '../../components/utilities/Auth/index.js';
 import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.js';
-import { buildColumns } from '../../utilities/buildColumns.js';
 import { UserContextProvider, useUser } from './Context/index.js';
 
 const UserPageImpl: React.FC = () => {
@@ -21,38 +21,46 @@ const UserPageImpl: React.FC = () => {
   const { getUsers } = useUser();
   const { data } = getUsers();
 
-  const fields = [
-    { field: 'name', label: t('name'), type: cells.text() },
-    { field: 'email', label: t('email'), type: cells.text() },
-    { field: 'role', label: t('role'), type: cells.text() },
-  ];
-
-  const columns = buildColumns(fields, (i: number, row: UserProfile, data: any) => {
-    const defaultCell = <Cell colIndex={i} type={fields[i].type} cellData={data} />;
-
-    switch (fields[i].field) {
-      case 'role':
-        return <Cell colIndex={i} type={fields[i].type} cellData={row.role.name} />;
-      case 'name':
-        if (row.isRegistered) {
-          return hasPermission('updateUser') ? (
-            <Link href={`${row.id}`}>{defaultCell}</Link>
-          ) : (
-            <>{defaultCell}</>
-          );
-        } else {
-          return (
-            <>
-              {defaultCell}
-              <Chip label={t('invited')} color="warning" size="small" sx={{ marginLeft: 1 }} />
-            </>
-          );
-        }
-
-      default:
-        return defaultCell;
-    }
-  });
+  const columns = useMemo(
+    () => [
+      {
+        id: 'name',
+        Header: t('name'),
+        accessor: 'name',
+        Cell: ({ row }: { row: Row }) => {
+          const user = row.original as UserProfile;
+          if (user.isRegistered) {
+            return hasPermission('updateUser') ? (
+              <Link href={`${row.id}`}>{user.name}</Link>
+            ) : (
+              <Typography>{user.name}</Typography>
+            );
+          } else {
+            return (
+              <Stack flexDirection="row" gap={1}>
+                <Typography>{user.name}</Typography>
+                <Chip label={t('invited')} color="warning" size="small" />
+              </Stack>
+            );
+          }
+        },
+      },
+      {
+        id: 'email',
+        Header: t('email'),
+        accessor: 'email',
+      },
+      {
+        id: 'role',
+        Header: t('role'),
+        accessor: 'role',
+        Cell: ({ value }: { value: Role }) => {
+          return <Typography>{value.name}</Typography>;
+        },
+      },
+    ],
+    []
+  );
 
   return (
     <MainCard
@@ -62,7 +70,9 @@ const UserPageImpl: React.FC = () => {
         hasPermission('inviteUser') && <CreateNewButton onClick={() => navigate('create')} />
       }
     >
-      <Table columns={columns} rows={data} />
+      <ScrollX>
+        <ReactTable columns={columns} data={data} />
+      </ScrollX>
     </MainCard>
   );
 };

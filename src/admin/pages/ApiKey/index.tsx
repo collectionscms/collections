@@ -1,20 +1,20 @@
-import { IconButton, Stack, Tooltip } from '@mui/material';
+import { IconButton, Stack, Tooltip, Typography } from '@mui/material';
+import { ApiKey } from '@prisma/client';
+import dayjs from 'dayjs';
 import { useSnackbar } from 'notistack';
-import React from 'react';
+import React, { useMemo } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { UserProfile } from '../../../types/index.js';
+import { Row } from 'react-table';
 import { MainCard } from '../../@extended/components/MainCard/index.js';
 import { CreateNewButton } from '../../components/elements/CreateNewButton/index.js';
 import { Icon } from '../../components/elements/Icon/index.js';
 import { Link } from '../../components/elements/Link/index.js';
-import { Cell } from '../../components/elements/Table/Cell/index.js';
-import { cells } from '../../components/elements/Table/Cell/types.js';
-import { Table } from '../../components/elements/Table/index.js';
+import { ReactTable } from '../../components/elements/ReactTable/index.js';
+import { ScrollX } from '../../components/elements/ScrollX/index.js';
 import { useAuth } from '../../components/utilities/Auth/index.js';
 import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.js';
-import { buildColumns } from '../../utilities/buildColumns.js';
 import { ApiKeyContextProvider, useApiKey } from './Context/index.js';
 
 const ApiKeyPageImpl: React.FC = () => {
@@ -25,49 +25,68 @@ const ApiKeyPageImpl: React.FC = () => {
   const { data } = getApiKeys();
   const { enqueueSnackbar } = useSnackbar();
 
-  const fields = [
-    { field: 'name', label: t('name'), type: cells.text() },
-    { field: 'key', label: t('api_key'), type: cells.text() },
-    { field: 'createdAt', label: t('created_at'), type: cells.date() },
-    { field: 'updatedAt', label: t('updated_at'), type: cells.date() },
-  ];
+  const columns = useMemo(
+    () => [
+      {
+        id: 'name',
+        Header: t('name'),
+        accessor: 'name',
+        Cell: ({ row }: { row: Row }) => {
+          const apiKey = row.original as ApiKey;
+          return hasPermission('updateApiKey') ? (
+            <Link href={`${apiKey.id}`}>{apiKey.name}</Link>
+          ) : (
+            <Typography>{apiKey.name}</Typography>
+          );
+        },
+      },
+      {
+        id: 'key',
+        Header: t('api_key'),
+        accessor: 'key',
+        Cell: ({ value }: { value: string }) => {
+          const maskUuidExceptLast4 = (uuid: string) => {
+            return `${'*'.repeat(uuid.length - 4)}${uuid.slice(-4)}`;
+          };
 
-  const maskUuidExceptLast4 = (uuid: string) => {
-    return `${'*'.repeat(uuid.length - 4)}${uuid.slice(-4)}`;
-  };
+          const handleCopy = (result: boolean) => {
+            if (!result) return;
+            enqueueSnackbar(t('toast.copied'), { variant: 'success' });
+          };
 
-  const handleCopy = (result: boolean) => {
-    if (!result) return;
-    enqueueSnackbar(t('toast.copied'), { variant: 'success' });
-  };
-
-  const columns = buildColumns(fields, (i: number, row: UserProfile, data: any) => {
-    const defaultCell = <Cell colIndex={i} type={fields[i].type} cellData={data} />;
-
-    switch (fields[i].field) {
-      case 'name':
-        return hasPermission('updateApiKey') ? (
-          <Link href={`${row.id}`}>{defaultCell}</Link>
-        ) : (
-          <>{defaultCell}</>
-        );
-      case 'key':
-        return (
-          <Stack direction="row" alignItems="center" gap={1}>
-            {maskUuidExceptLast4(data)}
-            <CopyToClipboard text={data} onCopy={(text, result) => handleCopy(result)}>
-              <Tooltip title="Copy" placement="bottom">
-                <IconButton>
-                  <Icon name="Copy" size={16} />
-                </IconButton>
-              </Tooltip>
-            </CopyToClipboard>
-          </Stack>
-        );
-      default:
-        return defaultCell;
-    }
-  });
+          return (
+            <Stack direction="row" alignItems="center">
+              {maskUuidExceptLast4(value)}
+              <CopyToClipboard text={value} onCopy={(_text, result) => handleCopy(result)}>
+                <Tooltip title="Copy" placement="bottom">
+                  <IconButton>
+                    <Icon name="Copy" size={16} />
+                  </IconButton>
+                </Tooltip>
+              </CopyToClipboard>
+            </Stack>
+          );
+        },
+      },
+      {
+        id: 'createdAt',
+        Header: t('created_at'),
+        accessor: 'createdAt',
+        Cell: ({ value }: { value: Date }) => {
+          return <Typography>{dayjs(value).format(t('date_format.long'))}</Typography>;
+        },
+      },
+      {
+        id: 'updatedAt',
+        Header: t('updated_at'),
+        accessor: 'updatedAt',
+        Cell: ({ value }: { value: Date }) => {
+          return <Typography>{dayjs(value).format(t('date_format.long'))}</Typography>;
+        },
+      },
+    ],
+    []
+  );
 
   return (
     <MainCard
@@ -77,7 +96,9 @@ const ApiKeyPageImpl: React.FC = () => {
         hasPermission('createApiKey') && <CreateNewButton onClick={() => navigate('create')} />
       }
     >
-      <Table columns={columns} rows={data} />
+      <ScrollX>
+        <ReactTable columns={columns} data={data} />
+      </ScrollX>
     </MainCard>
   );
 };
