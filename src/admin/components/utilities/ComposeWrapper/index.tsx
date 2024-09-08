@@ -7,7 +7,7 @@ type ComposedWrappers<CW> = {
 
 type ComposedWrapperProps<T extends {}, CW> = T & {
   [key in keyof CW]?: CW[key] & Partial<{ disable?: boolean }>;
-} & Partial<{ unwrap?: boolean }>;
+};
 
 function omit(obj: any, ...keys: string[][]) {
   const keysToRemove = new Set(keys.flat());
@@ -17,12 +17,12 @@ function omit(obj: any, ...keys: string[][]) {
 export const ComposeWrapper = <CW,>(wrappers: ComposedWrappers<CW>) => {
   return function <T extends object, R>(Component: React.FC<T>) {
     // eslint-disable-next-line react/display-name
-    return forwardRef<R, ComposedWrapperProps<T, CW>>(({ unwrap = false, ...allProps }, ref) => {
+    return forwardRef<R, ComposedWrapperProps<T, CW>>(({ ...allProps }, ref) => {
       const keys = Object.keys(wrappers).filter((k) => !allProps[k as keyof CW]?.disable);
       const props = omit(allProps, keys) as T;
       const restProps = pick(allProps, keys);
 
-      if (unwrap || keys.length === 0) {
+      if (keys.length === 0) {
         return <Component {...props} ref={ref} />;
       }
 
