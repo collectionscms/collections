@@ -65,7 +65,7 @@ export const ProjectSettingsForm: React.FC<Props> = ({
                     id="projectName"
                     type="text"
                     fullWidth
-                    placeholder={`${t('input_placeholder')} Collections`}
+                    placeholder={`${t('input_placeholder')} My Project`}
                     error={errors.name !== undefined}
                   />
                 )}

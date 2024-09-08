@@ -3,12 +3,12 @@ import { v4 } from 'uuid';
 import { UnexpectedException } from '../../../exceptions/unexpected.js';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 
-export const reviewStatus = {
+export const ReviewStatus = {
   Request: 'request',
   Approve: 'approve',
   Close: 'close',
 } as const;
-export type ReviewStatusType = (typeof reviewStatus)[keyof typeof reviewStatus];
+export type ReviewStatusType = (typeof ReviewStatus)[keyof typeof ReviewStatus];
 
 export class ReviewEntity extends PrismaBaseEntity<Review> {
   static Construct({
@@ -33,22 +33,22 @@ export class ReviewEntity extends PrismaBaseEntity<Review> {
       revieweeId,
       reviewerId: null,
       comment,
-      status: reviewStatus.Request,
+      status: ReviewStatus.Request,
       createdAt: now,
       updatedAt: now,
     });
   }
 
   close(): void {
-    this.props.status = reviewStatus.Close;
+    this.props.status = ReviewStatus.Close;
   }
 
   approve(): void {
-    this.props.status = reviewStatus.Approve;
+    this.props.status = ReviewStatus.Approve;
   }
 
   requestReview(comment: string): void {
-    this.props.status = reviewStatus.Request;
+    this.props.status = ReviewStatus.Request;
     this.props.comment = comment;
   }
 

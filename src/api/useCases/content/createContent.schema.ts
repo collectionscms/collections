@@ -1,10 +1,10 @@
 import { z } from 'zod';
-import { LanguageCodes } from '../../../constants/languages.js';
+import { IsoLanguageCode } from '../../../constants/languages.js';
 
 export const createContentUseCaseSchema = z.object({
   id: z.string(),
   projectId: z.string(),
-  language: z.nativeEnum(LanguageCodes),
+  language: z.nativeEnum(IsoLanguageCode),
   userId: z.string(),
 });
 

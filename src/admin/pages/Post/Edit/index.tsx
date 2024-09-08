@@ -1,3 +1,4 @@
+import { LoadingOutlined } from '@ant-design/icons';
 import {
   Box,
   Button,
@@ -9,7 +10,6 @@ import {
   alpha,
   useTheme,
 } from '@mui/material';
-import { enqueueSnackbar } from 'notistack';
 import React, { useEffect, useRef, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useTranslation } from 'react-i18next';
@@ -25,9 +25,8 @@ import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/ind
 import { useUnsavedChangesPrompt } from '../../../hooks/useUnsavedChangesPrompt.js';
 import { PostContextProvider, usePost } from '../Context/index.js';
 import { LocalizedContent } from '../LocalizedContent/index.js';
-import { PostFooter } from '../PostFooter/index.js';
-import { PostHeader } from '../PostHeader/index.js';
-import { PublishSettings } from '../PublishSettings/index.js';
+import { PostFooter } from './PostFooter/index.js';
+import { PostHeader } from './PostHeader/index.js';
 
 const toJson = (value?: string | null) => {
   return value ? JSON.parse(value) : '';
@@ -43,26 +42,28 @@ export const EditPostPageImpl: React.FC = () => {
   const queryParams = new URLSearchParams(location.search);
   const language = queryParams.get('language');
 
-  const { getPost, updateContent, trashPost, trashContent, createFileImage, trashLanguageContent } =
-    usePost();
+  const { getPost, updateContent, createFileImage, translateContent } = usePost();
   const { data: post, mutate } = getPost(id, language);
-  const { trigger, isMutating: isSaving } = updateContent(post.contentId);
-  const { trigger: trashPostTrigger } = trashPost(post.id);
-  const { trigger: trashContentTrigger } = trashContent(post.contentId);
-  const { trigger: trashLanguageContentTrigger } = trashLanguageContent(
-    post.id,
-    post.contentLanguage
-  );
+  const { trigger: updateContentTrigger, isMutating: isSaving } = updateContent(post.contentId);
+  const { trigger: translateTrigger } = translateContent(post.id);
+
   const [isDirty, setIsDirty] = useState(false);
   const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
 
   if (!post) return <></>;
+
+  useEffect(() => {
+    setPostTitle(post.title);
+    setUploadCover(post.coverUrl ?? null);
+    editor?.commands.setContent(toJson(post.bodyJson));
+  }, [post]);
 
   // /////////////////////////////////////
   // Editor
   // /////////////////////////////////////
 
   const [postTitle, setPostTitle] = useState(post.title);
+
   const handleChangeTitle = (value: string) => {
     setPostTitle(value);
     setIsDirty(true);
@@ -70,16 +71,23 @@ export const EditPostPageImpl: React.FC = () => {
 
   const { mode } = useColorMode();
   const ref = React.useRef<HTMLButtonElement>(null);
-  const { editor } = useBlockEditor({
+  const { editor, characterCount } = useBlockEditor({
     initialContent: toJson(post.bodyJson),
     ref: ref,
     mode,
   });
 
   useEffect(() => {
-    setPostTitle(post.title);
-    editor?.commands.setContent(toJson(post.bodyJson));
-  }, [post]);
+    if (isDirty) {
+      // auto save after 5 seconds
+      const timer = setTimeout(async () => {
+        await handleSaveContent();
+        setIsDirty(false);
+      }, 5_000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [isDirty, postTitle, editor?.getText()]);
 
   useEffect(() => {
     if (editor) {
@@ -100,7 +108,6 @@ export const EditPostPageImpl: React.FC = () => {
   // /////////////////////////////////////
 
   const theme = useTheme();
-  const bg = theme.palette.background.paper;
 
   // /////////////////////////////////////
   // Short cut
@@ -118,10 +125,6 @@ export const EditPostPageImpl: React.FC = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploadCover, setUploadCover] = useState<string | null>(post.coverUrl);
   const { trigger: createFileImageTrigger } = createFileImage();
-
-  useEffect(() => {
-    setUploadCover(post.coverUrl ?? null);
-  }, [post]);
 
   const handleUploadCover = async () => {
     const file = inputRef.current?.files?.[0];
@@ -157,24 +160,6 @@ export const EditPostPageImpl: React.FC = () => {
   };
 
   // /////////////////////////////////////
-  // Open settings
-  // /////////////////////////////////////
-
-  const [openSettings, setOpenSettings] = useState(false);
-  const handleOpenSettings = async () => {
-    if (isDirty) {
-      try {
-        await saveContent(buildParams());
-        enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
-      } catch (error) {
-        logger.error(error);
-      }
-    }
-
-    setOpenSettings(true);
-  };
-
-  // /////////////////////////////////////
   // Save content
   // /////////////////////////////////////
 
@@ -191,7 +176,6 @@ export const EditPostPageImpl: React.FC = () => {
   const handleSaveContent = async () => {
     try {
       await saveContent(buildParams());
-      enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
     } catch (error) {
       logger.error(error);
     }
@@ -204,7 +188,7 @@ export const EditPostPageImpl: React.FC = () => {
     bodyHtml: string | null;
     coverUrl: string | null;
   }) => {
-    await trigger(data);
+    await updateContentTrigger(data);
     setIsDirty(false);
     mutate();
   };
@@ -219,34 +203,8 @@ export const EditPostPageImpl: React.FC = () => {
   // Content actions
   // /////////////////////////////////////
 
-  const handleRevertContent = async () => {
-    try {
-      await trashContentTrigger();
-      mutate();
-      enqueueSnackbar(t('toast.move_to_trash'), { variant: 'success' });
-    } catch (error) {
-      logger.error(error);
-    }
-  };
-
-  const handleTrashPost = async () => {
-    try {
-      await trashPostTrigger();
-      enqueueSnackbar(t('toast.move_to_trash'), { variant: 'success' });
-      navigate('/admin/posts');
-    } catch (error) {
-      logger.error(error);
-    }
-  };
-
-  const handleTrashLanguageContent = async (language: string) => {
-    try {
-      await trashLanguageContentTrigger();
-      mutate();
-      enqueueSnackbar(t('toast.move_to_trash'), { variant: 'success' });
-    } catch (error) {
-      logger.error(error);
-    }
+  const handleMutate = () => {
+    mutate();
   };
 
   // /////////////////////////////////////
@@ -271,35 +229,93 @@ export const EditPostPageImpl: React.FC = () => {
     handleChangeLanguage(language);
     mutate({
       ...post,
-      languages: [...post.languages, language],
+      usedLanguages: [...post.usedLanguages, language],
     });
+  };
+
+  const [isTranslating, setIsTranslating] = useState(false);
+  const handleTranslate = async () => {
+    try {
+      setIsTranslating(true);
+      const response = await translateTrigger({
+        sourceLanguage: post.sourceLanguageCode,
+        targetLanguage: post.targetLanguageCode,
+      });
+      handleChangeTitle(response.title);
+      editor?.commands.setContent(response.body);
+    } catch (error) {
+      logger.error(error);
+    } finally {
+      setIsTranslating(false);
+    }
   };
 
   return (
     <>
+      <Button ref={ref} onClick={handleSaveContent} />
       <ConfirmDiscardDialog open={showPrompt} onDiscard={proceed} onKeepEditing={stay} />
       <PostHeader
         post={post}
         currentLanguage={post.contentLanguage}
-        buttonRef={ref}
-        isDirty={isDirty}
         isSaving={isSaving}
-        onOpenSettings={handleOpenSettings}
-        onSaveDraft={handleSaveContent}
         onChangeLanguage={handleChangeLanguage}
         onOpenAddLanguage={handleOpenAddLanguage}
-        onRevertContent={handleRevertContent}
-        onTrashPost={handleTrashPost}
-        onTrashLanguageContent={handleTrashLanguageContent}
+        onReverted={handleMutate}
       />
       <PostFooter
-        histories={post.histories}
-        characters={editor?.storage.characterCount.characters() ?? 0}
+        post={post}
+        onTrashed={handleMutate}
+        onReverted={handleMutate}
+        characters={characterCount.characters()}
       />
-      <Box component="main" sx={{ minHeight: '100vh', backgroundColor: bg }}>
+      <Box component="main" sx={{ minHeight: '100vh' }}>
         <Toolbar sx={{ mt: 0 }} />
-        <Container sx={{ py: 10 }}>
+        <Container sx={{ py: 6 }}>
           <Box sx={{ maxWidth: '42rem', marginLeft: 'auto', marginRight: 'auto' }}>
+            {post.body.length === 0 && post.canTranslate && (
+              <Stack direction="row" gap={1} sx={{ mb: 4, alignItems: 'center' }} color="secondary">
+                <Icon name="Languages" size={16} />
+                <Typography>
+                  {t('translate_source_to_target', {
+                    sourceLanguage: t(
+                      `languages.${post.sourceLanguageCode}` as unknown as TemplateStringsArray
+                    ),
+                    targetLanguage: t(
+                      `languages.${post.targetLanguageCode}` as unknown as TemplateStringsArray
+                    ),
+                  })}
+                </Typography>
+                {isTranslating ? (
+                  <>
+                    <Box
+                      width={64}
+                      height={40}
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                    >
+                      <LoadingOutlined size={14} />
+                    </Box>
+                  </>
+                ) : (
+                  <Button
+                    variant="text"
+                    size="small"
+                    color="secondary"
+                    sx={{
+                      width: 40,
+                      height: 40,
+                      textDecoration: 'underline',
+                      textDecorationStyle: 'dotted',
+                      textUnderlineOffset: '0.3rem',
+                    }}
+                    onClick={handleTranslate}
+                  >
+                    {t('i_do')}
+                  </Button>
+                )}
+              </Stack>
+            )}
             <Box sx={{ mb: 2 }}>
               {uploadCover ? (
                 <Box
@@ -385,16 +401,6 @@ export const EditPostPageImpl: React.FC = () => {
           <BlockEditor editor={editor} />
         </Container>
       </Box>
-      <PublishSettings
-        open={openSettings}
-        contentId={post.contentId}
-        post={{
-          id: post.id,
-          slug: post.slug,
-          currentStatus: post.currentStatus,
-        }}
-        onClose={() => setOpenSettings(false)}
-      />
       <LocalizedContent
         open={openAddLanguage}
         post={post}

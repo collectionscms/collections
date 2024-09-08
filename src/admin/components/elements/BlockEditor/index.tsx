@@ -5,7 +5,9 @@ import { useColorMode } from '../../utilities/ColorMode/index.js';
 import { ContentItemMenu } from './menus/ContentItemMenu/index.js';
 import { LinkMenu } from './menus/LinkMenu/index.js';
 import { TextMenu } from './menus/TextMenu/index.js';
+import { useTranslation } from 'react-i18next';
 import './styles/index.css';
+import './styles/partials/en.css';
 
 export type Props = {
   editor: Editor | null;
@@ -13,6 +15,7 @@ export type Props = {
 
 export const BlockEditor: React.FC<Props> = ({ editor }) => {
   const { mode } = useColorMode();
+  const { i18n } = useTranslation();
   const menuContainerRef = useRef(null);
 
   useEffect(() => {
@@ -22,10 +25,16 @@ export const BlockEditor: React.FC<Props> = ({ editor }) => {
       document.body.style.backgroundColor = '#1e1e1e';
     }
 
+    if (i18n.language === 'ja') {
+      require('./styles/partials/ja.css');
+    } else {
+      require('./styles/partials/en.css');
+    }
+
     return () => {
       document.body.style.backgroundColor = '';
     };
-  }, [mode]);
+  }, [mode, i18n.language]);
 
   if (!editor) {
     return null;

@@ -17,6 +17,7 @@ export const roleActions = {
   invitation: ['inviteUser'],
   review: ['readOwnReview', 'readAllReview', 'createReview', 'approveReview', 'closeReview'],
   apiKey: ['readApiKey', 'createApiKey', 'updateApiKey', 'deleteApiKey'],
+  extension: ['readTemplate'],
 };
 
 export const apiKeyActions = {

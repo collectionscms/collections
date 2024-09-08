@@ -2,12 +2,12 @@ import { ApiKey, Project } from '@prisma/client';
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWR, { SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
-import { LocalizedPost, PostItem, UploadFile } from '../../../../types/index.js';
+import { LocalizedPost, SourceLanguagePostItem, UploadFile } from '../../../../types/index.js';
 import { api } from '../../../utilities/api.js';
 
 type PostContext = {
   getPosts: () => SWRResponse<
-    PostItem[],
+    SourceLanguagePostItem[],
     Error,
     {
       suspense: true;
@@ -25,7 +25,6 @@ type PostContext = {
   >;
   createPost: () => SWRMutationResponse<LocalizedPost, any, string>;
   trashPost: (postId: string) => SWRMutationResponse<void, any, string>;
-  updatePost: (postId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
   createContent: (postId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
   trashLanguageContent: (
     postId: string,
@@ -33,6 +32,9 @@ type PostContext = {
   ) => SWRMutationResponse<void, any, string>;
   updateContent: (contentId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
   trashContent: (contentId: string) => SWRMutationResponse<void, any, string>;
+  translateContent: (
+    contentId: string
+  ) => SWRMutationResponse<{ title: string; body: string }, any, string, Record<string, any>>;
   requestReview: (contentId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
   publish: (contentId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
   archive: (contentId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
@@ -56,9 +58,13 @@ const Context = createContext({} as PostContext);
 
 export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const getPosts = () =>
-    useSWR('/posts', (url) => api.get<{ posts: PostItem[] }>(url).then((res) => res.data.posts), {
-      suspense: true,
-    });
+    useSWR(
+      '/posts',
+      (url) => api.get<{ posts: SourceLanguagePostItem[] }>(url).then((res) => res.data.posts),
+      {
+        suspense: true,
+      }
+    );
 
   const getPost = (id: string, language: string | null) =>
     useSWR(
@@ -79,14 +85,6 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       return api.delete(url).then((res) => res.data);
     });
 
-  const updatePost = (postId: string) =>
-    useSWRMutation(
-      `/posts/${postId}`,
-      async (url: string, { arg }: { arg: Record<string, any> }) => {
-        return api.patch(url, arg).then((res) => res.data);
-      }
-    );
-
   const createContent = (postId: string) =>
     useSWRMutation(
       `/posts/${postId}/contents`,
@@ -99,6 +97,14 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
     useSWRMutation(`/posts/${postId}/languages/${language}`, async (url: string) => {
       return api.delete(url).then((res) => res.data);
     });
+
+  const translateContent = (postId: string) =>
+    useSWRMutation(
+      `/posts/${postId}/translate`,
+      async (url: string, { arg }: { arg: Record<string, any> }) => {
+        return api.post(url, arg).then((res) => res.data);
+      }
+    );
 
   const updateContent = (contentId: string) =>
     useSWRMutation(
@@ -160,10 +166,10 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       getPost,
       createPost,
       trashPost,
-      updatePost,
       createContent,
       updateContent,
       trashContent,
+      translateContent,
       trashLanguageContent,
       requestReview,
       publish,
@@ -177,10 +183,10 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       getPost,
       createPost,
       trashPost,
-      updatePost,
       createContent,
       updateContent,
       trashContent,
+      translateContent,
       trashLanguageContent,
       requestReview,
       publish,

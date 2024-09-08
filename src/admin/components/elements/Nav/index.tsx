@@ -1,6 +1,7 @@
 import { Box, Drawer, Stack, useMediaQuery, useTheme } from '@mui/material';
 import React, { useMemo } from 'react';
 import {
+  extensionsGroupNavItems,
   postNavItems,
   profileNavItems,
   settingsGroupNavItems,
@@ -21,7 +22,7 @@ export const Nav: React.FC<Props> = ({ window, open, variable, toggleDrawer }) =
   const lgUp = useMediaQuery(theme.breakpoints.up('lg'));
   const navWidth = variable === 'portal' ? 60 : 300;
 
-  const tenantGroups = [postNavItems(), settingsGroupNavItems()];
+  const tenantGroups = [postNavItems(), settingsGroupNavItems(), extensionsGroupNavItems()];
   const profileGroups = [profileNavItems()];
 
   const container = window !== undefined ? () => window().document.body : undefined;

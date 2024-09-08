@@ -1,6 +1,5 @@
 import { User } from '@auth/express';
 import { Content, ContentHistory, Post } from '@prisma/client';
-import { validate as isUuid } from 'uuid';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
 import { ContentEntity } from '../content/content.entity.js';
 import { ContentHistoryEntity } from '../contentHistory/contentHistory.entity.js';
@@ -108,9 +107,9 @@ export class PostRepository {
     });
   }
 
-  async findOnePublished(
+  async findOnePublishedById(
     prisma: ProjectPrismaType,
-    key: string
+    id: string
   ): Promise<{
     post: PostEntity;
     contents: {
@@ -121,7 +120,7 @@ export class PostRepository {
   } | null> {
     const record = await prisma.post.findFirst({
       where: {
-        OR: [{ id: isUuid(key) ? key : undefined }, { slug: key }],
+        id,
       },
       include: {
         contents: {
@@ -160,26 +159,6 @@ export class PostRepository {
     };
   }
 
-  async findOneById(prisma: ProjectPrismaType, id: string): Promise<PostEntity> {
-    const record = await prisma.post.findFirstOrThrow({
-      where: {
-        id,
-      },
-    });
-
-    return PostEntity.Reconstruct<Post, PostEntity>(record);
-  }
-
-  async findOneBySlug(prisma: ProjectPrismaType, slug: string): Promise<PostEntity | null> {
-    const record = await prisma.post.findFirst({
-      where: {
-        slug,
-      },
-    });
-
-    return record ? PostEntity.Reconstruct<Post, PostEntity>(record) : null;
-  }
-
   async findOneWithContentsById(
     prisma: ProjectPrismaType,
     id: string,
@@ -200,7 +179,11 @@ export class PostRepository {
         createdById: options?.userId,
       },
       include: {
-        contentHistories: true,
+        contentHistories: {
+          where: {
+            deletedAt: null,
+          },
+        },
         contents: {
           include: {
             createdBy: true,
@@ -239,18 +222,5 @@ export class PostRepository {
     });
 
     return PostEntity.Reconstruct<Post, PostEntity>(record);
-  }
-
-  async updateSlug(prisma: ProjectPrismaType, postEntity: PostEntity): Promise<PostEntity> {
-    const result = await prisma.post.update({
-      where: {
-        id: postEntity.id,
-      },
-      data: {
-        slug: postEntity.slug,
-      },
-    });
-
-    return PostEntity.Reconstruct<Post, PostEntity>(result);
   }
 }

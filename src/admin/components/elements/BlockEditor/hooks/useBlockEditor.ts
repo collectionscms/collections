@@ -119,5 +119,6 @@ export const useBlockEditor = ({
     ],
   });
 
-  return { editor };
+  const characterCount = editor?.storage.characterCount || { characters: () => 0 };
+  return { editor, characterCount };
 };

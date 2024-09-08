@@ -1,5 +1,5 @@
 import { Content } from '@prisma/client';
-import { contentStatus } from '../../persistence/content/content.entity.js';
+import { ContentStatus } from '../../persistence/content/content.entity.js';
 import { ContentRepository } from '../../persistence/content/content.repository.js';
 import { ContentHistoryEntity } from '../../persistence/contentHistory/contentHistory.entity.js';
 import { ContentHistoryRepository } from '../../persistence/contentHistory/contentHistory.repository.js';
@@ -18,7 +18,7 @@ export class ArchiveUseCase {
 
     const content = await this.contentRepository.findOneById(this.prisma, id);
     content.changeStatus({
-      status: contentStatus.archived,
+      status: ContentStatus.archived,
       updatedById: userId,
     });
 

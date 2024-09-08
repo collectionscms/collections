@@ -35,6 +35,7 @@
   "status": "Status",
   "created_at": "Created Date",
   "updated_at": "Updated Date",
+  "deleted_at": "Deleted Date",
   "updater": "Updater",
   "valid": "Valid",
   "invalid": "Invalid",
@@ -123,17 +124,14 @@
   "published_at": "Published At",
   "author": "Author",
   "publish_settings": "Publish Settings",
-  "save_draft_new_ver": "Save (V{{version}})",
-  "save_draft": "Save",
-  "saving": "Saving",
-  "saved": "Saved",
+  "saving": "Saving...",
   "publish": "Publish",
   "review": "Review",
   "publishing": "Publish",
   "updating": "Update",
   "publish_for_review": "Publish for Review",
   "write_the_text": "Write the text",
-  "characters": "characters",
+  "characters": "Characters",
   "source_language": "Source Language",
   "select_source_language": "Select source language",
   "add_to": "Add",
@@ -158,7 +156,7 @@
   "project_created": "Project created!",
   "go_to_project_home": "Go to project home",
   "slug": "Slug",
-  "history": "History",
+  "version_history": "Version History",
   "delete_post": "Delete post",
   "revert_previous_version": "Revert previous version",
   "api_key": "API key",
@@ -170,6 +168,7 @@
   "user_permission": "User Permissions",
   "role_permission": "Role Permissions",
   "api_key_permission": "API Key Permissions",
+  "extension_permission": "Extension Permissions",
   "no_permissions": "No Permissions",
   "open_in_new_tab": "Open in new tab",
   "edit_link": "Edit link",
@@ -177,11 +176,26 @@
   "post_slug": "Post slug",
   "comment": "Comment",
   "add_language_content": "Add language",
-  "remove_language_content": "Remove {{language}}",
+  "remove_language_content": "Delete {{language}} post",
   "no_additional_languages": "No additional languages available",
   "choose_language": "Choose a language",
   "translatable": "Translatable",
   "apply": "Apply",
+  "extension": "Extension",
+  "template": "Template",
+  "deploy": "Deploy",
+  "view_demo": "View Demo",
+  "nextjs_blog_starter_description": "A multilingual statically generated blog template using Next.js and Collections.",
+  "translate_source_to_target": "Do you want to translate from {{sourceLanguage}} to {{targetLanguage}}?",
+  "i_do": "I do.",
+  "version": "Version",
+  "move_lang_content_to_trash": "Move only {{language}} post to trash.",
+  "move_all_lang_content_to_trash": "Move all language post to trash.",
+  "language_post_settings": "{{language}} Post Settings",
+  "language_publish_settings": "{{language}} Publish Settings",
+  "danger_zone": "Danger Zone",
+  "post_info": "Post info",
+  "other_localized_languages": "( {{count}} other languages )",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",
@@ -191,14 +205,13 @@
     "discard_changes": "Discard Changes",
     "confirm_post_archive_title": "Confirm archive",
     "confirm_post_archive": "Are you sure you want to archive it?",
-    "confirm_revert_previous_version": "Do you want to trash the V{{version}} post?",
     "confirm_post_trash_title": "Do you want to move to the trash?",
     "confirm_post_trash": "Posts in the trash can be returned to later.",
-    "confirm_content_trash_title": "Do you want to trash {{language}} post?",
-    "confirm_content_trash": "Posts in the trash can be returned to later.",
     "confirm_removal_user_from_project": "Are you sure you want to remove user from project?",
     "confirm_post_restore_title": "Do you want to restore it?",
-    "confirm_post_restore": "Are you sure you want to restore the post."
+    "confirm_post_restore": "Are you sure you want to restore the post.",
+    "confirm_revert_previous_version_title": "Do you want to revert to the previous version?",
+    "confirm_revert_previous_version": "Writings will be moved to the trash."
   },
   "toast": {
     "created_successfully": "Created successfully.",
@@ -211,7 +224,8 @@
     "joined_project": "Joined the project",
     "move_to_trash": "Move to trash",
     "post_restored": "Restored post",
-    "copied": "Copied"
+    "copied": "Copied",
+    "post_reverted": "Restored version"
   },
   "create": {
     "user": "Create User",
@@ -225,13 +239,14 @@
     "api_key": "Edit Api Key"
   },
   "languages": {
-    "en-us": "English (American)",
-    "en-gb": "English (British)",
+    "en-us": "English",
+    "en-gb": "English",
     "es": "Spanish",
     "ja": "Japanese",
-    "pt-pt": "Portuguese (Portugal)",
-    "pt-br": "Portuguese (Brazilian)",
-    "zh": "Chinese"
+    "pt-pt": "Portuguese",
+    "pt-br": "Portuguese",
+    "zh-cn": "Chinese",
+    "zh-tw": "Chinese"
   },
   "editor": {
     "text": "Text",
@@ -250,7 +265,6 @@
     "code_block": "Code Block",
     "divider": "Divider",
     "image": "Image",
-    "save_draft": "Save Draft",
     "duplicate": "Duplicate",
     "copy_to_clipboard": "Copy to clipboard"
   },
@@ -282,8 +296,13 @@
       "readApiKey": "Read",
       "createApiKey": "Create",
       "updateApiKey": "Update",
-      "deleteApiKey": "Delete"
+      "deleteApiKey": "Delete",
+      "readTemplate": "Read template"
     }
+  },
+  "date_format": {
+    "short": "MM/DD/YYYY",
+    "long": "MM/DD/YYYY hh:mm A"
   },
   "error": {
     "invalid_user_credentials": "Invalid user credentials.",

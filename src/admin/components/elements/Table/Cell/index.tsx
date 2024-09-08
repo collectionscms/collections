@@ -24,7 +24,7 @@ export const Cell: React.FC<Props> = (props) => {
       case 'text' || 'number':
         return cellData && truncate(String(cellData));
       case 'date':
-        return cellData && dayjs(String(cellData)).local().format('YYYY-MM-DD HH:mm');
+        return cellData && dayjs(String(cellData)).local().format(t('date_format.long'));
       case 'boolean':
         return castToBoolean(cellData) ? t('enabled') : t('disabled');
       case 'object':

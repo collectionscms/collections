@@ -1,33 +1,29 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import {
-  Button,
-  FormHelperText,
-  IconButton,
-  InputLabel,
-  Stack,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Button, FormHelperText, IconButton, Stack, TextField, Typography } from '@mui/material';
 import { enqueueSnackbar } from 'notistack';
 import React, { useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { logger } from '../../../../../utilities/logger.js';
-import { Icon } from '../../../../components/elements/Icon/index.js';
-import { FormValues, updateSlugValidator } from '../../../../fields/validators/post/updateSlug.js';
-import { usePost } from '../../Context/index.js';
+import { logger } from '../../../../../../../utilities/logger.js';
+import { Icon } from '../../../../../../components/elements/Icon/index.js';
+import {
+  FormValues,
+  updateSlugValidator,
+} from '../../../../../../fields/validators/post/updateSlug.js';
+import { usePost } from '../../../../Context/index.js';
 
 type Props = {
-  postId: string;
+  contentId: string;
   slug: string;
+  onUpdated: (slug: string) => void;
 };
 
-export const SlugSettings: React.FC<Props> = ({ postId, slug }) => {
+export const SlugSettings: React.FC<Props> = ({ contentId, slug, onUpdated }) => {
   const { t } = useTranslation();
   const [isEditingSlug, setIsEditingSlug] = useState(false);
 
-  const { updatePost } = usePost();
-  const { trigger: updatePostTrigger } = updatePost(postId);
+  const { updateContent } = usePost();
+  const { trigger: updateContentTrigger } = updateContent(contentId);
 
   const {
     control,
@@ -37,13 +33,14 @@ export const SlugSettings: React.FC<Props> = ({ postId, slug }) => {
     defaultValues: {
       slug,
     },
-    resolver: yupResolver(updateSlugValidator(t)),
+    resolver: yupResolver(updateSlugValidator()),
   });
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
-      await updatePostTrigger(form);
+      await updateContentTrigger(form);
       setIsEditingSlug(false);
+      onUpdated(form.slug);
       enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
     } catch (error) {
       logger.error(error);
@@ -52,7 +49,6 @@ export const SlugSettings: React.FC<Props> = ({ postId, slug }) => {
 
   return (
     <>
-      <InputLabel sx={{ mb: 1 }}>{t('post_slug')}</InputLabel>
       <form onSubmit={handleSubmit(onSubmit)}>
         {isEditingSlug ? (
           <>
@@ -77,7 +73,7 @@ export const SlugSettings: React.FC<Props> = ({ postId, slug }) => {
           </>
         ) : (
           <Stack direction="row" alignItems="center" gap={1}>
-            <Typography flexGrow={1}>{slug}</Typography>
+            <Typography flexGrow={1}>{decodeURIComponent(slug)}</Typography>
             <IconButton onClick={() => setIsEditingSlug(true)}>
               <Icon name="Pencil" size={16} />
             </IconButton>

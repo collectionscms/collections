@@ -6,6 +6,7 @@ CREATE TABLE "Project" (
     "subdomain" VARCHAR(255) NOT NULL,
     "iconUrl" VARCHAR(255),
     "enabled" BOOLEAN NOT NULL DEFAULT true,
+    "translationEnabled" BOOLEAN NOT NULL DEFAULT true,
     "sourceLanguage" VARCHAR(255) NOT NULL,
     "createdAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMPTZ(6) NOT NULL,
@@ -111,7 +112,6 @@ CREATE TABLE "File" (
 CREATE TABLE "Post" (
     "id" UUID NOT NULL,
     "projectId" UUID NOT NULL DEFAULT (current_setting('app.current_project_id'::text))::uuid,
-    "slug" VARCHAR(255) NOT NULL,
     "createdById" UUID NOT NULL,
     "createdAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMPTZ(6) NOT NULL,
@@ -140,6 +140,7 @@ CREATE TABLE "Content" (
     "id" UUID NOT NULL,
     "projectId" UUID NOT NULL DEFAULT (current_setting('app.current_project_id'::text))::uuid,
     "postId" UUID NOT NULL,
+    "slug" TEXT NOT NULL,
     "title" VARCHAR(255),
     "body" TEXT,
     "bodyJson" TEXT,
@@ -163,6 +164,7 @@ CREATE TABLE "ContentHistory" (
     "id" UUID NOT NULL,
     "projectId" UUID NOT NULL DEFAULT (current_setting('app.current_project_id'::text))::uuid,
     "postId" UUID NOT NULL,
+    "slug" TEXT NOT NULL,
     "title" VARCHAR(255),
     "body" TEXT,
     "bodyJson" TEXT,
@@ -206,6 +208,21 @@ CREATE TABLE "ApiKeyPermission" (
     CONSTRAINT "ApiKeyPermission_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "TranslationUsage" (
+    "id" UUID NOT NULL,
+    "projectId" UUID NOT NULL DEFAULT (current_setting('app.current_project_id'::text))::uuid,
+    "userId" UUID NOT NULL,
+    "sourceLanguage" VARCHAR(255) NOT NULL,
+    "targetLanguage" VARCHAR(255) NOT NULL,
+    "sourceText" TEXT NOT NULL,
+    "translatedText" TEXT NOT NULL,
+    "characterCount" INTEGER NOT NULL,
+    "createdAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "TranslationUsage_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "Project_subdomain_key" ON "Project"("subdomain");
 
@@ -214,9 +231,6 @@ CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "UserProject_userId_projectId_key" ON "UserProject"("userId", "projectId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Post_projectId_slug_key" ON "Post"("projectId", "slug");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Review_postId_key" ON "Review"("postId");
@@ -319,3 +333,9 @@ ALTER TABLE "ApiKeyPermission" ADD CONSTRAINT "ApiKeyPermission_projectId_fkey" 
 
 -- AddForeignKey
 ALTER TABLE "ApiKeyPermission" ADD CONSTRAINT "ApiKeyPermission_permissionAction_fkey" FOREIGN KEY ("permissionAction") REFERENCES "Permission"("action") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TranslationUsage" ADD CONSTRAINT "TranslationUsage_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Project"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TranslationUsage" ADD CONSTRAINT "TranslationUsage_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE NO ACTION ON UPDATE CASCADE;

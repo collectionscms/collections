@@ -1,10 +1,10 @@
 import { z } from 'zod';
-import { LanguageCodes } from '../../../constants/languages.js';
+import { IsoLanguageCode } from '../../../constants/languages.js';
 
 export const createPostUseCaseSchema = z.object({
   projectId: z.string(),
   userId: z.string(),
-  sourceLanguage: z.nativeEnum(LanguageCodes),
+  sourceLanguage: z.nativeEnum(IsoLanguageCode),
 });
 
 export type CreatePostUseCaseSchemaType = z.infer<typeof createPostUseCaseSchema>;

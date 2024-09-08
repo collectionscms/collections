@@ -1,9 +1,9 @@
 import { z } from 'zod';
-import { LanguageCodes } from '../../../constants/languages.js';
+import { IsoLanguageCode } from '../../../constants/languages.js';
 
 export const getPostsUseCaseSchema = z.object({
   projectId: z.string(),
-  sourceLanguage: z.nativeEnum(LanguageCodes),
+  sourceLanguage: z.nativeEnum(IsoLanguageCode),
   userId: z.string(),
 });
 

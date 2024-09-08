@@ -56,6 +56,7 @@ const CreateRolePageImpl: React.FC = () => {
     { label: t('user_permission'), permissions: roleActions.user },
     { label: t('role_permission'), permissions: roleActions.role },
     { label: t('api_key_permission'), permissions: roleActions.apiKey },
+    { label: t('extension_permission'), permissions: roleActions.extension },
   ];
   const navigateToList = () => {
     navigate('../roles');

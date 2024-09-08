@@ -1,17 +1,19 @@
 import { Post } from '@prisma/client';
 import { v4 } from 'uuid';
 import { UnexpectedException } from '../../../exceptions/unexpected.js';
-import { LocalizedPost, PostItem, PublishedContent, PublishedPost } from '../../../types/index.js';
+import {
+  ContentStatus,
+  LocalizedContentItem,
+  LocalizedPost,
+  PublishedContent,
+  PublishedPost,
+  SourceLanguagePostItem,
+} from '../../../types/index.js';
 import { ContentEntity } from '../content/content.entity.js';
 import { ContentHistoryEntity } from '../contentHistory/contentHistory.entity.js';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
+import { ProjectEntity } from '../project/project.entity.js';
 import { UserEntity } from '../user/user.entity.js';
-
-type LanguageStatus = {
-  language: string;
-  statuses: string[];
-  publishedAt: Date | null;
-};
 
 export class PostEntity extends PrismaBaseEntity<Post> {
   static Construct({
@@ -27,7 +29,6 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     const post = new PostEntity({
       id: postId,
       projectId,
-      slug: this.GenerateSlug(),
       createdById,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -37,6 +38,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       projectId,
       postId,
       language,
+      slug: ContentEntity.generateSlug(),
       createdById,
     });
 
@@ -57,10 +59,6 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     this.isValid();
   }
 
-  static GenerateSlug = () => {
-    return v4().trim().replace(/-/g, '').substring(0, 10);
-  };
-
   get id(): string {
     return this.props.id;
   }
@@ -69,49 +67,80 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     return this.props.projectId;
   }
 
-  get slug(): string {
-    return this.props.slug;
-  }
-
-  updatePost({ slug }: { slug?: string }): void {
-    if (slug) {
-      this.props.slug = slug;
-    }
-  }
-
-  toPostItemResponse(
-    language: string,
+  /**
+   * Convert entity to source language post item response
+   * @param sourceLanguage
+   * @param contents
+   * @returns
+   */
+  toSourceLanguagePostItemResponse(
+    sourceLanguage: string,
     contents: {
       content: ContentEntity;
       updatedBy: UserEntity;
     }[]
-  ): PostItem {
+  ): SourceLanguagePostItem {
     const sortedContents = contents.sort((a, b) => b.content.version - a.content.version);
 
-    // Get content of language
-    const languageContent =
-      sortedContents.filter((c) => c.content.language === language)[0] || sortedContents[0];
+    const sourceLngContent =
+      sortedContents.filter((c) => c.content.language === sourceLanguage)[0] || sortedContents[0];
 
-    // Get language with statuses
+    // Filter for latest ver content in other languages
+    const otherLngContents = Object.values(
+      sortedContents.reduce(
+        (acc, c) => {
+          if (
+            c.content.id !== sourceLngContent.content.id &&
+            c.content.language !== sourceLanguage
+          ) {
+            if (!acc[c.content.language]) {
+              acc[c.content.language] = c;
+            }
+          }
+          return acc;
+        },
+        {} as Record<string, (typeof sortedContents)[0]>
+      )
+    );
+
     const languageStatues = this.getLanguageStatues(contents.map((c) => c.content));
 
     return {
-      id: this.props.id,
-      contentId: languageContent.content.id,
-      title: languageContent.content.title ?? '',
-      slug: this.props.slug,
-      updatedByName: languageContent.updatedBy.name,
-      updatedAt: this.props.updatedAt,
-      languageStatues: Object.entries(languageStatues).map(([language, value]) => ({
-        language,
-        currentStatus: value.statuses[0],
-        prevStatus: value.statuses[1],
-      })),
+      ...this.toLocalizedContentItem(
+        sourceLngContent.content,
+        sourceLngContent.updatedBy,
+        languageStatues[sourceLngContent.content.language]
+      ),
+      localizedContents: otherLngContents.map((otherLngContent) =>
+        this.toLocalizedContentItem(
+          otherLngContent.content,
+          otherLngContent.updatedBy,
+          languageStatues[otherLngContent.content.language]
+        )
+      ),
+    };
+  }
+
+  private toLocalizedContentItem(
+    content: ContentEntity,
+    updatedBy: UserEntity,
+    contentStatus: ContentStatus
+  ): LocalizedContentItem {
+    return {
+      contentId: content.id,
+      postId: content.postId,
+      title: content.title ?? '',
+      slug: content.slug,
+      language: content.language,
+      status: contentStatus,
+      updatedByName: updatedBy.name,
+      updatedAt: content.updatedAt,
     };
   }
 
   toLocalizedWithContentsResponse(
     language: string,
+    project: ProjectEntity,
     contents: {
       content: ContentEntity;
       histories: ContentHistoryEntity[];
@@ -123,24 +152,25 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     const languageContents = sortedContents.filter((c) => c.content.language === language);
     const languageContent = languageContents[0] || sortedContents[0];
 
-    // Get history of language
-    const histories = languageContents.reduce(
-      (acc: ContentHistoryEntity[], c) => acc.concat(c.histories),
-      []
+    // Get the latest history of each version in the same language.
+    const histories = this.getLatestHistoriesByLanguage(
+      language,
+      languageContent.content.version,
+      languageContent.histories
     );
 
-    // Get language statues
+    // Get language statues.
     const languageStatues = this.getLanguageStatues(contents.map((c) => c.content));
 
-    // Filter unique languages
-    const languages = [...new Set(contents.map((c) => c.content.language))];
+    // Filter unique languages.
+    const usedLanguages = [...new Set(contents.map((c) => c.content.language))];
 
     return {
       id: this.props.id,
-      slug: this.props.slug,
+      slug: languageContent.content.slug,
       contentId: languageContent.content.id,
-      currentStatus: languageStatues[languageContent.content.language].statuses[0],
-      prevStatus: languageStatues[languageContent.content.language].statuses[1],
+      currentStatus: languageStatues[languageContent.content.language].currentStatus,
+      prevStatus: languageStatues[languageContent.content.language].prevStatus,
       updatedAt: languageContent.content.updatedAt,
       title: languageContent.content.title ?? '',
       body: languageContent.content.body ?? '',
@@ -149,8 +179,13 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       contentLanguage: languageContent.content.language,
       version: languageContent.content.version,
       coverUrl: languageContent.content.coverUrl,
-      languages,
-      histories: histories.map((history) => history.toResponse()),
+      usedLanguages,
+      canTranslate:
+        project.isTranslationEnabled(languageContent.content.language) &&
+        usedLanguages.includes(project.sourceLanguage),
+      sourceLanguageCode: project.sourceLanguageCode?.code ?? null,
+      targetLanguageCode: languageContent.content.languageCode?.code ?? null,
+      histories,
     };
   }
 
@@ -174,32 +209,34 @@ export class PostEntity extends PrismaBaseEntity<Post> {
 
     return {
       id: this.props.id,
-      slug: this.props.slug,
       contents: filteredLngContents,
     };
   }
 
   private getLanguageStatues(contents: ContentEntity[]): {
-    [language: string]: LanguageStatus;
+    [language: string]: ContentStatus;
   } {
-    return contents.reduce(
-      (acc: { [language: string]: LanguageStatus }, content) => {
-        const { language, status, publishedAt } = content;
+    const sortedContents = contents.sort((a, b) => b.version - a.version);
+
+    return sortedContents.reduce(
+      (acc: { [language: string]: ContentStatus }, content) => {
+        const { language, status } = content;
         const languageStatus = acc[language];
 
         if (!languageStatus) {
           acc[language] = {
-            language,
-            statuses: [status],
-            publishedAt,
+            currentStatus: status,
           };
-        } else if (!languageStatus.publishedAt) {
-          acc[language].statuses.push(status);
+        } else if (languageStatus) {
+          acc[language] = {
+            ...acc[language],
+            prevStatus: status,
+          };
         }
 
         return acc;
       },
-      {} as { [language: string]: LanguageStatus }
+      {} as { [language: string]: ContentStatus }
     );
   }
 
@@ -216,6 +253,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
 
         if (!acc[content.language] && content.publishedAt) {
           acc[content.language] = {
+            slug: content.slug,
             title: content.title ?? '',
             body: content.body ?? '',
             bodyHtml: content.bodyHtml ?? '',
@@ -235,5 +273,38 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       },
       {} as { [language: string]: PublishedContent }
     );
+  }
+
+  /**
+   * Get the latest history of each version in the same language.
+   * @param language
+   * @param currentVersion
+   * @param histories
+   * @returns
+   */
+  private getLatestHistoriesByLanguage(
+    language: string,
+    currentVersion: number,
+    histories: ContentHistoryEntity[]
+  ) {
+    const filteredHistories = histories.filter((history) => history.language === language);
+
+    const latestHistories: { [version: number]: ContentHistoryEntity } = filteredHistories.reduce(
+      (acc: { [version: number]: ContentHistoryEntity }, history) => {
+        const version = history.version;
+        if (version > currentVersion) {
+          // Deleted case
+          return acc;
+        }
+
+        if (!acc[version] || acc[version].createdAt < history.createdAt) {
+          acc[version] = history;
+        }
+        return acc;
+      },
+      {}
+    );
+
+    return Object.values(latestHistories).map((history) => history.toResponse());
   }
 }

@@ -23,26 +23,24 @@ import React, { useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { logger } from '../../../../utilities/logger.js';
-import { IconButton } from '../../../@extended/components/IconButton/index.js';
-import { Icon } from '../../../components/elements/Icon/index.js';
-import { useAuth } from '../../../components/utilities/Auth/index.js';
+import { LocalizedPost } from '../../../../../../types/index.js';
+import { logger } from '../../../../../../utilities/logger.js';
+import { IconButton } from '../../../../../@extended/components/IconButton/index.js';
+import { MainCard } from '../../../../../@extended/components/MainCard/index.js';
+import { Icon } from '../../../../../components/elements/Icon/index.js';
+import { useAuth } from '../../../../../components/utilities/Auth/index.js';
 import {
   FormValues,
   editContentValidator,
-} from '../../../fields/validators/content/editContent.js';
-import { usePost } from '../Context/index.js';
-import AppBarStyled from '../PostHeader/AppBarStyled.js';
+} from '../../../../../fields/validators/content/editContent.js';
+import { usePost } from '../../../Context/index.js';
+import { AppBarStyled } from '../../AppBarStyled.js';
 import { SlugSettings } from './SlugSettings/index.js';
 
 export type Props = {
   open: boolean;
   contentId: string;
-  post: {
-    id: string;
-    currentStatus: string;
-    slug: string;
-  };
+  post: LocalizedPost;
   onClose: () => void;
 };
 
@@ -51,12 +49,11 @@ export const PublishSettings: React.FC<Props> = ({ open, contentId, post, onClos
   const { t } = useTranslation();
   const navigate = useNavigate();
   const theme = useTheme();
-  const { requestReview, publish, archive } = usePost();
+  const { requestReview, publish, archive, getPost } = usePost();
   const { trigger: requestReviewTrigger } = requestReview(contentId);
   const { trigger: publishTrigger } = publish(contentId);
   const { trigger: archiveTrigger } = archive(contentId);
-
-  const { currentStatus, slug } = post;
+  const { data: mutatedPost, mutate } = getPost(post.id, post.contentLanguage);
 
   const appBar: AppBarProps = {
     position: 'fixed',
@@ -78,15 +75,15 @@ export const PublishSettings: React.FC<Props> = ({ open, contentId, post, onClos
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
-      status: currentStatus === 'published' ? 'published' : 'review',
+      status: post.currentStatus === 'published' ? 'published' : 'review',
       comment: '',
     },
     resolver: yupResolver(editContentValidator()),
   });
 
   useEffect(() => {
-    setValue('status', currentStatus === 'published' ? 'published' : 'review');
-  }, [currentStatus]);
+    setValue('status', post.currentStatus === 'published' ? 'published' : 'review');
+  }, [post.currentStatus]);
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
@@ -123,81 +120,82 @@ export const PublishSettings: React.FC<Props> = ({ open, contentId, post, onClos
     }
   };
 
+  const handleUpdatedSlug = (slug: string) => {
+    mutate({
+      ...post,
+      slug,
+    });
+  };
+
   return (
     <Dialog
       open={open}
       fullScreen
-      sx={{ '& .MuiDialog-paper': { bgcolor: 'background.paper', backgroundImage: 'none' } }}
+      sx={{ '& .MuiDialog-paper': { bgcolor: 'background.default', backgroundImage: 'none' } }}
     >
       <form onSubmit={handleSubmit(onSubmit)}>
         <AppBarStyled open={true} {...appBar}>
           <Toolbar>
-            <Stack
-              direction="row"
-              sx={{ flexGrow: 1 }}
-              justifyContent="flex-end"
-              alignItems="center"
-              gap={1.5}
-            >
-              <Button variant="contained" type="submit">
-                {getPublishButtonLabel()}
-              </Button>
-              <IconButton shape="rounded" color="secondary" onClick={onClose} sx={{ p: 0 }}>
-                <Icon name="X" size={28} strokeWidth={1.5} />
-              </IconButton>
-            </Stack>
+            <IconButton color="secondary" onClick={onClose} sx={{ p: 0, position: 'absolute' }}>
+              <Icon name="X" size={28} strokeWidth={1.5} />
+            </IconButton>
+            <Box width="100%">
+              <Typography variant="h3" align="center">
+                {t('language_publish_settings', {
+                  language: t(
+                    `languages.${post.contentLanguage}` as unknown as TemplateStringsArray
+                  ),
+                })}
+              </Typography>
+            </Box>
+            <Button variant="contained" type="submit" sx={{ position: 'absolute', right: 24 }}>
+              {getPublishButtonLabel()}
+            </Button>
           </Toolbar>
         </AppBarStyled>
         <Box component="main">
           <Toolbar sx={{ mt: 0 }} />
-          <Container
-            maxWidth="sm"
-            sx={{
-              mt: 4,
-            }}
-          >
-            <Typography variant={'h1'} align="center">
-              {t('publish_settings')}
-            </Typography>
-            <Box sx={{ py: 3, display: 'flex', justifyContent: 'center' }}>
-              <FormControl component="fieldset">
-                <Controller
-                  name="status"
-                  control={control}
-                  render={({ field }) => (
-                    <RadioGroup value={field.value} name="radio-buttons-group" row>
-                      {currentStatus === 'published' && (
+          <Container maxWidth="sm">
+            <MainCard sx={{ mt: 3 }}>
+              <Stack gap={1}>
+                <InputLabel>{t('status')}</InputLabel>
+                <FormControl fullWidth component="fieldset">
+                  <Controller
+                    name="status"
+                    control={control}
+                    render={({ field }) => (
+                      <RadioGroup value={field.value} name="radio-buttons-group" row>
+                        {post.currentStatus === 'published' && (
+                          <FormControlLabel
+                            {...field}
+                            value="archived"
+                            control={<Radio />}
+                            label={t('archived')}
+                          />
+                        )}
                         <FormControlLabel
                           {...field}
-                          value="archived"
+                          value="review"
                           control={<Radio />}
-                          label={t('archived')}
+                          label={t('review')}
                         />
-                      )}
-                      <FormControlLabel
-                        {...field}
-                        value="review"
-                        control={<Radio />}
-                        label={t('review')}
-                      />
-                      {hasPermission('publishPost') && (
-                        <FormControlLabel
-                          {...field}
-                          value="published"
-                          control={<Radio />}
-                          label={t('publish')}
-                        />
-                      )}
-                    </RadioGroup>
-                  )}
-                />
-              </FormControl>
-            </Box>
-            {watch('status') === 'review' && (
-              <>
-                <Grid container spacing={3}>
+                        {hasPermission('publishPost') && (
+                          <FormControlLabel
+                            {...field}
+                            value="published"
+                            control={<Radio />}
+                            label={t('publish')}
+                          />
+                        )}
+                      </RadioGroup>
+                    )}
+                  />
+                </FormControl>
+              </Stack>
+              {watch('status') === 'review' && (
+                <Grid container spacing={3} sx={{ mt: 1 }}>
                   <Grid xs={12}>
-                    <Stack spacing={1}>
+                    <Stack gap={1}>
                       <InputLabel required>{t('comment')}</InputLabel>
                       <Controller
                         name="comment"
@@ -217,14 +215,24 @@ export const PublishSettings: React.FC<Props> = ({ open, contentId, post, onClos
                     </Stack>
                   </Grid>
                 </Grid>
-              </>
-            )}
+              )}
+            </MainCard>
           </Container>
         </Box>
       </form>
+      {/* Slug */}
       {watch('status') === 'published' && (
-        <Container maxWidth="sm" sx={{ mt: 3 }}>
-          <SlugSettings postId={post.id} slug={slug} />
+        <Container maxWidth="sm" sx={{ mt: 1 }}>
+          <Stack sx={{ py: 3 }}>
+            <Typography variant={'h4'}>{t('post_slug')}</Typography>
+          </Stack>
+          <MainCard>
+            <SlugSettings
+              contentId={mutatedPost.contentId}
+              slug={mutatedPost.slug}
+              onUpdated={(slug) => handleUpdatedSlug(slug)}
+            />
+          </MainCard>
         </Container>
       )}
     </Dialog>

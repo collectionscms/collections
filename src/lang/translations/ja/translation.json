@@ -35,6 +35,7 @@
   "status": "ステータス",
   "created_at": "登録日",
   "updated_at": "更新日",
+  "deleted_at": "削除日",
   "updater": "更新者",
   "valid": "有効",
   "invalid": "無効",
@@ -123,17 +124,14 @@
   "published_at": "公開日時",
   "author": "作成者",
   "publish_settings": "公開設定",
-  "save_draft_new_ver": "v{{version}} を保存する",
-  "save_draft": "保存する",
-  "saving": "保存中",
-  "saved": "保存済み",
+  "saving": "保存中...",
   "publish": "公開",
   "review": "レビュー",
   "publishing": "公開する",
   "updating": "更新する",
   "publish_for_review": "レビュー申請する",
   "write_the_text": "本文を書く",
-  "characters": "文字",
+  "characters": "文字数",
   "source_language": "記事の原文言語",
   "select_source_language": "記事の原文言語を選択",
   "add_to": "追加する",
@@ -158,8 +156,8 @@
   "project_created": "プロジェクトを作成しました！",
   "go_to_project_home": "プロジェクトホームへ",
   "slug": "スラッグ",
-  "history": "履歴",
-  "delete_post": "記事を削除する",
+  "version_history": "バージョン履歴",
+  "delete_post": "記事を削除",
   "revert_previous_version": "前のバージョンに戻す",
   "api_key": "APIキー",
   "generate_api_key": "APIキーを生成",
@@ -170,6 +168,7 @@
   "user_permission": "ユーザーの権限",
   "role_permission": "ロールの権限",
   "api_key_permission": "APIキーの権限",
+  "extension_permission": "拡張の権限",
   "no_permissions": "権限がありません",
   "open_in_new_tab": "新しいタブで開く",
   "edit_link": "リンクを編集",
@@ -177,11 +176,26 @@
   "post_slug": "記事のスラッグ",
   "comment": "コメント",
   "add_language_content": "言語を追加する",
-  "remove_language_content": "{{language}}を削除する",
+  "remove_language_content": "{{language}}の記事を削除",
   "no_additional_languages": "追加できる言語はありません",
   "choose_language": "言語を選択してください",
-  "translatable": "翻訳可能",
+  "translatable": "翻訳可",
   "apply": "適用",
+  "extension": "拡張",
+  "template": "テンプレート",
+  "deploy": "デプロイ",
+  "view_demo": "デモを見る",
+  "nextjs_blog_starter_description": "Next.js と Collections を使った多言語の静的生成ブログテンプレート",
+  "translate_source_to_target": "{{sourceLanguage}}から{{targetLanguage}}に翻訳しますか？",
+  "i_do": "する",
+  "version": "バージョン",
+  "move_lang_content_to_trash": "{{language}}の記事だけごみ箱にいれます。",
+  "move_all_lang_content_to_trash": "全ての言語の記事をごみ箱に入れます。",
+  "language_post_settings": "{{language}}の記事設定",
+  "language_publish_settings": "{{language}}の公開設定",
+  "danger_zone": "Danger Zone",
+  "post_info": "記事情報",
+  "other_localized_languages": "（他 {{count}} 言語）",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",
@@ -191,14 +205,13 @@
     "discard_changes": "変更を破棄",
     "confirm_post_archive_title": "公開終了の確認",
     "confirm_post_archive": "記事を公開終了にしますか？",
-    "confirm_revert_previous_version": "V{{version}} の記事をごみ箱にいれますか？",
     "confirm_post_trash_title": "ごみ箱にいれますか？",
-    "confirm_post_trash": "ごみ箱の記事はあとでもどすことができます。",
-    "confirm_content_trash_title": "{{language}}の記事をごみ箱にいれますか？",
-    "confirm_content_trash": "ごみ箱の記事はあとでもどすことができます。",
+    "confirm_post_trash": "ごみ箱の記事は、あとでもどすことができます。",
     "confirm_removal_user_from_project": "ユーザーをプロジェクトから削除します。よろしいですか？",
     "confirm_post_restore_title": "元にもどしますか？",
-    "confirm_post_restore": "記事を元に戻そうとしています。よろしいですか？"
+    "confirm_post_restore": "記事を元に戻そうとしています。よろしいですか？",
+    "confirm_revert_previous_version_title": "以前のバージョンに戻しますか？",
+    "confirm_revert_previous_version": "書きかけの記事はごみ箱に移動します。"
   },
   "toast": {
     "created_successfully": "登録しました",
@@ -211,7 +224,8 @@
     "joined_project": "プロジェクトに参加しました",
     "move_to_trash": "ごみ箱へ移動しました",
     "post_restored": "記事を復元しました",
-    "copied": "コピーしました"
+    "copied": "コピーしました",
+    "post_reverted": "バージョンを戻しました"
   },
   "create": {
     "user": "ユーザー 新規登録",
@@ -225,13 +239,14 @@
     "api_key": "APIキー 編集"
   },
   "languages": {
-    "en-us": "英語（アメリカ）",
-    "en-gb": "英語（イギリス）",
+    "en-us": "英語",
+    "en-gb": "英語",
     "es": "スペイン語",
     "ja": "日本語",
     "pt-pt": "ポルトガル語",
-    "pt-br": "ポルトガル語（ブラジル）",
-    "zh": "中国語"
+    "pt-br": "ポルトガル語",
+    "zh-cn": "中国語",
+    "zh-tw": "中国語"
   },
   "editor": {
     "text": "テキスト",
@@ -250,7 +265,6 @@
     "code_block": "コードブロック",
     "divider": "区切り線",
     "image": "画像",
-    "save_draft": "下書き保存",
     "duplicate": "複製",
     "copy_to_clipboard": "クリップボードにコピー"
   },
@@ -282,8 +296,13 @@
       "readApiKey": "閲覧",
       "createApiKey": "新規登録",
       "updateApiKey": "編集",
-      "deleteApiKey": "削除"
+      "deleteApiKey": "削除",
+      "readTemplate": "テンプレートの閲覧"
     }
+  },
+  "date_format": {
+    "short": "YYYY/MM/DD",
+    "long": "YYYY/MM/DD HH:mm"
   },
   "error": {
     "invalid_user_credentials": "無効なユーザ認証情報です。",

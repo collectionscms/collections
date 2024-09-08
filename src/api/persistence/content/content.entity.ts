@@ -1,48 +1,66 @@
 import { Content } from '@prisma/client';
 import { v4 } from 'uuid';
+import { getLanguageCodeType, LanguageCode } from '../../../constants/languages.js';
+import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
 import { UnexpectedException } from '../../../exceptions/unexpected.js';
+import { PublishedContent } from '../../../types/index.js';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
+import { UserEntity } from '../user/user.entity.js';
 
-export const contentStatus = {
+export const ContentStatus = {
   draft: 'draft',
   review: 'review',
   published: 'published',
   archived: 'archived',
 } as const;
-export type ContentStatusType = (typeof contentStatus)[keyof typeof contentStatus];
+export type ContentStatusType = (typeof ContentStatus)[keyof typeof ContentStatus];
+
+type ContentProps = Omit<
+  Content,
+  | 'id'
+  | 'coverUrl'
+  | 'title'
+  | 'body'
+  | 'bodyJson'
+  | 'bodyHtml'
+  | 'version'
+  | 'status'
+  | 'updatedById'
+  | 'publishedAt'
+  | 'deletedAt'
+  | 'createdAt'
+  | 'updatedAt'
+> & {
+  coverUrl?: string | null;
+  title?: string | null;
+  body?: string | null;
+  bodyJson?: string | null;
+  bodyHtml?: string | null;
+  version?: number;
+};
 
 export class ContentEntity extends PrismaBaseEntity<Content> {
-  static Construct({
-    projectId,
-    postId,
-    language,
-    createdById,
-    version,
-  }: {
-    projectId: string;
-    postId: string;
-    language: string;
-    createdById: string;
-    version?: number;
-  }): ContentEntity {
+  static Construct(props: ContentProps): ContentEntity {
+    const now = new Date();
     return new ContentEntity({
       id: v4(),
-      projectId,
-      postId,
-      coverUrl: null,
-      title: null,
-      body: null,
-      bodyJson: null,
-      bodyHtml: null,
-      language,
-      status: contentStatus.draft,
+      projectId: props.projectId,
+      postId: props.postId,
+      slug: props.slug,
+      coverUrl: props.coverUrl ?? null,
+      title: props.title ?? null,
+      body: props.body ?? null,
+      bodyJson: props.bodyJson ?? null,
+      bodyHtml: props.bodyHtml ?? null,
+      language: props.language,
+      status: ContentStatus.draft,
       publishedAt: null,
-      version: version || 1,
-      createdById,
-      updatedById: createdById,
+      version: props.version ?? 1,
+      createdById: props.createdById,
+      updatedById: props.createdById,
       deletedAt: null,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      createdAt: now,
+      updatedAt: now,
     });
   }
 
@@ -54,10 +72,18 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
 
   public beforeUpdateValidate(): void {
     this.isValid();
+
+    if (!encodeURIComponent(this.props.slug)) {
+      throw new UnexpectedException({ message: 'Invalid slug format' });
+    }
   }
 
   public beforeInsertValidate(): void {
     this.isValid();
+
+    if (!encodeURIComponent(this.props.slug)) {
+      throw new UnexpectedException({ message: 'Invalid slug format' });
+    }
   }
 
   get id(): string {
@@ -70,6 +96,10 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
 
   get postId(): string {
     return this.props.postId;
+  }
+
+  get slug(): string {
+    return this.props.slug;
   }
 
   get title(): string {
@@ -124,10 +154,18 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     return this.props.updatedAt;
   }
 
+  get languageCode(): LanguageCode | null {
+    return getLanguageCodeType(this.language);
+  }
+
+  static generateSlug = () => {
+    return v4().trim().replace(/-/g, '').substring(0, 10);
+  };
+
   changeStatus({ status, updatedById }: { status: string; updatedById?: string }) {
     this.props.status = status;
 
-    if (status === contentStatus.published) {
+    if (status === ContentStatus.published) {
       this.props.publishedAt = new Date();
     }
 
@@ -153,7 +191,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
   }
 
   isPublished(): boolean {
-    return this.props.status === contentStatus.published;
+    return this.props.status === ContentStatus.published;
   }
 
   updateContent({
@@ -162,24 +200,57 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     bodyJson,
     bodyHtml,
     coverUrl,
+    slug,
     updatedById,
   }: {
-    title: string | null;
-    body: string | null;
-    bodyJson: string | null;
-    bodyHtml: string | null;
-    coverUrl: string | null;
+    title?: string | null;
+    body?: string | null;
+    bodyJson?: string | null;
+    bodyHtml?: string | null;
+    coverUrl?: string | null;
+    slug?: string;
     updatedById: string;
   }): void {
-    this.props.title = title;
-    this.props.body = body;
-    this.props.bodyJson = bodyJson;
-    this.props.bodyHtml = bodyHtml;
-    this.props.coverUrl = coverUrl;
-    this.props.updatedById = updatedById;
+    Object.assign(this.props, {
+      ...(title !== undefined && { title }),
+      ...(body !== undefined && { body }),
+      ...(bodyJson !== undefined && { bodyJson }),
+      ...(bodyHtml !== undefined && { bodyHtml }),
+      ...(coverUrl !== undefined && { coverUrl }),
+      ...(slug !== undefined && { slug: encodeURIComponent(slug) }),
+      updatedById,
+    });
   }
 
   isSameLanguageContent(language: string) {
     return this.props.language.toLocaleLowerCase() === language.toLocaleLowerCase();
+  }
+
+  /**
+   * Convert entity to published content response
+   * @param content
+   * @param createdBy
+   * @returns
+   */
+  toPublishedContentResponse(createdBy: UserEntity): PublishedContent {
+    if (!this.props.publishedAt) {
+      throw new RecordNotFoundException('record_not_found');
+    }
+
+    return {
+      slug: this.props.slug,
+      title: this.props.title ?? '',
+      body: this.props.body ?? '',
+      bodyHtml: this.props.bodyHtml ?? '',
+      language: this.props.language,
+      version: this.props.version,
+      coverUrl: this.props.coverUrl,
+      publishedAt: this.props.publishedAt,
+      author: {
+        id: createdBy.id,
+        name: createdBy.name,
+        avatarUrl: createdBy.avatarUrl,
+      },
+    };
   }
 }

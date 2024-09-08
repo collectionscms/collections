@@ -34,6 +34,29 @@ export class ContentRepository {
     return record ? ContentEntity.Reconstruct<Content, ContentEntity>(record) : null;
   }
 
+  async findOneBySlug(
+    prisma: ProjectPrismaType,
+    slug: string
+  ): Promise<{ content: ContentEntity; createdBy: UserEntity } | null> {
+    const record = await prisma.content.findFirst({
+      where: {
+        slug,
+      },
+      include: {
+        createdBy: true,
+      },
+    });
+
+    if (!record) {
+      return null;
+    }
+
+    return {
+      content: ContentEntity.Reconstruct<Content, ContentEntity>(record),
+      createdBy: UserEntity.Reconstruct<User, UserEntity>(record.createdBy),
+    };
+  }
+
   async findManyByPostIdAndLanguage(
     prisma: ProjectPrismaType,
     postId: string,
@@ -44,6 +67,9 @@ export class ContentRepository {
         postId,
         language,
         deletedAt: null,
+      },
+      orderBy: {
+        version: 'desc',
       },
     });
 

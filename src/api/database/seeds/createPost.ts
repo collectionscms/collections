@@ -1,14 +1,14 @@
 import { v4 } from 'uuid';
-import { contentStatus } from '../../persistence/content/content.entity.js';
+import { ContentStatus } from '../../persistence/content/content.entity.js';
 import { BypassPrismaType } from '../prisma/client.js';
 import { adminUser } from './createUsers.js';
 
 export const createPost = async (
   prisma: BypassPrismaType,
   projectId: string,
-  slug: string,
   contents: {
     language: string;
+    slug: string;
     title: string;
     body: string;
     bodyJson: string;
@@ -35,9 +35,10 @@ export const createPost = async (
       id: v4(),
       projectId,
       status: content.status,
-      publishedAt: content.status === contentStatus.published ? currentTime : null,
+      publishedAt: content.status === ContentStatus.published ? currentTime : null,
       language: content.language,
       version: 1,
+      slug: encodeURIComponent(content.slug),
       title: content.title,
       body: content.body,
       bodyJson: content.bodyJson,
@@ -52,7 +53,6 @@ export const createPost = async (
     data: {
       id: postId,
       projectId,
-      slug: slug,
       createdById: user.id,
       createdAt: currentTime,
       updatedAt: currentTime,

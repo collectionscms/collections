@@ -1,16 +1,15 @@
 import express, { Request, Response } from 'express';
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
-import { ContentRepository } from '../persistence/content/content.repository.js';
-import { PostRepository } from '../persistence/post/post.repository.js';
 import { projectPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';
 import { validateAccess } from '../middlewares/validateAccess.js';
+import { ContentRepository } from '../persistence/content/content.repository.js';
+import { PostRepository } from '../persistence/post/post.repository.js';
 import { getTrashedContentsUseCaseSchema } from '../useCases/content/getTrashedContents.schema.js';
 import { GetTrashedContentsUseCase } from '../useCases/content/getTrashedContents.useCase.js';
 import { restoreContentUseCaseSchema } from '../useCases/content/restoreContent.schema.js';
 import { RestoreContentUseCase } from '../useCases/content/restoreContent.useCase.js';
-import { user } from './user.router.js';
 
 const router = express.Router();
 
