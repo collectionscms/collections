@@ -40,7 +40,7 @@ const TrashPageImpl: React.FC = () => {
         Header: t('deleted_at'),
         accessor: 'deletedAt',
         Cell: ({ value }: { value: Date }) => {
-          return <Typography>{dayjs(value).format(t('date_format.short'))}</Typography>;
+          return <Typography>{dayjs(value).format(t('date_format.long'))}</Typography>;
         },
       },
       {

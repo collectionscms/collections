@@ -153,7 +153,7 @@ export const PostPageImpl: React.FC = () => {
           const post = row.original as SourceLanguagePostItem;
           return (
             <Stack direction="row" gap={1}>
-              <Typography>{dayjs(post.updatedAt).format(t('date_format.short'))}</Typography>
+              <Typography>{dayjs(post.updatedAt).format(t('date_format.long'))}</Typography>
               <Typography>
                 {t('updater')}: {post.updatedByName}
               </Typography>

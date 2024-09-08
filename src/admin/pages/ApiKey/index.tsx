@@ -73,7 +73,7 @@ const ApiKeyPageImpl: React.FC = () => {
         Header: t('created_at'),
         accessor: 'createdAt',
         Cell: ({ value }: { value: Date }) => {
-          return <Typography>{dayjs(value).format(t('date_format.short'))}</Typography>;
+          return <Typography>{dayjs(value).format(t('date_format.long'))}</Typography>;
         },
       },
       {
@@ -81,7 +81,7 @@ const ApiKeyPageImpl: React.FC = () => {
         Header: t('updated_at'),
         accessor: 'updatedAt',
         Cell: ({ value }: { value: Date }) => {
-          return <Typography>{dayjs(value).format(t('date_format.short'))}</Typography>;
+          return <Typography>{dayjs(value).format(t('date_format.long'))}</Typography>;
         },
       },
     ],

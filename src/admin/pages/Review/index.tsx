@@ -37,7 +37,7 @@ const ReviewPageImpl: React.FC = () => {
         Header: t('updated_at'),
         accessor: 'updatedAt',
         Cell: ({ value }: { value: Date }) => {
-          return <Typography>{dayjs(value).format(t('date_format.short'))}</Typography>;
+          return <Typography>{dayjs(value).format(t('date_format.long'))}</Typography>;
         },
       },
     ],
