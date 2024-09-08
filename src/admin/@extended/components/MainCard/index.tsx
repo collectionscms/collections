@@ -39,8 +39,7 @@ export interface MainCardProps extends KeyedObject {
   modal?: boolean;
 }
 
-// eslint-disable-next-line react/display-name
-export const MainCard = forwardRef(
+export const MainCard = forwardRef<HTMLDivElement, MainCardProps>(
   (
     {
       border = true,
@@ -60,8 +59,8 @@ export const MainCard = forwardRef(
       codeString,
       modal = false,
       ...others
-    }: MainCardProps,
-    ref: Ref<HTMLDivElement>
+    },
+    ref
   ) => {
     const theme = useTheme();
     boxShadow = theme.palette.mode === 'dark' ? boxShadow || true : boxShadow;
@@ -147,3 +146,4 @@ export const MainCard = forwardRef(
     );
   }
 );
+MainCard.displayName = 'MainCard';
