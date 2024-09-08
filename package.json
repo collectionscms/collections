@@ -60,7 +60,7 @@
     "@tiptap-pro/extension-drag-handle": "2.10.11",
     "@tiptap-pro/extension-drag-handle-react": "2.11.2",
     "@tiptap-pro/extension-file-handler": "2.10.9",
-    "@tiptap-pro/extension-node-range": "2.10.11",
+    "@tiptap-pro/extension-node-range": "2.11.2",
     "@tiptap/core": "2.6.2",
     "@tiptap/extension-character-count": "2.6.2",
     "@tiptap/extension-code-block-lowlight": "2.6.6",

@@ -2628,10 +2628,10 @@
   resolved "https://registry.tiptap.dev/@tiptap-pro%2fextension-file-handler/-/extension-file-handler-2.10.9.tgz#908c77274fb30cc0174f3c71446dfe7252ed4dc8"
   integrity sha512-JmWPG+M6I1Lj96b3vUQ1rY80PUQAUwinwA9VivyPVYFCrVML6Yi+Oc0FhZyiSHSs6ep2cEAlAQjScdYfF06ckg==
 
-"@tiptap-pro/extension-node-range@2.10.11":
-  version "2.10.11"
-  resolved "https://registry.tiptap.dev/@tiptap-pro%2fextension-node-range/-/extension-node-range-2.10.11.tgz#e650be5961a9032aea62b4b1b489a8b8ec0a08a7"
-  integrity sha512-7LyjIckp6R6h9NpvQewimK1M5Gha6LlhFKXS0IYS+A/aCDjfyzmTjqZP86h34BIkrWQtGgPpFrQT3LOp8KTBUA==
+"@tiptap-pro/extension-node-range@2.11.2":
+  version "2.11.2"
+  resolved "https://registry.tiptap.dev/@tiptap-pro%2fextension-node-range/-/extension-node-range-2.11.2.tgz#992618f928c7e35e6600aaf42a2864c586d8be7d"
+  integrity sha512-fEhe/QlJj4b+EzhNUEEQHVO5kzmN5P8JrxmUMCXE5JEma6nineyFbxFSjPlTr2IewWvpkuJPJdxc+p1bXM8+vg==
 
 "@tiptap/core@2.6.2", "@tiptap/core@^2.5.8":
   version "2.6.2"
