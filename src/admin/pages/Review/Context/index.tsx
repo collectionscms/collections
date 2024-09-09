@@ -1,19 +1,19 @@
-import { Review } from '@prisma/client';
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWR, { SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
+import { ReviewWithParticipant } from '../../../../types/index.js';
 import { api } from '../../../utilities/api.js';
 
 type ReviewContext = {
   getReviews: () => SWRResponse<
-    Review[],
+    ReviewWithParticipant[],
     Error,
     {
       suspense: true;
     }
   >;
   getReview: (id: string) => SWRResponse<
-    Review,
+    ReviewWithParticipant,
     Error,
     {
       suspense: true;
@@ -29,7 +29,7 @@ export const ReviewContextProvider: React.FC<{ children: React.ReactNode }> = ({
   const getReviews = () =>
     useSWR(
       '/reviews',
-      (url) => api.get<{ reviews: Review[] }>(url).then((res) => res.data.reviews),
+      (url) => api.get<{ reviews: ReviewWithParticipant[] }>(url).then((res) => res.data.reviews),
       {
         suspense: true,
       }
@@ -38,7 +38,7 @@ export const ReviewContextProvider: React.FC<{ children: React.ReactNode }> = ({
   const getReview = (id: string) =>
     useSWR(
       `/reviews/${id}`,
-      (url) => api.get<{ review: Review }>(url).then((res) => res.data.review),
+      (url) => api.get<{ review: ReviewWithParticipant }>(url).then((res) => res.data.review),
       {
         suspense: true,
       }

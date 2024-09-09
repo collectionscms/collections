@@ -1,35 +1,111 @@
-import { Review } from '@prisma/client';
+import { Review, User } from '@prisma/client';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
+import { UserEntity } from '../user/user.entity.js';
 import { ReviewEntity } from './review.entity.js';
 
 export class ReviewRepository {
-  async findOwnMany(prisma: ProjectPrismaType, userId: string): Promise<ReviewEntity[]> {
+  async findOwnManyWithUser(
+    prisma: ProjectPrismaType,
+    userId: string
+  ): Promise<
+    {
+      review: ReviewEntity;
+      reviewee: UserEntity;
+      reviewer: UserEntity | null;
+    }[]
+  > {
     const records = await prisma.review.findMany({
       where: {
         OR: [{ revieweeId: userId }, { reviewerId: userId }],
       },
+      include: {
+        reviewee: true,
+        reviewer: true,
+      },
+      orderBy: {
+        updatedAt: 'desc',
+      },
     });
-    return records.map((record) => ReviewEntity.Reconstruct<Review, ReviewEntity>(record));
+
+    return records.map((record) => ({
+      review: ReviewEntity.Reconstruct<Review, ReviewEntity>(record),
+      reviewee: UserEntity.Reconstruct<User, UserEntity>(record.reviewee),
+      reviewer: record.reviewer ? UserEntity.Reconstruct<User, UserEntity>(record.reviewer) : null,
+    }));
   }
 
-  async findOwnOne(prisma: ProjectPrismaType, userId: string, id: string): Promise<ReviewEntity> {
+  async findOwnOne(
+    prisma: ProjectPrismaType,
+    userId: string,
+    id: string
+  ): Promise<{
+    review: ReviewEntity;
+    reviewee: UserEntity;
+    reviewer: UserEntity | null;
+  }> {
     const record = await prisma.review.findFirstOrThrow({
       where: {
         id,
         OR: [{ revieweeId: userId }, { reviewerId: userId }],
       },
+      include: {
+        reviewee: true,
+        reviewer: true,
+      },
     });
-    return ReviewEntity.Reconstruct<Review, ReviewEntity>(record);
+
+    return {
+      review: ReviewEntity.Reconstruct<Review, ReviewEntity>(record),
+      reviewee: UserEntity.Reconstruct<User, UserEntity>(record.reviewee),
+      reviewer: record.reviewer ? UserEntity.Reconstruct<User, UserEntity>(record.reviewer) : null,
+    };
   }
 
-  async findMany(prisma: ProjectPrismaType): Promise<ReviewEntity[]> {
-    const records = await prisma.review.findMany();
-    return records.map((record) => ReviewEntity.Reconstruct<Review, ReviewEntity>(record));
+  async findManyWithUser(prisma: ProjectPrismaType): Promise<
+    {
+      review: ReviewEntity;
+      reviewee: UserEntity;
+      reviewer: UserEntity | null;
+    }[]
+  > {
+    const records = await prisma.review.findMany({
+      include: {
+        reviewee: true,
+        reviewer: true,
+      },
+      orderBy: {
+        updatedAt: 'desc',
+      },
+    });
+
+    return records.map((record) => ({
+      review: ReviewEntity.Reconstruct<Review, ReviewEntity>(record),
+      reviewee: UserEntity.Reconstruct<User, UserEntity>(record.reviewee),
+      reviewer: record.reviewer ? UserEntity.Reconstruct<User, UserEntity>(record.reviewer) : null,
+    }));
   }
 
-  async findOne(prisma: ProjectPrismaType, id: string): Promise<ReviewEntity> {
-    const record = await prisma.review.findUniqueOrThrow({ where: { id } });
-    return ReviewEntity.Reconstruct<Review, ReviewEntity>(record);
+  async findOne(
+    prisma: ProjectPrismaType,
+    id: string
+  ): Promise<{
+    review: ReviewEntity;
+    reviewee: UserEntity;
+    reviewer: UserEntity | null;
+  }> {
+    const record = await prisma.review.findUniqueOrThrow({
+      where: { id },
+      include: {
+        reviewee: true,
+        reviewer: true,
+      },
+    });
+
+    return {
+      review: ReviewEntity.Reconstruct<Review, ReviewEntity>(record),
+      reviewee: UserEntity.Reconstruct<User, UserEntity>(record.reviewee),
+      reviewer: record.reviewer ? UserEntity.Reconstruct<User, UserEntity>(record.reviewer) : null,
+    };
   }
 
   async findOneByContentId(

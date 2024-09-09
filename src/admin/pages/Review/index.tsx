@@ -28,6 +28,11 @@ const ReviewPageImpl: React.FC = () => {
         },
       },
       {
+        id: 'revieweeName',
+        Header: t('requester'),
+        accessor: 'revieweeName',
+      },
+      {
         id: 'status',
         Header: t('status'),
         accessor: 'status',
