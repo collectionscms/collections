@@ -1,5 +1,6 @@
 import { Button, Stack, Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
+import dayjs from 'dayjs';
 import { enqueueSnackbar } from 'notistack';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -57,9 +58,12 @@ const ReviewDetailPageImpl: React.FC = () => {
                   <Icon name="ChevronRight" size={16} />
                   <Link href={`/admin/posts/${review.postId}`}>{review.postId}</Link>
                 </Stack>
-                <Stack spacing={1}>
-                  <Typography>{review.comment}</Typography>
+                <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
+                  <Icon name="UserRound" size={16} />
+                  <Typography>{review.revieweeName}</Typography>
+                  <Typography>{dayjs(review.updatedAt).format(t('date_format.long'))}</Typography>
                 </Stack>
+                <Typography>{review.comment}</Typography>
               </Grid>
               <Grid xs={12}>
                 <Stack direction="row" justifyContent="flex-end" spacing={1}>
