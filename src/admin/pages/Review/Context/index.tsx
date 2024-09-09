@@ -3,10 +3,11 @@ import React, { createContext, useContext, useMemo } from 'react';
 import useSWR, { SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
 import { api } from '../../../utilities/api.js';
+import { ReviewWithParticipant } from '../../../../types/index.js';
 
 type ReviewContext = {
   getReviews: () => SWRResponse<
-    Review[],
+    ReviewWithParticipant[],
     Error,
     {
       suspense: true;
@@ -29,7 +30,7 @@ export const ReviewContextProvider: React.FC<{ children: React.ReactNode }> = ({
   const getReviews = () =>
     useSWR(
       '/reviews',
-      (url) => api.get<{ reviews: Review[] }>(url).then((res) => res.data.reviews),
+      (url) => api.get<{ reviews: ReviewWithParticipant[] }>(url).then((res) => res.data.reviews),
       {
         suspense: true,
       }
