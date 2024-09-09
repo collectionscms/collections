@@ -1,4 +1,4 @@
-import { ApiKey, ContentHistory, File, Permission, Project, Role } from '@prisma/client';
+import { ApiKey, ContentHistory, File, Permission, Project, Review, Role } from '@prisma/client';
 
 export type UserProfile = {
   id: string;
@@ -109,4 +109,9 @@ export type ProjectWithRole = Project & {
   permissions: {
     action: string;
   }[];
+};
+
+export type ReviewWithParticipant = Review & {
+  revieweeName: string;
+  reviewerName: string | null;
 };
