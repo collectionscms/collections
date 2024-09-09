@@ -17,7 +17,7 @@ export class ApproveReviewUseCase {
         tx,
         props.reviewId,
         props.userId,
-        ReviewStatus.Approve,
+        ReviewStatus.Approved,
         ContentStatus.published,
         hasReadAllReview
       );

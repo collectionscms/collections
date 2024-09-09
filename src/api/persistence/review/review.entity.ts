@@ -5,8 +5,8 @@ import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 
 export const ReviewStatus = {
   Request: 'request',
-  Approve: 'approve',
-  Close: 'close',
+  Approved: 'approved',
+  Closed: 'closed',
 } as const;
 export type ReviewStatusType = (typeof ReviewStatus)[keyof typeof ReviewStatus];
 
@@ -40,11 +40,11 @@ export class ReviewEntity extends PrismaBaseEntity<Review> {
   }
 
   close(): void {
-    this.props.status = ReviewStatus.Close;
+    this.props.status = ReviewStatus.Closed;
   }
 
   approve(): void {
-    this.props.status = ReviewStatus.Approve;
+    this.props.status = ReviewStatus.Approved;
   }
 
   requestReview(comment: string): void {
