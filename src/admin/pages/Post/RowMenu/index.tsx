@@ -45,6 +45,7 @@ export const RowMenuImpl: React.FC<Props> = (props) => {
     <>
       <ModalDialog
         open={openTrash}
+        color="error"
         title={t('dialog.confirm_all_content_trash_title')}
         body={t('dialog.confirm_content_trash')}
         execute={{ label: t('move_to_trash'), action: handleTrash }}
