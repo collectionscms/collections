@@ -102,16 +102,18 @@ export const Settings: React.FC<Props> = ({ open, post, onClose, onTrashed }) =>
       <ModalDialog
         open={openContentTrash}
         color="error"
-        title={t('dialog.confirm_post_trash_title')}
-        body={t('dialog.confirm_post_trash')}
+        title={t('dialog.confirm_content_trash_title', {
+          language: t(`languages.${post.contentLanguage}` as unknown as TemplateStringsArray),
+        })}
+        body={t('dialog.confirm_content_trash')}
         execute={{ label: t('move_to_trash'), action: handleTrashLanguageContent }}
         cancel={{ label: t('cancel'), action: handleOpenLanguageContent }}
       />
       <ModalDialog
         open={openPostTrash}
         color="error"
-        title={t('dialog.confirm_post_trash_title')}
-        body={t('dialog.confirm_post_trash')}
+        title={t('dialog.confirm_all_content_trash_title')}
+        body={t('dialog.confirm_content_trash')}
         execute={{ label: t('move_to_trash'), action: handleTrashPost }}
         cancel={{ label: t('cancel'), action: handleOpenPostTrash }}
       />

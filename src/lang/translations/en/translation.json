@@ -206,12 +206,13 @@
     "discard_changes": "Discard Changes",
     "confirm_post_archive_title": "Confirm archive",
     "confirm_post_archive": "Are you sure you want to archive it?",
-    "confirm_post_trash_title": "Do you want to move to the trash?",
-    "confirm_post_trash": "Posts in the trash can be returned to later.",
+    "confirm_content_trash_title": "Are you sure you want to move {{language}} post to trash?",
+    "confirm_content_trash": "Posts in the trash can be returned to later.",
+    "confirm_all_content_trash_title": "Are you sure you want to move all language posts to trash?",
     "confirm_removal_user_from_project": "Are you sure you want to remove user from project?",
     "confirm_post_restore_title": "Do you want to restore it?",
     "confirm_post_restore": "Are you sure you want to restore the post.",
-    "confirm_revert_previous_version_title": "Do you want to revert to the previous version?",
+    "confirm_revert_previous_version_title": "Are you sure you want to revert to the previous version?",
     "confirm_revert_previous_version": "Writings will be moved to the trash."
   },
   "toast": {
