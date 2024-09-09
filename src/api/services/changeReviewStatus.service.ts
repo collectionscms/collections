@@ -1,15 +1,15 @@
 import { UnexpectedException } from '../../exceptions/unexpected.js';
+import { ProjectPrismaType } from '../database/prisma/client';
 import { ContentStatusType } from '../persistence/content/content.entity.js';
 import { ContentRepository } from '../persistence/content/content.repository.js';
 import { ContentHistoryEntity } from '../persistence/contentHistory/contentHistory.entity.js';
 import { ContentHistoryRepository } from '../persistence/contentHistory/contentHistory.repository.js';
 import {
   ReviewEntity,
-  ReviewStatusType,
   ReviewStatus,
+  ReviewStatusType,
 } from '../persistence/review/review.entity.js';
 import { ReviewRepository } from '../persistence/review/review.repository.js';
-import { ProjectPrismaType } from '../database/prisma/client';
 
 export class ChangeReviewStatusService {
   constructor(
@@ -26,7 +26,7 @@ export class ChangeReviewStatusService {
     statusType: ContentStatusType,
     hasReadAllReview: boolean
   ): Promise<ReviewEntity> {
-    const review = hasReadAllReview
+    const { review } = hasReadAllReview
       ? await this.reviewRepository.findOne(prisma, reviewId)
       : await this.reviewRepository.findOwnOne(prisma, userId, reviewId);
 
