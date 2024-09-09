@@ -13,7 +13,7 @@ export class GetPublishedPostsUseCase {
     const records = await this.postRepository.findManyPublished(this.prisma);
 
     return records.map((record) => {
-      return record.post.toPublishedContentsResponse(props.language ?? null, record.contents);
+      return record.post.toPublishedPostResponse(props.language ?? null, record.contents);
     });
   }
 }

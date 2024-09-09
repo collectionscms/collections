@@ -16,6 +16,6 @@ export class GetPublishedPostUseCase {
       throw new RecordNotFoundException('record_not_found');
     }
 
-    return record.post.toPublishedContentsResponse(props.language ?? null, record.contents);
+    return record.post.toPublishedPostResponse(props.language ?? null, record.contents);
   }
 }
