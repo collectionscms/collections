@@ -268,6 +268,11 @@
     "duplicate": "複製",
     "copy_to_clipboard": "クリップボードにコピー"
   },
+  "post_review_status": {
+    "request": "申請中",
+    "approved": "承認",
+    "closed": "終了"
+  },
   "permissions": {
     "action": {
       "readOwnPost": "閲覧（作成者が自分）",

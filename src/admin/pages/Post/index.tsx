@@ -84,13 +84,17 @@ export const PostPageImpl: React.FC = () => {
           ) : (
             <Icon name="ChevronRight" size={20} strokeWidth={2} />
           );
-          return (
+
+          const post = row.original as SourceLanguagePostItem;
+          return post.localizedContents?.length > 0 ? (
             <Box
               sx={{ display: 'flex', alignItems: 'center', color: 'text.secondary' }}
               {...row.getToggleRowExpandedProps()}
             >
               {collapseIcon}
             </Box>
+          ) : (
+            <Box sx={{ opacity: 0.1 }}>{collapseIcon}</Box>
           );
         },
         SubCell: () => null,
