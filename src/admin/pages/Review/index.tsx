@@ -31,6 +31,13 @@ const ReviewPageImpl: React.FC = () => {
         id: 'status',
         Header: t('status'),
         accessor: 'status',
+        Cell: ({ value }: { value: string }) => {
+          return (
+            <Typography>
+              {t(`post_review_status.${value}` as unknown as TemplateStringsArray)}
+            </Typography>
+          );
+        },
       },
       {
         id: 'updatedAt',
