@@ -74,7 +74,12 @@ const EditRolePageImpl: React.FC = () => {
     try {
       reset(form);
       await updateRoleTrigger(form);
-      enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
+      enqueueSnackbar(t('toast.updated_successfully'), {
+        anchorOrigin: {
+          vertical: 'bottom',
+          horizontal: 'center',
+        },
+      });
       navigate('../roles');
     } catch (error) {
       logger.error(error);

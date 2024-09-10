@@ -100,7 +100,12 @@ export const PublishSettings: React.FC<Props> = ({ open, contentId, post, onClos
       }
 
       reset(form);
-      enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
+      enqueueSnackbar(t('toast.updated_successfully'), {
+        anchorOrigin: {
+          vertical: 'bottom',
+          horizontal: 'center',
+        },
+      });
       navigate('/admin/posts');
     } catch (error) {
       logger.error(error);

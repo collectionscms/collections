@@ -32,7 +32,12 @@ export const History: React.FC<Props> = ({ post, onReverted }) => {
     try {
       await trashContentTrigger();
       onReverted();
-      enqueueSnackbar(t('toast.post_reverted'), { variant: 'success' });
+      enqueueSnackbar(t('toast.post_reverted'), {
+        anchorOrigin: {
+          vertical: 'bottom',
+          horizontal: 'center',
+        },
+      });
       setOpenRevert(false);
     } catch (error) {
       logger.error(error);

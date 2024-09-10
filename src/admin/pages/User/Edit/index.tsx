@@ -52,7 +52,12 @@ const EditUserPageImpl: React.FC = () => {
     try {
       reset(form);
       await trigger(form);
-      enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
+      enqueueSnackbar(t('toast.updated_successfully'), {
+        anchorOrigin: {
+          vertical: 'bottom',
+          horizontal: 'center',
+        },
+      });
       navigate('../users');
     } catch (e) {
       logger.error(e);

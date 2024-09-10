@@ -22,7 +22,13 @@ const AcceptInvitationImpl: React.FC = () => {
   useEffect(() => {
     if (!me) return;
     if (!email || !token || me.email !== email) {
-      enqueueSnackbar(t('error.unauthorized_user'), { variant: 'error' });
+      enqueueSnackbar(t('error.unauthorized_user'), {
+        variant: 'error',
+        anchorOrigin: {
+          vertical: 'bottom',
+          horizontal: 'center',
+        },
+      });
       return navigate('/admin');
     }
 

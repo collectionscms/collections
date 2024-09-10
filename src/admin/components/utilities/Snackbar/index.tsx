@@ -6,7 +6,8 @@ import { Icon } from '../../elements/Icon/index.js';
 // custom styles
 const StyledSnackbarProvider = styled(SnackbarProvider)(({ theme }) => ({
   '&.notistack-MuiContent-default': {
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: theme.palette.grey[800],
+    color: theme.palette.grey[0],
   },
   '&.notistack-MuiContent-error': {
     backgroundColor: theme.palette.error.main,

@@ -17,7 +17,13 @@ export const SWRConfigure: React.FC<Props> = ({ children }) => {
           if (e instanceof AxiosError) {
             const apiError = e.response?.data as ApiError;
             if (!apiError?.code) {
-              return enqueueSnackbar(t('error.internal_server_error'), { variant: 'error' });
+              return enqueueSnackbar(t('error.internal_server_error'), {
+                variant: 'error',
+                anchorOrigin: {
+                  vertical: 'bottom',
+                  horizontal: 'center',
+                },
+              });
             }
 
             // Refresh the token,  No snack bar display.
@@ -27,7 +33,13 @@ export const SWRConfigure: React.FC<Props> = ({ children }) => {
             if (apiError.extensions?.message) {
               message += `(${apiError.extensions.message})`;
             }
-            enqueueSnackbar(message, { variant: 'error' });
+            enqueueSnackbar(message, {
+              variant: 'error',
+              anchorOrigin: {
+                vertical: 'bottom',
+                horizontal: 'center',
+              },
+            });
           }
         },
       }}
