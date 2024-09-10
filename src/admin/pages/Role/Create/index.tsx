@@ -66,7 +66,12 @@ const CreateRolePageImpl: React.FC = () => {
     try {
       reset(form);
       await trigger(form);
-      enqueueSnackbar(t('toast.created_successfully'), { variant: 'success' });
+      enqueueSnackbar(t('toast.created_successfully'), {
+        anchorOrigin: {
+          vertical: 'bottom',
+          horizontal: 'center',
+        },
+      });
       navigate(`../roles`);
     } catch (error) {
       logger.error(error);

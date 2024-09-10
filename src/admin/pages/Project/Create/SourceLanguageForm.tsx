@@ -65,7 +65,12 @@ export const SourceLanguageForm: React.FC<Props> = ({
         sourceLanguage: form.sourceLanguage,
       });
       handleNext();
-      enqueueSnackbar(t('toast.created_successfully'), { variant: 'success' });
+      enqueueSnackbar(t('toast.created_successfully'), {
+        anchorOrigin: {
+          vertical: 'bottom',
+          horizontal: 'center',
+        },
+      });
     } catch (e) {
       logger.error(e);
     }

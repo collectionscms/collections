@@ -46,7 +46,12 @@ const ResetPasswordImpl: React.FC = () => {
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
       await trigger(form);
-      enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
+      enqueueSnackbar(t('toast.updated_successfully'), {
+        anchorOrigin: {
+          vertical: 'bottom',
+          horizontal: 'center',
+        },
+      });
       navigate('../users');
     } catch (e) {
       logger.error(e);

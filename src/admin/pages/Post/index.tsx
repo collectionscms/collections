@@ -59,7 +59,12 @@ export const PostPageImpl: React.FC = () => {
     const trashedPost = posts.filter((post) => post.postId !== postId);
     mutate(trashedPost);
     setMenu(null);
-    enqueueSnackbar(t('toast.move_to_trash'), { variant: 'success' });
+    enqueueSnackbar(t('toast.move_to_trash'), {
+      anchorOrigin: {
+        vertical: 'bottom',
+        horizontal: 'center',
+      },
+    });
   };
 
   const handleCreatePost = async () => {

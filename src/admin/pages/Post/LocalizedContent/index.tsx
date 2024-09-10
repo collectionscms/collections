@@ -42,7 +42,12 @@ export const LocalizedContent: React.FC<Props> = ({ open, post, onClose, onChang
     try {
       await createContentTrigger(form);
       onChanged(form.language);
-      enqueueSnackbar(t('toast.created_successfully'), { variant: 'success' });
+      enqueueSnackbar(t('toast.created_successfully'), {
+        anchorOrigin: {
+          vertical: 'bottom',
+          horizontal: 'center',
+        },
+      });
     } catch (error) {
       logger.error(error);
     }

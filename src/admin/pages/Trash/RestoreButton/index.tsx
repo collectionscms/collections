@@ -25,7 +25,12 @@ export const RestoreButtonImpl: React.FC<Props> = ({ postId, onRestored }) => {
       await trigger();
       setOpenRestore(false);
       onRestored();
-      enqueueSnackbar(t('toast.post_restored'), { variant: 'success' });
+      enqueueSnackbar(t('toast.post_restored'), {
+        anchorOrigin: {
+          vertical: 'bottom',
+          horizontal: 'center',
+        },
+      });
     } catch (error) {
       logger.error(error);
     }

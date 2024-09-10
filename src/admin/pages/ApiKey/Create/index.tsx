@@ -53,7 +53,12 @@ const CreateApiKeyPageImpl: React.FC = () => {
     try {
       reset(form);
       await trigger(form);
-      enqueueSnackbar(t('toast.created_successfully'), { variant: 'success' });
+      enqueueSnackbar(t('toast.created_successfully'), {
+        anchorOrigin: {
+          vertical: 'bottom',
+          horizontal: 'center',
+        },
+      });
       navigateToList();
     } catch (error) {
       logger.error(error);

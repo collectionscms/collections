@@ -23,7 +23,12 @@ export const VerifyImpl: React.FC = () => {
         await trigger({
           token,
         });
-        enqueueSnackbar(t('email_verified'), { variant: 'success' });
+        enqueueSnackbar(t('email_verified'), {
+          anchorOrigin: {
+            vertical: 'bottom',
+            horizontal: 'center',
+          },
+        });
       } catch (e) {
         logger.error(e);
       } finally {

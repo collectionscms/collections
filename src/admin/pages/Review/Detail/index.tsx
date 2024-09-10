@@ -29,7 +29,12 @@ const ReviewDetailPageImpl: React.FC = () => {
   const onCloseReview = async () => {
     try {
       await closeReviewTrigger();
-      enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
+      enqueueSnackbar(t('toast.updated_successfully'), {
+        anchorOrigin: {
+          vertical: 'bottom',
+          horizontal: 'center',
+        },
+      });
       mutate();
     } catch (error) {
       logger.error(error);
@@ -39,7 +44,12 @@ const ReviewDetailPageImpl: React.FC = () => {
   const onApproveReview = async () => {
     try {
       await approveReviewTrigger();
-      enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
+      enqueueSnackbar(t('toast.updated_successfully'), {
+        anchorOrigin: {
+          vertical: 'bottom',
+          horizontal: 'center',
+        },
+      });
       mutate();
     } catch (error) {
       logger.error(error);

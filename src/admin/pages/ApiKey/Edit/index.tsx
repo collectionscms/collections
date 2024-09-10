@@ -71,7 +71,12 @@ const EditApiKeyPageImpl: React.FC = () => {
     try {
       reset(form);
       await updateTrigger(form);
-      enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
+      enqueueSnackbar(t('toast.updated_successfully'), {
+        anchorOrigin: {
+          vertical: 'bottom',
+          horizontal: 'center',
+        },
+      });
       navigateToList();
     } catch (error) {
       logger.error(error);

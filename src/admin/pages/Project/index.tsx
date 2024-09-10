@@ -1,14 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import {
-  Autocomplete,
-  Box,
-  Button,
-  FormHelperText,
-  InputLabel,
-  Stack,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Button, FormHelperText, InputLabel, Stack, TextField } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { useSnackbar } from 'notistack';
 import React from 'react';
@@ -18,6 +9,7 @@ import { languages } from '../../../constants/languages.js';
 import { logger } from '../../../utilities/logger.js';
 import { MainCard } from '../../@extended/components/MainCard/index.js';
 import { ConfirmDiscardDialog } from '../../components/elements/ConfirmDiscardDialog/index.js';
+import { LanguageAutocomplete } from '../../components/elements/LanguageAutocomplete/index.js';
 import { useAuth } from '../../components/utilities/Auth/index.js';
 import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.js';
 import {
@@ -26,7 +18,6 @@ import {
 } from '../../fields/validators/projects/updateProject.js';
 import { useUnsavedChangesPrompt } from '../../hooks/useUnsavedChangesPrompt.js';
 import { ProjectContextProvider, useProject } from './Context/index.js';
-import { LanguageAutocomplete } from '../../components/elements/LanguageAutocomplete/index.js';
 
 const ProjectImpl: React.FC = () => {
   const { hasPermission } = useAuth();
@@ -56,7 +47,12 @@ const ProjectImpl: React.FC = () => {
     try {
       reset(form);
       await trigger(form);
-      enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
+      enqueueSnackbar(t('toast.updated_successfully'), {
+        anchorOrigin: {
+          vertical: 'bottom',
+          horizontal: 'center',
+        },
+      });
     } catch (e) {
       logger.error(e);
     }

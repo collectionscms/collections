@@ -41,7 +41,12 @@ export const SlugSettings: React.FC<Props> = ({ contentId, slug, onUpdated }) =>
       await updateContentTrigger(form);
       setIsEditingSlug(false);
       onUpdated(form.slug);
-      enqueueSnackbar(t('toast.updated_successfully'), { variant: 'success' });
+      enqueueSnackbar(t('toast.updated_successfully'), {
+        anchorOrigin: {
+          vertical: 'bottom',
+          horizontal: 'center',
+        },
+      });
     } catch (error) {
       logger.error(error);
     }

@@ -38,7 +38,12 @@ const DeleteDocumentImpl: React.FC<Props> = ({
   const handleDelete = async () => {
     try {
       await trigger();
-      enqueueSnackbar(t('toast.deleted_successfully'), { variant: 'success' });
+      enqueueSnackbar(t('toast.deleted_successfully'), {
+        anchorOrigin: {
+          vertical: 'bottom',
+          horizontal: 'center',
+        },
+      });
       onSuccess();
       reset();
     } catch (error) {

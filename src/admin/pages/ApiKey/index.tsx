@@ -51,7 +51,12 @@ const ApiKeyPageImpl: React.FC = () => {
 
           const handleCopy = (result: boolean) => {
             if (!result) return;
-            enqueueSnackbar(t('toast.copied'), { variant: 'success' });
+            enqueueSnackbar(t('toast.copied'), {
+              anchorOrigin: {
+                vertical: 'bottom',
+                horizontal: 'center',
+              },
+            });
           };
 
           return (

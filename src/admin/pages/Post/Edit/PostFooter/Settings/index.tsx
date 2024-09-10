@@ -73,7 +73,12 @@ export const Settings: React.FC<Props> = ({ open, post, onClose, onTrashed }) =>
       await trashLanguageContentTrigger();
       onTrashed();
       handleOpenLanguageContent();
-      enqueueSnackbar(t('toast.move_to_trash'), { variant: 'success' });
+      enqueueSnackbar(t('toast.move_to_trash'), {
+        anchorOrigin: {
+          vertical: 'bottom',
+          horizontal: 'center',
+        },
+      });
     } catch (error) {
       logger.error(error);
     }
@@ -82,7 +87,12 @@ export const Settings: React.FC<Props> = ({ open, post, onClose, onTrashed }) =>
   const handleTrashPost = async () => {
     try {
       await trashPostTrigger();
-      enqueueSnackbar(t('toast.move_to_trash'), { variant: 'success' });
+      enqueueSnackbar(t('toast.move_to_trash'), {
+        anchorOrigin: {
+          vertical: 'bottom',
+          horizontal: 'center',
+        },
+      });
       handleOpenPostTrash();
       navigate('/admin/posts');
     } catch (error) {
