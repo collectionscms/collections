@@ -11,7 +11,7 @@ export class GetPublishedContentUseCase {
   ) {}
 
   async execute(props: GetPublishedContentUseCaseSchemaType): Promise<PublishedContent> {
-    const record = await this.contentRepository.findOneBySlug(this.prisma, props.slug);
+    const record = await this.contentRepository.findOneBySlug(this.prisma, encodeURI(props.slug));
     if (!record) {
       throw new RecordNotFoundException('record_not_found');
     }
