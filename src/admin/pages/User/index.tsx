@@ -31,7 +31,7 @@ const UserPageImpl: React.FC = () => {
           const user = row.original as UserProfile;
           if (user.isRegistered) {
             return hasPermission('updateUser') ? (
-              <Link href={`${row.id}`}>{user.name}</Link>
+              <Link href={`${user.id}`}>{user.name}</Link>
             ) : (
               <Typography>{user.name}</Typography>
             );
