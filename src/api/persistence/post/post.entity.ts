@@ -228,8 +228,12 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       content: ContentEntity;
       createdBy: UserEntity;
     }[]
-  ): PublishedPost {
+  ): PublishedPost | null {
     const groupByLngContents = this.groupContentsByLanguage(contents);
+    if (language && !groupByLngContents[language]) {
+      return null;
+    }
+
     const filteredLngContents = language
       ? { [language]: groupByLngContents[language] }
       : groupByLngContents;

@@ -16,6 +16,11 @@ export class GetPublishedPostUseCase {
       throw new RecordNotFoundException('record_not_found');
     }
 
-    return record.post.toPublishedPostResponse(props.language ?? null, record.contents);
+    const post = record.post.toPublishedPostResponse(props.language ?? null, record.contents);
+    if (!post) {
+      throw new RecordNotFoundException('record_not_found');
+    }
+
+    return post;
   }
 }
