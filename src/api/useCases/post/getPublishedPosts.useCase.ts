@@ -12,8 +12,8 @@ export class GetPublishedPostsUseCase {
   async execute(props: GetPublishedPostsUseCaseSchemaType): Promise<PublishedPost[]> {
     const records = await this.postRepository.findManyPublished(this.prisma);
 
-    return records.map((record) => {
-      return record.post.toPublishedContentsResponse(props.language ?? null, record.contents);
-    });
+    return records
+      .map((record) => record.post.toPublishedPostResponse(props.language ?? null, record.contents))
+      .filter((post) => post !== null);
   }
 }

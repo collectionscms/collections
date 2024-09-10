@@ -189,30 +189,6 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     };
   }
 
-  /**
-   * Convert entity to published post response
-   * @param language
-   * @param contents
-   * @returns
-   */
-  toPublishedContentsResponse(
-    language: string | null,
-    contents: {
-      content: ContentEntity;
-      createdBy: UserEntity;
-    }[]
-  ): PublishedPost {
-    const groupByLngContents = this.groupByLanguage(contents);
-    const filteredLngContents = language
-      ? { [language]: groupByLngContents[language] }
-      : groupByLngContents;
-
-    return {
-      id: this.props.id,
-      contents: filteredLngContents,
-    };
-  }
-
   private getLanguageStatues(contents: ContentEntity[]): {
     [language: string]: ContentStatus;
   } {
@@ -240,7 +216,35 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     );
   }
 
-  private groupByLanguage(
+  /**
+   * Convert entity to published post response
+   * @param language
+   * @param contents
+   * @returns
+   */
+  toPublishedPostResponse(
+    language: string | null,
+    contents: {
+      content: ContentEntity;
+      createdBy: UserEntity;
+    }[]
+  ): PublishedPost | null {
+    const groupByLngContents = this.groupContentsByLanguage(contents);
+    if (language && !groupByLngContents[language]) {
+      return null;
+    }
+
+    const filteredLngContents = language
+      ? { [language]: groupByLngContents[language] }
+      : groupByLngContents;
+
+    return {
+      id: this.props.id,
+      contents: filteredLngContents,
+    };
+  }
+
+  private groupContentsByLanguage(
     contents: {
       content: ContentEntity;
       createdBy: UserEntity;

@@ -9,7 +9,7 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import React, { CSSProperties, ReactNode, Ref, forwardRef } from 'react';
+import React, { CSSProperties, ReactNode, forwardRef } from 'react';
 import { KeyedObject } from '../../types/root.js';
 import Highlighter from '../Highlighter/index.js';
 
@@ -87,8 +87,10 @@ export const MainCard = forwardRef<HTMLDivElement, MainCardProps>(
             '& pre': {
               m: 0,
               p: '12px !important',
-              fontFamily: theme.typography.fontFamily,
-              fontSize: '0.75rem',
+              '& code': {
+                fontFamily: theme.typography.fontFamily,
+                fontSize: '0.75rem',
+              },
             },
           }),
           ...(modal && {
