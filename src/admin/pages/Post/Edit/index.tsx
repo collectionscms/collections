@@ -203,6 +203,16 @@ export const EditPostPageImpl: React.FC = () => {
     mutate();
   };
 
+  const handleTrashedContent = () => {
+    const changeContent = content.usedLanguages.find(
+      (usedLanguage) => usedLanguage.language !== content.language
+    );
+
+    if (changeContent) {
+      handleChangeLanguage(changeContent?.contentId);
+    }
+  };
+
   // /////////////////////////////////////
   // Language
   // /////////////////////////////////////
@@ -260,7 +270,7 @@ export const EditPostPageImpl: React.FC = () => {
       />
       <PostFooter
         content={content}
-        onTrashed={handleMutate}
+        onTrashed={handleTrashedContent}
         onReverted={handleMutate}
         characters={characterCount.characters()}
       />
