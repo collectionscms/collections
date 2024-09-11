@@ -30,7 +30,7 @@ export type ApiError = {
 
 export type ContentStatus = {
   currentStatus: string;
-  prevStatus?: string;
+  prevStatus: string | null;
 };
 
 export type LocalizedContentItem = {
@@ -48,24 +48,25 @@ export type SourceLanguagePostItem = LocalizedContentItem & {
   localizedContents: LocalizedContentItem[];
 };
 
-export type LocalizedPost = {
-  id: string;
-  slug: string;
+export type LocalizedContent = {
+  postId: string;
   contentId: string;
-  currentStatus: string;
-  prevStatus?: string;
-  updatedAt: Date;
   version: number;
   title: string;
   body: string;
   bodyJson: string;
   bodyHtml: string;
   coverUrl: string | null;
-  contentLanguage: string;
+  slug: string;
+  status: ContentStatus;
+  language: string;
   usedLanguages: string[];
   canTranslate: boolean;
   sourceLanguageCode: string | null;
   targetLanguageCode: string | null;
+  updatedAt: Date;
+  createdByName: string;
+  updatedByName: string;
   histories: ContentHistory[];
 };
 

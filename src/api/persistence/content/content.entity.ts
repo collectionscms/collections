@@ -3,8 +3,10 @@ import { v4 } from 'uuid';
 import { getLanguageCodeType, LanguageCode } from '../../../constants/languages.js';
 import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
 import { UnexpectedException } from '../../../exceptions/unexpected.js';
-import { PublishedContent } from '../../../types/index.js';
+import { LocalizedContent, PublishedContent } from '../../../types/index.js';
+import { ContentHistoryEntity } from '../contentHistory/contentHistory.entity.js';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
+import { ProjectEntity } from '../project/project.entity.js';
 import { UserEntity } from '../user/user.entity.js';
 
 export const ContentStatus = {
@@ -224,6 +226,54 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
 
   isSameLanguageContent(language: string) {
     return this.props.language.toLocaleLowerCase() === language.toLocaleLowerCase();
+  }
+
+  /**
+   * Convert entity to content response
+   * @param project
+   * @param usedLanguages
+   * @param content
+   * @param createdBy
+   * @param updatedBy
+   * @param histories
+   * @returns
+   */
+  toLocalizedContentResponse(
+    project: ProjectEntity,
+    usedLanguages: string[],
+    createdBy: UserEntity,
+    updatedBy: UserEntity,
+    histories: ContentHistoryEntity[]
+  ): LocalizedContent {
+    return {
+      contentId: this.props.id,
+      postId: this.props.postId,
+      title: this.props.title ?? '',
+      body: this.props.body ?? '',
+      bodyJson: this.props.bodyJson ?? '',
+      bodyHtml: this.props.bodyHtml ?? '',
+      slug: this.props.slug,
+      status: {
+        prevStatus:
+          this.props.version > 1 && this.props.status !== ContentStatus.published
+            ? ContentStatus.published
+            : null,
+        currentStatus: this.props.status,
+      },
+      version: this.props.version,
+      coverUrl: this.props.coverUrl ?? '',
+      language: this.props.language,
+      updatedAt: this.props.updatedAt,
+      createdByName: createdBy.name,
+      updatedByName: updatedBy.name,
+      usedLanguages,
+      canTranslate:
+        project.isTranslationEnabled(this.props.language) &&
+        usedLanguages.includes(project.sourceLanguage),
+      sourceLanguageCode: project.sourceLanguageCode?.code ?? null,
+      targetLanguageCode: this.languageCode?.code ?? null,
+      histories: histories.map((history) => history.toResponse()),
+    };
   }
 
   /**

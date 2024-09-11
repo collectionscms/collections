@@ -14,6 +14,49 @@ export class ContentRepository {
     return ContentEntity.Reconstruct<Content, ContentEntity>(record);
   }
 
+  async findOneWithUserById(
+    prisma: ProjectPrismaType,
+    id: string,
+    options?: {
+      userId?: string;
+    }
+  ): Promise<{
+    content: ContentEntity;
+    allContents: ContentEntity[];
+    createdBy: UserEntity;
+    updatedBy: UserEntity;
+  } | null> {
+    const record = await prisma.content.findFirst({
+      where: {
+        id,
+        deletedAt: null,
+        post: {
+          createdById: options?.userId,
+        },
+      },
+      include: {
+        createdBy: true,
+        updatedBy: true,
+        post: {
+          include: {
+            contents: true,
+          },
+        },
+      },
+    });
+
+    if (!record) return null;
+
+    return {
+      content: ContentEntity.Reconstruct<Content, ContentEntity>(record),
+      allContents: record.post.contents.map((content) =>
+        ContentEntity.Reconstruct<Content, ContentEntity>(content)
+      ),
+      createdBy: UserEntity.Reconstruct<User, UserEntity>(record.createdBy),
+      updatedBy: UserEntity.Reconstruct<User, UserEntity>(record.updatedBy),
+    };
+  }
+
   async findOneByPostIdAndLanguage(
     prisma: ProjectPrismaType,
     excludeId: string,

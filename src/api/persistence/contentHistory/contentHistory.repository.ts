@@ -3,6 +3,23 @@ import { ProjectPrismaType } from '../../database/prisma/client.js';
 import { ContentHistoryEntity } from './contentHistory.entity.js';
 
 export class ContentHistoryRepository {
+  async findManyByPostIdWithLanguage(
+    prisma: ProjectPrismaType,
+    postId: string,
+    language: string
+  ): Promise<ContentHistoryEntity[]> {
+    const record = await prisma.contentHistory.findMany({
+      where: {
+        postId,
+        language,
+      },
+    });
+
+    return record.map((r) =>
+      ContentHistoryEntity.Reconstruct<ContentHistory, ContentHistoryEntity>(r)
+    );
+  }
+
   async create(
     prisma: ProjectPrismaType,
     entity: ContentHistoryEntity
