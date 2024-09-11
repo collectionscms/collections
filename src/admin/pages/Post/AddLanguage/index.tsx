@@ -22,7 +22,7 @@ export type Props = {
 export const AddLanguage: React.FC<Props> = ({ open, content, onClose, onAdded }) => {
   const { createContent } = usePost();
   const { t } = useTranslation();
-  const { trigger: createContentTrigger } = createContent(content.contentId);
+  const { trigger: createContentTrigger } = createContent(content.postId);
   const enabledLanguages = languages.filter(
     (language) => !content.usedLanguages.some((ul) => ul.language === language.code)
   );

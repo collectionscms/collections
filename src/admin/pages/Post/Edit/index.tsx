@@ -222,7 +222,7 @@ export const EditPostPageImpl: React.FC = () => {
 
   const handleAddedLanguage = (contentId: string, language: string) => {
     setOpenAddLanguage(false);
-    handleChangeLanguage(language);
+    handleChangeLanguage(contentId);
     mutate({
       ...content,
       usedLanguages: [...content.usedLanguages, { contentId, language }],
