@@ -1,4 +1,4 @@
-import { ApiKey, Project } from '@prisma/client';
+import { ApiKey, Content, Project } from '@prisma/client';
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWR, { SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
@@ -22,7 +22,7 @@ type PostContext = {
   >;
   createPost: () => SWRMutationResponse<SourceLanguagePostItem, any, string>;
   trashPost: (postId: string) => SWRMutationResponse<void, any, string>;
-  createContent: (postId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
+  createContent: (postId: string) => SWRMutationResponse<Content, any, string, Record<string, any>>;
   trashLanguageContent: (
     postId: string,
     language: string
@@ -86,7 +86,7 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
     useSWRMutation(
       `/posts/${postId}/contents`,
       async (url: string, { arg }: { arg: Record<string, any> }) => {
-        return api.post(url, arg).then((res) => res.data);
+        return api.post<{ content: Content }>(url, arg).then((res) => res.data.content);
       }
     );
 

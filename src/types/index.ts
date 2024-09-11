@@ -48,6 +48,11 @@ export type SourceLanguagePostItem = LocalizedContentItem & {
   localizedContents: LocalizedContentItem[];
 };
 
+export type UsedLanguage = {
+  contentId: string;
+  language: string;
+};
+
 export type LocalizedContent = {
   postId: string;
   contentId: string;
@@ -60,7 +65,7 @@ export type LocalizedContent = {
   slug: string;
   status: ContentStatus;
   language: string;
-  usedLanguages: string[];
+  usedLanguages: UsedLanguage[];
   canTranslate: boolean;
   sourceLanguageCode: string | null;
   targetLanguageCode: string | null;

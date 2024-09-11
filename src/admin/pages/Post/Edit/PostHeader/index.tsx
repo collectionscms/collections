@@ -25,7 +25,7 @@ export type Props = {
   content: LocalizedContent;
   currentLanguage: string;
   isSaving: boolean;
-  onChangeLanguage: (language: string) => void;
+  onChangeLanguage: (contentId: string) => void;
   onOpenAddLanguage: () => void;
   onReverted: () => void;
 };
@@ -82,8 +82,8 @@ export const PostHeader: React.FC<Props> = ({
     setLanguageOpen(false);
   };
 
-  const handleChangeLanguage = (language: string) => {
-    onChangeLanguage(language);
+  const handleChangeLanguage = (contentId: string) => {
+    onChangeLanguage(contentId);
     setLanguageOpen(false);
   };
 
@@ -150,9 +150,9 @@ export const PostHeader: React.FC<Props> = ({
           open={languageOpen}
           onClose={handleCloseLanguage}
         >
-          {content.usedLanguages.map((language: string) => (
+          {content.usedLanguages.map(({ contentId, language }) => (
             <MenuItem
-              onClick={() => handleChangeLanguage(language)}
+              onClick={() => handleChangeLanguage(contentId)}
               selected={currentLanguage === language}
               key={language}
             >

@@ -207,8 +207,8 @@ export const EditPostPageImpl: React.FC = () => {
   // Language
   // /////////////////////////////////////
 
-  const handleChangeLanguage = (language: string) => {
-    navigate(`${window.location.pathname}?language=${language}`);
+  const handleChangeLanguage = (contentId: string) => {
+    navigate(`/admin/contents/${contentId}`);
   };
 
   const [openAddLanguage, setOpenAddLanguage] = useState(false);
@@ -220,12 +220,12 @@ export const EditPostPageImpl: React.FC = () => {
     setOpenAddLanguage(false);
   };
 
-  const handleChangedLanguage = (language: string) => {
+  const handleAddedLanguage = (contentId: string, language: string) => {
     setOpenAddLanguage(false);
     handleChangeLanguage(language);
     mutate({
       ...content,
-      usedLanguages: [...content.usedLanguages, language],
+      usedLanguages: [...content.usedLanguages, { contentId, language }],
     });
   };
 
@@ -401,7 +401,7 @@ export const EditPostPageImpl: React.FC = () => {
         open={openAddLanguage}
         content={content}
         onClose={handleCloseAddLanguage}
-        onChanged={(language) => handleChangedLanguage(language)}
+        onAdded={(contentId, language) => handleAddedLanguage(contentId, language)}
       />
     </>
   );

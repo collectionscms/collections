@@ -3,7 +3,7 @@ import { v4 } from 'uuid';
 import { getLanguageCodeType, LanguageCode } from '../../../constants/languages.js';
 import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
 import { UnexpectedException } from '../../../exceptions/unexpected.js';
-import { LocalizedContent, PublishedContent } from '../../../types/index.js';
+import { LocalizedContent, PublishedContent, UsedLanguage } from '../../../types/index.js';
 import { ContentHistoryEntity } from '../contentHistory/contentHistory.entity.js';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 import { ProjectEntity } from '../project/project.entity.js';
@@ -240,7 +240,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
    */
   toLocalizedContentResponse(
     project: ProjectEntity,
-    usedLanguages: string[],
+    usedLanguages: UsedLanguage[],
     createdBy: UserEntity,
     updatedBy: UserEntity,
     histories: ContentHistoryEntity[]
@@ -269,7 +269,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
       usedLanguages,
       canTranslate:
         project.isTranslationEnabled(this.props.language) &&
-        usedLanguages.includes(project.sourceLanguage),
+        usedLanguages.some((ul) => ul.language === project.sourceLanguage),
       sourceLanguageCode: project.sourceLanguageCode?.code ?? null,
       targetLanguageCode: this.languageCode?.code ?? null,
       histories: histories.map((history) => history.toResponse()),
