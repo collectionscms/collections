@@ -181,6 +181,10 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
   changeStatus({ status, updatedById }: { status: string; updatedById?: string }) {
     this.props.status = status;
 
+    if (status === ContentStatus.published) {
+      this.props.publishedAt = new Date();
+    }
+
     if (updatedById) {
       this.props.updatedById = updatedById;
     }
