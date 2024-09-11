@@ -1,4 +1,4 @@
-import { LocalizedPost } from '../../../types/index.js';
+import { SourceLanguagePostItem } from '../../../types/index.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
 import { ContentRepository } from '../../persistence/content/content.repository.js';
 import { ContentHistoryEntity } from '../../persistence/contentHistory/contentHistory.entity.js';
@@ -17,7 +17,7 @@ export class CreatePostUseCase {
     private readonly contentHistoryRepository: ContentHistoryRepository
   ) {}
 
-  async execute(props: CreatePostUseCaseSchemaType): Promise<LocalizedPost> {
+  async execute(props: CreatePostUseCaseSchemaType): Promise<SourceLanguagePostItem> {
     const { userId, projectId, sourceLanguage } = props;
 
     const project = await this.projectRepository.findOneById(this.prisma, props.projectId);
@@ -53,6 +53,8 @@ export class CreatePostUseCase {
       };
     });
 
-    return result.post.toLocalizedWithContentsResponse(sourceLanguage, project, result.contents);
+    return result.post.toSourceLanguagePostItemResponse(project.sourceLanguage, [
+      { content: result.contents[0].content, updatedBy: result.contents[0].createdBy },
+    ]);
   }
 }

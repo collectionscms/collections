@@ -21,6 +21,10 @@ const TrashPageImpl: React.FC = () => {
         id: 'title',
         Header: t('title'),
         accessor: 'title',
+        Cell: ({ value }: { value: string }) => {
+          const title = value || t('untitled');
+          return <Typography>{title}</Typography>;
+        },
       },
       {
         id: 'language',

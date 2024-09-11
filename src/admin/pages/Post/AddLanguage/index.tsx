@@ -5,7 +5,7 @@ import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { languages } from '../../../../constants/languages.js';
-import { LocalizedPost } from '../../../../types/index.js';
+import { LocalizedContent } from '../../../../types/index.js';
 import { logger } from '../../../../utilities/logger.js';
 import { LanguageAutocomplete } from '../../../components/elements/LanguageAutocomplete/index.js';
 import { ModalDialog } from '../../../components/elements/ModalDialog/index.js';
@@ -14,17 +14,17 @@ import { usePost } from '../Context/index.js';
 
 export type Props = {
   open: boolean;
-  post: LocalizedPost;
+  content: LocalizedContent;
   onClose: () => void;
-  onChanged: (language: string) => void;
+  onAdded: (contentId: string, language: string) => void;
 };
 
-export const LocalizedContent: React.FC<Props> = ({ open, post, onClose, onChanged }) => {
+export const AddLanguage: React.FC<Props> = ({ open, content, onClose, onAdded }) => {
   const { createContent } = usePost();
   const { t } = useTranslation();
-  const { trigger: createContentTrigger } = createContent(post.id);
+  const { trigger: createContentTrigger } = createContent(content.postId);
   const enabledLanguages = languages.filter(
-    (language) => !post.usedLanguages.includes(language.code)
+    (language) => !content.usedLanguages.some((ul) => ul.language === language.code)
   );
 
   const {
@@ -40,8 +40,8 @@ export const LocalizedContent: React.FC<Props> = ({ open, post, onClose, onChang
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
-      await createContentTrigger(form);
-      onChanged(form.language);
+      const content = await createContentTrigger(form);
+      onAdded(content.id, content.language);
       enqueueSnackbar(t('toast.created_successfully'), {
         anchorOrigin: {
           vertical: 'bottom',
