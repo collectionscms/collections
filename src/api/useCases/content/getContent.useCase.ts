@@ -32,7 +32,7 @@ export class GetContentUseCase {
 
     const histories = await this.contentHistoryRepository.findManyByPostIdWithLanguage(
       this.prisma,
-      record.content.id,
+      record.content.postId,
       record.content.language
     );
 
