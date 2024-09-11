@@ -1,7 +1,7 @@
 import { Stack, Tooltip } from '@mui/material';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { LocalizedPost } from '../../../../../types/index.js';
+import { LocalizedContent } from '../../../../../types/index.js';
 import { IconButton } from '../../../../@extended/components/IconButton/index.js';
 import { Icon } from '../../../../components/elements/Icon/index.js';
 import { History } from './History/index.js';
@@ -9,13 +9,13 @@ import { Information } from './Information/index.js';
 import { Settings } from './Settings/index.js';
 
 export type Props = {
-  post: LocalizedPost;
+  content: LocalizedContent;
   characters: number;
   onTrashed: () => void;
   onReverted: () => void;
 };
 
-export const PostFooter: React.FC<Props> = ({ post, characters, onTrashed, onReverted }) => {
+export const PostFooter: React.FC<Props> = ({ content, characters, onTrashed, onReverted }) => {
   const { t } = useTranslation();
 
   // /////////////////////////////////////
@@ -39,7 +39,7 @@ export const PostFooter: React.FC<Props> = ({ post, characters, onTrashed, onRev
       }}
     >
       <Stack flexDirection="row" gap={2}>
-        <History post={post} onReverted={onReverted} />
+        <History post={content} onReverted={onReverted} />
         <Information characters={characters} />
       </Stack>
       <Tooltip title={t('setting')}>
@@ -53,7 +53,7 @@ export const PostFooter: React.FC<Props> = ({ post, characters, onTrashed, onRev
         </IconButton>
       </Tooltip>
       <Settings
-        post={post}
+        content={content}
         open={openSettings}
         onClose={handleOpenSettings}
         onTrashed={() => {

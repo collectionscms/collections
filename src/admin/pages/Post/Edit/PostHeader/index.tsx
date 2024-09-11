@@ -13,7 +13,7 @@ import {
 import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { LocalizedPost } from '../../../../../types/index.js';
+import { LocalizedContent } from '../../../../../types/index.js';
 import { IconButton } from '../../../../@extended/components/IconButton/index.js';
 import { Icon } from '../../../../components/elements/Icon/index.js';
 import { NationalFlagIcon } from '../../../../components/elements/NationalFlagIcon/index.js';
@@ -22,7 +22,7 @@ import { AppBarStyled } from '../AppBarStyled.js';
 import { PublishSettings } from './PublishSettings/index.js';
 
 export type Props = {
-  post: LocalizedPost;
+  content: LocalizedContent;
   currentLanguage: string;
   isSaving: boolean;
   onChangeLanguage: (language: string) => void;
@@ -31,7 +31,7 @@ export type Props = {
 };
 
 export const PostHeader: React.FC<Props> = ({
-  post,
+  content,
   currentLanguage,
   isSaving,
   onChangeLanguage,
@@ -96,8 +96,8 @@ export const PostHeader: React.FC<Props> = ({
     <>
       <PublishSettings
         open={openSettings}
-        contentId={post.contentId}
-        post={post}
+        contentId={content.contentId}
+        content={content}
         onClose={() => setOpenSettings(false)}
       />
       <AppBarStyled open={true} {...appBar}>
@@ -107,13 +107,13 @@ export const PostHeader: React.FC<Props> = ({
               <Icon name="ArrowLeft" size={28} />
             </IconButton>
             <Stack direction="row" gap={1.5}>
-              {post.prevStatus && (
+              {content.status.prevStatus && (
                 <>
                   <StatusDot status="published" />
                   <Divider orientation="vertical" flexItem variant="middle" />
                 </>
               )}
-              <StatusDot status={post.currentStatus} />
+              <StatusDot status={content.status.currentStatus} />
             </Stack>
             {isSaving && (
               <Stack flexDirection="row" alignItems="center" gap={1}>
@@ -150,7 +150,7 @@ export const PostHeader: React.FC<Props> = ({
           open={languageOpen}
           onClose={handleCloseLanguage}
         >
-          {post.usedLanguages.map((language: string) => (
+          {content.usedLanguages.map((language: string) => (
             <MenuItem
               onClick={() => handleChangeLanguage(language)}
               selected={currentLanguage === language}

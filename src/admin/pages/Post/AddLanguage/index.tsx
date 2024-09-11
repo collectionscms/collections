@@ -5,7 +5,7 @@ import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { languages } from '../../../../constants/languages.js';
-import { LocalizedPost } from '../../../../types/index.js';
+import { LocalizedContent } from '../../../../types/index.js';
 import { logger } from '../../../../utilities/logger.js';
 import { LanguageAutocomplete } from '../../../components/elements/LanguageAutocomplete/index.js';
 import { ModalDialog } from '../../../components/elements/ModalDialog/index.js';
@@ -14,17 +14,17 @@ import { usePost } from '../Context/index.js';
 
 export type Props = {
   open: boolean;
-  post: LocalizedPost;
+  content: LocalizedContent;
   onClose: () => void;
   onChanged: (language: string) => void;
 };
 
-export const LocalizedContent: React.FC<Props> = ({ open, post, onClose, onChanged }) => {
+export const AddLanguage: React.FC<Props> = ({ open, content, onClose, onChanged }) => {
   const { createContent } = usePost();
   const { t } = useTranslation();
-  const { trigger: createContentTrigger } = createContent(post.id);
+  const { trigger: createContentTrigger } = createContent(content.contentId);
   const enabledLanguages = languages.filter(
-    (language) => !post.usedLanguages.includes(language.code)
+    (language) => !content.usedLanguages.includes(language.code)
   );
 
   const {
