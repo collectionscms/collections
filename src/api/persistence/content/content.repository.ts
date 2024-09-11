@@ -22,7 +22,6 @@ export class ContentRepository {
     }
   ): Promise<{
     content: ContentEntity;
-    allContents: ContentEntity[];
     createdBy: UserEntity;
     updatedBy: UserEntity;
   } | null> {
@@ -37,11 +36,6 @@ export class ContentRepository {
       include: {
         createdBy: true,
         updatedBy: true,
-        post: {
-          include: {
-            contents: true,
-          },
-        },
       },
     });
 
@@ -49,9 +43,6 @@ export class ContentRepository {
 
     return {
       content: ContentEntity.Reconstruct<Content, ContentEntity>(record),
-      allContents: record.post.contents.map((content) =>
-        ContentEntity.Reconstruct<Content, ContentEntity>(content)
-      ),
       createdBy: UserEntity.Reconstruct<User, UserEntity>(record.createdBy),
       updatedBy: UserEntity.Reconstruct<User, UserEntity>(record.updatedBy),
     };

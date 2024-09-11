@@ -1,6 +1,7 @@
 import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
 import { LocalizedContent } from '../../../types/index.js';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
+import { ContentEntity } from '../../persistence/content/content.entity.js';
 import { ContentRepository } from '../../persistence/content/content.repository.js';
 import { ContentHistoryRepository } from '../../persistence/contentHistory/contentHistory.repository.js';
 import { ProjectRepository } from '../../persistence/project/project.repository.js';
@@ -24,11 +25,16 @@ export class GetContentUseCase {
       props.contentId,
       options
     );
+
     if (!record) {
       throw new RecordNotFoundException('record_not_found');
     }
 
-    const usedLanguages = [...new Set(record.allContents.map((c) => c.language))];
+    const contents = await this.contentRepository.findManyByPostId(
+      this.prisma,
+      record.content.postId
+    );
+    const usedLanguages = ContentEntity.usedLanguages(contents);
 
     const histories = await this.contentHistoryRepository.findManyByPostIdWithLanguage(
       this.prisma,

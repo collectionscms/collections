@@ -164,12 +164,22 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     return v4().trim().replace(/-/g, '').substring(0, 10);
   };
 
+  static usedLanguages(contents: ContentEntity[]): UsedLanguage[] {
+    const latestVerContents = contents.filter(
+      (c) =>
+        !contents.some(
+          (cc) => c.props.language === cc.props.language && c.props.version < cc.props.version
+        )
+    );
+
+    return latestVerContents.map((c) => ({
+      contentId: c.props.id,
+      language: c.props.language,
+    }));
+  }
+
   changeStatus({ status, updatedById }: { status: string; updatedById?: string }) {
     this.props.status = status;
-
-    if (status === ContentStatus.published) {
-      this.props.publishedAt = new Date();
-    }
 
     if (updatedById) {
       this.props.updatedById = updatedById;
