@@ -39,7 +39,7 @@ export const PostFooter: React.FC<Props> = ({ content, characters, onTrashed, on
       }}
     >
       <Stack flexDirection="row" gap={2}>
-        <History post={content} onReverted={onReverted} />
+        <History content={content} onReverted={onReverted} />
         <Information characters={characters} />
       </Stack>
       <Tooltip title={t('setting')}>

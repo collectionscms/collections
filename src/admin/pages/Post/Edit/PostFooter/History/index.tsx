@@ -14,12 +14,12 @@ import { ModalDialog } from '../../../../../components/elements/ModalDialog/inde
 import { usePost } from '../../../Context/index.js';
 
 export type Props = {
-  post: LocalizedContent;
+  content: LocalizedContent;
   onReverted: () => void;
 };
 
-export const History: React.FC<Props> = ({ post, onReverted }) => {
-  const { contentId, histories, version, status } = post;
+export const History: React.FC<Props> = ({ content, onReverted }) => {
+  const { contentId, histories, version, status } = content;
 
   const theme = useTheme();
   const { t } = useTranslation();
