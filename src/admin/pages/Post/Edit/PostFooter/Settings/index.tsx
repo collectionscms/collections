@@ -38,13 +38,13 @@ export const Settings: React.FC<Props> = ({ open, content, onClose, onTrashed })
   const navigate = useNavigate();
 
   const { hasPermission } = useAuth();
-  const { trashPost, trashLanguageContent, getContent: getPost } = usePost();
+  const { trashPost, trashLanguageContent, getContent } = usePost();
   const { trigger: trashPostTrigger } = trashPost(content.postId);
   const { trigger: trashLanguageContentTrigger } = trashLanguageContent(
-    content.contentId,
+    content.postId,
     content.language
   );
-  const { data: mutatedPost, mutate } = getPost(content.contentId);
+  const { data: mutatedContent, mutate } = getContent(content.contentId);
 
   const [openContentTrash, setOpenContentTrash] = useState(false);
   const [openPostTrash, setOpenPostTrash] = useState(false);
@@ -155,8 +155,8 @@ export const Settings: React.FC<Props> = ({ open, content, onClose, onTrashed })
             </Stack>
             <MainCard>
               <SlugSettings
-                contentId={mutatedPost.contentId}
-                slug={mutatedPost.slug}
+                contentId={mutatedContent.contentId}
+                slug={mutatedContent.slug}
                 onUpdated={(slug) => handleUpdatedSlug(slug)}
               />
             </MainCard>
