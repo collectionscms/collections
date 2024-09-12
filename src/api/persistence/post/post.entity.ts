@@ -4,6 +4,7 @@ import { UnexpectedException } from '../../../exceptions/unexpected.js';
 import {
   ContentStatus,
   LocalizedContentItem,
+  LocalizedPost,
   PublishedContent,
   PublishedPost,
   SourceLanguagePostItem,
@@ -11,6 +12,7 @@ import {
 import { ContentEntity } from '../content/content.entity.js';
 import { ContentHistoryEntity } from '../contentHistory/contentHistory.entity.js';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
+import { ProjectEntity } from '../project/project.entity.js';
 import { UserEntity } from '../user/user.entity.js';
 
 export class PostEntity extends PrismaBaseEntity<Post> {
@@ -136,6 +138,57 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     };
   }
 
+  toLocalizedWithContentsResponse(
+    language: string,
+    project: ProjectEntity,
+    contents: {
+      content: ContentEntity;
+      histories: ContentHistoryEntity[];
+    }[]
+  ): LocalizedPost {
+    const sortedContents = contents.sort((a, b) => b.content.version - a.content.version);
+
+    // Get content of language. If language is not found, get the first content.
+    const languageContents = sortedContents.filter((c) => c.content.language === language);
+    const languageContent = languageContents[0] || sortedContents[0];
+
+    // Get the latest history of each version in the same language.
+    const histories = this.getLatestHistoriesByLanguage(
+      language,
+      languageContent.content.version,
+      languageContent.histories
+    );
+
+    // Get language statues.
+    const languageStatues = this.getLanguageStatues(contents.map((c) => c.content));
+
+    // Filter unique languages.
+    const usedLanguages = [...new Set(contents.map((c) => c.content.language))];
+
+    return {
+      id: this.props.id,
+      slug: languageContent.content.slug,
+      contentId: languageContent.content.id,
+      currentStatus: languageStatues[languageContent.content.language].currentStatus,
+      prevStatus: languageStatues[languageContent.content.language].prevStatus,
+      updatedAt: languageContent.content.updatedAt,
+      title: languageContent.content.title ?? '',
+      body: languageContent.content.body ?? '',
+      bodyJson: languageContent.content.bodyJson ?? '',
+      bodyHtml: languageContent.content.bodyHtml ?? '',
+      contentLanguage: languageContent.content.language,
+      version: languageContent.content.version,
+      coverUrl: languageContent.content.coverUrl,
+      usedLanguages,
+      canTranslate:
+        project.isTranslationEnabled(languageContent.content.language) &&
+        usedLanguages.includes(project.sourceLanguage),
+      sourceLanguageCode: project.sourceLanguageCode?.code ?? null,
+      targetLanguageCode: languageContent.content.languageCode?.code ?? null,
+      histories,
+    };
+  }
+
   private getLanguageStatues(contents: ContentEntity[]): {
     [language: string]: ContentStatus;
   } {
@@ -148,7 +201,6 @@ export class PostEntity extends PrismaBaseEntity<Post> {
 
         if (!languageStatus) {
           acc[language] = {
-            prevStatus: null,
             currentStatus: status,
           };
         } else if (languageStatus) {

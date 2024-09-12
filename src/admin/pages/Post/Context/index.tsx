@@ -1,8 +1,8 @@
-import { ApiKey, Content, Project } from '@prisma/client';
+import { ApiKey, Project } from '@prisma/client';
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWR, { SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
-import { LocalizedContent, SourceLanguagePostItem, UploadFile } from '../../../../types/index.js';
+import { LocalizedPost, SourceLanguagePostItem, UploadFile } from '../../../../types/index.js';
 import { api } from '../../../utilities/api.js';
 
 type PostContext = {
@@ -13,16 +13,19 @@ type PostContext = {
       suspense: true;
     }
   >;
-  getContent: (id: string) => SWRResponse<
-    LocalizedContent,
+  getPost: (
+    id: string,
+    language: string | null
+  ) => SWRResponse<
+    LocalizedPost,
     Error,
     {
       suspense: true;
     }
   >;
-  createPost: () => SWRMutationResponse<SourceLanguagePostItem, any, string>;
+  createPost: () => SWRMutationResponse<LocalizedPost, any, string>;
   trashPost: (postId: string) => SWRMutationResponse<void, any, string>;
-  createContent: (postId: string) => SWRMutationResponse<Content, any, string, Record<string, any>>;
+  createContent: (postId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
   trashLanguageContent: (
     postId: string,
     language: string
@@ -63,9 +66,18 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       }
     );
 
+  const getPost = (id: string, language: string | null) =>
+    useSWR(
+      `/posts/${id}${language ? `?language=${language}` : ''}`,
+      (url) => api.get<{ post: LocalizedPost }>(url).then((res) => res.data.post),
+      {
+        suspense: true,
+      }
+    );
+
   const createPost = () =>
     useSWRMutation('/posts', async (url: string) => {
-      return api.post<{ post: SourceLanguagePostItem }>(url).then((res) => res.data.post);
+      return api.post<{ post: LocalizedPost }>(url).then((res) => res.data.post);
     });
 
   const trashPost = (postId: string) =>
@@ -73,20 +85,11 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       return api.delete(url).then((res) => res.data);
     });
 
-  const getContent = (id: string) =>
-    useSWR(
-      `/contents/${id}`,
-      (url) => api.get<{ content: LocalizedContent }>(url).then((res) => res.data.content),
-      {
-        suspense: true,
-      }
-    );
-
   const createContent = (postId: string) =>
     useSWRMutation(
       `/posts/${postId}/contents`,
       async (url: string, { arg }: { arg: Record<string, any> }) => {
-        return api.post<{ content: Content }>(url, arg).then((res) => res.data.content);
+        return api.post(url, arg).then((res) => res.data);
       }
     );
 
@@ -160,9 +163,9 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
   const value = useMemo(
     () => ({
       getPosts,
+      getPost,
       createPost,
       trashPost,
-      getContent,
       createContent,
       updateContent,
       trashContent,
@@ -177,9 +180,9 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
     }),
     [
       getPosts,
+      getPost,
       createPost,
       trashPost,
-      getContent,
       createContent,
       updateContent,
       trashContent,

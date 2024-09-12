@@ -66,7 +66,7 @@ const ReviewDetailPageImpl: React.FC = () => {
                 <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 1 }}>
                   <Icon name="FileText" size={16} />
                   <Icon name="ChevronRight" size={16} />
-                  <Link href={`/admin/contents/${review.contentId}`}>{review.contentId}</Link>
+                  <Link href={`/admin/posts/${review.postId}`}>{review.postId}</Link>
                 </Stack>
                 <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
                   <Icon name="UserRound" size={16} />
