@@ -53,7 +53,7 @@ export const PublishSettings: React.FC<Props> = ({ open, contentId, post, onClos
   const { trigger: requestReviewTrigger } = requestReview(contentId);
   const { trigger: publishTrigger } = publish(contentId);
   const { trigger: archiveTrigger } = archive(contentId);
-  const { data: mutatedPost, mutate } = getPost(post.id, post.contentLanguage);
+  const { data: mutatedPost, mutate } = getPost(post.id, post.language);
 
   const appBar: AppBarProps = {
     position: 'fixed',
@@ -75,15 +75,15 @@ export const PublishSettings: React.FC<Props> = ({ open, contentId, post, onClos
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
-      status: post.currentStatus === 'published' ? 'published' : 'review',
+      status: post.status.currentStatus === 'published' ? 'published' : 'review',
       comment: '',
     },
     resolver: yupResolver(editContentValidator()),
   });
 
   useEffect(() => {
-    setValue('status', post.currentStatus === 'published' ? 'published' : 'review');
-  }, [post.currentStatus]);
+    setValue('status', post.status.currentStatus === 'published' ? 'published' : 'review');
+  }, [post.status.currentStatus]);
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
@@ -147,9 +147,7 @@ export const PublishSettings: React.FC<Props> = ({ open, contentId, post, onClos
             <Box width="100%">
               <Typography variant="h3" align="center">
                 {t('language_publish_settings', {
-                  language: t(
-                    `languages.${post.contentLanguage}` as unknown as TemplateStringsArray
-                  ),
+                  language: t(`languages.${post.language}` as unknown as TemplateStringsArray),
                 })}
               </Typography>
             </Box>
@@ -170,7 +168,7 @@ export const PublishSettings: React.FC<Props> = ({ open, contentId, post, onClos
                     control={control}
                     render={({ field }) => (
                       <RadioGroup value={field.value} name="radio-buttons-group" row>
-                        {post.currentStatus === 'published' && (
+                        {post.status.currentStatus === 'published' && (
                           <FormControlLabel
                             {...field}
                             value="archived"

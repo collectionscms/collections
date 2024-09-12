@@ -2,12 +2,12 @@ import { Post } from '@prisma/client';
 import { v4 } from 'uuid';
 import { UnexpectedException } from '../../../exceptions/unexpected.js';
 import {
-  ContentStatus,
   LocalizedContentItem,
   LocalizedPost,
   PublishedContent,
   PublishedPost,
   SourceLanguagePostItem,
+  StatusHistory,
 } from '../../../types/index.js';
 import { ContentEntity } from '../content/content.entity.js';
 import { ContentHistoryEntity } from '../contentHistory/contentHistory.entity.js';
@@ -103,19 +103,17 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       )
     );
 
-    const languageStatues = this.getLanguageStatues(contents.map((c) => c.content));
-
     return {
       ...this.toLocalizedContentItem(
         sourceLngContent.content,
         sourceLngContent.updatedBy,
-        languageStatues[sourceLngContent.content.language]
+        sourceLngContent.content.statusHistory()
       ),
       localizedContents: otherLngContents.map((otherLngContent) =>
         this.toLocalizedContentItem(
           otherLngContent.content,
           otherLngContent.updatedBy,
-          languageStatues[otherLngContent.content.language]
+          otherLngContent.content.statusHistory()
         )
       ),
     };
@@ -124,7 +122,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
   private toLocalizedContentItem(
     content: ContentEntity,
     updatedBy: UserEntity,
-    contentStatus: ContentStatus
+    statusHistory: StatusHistory
   ): LocalizedContentItem {
     return {
       contentId: content.id,
@@ -132,7 +130,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       title: content.title ?? '',
       slug: content.slug,
       language: content.language,
-      status: contentStatus,
+      status: statusHistory,
       updatedByName: updatedBy.name,
       updatedAt: content.updatedAt,
     };
@@ -150,70 +148,35 @@ export class PostEntity extends PrismaBaseEntity<Post> {
 
     // Get content of language. If language is not found, get the first content.
     const languageContents = sortedContents.filter((c) => c.content.language === language);
-    const languageContent = languageContents[0] || sortedContents[0];
+    const { content, histories } = languageContents[0] || sortedContents[0];
 
     // Get the latest history of each version in the same language.
-    const histories = this.getLatestHistoriesByLanguage(
-      language,
-      languageContent.content.version,
-      languageContent.histories
-    );
-
-    // Get language statues.
-    const languageStatues = this.getLanguageStatues(contents.map((c) => c.content));
+    const latestHistories = this.getLatestHistoriesByLanguage(language, content.version, histories);
 
     // Filter unique languages.
     const usedLanguages = [...new Set(contents.map((c) => c.content.language))];
 
     return {
       id: this.props.id,
-      slug: languageContent.content.slug,
-      contentId: languageContent.content.id,
-      currentStatus: languageStatues[languageContent.content.language].currentStatus,
-      prevStatus: languageStatues[languageContent.content.language].prevStatus,
-      updatedAt: languageContent.content.updatedAt,
-      title: languageContent.content.title ?? '',
-      body: languageContent.content.body ?? '',
-      bodyJson: languageContent.content.bodyJson ?? '',
-      bodyHtml: languageContent.content.bodyHtml ?? '',
-      contentLanguage: languageContent.content.language,
-      version: languageContent.content.version,
-      coverUrl: languageContent.content.coverUrl,
+      slug: content.slug,
+      contentId: content.id,
+      status: content.statusHistory(),
+      updatedAt: content.updatedAt,
+      title: content.title ?? '',
+      body: content.body ?? '',
+      bodyJson: content.bodyJson ?? '',
+      bodyHtml: content.bodyHtml ?? '',
+      language: content.language,
+      version: content.version,
+      coverUrl: content.coverUrl,
       usedLanguages,
       canTranslate:
-        project.isTranslationEnabled(languageContent.content.language) &&
+        project.isTranslationEnabled(content.language) &&
         usedLanguages.includes(project.sourceLanguage),
       sourceLanguageCode: project.sourceLanguageCode?.code ?? null,
-      targetLanguageCode: languageContent.content.languageCode?.code ?? null,
-      histories,
+      targetLanguageCode: content.languageCode?.code ?? null,
+      histories: latestHistories,
     };
-  }
-
-  private getLanguageStatues(contents: ContentEntity[]): {
-    [language: string]: ContentStatus;
-  } {
-    const sortedContents = contents.sort((a, b) => b.version - a.version);
-
-    return sortedContents.reduce(
-      (acc: { [language: string]: ContentStatus }, content) => {
-        const { language, status } = content;
-        const languageStatus = acc[language];
-
-        if (!languageStatus) {
-          acc[language] = {
-            currentStatus: status,
-          };
-        } else if (languageStatus) {
-          acc[language] = {
-            ...acc[language],
-            prevStatus: status,
-          };
-        }
-
-        return acc;
-      },
-      {} as { [language: string]: ContentStatus }
-    );
   }
 
   /**

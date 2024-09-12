@@ -28,9 +28,9 @@ export type ApiError = {
   };
 };
 
-export type ContentStatus = {
+export type StatusHistory = {
   currentStatus: string;
-  prevStatus?: string;
+  prevStatus: string | null;
 };
 
 export type LocalizedContentItem = {
@@ -38,7 +38,7 @@ export type LocalizedContentItem = {
   contentId: string;
   title: string;
   slug: string;
-  status: ContentStatus;
+  status: StatusHistory;
   language: string;
   updatedByName: string;
   updatedAt: Date;
@@ -52,8 +52,7 @@ export type LocalizedPost = {
   id: string;
   slug: string;
   contentId: string;
-  currentStatus: string;
-  prevStatus?: string;
+  status: StatusHistory;
   updatedAt: Date;
   version: number;
   title: string;
@@ -61,7 +60,7 @@ export type LocalizedPost = {
   bodyJson: string;
   bodyHtml: string;
   coverUrl: string | null;
-  contentLanguage: string;
+  language: string;
   usedLanguages: string[];
   canTranslate: boolean;
   sourceLanguageCode: string | null;

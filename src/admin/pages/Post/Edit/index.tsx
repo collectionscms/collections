@@ -256,7 +256,7 @@ export const EditPostPageImpl: React.FC = () => {
       <ConfirmDiscardDialog open={showPrompt} onDiscard={proceed} onKeepEditing={stay} />
       <PostHeader
         post={post}
-        currentLanguage={post.contentLanguage}
+        currentLanguage={post.language}
         isSaving={isSaving}
         onChangeLanguage={handleChangeLanguage}
         onOpenAddLanguage={handleOpenAddLanguage}

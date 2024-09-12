@@ -19,7 +19,7 @@ export type Props = {
 };
 
 export const History: React.FC<Props> = ({ post, onReverted }) => {
-  const { contentId, histories, version, currentStatus } = post;
+  const { contentId, histories, version, status } = post;
 
   const theme = useTheme();
   const { t } = useTranslation();
@@ -139,7 +139,7 @@ export const History: React.FC<Props> = ({ post, onReverted }) => {
                             {dayjs(history.createdAt).format(t('date_format.long'))}
                           </Typography>
                         </Stack>
-                        {currentStatus === 'draft' && version - 1 === history.version && (
+                        {status.currentStatus === 'draft' && version - 1 === history.version && (
                           <Tooltip title={t('restore')}>
                             <IconButton color="secondary" onClick={() => setOpenRevert(true)}>
                               <Icon name="Undo2" size={14} />
