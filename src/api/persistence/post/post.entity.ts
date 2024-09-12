@@ -136,25 +136,19 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     };
   }
 
-  toLocalizedWithContentsResponse(
-    language: string,
+  toLocalizedPostResponse(
     project: ProjectEntity,
-    contents: {
-      content: ContentEntity;
-      histories: ContentHistoryEntity[];
-    }[]
+    usedLanguages: string[],
+    content: ContentEntity,
+    createdBy: UserEntity,
+    updatedBy: UserEntity,
+    histories: ContentHistoryEntity[]
   ): LocalizedPost {
-    const sortedContents = contents.sort((a, b) => b.content.version - a.content.version);
-
-    // Get content of language. If language is not found, get the first content.
-    const languageContents = sortedContents.filter((c) => c.content.language === language);
-    const { content, histories } = languageContents[0] || sortedContents[0];
-
-    // Get the latest history of each version in the same language.
-    const latestHistories = this.getLatestHistoriesByLanguage(language, content.version, histories);
-
-    // Filter unique languages.
-    const usedLanguages = [...new Set(contents.map((c) => c.content.language))];
+    const latestHistories = this.getLatestHistoriesByLanguage(
+      content.language,
+      content.version,
+      histories
+    );
 
     return {
       id: this.props.id,
@@ -175,6 +169,8 @@ export class PostEntity extends PrismaBaseEntity<Post> {
         usedLanguages.includes(project.sourceLanguage),
       sourceLanguageCode: project.sourceLanguageCode?.code ?? null,
       targetLanguageCode: content.languageCode?.code ?? null,
+      createdByName: createdBy.name,
+      updatedByName: updatedBy.name,
       histories: latestHistories,
     };
   }
