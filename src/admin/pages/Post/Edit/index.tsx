@@ -23,8 +23,8 @@ import { Icon } from '../../../components/elements/Icon/index.js';
 import { useColorMode } from '../../../components/utilities/ColorMode/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
 import { useUnsavedChangesPrompt } from '../../../hooks/useUnsavedChangesPrompt.js';
+import { AddLanguage } from '../AddLanguage/index.js';
 import { PostContextProvider, usePost } from '../Context/index.js';
-import { LocalizedContent } from '../LocalizedContent/index.js';
 import { PostFooter } from './PostFooter/index.js';
 import { PostHeader } from './PostHeader/index.js';
 
@@ -224,7 +224,7 @@ export const EditPostPageImpl: React.FC = () => {
     setOpenAddLanguage(false);
   };
 
-  const handleChangedLanguage = (language: string) => {
+  const handleAddedLanguage = (language: string) => {
     setOpenAddLanguage(false);
     handleChangeLanguage(language);
     mutate({
@@ -401,11 +401,11 @@ export const EditPostPageImpl: React.FC = () => {
           <BlockEditor editor={editor} />
         </Container>
       </Box>
-      <LocalizedContent
+      <AddLanguage
         open={openAddLanguage}
         post={post}
         onClose={handleCloseAddLanguage}
-        onChanged={(language) => handleChangedLanguage(language)}
+        onChanged={(language) => handleAddedLanguage(language)}
       />
     </>
   );

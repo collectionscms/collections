@@ -19,7 +19,7 @@ export type Props = {
   onChanged: (language: string) => void;
 };
 
-export const LocalizedContent: React.FC<Props> = ({ open, post, onClose, onChanged }) => {
+export const AddLanguage: React.FC<Props> = ({ open, post, onClose, onChanged }) => {
   const { createContent } = usePost();
   const { t } = useTranslation();
   const { trigger: createContentTrigger } = createContent(post.id);
