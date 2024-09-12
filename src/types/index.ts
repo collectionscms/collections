@@ -65,6 +65,8 @@ export type LocalizedPost = {
   canTranslate: boolean;
   sourceLanguageCode: string | null;
   targetLanguageCode: string | null;
+  createdByName: string;
+  updatedByName: string;
   histories: ContentHistory[];
 };
 
