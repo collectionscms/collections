@@ -69,7 +69,7 @@ export const PostPageImpl: React.FC = () => {
 
   const handleCreatePost = async () => {
     const post = await trigger();
-    navigate(`/admin/contents/${post.contentId}`);
+    navigate(`${post.id}`);
   };
 
   const handleOpenMenu = (currentTarget: EventTarget, post: SourceLanguagePostItem) => {
@@ -99,7 +99,7 @@ export const PostPageImpl: React.FC = () => {
               {collapseIcon}
             </Box>
           ) : (
-            <Box sx={{ display: 'flex', alignItems: 'center', opacity: 0.1 }}>{collapseIcon}</Box>
+            <Box sx={{ opacity: 0.1 }}>{collapseIcon}</Box>
           );
         },
         SubCell: () => null,
@@ -112,7 +112,7 @@ export const PostPageImpl: React.FC = () => {
           const post = row.original as SourceLanguagePostItem;
           const title = post.title || t('untitled');
           return hasPermission('updatePost') ? (
-            <Link href={`/admin/contents/${post.contentId}`}>{title}</Link>
+            <Link href={`${post.postId}?language=${post.language}`}>{title}</Link>
           ) : (
             <Typography>{title}</Typography>
           );

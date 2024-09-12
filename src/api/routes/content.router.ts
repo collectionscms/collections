@@ -7,12 +7,9 @@ import { validateAccess } from '../middlewares/validateAccess.js';
 import { ContentRepository } from '../persistence/content/content.repository.js';
 import { ContentHistoryRepository } from '../persistence/contentHistory/contentHistory.repository.js';
 import { PostRepository } from '../persistence/post/post.repository.js';
-import { ProjectRepository } from '../persistence/project/project.repository.js';
 import { ReviewRepository } from '../persistence/review/review.repository.js';
 import { archiveUseCaseSchema } from '../useCases/content/archive.schema.js';
 import { ArchiveUseCase } from '../useCases/content/archive.useCase.js';
-import { getContentUseCaseSchema } from '../useCases/content/getContent.schema.js';
-import { GetContentUseCase } from '../useCases/content/getContent.useCase.js';
 import { publishUseCaseSchema } from '../useCases/content/publish.schema.js';
 import { PublishUseCase } from '../useCases/content/publish.useCase.js';
 import { requestReviewUseCaseSchema } from '../useCases/content/requestReview.schema.js';
@@ -23,35 +20,6 @@ import { updateContentUseCaseSchema } from '../useCases/content/updateContent.sc
 import { UpdateContentUseCase } from '../useCases/content/updateContent.useCase.js';
 
 const router = express.Router();
-
-router.get(
-  '/contents/:id',
-  authenticatedUser,
-  validateAccess(['readOwnPost', 'readAllPost']),
-  asyncHandler(async (req: Request, res: Response) => {
-    const validated = getContentUseCaseSchema.safeParse({
-      projectId: res.projectRole?.id,
-      contentId: req.params.id,
-      userId: res.user.id,
-    });
-    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
-
-    const useCase = new GetContentUseCase(
-      projectPrisma(validated.data.projectId),
-      new ProjectRepository(),
-      new ContentRepository(),
-      new ContentHistoryRepository()
-    );
-
-    const permissions = res.projectRole?.permissions ?? [];
-    const hasReadAllPost = permissions.map((p) => p.action).includes('readAllPost');
-    const content = await useCase.execute(validated.data, hasReadAllPost);
-
-    res.json({
-      content,
-    });
-  })
-);
 
 router.patch(
   '/contents/:id',

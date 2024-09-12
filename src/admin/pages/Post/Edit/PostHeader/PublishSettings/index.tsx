@@ -23,7 +23,7 @@ import React, { useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { LocalizedContent } from '../../../../../../types/index.js';
+import { LocalizedPost } from '../../../../../../types/index.js';
 import { logger } from '../../../../../../utilities/logger.js';
 import { IconButton } from '../../../../../@extended/components/IconButton/index.js';
 import { MainCard } from '../../../../../@extended/components/MainCard/index.js';
@@ -40,20 +40,20 @@ import { SlugSettings } from './SlugSettings/index.js';
 export type Props = {
   open: boolean;
   contentId: string;
-  content: LocalizedContent;
+  post: LocalizedPost;
   onClose: () => void;
 };
 
-export const PublishSettings: React.FC<Props> = ({ open, contentId, content, onClose }) => {
+export const PublishSettings: React.FC<Props> = ({ open, contentId, post, onClose }) => {
   const { hasPermission } = useAuth();
   const { t } = useTranslation();
   const navigate = useNavigate();
   const theme = useTheme();
-  const { requestReview, publish, archive, getContent } = usePost();
+  const { requestReview, publish, archive, getPost } = usePost();
   const { trigger: requestReviewTrigger } = requestReview(contentId);
   const { trigger: publishTrigger } = publish(contentId);
   const { trigger: archiveTrigger } = archive(contentId);
-  const { data: mutatedPost, mutate } = getContent(content.contentId);
+  const { data: mutatedPost, mutate } = getPost(post.id, post.contentLanguage);
 
   const appBar: AppBarProps = {
     position: 'fixed',
@@ -75,15 +75,15 @@ export const PublishSettings: React.FC<Props> = ({ open, contentId, content, onC
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
-      status: content.status.currentStatus === 'published' ? 'published' : 'review',
+      status: post.currentStatus === 'published' ? 'published' : 'review',
       comment: '',
     },
     resolver: yupResolver(editContentValidator()),
   });
 
   useEffect(() => {
-    setValue('status', content.status.currentStatus === 'published' ? 'published' : 'review');
-  }, [content.status.currentStatus]);
+    setValue('status', post.currentStatus === 'published' ? 'published' : 'review');
+  }, [post.currentStatus]);
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
@@ -127,7 +127,7 @@ export const PublishSettings: React.FC<Props> = ({ open, contentId, content, onC
 
   const handleUpdatedSlug = (slug: string) => {
     mutate({
-      ...content,
+      ...post,
       slug,
     });
   };
@@ -147,7 +147,9 @@ export const PublishSettings: React.FC<Props> = ({ open, contentId, content, onC
             <Box width="100%">
               <Typography variant="h3" align="center">
                 {t('language_publish_settings', {
-                  language: t(`languages.${content.language}` as unknown as TemplateStringsArray),
+                  language: t(
+                    `languages.${post.contentLanguage}` as unknown as TemplateStringsArray
+                  ),
                 })}
               </Typography>
             </Box>
@@ -168,7 +170,7 @@ export const PublishSettings: React.FC<Props> = ({ open, contentId, content, onC
                     control={control}
                     render={({ field }) => (
                       <RadioGroup value={field.value} name="radio-buttons-group" row>
-                        {content.status.currentStatus === 'published' && (
+                        {post.currentStatus === 'published' && (
                           <FormControlLabel
                             {...field}
                             value="archived"
