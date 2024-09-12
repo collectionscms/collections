@@ -71,7 +71,8 @@ router.get(
     const useCase = new GetPostUseCase(
       projectPrisma(validated.data.projectId),
       new ProjectRepository(),
-      new PostRepository()
+      new PostRepository(),
+      new ContentHistoryRepository()
     );
 
     const permissions = res.projectRole?.permissions ?? [];

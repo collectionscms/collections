@@ -3,7 +3,7 @@ import { v4 } from 'uuid';
 import { getLanguageCodeType, LanguageCode } from '../../../constants/languages.js';
 import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
 import { UnexpectedException } from '../../../exceptions/unexpected.js';
-import { PublishedContent } from '../../../types/index.js';
+import { PublishedContent, StatusHistory } from '../../../types/index.js';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 import { UserEntity } from '../user/user.entity.js';
 
@@ -225,6 +225,16 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
   isSameLanguageContent(language: string) {
     return this.props.language.toLocaleLowerCase() === language.toLocaleLowerCase();
   }
+
+  statusHistory = (): StatusHistory => {
+    return {
+      prevStatus:
+        this.props.version > 1 && this.props.status !== ContentStatus.published
+          ? ContentStatus.published
+          : null,
+      currentStatus: this.props.status,
+    };
+  };
 
   /**
    * Convert entity to published content response

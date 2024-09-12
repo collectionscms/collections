@@ -107,13 +107,13 @@ export const PostHeader: React.FC<Props> = ({
               <Icon name="ArrowLeft" size={28} />
             </IconButton>
             <Stack direction="row" gap={1.5}>
-              {post.prevStatus && (
+              {post.status.prevStatus && (
                 <>
                   <StatusDot status="published" />
                   <Divider orientation="vertical" flexItem variant="middle" />
                 </>
               )}
-              <StatusDot status={post.currentStatus} />
+              <StatusDot status={post.status.currentStatus} />
             </Stack>
             {isSaving && (
               <Stack flexDirection="row" alignItems="center" gap={1}>

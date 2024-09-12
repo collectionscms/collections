@@ -40,11 +40,8 @@ export const Settings: React.FC<Props> = ({ open, post, onClose, onTrashed }) =>
   const { hasPermission } = useAuth();
   const { trashPost, trashLanguageContent, getPost } = usePost();
   const { trigger: trashPostTrigger } = trashPost(post.id);
-  const { trigger: trashLanguageContentTrigger } = trashLanguageContent(
-    post.id,
-    post.contentLanguage
-  );
-  const { data: mutatedPost, mutate } = getPost(post.id, post.contentLanguage);
+  const { trigger: trashLanguageContentTrigger } = trashLanguageContent(post.id, post.language);
+  const { data: mutatedPost, mutate } = getPost(post.id, post.language);
 
   const [openContentTrash, setOpenContentTrash] = useState(false);
   const [openPostTrash, setOpenPostTrash] = useState(false);
@@ -113,7 +110,7 @@ export const Settings: React.FC<Props> = ({ open, post, onClose, onTrashed }) =>
         open={openContentTrash}
         color="error"
         title={t('dialog.confirm_content_trash_title', {
-          language: t(`languages.${post.contentLanguage}` as unknown as TemplateStringsArray),
+          language: t(`languages.${post.language}` as unknown as TemplateStringsArray),
         })}
         body={t('dialog.confirm_content_trash')}
         execute={{ label: t('move_to_trash'), action: handleTrashLanguageContent }}
@@ -140,9 +137,7 @@ export const Settings: React.FC<Props> = ({ open, post, onClose, onTrashed }) =>
             <Box width="100%">
               <Typography variant="h3" align="center">
                 {t('language_post_settings', {
-                  language: t(
-                    `languages.${post.contentLanguage}` as unknown as TemplateStringsArray
-                  ),
+                  language: t(`languages.${post.language}` as unknown as TemplateStringsArray),
                 })}
               </Typography>
             </Box>
@@ -176,14 +171,14 @@ export const Settings: React.FC<Props> = ({ open, post, onClose, onTrashed }) =>
                           <Typography variant="subtitle1">
                             {t('remove_language_content', {
                               language: t(
-                                `languages.${post.contentLanguage}` as unknown as TemplateStringsArray
+                                `languages.${post.language}` as unknown as TemplateStringsArray
                               ),
                             })}
                           </Typography>
                           <Typography variant="caption" color="textSecondary">
                             {t('move_lang_content_to_trash', {
                               language: t(
-                                `languages.${post.contentLanguage}` as unknown as TemplateStringsArray
+                                `languages.${post.language}` as unknown as TemplateStringsArray
                               ),
                             })}
                           </Typography>

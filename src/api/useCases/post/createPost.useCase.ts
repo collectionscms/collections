@@ -42,17 +42,20 @@ export class CreatePostUseCase {
 
       return {
         post: createdPost,
-        contents: [
-          {
-            content: createdContent,
-            file: null,
-            createdBy: createdBy,
-            histories: [contentHistory],
-          },
-        ],
+        content: createdContent,
+        createdBy: createdBy,
+        updatedBy: createdBy,
+        histories: [contentHistory],
       };
     });
 
-    return result.post.toLocalizedWithContentsResponse(sourceLanguage, project, result.contents);
+    return result.post.toLocalizedPostResponse(
+      project,
+      [result.content.language],
+      result.content,
+      result.createdBy,
+      result.updatedBy,
+      result.histories
+    );
   }
 }

@@ -170,7 +170,7 @@ export class PostRepository {
     contents: {
       content: ContentEntity;
       createdBy: UserEntity;
-      histories: ContentHistoryEntity[];
+      updatedBy: UserEntity;
     }[];
   }> {
     const record = await prisma.post.findFirstOrThrow({
@@ -179,20 +179,13 @@ export class PostRepository {
         createdById: options?.userId,
       },
       include: {
-        contentHistories: {
-          where: {
-            deletedAt: null,
-          },
-        },
         contents: {
           include: {
             createdBy: true,
+            updatedBy: true,
           },
           where: {
             deletedAt: null,
-          },
-          orderBy: {
-            version: 'desc',
           },
         },
       },
@@ -204,9 +197,7 @@ export class PostRepository {
       contents.push({
         content: ContentEntity.Reconstruct<Content, ContentEntity>(content),
         createdBy: UserEntity.Reconstruct<User, UserEntity>(content.createdBy),
-        histories: record.contentHistories.map((history) =>
-          ContentHistoryEntity.Reconstruct<ContentHistory, ContentHistoryEntity>(history)
-        ),
+        updatedBy: UserEntity.Reconstruct<User, UserEntity>(content.updatedBy),
       });
     }
 
