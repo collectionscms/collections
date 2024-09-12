@@ -23,13 +23,13 @@ model Project {
   roles              Role[]
   posts              Post[]
   contents           Content[]
-  contentHistory     ContentHistory[]
+  contentHistories   ContentHistory[]
   apiKeys            ApiKey[]
   invitations        Invitation[]
   rolePermissions    RolePermission[]
   reivews            Review[]
   apiKeyPermissions  ApiKeyPermission[]
-  TranslationUsage   TranslationUsage[]
+  translationUsages  TranslationUsage[]
 }
 
 model User {
@@ -56,7 +56,7 @@ model User {
   createdByHasPosts            Post[]             @relation("CreatedBy")
   createdByHasContentHistories ContentHistory[]   @relation("CreatedBy")
   updatedByHasContentHistories ContentHistory[]   @relation("UpdatedBy")
-  TranslationUsage             TranslationUsage[]
+  translationUsages            TranslationUsage[]
 }
 
 model UserProject {
