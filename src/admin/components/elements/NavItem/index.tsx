@@ -2,8 +2,12 @@ import { ListItemButton, ListItemIcon, ListItemText, Typography, useTheme } from
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Icon } from '../Icon/index.js';
+import { GroupItem } from '../NavGroup/types.js';
 import { NavLink } from '../NavLink/index.js';
-import { Props } from './types.js';
+
+export type Props = {
+  item: GroupItem;
+};
 
 export const NavItem: React.FC<Props> = ({ item }) => {
   const { t } = useTranslation();

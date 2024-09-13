@@ -1,6 +1,10 @@
 import React from 'react';
 import { HeaderBar } from '../../../@extended/components/HeaderBar/index.js';
-import { Props } from './types.js';
+
+export type Props = {
+  label: string;
+  children?: React.ReactNode;
+};
 
 export const MainHeader: React.FC<Props> = ({ label, children }) => {
   return (
