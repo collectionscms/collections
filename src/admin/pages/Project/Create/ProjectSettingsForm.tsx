@@ -12,6 +12,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscardDialog/index.js';
 import { useUnsavedChangesPrompt } from '../../../hooks/useUnsavedChangesPrompt.js';
 import { useTranslation } from 'react-i18next';
+import { useProject } from '../Context/index.js';
+import { logger } from '../../../../utilities/logger.js';
 
 export type ProjectData = { name: string; subdomain: string };
 type Props = {
@@ -26,10 +28,13 @@ export const ProjectSettingsForm: React.FC<Props> = ({
   handleNext,
 }) => {
   const { t } = useTranslation();
+  const { checkSubdomainAvailability } = useProject();
+  const { trigger } = checkSubdomainAvailability();
 
   const {
     control,
     handleSubmit,
+    setError,
     formState: { isDirty, errors },
   } = useForm<FormValues>({
     defaultValues: {
@@ -41,8 +46,20 @@ export const ProjectSettingsForm: React.FC<Props> = ({
   const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
-    setProjectData(form);
-    handleNext();
+    try {
+      const result = await trigger({ subdomain: form.subdomain });
+      if (result.available) {
+        setProjectData(form);
+        handleNext();
+      } else {
+        setError('subdomain', {
+          type: 'manual',
+          message: t('error.already_registered_project_id'),
+        });
+      }
+    } catch (error) {
+      logger.error(error);
+    }
   };
 
   return (

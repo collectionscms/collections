@@ -5,12 +5,18 @@ import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
 import { api } from '../../../utilities/api.js';
 
 type ProjectContext = {
-  getProject: () => SWRResponse<
+  getMyProject: () => SWRResponse<
     Project,
     Error,
     {
       suspense: true;
     }
+  >;
+  checkSubdomainAvailability: () => SWRMutationResponse<
+    { available: boolean },
+    any,
+    string,
+    Record<string, any>
   >;
   createProject: () => SWRMutationResponse<Project, any, string, Record<string, any>>;
   updateProject: () => SWRMutationResponse<void, any, string, Record<string, any>>;
@@ -19,11 +25,19 @@ type ProjectContext = {
 const Context = createContext({} as ProjectContext);
 
 export const ProjectContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const getProject = () =>
+  const getMyProject = () =>
     useSWR(
-      '/projects',
+      '/my/projects',
       (url) => api.get<{ project: Project }>(url).then((res) => res.data.project),
       { suspense: true }
+    );
+
+  const checkSubdomainAvailability = () =>
+    useSWRMutation(
+      '/projects/subdomain-availability',
+      async (url: string, { arg }: { arg: Record<string, any> }) => {
+        return api.post<{ available: boolean }>(url, arg).then((res) => res.data);
+      }
     );
 
   const createProject = () =>
@@ -38,11 +52,12 @@ export const ProjectContextProvider: React.FC<{ children: React.ReactNode }> = (
 
   const value = useMemo(
     () => ({
-      getProject,
+      getMyProject,
+      checkSubdomainAvailability,
       createProject,
       updateProject,
     }),
-    [getProject, createProject, updateProject]
+    [getMyProject, checkSubdomainAvailability, createProject, updateProject]
   );
 
   return <Context.Provider value={value}>{children}</Context.Provider>;
