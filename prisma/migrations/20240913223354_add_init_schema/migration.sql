@@ -207,6 +207,39 @@ CREATE TABLE "ApiKeyPermission" (
     CONSTRAINT "ApiKeyPermission_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "WebhookSetting" (
+    "id" UUID NOT NULL,
+    "projectId" UUID NOT NULL DEFAULT (current_setting('app.current_project_id'::text))::uuid,
+    "name" VARCHAR(255) NOT NULL,
+    "serviceType" VARCHAR(255) NOT NULL,
+    "url" VARCHAR(255),
+    "secret" VARCHAR(255),
+    "requestHeaders" JSONB,
+    "onPublish" BOOLEAN NOT NULL DEFAULT false,
+    "onReview" BOOLEAN NOT NULL DEFAULT false,
+    "onArchive" BOOLEAN NOT NULL DEFAULT false,
+    "onDeletePublished" BOOLEAN NOT NULL DEFAULT false,
+    "createdAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMPTZ(6) NOT NULL,
+
+    CONSTRAINT "WebhookSetting_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "WebhookLog" (
+    "id" UUID NOT NULL,
+    "projectId" UUID NOT NULL DEFAULT (current_setting('app.current_project_id'::text))::uuid,
+    "name" VARCHAR(255) NOT NULL,
+    "serviceType" VARCHAR(255) NOT NULL,
+    "status" VARCHAR(255) NOT NULL,
+    "responseCode" INTEGER NOT NULL,
+    "responseBody" TEXT,
+    "createdAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "WebhookLog_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "Project_subdomain_key" ON "Project"("subdomain");
 
@@ -317,3 +350,9 @@ ALTER TABLE "ApiKeyPermission" ADD CONSTRAINT "ApiKeyPermission_projectId_fkey" 
 
 -- AddForeignKey
 ALTER TABLE "ApiKeyPermission" ADD CONSTRAINT "ApiKeyPermission_permissionAction_fkey" FOREIGN KEY ("permissionAction") REFERENCES "Permission"("action") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "WebhookSetting" ADD CONSTRAINT "WebhookSetting_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Project"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "WebhookLog" ADD CONSTRAINT "WebhookLog_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Project"("id") ON DELETE CASCADE ON UPDATE CASCADE;
