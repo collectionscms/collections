@@ -1,16 +1,18 @@
 import express, { Request, Response } from 'express';
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
-import { ProjectRepository } from '../persistence/project/project.repository.js';
-import { RoleRepository } from '../persistence/role/role.repository.js';
-import { UserProjectRepository } from '../persistence/userProject/userProject.repository.js';
 import { bypassPrisma, projectPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';
 import { validateAccess } from '../middlewares/validateAccess.js';
+import { ProjectRepository } from '../persistence/project/project.repository.js';
+import { RoleRepository } from '../persistence/role/role.repository.js';
+import { UserProjectRepository } from '../persistence/userProject/userProject.repository.js';
 import { createProjectUseCaseSchema } from '../useCases/project/createProject.schema.js';
 import { CreateProjectUseCase } from '../useCases/project/createProject.useCase.js';
-import { getProjectUseCaseSchema } from '../useCases/project/getProject.schema.js';
-import { GetProjectUseCase } from '../useCases/project/getProject.useCase.js';
+import { getMyProjectUseCaseSchema } from '../useCases/project/getMyProject.schema.js';
+import { GetMyProjectUseCase } from '../useCases/project/getMyProject.useCase.js';
+import { getSubdomainAvailabilityUseCaseSchema } from '../useCases/project/getSubdomainAvailability.schema.js';
+import { GetSubdomainAvailabilityUseCase } from '../useCases/project/getSubdomainAvailability.useCase.js';
 import { updateProjectUseCaseSchema } from '../useCases/project/updateProject.schema.js';
 import { UpdateProjectUseCase } from '../useCases/project/updateProject.useCase.js';
 
@@ -33,6 +35,22 @@ router.get(
     const project = await useCase.execute(validated.data.projectId);
 
     res.json({ project });
+  })
+);
+
+router.post(
+  '/projects/subdomain-availability',
+  authenticatedUser,
+  asyncHandler(async (req: Request, res: Response) => {
+    const validated = getSubdomainAvailabilityUseCaseSchema.safeParse({
+      subdomain: req.body.subdomain,
+    });
+    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
+
+    const useCase = new GetSubdomainAvailabilityUseCase(bypassPrisma, new ProjectRepository());
+    const result = await useCase.execute(validated.data);
+
+    res.json({ ...result });
   })
 );
 

@@ -9,6 +9,7 @@ import { UserProjectEntity } from '../../persistence/userProject/userProject.ent
 import { UserProjectRepository } from '../../persistence/userProject/userProject.repository.js';
 import { BypassPrismaClient } from '../../database/prisma/client.js';
 import { CreateProjectUseCaseSchemaType } from './createProject.schema.js';
+import { env } from '../../../env.js';
 
 export class CreateProjectUseCase {
   constructor(
@@ -26,8 +27,9 @@ export class CreateProjectUseCase {
   }: CreateProjectUseCaseSchemaType): Promise<Project> {
     const t = await i18n.changeLanguage(sourceLanguage);
 
+    const isReservedSubdomain = env.RESERVED_SUBDOMAINS.split(',').includes(subdomain);
     const project = await this.projectRepository.findOneBySubdomain(this.prisma, subdomain);
-    if (project) {
+    if (isReservedSubdomain || project) {
       throw new RecordNotUniqueException('already_registered_project_id');
     }
 
