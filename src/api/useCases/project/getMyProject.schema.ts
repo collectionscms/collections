@@ -1,5 +1,5 @@
 import { z } from 'zod';
 
-export const getProjectUseCaseSchema = z.object({
+export const getMyProjectUseCaseSchema = z.object({
   projectId: z.string(),
 });

@@ -2,7 +2,7 @@ import { Project } from '@prisma/client';
 import { ProjectRepository } from '../../persistence/project/project.repository.js';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
 
-export class GetProjectUseCase {
+export class GetMyProjectUseCase {
   constructor(
     private readonly prisma: ProjectPrismaType,
     private readonly projectRepository: ProjectRepository

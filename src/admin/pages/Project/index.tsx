@@ -24,7 +24,7 @@ const ProjectImpl: React.FC = () => {
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
 
-  const { getProject, updateProject } = useProject();
+  const { getMyProject: getProject, updateProject } = useProject();
   const { data: project } = getProject();
   const { trigger, isMutating } = updateProject();
   const {

@@ -17,16 +17,16 @@ import { UpdateProjectUseCase } from '../useCases/project/updateProject.useCase.
 const router = express.Router();
 
 router.get(
-  '/projects',
+  '/my/projects',
   authenticatedUser,
   validateAccess(['readProject']),
   asyncHandler(async (_req: Request, res: Response) => {
-    const validated = getProjectUseCaseSchema.safeParse({
+    const validated = getMyProjectUseCaseSchema.safeParse({
       projectId: res.projectRole?.id,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
-    const useCase = new GetProjectUseCase(
+    const useCase = new GetMyProjectUseCase(
       projectPrisma(validated.data.projectId),
       new ProjectRepository()
     );
