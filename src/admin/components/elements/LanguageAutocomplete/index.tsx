@@ -31,11 +31,6 @@ export const LanguageAutocomplete: React.FC<Props> = ({ languages, value, onChan
           <Typography variant="caption" color="text.secondary" sx={{ ml: 1 }}>
             {option.code.toUpperCase()}
           </Typography>
-          {option.sourceLanguageCode && (
-            <Typography variant="caption" color="text.secondary" sx={{ ml: 1 }}>
-              - {t('translatable')}
-            </Typography>
-          )}
         </Box>
       )}
       renderInput={(params) => (
