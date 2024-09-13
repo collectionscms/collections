@@ -196,6 +196,7 @@
   "other_localized_languages": "( {{count}} other languages )",
   "requester": "Requester",
   "untitled": "Untitled",
+  "webhook": "Webhook",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",
