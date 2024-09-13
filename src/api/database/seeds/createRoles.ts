@@ -33,6 +33,7 @@ export const createRoles = async (prisma: BypassPrismaType, i18next: i18n): Prom
     'createApiKey',
     'readApiKey',
     ...roleActions.extension,
+    ...roleActions.webhookSetting,
   ];
 
   const contributorPermissions = [
