@@ -85,13 +85,7 @@ type AllowedEnvironmentVariable =
   // /////////////////////////////////////
   | 'EMAIL_TRANSPORT'
   | 'EMAIL_FROM'
-  | 'EMAIL_SENDGRID_API_KEY'
-
-  // /////////////////////////////////////
-  // Translation
-  // /////////////////////////////////////
-  | 'DEEPL_API_KEY'
-  | 'MAX_TRANSLATION_LENGTH';
+  | 'EMAIL_SENDGRID_API_KEY';
 
 export const defaults: Partial<Record<AllowedEnvironmentVariable, any>> = {
   // General
@@ -130,9 +124,6 @@ export const defaults: Partial<Record<AllowedEnvironmentVariable, any>> = {
 
   // Email
   EMAIL_TRANSPORT: 'sendgrid',
-
-  // Translation
-  MAX_TRANSLATION_LENGTH: 2_000,
 };
 
 export let env: Record<string, any> = {
