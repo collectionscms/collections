@@ -11,7 +11,6 @@ ALTER TABLE "Review" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE "ApiKey" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE "ApiKeyPermission" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE "Invitation" ENABLE ROW LEVEL SECURITY;
-ALTER TABLE "TranslationUsage" ENABLE ROW LEVEL SECURITY;
 
 -- Force Row Level Security for table owners
 ALTER TABLE "Project" FORCE ROW LEVEL SECURITY;
@@ -26,7 +25,6 @@ ALTER TABLE "Review" FORCE ROW LEVEL SECURITY;
 ALTER TABLE "ApiKey" FORCE ROW LEVEL SECURITY;
 ALTER TABLE "ApiKeyPermission" FORCE ROW LEVEL SECURITY;
 ALTER TABLE "Invitation" FORCE ROW LEVEL SECURITY;
-ALTER TABLE "TranslationUsage" FORCE ROW LEVEL SECURITY;
 
 -- Create row security policies
 CREATE POLICY tenant_isolation_policy ON "Project" USING ("id" = current_setting('app.current_project_id', TRUE)::uuid);
@@ -41,7 +39,6 @@ CREATE POLICY tenant_isolation_policy ON "Review" USING ("projectId" = current_s
 CREATE POLICY tenant_isolation_policy ON "ApiKey" USING ("projectId" = current_setting('app.current_project_id', TRUE)::uuid);
 CREATE POLICY tenant_isolation_policy ON "ApiKeyPermission" USING ("projectId" = current_setting('app.current_project_id', TRUE)::uuid);
 CREATE POLICY tenant_isolation_policy ON "Invitation" USING ("projectId" = current_setting('app.current_project_id', TRUE)::uuid);
-CREATE POLICY tenant_isolation_policy ON "TranslationUsage" USING ("projectId" = current_setting('app.current_project_id', TRUE)::uuid);
 
 -- Create policies to bypass RLS
 CREATE POLICY bypass_rls_policy ON "Project" USING (current_setting('app.bypass_rls', TRUE)::text = 'on');
@@ -56,4 +53,3 @@ CREATE POLICY bypass_rls_policy ON "Review" USING (current_setting('app.bypass_r
 CREATE POLICY bypass_rls_policy ON "ApiKey" USING (current_setting('app.bypass_rls', TRUE)::text = 'on');
 CREATE POLICY bypass_rls_policy ON "ApiKeyPermission" USING (current_setting('app.bypass_rls', TRUE)::text = 'on');
 CREATE POLICY bypass_rls_policy ON "Invitation" USING (current_setting('app.bypass_rls', TRUE)::text = 'on');
-CREATE POLICY bypass_rls_policy ON "TranslationUsage" USING (current_setting('app.bypass_rls', TRUE)::text = 'on');
