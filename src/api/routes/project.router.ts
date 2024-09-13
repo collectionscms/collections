@@ -32,7 +32,7 @@ router.get(
       projectPrisma(validated.data.projectId),
       new ProjectRepository()
     );
-    const project = await useCase.execute(validated.data.projectId);
+    const project = await useCase.execute(validated.data);
 
     res.json({ project });
   })

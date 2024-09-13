@@ -1,6 +1,7 @@
 import { Project } from '@prisma/client';
-import { ProjectRepository } from '../../persistence/project/project.repository.js';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
+import { ProjectRepository } from '../../persistence/project/project.repository.js';
+import { GetMyProjectUseCaseSchemaType } from './getMyProject.schema.js';
 
 export class GetMyProjectUseCase {
   constructor(
@@ -8,8 +9,8 @@ export class GetMyProjectUseCase {
     private readonly projectRepository: ProjectRepository
   ) {}
 
-  async execute(projectId: string): Promise<Project> {
-    const record = await this.projectRepository.findOneById(this.prisma, projectId);
+  async execute(props: GetMyProjectUseCaseSchemaType): Promise<Project> {
+    const record = await this.projectRepository.findOneById(this.prisma, props.projectId);
     return record.toResponse();
   }
 }
