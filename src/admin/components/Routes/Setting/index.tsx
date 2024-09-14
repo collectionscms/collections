@@ -36,6 +36,9 @@ const EditApiKey = Loader(
 const WebhookSetting = Loader(
   lazy(() => import('../../../pages/WebhookSetting/index.js'), 'WebhookSettingPage')
 );
+const CreateWebhookSetting = Loader(
+  lazy(() => import('../../../pages/WebhookSetting/Create/index.js'), 'CreateWebhookSettingPage')
+);
 
 const NotFound = Loader(lazy(() => import('../../../pages/NotFound/index.js'), 'NotFound'));
 
@@ -184,6 +187,17 @@ export const SettingRoutes = () => {
       element: (
         <MainHeader label={t('webhook')}>
           <WebhookSetting />
+        </MainHeader>
+      ),
+    });
+  }
+
+  if (hasPermission('createWebhookSetting')) {
+    children.push({
+      path: 'webhooks/create',
+      element: (
+        <MainHeader label={t('create.webhook')}>
+          <CreateWebhookSetting />
         </MainHeader>
       ),
     });
