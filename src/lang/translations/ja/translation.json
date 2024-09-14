@@ -198,6 +198,7 @@
   "untitled": "無題",
   "webhook": "Webhook",
   "provider": "プロバイダー",
+  "notification_triggers": "通知のタイミング",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",
@@ -258,7 +259,10 @@
   },
   "providers_field": {
     "url": "URL",
-    "vercel_url_caption": "Vercel の Deploy Hooks 設定から取得できます。"
+    "vercel_url_caption": "Vercel の Deploy Hooks 設定から取得できます。",
+    "on_publish": "記事を公開した時",
+    "on_archive": "記事を公開終了にした時",
+    "on_delete_published": "公開済みの記事を削除した時"
   },
   "editor": {
     "text": "テキスト",
