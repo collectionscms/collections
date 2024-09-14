@@ -234,7 +234,8 @@
     "user": "Create User",
     "role": "Create Role",
     "project": "Create Project",
-    "api_key": "Create Api Key"
+    "api_key": "Create Api Key",
+    "webhook": "Create Webhook"
   },
   "edit": {
     "user": "Edit User",
@@ -254,6 +255,10 @@
   "providers": {
     "vercel": "Vercel",
     "custom": "Custom Notifications"
+  },
+  "providers_field": {
+    "url": "URL",
+    "vercel_url_caption": "It can be obtained from Vercel's Deploy Hooks setting."
   },
   "editor": {
     "text": "Text",

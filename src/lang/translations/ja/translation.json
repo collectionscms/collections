@@ -234,7 +234,8 @@
     "user": "ユーザー 新規登録",
     "role": "ロール 新規登録",
     "project": "プロジェクト 新規登録",
-    "api_key": "APIキー 新規登録"
+    "api_key": "APIキー 新規登録",
+    "webhook": "Webhook 新規登録"
   },
   "edit": {
     "user": "ユーザー 編集",
@@ -254,6 +255,10 @@
   "providers": {
     "vercel": "Vercel",
     "custom": "カスタム通知"
+  },
+  "providers_field": {
+    "url": "URL",
+    "vercel_url_caption": "Vercel の Deploy Hooks 設定から取得できます。"
   },
   "editor": {
     "text": "テキスト",
