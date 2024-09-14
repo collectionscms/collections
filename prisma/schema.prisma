@@ -252,7 +252,6 @@ model WebhookSetting {
   secret            String?  @db.VarChar(255)
   requestHeaders    Json?
   onPublish         Boolean  @default(false)
-  onReview          Boolean  @default(false)
   onArchive         Boolean  @default(false)
   onDeletePublished Boolean  @default(false)
   createdAt         DateTime @default(now()) @db.Timestamptz(6)

@@ -218,7 +218,6 @@ CREATE TABLE "WebhookSetting" (
     "secret" VARCHAR(255),
     "requestHeaders" JSONB,
     "onPublish" BOOLEAN NOT NULL DEFAULT false,
-    "onReview" BOOLEAN NOT NULL DEFAULT false,
     "onArchive" BOOLEAN NOT NULL DEFAULT false,
     "onDeletePublished" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,

@@ -24,7 +24,6 @@ export class WebhookSettingEntity extends PrismaBaseEntity<WebhookSetting> {
       secret: props.secret,
       requestHeaders: props.requestHeaders,
       onPublish: props.onPublish,
-      onReview: props.onReview,
       onArchive: props.onArchive,
       onDeletePublished: props.onDeletePublished,
       createdAt: now,
