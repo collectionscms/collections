@@ -7,6 +7,8 @@ import { validateAccess } from '../middlewares/validateAccess.js';
 import { WebhookSettingRepository } from '../persistence/webhookSetting/webhookSetting.repository.js';
 import { CreateWebSettingsUseCase } from '../useCases/webSetting/createWebSettings.useCase.js';
 import { createWebSettingsUseCaseSchema } from '../useCases/webSetting/createWebSettings.useCase.schema.js';
+import { DeleteWebSettingUseCase } from '../useCases/webSetting/deleteWebSetting.useCase.js';
+import { deleteWebSettingsUseCaseSchema } from '../useCases/webSetting/deleteWebSetting.useCase.schema.js';
 import { GetWebSettingUseCase } from '../useCases/webSetting/getWebSetting.useCase.js';
 import { getWebSettingUseCaseSchema } from '../useCases/webSetting/getWebSetting.useCase.schema.js';
 import { GetWebSettingsUseCase } from '../useCases/webSetting/getWebSettings.useCase.js';
@@ -107,6 +109,27 @@ router.patch(
       new WebhookSettingRepository()
     );
     await useCase.execute(validated.data);
+
+    res.status(204).end();
+  })
+);
+
+router.delete(
+  '/webhook-settings/:id',
+  authenticatedUser,
+  validateAccess(['deleteWebhookSetting']),
+  asyncHandler(async (req: Request, res: Response) => {
+    const validate = deleteWebSettingsUseCaseSchema.safeParse({
+      projectId: res.projectRole?.id,
+      id: req.params.id,
+    });
+    if (!validate.success) throw new InvalidPayloadException('bad_request', validate.error);
+
+    const useCase = new DeleteWebSettingUseCase(
+      projectPrisma(validate.data.projectId),
+      new WebhookSettingRepository()
+    );
+    await useCase.execute(validate.data);
 
     res.status(204).end();
   })

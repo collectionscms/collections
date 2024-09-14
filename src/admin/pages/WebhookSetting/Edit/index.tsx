@@ -23,7 +23,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { logger } from '../../../../utilities/logger.js';
 import { MainCard } from '../../../@extended/components/MainCard/index.js';
 import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscardDialog/index.js';
+import { DeleteButton } from '../../../components/elements/DeleteButton/index.js';
 import { Icon } from '../../../components/elements/Icon/index.js';
+import { useAuth } from '../../../components/utilities/Auth/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
 import { createWebhookSettingValidator } from '../../../fields/validators/webhookSettings/createWebhookSetting.validator.js';
 import { FormValues } from '../../../fields/validators/webhookSettings/values.js';
@@ -39,6 +41,7 @@ const EditWebhookSettingPageImpl: React.FC = () => {
   const { t } = useTranslation();
   const theme = useTheme();
   const navigate = useNavigate();
+  const { hasPermission } = useAuth();
   const { enqueueSnackbar } = useSnackbar();
   const { getWebhookSetting, updateWebhookSetting } = useWebhookSetting();
   const { data: webhookSetting } = getWebhookSetting(id);
@@ -259,13 +262,25 @@ const EditWebhookSettingPageImpl: React.FC = () => {
                 </Grid>
 
                 <Grid xs={12}>
-                  <Stack direction="row" justifyContent="flex-end" spacing={1}>
-                    <Button variant="outlined" color="secondary" onClick={navigateToList}>
-                      {t('cancel')}
-                    </Button>
-                    <Button variant="contained" type="submit" disabled={isMutating}>
-                      {t('save')}
-                    </Button>
+                  <Stack
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="space-between"
+                    sx={{ width: 1 }}
+                  >
+                    {hasPermission('deleteWebhookSetting') ? (
+                      <DeleteButton id={id} slug="webhook-settings" onSuccess={navigateToList} />
+                    ) : (
+                      <div />
+                    )}
+                    <Stack direction="row" spacing={1}>
+                      <Button variant="outlined" color="secondary" onClick={navigateToList}>
+                        {t('cancel')}
+                      </Button>
+                      <Button variant="contained" type="submit" disabled={isMutating}>
+                        {t('save')}
+                      </Button>
+                    </Stack>
                   </Stack>
                 </Grid>
               </Grid>

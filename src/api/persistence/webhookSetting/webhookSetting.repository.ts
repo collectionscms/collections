@@ -56,4 +56,12 @@ export class WebhookSettingRepository {
     });
     return WebhookSettingEntity.Reconstruct<WebhookSetting, WebhookSettingEntity>(result);
   }
+
+  async delete(prisma: ProjectPrismaType, entity: WebhookSettingEntity): Promise<void> {
+    await prisma.webhookSetting.delete({
+      where: {
+        id: entity.id,
+      },
+    });
+  }
 }
