@@ -9,7 +9,7 @@ export const WebhookProvider = {
 } as const;
 export type WebhookProviderType = (typeof WebhookProvider)[keyof typeof WebhookProvider];
 
-type WebhookSettingProps = Omit<WebhookSetting, 'id' | 'enabled' | 'createdAt' | 'updatedAt'>;
+export type WebhookSettingProps = Omit<WebhookSetting, 'id' | 'createdAt' | 'updatedAt'>;
 
 export class WebhookSettingEntity extends PrismaBaseEntity<WebhookSetting> {
   static Construct(props: WebhookSettingProps): WebhookSettingEntity {
@@ -18,7 +18,7 @@ export class WebhookSettingEntity extends PrismaBaseEntity<WebhookSetting> {
       id: v4(),
       projectId: props.projectId,
       name: props.name,
-      enabled: true,
+      enabled: props.enabled,
       provider: props.provider,
       url: props.url,
       secret: props.secret,
