@@ -31,6 +31,10 @@ export class WebhookSettingEntity extends PrismaBaseEntity<WebhookSetting> {
     });
   }
 
+  get requestHeaders() {
+    return this.props.requestHeaders ?? {};
+  }
+
   private isValid() {
     if (!this.props.id) {
       throw new UnexpectedException({ message: 'id is required' });

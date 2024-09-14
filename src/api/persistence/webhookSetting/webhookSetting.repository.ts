@@ -9,4 +9,19 @@ export class WebhookSettingRepository {
       WebhookSettingEntity.Reconstruct<WebhookSetting, WebhookSettingEntity>(record)
     );
   }
+
+  async create(
+    prisma: ProjectPrismaType,
+    entity: WebhookSettingEntity
+  ): Promise<WebhookSettingEntity> {
+    entity.beforeInsertValidate();
+
+    const result = await prisma.webhookSetting.create({
+      data: {
+        ...entity.toPersistence(),
+        requestHeaders: entity.requestHeaders,
+      },
+    });
+    return WebhookSettingEntity.Reconstruct<WebhookSetting, WebhookSettingEntity>(result);
+  }
 }
