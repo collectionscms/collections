@@ -246,7 +246,7 @@ model WebhookSetting {
   id                String   @id @db.Uuid
   projectId         String   @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
   name              String   @db.VarChar(255)
-  serviceType       String   @db.VarChar(255)
+  provider          String   @db.VarChar(255)
   enabled           Boolean  @default(true)
   url               String?  @db.VarChar(255)
   secret            String?  @db.VarChar(255)
@@ -264,7 +264,7 @@ model WebhookLog {
   id           String   @id @db.Uuid
   projectId    String   @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
   name         String   @db.VarChar(255)
-  serviceType  String   @db.VarChar(255)
+  provider     String   @db.VarChar(255)
   status       String   @db.VarChar(255)
   responseCode Int
   responseBody String?

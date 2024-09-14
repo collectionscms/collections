@@ -13,7 +13,7 @@ export class WebhookSettingEntity extends PrismaBaseEntity<WebhookSetting> {
       projectId: props.projectId,
       name: props.name,
       enabled: true,
-      serviceType: props.serviceType,
+      provider: props.provider,
       url: props.url,
       secret: props.secret,
       requestHeaders: props.requestHeaders,
