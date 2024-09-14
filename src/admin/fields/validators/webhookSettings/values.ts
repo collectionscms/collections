@@ -5,4 +5,5 @@ export type FormValues = {
   onPublish: boolean;
   onArchive: boolean;
   onDeletePublished: boolean;
+  enabled: boolean;
 };

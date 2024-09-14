@@ -48,6 +48,7 @@ const CreateWebhookSettingPageImpl: React.FC = () => {
   } = useForm<FormValues>({
     defaultValues: {
       name: '',
+      enabled: true,
       provider: 'vercel',
       url: '',
       onPublish: true,
@@ -219,7 +220,7 @@ const CreateWebhookSettingPageImpl: React.FC = () => {
                                 <FormControlLabel
                                   {...field}
                                   value={field.value}
-                                  control={<Checkbox {...field} />}
+                                  control={<Checkbox checked={watch(item.value)} {...field} />}
                                   label={item.label}
                                 />
                               </Grid>
