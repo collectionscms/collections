@@ -31,9 +31,29 @@ export class WebhookSettingEntity extends PrismaBaseEntity<WebhookSetting> {
     });
   }
 
+  get id() {
+    return this.props.id;
+  }
+
   get requestHeaders() {
     return this.props.requestHeaders ?? {};
   }
+
+  update = (params: {
+    name: string;
+    url: string | null;
+    enabled: boolean;
+    onPublish: boolean;
+    onArchive: boolean;
+    onDeletePublished: boolean;
+  }) => {
+    this.props.name = params.name;
+    this.props.url = params.url;
+    this.props.enabled = params.enabled;
+    this.props.onPublish = params.onPublish;
+    this.props.onArchive = params.onArchive;
+    this.props.onDeletePublished = params.onDeletePublished;
+  };
 
   private isValid() {
     if (!this.props.id) {
