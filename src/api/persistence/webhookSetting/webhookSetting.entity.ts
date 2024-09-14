@@ -3,7 +3,7 @@ import { v4 } from 'uuid';
 import { UnexpectedException } from '../../../exceptions/unexpected.js';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 
-type WebhookSettingProps = Omit<WebhookSetting, 'id' | 'createdAt' | 'updatedAt'>;
+type WebhookSettingProps = Omit<WebhookSetting, 'id' | 'enabled' | 'createdAt' | 'updatedAt'>;
 
 export class WebhookSettingEntity extends PrismaBaseEntity<WebhookSetting> {
   static Construct(props: WebhookSettingProps): WebhookSettingEntity {
@@ -12,6 +12,7 @@ export class WebhookSettingEntity extends PrismaBaseEntity<WebhookSetting> {
       id: v4(),
       projectId: props.projectId,
       name: props.name,
+      enabled: true,
       serviceType: props.serviceType,
       url: props.url,
       secret: props.secret,

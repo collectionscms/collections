@@ -247,6 +247,7 @@ model WebhookSetting {
   projectId         String   @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
   name              String   @db.VarChar(255)
   serviceType       String   @db.VarChar(255)
+  enabled           Boolean  @default(true)
   url               String?  @db.VarChar(255)
   secret            String?  @db.VarChar(255)
   requestHeaders    Json?

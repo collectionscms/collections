@@ -213,6 +213,7 @@ CREATE TABLE "WebhookSetting" (
     "projectId" UUID NOT NULL DEFAULT (current_setting('app.current_project_id'::text))::uuid,
     "name" VARCHAR(255) NOT NULL,
     "serviceType" VARCHAR(255) NOT NULL,
+    "enabled" BOOLEAN NOT NULL DEFAULT true,
     "url" VARCHAR(255),
     "secret" VARCHAR(255),
     "requestHeaders" JSONB,
