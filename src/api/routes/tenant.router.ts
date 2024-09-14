@@ -10,6 +10,7 @@ import { review } from './review.router.js';
 import { role } from './role.router.js';
 import { trashedContent } from './trashedContent.router.js';
 import { user } from './user.router.js';
+import { webhookSetting } from './webhookSetting.router.js';
 
 export const tenantApiRouter = express.Router();
 
@@ -25,3 +26,4 @@ tenantApiRouter.use(content);
 tenantApiRouter.use(invitation);
 tenantApiRouter.use(review);
 tenantApiRouter.use(apiKey);
+tenantApiRouter.use(webhookSetting);
