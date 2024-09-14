@@ -39,6 +39,9 @@ const WebhookSetting = Loader(
 const CreateWebhookSetting = Loader(
   lazy(() => import('../../../pages/WebhookSetting/Create/index.js'), 'CreateWebhookSettingPage')
 );
+const EditWebhookSetting = Loader(
+  lazy(() => import('../../../pages/WebhookSetting/Edit/index.js'), 'EditWebhookSettingPage')
+);
 
 const NotFound = Loader(lazy(() => import('../../../pages/NotFound/index.js'), 'NotFound'));
 
@@ -198,6 +201,17 @@ export const SettingRoutes = () => {
       element: (
         <MainHeader label={t('create.webhook')}>
           <CreateWebhookSetting />
+        </MainHeader>
+      ),
+    });
+  }
+
+  if (hasPermission('editWebhookSetting')) {
+    children.push({
+      path: 'webhooks/:id',
+      element: (
+        <MainHeader label={t('edit.webhook')}>
+          <EditWebhookSetting />
         </MainHeader>
       ),
     });

@@ -12,8 +12,15 @@ type WebhookContext = {
       suspense: true;
     }
   >;
-
+  getWebhookSetting: (id: string) => SWRResponse<
+    WebhookSetting,
+    Error,
+    {
+      suspense: true;
+    }
+  >;
   createWebhookSetting: () => SWRMutationResponse<WebhookSetting, any, string, Record<string, any>>;
+  updateWebhookSetting: (id: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
 };
 
 const Context = createContext({} as WebhookContext);
@@ -29,6 +36,16 @@ export const WebhookContextProvider: React.FC<{ children: React.ReactNode }> = (
       }
     );
 
+  const getWebhookSetting = (id: string) =>
+    useSWR(
+      `/webhook-settings/${id}`,
+      (url) =>
+        api.get<{ webhookSetting: WebhookSetting }>(url).then((res) => res.data.webhookSetting),
+      {
+        suspense: true,
+      }
+    );
+
   const createWebhookSetting = () =>
     useSWRMutation(
       `/webhook-settings`,
@@ -39,9 +56,17 @@ export const WebhookContextProvider: React.FC<{ children: React.ReactNode }> = (
       }
     );
 
+  const updateWebhookSetting = (id: string) =>
+    useSWRMutation(
+      `/webhook-settings/${id}`,
+      async (url: string, { arg }: { arg: Record<string, any> }) => {
+        return api.patch(url, arg).then((res) => res.data);
+      }
+    );
+
   const value = useMemo(
-    () => ({ getWebhookSettings, createWebhookSetting }),
-    [getWebhookSettings, createWebhookSetting]
+    () => ({ getWebhookSettings, getWebhookSetting, createWebhookSetting, updateWebhookSetting }),
+    [getWebhookSettings, getWebhookSetting, createWebhookSetting, updateWebhookSetting]
   );
 
   return <Context.Provider value={value}>{children}</Context.Provider>;
