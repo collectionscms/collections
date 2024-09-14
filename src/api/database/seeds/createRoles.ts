@@ -2,10 +2,10 @@ import { i18n } from 'i18next';
 import { v4 } from 'uuid';
 import { roleActions } from '../../persistence/permission/permission.entity.js';
 import { BypassPrismaType } from '../prisma/client.js';
-import { jpProject, usaProject } from './createProjects.js';
+import { jpProject, enProject } from './createProjects.js';
 
 export const projectRoles = {
-  [usaProject]: {
+  [enProject]: {
     language: 'en-us',
     admin: v4(),
     editor: v4(),
@@ -52,7 +52,7 @@ export const createRoles = async (prisma: BypassPrismaType, i18next: i18n): Prom
   const viewerPermissions = ['readOwnPost'];
 
   const roles = [];
-  for (const project of [usaProject, jpProject]) {
+  for (const project of [enProject, jpProject]) {
     const projectRole = projectRoles[project];
     i18next.changeLanguage(projectRole.language);
 
