@@ -32,6 +32,11 @@ const EditApiKey = Loader(
   lazy(() => import('../../../pages/ApiKey/Edit/index.js'), 'EditApiKeyPage')
 );
 
+// Webhook
+const WebhookSetting = Loader(
+  lazy(() => import('../../../pages/WebhookSetting/index.js'), 'WebhookSettingPage')
+);
+
 const NotFound = Loader(lazy(() => import('../../../pages/NotFound/index.js'), 'NotFound'));
 
 export const SettingRoutes = () => {
@@ -164,6 +169,21 @@ export const SettingRoutes = () => {
       element: (
         <MainHeader label={t('edit.api_key')}>
           <EditApiKey />
+        </MainHeader>
+      ),
+    });
+  }
+
+  // /////////////////////////////////////
+  // Webhooks
+  // /////////////////////////////////////
+
+  if (hasPermission('readWebhook')) {
+    children.push({
+      path: 'webhooks',
+      element: (
+        <MainHeader label={t('webhook')}>
+          <WebhookSetting />
         </MainHeader>
       ),
     });
