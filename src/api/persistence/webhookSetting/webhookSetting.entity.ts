@@ -3,6 +3,12 @@ import { v4 } from 'uuid';
 import { UnexpectedException } from '../../../exceptions/unexpected.js';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 
+export const WebhookProvider = {
+  vercel: 'vercel',
+  custom: 'custom',
+} as const;
+export type WebhookProviderType = (typeof WebhookProvider)[keyof typeof WebhookProvider];
+
 type WebhookSettingProps = Omit<WebhookSetting, 'id' | 'enabled' | 'createdAt' | 'updatedAt'>;
 
 export class WebhookSettingEntity extends PrismaBaseEntity<WebhookSetting> {
