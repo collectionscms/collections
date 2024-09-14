@@ -13,8 +13,6 @@ export class CreateWebSettingsUseCase {
   async execute(props: CreateWebSettingsUseCaseSchemaType): Promise<WebhookSetting> {
     const entity = WebhookSettingEntity.Construct({
       ...props,
-      requestHeaders: null,
-      secret: null,
       enabled: true,
     });
     const result = await this.webhookSettingRepository.create(this.prisma, entity);

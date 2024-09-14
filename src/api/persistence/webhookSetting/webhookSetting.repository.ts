@@ -28,7 +28,6 @@ export class WebhookSettingRepository {
     const result = await prisma.webhookSetting.create({
       data: {
         ...entity.toPersistence(),
-        requestHeaders: entity.requestHeaders,
       },
     });
     return WebhookSettingEntity.Reconstruct<WebhookSetting, WebhookSettingEntity>(result);

@@ -12,6 +12,8 @@ export class WebhookLogEntity extends PrismaBaseEntity<WebhookLog> {
       id: v4(),
       projectId: props.projectId,
       name: props.name,
+      url: props.url,
+      trigger: props.trigger,
       provider: props.provider,
       status: props.status,
       responseCode: props.responseCode,

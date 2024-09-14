@@ -21,8 +21,6 @@ export class WebhookSettingEntity extends PrismaBaseEntity<WebhookSetting> {
       enabled: props.enabled,
       provider: props.provider,
       url: props.url,
-      secret: props.secret,
-      requestHeaders: props.requestHeaders,
       onPublish: props.onPublish,
       onArchive: props.onArchive,
       onDeletePublished: props.onDeletePublished,
@@ -33,10 +31,6 @@ export class WebhookSettingEntity extends PrismaBaseEntity<WebhookSetting> {
 
   get id() {
     return this.props.id;
-  }
-
-  get requestHeaders() {
-    return this.props.requestHeaders ?? {};
   }
 
   update = (params: {

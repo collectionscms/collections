@@ -11,7 +11,6 @@ export const createWebhookSettings = async (
       data: {
         id: v4(),
         ...webhookSetting,
-        requestHeaders: webhookSetting.requestHeaders ?? {},
         createdAt: new Date(),
         updatedAt: new Date(),
       },

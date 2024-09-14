@@ -1,4 +1,3 @@
-import { v4 } from 'uuid';
 import { WebhookProvider } from '../../../persistence/webhookSetting/webhookSetting.entity.js';
 
 export const webhookSettings = (projectId: string) => {
@@ -9,10 +8,6 @@ export const webhookSettings = (projectId: string) => {
       projectId,
       enabled: false,
       url: 'https://example.com/api/revalidate',
-      secret: v4(),
-      requestHeaders: {
-        'X-CUSTOM-ON-DEMAND-ISR-KEY': v4(),
-      },
       onPublish: true,
       onArchive: true,
       onDeletePublished: true,
@@ -23,8 +18,6 @@ export const webhookSettings = (projectId: string) => {
       projectId,
       enabled: false,
       url: 'https://example.com/v1/vercel/deployment',
-      secret: null,
-      requestHeaders: {},
       onPublish: true,
       onArchive: true,
       onDeletePublished: true,
