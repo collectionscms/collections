@@ -6,10 +6,12 @@ import { bypassPrisma } from '../prisma/client.js';
 import { createApiKeys } from './createApiKeys.js';
 import { createPermissions } from './createPermissions.js';
 import { createPost } from './createPost.js';
-import { createProjects, jpProject, usaProject } from './createProjects.js';
+import { createProjects, enProject, jpProject } from './createProjects.js';
 import { createRoles, projectRoles } from './createRoles.js';
 import { adminUser, contributorUser, createUsers, editorUser, viewerUser } from './createUsers.js';
+import { createWebhookSettings } from './createWebhookSettings.js';
 import { contents } from './data/contents.js';
+import { webhookSettings } from './data/webhookSettings.js';
 
 i18next.init({
   resources: {
@@ -30,8 +32,12 @@ export const seedDev = async (): Promise<void> => {
       await createRoles(tx, i18next);
       await createUsers(tx, getUsers());
       await createApiKeys(tx);
-      await createPost(tx, usaProject, contents);
+      await createPost(tx, enProject, contents);
       await createPost(tx, jpProject, contents);
+      await createWebhookSettings(tx, [
+        ...webhookSettings(enProject),
+        ...webhookSettings(jpProject),
+      ]);
     });
 
     process.exit(0);
@@ -49,8 +55,8 @@ function getUsers() {
       password: 'password',
       userProjects: [
         {
-          projectId: usaProject,
-          roleId: projectRoles[usaProject].admin,
+          projectId: enProject,
+          roleId: projectRoles[enProject].admin,
         },
         {
           projectId: jpProject,
@@ -64,8 +70,8 @@ function getUsers() {
       password: 'password',
       userProjects: [
         {
-          projectId: usaProject,
-          roleId: projectRoles[usaProject].editor,
+          projectId: enProject,
+          roleId: projectRoles[enProject].editor,
         },
         {
           projectId: jpProject,
@@ -79,8 +85,8 @@ function getUsers() {
       password: 'password',
       userProjects: [
         {
-          projectId: usaProject,
-          roleId: projectRoles[usaProject].contributor,
+          projectId: enProject,
+          roleId: projectRoles[enProject].contributor,
         },
         {
           projectId: jpProject,
@@ -94,8 +100,8 @@ function getUsers() {
       password: 'password',
       userProjects: [
         {
-          projectId: usaProject,
-          roleId: projectRoles[usaProject].viewer,
+          projectId: enProject,
+          roleId: projectRoles[enProject].viewer,
         },
         {
           projectId: jpProject,
