@@ -241,7 +241,8 @@
   "edit": {
     "user": "ユーザー 編集",
     "role": "ロール 編集",
-    "api_key": "APIキー 編集"
+    "api_key": "APIキー 編集",
+    "webhook": "Webhook 編集"
   },
   "languages": {
     "en-us": "英語",

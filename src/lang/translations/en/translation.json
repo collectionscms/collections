@@ -241,7 +241,8 @@
   "edit": {
     "user": "Edit User",
     "role": "Edit Role",
-    "api_key": "Edit Api Key"
+    "api_key": "Edit Api Key",
+    "webhook": "Edit Webhook"
   },
   "languages": {
     "en-us": "English",
