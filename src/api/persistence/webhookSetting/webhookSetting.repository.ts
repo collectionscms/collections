@@ -10,6 +10,15 @@ export class WebhookSettingRepository {
     );
   }
 
+  async findOne(prisma: ProjectPrismaType, id: string): Promise<WebhookSettingEntity> {
+    const record = await prisma.webhookSetting.findUniqueOrThrow({
+      where: {
+        id,
+      },
+    });
+    return WebhookSettingEntity.Reconstruct<WebhookSetting, WebhookSettingEntity>(record);
+  }
+
   async create(
     prisma: ProjectPrismaType,
     entity: WebhookSettingEntity
@@ -20,6 +29,29 @@ export class WebhookSettingRepository {
       data: {
         ...entity.toPersistence(),
         requestHeaders: entity.requestHeaders,
+      },
+    });
+    return WebhookSettingEntity.Reconstruct<WebhookSetting, WebhookSettingEntity>(result);
+  }
+
+  async update(
+    prisma: ProjectPrismaType,
+    entity: WebhookSettingEntity
+  ): Promise<WebhookSettingEntity> {
+    entity.beforeUpdateValidate();
+
+    const record = entity.toPersistence();
+    const result = await prisma.webhookSetting.update({
+      where: {
+        id: entity.id,
+      },
+      data: {
+        name: record.name,
+        url: record.url,
+        enabled: record.enabled,
+        onPublish: record.onPublish,
+        onArchive: record.onArchive,
+        onDeletePublished: record.onDeletePublished,
       },
     });
     return WebhookSettingEntity.Reconstruct<WebhookSetting, WebhookSettingEntity>(result);
