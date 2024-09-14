@@ -197,6 +197,7 @@
   "requester": "Requester",
   "untitled": "Untitled",
   "webhook": "Webhook",
+  "provider": "Provider",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",
@@ -249,6 +250,10 @@
     "pt-br": "Portuguese",
     "zh-cn": "Chinese",
     "zh-tw": "Chinese"
+  },
+  "providers": {
+    "vercel": "Vercel",
+    "custom": "Custom Notifications"
   },
   "editor": {
     "text": "Text",

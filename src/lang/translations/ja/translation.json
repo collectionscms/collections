@@ -197,6 +197,7 @@
   "requester": "申請者",
   "untitled": "無題",
   "webhook": "Webhook",
+  "provider": "プロバイダー",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",
@@ -249,6 +250,10 @@
     "pt-br": "ポルトガル語",
     "zh-cn": "中国語",
     "zh-tw": "中国語"
+  },
+  "providers": {
+    "vercel": "Vercel",
+    "custom": "カスタム通知"
   },
   "editor": {
     "text": "テキスト",
