@@ -2,9 +2,6 @@ import { ApiKey } from '@prisma/client';
 import { v4 } from 'uuid';
 import { BypassPrismaType } from '../prisma/client.js';
 
-export const enEditorRole = v4();
-export const jaEditorRole = v4();
-
 export const createApiKeys = async (
   prisma: BypassPrismaType,
   apiKeys: {

@@ -7,7 +7,7 @@ export const apiKeys = [
   {
     apiKey: {
       id: v4(),
-      key: v4(),
+      key: 'bd7ef64b-dc9b-4d42-a486-df1ebd69fe1b',
       name: 'default',
       isAdmin: false,
       projectId: enProject,
@@ -19,7 +19,7 @@ export const apiKeys = [
   {
     apiKey: {
       id: v4(),
-      key: v4(),
+      key: 'e25106cd-e059-4fe6-8213-9acb80c58c8e',
       name: 'default',
       isAdmin: false,
       projectId: jpProject,
