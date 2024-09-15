@@ -8,7 +8,7 @@ export class ContentRepository {
     prisma: ProjectPrismaType,
     id: string
   ): Promise<{ content: ContentEntity; createdBy: UserEntity }> {
-    const record = await prisma.content.findFirstOrThrow({
+    const { createdBy, ...content } = await prisma.content.findFirstOrThrow({
       where: {
         id,
       },
@@ -18,8 +18,8 @@ export class ContentRepository {
     });
 
     return {
-      content: ContentEntity.Reconstruct<Content, ContentEntity>(record),
-      createdBy: UserEntity.Reconstruct<User, UserEntity>(record.createdBy),
+      content: ContentEntity.Reconstruct<Content, ContentEntity>(content),
+      createdBy: UserEntity.Reconstruct<User, UserEntity>(createdBy),
     };
   }
 
