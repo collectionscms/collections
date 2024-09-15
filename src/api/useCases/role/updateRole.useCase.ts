@@ -4,7 +4,7 @@ import { RoleEntity } from '../../persistence/role/role.entity.js';
 import { RoleRepository } from '../../persistence/role/role.repository.js';
 import { RolePermissionEntity } from '../../persistence/rolePermission/rolePermission.entity.js';
 import { RolePermissionRepository } from '../../persistence/rolePermission/rolePermission.repository.js';
-import { UpdateRoleUseCaseSchemaType } from './updateRole.schema.js';
+import { UpdateRoleUseCaseSchemaType } from './updateRole.useCase.schema.js';
 
 export class UpdateRoleUseCase {
   constructor(

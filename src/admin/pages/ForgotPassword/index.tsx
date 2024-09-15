@@ -21,8 +21,8 @@ import { useAuth } from '../../components/utilities/Auth/index.js';
 import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.js';
 import {
   FormValues,
-  forgotPasswordSchema,
-} from '../../fields/validators/authentications/forgotPassword.js';
+  forgotPasswordValidator,
+} from '../../fields/validators/authentications/forgotPassword.validator.js';
 import { ForgotPasswordContextProvider, useForgotPassword } from './Context/index.js';
 import { useTranslation } from 'react-i18next';
 
@@ -41,7 +41,7 @@ const ForgotPasswordImpl: React.FC = () => {
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: { email: '' },
-    resolver: yupResolver(forgotPasswordSchema),
+    resolver: yupResolver(forgotPasswordValidator),
   });
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {

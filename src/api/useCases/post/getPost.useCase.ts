@@ -3,7 +3,7 @@ import { ProjectPrismaType } from '../../database/prisma/client.js';
 import { ContentHistoryRepository } from '../../persistence/contentHistory/contentHistory.repository.js';
 import { PostRepository } from '../../persistence/post/post.repository.js';
 import { ProjectRepository } from '../../persistence/project/project.repository.js';
-import { GetPostUseCaseSchemaType } from './getPost.schema.js';
+import { GetPostUseCaseSchemaType } from './getPost.useCase.schema.js';
 
 export class GetPostUseCase {
   constructor(

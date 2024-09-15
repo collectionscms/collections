@@ -3,7 +3,7 @@ import { ContentStatus } from '../../persistence/content/content.entity.js';
 import { ReviewStatus } from '../../persistence/review/review.entity.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
 import { ChangeReviewStatusService } from '../../services/changeReviewStatus.service.js';
-import { CloseReviewUseCaseSchemaType } from './closeReview.schema.js';
+import { CloseReviewUseCaseSchemaType } from './closeReview.useCase.schema.js';
 
 export class CloseReviewUseCase {
   constructor(

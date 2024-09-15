@@ -9,7 +9,7 @@ import { Icon } from '../../../../../../components/elements/Icon/index.js';
 import {
   FormValues,
   updateSlugValidator,
-} from '../../../../../../fields/validators/post/updateSlug.js';
+} from '../../../../../../fields/validators/posts/updateSlug.validator.js';
 import { usePost } from '../../../../Context/index.js';
 
 type Props = {

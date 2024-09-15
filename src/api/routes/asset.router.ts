@@ -7,8 +7,8 @@ import { bypassPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { FileRepository } from '../persistence/file/file.repository.js';
 import { ProjectRepository } from '../persistence/project/project.repository.js';
-import { getDataUseCaseSchema } from '../useCases/asset/getData.schema.js';
 import { GetDataUseCase } from '../useCases/asset/getData.useCase.js';
+import { getDataUseCaseSchema } from '../useCases/asset/getData.useCase.schema.js';
 import { GetProjectFromSubdomainUseCase } from '../useCases/asset/getProjectFromSubdomain.useCase.js';
 
 const router = express.Router();

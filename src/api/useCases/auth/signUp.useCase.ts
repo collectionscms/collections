@@ -8,7 +8,7 @@ import { UserProjectRepository } from '../../persistence/userProject/userProject
 import { BypassPrismaClient } from '../../database/prisma/client.js';
 import { SignUpMailService } from '../../services/signUpMail.service.js';
 import { oneWayHash } from '../../utilities/oneWayHash.js';
-import { SignUpUseCaseSchemaType } from './signUp.schema.js';
+import { SignUpUseCaseSchemaType } from './signUp.useCase.schema.js';
 
 export class SignUpUseCase {
   constructor(

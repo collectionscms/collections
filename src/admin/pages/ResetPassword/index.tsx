@@ -21,8 +21,8 @@ import { useAuth } from '../../components/utilities/Auth/index.js';
 import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.js';
 import {
   FormValues,
-  resetPassword as resetPasswordSchema,
-} from '../../fields/validators/authentications/resetPassword.js';
+  resetPasswordValidator,
+} from '../../fields/validators/authentications/resetPassword.validator.js';
 import { ResetPasswordContextProvider, useResetPassword } from './Context/index.js';
 
 const ResetPasswordImpl: React.FC = () => {
@@ -40,7 +40,7 @@ const ResetPasswordImpl: React.FC = () => {
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: { password: '', token: token },
-    resolver: yupResolver(resetPasswordSchema(t)),
+    resolver: yupResolver(resetPasswordValidator(t)),
   });
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {

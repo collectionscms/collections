@@ -6,9 +6,9 @@ import { authenticatedUser } from '../middlewares/auth.js';
 import { validateAccess } from '../middlewares/validateAccess.js';
 import { ContentRepository } from '../persistence/content/content.repository.js';
 import { PostRepository } from '../persistence/post/post.repository.js';
-import { getTrashedContentsUseCaseSchema } from '../useCases/content/getTrashedContents.schema.js';
+import { getTrashedContentsUseCaseSchema } from '../useCases/content/getTrashedContents.useCase.schema.js';
 import { GetTrashedContentsUseCase } from '../useCases/content/getTrashedContents.useCase.js';
-import { restoreContentUseCaseSchema } from '../useCases/content/restoreContent.schema.js';
+import { restoreContentUseCaseSchema } from '../useCases/content/restoreContent.useCase.schema.js';
 import { RestoreContentUseCase } from '../useCases/content/restoreContent.useCase.js';
 
 const router = express.Router();

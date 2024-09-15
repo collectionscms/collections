@@ -3,7 +3,7 @@ import { RecordNotFoundException } from '../../../exceptions/database/recordNotF
 import { Me } from '../../../types/index.js';
 import { UserRepository } from '../../persistence/user/user.repository.js';
 import { BypassPrismaClient } from '../../database/prisma/client.js';
-import { VerifyUseCaseSchemaType } from './verify.schema.js';
+import { VerifyUseCaseSchemaType } from './verify.useCase.schema.js';
 
 export class VerifyUseCase {
   constructor(

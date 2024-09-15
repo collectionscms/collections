@@ -8,7 +8,7 @@ export type FormValues = {
   token?: string | null;
 };
 
-export const signUpSchema: ObjectSchema<FormValues> = yup.object().shape({
+export const signUpValidator: ObjectSchema<FormValues> = yup.object().shape({
   email: yup.string().email().required(),
   password: yup
     .string()

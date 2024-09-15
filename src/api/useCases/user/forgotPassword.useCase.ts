@@ -4,7 +4,7 @@ import { UnexpectedException } from '../../../exceptions/unexpected.js';
 import { UserRepository } from '../../persistence/user/user.repository.js';
 import { BypassPrismaType } from '../../database/prisma/client.js';
 import { ResetPasswordMailService } from '../../services/resetPasswordMail.service.js';
-import { ForgotPasswordUseCaseSchemaType } from './forgotPassword.schema.js';
+import { ForgotPasswordUseCaseSchemaType } from './forgotPassword.useCase.schema.js';
 
 export class ForgotPasswordUseCase {
   constructor(

@@ -7,8 +7,8 @@ import { multipartHandler } from '../middlewares/multipartHandler.js';
 import { FileEntity } from '../persistence/file/file.entity.js';
 import { FileRepository } from '../persistence/file/file.repository.js';
 import { ProjectRepository } from '../persistence/project/project.repository.js';
-import { createFileUseCaseSchema } from '../useCases/file/createFile.schema.js';
 import { CreateFileUseCase } from '../useCases/file/createFile.useCase.js';
+import { createFileUseCaseSchema } from '../useCases/file/createFile.useCase.schema.js';
 
 const router = express.Router();
 

@@ -8,7 +8,7 @@ import { RoleRepository } from '../../persistence/role/role.repository.js';
 import { UserProjectEntity } from '../../persistence/userProject/userProject.entity.js';
 import { UserProjectRepository } from '../../persistence/userProject/userProject.repository.js';
 import { BypassPrismaClient } from '../../database/prisma/client.js';
-import { CreateProjectUseCaseSchemaType } from './createProject.schema.js';
+import { CreateProjectUseCaseSchemaType } from './createProject.useCase.schema.js';
 import { env } from '../../../env.js';
 
 export class CreateProjectUseCase {

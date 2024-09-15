@@ -1,7 +1,7 @@
 import { ApiKeyWithPermissions } from '../../../types/index.js';
 import { ApiKeyRepository } from '../../persistence/apiKey/apiKey.repository.js';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
-import { GetApiKeyUseCaseSchemaType } from './getApiKey.schema.js';
+import { GetApiKeyUseCaseSchemaType } from './getApiKey.useCase.schema.js';
 
 export class GetApiKeyUseCase {
   constructor(

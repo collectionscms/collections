@@ -4,7 +4,7 @@ import { RoleRepository } from '../../persistence/role/role.repository.js';
 import { RolePermissionEntity } from '../../persistence/rolePermission/rolePermission.entity.js';
 import { RolePermissionRepository } from '../../persistence/rolePermission/rolePermission.repository.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
-import { CreateRoleUseCaseSchemaType } from './createRole.schema.js';
+import { CreateRoleUseCaseSchemaType } from './createRole.useCase.schema.js';
 
 export class CreateRoleUseCase {
   constructor(

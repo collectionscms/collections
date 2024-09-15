@@ -7,13 +7,13 @@ import { projectPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';
 import { validateAccess } from '../middlewares/validateAccess.js';
-import { deleteUserProjectUseCaseSchema } from '../useCases/user/deleteUserProject.schema.js';
+import { deleteUserProjectUseCaseSchema } from '../useCases/user/deleteUserProject.useCase.schema.js';
 import { DeleteUserProjectUserUseCase } from '../useCases/user/deleteUserProject.useCase.js';
-import { getUserProfileUseCaseSchema } from '../useCases/user/getUserProfile.schema.js';
+import { getUserProfileUseCaseSchema } from '../useCases/user/getUserProfile.useCase.schema.js';
 import { GetUserProfileUseCase } from '../useCases/user/getUserProfile.useCase.js';
-import { getUserProfilesUseCaseSchema } from '../useCases/user/getUserProfiles.schema.js';
+import { getUserProfilesUseCaseSchema } from '../useCases/user/getUserProfiles.useCase.schema.js';
 import { GetUserProfilesUseCase } from '../useCases/user/getUserProfiles.useCase.js';
-import { updateUserUseCaseSchema } from '../useCases/user/updateUser.schema.js';
+import { updateUserUseCaseSchema } from '../useCases/user/updateUser.useCase.schema.js';
 import { UpdateUserUseCase } from '../useCases/user/updateUser.useCase.js';
 
 const router = express.Router();

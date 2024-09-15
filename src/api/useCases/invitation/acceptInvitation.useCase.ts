@@ -5,7 +5,7 @@ import { InvitationRepository } from '../../persistence/invitation/invitation.re
 import { UserProjectEntity } from '../../persistence/userProject/userProject.entity.js';
 import { UserProjectRepository } from '../../persistence/userProject/userProject.repository.js';
 import { BypassPrismaType, projectPrisma } from '../../database/prisma/client.js';
-import { AcceptInvitationUseCaseSchemaType } from './acceptInvitation.schema.js';
+import { AcceptInvitationUseCaseSchemaType } from './acceptInvitation.useCase.schema.js';
 
 export type AcceptInvitationUseCaseResponse = {
   project: Project;

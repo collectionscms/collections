@@ -14,8 +14,8 @@ import { useAuth } from '../../../components/utilities/Auth/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
 import {
   FormValues,
-  updateUser as updateUserSchema,
-} from '../../../fields/validators/users/updateUser.js';
+  updateUserValidator,
+} from '../../../fields/validators/users/updateUser.validator.js';
 import { useUnsavedChangesPrompt } from '../../../hooks/useUnsavedChangesPrompt.js';
 import { UserContextProvider, useUser } from '../Context/index.js';
 
@@ -40,7 +40,7 @@ const EditUserPageImpl: React.FC = () => {
     defaultValues: {
       roleId: user.role.id,
     },
-    resolver: yupResolver(updateUserSchema(t)),
+    resolver: yupResolver(updateUserValidator()),
   });
   const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
 

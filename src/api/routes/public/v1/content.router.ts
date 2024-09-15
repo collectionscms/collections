@@ -5,7 +5,7 @@ import { asyncHandler } from '../../../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../../../middlewares/auth.js';
 import { validateAccess } from '../../../middlewares/validateAccess.js';
 import { ContentRepository } from '../../../persistence/content/content.repository.js';
-import { getPublishedContentUseCaseSchema } from '../../../useCases/content/getPublishedContent.schema.js';
+import { getPublishedContentUseCaseSchema } from '../../../useCases/content/getPublishedContent.useCase.schema.js';
 import { GetPublishedContentUseCase } from '../../../useCases/content/getPublishedContent.useCase.js';
 
 const router = express.Router();

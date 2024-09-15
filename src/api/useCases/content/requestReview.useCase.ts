@@ -6,7 +6,7 @@ import { ContentHistoryRepository } from '../../persistence/contentHistory/conte
 import { ReviewEntity } from '../../persistence/review/review.entity.js';
 import { ReviewRepository } from '../../persistence/review/review.repository.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
-import { RequestReviewUseCaseSchemaType } from './requestReview.schema.js';
+import { RequestReviewUseCaseSchemaType } from './requestReview.useCase.schema.js';
 
 export class RequestReviewUseCase {
   constructor(

@@ -26,7 +26,10 @@ import { DeleteButton } from '../../../components/elements/DeleteButton/index.js
 import { Icon } from '../../../components/elements/Icon/index.js';
 import { useAuth } from '../../../components/utilities/Auth/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
-import { FormValues, updateApiKeySchema } from '../../../fields/validators/apiKeys/updateApiKey.js';
+import {
+  FormValues,
+  updateApiKeyValidator,
+} from '../../../fields/validators/apiKeys/updateApiKey.validator.js';
 import { useUnsavedChangesPrompt } from '../../../hooks/useUnsavedChangesPrompt.js';
 import { ApiKeyContextProvider, useApiKey } from '../Context/index.js';
 
@@ -55,7 +58,7 @@ const EditApiKeyPageImpl: React.FC = () => {
       key: '',
       permissions: apiKey.permissions,
     },
-    resolver: yupResolver(updateApiKeySchema()),
+    resolver: yupResolver(updateApiKeyValidator()),
   });
   const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
 

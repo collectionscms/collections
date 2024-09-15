@@ -1,7 +1,7 @@
 import { PublishedPost } from '../../../types/index.js';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
 import { PostRepository } from '../../persistence/post/post.repository.js';
-import { GetPublishedPostsUseCaseSchemaType } from './getPublishedPosts.schema.js';
+import { GetPublishedPostsUseCaseSchemaType } from './getPublishedPosts.useCase.schema.js';
 
 export class GetPublishedPostsUseCase {
   constructor(

@@ -3,7 +3,7 @@ import { InvalidPayloadException } from '../../../exceptions/invalidPayload.js';
 import { UnprocessableEntityException } from '../../../exceptions/unprocessableEntity.js';
 import { UserProjectRepository } from '../../persistence/userProject/userProject.repository.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
-import { UpdateUserUseCaseSchemaType } from './updateUser.schema.js';
+import { UpdateUserUseCaseSchemaType } from './updateUser.useCase.schema.js';
 
 export class UpdateUserUseCase {
   constructor(

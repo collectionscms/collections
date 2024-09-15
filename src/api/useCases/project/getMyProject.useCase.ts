@@ -1,7 +1,7 @@
 import { Project } from '@prisma/client';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
 import { ProjectRepository } from '../../persistence/project/project.repository.js';
-import { GetMyProjectUseCaseSchemaType } from './getMyProject.schema.js';
+import { GetMyProjectUseCaseSchemaType } from './getMyProject.useCase.schema.js';
 
 export class GetMyProjectUseCase {
   constructor(

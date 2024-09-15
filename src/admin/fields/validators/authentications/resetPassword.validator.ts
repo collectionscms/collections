@@ -7,7 +7,7 @@ export type FormValues = {
   token: string;
 };
 
-export const resetPassword = (t: TFunction): ObjectSchema<FormValues> => {
+export const resetPasswordValidator = (t: TFunction): ObjectSchema<FormValues> => {
   return yup.object().shape({
     password: yup
       .string()

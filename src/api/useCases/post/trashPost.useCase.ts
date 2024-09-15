@@ -3,7 +3,7 @@ import { ContentRepository } from '../../persistence/content/content.repository.
 import { ContentHistoryEntity } from '../../persistence/contentHistory/contentHistory.entity.js';
 import { ContentHistoryRepository } from '../../persistence/contentHistory/contentHistory.repository.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
-import { TrashPostUseCaseSchemaType } from './trashPost.schema.js';
+import { TrashPostUseCaseSchemaType } from './trashPost.useCase.schema.js';
 
 export class TrashPostUseCase {
   constructor(

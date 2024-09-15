@@ -5,9 +5,9 @@ import { asyncHandler } from '../../../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../../../middlewares/auth.js';
 import { validateAccess } from '../../../middlewares/validateAccess.js';
 import { PostRepository } from '../../../persistence/post/post.repository.js';
-import { getPublishedPostUseCaseSchema } from '../../../useCases/post/getPublishedPost.schema.js';
+import { getPublishedPostUseCaseSchema } from '../../../useCases/post/getPublishedPost.useCase.schema.js';
 import { GetPublishedPostUseCase } from '../../../useCases/post/getPublishedPost.useCase.js';
-import { getPublishedPostsUseCaseSchema } from '../../../useCases/post/getPublishedPosts.schema.js';
+import { getPublishedPostsUseCaseSchema } from '../../../useCases/post/getPublishedPosts.useCase.schema.js';
 import { GetPublishedPostsUseCase } from '../../../useCases/post/getPublishedPosts.useCase.js';
 
 const router = express.Router();

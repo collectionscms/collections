@@ -7,13 +7,13 @@ import { validateAccess } from '../middlewares/validateAccess.js';
 import { ProjectRepository } from '../persistence/project/project.repository.js';
 import { RoleRepository } from '../persistence/role/role.repository.js';
 import { UserProjectRepository } from '../persistence/userProject/userProject.repository.js';
-import { createProjectUseCaseSchema } from '../useCases/project/createProject.schema.js';
+import { createProjectUseCaseSchema } from '../useCases/project/createProject.useCase.schema.js';
 import { CreateProjectUseCase } from '../useCases/project/createProject.useCase.js';
-import { getMyProjectUseCaseSchema } from '../useCases/project/getMyProject.schema.js';
+import { getMyProjectUseCaseSchema } from '../useCases/project/getMyProject.useCase.schema.js';
 import { GetMyProjectUseCase } from '../useCases/project/getMyProject.useCase.js';
-import { getSubdomainAvailabilityUseCaseSchema } from '../useCases/project/getSubdomainAvailability.schema.js';
+import { getSubdomainAvailabilityUseCaseSchema } from '../useCases/project/getSubdomainAvailability.useCase.schema.js';
 import { GetSubdomainAvailabilityUseCase } from '../useCases/project/getSubdomainAvailability.useCase.js';
-import { updateProjectUseCaseSchema } from '../useCases/project/updateProject.schema.js';
+import { updateProjectUseCaseSchema } from '../useCases/project/updateProject.useCase.schema.js';
 import { UpdateProjectUseCase } from '../useCases/project/updateProject.useCase.js';
 
 const router = express.Router();

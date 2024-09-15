@@ -8,17 +8,17 @@ import { ContentRepository } from '../persistence/content/content.repository.js'
 import { ContentHistoryRepository } from '../persistence/contentHistory/contentHistory.repository.js';
 import { PostRepository } from '../persistence/post/post.repository.js';
 import { ProjectRepository } from '../persistence/project/project.repository.js';
-import { createContentUseCaseSchema } from '../useCases/content/createContent.schema.js';
+import { createContentUseCaseSchema } from '../useCases/content/createContent.useCase.schema.js';
 import { CreateContentUseCase } from '../useCases/content/createContent.useCase.js';
-import { trashLanguageContentUseCaseSchema } from '../useCases/content/trashLanguageContent.schema.js';
+import { trashLanguageContentUseCaseSchema } from '../useCases/content/trashLanguageContent.useCase.schema.js';
 import { TrashLanguageContentUseCase } from '../useCases/content/trashLanguageContent.useCase.js';
-import { createPostUseCaseSchema } from '../useCases/post/createPost.schema.js';
+import { createPostUseCaseSchema } from '../useCases/post/createPost.useCase.schema.js';
 import { CreatePostUseCase } from '../useCases/post/createPost.useCase.js';
-import { getPostUseCaseSchema } from '../useCases/post/getPost.schema.js';
+import { getPostUseCaseSchema } from '../useCases/post/getPost.useCase.schema.js';
 import { GetPostUseCase } from '../useCases/post/getPost.useCase.js';
-import { getPostsUseCaseSchema } from '../useCases/post/getPosts.schema.js';
+import { getPostsUseCaseSchema } from '../useCases/post/getPosts.useCase.schema.js';
 import { GetPostsUseCase } from '../useCases/post/getPosts.useCase.js';
-import { trashPostUseCaseSchema } from '../useCases/post/trashPost.schema.js';
+import { trashPostUseCaseSchema } from '../useCases/post/trashPost.useCase.schema.js';
 import { TrashPostUseCase } from '../useCases/post/trashPost.useCase.js';
 
 const router = express.Router();

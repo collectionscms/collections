@@ -7,7 +7,7 @@ export type FormValues = {
   csrfToken: string;
 };
 
-export const loginSchema: ObjectSchema<FormValues> = yup.object().shape({
+export const loginValidator: ObjectSchema<FormValues> = yup.object().shape({
   email: yup.string().email().required(),
   password: yup.string().required(),
   csrfToken: yup.string().required(),

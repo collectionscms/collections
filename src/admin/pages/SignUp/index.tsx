@@ -17,7 +17,10 @@ import { Link as RouterLink, useLocation } from 'react-router-dom';
 import { logger } from '../../../utilities/logger.js';
 import { AuthCard } from '../../@extended/components/AuthCard/index.js';
 import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.js';
-import { FormValues, signUpSchema } from '../../fields/validators/authentications/signUp.js';
+import {
+  FormValues,
+  signUpValidator,
+} from '../../fields/validators/authentications/signUp.validator.js';
 import { SignUpContextProvider, useSignUp } from './Context/index.js';
 
 const SignUpImpl: React.FC = () => {
@@ -37,7 +40,7 @@ const SignUpImpl: React.FC = () => {
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: { email: email ?? '', password: '', token: token },
-    resolver: yupResolver(signUpSchema),
+    resolver: yupResolver(signUpValidator),
   });
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {

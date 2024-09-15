@@ -1,6 +1,6 @@
 import { ApiKeyRepository } from '../../persistence/apiKey/apiKey.repository.js';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
-import { DeleteApiKeyUseCaseSchemaType } from './deleteApiKey.schema.js';
+import { DeleteApiKeyUseCaseSchemaType } from './deleteApiKey.useCase.schema.js';
 
 export class DeleteApiKeyUseCase {
   constructor(
