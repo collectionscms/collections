@@ -8,7 +8,6 @@ export const updateWebSettingsUseCaseSchema = z.object({
   url: z.string().url().nullable(),
   onPublish: z.boolean(),
   onArchive: z.boolean(),
-  onUpdatePublished: z.boolean(),
   onDeletePublished: z.boolean(),
 });
 

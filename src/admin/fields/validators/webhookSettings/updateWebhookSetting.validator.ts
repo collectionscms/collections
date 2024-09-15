@@ -7,7 +7,6 @@ export type FormValues = {
   enabled: boolean;
   onPublish: boolean;
   onArchive: boolean;
-  onUpdatePublished: boolean;
   onDeletePublished: boolean;
 };
 
@@ -18,7 +17,6 @@ export const updateWebhookSettingValidator = (): ObjectSchema<FormValues> => {
     url: yup.string().url().required(),
     onPublish: yup.boolean().required(),
     onArchive: yup.boolean().required(),
-    onUpdatePublished: yup.boolean().required(),
     onDeletePublished: yup.boolean().required(),
   });
 };

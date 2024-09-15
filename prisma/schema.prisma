@@ -251,7 +251,6 @@ model WebhookSetting {
   url               String?  @db.VarChar(255)
   onPublish         Boolean  @default(false)
   onArchive         Boolean  @default(false)
-  onUpdatePublished Boolean  @default(false)
   onDeletePublished Boolean  @default(false)
   createdAt         DateTime @default(now()) @db.Timestamptz(6)
   updatedAt         DateTime @updatedAt @db.Timestamptz(6)

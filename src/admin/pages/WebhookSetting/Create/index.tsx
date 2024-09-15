@@ -53,7 +53,6 @@ const CreateWebhookSettingPageImpl: React.FC = () => {
       url: '',
       onPublish: true,
       onArchive: true,
-      onUpdatePublished: true,
       onDeletePublished: true,
     },
     resolver: yupResolver(createWebhookSettingValidator()),
@@ -77,7 +76,7 @@ const CreateWebhookSettingPageImpl: React.FC = () => {
 
   const notificationTriggers: {
     id: string;
-    value: 'onPublish' | 'onArchive' | 'onUpdatePublished' | 'onDeletePublished';
+    value: 'onPublish' | 'onArchive' | 'onDeletePublished';
     label: string;
   }[] = [
     {
@@ -89,11 +88,6 @@ const CreateWebhookSettingPageImpl: React.FC = () => {
       id: 'onArchive',
       value: 'onArchive',
       label: t('providers_field.on_archive'),
-    },
-    {
-      id: 'onUpdatePublished',
-      value: 'onUpdatePublished',
-      label: t('providers_field.on_update_published'),
     },
     {
       id: 'onDeletePublished',

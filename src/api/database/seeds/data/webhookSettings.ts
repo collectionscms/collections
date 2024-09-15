@@ -10,7 +10,6 @@ export const webhookSettings = (projectId: string) => {
       url: 'https://example.com/api/revalidate',
       onPublish: true,
       onArchive: true,
-      onUpdatePublished: true,
       onDeletePublished: true,
     },
     {
@@ -21,7 +20,6 @@ export const webhookSettings = (projectId: string) => {
       url: 'https://example.com/v1/vercel/deployment',
       onPublish: true,
       onArchive: true,
-      onUpdatePublished: true,
       onDeletePublished: true,
     },
   ];
