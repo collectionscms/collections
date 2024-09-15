@@ -33,6 +33,18 @@ export class WebhookSettingEntity extends PrismaBaseEntity<WebhookSetting> {
     return this.props.id;
   }
 
+  get url() {
+    return this.props.url;
+  }
+
+  get name() {
+    return this.props.name;
+  }
+
+  get provider() {
+    return this.props.provider;
+  }
+
   update = (params: {
     name: string;
     url: string | null;
