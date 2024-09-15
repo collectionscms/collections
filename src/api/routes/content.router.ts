@@ -118,7 +118,8 @@ router.patch(
     const useCase = new ArchiveUseCase(
       projectPrisma(validated.data.projectId),
       new ContentRepository(),
-      new ContentHistoryRepository()
+      new ContentHistoryRepository(),
+      new WebhookService(new WebhookSettingRepository(), new WebhookLogRepository())
     );
     await useCase.execute(validated.data);
 
@@ -141,7 +142,8 @@ router.delete(
     const useCase = new TrashContentUseCase(
       projectPrisma(validated.data.projectId),
       new ContentRepository(),
-      new ContentHistoryRepository()
+      new ContentHistoryRepository(),
+      new WebhookService(new WebhookSettingRepository(), new WebhookLogRepository())
     );
     await useCase.execute(validated.data);
 

@@ -35,7 +35,7 @@ export class UpdateContentUseCase {
       }
     }
 
-    const result = await this.prisma.$transaction(async (tx) => {
+    const updatedContent = await this.prisma.$transaction(async (tx) => {
       let entity = content.isPublished()
         ? ContentEntity.Construct({
             ...content.toResponse(),
@@ -70,6 +70,6 @@ export class UpdateContentUseCase {
       }
     });
 
-    return result.toResponse();
+    return updatedContent.toResponse();
   }
 }
