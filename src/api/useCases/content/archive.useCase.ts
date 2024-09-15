@@ -16,7 +16,7 @@ export class ArchiveUseCase {
   async execute(props: ArchiveUseCaseSchemaType): Promise<Content> {
     const { id, userId } = props;
 
-    const content = await this.contentRepository.findOneById(this.prisma, id);
+    const { content } = await this.contentRepository.findOneById(this.prisma, id);
     content.changeStatus({
       status: ContentStatus.archived,
       updatedById: userId,

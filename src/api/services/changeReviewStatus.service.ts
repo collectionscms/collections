@@ -38,7 +38,7 @@ export class ChangeReviewStatusService {
       throw new UnexpectedException();
     }
 
-    const content = await this.contentRepository.findOneById(prisma, review.contentId);
+    const { content } = await this.contentRepository.findOneById(prisma, review.contentId);
     content.changeStatus({
       status: statusType,
       updatedById: userId,

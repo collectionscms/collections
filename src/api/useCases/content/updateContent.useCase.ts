@@ -20,7 +20,7 @@ export class UpdateContentUseCase {
   async execute(props: UpdateContentUseCaseSchemaType): Promise<Content> {
     const { id, userId, slug } = props;
 
-    const content = await this.contentRepository.findOneById(this.prisma, id);
+    const { content } = await this.contentRepository.findOneById(this.prisma, id);
     const post = await this.postRepository.findOneWithContentsById(this.prisma, content.postId);
 
     if (content.hasNewVersion(post.contents.map((c) => c.content))) {
