@@ -19,6 +19,20 @@ export class WebhookSettingRepository {
     return WebhookSettingEntity.Reconstruct<WebhookSetting, WebhookSettingEntity>(record);
   }
 
+  async findManyByProjectId(
+    prisma: ProjectPrismaType,
+    projectId: string
+  ): Promise<WebhookSettingEntity[]> {
+    const records = await prisma.webhookSetting.findMany({
+      where: {
+        projectId,
+      },
+    });
+    return records.map((record) =>
+      WebhookSettingEntity.Reconstruct<WebhookSetting, WebhookSettingEntity>(record)
+    );
+  }
+
   async create(
     prisma: ProjectPrismaType,
     entity: WebhookSettingEntity
