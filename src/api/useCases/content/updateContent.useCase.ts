@@ -56,16 +56,16 @@ export class UpdateContentUseCase {
 
       if (content.isPublished()) {
         // create new version content
-        const createdContent = await this.contentRepository.create(this.prisma, entity);
+        const createdContent = await this.contentRepository.create(tx, entity);
         const history = ContentHistoryEntity.Construct({
           ...entity.toResponse(),
         });
-        await this.contentHistoryRepository.create(this.prisma, history);
+        await this.contentHistoryRepository.create(tx, history);
 
         return createdContent.content;
       } else {
         // update current content
-        const updatedContent = await this.contentRepository.update(this.prisma, entity);
+        const updatedContent = await this.contentRepository.update(tx, entity);
         return updatedContent;
       }
     });
