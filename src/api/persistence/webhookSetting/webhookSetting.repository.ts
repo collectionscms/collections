@@ -64,6 +64,7 @@ export class WebhookSettingRepository {
         enabled: record.enabled,
         onPublish: record.onPublish,
         onArchive: record.onArchive,
+        onUpdatePublished: record.onUpdatePublished,
         onDeletePublished: record.onDeletePublished,
       },
     });

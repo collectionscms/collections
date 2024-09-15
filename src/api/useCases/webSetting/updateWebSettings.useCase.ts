@@ -18,6 +18,7 @@ export class UpdateWebSettingsUseCase {
       enabled: props.enabled,
       onPublish: props.onPublish,
       onArchive: props.onArchive,
+      onUpdatePublished: props.onUpdatePublished,
       onDeletePublished: props.onDeletePublished,
     });
 

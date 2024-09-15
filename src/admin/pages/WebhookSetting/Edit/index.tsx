@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Button,
@@ -6,8 +5,6 @@ import {
   FormControlLabel,
   FormHelperText,
   InputLabel,
-  Radio,
-  RadioGroup,
   Stack,
   Switch,
   TextField,
@@ -27,8 +24,10 @@ import { DeleteButton } from '../../../components/elements/DeleteButton/index.js
 import { Icon } from '../../../components/elements/Icon/index.js';
 import { useAuth } from '../../../components/utilities/Auth/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
-import { createWebhookSettingValidator } from '../../../fields/validators/webhookSettings/createWebhookSetting.validator.js';
-import { FormValues } from '../../../fields/validators/webhookSettings/values.js';
+import {
+  FormValues,
+  updateWebhookSettingValidator,
+} from '../../../fields/validators/webhookSettings/updateWebhookSetting.validator.js';
 import { useUnsavedChangesPrompt } from '../../../hooks/useUnsavedChangesPrompt.js';
 import { useWebhookSetting, WebhookContextProvider } from '../Context/index.js';
 import { CustomForm } from '../forms/Custom/index.js';
@@ -57,13 +56,13 @@ const EditWebhookSettingPageImpl: React.FC = () => {
     defaultValues: {
       name: webhookSetting.name,
       enabled: webhookSetting.enabled,
-      provider: webhookSetting.provider,
       url: webhookSetting.url,
       onPublish: webhookSetting.onPublish,
       onArchive: webhookSetting.onArchive,
+      onUpdatePublished: webhookSetting.onUpdatePublished,
       onDeletePublished: webhookSetting.onDeletePublished,
     },
-    resolver: yupResolver(createWebhookSettingValidator()),
+    resolver: yupResolver(updateWebhookSettingValidator()),
   });
   const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
 
@@ -85,7 +84,7 @@ const EditWebhookSettingPageImpl: React.FC = () => {
 
   const notificationTriggers: {
     id: string;
-    value: 'onPublish' | 'onArchive' | 'onDeletePublished';
+    value: 'onPublish' | 'onArchive' | 'onUpdatePublished' | 'onDeletePublished';
     label: string;
   }[] = [
     {
@@ -97,6 +96,11 @@ const EditWebhookSettingPageImpl: React.FC = () => {
       id: 'onArchive',
       value: 'onArchive',
       label: t('providers_field.on_archive'),
+    },
+    {
+      id: 'onUpdatePublished',
+      value: 'onUpdatePublished',
+      label: t('providers_field.on_update_published'),
     },
     {
       id: 'onDeletePublished',
@@ -135,56 +139,27 @@ const EditWebhookSettingPageImpl: React.FC = () => {
               <Grid container spacing={3}>
                 {/* Provider */}
                 <Grid xs={12}>
-                  <Controller
-                    name="provider"
-                    control={control}
-                    render={({ field }) => (
-                      <RadioGroup row value={field.value}>
-                        <Grid container spacing={1.75} sx={{ ml: 0 }}>
-                          <Grid>
-                            <FormControlLabel
-                              {...field}
-                              value={provider.value}
-                              control={<Radio value={provider.value} sx={{ display: 'none' }} />}
-                              sx={{
-                                display: 'flex',
-                                '& .MuiFormControlLabel-label': { flex: 1 },
-                              }}
-                              label={
-                                <MainCard
-                                  content={false}
-                                  sx={{
-                                    bgcolor:
-                                      field.value === provider.value
-                                        ? 'primary.lighter'
-                                        : 'secondary.lighter',
-                                    p: 1,
-                                  }}
-                                  border={false}
-                                  {...(field.value === provider.value && {
-                                    boxShadow: true,
-                                    shadow: theme.customShadows.primary,
-                                  })}
-                                >
-                                  <Stack
-                                    gap={1}
-                                    flexDirection="row"
-                                    alignItems="center"
-                                    sx={{ p: 1 }}
-                                  >
-                                    {provider.icon}
-                                    <Typography variant="subtitle1" color="textSecondary">
-                                      {provider.label}
-                                    </Typography>
-                                  </Stack>
-                                </MainCard>
-                              }
-                            />
-                          </Grid>
-                        </Grid>
-                      </RadioGroup>
-                    )}
-                  />
+                  <Grid container spacing={1} sx={{ ml: 0 }}>
+                    <Grid>
+                      <MainCard
+                        content={false}
+                        sx={{
+                          bgcolor: 'primary.lighter',
+                          p: 1,
+                        }}
+                        border={false}
+                        boxShadow={false}
+                        shadow={theme.customShadows.primary}
+                      >
+                        <Stack gap={1} flexDirection="row" alignItems="center" sx={{ p: 1 }}>
+                          {provider.icon}
+                          <Typography variant="subtitle1" color="textSecondary">
+                            {provider.label}
+                          </Typography>
+                        </Stack>
+                      </MainCard>
+                    </Grid>
+                  </Grid>
                 </Grid>
 
                 {/* Name */}
@@ -208,8 +183,12 @@ const EditWebhookSettingPageImpl: React.FC = () => {
                 </Grid>
 
                 {/* Form */}
-                {watch('provider') === 'vercel' && <VercelForm control={control} errors={errors} />}
-                {watch('provider') === 'custom' && <CustomForm control={control} errors={errors} />}
+                {webhookSetting.provider === 'vercel' && (
+                  <VercelForm control={control} errors={errors} />
+                )}
+                {webhookSetting.provider === 'custom' && (
+                  <CustomForm control={control} errors={errors} />
+                )}
 
                 {/* Trigger */}
                 <Grid xs={12}>

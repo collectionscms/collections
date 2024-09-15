@@ -3,11 +3,10 @@ import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { t } from 'i18next';
 import React from 'react';
 import { Control, Controller, FieldErrors } from 'react-hook-form';
-import { FormValues } from '../../../../fields/validators/webhookSettings/values';
 
 type Props = {
-  control: Control<FormValues>;
-  errors: FieldErrors<FormValues>;
+  control: Control<any, any>;
+  errors: FieldErrors<{ url?: string | null }>;
 };
 
 export const VercelForm: React.FC<Props> = (props) => {

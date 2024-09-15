@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Button,
@@ -24,8 +23,10 @@ import { MainCard } from '../../../@extended/components/MainCard/index.js';
 import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscardDialog/index.js';
 import { Icon } from '../../../components/elements/Icon/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
-import { createWebhookSettingValidator } from '../../../fields/validators/webhookSettings/createWebhookSetting.validator.js';
-import { FormValues } from '../../../fields/validators/webhookSettings/values.js';
+import {
+  createWebhookSettingValidator,
+  FormValues,
+} from '../../../fields/validators/webhookSettings/createWebhookSetting.validator.js';
 import { useUnsavedChangesPrompt } from '../../../hooks/useUnsavedChangesPrompt.js';
 import { useWebhookSetting, WebhookContextProvider } from '../Context/index.js';
 import { CustomForm } from '../forms/Custom/index.js';
@@ -48,11 +49,11 @@ const CreateWebhookSettingPageImpl: React.FC = () => {
   } = useForm<FormValues>({
     defaultValues: {
       name: '',
-      enabled: true,
       provider: 'vercel',
       url: '',
       onPublish: true,
       onArchive: true,
+      onUpdatePublished: true,
       onDeletePublished: true,
     },
     resolver: yupResolver(createWebhookSettingValidator()),
@@ -76,7 +77,7 @@ const CreateWebhookSettingPageImpl: React.FC = () => {
 
   const notificationTriggers: {
     id: string;
-    value: 'onPublish' | 'onArchive' | 'onDeletePublished';
+    value: 'onPublish' | 'onArchive' | 'onUpdatePublished' | 'onDeletePublished';
     label: string;
   }[] = [
     {
@@ -88,6 +89,11 @@ const CreateWebhookSettingPageImpl: React.FC = () => {
       id: 'onArchive',
       value: 'onArchive',
       label: t('providers_field.on_archive'),
+    },
+    {
+      id: 'onUpdatePublished',
+      value: 'onUpdatePublished',
+      label: t('providers_field.on_update_published'),
     },
     {
       id: 'onDeletePublished',
@@ -131,7 +137,7 @@ const CreateWebhookSettingPageImpl: React.FC = () => {
                     control={control}
                     render={({ field }) => (
                       <RadioGroup row value={field.value}>
-                        <Grid container spacing={1.75} sx={{ ml: 0 }}>
+                        <Grid container spacing={1.75} sx={{ ml: 1 }}>
                           {providers.map((item, index) => (
                             <Grid key={index}>
                               <FormControlLabel
