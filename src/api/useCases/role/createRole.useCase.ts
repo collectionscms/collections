@@ -25,7 +25,7 @@ export class CreateRoleUseCase {
     });
 
     const createdRole = await this.prisma.$transaction(async (tx) => {
-      const result = await this.roleRepository.create(this.prisma, entity);
+      const result = await this.roleRepository.create(tx, entity);
       await this.rolePermissionRepository.createMany(tx, permissions);
 
       return result;

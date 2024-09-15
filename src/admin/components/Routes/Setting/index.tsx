@@ -32,6 +32,17 @@ const EditApiKey = Loader(
   lazy(() => import('../../../pages/ApiKey/Edit/index.js'), 'EditApiKeyPage')
 );
 
+// Webhook
+const WebhookSetting = Loader(
+  lazy(() => import('../../../pages/WebhookSetting/index.js'), 'WebhookSettingPage')
+);
+const CreateWebhookSetting = Loader(
+  lazy(() => import('../../../pages/WebhookSetting/Create/index.js'), 'CreateWebhookSettingPage')
+);
+const EditWebhookSetting = Loader(
+  lazy(() => import('../../../pages/WebhookSetting/Edit/index.js'), 'EditWebhookSettingPage')
+);
+
 const NotFound = Loader(lazy(() => import('../../../pages/NotFound/index.js'), 'NotFound'));
 
 export const SettingRoutes = () => {
@@ -164,6 +175,43 @@ export const SettingRoutes = () => {
       element: (
         <MainHeader label={t('edit.api_key')}>
           <EditApiKey />
+        </MainHeader>
+      ),
+    });
+  }
+
+  // /////////////////////////////////////
+  // Webhooks
+  // /////////////////////////////////////
+
+  if (hasPermission('readWebhook')) {
+    children.push({
+      path: 'webhooks',
+      element: (
+        <MainHeader label={t('webhook')}>
+          <WebhookSetting />
+        </MainHeader>
+      ),
+    });
+  }
+
+  if (hasPermission('createWebhookSetting')) {
+    children.push({
+      path: 'webhooks/create',
+      element: (
+        <MainHeader label={t('create.webhook')}>
+          <CreateWebhookSetting />
+        </MainHeader>
+      ),
+    });
+  }
+
+  if (hasPermission('editWebhookSetting')) {
+    children.push({
+      path: 'webhooks/:id',
+      element: (
+        <MainHeader label={t('edit.webhook')}>
+          <EditWebhookSetting />
         </MainHeader>
       ),
     });

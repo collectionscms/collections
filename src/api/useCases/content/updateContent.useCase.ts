@@ -20,7 +20,7 @@ export class UpdateContentUseCase {
   async execute(props: UpdateContentUseCaseSchemaType): Promise<Content> {
     const { id, userId, slug } = props;
 
-    const content = await this.contentRepository.findOneById(this.prisma, id);
+    const { content } = await this.contentRepository.findOneById(this.prisma, id);
     const post = await this.postRepository.findOneWithContentsById(this.prisma, content.postId);
 
     if (content.hasNewVersion(post.contents.map((c) => c.content))) {
@@ -35,7 +35,7 @@ export class UpdateContentUseCase {
       }
     }
 
-    const result = await this.prisma.$transaction(async (tx) => {
+    const updatedContent = await this.prisma.$transaction(async (tx) => {
       let entity = content.isPublished()
         ? ContentEntity.Construct({
             ...content.toResponse(),
@@ -56,20 +56,20 @@ export class UpdateContentUseCase {
 
       if (content.isPublished()) {
         // create new version content
-        const createdContent = await this.contentRepository.create(this.prisma, entity);
+        const createdContent = await this.contentRepository.create(tx, entity);
         const history = ContentHistoryEntity.Construct({
           ...entity.toResponse(),
         });
-        await this.contentHistoryRepository.create(this.prisma, history);
+        await this.contentHistoryRepository.create(tx, history);
 
         return createdContent.content;
       } else {
         // update current content
-        const updatedContent = await this.contentRepository.update(this.prisma, entity);
+        const updatedContent = await this.contentRepository.update(tx, entity);
         return updatedContent;
       }
     });
 
-    return result.toResponse();
+    return updatedContent.toResponse();
   }
 }

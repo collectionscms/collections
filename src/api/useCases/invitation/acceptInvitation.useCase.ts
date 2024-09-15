@@ -40,7 +40,7 @@ export class AcceptInvitationUseCase {
       await this.userProjectRepository.create(tx, entity);
 
       invitation.acceptInvitation();
-      await this.invitationRepository.updateStatus(this.prisma, invitation);
+      await this.invitationRepository.updateStatus(tx, invitation);
 
       const projectRole = await this.userProjectRepository.findOneWithRoleByUserId(tx, userId);
       if (!projectRole) {

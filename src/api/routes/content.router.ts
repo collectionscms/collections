@@ -8,6 +8,9 @@ import { ContentRepository } from '../persistence/content/content.repository.js'
 import { ContentHistoryRepository } from '../persistence/contentHistory/contentHistory.repository.js';
 import { PostRepository } from '../persistence/post/post.repository.js';
 import { ReviewRepository } from '../persistence/review/review.repository.js';
+import { WebhookLogRepository } from '../persistence/webhookLog/webhookLog.repository.js';
+import { WebhookSettingRepository } from '../persistence/webhookSetting/webhookSetting.repository.js';
+import { WebhookService } from '../services/webhook.service.js';
 import { archiveUseCaseSchema } from '../useCases/content/archive.schema.js';
 import { ArchiveUseCase } from '../useCases/content/archive.useCase.js';
 import { publishUseCaseSchema } from '../useCases/content/publish.schema.js';
@@ -91,7 +94,8 @@ router.patch(
     const useCase = new PublishUseCase(
       projectPrisma(validated.data.projectId),
       new ContentRepository(),
-      new ContentHistoryRepository()
+      new ContentHistoryRepository(),
+      new WebhookService(new WebhookSettingRepository(), new WebhookLogRepository())
     );
     await useCase.execute(validated.data);
 
@@ -114,7 +118,8 @@ router.patch(
     const useCase = new ArchiveUseCase(
       projectPrisma(validated.data.projectId),
       new ContentRepository(),
-      new ContentHistoryRepository()
+      new ContentHistoryRepository(),
+      new WebhookService(new WebhookSettingRepository(), new WebhookLogRepository())
     );
     await useCase.execute(validated.data);
 
@@ -137,7 +142,8 @@ router.delete(
     const useCase = new TrashContentUseCase(
       projectPrisma(validated.data.projectId),
       new ContentRepository(),
-      new ContentHistoryRepository()
+      new ContentHistoryRepository(),
+      new WebhookService(new WebhookSettingRepository(), new WebhookLogRepository())
     );
     await useCase.execute(validated.data);
 

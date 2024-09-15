@@ -28,6 +28,8 @@ model Project {
   rolePermissions   RolePermission[]
   reivews           Review[]
   apiKeyPermissions ApiKeyPermission[]
+  webhookSettings   WebhookSetting[]
+  webhookLogs       WebhookLog[]
 }
 
 model User {
@@ -238,4 +240,33 @@ model ApiKeyPermission {
   apiKey           ApiKey     @relation(fields: [apiKeyId], references: [id], onDelete: Cascade)
   project          Project    @relation(fields: [projectId], references: [id], onDelete: Cascade)
   permission       Permission @relation(fields: [permissionAction], references: [action], onDelete: Cascade)
+}
+
+model WebhookSetting {
+  id                String   @id @db.Uuid
+  projectId         String   @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
+  name              String   @db.VarChar(255)
+  provider          String   @db.VarChar(255)
+  enabled           Boolean  @default(true)
+  url               String?  @db.VarChar(255)
+  onPublish         Boolean  @default(false)
+  onArchive         Boolean  @default(false)
+  onDeletePublished Boolean  @default(false)
+  createdAt         DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt         DateTime @updatedAt @db.Timestamptz(6)
+  project           Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model WebhookLog {
+  id           String   @id @db.Uuid
+  projectId    String   @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
+  name         String   @db.VarChar(255)
+  provider     String   @db.VarChar(255)
+  url          String?  @db.VarChar(255)
+  triggerEvent String   @db.VarChar(255)
+  status       String   @db.VarChar(255)
+  responseCode Int?
+  responseBody String?
+  createdAt    DateTime @default(now()) @db.Timestamptz(6)
+  project      Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
 }

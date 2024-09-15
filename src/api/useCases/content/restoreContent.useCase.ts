@@ -13,7 +13,7 @@ export class RestoreContentUseCase {
   ) {}
 
   async execute({ id, userId }: RestoreContentUseCaseSchemaType): Promise<Content> {
-    const content = await this.contentRepository.findOneById(this.prisma, id);
+    const { content } = await this.contentRepository.findOneById(this.prisma, id);
     const post = await this.postRepository.findOneWithContentsById(this.prisma, content.postId);
 
     const sameLanguageContent = post.contents.find((c) => c.content.language === content.language);

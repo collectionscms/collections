@@ -103,6 +103,14 @@ export const settingsGroupNavItems = (): Group => {
     });
   }
 
+  if (hasPermission('readWebhook')) {
+    items.push({
+      label: 'webhook',
+      href: `${path}/webhooks`,
+      icon: 'Webhook',
+    });
+  }
+
   return {
     label: 'setting',
     items,

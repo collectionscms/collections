@@ -4,14 +4,23 @@ import { UserEntity } from '../user/user.entity.js';
 import { ContentEntity } from './content.entity.js';
 
 export class ContentRepository {
-  async findOneById(prisma: ProjectPrismaType, id: string): Promise<ContentEntity> {
-    const record = await prisma.content.findFirstOrThrow({
+  async findOneById(
+    prisma: ProjectPrismaType,
+    id: string
+  ): Promise<{ content: ContentEntity; createdBy: UserEntity }> {
+    const { createdBy, ...content } = await prisma.content.findFirstOrThrow({
       where: {
         id,
       },
+      include: {
+        createdBy: true,
+      },
     });
 
-    return ContentEntity.Reconstruct<Content, ContentEntity>(record);
+    return {
+      content: ContentEntity.Reconstruct<Content, ContentEntity>(content),
+      createdBy: UserEntity.Reconstruct<User, UserEntity>(createdBy),
+    };
   }
 
   async findOneByPostIdAndLanguage(

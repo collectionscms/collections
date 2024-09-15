@@ -17,6 +17,12 @@ export const roleActions = {
   invitation: ['inviteUser'],
   review: ['readOwnReview', 'readAllReview', 'createReview', 'approveReview', 'closeReview'],
   apiKey: ['readApiKey', 'createApiKey', 'updateApiKey', 'deleteApiKey'],
+  webhookSetting: [
+    'readWebhookSetting',
+    'createWebhookSetting',
+    'updateWebhookSetting',
+    'deleteWebhookSetting',
+  ],
   extension: ['readTemplate'],
 };
 

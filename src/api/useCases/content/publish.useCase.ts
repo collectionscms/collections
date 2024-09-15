@@ -1,22 +1,25 @@
 import { Content } from '@prisma/client';
+import { ProjectPrismaClient } from '../../database/prisma/client.js';
 import { ContentStatus } from '../../persistence/content/content.entity.js';
 import { ContentRepository } from '../../persistence/content/content.repository.js';
 import { ContentHistoryEntity } from '../../persistence/contentHistory/contentHistory.entity.js';
 import { ContentHistoryRepository } from '../../persistence/contentHistory/contentHistory.repository.js';
-import { ProjectPrismaClient } from '../../database/prisma/client.js';
+import { WebhookTriggerEvent } from '../../persistence/webhookLog/webhookLog.entity.js';
+import { WebhookService } from '../../services/webhook.service.js';
 import { PublishUseCaseSchemaType } from './publish.schema.js';
 
 export class PublishUseCase {
   constructor(
     private readonly prisma: ProjectPrismaClient,
     private readonly contentRepository: ContentRepository,
-    private readonly contentHistoryRepository: ContentHistoryRepository
+    private readonly contentHistoryRepository: ContentHistoryRepository,
+    private readonly webhookService: WebhookService
   ) {}
 
   async execute(props: PublishUseCaseSchemaType): Promise<Content> {
     const { id, userId } = props;
 
-    const content = await this.contentRepository.findOneById(this.prisma, id);
+    const { content, createdBy } = await this.contentRepository.findOneById(this.prisma, id);
     content.changeStatus({
       status: ContentStatus.published,
       updatedById: userId,
@@ -43,6 +46,15 @@ export class PublishUseCase {
 
       return result;
     });
+
+    await this.webhookService.send(
+      this.prisma,
+      updatedContent.projectId,
+      WebhookTriggerEvent.publish,
+      {
+        new: updatedContent.toPublishedContentResponse(createdBy),
+      }
+    );
 
     return updatedContent.toResponse();
   }

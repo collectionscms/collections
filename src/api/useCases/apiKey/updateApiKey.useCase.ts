@@ -26,7 +26,7 @@ export class UpdateApiKeyUseCase {
     });
 
     const updatedApiKey = await this.prisma.$transaction(async (tx) => {
-      const result = await this.apiKeyRepository.update(this.prisma, apiKey);
+      const result = await this.apiKeyRepository.update(tx, apiKey);
       await this.apiKeyPermissionRepository.deleteManyByApiKeyId(tx, props.apiKeyId);
       await this.apiKeyPermissionRepository.createMany(tx, permissions);
 

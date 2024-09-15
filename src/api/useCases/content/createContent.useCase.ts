@@ -23,7 +23,7 @@ export class CreateContentUseCase {
     });
 
     const createdContent = await this.prisma.$transaction(async (tx) => {
-      const result = await this.contentRepository.create(this.prisma, entity);
+      const result = await this.contentRepository.create(tx, entity);
 
       const contentHistory = ContentHistoryEntity.Construct({
         ...result.content.toResponse(),

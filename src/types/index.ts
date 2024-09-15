@@ -70,6 +70,7 @@ export type LocalizedPost = {
 };
 
 export type PublishedContent = {
+  id: string;
   slug: string;
   title: string;
   body: string;

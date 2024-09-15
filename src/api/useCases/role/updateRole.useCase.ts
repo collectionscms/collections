@@ -1,9 +1,9 @@
 import { Role } from '@prisma/client';
+import { ProjectPrismaClient } from '../../database/prisma/client.js';
 import { RoleEntity } from '../../persistence/role/role.entity.js';
 import { RoleRepository } from '../../persistence/role/role.repository.js';
 import { RolePermissionEntity } from '../../persistence/rolePermission/rolePermission.entity.js';
 import { RolePermissionRepository } from '../../persistence/rolePermission/rolePermission.repository.js';
-import { ProjectPrismaClient } from '../../database/prisma/client.js';
 import { UpdateRoleUseCaseSchemaType } from './updateRole.schema.js';
 
 export class UpdateRoleUseCase {
@@ -30,7 +30,7 @@ export class UpdateRoleUseCase {
     });
 
     const updatedRole = await this.prisma.$transaction(async (tx) => {
-      const result = await this.roleRepository.update(this.prisma, props.roleId, entity);
+      const result = await this.roleRepository.update(tx, props.roleId, entity);
       await this.rolePermissionRepository.deleteManyByRoleId(tx, props.roleId);
       await this.rolePermissionRepository.createMany(tx, permissions);
 

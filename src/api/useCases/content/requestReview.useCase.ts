@@ -19,7 +19,7 @@ export class RequestReviewUseCase {
   async execute(props: RequestReviewUseCaseSchemaType): Promise<Content> {
     const { projectId, id, userId, comment } = props;
 
-    const content = await this.contentRepository.findOneById(this.prisma, id);
+    const { content } = await this.contentRepository.findOneById(this.prisma, id);
     content.changeStatus({
       status: ContentStatus.review,
       updatedById: userId,

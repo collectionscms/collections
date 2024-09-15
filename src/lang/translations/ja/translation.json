@@ -196,6 +196,9 @@
   "other_localized_languages": "（他 {{count}} 言語）",
   "requester": "申請者",
   "untitled": "無題",
+  "webhook": "Webhook",
+  "provider": "プロバイダー",
+  "notification_triggers": "通知のタイミング",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",
@@ -232,12 +235,14 @@
     "user": "ユーザー 新規登録",
     "role": "ロール 新規登録",
     "project": "プロジェクト 新規登録",
-    "api_key": "APIキー 新規登録"
+    "api_key": "APIキー 新規登録",
+    "webhook": "Webhook 新規登録"
   },
   "edit": {
     "user": "ユーザー 編集",
     "role": "ロール 編集",
-    "api_key": "APIキー 編集"
+    "api_key": "APIキー 編集",
+    "webhook": "Webhook 編集"
   },
   "languages": {
     "en-us": "英語",
@@ -248,6 +253,17 @@
     "pt-br": "ポルトガル語",
     "zh-cn": "中国語",
     "zh-tw": "中国語"
+  },
+  "providers": {
+    "vercel": "Vercel",
+    "custom": "カスタム通知"
+  },
+  "providers_field": {
+    "url": "URL",
+    "vercel_url_caption": "Vercel の Deploy Hooks 設定から取得できます。",
+    "on_publish": "記事を公開した時",
+    "on_archive": "記事を公開終了にした時",
+    "on_delete_published": "公開済みの記事を削除した時"
   },
   "editor": {
     "text": "テキスト",
