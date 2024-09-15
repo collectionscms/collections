@@ -20,8 +20,8 @@ import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscar
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
 import {
   FormValues,
-  inviteUser as createUserSchema,
-} from '../../../fields/validators/users/createUser.js';
+  inviteUserValidator,
+} from '../../../fields/validators/users/inviteUser.validator.js';
 import { useUnsavedChangesPrompt } from '../../../hooks/useUnsavedChangesPrompt.js';
 import { UserContextProvider, useUser } from '../Context/index.js';
 
@@ -42,7 +42,7 @@ const CreateUserPageImpl: React.FC = () => {
       email: '',
       roleId: roles ? roles[0]?.id.toString() : '',
     },
-    resolver: yupResolver(createUserSchema(t)),
+    resolver: yupResolver(inviteUserValidator()),
   });
   const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
 

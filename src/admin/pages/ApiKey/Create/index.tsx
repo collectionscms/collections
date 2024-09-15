@@ -19,7 +19,10 @@ import { logger } from '../../../../utilities/logger.js';
 import { MainCard } from '../../../@extended/components/MainCard/index.js';
 import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscardDialog/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
-import { createApiKeySchema, FormValues } from '../../../fields/validators/apiKeys/createApiKey.js';
+import {
+  createApiKeyValidator,
+  FormValues,
+} from '../../../fields/validators/apiKeys/createApiKey.validator.js';
 import { useUnsavedChangesPrompt } from '../../../hooks/useUnsavedChangesPrompt.js';
 import { ApiKeyContextProvider, useApiKey } from '../Context/index.js';
 
@@ -41,7 +44,7 @@ const CreateApiKeyPageImpl: React.FC = () => {
       name: '',
       permissions: [],
     },
-    resolver: yupResolver(createApiKeySchema()),
+    resolver: yupResolver(createApiKeyValidator()),
   });
   const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
 

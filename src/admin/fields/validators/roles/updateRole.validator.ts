@@ -7,7 +7,7 @@ export type FormValues = {
   permissions: string[];
 };
 
-export const updateRole = (): ObjectSchema<FormValues> => {
+export const updateRoleValidator = (): ObjectSchema<FormValues> => {
   return yup.object().shape({
     name: yup.string().required().max(60),
     description: yup.string().notRequired().max(250),

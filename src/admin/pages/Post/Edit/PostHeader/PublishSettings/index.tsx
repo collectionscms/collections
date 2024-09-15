@@ -32,7 +32,7 @@ import { useAuth } from '../../../../../components/utilities/Auth/index.js';
 import {
   FormValues,
   editContentValidator,
-} from '../../../../../fields/validators/contents/editContent.js';
+} from '../../../../../fields/validators/contents/editContent.validator.js';
 import { usePost } from '../../../Context/index.js';
 import { AppBarStyled } from '../../AppBarStyled.js';
 import { SlugSettings } from './SlugSettings/index.js';

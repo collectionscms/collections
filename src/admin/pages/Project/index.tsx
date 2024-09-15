@@ -14,8 +14,8 @@ import { useAuth } from '../../components/utilities/Auth/index.js';
 import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.js';
 import {
   FormValues,
-  updateProject as updateProjectSchema,
-} from '../../fields/validators/projects/updateProject.js';
+  updateProjectValidator,
+} from '../../fields/validators/projects/updateProject.validator.js';
 import { useUnsavedChangesPrompt } from '../../hooks/useUnsavedChangesPrompt.js';
 import { ProjectContextProvider, useProject } from './Context/index.js';
 
@@ -39,7 +39,7 @@ const ProjectImpl: React.FC = () => {
       name: project.name,
       sourceLanguage: project.sourceLanguage,
     },
-    resolver: yupResolver(updateProjectSchema()),
+    resolver: yupResolver(updateProjectValidator()),
   });
   const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
 

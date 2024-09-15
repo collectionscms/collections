@@ -22,8 +22,8 @@ import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscar
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
 import {
   FormValues,
-  createRole as createRoleSchema,
-} from '../../../fields/validators/roles/createRole.js';
+  createRoleValidator as createRoleSchema,
+} from '../../../fields/validators/roles/createRole.validator.js';
 import { useUnsavedChangesPrompt } from '../../../hooks/useUnsavedChangesPrompt.js';
 import { RoleContextProvider, useRole } from '../Context/index.js';
 

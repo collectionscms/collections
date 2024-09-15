@@ -1,19 +1,17 @@
+import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, FormHelperText, InputLabel, Stack, TextField, Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
-import { t } from 'i18next';
 import React from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { logger } from '../../../../utilities/logger.js';
+import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscardDialog/index.js';
 import {
   FormValues,
-  projectSettings as projectSettingsValidator,
-} from '../../../fields/validators/projects/projectSettings.js';
-
-import { yupResolver } from '@hookform/resolvers/yup';
-import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscardDialog/index.js';
+  projectSettingsValidator,
+} from '../../../fields/validators/projects/projectSettings.validator.js';
 import { useUnsavedChangesPrompt } from '../../../hooks/useUnsavedChangesPrompt.js';
-import { useTranslation } from 'react-i18next';
 import { useProject } from '../Context/index.js';
-import { logger } from '../../../../utilities/logger.js';
 
 export type ProjectData = { name: string; subdomain: string };
 type Props = {

@@ -5,7 +5,7 @@ export type FormValues = {
   language: string;
 };
 
-export const addContent = (): ObjectSchema<FormValues> => {
+export const addContentValidator = (): ObjectSchema<FormValues> => {
   return yup.object().shape({
     language: yup.string().required(),
   });

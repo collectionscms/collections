@@ -1,9 +1,9 @@
-import { loginSchema } from './login.js';
+import { loginValidator } from './login.validator.js';
 
 describe('Login Validations', () => {
   it('success', async () => {
     expect(
-      await loginSchema.isValid({
+      await loginValidator.isValid({
         email: 'admin@example.com',
         password: '************',
         csrfToken: '************',
@@ -13,13 +13,17 @@ describe('Login Validations', () => {
 
   it('failure (email not entered)', async () => {
     expect(
-      await loginSchema.isValid({ email: '', password: '************', csrfToken: '************' })
+      await loginValidator.isValid({
+        email: '',
+        password: '************',
+        csrfToken: '************',
+      })
     ).toEqual(false);
   });
 
   it('failure (password not entered)', async () => {
     expect(
-      await loginSchema.isValid({
+      await loginValidator.isValid({
         email: 'admin@example.com',
         password: '',
         csrfToken: '************',
@@ -29,7 +33,7 @@ describe('Login Validations', () => {
 
   it('failure (different email format)', async () => {
     expect(
-      await loginSchema.isValid({
+      await loginValidator.isValid({
         email: 'admin/example.com',
         password: '************',
         csrfToken: '************',

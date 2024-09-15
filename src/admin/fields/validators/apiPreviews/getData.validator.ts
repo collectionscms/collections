@@ -5,6 +5,6 @@ export type FormValues = {
   path: string;
 };
 
-export const getDataSchema: ObjectSchema<FormValues> = yup.object().shape({
+export const getDataValidator: ObjectSchema<FormValues> = yup.object().shape({
   path: yup.string().required(),
 });

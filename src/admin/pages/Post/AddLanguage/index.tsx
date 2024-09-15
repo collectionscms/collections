@@ -9,7 +9,10 @@ import { LocalizedPost } from '../../../../types/index.js';
 import { logger } from '../../../../utilities/logger.js';
 import { LanguageAutocomplete } from '../../../components/elements/LanguageAutocomplete/index.js';
 import { ModalDialog } from '../../../components/elements/ModalDialog/index.js';
-import { FormValues, addContent } from '../../../fields/validators/posts/addContent.js';
+import {
+  FormValues,
+  addContentValidator,
+} from '../../../fields/validators/posts/addContent.validator.js';
 import { usePost } from '../Context/index.js';
 
 export type Props = {
@@ -35,7 +38,7 @@ export const AddLanguage: React.FC<Props> = ({ open, post, onClose, onChanged })
     defaultValues: {
       language: '',
     },
-    resolver: yupResolver(addContent()),
+    resolver: yupResolver(addContentValidator()),
   });
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {

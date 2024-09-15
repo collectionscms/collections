@@ -3,12 +3,12 @@ import { yup } from '../../yup.js';
 
 export type FormValues = {
   name: string;
-  subdomain: string;
+  sourceLanguage: string;
 };
 
-export const projectSettings = (): ObjectSchema<FormValues> => {
+export const updateProjectValidator = (): ObjectSchema<FormValues> => {
   return yup.object().shape({
     name: yup.string().required().max(100),
-    subdomain: yup.string().required(),
+    sourceLanguage: yup.string().required(),
   });
 };

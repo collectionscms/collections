@@ -7,7 +7,6 @@ import {
   InputLabel,
   Stack,
   TextField,
-  Typography,
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { useSnackbar } from 'notistack';
@@ -24,8 +23,8 @@ import { useAuth } from '../../../components/utilities/Auth/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
 import {
   FormValues,
-  updateRole as updateRoleSchema,
-} from '../../../fields/validators/roles/updateRole.js';
+  updateRoleValidator,
+} from '../../../fields/validators/roles/updateRole.validator.js';
 import { useUnsavedChangesPrompt } from '../../../hooks/useUnsavedChangesPrompt.js';
 import { RoleContextProvider, useRole } from '../Context/index.js';
 
@@ -52,7 +51,7 @@ const EditRolePageImpl: React.FC = () => {
       description: role.description,
       permissions: role.permissions,
     },
-    resolver: yupResolver(updateRoleSchema()),
+    resolver: yupResolver(updateRoleValidator()),
   });
   const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
   const formPermissions = [

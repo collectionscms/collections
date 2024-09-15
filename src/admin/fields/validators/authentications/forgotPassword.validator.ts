@@ -5,6 +5,6 @@ export type FormValues = {
   email: string;
 };
 
-export const forgotPasswordSchema: ObjectSchema<FormValues> = yup.object().shape({
+export const forgotPasswordValidator: ObjectSchema<FormValues> = yup.object().shape({
   email: yup.string().email().required(),
 });

@@ -23,7 +23,10 @@ import { IconButton } from '../../../@extended/components/IconButton/index.js';
 import { MainCard } from '../../../@extended/components/MainCard/index.js';
 import { SyntaxHighlighter } from '../../../@extended/components/SyntaxHighlighter/index.js';
 import { ScrollBar } from '../../../components/elements/ScrollBar/index.js';
-import { FormValues, getDataSchema } from '../../../fields/validators/apiPreviews/getData.js';
+import {
+  FormValues,
+  getDataValidator,
+} from '../../../fields/validators/apiPreviews/getData.validator.js';
 import { useAuth } from '../../utilities/Auth/index.js';
 import { Icon } from '../Icon/index.js';
 import { TabPanel } from '../TabPanel/index.js';
@@ -47,7 +50,7 @@ export const ApiPreview: React.FC<Props> = ({ path, apiKeys }) => {
     watch,
     formState: { errors },
   } = useForm<FormValues>({
-    resolver: yupResolver(getDataSchema),
+    resolver: yupResolver(getDataValidator),
     defaultValues: {
       path,
     },

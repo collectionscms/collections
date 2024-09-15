@@ -5,7 +5,7 @@ export type FormValues = {
   sourceLanguage: string;
 };
 
-export const selectSourceLanguage = (): ObjectSchema<FormValues> => {
+export const selectSourceLanguageValidator = (): ObjectSchema<FormValues> => {
   return yup.object().shape({
     sourceLanguage: yup.string().required(),
   });

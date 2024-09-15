@@ -18,8 +18,8 @@ import { logger } from '../../../../utilities/logger.js';
 import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscardDialog/index.js';
 import {
   FormValues,
-  selectSourceLanguage,
-} from '../../../fields/validators/projects/selectSourceLanguage.js';
+  selectSourceLanguageValidator,
+} from '../../../fields/validators/projects/selectSourceLanguage.validator.js';
 import { useUnsavedChangesPrompt } from '../../../hooks/useUnsavedChangesPrompt.js';
 import { useProject } from '../Context/index.js';
 import { ProjectData } from './ProjectSettingsForm.js';
@@ -53,7 +53,7 @@ export const SourceLanguageForm: React.FC<Props> = ({
     defaultValues: {
       sourceLanguage: sourceLanguageData.sourceLanguage,
     },
-    resolver: yupResolver(selectSourceLanguage()),
+    resolver: yupResolver(selectSourceLanguageValidator()),
   });
   const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
 
