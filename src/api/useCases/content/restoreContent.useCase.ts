@@ -3,7 +3,7 @@ import { ConflictException } from '../../../exceptions/conflict.js';
 import { ContentRepository } from '../../persistence/content/content.repository.js';
 import { PostRepository } from '../../persistence/post/post.repository.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
-import { RestoreContentUseCaseSchemaType } from './restoreContent.schema.js';
+import { RestoreContentUseCaseSchemaType } from './restoreContent.useCase.schema.js';
 
 export class RestoreContentUseCase {
   constructor(

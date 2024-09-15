@@ -1,7 +1,7 @@
 import { env } from '../../../env.js';
 import { BypassPrismaClient } from '../../database/prisma/client.js';
 import { ProjectRepository } from '../../persistence/project/project.repository.js';
-import { GetSubdomainAvailabilityUseCaseSchemaType } from './getSubdomainAvailability.schema.js';
+import { GetSubdomainAvailabilityUseCaseSchemaType } from './getSubdomainAvailability.useCase.schema.js';
 
 type GetSubdomainAvailabilityUseCaseResponse = {
   available: boolean;

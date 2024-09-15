@@ -5,7 +5,7 @@ import { InvitationRepository } from '../../persistence/invitation/invitation.re
 import { UserProjectRepository } from '../../persistence/userProject/userProject.repository.js';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
 import { InvitationMailService } from '../../services/invitationMail.service.js';
-import { InviteUserUseCaseSchemaType } from './inviteUser.schema.js';
+import { InviteUserUseCaseSchemaType } from './inviteUser.useCase.schema.js';
 
 export class InviteUserUseCase {
   constructor(

@@ -8,10 +8,10 @@ import { UserProjectRepository } from '../persistence/userProject/userProject.re
 import { bypassPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { SignUpMailService } from '../services/signUpMail.service.js';
-import { signInErrorUseCaseSchema } from '../useCases/auth/signInError.schema.js';
-import { signUpUseCaseSchema } from '../useCases/auth/signUp.schema.js';
+import { signInErrorUseCaseSchema } from '../useCases/auth/signInError.useCase.schema.js';
+import { signUpUseCaseSchema } from '../useCases/auth/signUp.useCase.schema.js';
 import { SignUpUseCase } from '../useCases/auth/signUp.useCase.js';
-import { verifyUseCaseSchema } from '../useCases/auth/verify.schema.js';
+import { verifyUseCaseSchema } from '../useCases/auth/verify.useCase.schema.js';
 import { VerifyUseCase } from '../useCases/auth/verify.useCase.js';
 
 const router = express.Router();

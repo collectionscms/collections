@@ -6,7 +6,7 @@ import { ContentHistoryEntity } from '../../persistence/contentHistory/contentHi
 import { ContentHistoryRepository } from '../../persistence/contentHistory/contentHistory.repository.js';
 import { WebhookTriggerEvent } from '../../persistence/webhookLog/webhookLog.entity.js';
 import { WebhookService } from '../../services/webhook.service.js';
-import { ArchiveUseCaseSchemaType } from './archive.schema.js';
+import { ArchiveUseCaseSchemaType } from './archive.useCase.schema.js';
 
 export class ArchiveUseCase {
   constructor(

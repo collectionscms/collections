@@ -7,7 +7,7 @@ import { ContentRepository } from '../../persistence/content/content.repository.
 import { ContentHistoryEntity } from '../../persistence/contentHistory/contentHistory.entity.js';
 import { ContentHistoryRepository } from '../../persistence/contentHistory/contentHistory.repository.js';
 import { PostRepository } from '../../persistence/post/post.repository.js';
-import { UpdateContentUseCaseSchemaType } from './updateContent.schema.js';
+import { UpdateContentUseCaseSchemaType } from './updateContent.useCase.schema.js';
 
 export class UpdateContentUseCase {
   constructor(

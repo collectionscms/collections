@@ -2,7 +2,7 @@ import { RecordNotFoundException } from '../../../exceptions/database/recordNotF
 import { PublishedContent } from '../../../types/index.js';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
 import { ContentRepository } from '../../persistence/content/content.repository.js';
-import { GetPublishedContentUseCaseSchemaType } from './getPublishedContent.schema.js';
+import { GetPublishedContentUseCaseSchemaType } from './getPublishedContent.useCase.schema.js';
 
 export class GetPublishedContentUseCase {
   constructor(

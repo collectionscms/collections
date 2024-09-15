@@ -4,7 +4,7 @@ import { ApiKeyRepository } from '../../persistence/apiKey/apiKey.repository.js'
 import { ApiKeyPermissionEntity } from '../../persistence/apiKeyPermission/apiKeyPermission.entity.js';
 import { ApiKeyPermissionRepository } from '../../persistence/apiKeyPermission/apiKeyPermission.repository.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
-import { CreateApiKeyUseCaseSchemaType } from './createApiKey.schema.js';
+import { CreateApiKeyUseCaseSchemaType } from './createApiKey.useCase.schema.js';
 
 export class CreateApiKeyUseCase {
   constructor(

@@ -6,7 +6,7 @@ import { ContentHistoryEntity } from '../../persistence/contentHistory/contentHi
 import { ContentHistoryRepository } from '../../persistence/contentHistory/contentHistory.repository.js';
 import { WebhookTriggerEvent } from '../../persistence/webhookLog/webhookLog.entity.js';
 import { WebhookService } from '../../services/webhook.service.js';
-import { TrashContentUseCaseSchemaType } from './trashContent.schema.js';
+import { TrashContentUseCaseSchemaType } from './trashContent.useCase.schema.js';
 
 export class TrashContentUseCase {
   constructor(

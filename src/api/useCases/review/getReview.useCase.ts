@@ -1,7 +1,7 @@
 import { ReviewWithParticipant } from '../../../types/index.js';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
 import { ReviewRepository } from '../../persistence/review/review.repository.js';
-import { GetReviewUseCaseSchemaType } from './getReview.schema.js';
+import { GetReviewUseCaseSchemaType } from './getReview.useCase.schema.js';
 
 export class GetReviewUseCase {
   constructor(

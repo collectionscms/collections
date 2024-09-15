@@ -8,13 +8,13 @@ import { ContentRepository } from '../persistence/content/content.repository.js'
 import { ContentHistoryRepository } from '../persistence/contentHistory/contentHistory.repository.js';
 import { ReviewRepository } from '../persistence/review/review.repository.js';
 import { ChangeReviewStatusService } from '../services/changeReviewStatus.service.js';
-import { approveReviewUseCaseSchema } from '../useCases/review/approveReview.schema.js';
+import { approveReviewUseCaseSchema } from '../useCases/review/approveReview.useCase.schema.js';
 import { ApproveReviewUseCase } from '../useCases/review/approveReview.useCase.js';
-import { closeReviewUseCaseSchema } from '../useCases/review/closeReview.schema.js';
+import { closeReviewUseCaseSchema } from '../useCases/review/closeReview.useCase.schema.js';
 import { CloseReviewUseCase } from '../useCases/review/closeReview.useCase.js';
-import { getReviewUseCaseSchema } from '../useCases/review/getReview.schema.js';
+import { getReviewUseCaseSchema } from '../useCases/review/getReview.useCase.schema.js';
 import { GetReviewUseCase } from '../useCases/review/getReview.useCase.js';
-import { getReviewsUseCaseSchema } from '../useCases/review/getReviews.schema.js';
+import { getReviewsUseCaseSchema } from '../useCases/review/getReviews.useCase.schema.js';
 import { GetReviewsUseCase } from '../useCases/review/getReviews.useCase.js';
 
 const router = express.Router();

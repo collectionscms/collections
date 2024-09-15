@@ -6,7 +6,7 @@ import { ContentHistoryRepository } from '../../persistence/contentHistory/conte
 import { PostEntity } from '../../persistence/post/post.entity.js';
 import { PostRepository } from '../../persistence/post/post.repository.js';
 import { ProjectRepository } from '../../persistence/project/project.repository.js';
-import { CreatePostUseCaseSchemaType } from './createPost.schema.js';
+import { CreatePostUseCaseSchemaType } from './createPost.useCase.schema.js';
 
 export class CreatePostUseCase {
   constructor(

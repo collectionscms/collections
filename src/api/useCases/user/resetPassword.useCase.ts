@@ -1,7 +1,7 @@
 import { User } from '@prisma/client';
 import { UserRepository } from '../../persistence/user/user.repository.js';
 import { BypassPrismaType } from '../../database/prisma/client.js';
-import { ResetPasswordUseCaseSchemaType } from './resetPassword.schema.js';
+import { ResetPasswordUseCaseSchemaType } from './resetPassword.useCase.schema.js';
 
 export class ResetPasswordUseCase {
   constructor(

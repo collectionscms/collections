@@ -4,7 +4,7 @@ import { ContentRepository } from '../../persistence/content/content.repository.
 import { ContentHistoryEntity } from '../../persistence/contentHistory/contentHistory.entity.js';
 import { ContentHistoryRepository } from '../../persistence/contentHistory/contentHistory.repository.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
-import { CreateContentUseCaseSchemaType } from './createContent.schema.js';
+import { CreateContentUseCaseSchemaType } from './createContent.useCase.schema.js';
 
 export class CreateContentUseCase {
   constructor(

@@ -2,7 +2,7 @@ import { User } from '@prisma/client';
 import { UserRepository } from '../../persistence/user/user.repository.js';
 import { BypassPrismaType } from '../../database/prisma/client.js';
 import { oneWayHash } from '../../utilities/oneWayHash.js';
-import { UpdateProfileUseCaseSchemaType } from './updateProfile.schema.js';
+import { UpdateProfileUseCaseSchemaType } from './updateProfile.useCase.schema.js';
 
 export class UpdateProfileUseCase {
   constructor(
