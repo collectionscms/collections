@@ -1,7 +1,6 @@
 import { v4 } from 'uuid';
 import { ContentStatus } from '../../persistence/content/content.entity.js';
 import { BypassPrismaType } from '../prisma/client.js';
-import { adminUser } from './createUsers.js';
 
 export const createPost = async (
   prisma: BypassPrismaType,
@@ -24,7 +23,7 @@ export const createPost = async (
   const currentTime = new Date();
   const user = await prisma.user.findFirstOrThrow({
     where: {
-      id: options?.createdById ?? adminUser,
+      id: options?.createdById,
     },
   });
   const postId = options?.postId ?? v4();

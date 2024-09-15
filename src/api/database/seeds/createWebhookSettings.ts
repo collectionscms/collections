@@ -11,8 +11,6 @@ export const createWebhookSettings = async (
       data: {
         id: v4(),
         ...webhookSetting,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
     });
   }
