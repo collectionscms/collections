@@ -2,15 +2,25 @@ import i18next from 'i18next';
 import translation_en from '../../../lang/translations/en/translation.json' assert { type: 'json' };
 import translation_ja from '../../../lang/translations/ja/translation.json' assert { type: 'json' };
 import { Output } from '../../../utilities/output.js';
+import { apiKeyActions, roleActions } from '../../persistence/permission/permission.entity.js';
 import { bypassPrisma } from '../prisma/client.js';
 import { createApiKeys } from './createApiKeys.js';
 import { createPermissions } from './createPermissions.js';
 import { createPost } from './createPost.js';
-import { createProjects, enProject, jpProject } from './createProjects.js';
-import { createRoles, projectRoles } from './createRoles.js';
-import { adminUser, contributorUser, createUsers, editorUser, viewerUser } from './createUsers.js';
+import { createProjects } from './createProjects.js';
+import { createRole } from './createRoles.js';
+import { createUsers } from './createUsers.js';
 import { createWebhookSettings } from './createWebhookSettings.js';
+import { apiKeys } from './data/apiKeys.js';
 import { contents } from './data/contents.js';
+import { enProject, jpProject, projects } from './data/projects.js';
+import {
+  contributorPermissions,
+  editorPermissions,
+  projectRoles,
+  viewerPermissions,
+} from './data/roles.js';
+import { users } from './data/users.js';
 import { webhookSettings } from './data/webhookSettings.js';
 
 i18next.init({
@@ -27,13 +37,69 @@ i18next.init({
 export const seedDev = async (): Promise<void> => {
   try {
     await bypassPrisma.$transaction(async (tx) => {
-      await createProjects(tx);
-      await createPermissions(tx);
-      await createRoles(tx, i18next);
-      await createUsers(tx, getUsers());
-      await createApiKeys(tx);
+      // projects
+      await createProjects(tx, projects);
+
+      // permissions
+      await createPermissions(tx, roleActions, apiKeyActions);
+
+      // roles
+      for (const projectId of [enProject, jpProject]) {
+        const projectRole = projectRoles[projectId];
+        i18next.changeLanguage(projectRole.language);
+
+        // admin
+        await createRole(tx, {
+          id: projectRole.admin,
+          name: i18next.t('seed.role.admin'),
+          description: i18next.t('seed.role.admin_description'),
+          isAdmin: true,
+          projectId,
+          permissions: [],
+        });
+
+        // editor
+        await createRole(tx, {
+          id: projectRole.editor,
+          name: i18next.t('seed.role.editor'),
+          description: i18next.t('seed.role.editor_description'),
+          isAdmin: false,
+          projectId,
+          permissions: editorPermissions,
+        });
+
+        // contributor
+        await createRole(tx, {
+          id: projectRole.contributor,
+          name: i18next.t('seed.role.contributor'),
+          description: i18next.t('seed.role.contributor_description'),
+          isAdmin: false,
+          projectId,
+          permissions: contributorPermissions,
+        });
+
+        // viewer
+        await createRole(tx, {
+          id: projectRole.viewer,
+          name: i18next.t('seed.role.viewer'),
+          description: i18next.t('seed.role.viewer_description'),
+          isAdmin: false,
+          projectId,
+          permissions: viewerPermissions,
+        });
+      }
+
+      // users
+      await createUsers(tx, users);
+
+      // api keys
+      await createApiKeys(tx, apiKeys);
+
+      // posts
       await createPost(tx, enProject, contents);
       await createPost(tx, jpProject, contents);
+
+      // webhook settings
       await createWebhookSettings(tx, [
         ...webhookSettings(enProject),
         ...webhookSettings(jpProject),
@@ -46,70 +112,3 @@ export const seedDev = async (): Promise<void> => {
     process.exit(1);
   }
 };
-
-function getUsers() {
-  const users = [
-    {
-      id: adminUser,
-      email: 'admin@collections.dev',
-      password: 'password',
-      userProjects: [
-        {
-          projectId: enProject,
-          roleId: projectRoles[enProject].admin,
-        },
-        {
-          projectId: jpProject,
-          roleId: projectRoles[jpProject].admin,
-        },
-      ],
-    },
-    {
-      id: editorUser,
-      email: 'editor@collections.dev',
-      password: 'password',
-      userProjects: [
-        {
-          projectId: enProject,
-          roleId: projectRoles[enProject].editor,
-        },
-        {
-          projectId: jpProject,
-          roleId: projectRoles[jpProject].editor,
-        },
-      ],
-    },
-    {
-      id: contributorUser,
-      email: 'contributor@collections.dev',
-      password: 'password',
-      userProjects: [
-        {
-          projectId: enProject,
-          roleId: projectRoles[enProject].contributor,
-        },
-        {
-          projectId: jpProject,
-          roleId: projectRoles[jpProject].contributor,
-        },
-      ],
-    },
-    {
-      id: viewerUser,
-      email: 'viewer@collections.dev',
-      password: 'password',
-      userProjects: [
-        {
-          projectId: enProject,
-          roleId: projectRoles[enProject].viewer,
-        },
-        {
-          projectId: jpProject,
-          roleId: projectRoles[jpProject].viewer,
-        },
-      ],
-    },
-  ];
-
-  return users;
-}

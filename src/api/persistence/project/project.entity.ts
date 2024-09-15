@@ -12,7 +12,6 @@ export class ProjectEntity extends PrismaBaseEntity<Project> {
   }: {
     name: string;
     sourceLanguage: string;
-    description?: string;
     subdomain: string;
   }): ProjectEntity {
     return new ProjectEntity({
