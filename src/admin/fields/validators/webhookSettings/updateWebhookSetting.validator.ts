@@ -1,5 +1,6 @@
 import { ObjectSchema } from 'yup';
 import { yup } from '../../yup.js';
+import { urlValidation } from '../shared/urlValidation.js';
 
 export type FormValues = {
   name: string;
@@ -14,7 +15,7 @@ export const updateWebhookSettingValidator = (): ObjectSchema<FormValues> => {
   return yup.object().shape({
     name: yup.string().required().max(60),
     enabled: yup.boolean().required(),
-    url: yup.string().url().required(),
+    url: urlValidation.required(),
     onPublish: yup.boolean().required(),
     onArchive: yup.boolean().required(),
     onDeletePublished: yup.boolean().required(),

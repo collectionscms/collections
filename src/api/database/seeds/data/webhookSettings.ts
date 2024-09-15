@@ -7,7 +7,7 @@ export const webhookSettings = (projectId: string) => {
       provider: WebhookProvider.custom,
       projectId,
       enabled: false,
-      url: 'https://example.com/api/revalidate',
+      url: 'http://localhost:3000/api/revalidate',
       onPublish: true,
       onArchive: true,
       onDeletePublished: true,
