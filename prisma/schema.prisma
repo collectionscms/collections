@@ -263,9 +263,9 @@ model WebhookLog {
   name         String   @db.VarChar(255)
   provider     String   @db.VarChar(255)
   url          String?  @db.VarChar(255)
-  trigger      String   @db.VarChar(255)
+  triggerEvent String   @db.VarChar(255)
   status       String   @db.VarChar(255)
-  responseCode Int
+  responseCode Int?
   responseBody String?
   createdAt    DateTime @default(now()) @db.Timestamptz(6)
   project      Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)

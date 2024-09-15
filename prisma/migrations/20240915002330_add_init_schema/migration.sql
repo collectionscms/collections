@@ -231,9 +231,9 @@ CREATE TABLE "WebhookLog" (
     "name" VARCHAR(255) NOT NULL,
     "provider" VARCHAR(255) NOT NULL,
     "url" VARCHAR(255),
-    "trigger" VARCHAR(255) NOT NULL,
+    "triggerEvent" VARCHAR(255) NOT NULL,
     "status" VARCHAR(255) NOT NULL,
-    "responseCode" INTEGER NOT NULL,
+    "responseCode" INTEGER,
     "responseBody" TEXT,
     "createdAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
