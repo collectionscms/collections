@@ -3,18 +3,18 @@ import { yup } from '../../yup.js';
 
 export type FormValues = {
   name: string;
-  provider: string;
-  url: string;
+  url: string | null;
+  enabled: boolean;
   onPublish: boolean;
   onArchive: boolean;
   onUpdatePublished: boolean;
   onDeletePublished: boolean;
 };
 
-export const createWebhookSettingValidator = (): ObjectSchema<FormValues> => {
+export const updateWebhookSettingValidator = (): ObjectSchema<FormValues> => {
   return yup.object().shape({
     name: yup.string().required().max(60),
-    provider: yup.string().required(),
+    enabled: yup.boolean().required(),
     url: yup.string().url().required(),
     onPublish: yup.boolean().required(),
     onArchive: yup.boolean().required(),
