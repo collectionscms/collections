@@ -61,7 +61,7 @@ const EditWebhookSettingPageImpl: React.FC = () => {
       onArchive: webhookSetting.onArchive,
       onDeletePublished: webhookSetting.onDeletePublished,
     },
-    resolver: yupResolver(updateWebhookSettingValidator()),
+    resolver: yupResolver(updateWebhookSettingValidator(t)),
   });
   const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
 
