@@ -19,7 +19,7 @@ export class WebhookService {
     prisma: ProjectPrismaType,
     projectId: string,
     triggerEvent: WebhookTriggerEventType,
-    content: {
+    contents: {
       old?: PublishedContent | null;
       new: PublishedContent;
     }
@@ -30,7 +30,7 @@ export class WebhookService {
       let response;
       try {
         if (setting.url) {
-          response = await axios.post(setting.url, content);
+          response = await axios.post(setting.url, { id: contents.new.id, triggerEvent, contents });
         }
       } catch (error) {
         logger.warn(`Failed to send webhook for id:${setting.id}`, error);
@@ -43,8 +43,9 @@ export class WebhookService {
           provider: setting.provider,
           status: response && response.status < 400 ? 'success' : 'error',
           responseCode: response ? response.status : null,
-          responseBody: response ? response.data : null,
+          responseBody: response ? JSON.stringify(response.data) : null,
         });
+
         await this.webhookLogRepository.create(prisma, entity);
       }
     }

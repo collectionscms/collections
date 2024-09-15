@@ -248,6 +248,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     }
 
     return {
+      id: this.props.id,
       slug: this.props.slug,
       title: this.props.title ?? '',
       body: this.props.body ?? '',
