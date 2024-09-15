@@ -23,7 +23,7 @@ import { IconButton } from '../../../@extended/components/IconButton/index.js';
 import { MainCard } from '../../../@extended/components/MainCard/index.js';
 import { SyntaxHighlighter } from '../../../@extended/components/SyntaxHighlighter/index.js';
 import { ScrollBar } from '../../../components/elements/ScrollBar/index.js';
-import { FormValues, getDataSchema } from '../../../fields/validators/apiPreview/getData.js';
+import { FormValues, getDataSchema } from '../../../fields/validators/apiPreviews/getData.js';
 import { useAuth } from '../../utilities/Auth/index.js';
 import { Icon } from '../Icon/index.js';
 import { TabPanel } from '../TabPanel/index.js';

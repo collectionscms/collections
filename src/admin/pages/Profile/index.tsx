@@ -27,7 +27,7 @@ import { ComposeWrapper } from '../../components/utilities/ComposeWrapper/index.
 import {
   FormValues,
   updateUser as updateUserSchema,
-} from '../../fields/validators/profile/updateUser.js';
+} from '../../fields/validators/profiles/updateUser.js';
 import { useUnsavedChangesPrompt } from '../../hooks/useUnsavedChangesPrompt.js';
 import lazy from '../../utilities/lazy.js';
 import { ProfileContextProvider, useProfile } from './Context/index.js';

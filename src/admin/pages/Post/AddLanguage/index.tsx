@@ -9,7 +9,7 @@ import { LocalizedPost } from '../../../../types/index.js';
 import { logger } from '../../../../utilities/logger.js';
 import { LanguageAutocomplete } from '../../../components/elements/LanguageAutocomplete/index.js';
 import { ModalDialog } from '../../../components/elements/ModalDialog/index.js';
-import { FormValues, addContent } from '../../../fields/validators/post/addContent.js';
+import { FormValues, addContent } from '../../../fields/validators/posts/addContent.js';
 import { usePost } from '../Context/index.js';
 
 export type Props = {
