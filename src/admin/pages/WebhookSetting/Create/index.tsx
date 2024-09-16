@@ -54,6 +54,7 @@ const CreateWebhookSettingPageImpl: React.FC = () => {
       onPublish: true,
       onArchive: true,
       onDeletePublished: true,
+      onRestorePublished: true,
     },
     resolver: yupResolver(createWebhookSettingValidator(t)),
   });
@@ -75,24 +76,24 @@ const CreateWebhookSettingPageImpl: React.FC = () => {
   ];
 
   const notificationTriggers: {
-    id: string;
-    value: 'onPublish' | 'onArchive' | 'onDeletePublished';
+    value: 'onPublish' | 'onArchive' | 'onDeletePublished' | 'onRestorePublished';
     label: string;
   }[] = [
     {
-      id: 'onPublish',
       value: 'onPublish',
       label: t('providers_field.on_publish'),
     },
     {
-      id: 'onArchive',
       value: 'onArchive',
       label: t('providers_field.on_archive'),
     },
     {
-      id: 'onDeletePublished',
       value: 'onDeletePublished',
       label: t('providers_field.on_delete_published'),
+    },
+    {
+      value: 'onRestorePublished',
+      label: t('providers_field.on_restore_published'),
     },
   ];
 
@@ -212,7 +213,7 @@ const CreateWebhookSettingPageImpl: React.FC = () => {
                       {notificationTriggers.map((item) => (
                         <Controller
                           name={item.value}
-                          key={item.id}
+                          key={item.value}
                           control={control}
                           render={({ field }) => (
                             <>

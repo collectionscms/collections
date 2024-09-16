@@ -263,7 +263,8 @@
     "vercel_url_caption": "Vercel の Deploy Hooks 設定から取得できます。",
     "on_publish": "記事を公開した時",
     "on_archive": "記事を公開終了にした時",
-    "on_delete_published": "公開済みの記事を削除した時"
+    "on_delete_published": "公開済みの記事を削除した時",
+    "on_restore_published": "公開済みの記事を復元した時"
   },
   "editor": {
     "text": "テキスト",

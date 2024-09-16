@@ -60,6 +60,7 @@ const EditWebhookSettingPageImpl: React.FC = () => {
       onPublish: webhookSetting.onPublish,
       onArchive: webhookSetting.onArchive,
       onDeletePublished: webhookSetting.onDeletePublished,
+      onRestorePublished: webhookSetting.onRestorePublished,
     },
     resolver: yupResolver(updateWebhookSettingValidator(t)),
   });
@@ -82,24 +83,24 @@ const EditWebhookSettingPageImpl: React.FC = () => {
   const provider = providers.filter((item) => item.value === webhookSetting.provider)[0];
 
   const notificationTriggers: {
-    id: string;
-    value: 'onPublish' | 'onArchive' | 'onDeletePublished';
+    value: 'onPublish' | 'onArchive' | 'onDeletePublished' | 'onRestorePublished';
     label: string;
   }[] = [
     {
-      id: 'onPublish',
       value: 'onPublish',
       label: t('providers_field.on_publish'),
     },
     {
-      id: 'onArchive',
       value: 'onArchive',
       label: t('providers_field.on_archive'),
     },
     {
-      id: 'onDeletePublished',
       value: 'onDeletePublished',
       label: t('providers_field.on_delete_published'),
+    },
+    {
+      value: 'onRestorePublished',
+      label: t('providers_field.on_restore_published'),
     },
   ];
 
@@ -192,7 +193,7 @@ const EditWebhookSettingPageImpl: React.FC = () => {
                       {notificationTriggers.map((item) => (
                         <Controller
                           name={item.value}
-                          key={item.id}
+                          key={item.value}
                           control={control}
                           render={({ field }) => (
                             <>
