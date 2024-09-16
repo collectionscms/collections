@@ -20,7 +20,6 @@ export class ArchiveUseCase {
     const { id, userId } = props;
 
     const { content, createdBy } = await this.contentRepository.findOneById(this.prisma, id);
-    const beforeContent = content.toPublishedContentResponse(createdBy);
 
     content.changeStatus({
       status: ContentStatus.archived,
@@ -43,8 +42,8 @@ export class ArchiveUseCase {
       updatedContent.projectId,
       WebhookTriggerEvent.archive,
       {
-        old: beforeContent,
-        new: updatedContent.toPublishedContentResponse(createdBy),
+        old: updatedContent.toPublishedContentResponse(createdBy),
+        new: null,
       }
     );
 
