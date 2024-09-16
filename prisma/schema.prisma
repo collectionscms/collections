@@ -243,18 +243,19 @@ model ApiKeyPermission {
 }
 
 model WebhookSetting {
-  id                String   @id @db.Uuid
-  projectId         String   @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
-  name              String   @db.VarChar(255)
-  provider          String   @db.VarChar(255)
-  enabled           Boolean  @default(true)
-  url               String?  @db.VarChar(255)
-  onPublish         Boolean  @default(false)
-  onArchive         Boolean  @default(false)
-  onDeletePublished Boolean  @default(false)
-  createdAt         DateTime @default(now()) @db.Timestamptz(6)
-  updatedAt         DateTime @updatedAt @db.Timestamptz(6)
-  project           Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  id                 String   @id @db.Uuid
+  projectId          String   @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
+  name               String   @db.VarChar(255)
+  provider           String   @db.VarChar(255)
+  enabled            Boolean  @default(true)
+  url                String?  @db.VarChar(255)
+  onPublish          Boolean  @default(false)
+  onArchive          Boolean  @default(false)
+  onDeletePublished  Boolean  @default(false)
+  onRestorePublished Boolean  @default(false)
+  createdAt          DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt          DateTime @updatedAt @db.Timestamptz(6)
+  project            Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
 }
 
 model WebhookLog {
