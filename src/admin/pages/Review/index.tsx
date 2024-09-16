@@ -50,9 +50,10 @@ const ReviewPageImpl: React.FC = () => {
   const [activeTab, setActiveTab] = useState(statues[0]);
 
   return (
-    <MainCard content={false}>
-      <ScrollX>
-        <Box sx={{ px: 3, py: 2, pb: 0, mb: 4, width: '100%' }}>
+    <MainCard
+      content={false}
+      title={
+        <Box sx={{ mb: 1 }}>
           <Tabs
             value={activeTab}
             onChange={(e: ChangeEvent<{}>, value: string) => setActiveTab(value)}
@@ -67,6 +68,9 @@ const ReviewPageImpl: React.FC = () => {
             ))}
           </Tabs>
         </Box>
+      }
+    >
+      <ScrollX>
         <ReactTable
           columns={columns}
           data={
