@@ -51,9 +51,7 @@ export class PublishUseCase {
       this.prisma,
       updatedContent.projectId,
       WebhookTriggerEvent.publish,
-      {
-        new: updatedContent.toPublishedContentResponse(createdBy),
-      }
+      updatedContent.toPublishedContentResponse(createdBy)
     );
 
     return updatedContent.toResponse();

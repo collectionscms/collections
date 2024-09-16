@@ -20,7 +20,6 @@ export class TrashContentUseCase {
     const { id, userId } = props;
 
     const { content, createdBy } = await this.contentRepository.findOneById(this.prisma, id);
-    const beforeContent = content.toPublishedContentResponse(createdBy);
 
     content.delete(userId);
 
@@ -40,10 +39,7 @@ export class TrashContentUseCase {
         this.prisma,
         content.projectId,
         WebhookTriggerEvent.deletePublished,
-        {
-          old: beforeContent,
-          new: deletedContent.toPublishedContentResponse(createdBy),
-        }
+        deletedContent.toPublishedContentResponse(createdBy)
       );
     }
 

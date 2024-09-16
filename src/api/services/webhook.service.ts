@@ -19,18 +19,18 @@ export class WebhookService {
     prisma: ProjectPrismaType,
     projectId: string,
     triggerEvent: WebhookTriggerEventType,
-    contents: {
-      old?: PublishedContent | null;
-      new: PublishedContent;
-    }
+    content: PublishedContent | null
   ): Promise<void> {
-    const settings = await this.webhookSettingRepository.findManyByProjectId(prisma, projectId);
+    const settings = await this.webhookSettingRepository.findEnabledManyByProjectId(
+      prisma,
+      projectId
+    );
 
     for (const setting of settings) {
       let response;
       try {
         if (setting.url) {
-          response = await axios.post(setting.url, { id: contents.new.id, triggerEvent, contents });
+          response = await axios.post(setting.url, { id: content?.id, triggerEvent, content });
         }
       } catch (error) {
         logger.warn(`Failed to send webhook for id:${setting.id}`, error);

@@ -19,13 +19,14 @@ export class WebhookSettingRepository {
     return WebhookSettingEntity.Reconstruct<WebhookSetting, WebhookSettingEntity>(record);
   }
 
-  async findManyByProjectId(
+  async findEnabledManyByProjectId(
     prisma: ProjectPrismaType,
     projectId: string
   ): Promise<WebhookSettingEntity[]> {
     const records = await prisma.webhookSetting.findMany({
       where: {
         projectId,
+        enabled: true,
       },
     });
     return records.map((record) =>
@@ -65,6 +66,7 @@ export class WebhookSettingRepository {
         onPublish: record.onPublish,
         onArchive: record.onArchive,
         onDeletePublished: record.onDeletePublished,
+        onRestorePublished: record.onRestorePublished,
       },
     });
     return WebhookSettingEntity.Reconstruct<WebhookSetting, WebhookSettingEntity>(result);
