@@ -19,7 +19,6 @@ import { Icon } from '../../../../components/elements/Icon/index.js';
 import { NationalFlagIcon } from '../../../../components/elements/NationalFlagIcon/index.js';
 import { StatusDot } from '../../../../components/elements/StatusDot/index.js';
 import { AppBarStyled } from '../AppBarStyled.js';
-import { PublishSettings } from './PublishSettings/index.js';
 
 export type Props = {
   post: LocalizedPost;
@@ -27,6 +26,7 @@ export type Props = {
   isSaving: boolean;
   onChangeLanguage: (language: string) => void;
   onOpenAddLanguage: () => void;
+  onOpenPublishSettings: () => void;
   onReverted: () => void;
 };
 
@@ -36,6 +36,7 @@ export const PostHeader: React.FC<Props> = ({
   isSaving,
   onChangeLanguage,
   onOpenAddLanguage,
+  onOpenPublishSettings,
 }) => {
   const theme = useTheme();
   const navigate = useNavigate();
@@ -54,15 +55,6 @@ export const PostHeader: React.FC<Props> = ({
 
   const navigateToList = () => {
     navigate('/admin/posts');
-  };
-
-  // /////////////////////////////////////
-  // Open settings
-  // /////////////////////////////////////
-
-  const [openSettings, setOpenSettings] = useState(false);
-  const handleOpenSettings = async () => {
-    setOpenSettings((open) => !open);
   };
 
   // /////////////////////////////////////
@@ -94,12 +86,6 @@ export const PostHeader: React.FC<Props> = ({
 
   return (
     <>
-      <PublishSettings
-        open={openSettings}
-        contentId={post.contentId}
-        post={post}
-        onClose={() => setOpenSettings(false)}
-      />
       <AppBarStyled open={true} {...appBar}>
         <Toolbar>
           <Stack direction="row" flexGrow={1} gap={2}>
@@ -131,7 +117,11 @@ export const PostHeader: React.FC<Props> = ({
                 <Icon name="ChevronDown" size={14} />
               </Stack>
             </Button>
-            <Button variant="contained" onClick={handleOpenSettings} sx={{ padding: '5px 15px' }}>
+            <Button
+              variant="contained"
+              onClick={onOpenPublishSettings}
+              sx={{ padding: '5px 15px' }}
+            >
               {t('publish_settings')}
             </Button>
           </Stack>

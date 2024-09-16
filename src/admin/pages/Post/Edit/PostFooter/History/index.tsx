@@ -62,7 +62,7 @@ export const History: React.FC<Props> = ({ post, onReverted }) => {
         execute={{ label: t('restore'), action: handleRevert }}
         cancel={{ label: t('cancel'), action: () => setOpenRevert(false) }}
       />
-      <Tooltip title={t('version_history')}>
+      <Tooltip title={t('version_history')} placement="top-start">
         <IconButton color="secondary" shape="rounded" variant="outlined" onClick={handleToggle}>
           <Icon strokeWidth={2} name="History" />
         </IconButton>
