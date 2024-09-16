@@ -24,7 +24,7 @@ const ReviewDetailPageImpl: React.FC = () => {
   const { trigger: closeReviewTrigger, isMutating: isCloseMutating } = closeReview(id);
   const { trigger: approveReviewTrigger, isMutating: isApproveMutating } = approveReview(id);
 
-  const enabled = review.status === 'request';
+  const enabled = review.status === 'pending';
 
   const onCloseReview = async () => {
     try {
