@@ -20,6 +20,9 @@ import { getPostsUseCaseSchema } from '../useCases/post/getPosts.useCase.schema.
 import { GetPostsUseCase } from '../useCases/post/getPosts.useCase.js';
 import { trashPostUseCaseSchema } from '../useCases/post/trashPost.useCase.schema.js';
 import { TrashPostUseCase } from '../useCases/post/trashPost.useCase.js';
+import { WebhookSettingRepository } from '../persistence/webhookSetting/webhookSetting.repository.js';
+import { WebhookService } from '../services/webhook.service.js';
+import { WebhookLogRepository } from '../persistence/webhookLog/webhookLog.repository.js';
 
 const router = express.Router();
 
@@ -149,7 +152,8 @@ router.delete(
     const useCase = new TrashLanguageContentUseCase(
       projectPrisma(validated.data.projectId),
       new ContentRepository(),
-      new ContentHistoryRepository()
+      new ContentHistoryRepository(),
+      new WebhookService(new WebhookSettingRepository(), new WebhookLogRepository())
     );
     await useCase.execute(validated.data);
     res.status(204).send();
@@ -171,7 +175,8 @@ router.delete(
     const useCase = new TrashPostUseCase(
       projectPrisma(validated.data.projectId),
       new ContentRepository(),
-      new ContentHistoryRepository()
+      new ContentHistoryRepository(),
+      new WebhookService(new WebhookSettingRepository(), new WebhookLogRepository())
     );
     await useCase.execute(validated.data);
 

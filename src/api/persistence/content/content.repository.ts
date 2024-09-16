@@ -70,7 +70,7 @@ export class ContentRepository {
     prisma: ProjectPrismaType,
     postId: string,
     language: string
-  ): Promise<ContentEntity[]> {
+  ): Promise<{ content: ContentEntity; createdBy: UserEntity }[]> {
     const records = await prisma.content.findMany({
       where: {
         postId,
@@ -80,20 +80,38 @@ export class ContentRepository {
       orderBy: {
         version: 'desc',
       },
+      include: {
+        createdBy: true,
+      },
     });
 
-    return records.map((record) => ContentEntity.Reconstruct<Content, ContentEntity>(record));
+    return records.map((record) => ({
+      content: ContentEntity.Reconstruct<Content, ContentEntity>(record),
+      createdBy: UserEntity.Reconstruct<User, UserEntity>(record.createdBy),
+    }));
   }
 
-  async findManyByPostId(prisma: ProjectPrismaType, postId: string): Promise<ContentEntity[]> {
+  async findManyByPostId(
+    prisma: ProjectPrismaType,
+    postId: string
+  ): Promise<{ content: ContentEntity; createdBy: UserEntity }[]> {
     const records = await prisma.content.findMany({
       where: {
         postId,
         deletedAt: null,
       },
+      orderBy: {
+        version: 'desc',
+      },
+      include: {
+        createdBy: true,
+      },
     });
 
-    return records.map((record) => ContentEntity.Reconstruct<Content, ContentEntity>(record));
+    return records.map((record) => ({
+      content: ContentEntity.Reconstruct<Content, ContentEntity>(record),
+      createdBy: UserEntity.Reconstruct<User, UserEntity>(record.createdBy),
+    }));
   }
 
   async findManyTrashed(prisma: ProjectPrismaType): Promise<ContentEntity[]> {
