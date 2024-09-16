@@ -27,8 +27,8 @@ export class ChangeReviewStatusService {
     hasReadAllReview: boolean
   ): Promise<ReviewEntity> {
     const { review } = hasReadAllReview
-      ? await this.reviewRepository.findOne(prisma, reviewId)
-      : await this.reviewRepository.findOwnOne(prisma, userId, reviewId);
+      ? await this.reviewRepository.findOneWithContentAndParticipant(prisma, reviewId)
+      : await this.reviewRepository.findOwnOneWithContentAndParticipant(prisma, userId, reviewId);
 
     if (reviewStatusType === ReviewStatus.Approved) {
       review.approve();

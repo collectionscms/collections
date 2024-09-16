@@ -1,7 +1,7 @@
-import { Typography } from '@mui/material';
+import { Box, Tab, Tabs, Typography } from '@mui/material';
 import { Review } from '@prisma/client';
 import dayjs from 'dayjs';
-import React, { useMemo } from 'react';
+import React, { ChangeEvent, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Row } from 'react-table';
 import { MainCard } from '../../@extended/components/MainCard/index.js';
@@ -13,8 +13,10 @@ import { ReviewContextProvider, useReview } from './Context/index.js';
 
 const ReviewPageImpl: React.FC = () => {
   const { t } = useTranslation();
-  const { getReviews } = useReview();
-  const { data } = getReviews();
+  const { getPendingReviews, getApprovedReviews, getClosedReviews } = useReview();
+  const { data: pendingReviews } = getPendingReviews();
+  const { data: approvedReviews } = getApprovedReviews();
+  const { data: closedReviews } = getClosedReviews();
 
   const columns = useMemo(
     () => [
@@ -33,18 +35,6 @@ const ReviewPageImpl: React.FC = () => {
         accessor: 'revieweeName',
       },
       {
-        id: 'status',
-        Header: t('status'),
-        accessor: 'status',
-        Cell: ({ value }: { value: string }) => {
-          return (
-            <Typography>
-              {t(`post_review_status.${value}` as unknown as TemplateStringsArray)}
-            </Typography>
-          );
-        },
-      },
-      {
         id: 'updatedAt',
         Header: t('updated_at'),
         accessor: 'updatedAt',
@@ -56,10 +46,37 @@ const ReviewPageImpl: React.FC = () => {
     []
   );
 
+  const statues = ['pending', 'approved', 'closed'];
+  const [activeTab, setActiveTab] = useState(statues[0]);
+
   return (
-    <MainCard content={false} title={<></>} secondary={<></>}>
+    <MainCard content={false}>
       <ScrollX>
-        <ReactTable columns={columns} data={data} />
+        <Box sx={{ px: 3, py: 2, pb: 0, mb: 4, width: '100%' }}>
+          <Tabs
+            value={activeTab}
+            onChange={(e: ChangeEvent<{}>, value: string) => setActiveTab(value)}
+            sx={{ borderBottom: 1, borderColor: 'divider' }}
+          >
+            {statues.map((status: string, index: number) => (
+              <Tab
+                key={index}
+                label={t(`post_review_status.${status}` as unknown as TemplateStringsArray)}
+                value={status}
+              />
+            ))}
+          </Tabs>
+        </Box>
+        <ReactTable
+          columns={columns}
+          data={
+            activeTab === 'pending'
+              ? pendingReviews
+              : activeTab === 'approved'
+                ? approvedReviews
+                : closedReviews
+          }
+        />
       </ScrollX>
     </MainCard>
   );

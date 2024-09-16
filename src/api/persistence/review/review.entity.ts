@@ -4,7 +4,7 @@ import { UnexpectedException } from '../../../exceptions/unexpected.js';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 
 export const ReviewStatus = {
-  Request: 'request',
+  Pending: 'pending',
   Approved: 'approved',
   Closed: 'closed',
 } as const;
@@ -33,7 +33,7 @@ export class ReviewEntity extends PrismaBaseEntity<Review> {
       revieweeId,
       reviewerId: null,
       comment,
-      status: ReviewStatus.Request,
+      status: ReviewStatus.Pending,
       createdAt: now,
       updatedAt: now,
     });
@@ -48,7 +48,7 @@ export class ReviewEntity extends PrismaBaseEntity<Review> {
   }
 
   requestReview(comment: string): void {
-    this.props.status = ReviewStatus.Request;
+    this.props.status = ReviewStatus.Pending;
     this.props.comment = comment;
   }
 
