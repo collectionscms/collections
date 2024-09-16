@@ -7,6 +7,7 @@ export const WebhookTriggerEvent = {
   publish: 'publish',
   archive: 'archive',
   deletePublished: 'deletePublished',
+  restorePublished: 'restorePublished',
 } as const;
 export type WebhookTriggerEventType =
   (typeof WebhookTriggerEvent)[keyof typeof WebhookTriggerEvent];

@@ -6,10 +6,13 @@ import { authenticatedUser } from '../middlewares/auth.js';
 import { validateAccess } from '../middlewares/validateAccess.js';
 import { ContentRepository } from '../persistence/content/content.repository.js';
 import { PostRepository } from '../persistence/post/post.repository.js';
-import { getTrashedContentsUseCaseSchema } from '../useCases/content/getTrashedContents.useCase.schema.js';
+import { WebhookLogRepository } from '../persistence/webhookLog/webhookLog.repository.js';
+import { WebhookSettingRepository } from '../persistence/webhookSetting/webhookSetting.repository.js';
+import { WebhookService } from '../services/webhook.service.js';
 import { GetTrashedContentsUseCase } from '../useCases/content/getTrashedContents.useCase.js';
-import { restoreContentUseCaseSchema } from '../useCases/content/restoreContent.useCase.schema.js';
+import { getTrashedContentsUseCaseSchema } from '../useCases/content/getTrashedContents.useCase.schema.js';
 import { RestoreContentUseCase } from '../useCases/content/restoreContent.useCase.js';
+import { restoreContentUseCaseSchema } from '../useCases/content/restoreContent.useCase.schema.js';
 
 const router = express.Router();
 
@@ -50,7 +53,8 @@ router.patch(
     const useCase = new RestoreContentUseCase(
       projectPrisma(validated.data.projectId),
       new PostRepository(),
-      new ContentRepository()
+      new ContentRepository(),
+      new WebhookService(new WebhookSettingRepository(), new WebhookLogRepository())
     );
     await useCase.execute(validated.data);
 

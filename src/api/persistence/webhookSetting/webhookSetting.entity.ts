@@ -24,6 +24,7 @@ export class WebhookSettingEntity extends PrismaBaseEntity<WebhookSetting> {
       onPublish: props.onPublish,
       onArchive: props.onArchive,
       onDeletePublished: props.onDeletePublished,
+      onRestorePublished: props.onRestorePublished,
       createdAt: now,
       updatedAt: now,
     });
@@ -52,6 +53,7 @@ export class WebhookSettingEntity extends PrismaBaseEntity<WebhookSetting> {
     onPublish: boolean;
     onArchive: boolean;
     onDeletePublished: boolean;
+    onRestorePublished: boolean;
   }) => {
     this.props.name = params.name;
     this.props.url = params.url;
@@ -59,6 +61,7 @@ export class WebhookSettingEntity extends PrismaBaseEntity<WebhookSetting> {
     this.props.onPublish = params.onPublish;
     this.props.onArchive = params.onArchive;
     this.props.onDeletePublished = params.onDeletePublished;
+    this.props.onRestorePublished = params.onRestorePublished;
   };
 
   private isValid() {

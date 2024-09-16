@@ -9,6 +9,7 @@ export const updateWebSettingsUseCaseSchema = z.object({
   onPublish: z.boolean(),
   onArchive: z.boolean(),
   onDeletePublished: z.boolean(),
+  onRestorePublished: z.boolean(),
 });
 
 export type UpdateWebSettingsUseCaseSchemaType = z.infer<typeof updateWebSettingsUseCaseSchema>;

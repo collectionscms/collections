@@ -65,6 +65,7 @@ export class WebhookSettingRepository {
         onPublish: record.onPublish,
         onArchive: record.onArchive,
         onDeletePublished: record.onDeletePublished,
+        onRestorePublished: record.onRestorePublished,
       },
     });
     return WebhookSettingEntity.Reconstruct<WebhookSetting, WebhookSettingEntity>(result);
