@@ -21,7 +21,10 @@ export class WebhookService {
     triggerEvent: WebhookTriggerEventType,
     content: PublishedContent | null
   ): Promise<void> {
-    const settings = await this.webhookSettingRepository.findManyByProjectId(prisma, projectId);
+    const settings = await this.webhookSettingRepository.findEnabledManyByProjectId(
+      prisma,
+      projectId
+    );
 
     for (const setting of settings) {
       let response;
