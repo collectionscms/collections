@@ -39,10 +39,7 @@ export class TrashContentUseCase {
         this.prisma,
         content.projectId,
         WebhookTriggerEvent.deletePublished,
-        {
-          old: deletedContent.toPublishedContentResponse(createdBy),
-          new: null,
-        }
+        deletedContent.toPublishedContentResponse(createdBy)
       );
     }
 

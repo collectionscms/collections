@@ -41,10 +41,7 @@ export class ArchiveUseCase {
       this.prisma,
       updatedContent.projectId,
       WebhookTriggerEvent.archive,
-      {
-        old: updatedContent.toPublishedContentResponse(createdBy),
-        new: null,
-      }
+      null
     );
 
     return updatedContent.toResponse();

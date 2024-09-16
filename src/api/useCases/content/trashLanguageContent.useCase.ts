@@ -47,10 +47,7 @@ export class TrashLanguageContentUseCase {
         this.prisma,
         content.projectId,
         WebhookTriggerEvent.deletePublished,
-        {
-          old: content.toPublishedContentResponse(createdBy),
-          new: null,
-        }
+        null
       );
     }
 

@@ -3,9 +3,9 @@ import { ProjectPrismaClient } from '../../database/prisma/client.js';
 import { ContentRepository } from '../../persistence/content/content.repository.js';
 import { ContentHistoryEntity } from '../../persistence/contentHistory/contentHistory.entity.js';
 import { ContentHistoryRepository } from '../../persistence/contentHistory/contentHistory.repository.js';
+import { WebhookTriggerEvent } from '../../persistence/webhookLog/webhookLog.entity.js';
 import { WebhookService } from '../../services/webhook.service.js';
 import { TrashPostUseCaseSchemaType } from './trashPost.useCase.schema.js';
-import { WebhookTriggerEvent } from '../../persistence/webhookLog/webhookLog.entity.js';
 
 export class TrashPostUseCase {
   constructor(
@@ -23,7 +23,7 @@ export class TrashPostUseCase {
       for (const { content, createdBy } of contents) {
         content.delete(userId);
         await this.contentRepository.delete(tx, content);
-        result.push({ content, createdBy });
+        result.push(content);
 
         const contentHistory = ContentHistoryEntity.Construct({
           ...content.toResponse(),
@@ -34,19 +34,16 @@ export class TrashPostUseCase {
       return result;
     });
 
-    const publishedContents = deletedContents.filter(({ content }) => content.isPublished());
-    for (const { content, createdBy } of publishedContents) {
+    const publishedContents = deletedContents.filter((content) => content.isPublished());
+    for (const content of publishedContents) {
       await this.webhookService.send(
         this.prisma,
         content.projectId,
         WebhookTriggerEvent.deletePublished,
-        {
-          old: content.toPublishedContentResponse(createdBy),
-          new: null,
-        }
+        null
       );
     }
 
-    return deletedContents.map(({ content }) => content.toResponse());
+    return deletedContents.map((content) => content.toResponse());
   }
 }
