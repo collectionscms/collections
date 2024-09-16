@@ -1,33 +1,33 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWR, { SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
-import { ReviewWithParticipant } from '../../../../types/index.js';
+import { ReviewWithContentAndParticipant } from '../../../../types/index.js';
 import { api } from '../../../utilities/api.js';
 
 type ReviewContext = {
   getPendingReviews: () => SWRResponse<
-    ReviewWithParticipant[],
+    ReviewWithContentAndParticipant[],
     Error,
     {
       suspense: true;
     }
   >;
   getApprovedReviews: () => SWRResponse<
-    ReviewWithParticipant[],
+    ReviewWithContentAndParticipant[],
     Error,
     {
       suspense: true;
     }
   >;
   getClosedReviews: () => SWRResponse<
-    ReviewWithParticipant[],
+    ReviewWithContentAndParticipant[],
     Error,
     {
       suspense: true;
     }
   >;
   getReview: (id: string) => SWRResponse<
-    ReviewWithParticipant,
+    ReviewWithContentAndParticipant,
     Error,
     {
       suspense: true;
@@ -43,7 +43,10 @@ export const ReviewContextProvider: React.FC<{ children: React.ReactNode }> = ({
   const getPendingReviews = () =>
     useSWR(
       '/reviews?status=pending',
-      (url) => api.get<{ reviews: ReviewWithParticipant[] }>(url).then((res) => res.data.reviews),
+      (url) =>
+        api
+          .get<{ reviews: ReviewWithContentAndParticipant[] }>(url)
+          .then((res) => res.data.reviews),
       {
         suspense: true,
       }
@@ -52,7 +55,10 @@ export const ReviewContextProvider: React.FC<{ children: React.ReactNode }> = ({
   const getApprovedReviews = () =>
     useSWR(
       '/reviews?status=approved',
-      (url) => api.get<{ reviews: ReviewWithParticipant[] }>(url).then((res) => res.data.reviews),
+      (url) =>
+        api
+          .get<{ reviews: ReviewWithContentAndParticipant[] }>(url)
+          .then((res) => res.data.reviews),
       {
         suspense: true,
       }
@@ -61,7 +67,10 @@ export const ReviewContextProvider: React.FC<{ children: React.ReactNode }> = ({
   const getClosedReviews = () =>
     useSWR(
       '/reviews?status=closed',
-      (url) => api.get<{ reviews: ReviewWithParticipant[] }>(url).then((res) => res.data.reviews),
+      (url) =>
+        api
+          .get<{ reviews: ReviewWithContentAndParticipant[] }>(url)
+          .then((res) => res.data.reviews),
       {
         suspense: true,
       }
@@ -70,7 +79,8 @@ export const ReviewContextProvider: React.FC<{ children: React.ReactNode }> = ({
   const getReview = (id: string) =>
     useSWR(
       `/reviews/${id}`,
-      (url) => api.get<{ review: ReviewWithParticipant }>(url).then((res) => res.data.review),
+      (url) =>
+        api.get<{ review: ReviewWithContentAndParticipant }>(url).then((res) => res.data.review),
       {
         suspense: true,
       }

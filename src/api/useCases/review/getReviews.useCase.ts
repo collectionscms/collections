@@ -1,4 +1,4 @@
-import { ReviewWithParticipant } from '../../../types/index.js';
+import { ReviewWithContentAndParticipant } from '../../../types/index.js';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
 import { ReviewRepository } from '../../persistence/review/review.repository.js';
 import { GetReviewsUseCaseSchemaType } from './getReviews.useCase.schema.js';
@@ -12,7 +12,7 @@ export class GetReviewsUseCase {
   async execute(
     props: GetReviewsUseCaseSchemaType,
     hasReadAllReview: boolean
-  ): Promise<ReviewWithParticipant[]> {
+  ): Promise<ReviewWithContentAndParticipant[]> {
     const records = hasReadAllReview
       ? await this.reviewRepository.findManyWithUser(
           this.prisma,
@@ -25,6 +25,7 @@ export class GetReviewsUseCase {
 
     return records.map((record) => ({
       ...record.review.toResponse(),
+      content: record.content.toResponse(),
       revieweeName: record.reviewee.name,
       reviewerName: record.reviewer?.name ?? null,
     }));

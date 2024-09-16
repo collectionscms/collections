@@ -1,5 +1,6 @@
-import { Review, User } from '@prisma/client';
+import { Content, Review, User } from '@prisma/client';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
+import { ContentEntity } from '../content/content.entity.js';
 import { UserEntity } from '../user/user.entity.js';
 import { ReviewEntity } from './review.entity.js';
 
@@ -10,6 +11,7 @@ export class ReviewRepository {
   ): Promise<
     {
       review: ReviewEntity;
+      content: ContentEntity;
       reviewee: UserEntity;
       reviewer: UserEntity | null;
     }[]
@@ -20,6 +22,7 @@ export class ReviewRepository {
         status: options?.status,
       },
       include: {
+        content: true,
         reviewee: true,
         reviewer: true,
       },
@@ -30,17 +33,19 @@ export class ReviewRepository {
 
     return records.map((record) => ({
       review: ReviewEntity.Reconstruct<Review, ReviewEntity>(record),
+      content: ContentEntity.Reconstruct<Content, ContentEntity>(record.content),
       reviewee: UserEntity.Reconstruct<User, UserEntity>(record.reviewee),
       reviewer: record.reviewer ? UserEntity.Reconstruct<User, UserEntity>(record.reviewer) : null,
     }));
   }
 
-  async findOwnOne(
+  async findOwnOneWithContentAndParticipant(
     prisma: ProjectPrismaType,
     userId: string,
     id: string
   ): Promise<{
     review: ReviewEntity;
+    content: ContentEntity;
     reviewee: UserEntity;
     reviewer: UserEntity | null;
   }> {
@@ -50,6 +55,7 @@ export class ReviewRepository {
         OR: [{ revieweeId: userId }, { reviewerId: userId }],
       },
       include: {
+        content: true,
         reviewee: true,
         reviewer: true,
       },
@@ -57,6 +63,7 @@ export class ReviewRepository {
 
     return {
       review: ReviewEntity.Reconstruct<Review, ReviewEntity>(record),
+      content: ContentEntity.Reconstruct<Content, ContentEntity>(record.content),
       reviewee: UserEntity.Reconstruct<User, UserEntity>(record.reviewee),
       reviewer: record.reviewer ? UserEntity.Reconstruct<User, UserEntity>(record.reviewer) : null,
     };
@@ -68,6 +75,7 @@ export class ReviewRepository {
   ): Promise<
     {
       review: ReviewEntity;
+      content: ContentEntity;
       reviewee: UserEntity;
       reviewer: UserEntity | null;
     }[]
@@ -77,6 +85,7 @@ export class ReviewRepository {
         status: options?.status,
       },
       include: {
+        content: true,
         reviewee: true,
         reviewer: true,
       },
@@ -87,22 +96,25 @@ export class ReviewRepository {
 
     return records.map((record) => ({
       review: ReviewEntity.Reconstruct<Review, ReviewEntity>(record),
+      content: ContentEntity.Reconstruct<Content, ContentEntity>(record.content),
       reviewee: UserEntity.Reconstruct<User, UserEntity>(record.reviewee),
       reviewer: record.reviewer ? UserEntity.Reconstruct<User, UserEntity>(record.reviewer) : null,
     }));
   }
 
-  async findOne(
+  async findOneWithContentAndParticipant(
     prisma: ProjectPrismaType,
     id: string
   ): Promise<{
     review: ReviewEntity;
+    content: ContentEntity;
     reviewee: UserEntity;
     reviewer: UserEntity | null;
   }> {
     const record = await prisma.review.findUniqueOrThrow({
       where: { id },
       include: {
+        content: true,
         reviewee: true,
         reviewer: true,
       },
@@ -110,6 +122,7 @@ export class ReviewRepository {
 
     return {
       review: ReviewEntity.Reconstruct<Review, ReviewEntity>(record),
+      content: ContentEntity.Reconstruct<Content, ContentEntity>(record.content),
       reviewee: UserEntity.Reconstruct<User, UserEntity>(record.reviewee),
       reviewer: record.reviewer ? UserEntity.Reconstruct<User, UserEntity>(record.reviewer) : null,
     };
