@@ -5,7 +5,21 @@ import { ReviewWithParticipant } from '../../../../types/index.js';
 import { api } from '../../../utilities/api.js';
 
 type ReviewContext = {
-  getReviews: () => SWRResponse<
+  getPendingReviews: () => SWRResponse<
+    ReviewWithParticipant[],
+    Error,
+    {
+      suspense: true;
+    }
+  >;
+  getApprovedReviews: () => SWRResponse<
+    ReviewWithParticipant[],
+    Error,
+    {
+      suspense: true;
+    }
+  >;
+  getClosedReviews: () => SWRResponse<
     ReviewWithParticipant[],
     Error,
     {
@@ -26,9 +40,27 @@ type ReviewContext = {
 const Context = createContext({} as ReviewContext);
 
 export const ReviewContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const getReviews = () =>
+  const getPendingReviews = () =>
     useSWR(
-      '/reviews',
+      '/reviews?status=pending',
+      (url) => api.get<{ reviews: ReviewWithParticipant[] }>(url).then((res) => res.data.reviews),
+      {
+        suspense: true,
+      }
+    );
+
+  const getApprovedReviews = () =>
+    useSWR(
+      '/reviews?status=approved',
+      (url) => api.get<{ reviews: ReviewWithParticipant[] }>(url).then((res) => res.data.reviews),
+      {
+        suspense: true,
+      }
+    );
+
+  const getClosedReviews = () =>
+    useSWR(
+      '/reviews?status=closed',
       (url) => api.get<{ reviews: ReviewWithParticipant[] }>(url).then((res) => res.data.reviews),
       {
         suspense: true,
@@ -56,12 +88,14 @@ export const ReviewContextProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const value = useMemo(
     () => ({
-      getReviews,
+      getPendingReviews,
+      getApprovedReviews,
+      getClosedReviews,
       getReview,
       closeReview,
       approveReview,
     }),
-    [getReviews, getReview, closeReview, approveReview]
+    [getPendingReviews, getApprovedReviews, getClosedReviews, getReview, closeReview, approveReview]
   );
 
   return <Context.Provider value={value}>{children}</Context.Provider>;

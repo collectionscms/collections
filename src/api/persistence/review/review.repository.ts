@@ -6,7 +6,7 @@ import { ReviewEntity } from './review.entity.js';
 export class ReviewRepository {
   async findOwnManyWithUser(
     prisma: ProjectPrismaType,
-    userId: string
+    options: { userId: string; status?: string }
   ): Promise<
     {
       review: ReviewEntity;
@@ -16,7 +16,8 @@ export class ReviewRepository {
   > {
     const records = await prisma.review.findMany({
       where: {
-        OR: [{ revieweeId: userId }, { reviewerId: userId }],
+        OR: [{ revieweeId: options.userId }, { reviewerId: options.userId }],
+        status: options?.status,
       },
       include: {
         reviewee: true,
@@ -61,7 +62,10 @@ export class ReviewRepository {
     };
   }
 
-  async findManyWithUser(prisma: ProjectPrismaType): Promise<
+  async findManyWithUser(
+    prisma: ProjectPrismaType,
+    options?: { status: string }
+  ): Promise<
     {
       review: ReviewEntity;
       reviewee: UserEntity;
@@ -69,6 +73,9 @@ export class ReviewRepository {
     }[]
   > {
     const records = await prisma.review.findMany({
+      where: {
+        status: options?.status,
+      },
       include: {
         reviewee: true,
         reviewer: true,
