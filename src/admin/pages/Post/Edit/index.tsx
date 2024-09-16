@@ -1,4 +1,3 @@
-import { LoadingOutlined } from '@ant-design/icons';
 import {
   Box,
   Button,
@@ -27,6 +26,7 @@ import { AddLanguage } from '../AddLanguage/index.js';
 import { PostContextProvider, usePost } from '../Context/index.js';
 import { PostFooter } from './PostFooter/index.js';
 import { PostHeader } from './PostHeader/index.js';
+import { PublishSettings } from './PostHeader/PublishSettings/index.js';
 
 const toJson = (value?: string | null) => {
   return value ? JSON.parse(value) : '';
@@ -207,6 +207,18 @@ export const EditPostPageImpl: React.FC = () => {
   };
 
   // /////////////////////////////////////
+  // Open settings
+  // /////////////////////////////////////
+
+  const [openPublishSettings, setOpenPublishSettings] = useState(false);
+  const handleOpenPublishSettings = async () => {
+    if (isDirty) {
+      await handleSaveContent();
+    }
+    setOpenPublishSettings((open) => !open);
+  };
+
+  // /////////////////////////////////////
   // Language
   // /////////////////////////////////////
 
@@ -243,12 +255,19 @@ export const EditPostPageImpl: React.FC = () => {
         onChangeLanguage={handleChangeLanguage}
         onOpenAddLanguage={handleOpenAddLanguage}
         onReverted={handleMutate}
+        onOpenPublishSettings={handleOpenPublishSettings}
       />
       <PostFooter
         post={post}
         onTrashed={handleMutate}
         onReverted={handleMutate}
         characters={characterCount.characters()}
+      />
+      <PublishSettings
+        open={openPublishSettings}
+        contentId={post.contentId}
+        post={post}
+        onClose={() => setOpenPublishSettings(false)}
       />
       <Box component="main" sx={{ minHeight: '100vh' }}>
         <Toolbar sx={{ mt: 0 }} />
