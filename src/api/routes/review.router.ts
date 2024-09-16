@@ -27,6 +27,7 @@ router.get(
     const validated = getReviewsUseCaseSchema.safeParse({
       projectId: res.projectRole?.id,
       userId: res.user?.id,
+      status: req.query.status,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 

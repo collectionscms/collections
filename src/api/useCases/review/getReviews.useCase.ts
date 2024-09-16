@@ -14,8 +14,14 @@ export class GetReviewsUseCase {
     hasReadAllReview: boolean
   ): Promise<ReviewWithParticipant[]> {
     const records = hasReadAllReview
-      ? await this.reviewRepository.findManyWithUser(this.prisma)
-      : await this.reviewRepository.findOwnManyWithUser(this.prisma, props.userId);
+      ? await this.reviewRepository.findManyWithUser(
+          this.prisma,
+          props.status && { status: props.status }
+        )
+      : await this.reviewRepository.findOwnManyWithUser(this.prisma, {
+          userId: props.userId,
+          status: props.status,
+        });
 
     return records.map((record) => ({
       ...record.review.toResponse(),
