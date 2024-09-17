@@ -199,6 +199,7 @@
   "webhook": "Webhook",
   "provider": "Provider",
   "notification_triggers": "Notification Triggers",
+  "deleted": "Deleted",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",

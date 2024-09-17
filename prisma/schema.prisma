@@ -150,8 +150,8 @@ model Post {
 model Review {
   id         String   @id @db.Uuid
   projectId  String   @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
-  postId     String   @unique @db.Uuid
-  contentId  String   @unique @db.Uuid
+  postId     String   @db.Uuid
+  contentId  String   @db.Uuid
   revieweeId String   @db.Uuid
   reviewerId String?  @db.Uuid
   comment    String
@@ -188,7 +188,7 @@ model Content {
   post        Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
   createdBy   User      @relation(name: "CreatedBy", fields: [createdById], references: [id], onDelete: NoAction)
   updatedBy   User      @relation(name: "UpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction)
-  review      Review?
+  reviews     Review[]
 }
 
 model ContentHistory {
