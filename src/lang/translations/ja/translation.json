@@ -199,6 +199,7 @@
   "webhook": "Webhook",
   "provider": "プロバイダー",
   "notification_triggers": "通知のタイミング",
+  "deleted": "削除済み",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",

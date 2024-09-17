@@ -66,9 +66,20 @@ const ReviewDetailPageImpl: React.FC = () => {
                 <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 1 }}>
                   <Icon name="FileText" size={16} />
                   <Icon name="ChevronRight" size={16} />
-                  <Link href={`/admin/posts/${review.postId}?language=${review.content.language}`}>
-                    {review.postId}
-                  </Link>
+                  {!review.content.deletedAt ? (
+                    <Link
+                      href={`/admin/posts/${review.postId}?language=${review.content.language}`}
+                    >
+                      {review.content.title}
+                    </Link>
+                  ) : (
+                    <Stack flexDirection="row" gap={1}>
+                      <Typography>{review.content.title}</Typography>
+                      <Typography variant="caption" color="text.secondary">
+                        ({t('deleted')})
+                      </Typography>
+                    </Stack>
+                  )}
                 </Stack>
                 <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
                   <Icon name="UserRound" size={16} />
