@@ -250,12 +250,6 @@ CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 -- CreateIndex
 CREATE UNIQUE INDEX "UserProject_userId_projectId_key" ON "UserProject"("userId", "projectId");
 
--- CreateIndex
-CREATE UNIQUE INDEX "Review_postId_key" ON "Review"("postId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Review_contentId_key" ON "Review"("contentId");
-
 -- AddForeignKey
 ALTER TABLE "UserProject" ADD CONSTRAINT "UserProject_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
