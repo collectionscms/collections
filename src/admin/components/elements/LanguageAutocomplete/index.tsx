@@ -29,7 +29,7 @@ export const LanguageAutocomplete: React.FC<Props> = ({ languages, value, onChan
           <NationalFlagIcon code={option.code} props={{ width: 20, mr: 1 }} />
           {t(`languages.${option.code}` as unknown as TemplateStringsArray)}
           <Typography variant="caption" color="text.secondary" sx={{ ml: 1 }}>
-            {option.code.toUpperCase()}
+            ({option.code.toUpperCase()})
           </Typography>
         </Box>
       )}
