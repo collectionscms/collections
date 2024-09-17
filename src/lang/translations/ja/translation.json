@@ -288,8 +288,8 @@
   },
   "post_review_status": {
     "pending": "申請中",
-    "approved": "承認",
-    "closed": "終了"
+    "approved": "承認済み",
+    "closed": "終了済み"
   },
   "permissions": {
     "action": {
