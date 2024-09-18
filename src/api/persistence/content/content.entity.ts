@@ -19,6 +19,8 @@ export type ContentStatusType = (typeof ContentStatus)[keyof typeof ContentStatu
 type ContentProps = Omit<
   Content,
   | 'id'
+  | 'metaTitle'
+  | 'metaDescription'
   | 'coverUrl'
   | 'title'
   | 'body'
@@ -32,6 +34,8 @@ type ContentProps = Omit<
   | 'createdAt'
   | 'updatedAt'
 > & {
+  metaTitle?: string | null;
+  metaDescription?: string | null;
   coverUrl?: string | null;
   title?: string | null;
   body?: string | null;
@@ -48,6 +52,8 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
       projectId: props.projectId,
       postId: props.postId,
       slug: props.slug,
+      metaTitle: props.metaTitle ?? null,
+      metaDescription: props.metaDescription ?? null,
       coverUrl: props.coverUrl ?? null,
       title: props.title ?? null,
       body: props.body ?? null,
