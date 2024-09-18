@@ -1,3 +1,5 @@
+import { SourceLanguageCode, TargetLanguageCode } from '@collectionscms/plugin-translate';
+
 export const IsoLanguageCode = {
   bg: 'bg',
   cs: 'cs',
@@ -30,74 +32,8 @@ export const IsoLanguageCode = {
   tr: 'tr',
   uk: 'uk',
   'zh-cn': 'zh-cn',
-  'zh-tw': 'zh-tw',
 } as const;
 export type IsoLanguageCodeType = (typeof IsoLanguageCode)[keyof typeof IsoLanguageCode];
-
-type SourceLanguageCode =
-  | 'bg'
-  | 'cs'
-  | 'da'
-  | 'de'
-  | 'el'
-  | 'en'
-  | 'es'
-  | 'et'
-  | 'fi'
-  | 'fr'
-  | 'hu'
-  | 'id'
-  | 'it'
-  | 'ja'
-  | 'ko'
-  | 'lt'
-  | 'lv'
-  | 'nb'
-  | 'nl'
-  | 'pl'
-  | 'pt'
-  | 'ro'
-  | 'ru'
-  | 'sk'
-  | 'sl'
-  | 'sv'
-  | 'tr'
-  | 'uk'
-  | 'zh';
-
-type TargetLanguageCode =
-  | 'bg'
-  | 'cs'
-  | 'da'
-  | 'de'
-  | 'el'
-  | 'en-GB'
-  | 'en-US'
-  | 'es'
-  | 'et'
-  | 'fi'
-  | 'fr'
-  | 'hu'
-  | 'id'
-  | 'it'
-  | 'ja'
-  | 'ko'
-  | 'lt'
-  | 'lv'
-  | 'nb'
-  | 'nl'
-  | 'pl'
-  | 'pt-BR'
-  | 'pt-PT'
-  | 'ro'
-  | 'ru'
-  | 'sk'
-  | 'sl'
-  | 'sv'
-  | 'tr'
-  | 'uk'
-  | 'zh-HANS'
-  | 'zh-HANT';
 
 export type LanguageCode = {
   code: IsoLanguageCodeType;
@@ -136,8 +72,7 @@ export const languages: readonly LanguageCode[] = [
   { code: 'sv', sourceLanguageCode: 'sv', targetLanguageCode: 'sv' },
   { code: 'tr', sourceLanguageCode: 'tr', targetLanguageCode: 'tr' },
   { code: 'uk', sourceLanguageCode: 'uk', targetLanguageCode: 'uk' },
-  { code: 'zh-cn', sourceLanguageCode: 'zh', targetLanguageCode: 'zh-HANS' },
-  { code: 'zh-tw', sourceLanguageCode: 'zh', targetLanguageCode: 'zh-HANT' },
+  { code: 'zh-cn', sourceLanguageCode: 'zh', targetLanguageCode: 'zh' },
 ];
 
 export const getLanguageCodeType = (language: string): LanguageCode | null => {

@@ -1,4 +1,6 @@
+import { Translator } from '@collectionscms/plugin-translate';
 import express, { Request, Response } from 'express';
+import { env } from '../../env.js';
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
 import { projectPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
@@ -8,21 +10,23 @@ import { ContentRepository } from '../persistence/content/content.repository.js'
 import { ContentHistoryRepository } from '../persistence/contentHistory/contentHistory.repository.js';
 import { PostRepository } from '../persistence/post/post.repository.js';
 import { ProjectRepository } from '../persistence/project/project.repository.js';
-import { createContentUseCaseSchema } from '../useCases/content/createContent.useCase.schema.js';
-import { CreateContentUseCase } from '../useCases/content/createContent.useCase.js';
-import { trashLanguageContentUseCaseSchema } from '../useCases/content/trashLanguageContent.useCase.schema.js';
-import { TrashLanguageContentUseCase } from '../useCases/content/trashLanguageContent.useCase.js';
-import { createPostUseCaseSchema } from '../useCases/post/createPost.useCase.schema.js';
-import { CreatePostUseCase } from '../useCases/post/createPost.useCase.js';
-import { getPostUseCaseSchema } from '../useCases/post/getPost.useCase.schema.js';
-import { GetPostUseCase } from '../useCases/post/getPost.useCase.js';
-import { getPostsUseCaseSchema } from '../useCases/post/getPosts.useCase.schema.js';
-import { GetPostsUseCase } from '../useCases/post/getPosts.useCase.js';
-import { trashPostUseCaseSchema } from '../useCases/post/trashPost.useCase.schema.js';
-import { TrashPostUseCase } from '../useCases/post/trashPost.useCase.js';
+import { WebhookLogRepository } from '../persistence/webhookLog/webhookLog.repository.js';
 import { WebhookSettingRepository } from '../persistence/webhookSetting/webhookSetting.repository.js';
 import { WebhookService } from '../services/webhook.service.js';
-import { WebhookLogRepository } from '../persistence/webhookLog/webhookLog.repository.js';
+import { CreateContentUseCase } from '../useCases/content/createContent.useCase.js';
+import { createContentUseCaseSchema } from '../useCases/content/createContent.useCase.schema.js';
+import { TrashLanguageContentUseCase } from '../useCases/content/trashLanguageContent.useCase.js';
+import { trashLanguageContentUseCaseSchema } from '../useCases/content/trashLanguageContent.useCase.schema.js';
+import { CreatePostUseCase } from '../useCases/post/createPost.useCase.js';
+import { createPostUseCaseSchema } from '../useCases/post/createPost.useCase.schema.js';
+import { GetPostUseCase } from '../useCases/post/getPost.useCase.js';
+import { getPostUseCaseSchema } from '../useCases/post/getPost.useCase.schema.js';
+import { GetPostsUseCase } from '../useCases/post/getPosts.useCase.js';
+import { getPostsUseCaseSchema } from '../useCases/post/getPosts.useCase.schema.js';
+import { TranslateContentUseCase } from '../useCases/post/translateContent.useCase.js';
+import { translateContentUseCaseSchema } from '../useCases/post/translateContent.useCase.schema.js';
+import { TrashPostUseCase } from '../useCases/post/trashPost.useCase.js';
+import { trashPostUseCaseSchema } from '../useCases/post/trashPost.useCase.schema.js';
 
 const router = express.Router();
 
@@ -132,6 +136,32 @@ router.post(
 
     res.json({
       content,
+    });
+  })
+);
+
+router.post(
+  '/posts/:id/translate',
+  authenticatedUser,
+  validateAccess(['updatePost']),
+  asyncHandler(async (req: Request, res: Response) => {
+    const validated = translateContentUseCaseSchema.safeParse({
+      id: req.params.id,
+      projectId: res.projectRole?.id,
+      sourceLanguage: req.body.sourceLanguage,
+      targetLanguage: req.body.targetLanguage,
+    });
+    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
+
+    const useCase = new TranslateContentUseCase(
+      projectPrisma(validated.data.projectId),
+      new ContentRepository(),
+      new Translator(env.TRANSLATE_API_KEY)
+    );
+    const response = await useCase.execute(validated.data);
+
+    res.json({
+      ...response,
     });
   })
 );

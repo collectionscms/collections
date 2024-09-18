@@ -163,6 +163,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       language: content.language,
       version: content.version,
       coverUrl: content.coverUrl,
+      canTranslate: content.isTranslationEnabled(project.sourceLanguage),
       usedLanguages,
       sourceLanguageCode: project.sourceLanguageCode?.code ?? null,
       targetLanguageCode: content.languageCode?.code ?? null,
