@@ -1,6 +1,7 @@
 import { Content } from '@prisma/client';
 import { v4 } from 'uuid';
 import { getLanguageCodeType, LanguageCode } from '../../../constants/languages.js';
+import { env } from '../../../env.js';
 import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
 import { UnexpectedException } from '../../../exceptions/unexpected.js';
 import { PublishedContent, StatusHistory } from '../../../types/index.js';
@@ -224,6 +225,11 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
 
   isSameLanguageContent(language: string) {
     return this.props.language.toLocaleLowerCase() === language.toLocaleLowerCase();
+  }
+
+  isTranslationEnabled(sourceLanguage: string): boolean {
+    if (!env.TRANSLATE_API_KEY) return false;
+    return sourceLanguage !== this.props.language;
   }
 
   statusHistory = (): StatusHistory => {
