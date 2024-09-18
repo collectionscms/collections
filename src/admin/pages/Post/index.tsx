@@ -112,9 +112,14 @@ export const PostPageImpl: React.FC = () => {
           const post = row.original as SourceLanguagePostItem;
           const title = post.title || t('untitled');
           return hasPermission('updatePost') ? (
-            <Link href={`${post.postId}?language=${post.language}`}>{title}</Link>
+            <Link
+              href={`${post.postId}?language=${post.language}`}
+              sx={{ wordBreak: 'break-word', whiteSpace: 'normal' }}
+            >
+              {title}
+            </Link>
           ) : (
-            <Typography>{title}</Typography>
+            <Typography sx={{ wordBreak: 'break-word', whiteSpace: 'normal' }}>{title}</Typography>
           );
         },
       },
