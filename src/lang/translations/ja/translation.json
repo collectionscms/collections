@@ -185,6 +185,7 @@
   "deploy": "デプロイ",
   "view_demo": "デモを見る",
   "nextjs_blog_starter_description": "Next.js と Collections を使った多言語の静的生成ブログテンプレート",
+  "translate_source_to_target": "{{sourceLanguage}}から{{targetLanguage}}に翻訳しますか？",
   "i_do": "する",
   "version": "バージョン",
   "move_lang_content_to_trash": "{{language}}の記事だけごみ箱にいれます。",

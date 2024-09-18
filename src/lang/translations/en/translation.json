@@ -185,6 +185,7 @@
   "deploy": "Deploy",
   "view_demo": "View Demo",
   "nextjs_blog_starter_description": "A multilingual statically generated blog template using Next.js and Collections.",
+  "translate_source_to_target": "Do you want to translate from {{sourceLanguage}} to {{targetLanguage}}?",
   "i_do": "I do.",
   "version": "Version",
   "move_lang_content_to_trash": "Move only {{language}} post to trash.",
