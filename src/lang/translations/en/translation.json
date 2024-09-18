@@ -276,8 +276,7 @@
     "sv": "Swedish",
     "tr": "Turkish",
     "uk": "Ukrainian",
-    "zh-cn": "Chinese",
-    "zh-tw": "Chinese"
+    "zh-cn": "Chinese"
   },
   "providers": {
     "vercel": "Vercel",
