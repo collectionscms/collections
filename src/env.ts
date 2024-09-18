@@ -90,7 +90,12 @@ type AllowedEnvironmentVariable =
   // /////////////////////////////////////
   // System
   // /////////////////////////////////////
-  | 'RESERVED_SUBDOMAINS';
+  | 'RESERVED_SUBDOMAINS'
+
+  // /////////////////////////////////////
+  // Third party services
+  // /////////////////////////////////////
+  | 'TRANSLATE_API_KEY';
 
 export const defaults: Partial<Record<AllowedEnvironmentVariable, any>> = {
   // General
