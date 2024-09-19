@@ -96,6 +96,8 @@ export const SocialSettings: React.FC<Props> = ({
                   <TextField
                     {...field}
                     type="text"
+                    multiline
+                    rows={3}
                     sx={{ flexGrow: 1 }}
                     error={errors.metaDescription !== undefined}
                   />
