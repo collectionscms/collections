@@ -35,7 +35,7 @@ import {
 } from '../../../../../fields/validators/contents/editContent.validator.js';
 import { usePost } from '../../../Context/index.js';
 import { AppBarStyled } from '../../AppBarStyled.js';
-import { SlugSettings } from './SlugSettings/index.js';
+import { GeneralSettings } from './GeneralSettings/index.js';
 import { SocialSettings } from './SocialSettings/index.js';
 
 export type Props = {
@@ -242,7 +242,7 @@ export const PublishSettings: React.FC<Props> = ({ open, contentId, post, onClos
               <Typography variant={'h4'}>{t('general')}</Typography>
             </Stack>
             <MainCard>
-              <SlugSettings
+              <GeneralSettings
                 contentId={mutatedPost.contentId}
                 slug={mutatedPost.slug}
                 onUpdated={(slug) => handleUpdatedPost({ slug })}

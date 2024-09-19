@@ -23,8 +23,8 @@ import { ModalDialog } from '../../../../../components/elements/ModalDialog/inde
 import { useAuth } from '../../../../../components/utilities/Auth/index.js';
 import { usePost } from '../../../Context/index.js';
 import { AppBarStyled } from '../../AppBarStyled.js';
+import { GeneralSettings } from '../../PostHeader/PublishSettings/GeneralSettings/index.js';
 import { SocialSettings } from '../../PostHeader/PublishSettings/SocialSettings/index.js';
-import { SlugSettings } from '../../PostHeader/PublishSettings/SlugSettings/index.js';
 
 export type Props = {
   open: boolean;
@@ -162,7 +162,7 @@ export const Settings: React.FC<Props> = ({ open, post, onClose, onTrashed }) =>
               <Typography variant={'h4'}>{t('general')}</Typography>
             </Stack>
             <MainCard>
-              <SlugSettings
+              <GeneralSettings
                 contentId={mutatedPost.contentId}
                 slug={mutatedPost.slug}
                 onUpdated={(slug) => handleUpdatedPost({ slug })}

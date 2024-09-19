@@ -26,7 +26,7 @@ type Props = {
   onUpdated: (slug: string) => void;
 };
 
-export const SlugSettings: React.FC<Props> = ({ contentId, slug, onUpdated }) => {
+export const GeneralSettings: React.FC<Props> = ({ contentId, slug, onUpdated }) => {
   const { t } = useTranslation();
   const [isEditingSlug, setIsEditingSlug] = useState(false);
 
