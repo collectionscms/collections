@@ -23,6 +23,7 @@ import { ModalDialog } from '../../../../../components/elements/ModalDialog/inde
 import { useAuth } from '../../../../../components/utilities/Auth/index.js';
 import { usePost } from '../../../Context/index.js';
 import { AppBarStyled } from '../../AppBarStyled.js';
+import { SocialSettings } from '../../PostHeader/PublishSettings/SocialSettings/index.js';
 import { SlugSettings } from '../../PostHeader/PublishSettings/SlugSettings/index.js';
 
 export type Props = {
@@ -97,10 +98,20 @@ export const Settings: React.FC<Props> = ({ open, post, onClose, onTrashed }) =>
     }
   };
 
-  const handleUpdatedSlug = (slug: string) => {
+  const handleUpdatedPost = ({
+    slug = post.slug,
+    metaTitle = post.metaTitle,
+    metaDescription = post.metaDescription,
+  }: {
+    slug?: string;
+    metaTitle?: string | null;
+    metaDescription?: string | null;
+  }) => {
     mutate({
       ...post,
       slug,
+      metaTitle,
+      metaDescription,
     });
   };
 
@@ -147,20 +158,39 @@ export const Settings: React.FC<Props> = ({ open, post, onClose, onTrashed }) =>
           <Toolbar sx={{ mt: 0 }} />
           <Container maxWidth="sm">
             {/* Slug */}
-            <Stack sx={{ py: 3 }}>
-              <Typography variant={'h4'}>{t('post_slug')}</Typography>
+            <Stack sx={{ pt: 3, pb: 1.5 }}>
+              <Typography variant={'h4'}>{t('general')}</Typography>
             </Stack>
             <MainCard>
               <SlugSettings
                 contentId={mutatedPost.contentId}
                 slug={mutatedPost.slug}
-                onUpdated={(slug) => handleUpdatedSlug(slug)}
+                onUpdated={(slug) => handleUpdatedPost({ slug })}
               />
             </MainCard>
+
+            {/* SEO */}
+            <Stack sx={{ pt: 5, pb: 1.5 }}>
+              <Typography variant={'h4'}>{t('social')}</Typography>
+            </Stack>
+            <MainCard>
+              <SocialSettings
+                contentId={mutatedPost.contentId}
+                metaTitle={mutatedPost.metaTitle}
+                metaDescription={mutatedPost.metaDescription}
+                onUpdated={(metaTitle, metaDescription) =>
+                  handleUpdatedPost({
+                    metaTitle,
+                    metaDescription,
+                  })
+                }
+              />
+            </MainCard>
+
             {/* Trash post */}
             {hasPermission('trashPost') && (
               <>
-                <Stack sx={{ py: 3 }}>
+                <Stack sx={{ pt: 5, pb: 1.5 }}>
                   <Typography variant={'h4'}>{t('danger_zone')}</Typography>
                 </Stack>
                 <MainCard>
@@ -168,7 +198,7 @@ export const Settings: React.FC<Props> = ({ open, post, onClose, onTrashed }) =>
                     <>
                       <Stack flexDirection="row">
                         <Box flexGrow="1">
-                          <Typography variant="subtitle1">
+                          <Typography variant="subtitle1" sx={{ mb: 0.5 }}>
                             {t('remove_language_content', {
                               language: t(
                                 `languages.${post.language}` as unknown as TemplateStringsArray
@@ -197,7 +227,9 @@ export const Settings: React.FC<Props> = ({ open, post, onClose, onTrashed }) =>
                   )}
                   <Stack flexDirection="row">
                     <Box flexGrow="1">
-                      <Typography variant="subtitle1">{t('delete_post')}</Typography>
+                      <Typography variant="subtitle1" sx={{ mb: 0.5 }}>
+                        {t('delete_post')}
+                      </Typography>
                       <Typography variant="caption" color="textSecondary">
                         {t('move_all_lang_content_to_trash')}
                       </Typography>

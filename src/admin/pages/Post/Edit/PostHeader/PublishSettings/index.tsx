@@ -36,6 +36,7 @@ import {
 import { usePost } from '../../../Context/index.js';
 import { AppBarStyled } from '../../AppBarStyled.js';
 import { SlugSettings } from './SlugSettings/index.js';
+import { SocialSettings } from './SocialSettings/index.js';
 
 export type Props = {
   open: boolean;
@@ -125,10 +126,20 @@ export const PublishSettings: React.FC<Props> = ({ open, contentId, post, onClos
     }
   };
 
-  const handleUpdatedSlug = (slug: string) => {
+  const handleUpdatedPost = ({
+    slug = post.slug,
+    metaTitle = post.metaTitle,
+    metaDescription = post.metaDescription,
+  }: {
+    slug?: string;
+    metaTitle?: string | null;
+    metaDescription?: string | null;
+  }) => {
     mutate({
       ...post,
       slug,
+      metaTitle,
+      metaDescription,
     });
   };
 
@@ -159,7 +170,7 @@ export const PublishSettings: React.FC<Props> = ({ open, contentId, post, onClos
         <Box component="main">
           <Toolbar sx={{ mt: 0 }} />
           <Container maxWidth="sm">
-            <MainCard sx={{ mt: 3 }}>
+            <MainCard sx={{ mt: 5 }}>
               <Stack gap={1}>
                 <InputLabel>{t('status')}</InputLabel>
                 <FormControl fullWidth component="fieldset">
@@ -223,20 +234,40 @@ export const PublishSettings: React.FC<Props> = ({ open, contentId, post, onClos
           </Container>
         </Box>
       </form>
-      {/* Slug */}
       {watch('status') === 'published' && (
-        <Container maxWidth="sm" sx={{ mt: 1 }}>
-          <Stack sx={{ py: 3 }}>
-            <Typography variant={'h4'}>{t('post_slug')}</Typography>
-          </Stack>
-          <MainCard>
-            <SlugSettings
-              contentId={mutatedPost.contentId}
-              slug={mutatedPost.slug}
-              onUpdated={(slug) => handleUpdatedSlug(slug)}
-            />
-          </MainCard>
-        </Container>
+        <>
+          <Container maxWidth="sm" sx={{ mt: 1 }}>
+            {/* Slug */}
+            <Stack sx={{ pt: 3, pb: 1.5 }}>
+              <Typography variant={'h4'}>{t('general')}</Typography>
+            </Stack>
+            <MainCard>
+              <SlugSettings
+                contentId={mutatedPost.contentId}
+                slug={mutatedPost.slug}
+                onUpdated={(slug) => handleUpdatedPost({ slug })}
+              />
+            </MainCard>
+
+            {/* SEO */}
+            <Stack sx={{ pt: 5, pb: 1.5 }}>
+              <Typography variant={'h4'}>{t('social')}</Typography>
+            </Stack>
+            <MainCard>
+              <SocialSettings
+                contentId={mutatedPost.contentId}
+                metaTitle={mutatedPost.metaTitle}
+                metaDescription={mutatedPost.metaDescription}
+                onUpdated={(metaTitle, metaDescription) =>
+                  handleUpdatedPost({
+                    metaTitle,
+                    metaDescription,
+                  })
+                }
+              />
+            </MainCard>
+          </Container>
+        </>
       )}
     </Dialog>
   );

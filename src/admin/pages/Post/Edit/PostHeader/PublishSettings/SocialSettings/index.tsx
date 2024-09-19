@@ -16,20 +16,25 @@ import { logger } from '../../../../../../../utilities/logger.js';
 import { Icon } from '../../../../../../components/elements/Icon/index.js';
 import {
   FormValues,
-  updateSlugValidator,
-} from '../../../../../../fields/validators/posts/updateSlug.validator.js';
+  updateMetaValidator,
+} from '../../../../../../fields/validators/posts/updateMeta.validator.js';
 import { usePost } from '../../../../Context/index.js';
 
 type Props = {
   contentId: string;
-  slug: string;
-  onUpdated: (slug: string) => void;
+  metaTitle: string | null;
+  metaDescription: string | null;
+  onUpdated: (metaTitle: string | null, metaDescription: string | null) => void;
 };
 
-export const SlugSettings: React.FC<Props> = ({ contentId, slug, onUpdated }) => {
+export const SocialSettings: React.FC<Props> = ({
+  contentId,
+  metaTitle,
+  metaDescription,
+  onUpdated,
+}) => {
   const { t } = useTranslation();
-  const [isEditingSlug, setIsEditingSlug] = useState(false);
-
+  const [isEditingMeta, setIsEditingMeta] = useState(false);
   const { updateContent } = usePost();
   const { trigger: updateContentTrigger } = updateContent(contentId);
 
@@ -39,16 +44,17 @@ export const SlugSettings: React.FC<Props> = ({ contentId, slug, onUpdated }) =>
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
-      slug,
+      metaTitle,
+      metaDescription,
     },
-    resolver: yupResolver(updateSlugValidator()),
+    resolver: yupResolver(updateMetaValidator()),
   });
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
       await updateContentTrigger(form);
-      setIsEditingSlug(false);
-      onUpdated(form.slug);
+      setIsEditingMeta(false);
+      onUpdated(form.metaTitle ?? null, form.metaDescription ?? null);
       enqueueSnackbar(t('toast.updated_successfully'), {
         anchorOrigin: {
           vertical: 'bottom',
@@ -63,26 +69,42 @@ export const SlugSettings: React.FC<Props> = ({ contentId, slug, onUpdated }) =>
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
-        {isEditingSlug ? (
+        {isEditingMeta ? (
           <Stack gap={2}>
             <Stack gap={1}>
-              <Typography variant="subtitle1">{t('post_slug')}</Typography>
+              <Typography variant="subtitle1">{t('seo_title')}</Typography>
               <Controller
-                name="slug"
+                name="metaTitle"
                 control={control}
                 render={({ field }) => (
                   <TextField
                     {...field}
                     type="text"
                     sx={{ flexGrow: 1 }}
-                    error={errors.slug !== undefined}
+                    error={errors.metaTitle !== undefined}
                   />
                 )}
               />
             </Stack>
-            <FormHelperText error>{errors.slug?.message}</FormHelperText>
+            <FormHelperText error>{errors.metaTitle?.message}</FormHelperText>
+            <Stack gap={1}>
+              <Typography variant="subtitle1">{t('seo_description')}</Typography>
+              <Controller
+                name="metaDescription"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    type="text"
+                    sx={{ flexGrow: 1 }}
+                    error={errors.metaDescription !== undefined}
+                  />
+                )}
+              />
+            </Stack>
+            <FormHelperText error>{errors.metaDescription?.message}</FormHelperText>
             <Stack direction="row" justifyContent="flex-end" spacing={1}>
-              <Button variant="outlined" color="secondary" onClick={() => setIsEditingSlug(false)}>
+              <Button variant="outlined" color="secondary" onClick={() => setIsEditingMeta(false)}>
                 {t('cancel')}
               </Button>
               <Button variant="contained" type="submit">
@@ -93,12 +115,16 @@ export const SlugSettings: React.FC<Props> = ({ contentId, slug, onUpdated }) =>
         ) : (
           <Stack direction="row" alignItems="center" gap={1}>
             <Box flexGrow="1">
+              <Stack gap={1} sx={{ mb: 3 }}>
+                <Typography variant="subtitle1">{t('seo_title')}</Typography>
+                <Typography>{metaTitle ?? t('not_set')}</Typography>
+              </Stack>
               <Stack gap={1}>
-                <Typography variant="subtitle1">{t('post_slug')}</Typography>
-                <Typography>{decodeURIComponent(slug)}</Typography>
+                <Typography variant="subtitle1">{t('seo_description')}</Typography>
+                <Typography>{metaDescription ?? t('not_set')}</Typography>
               </Stack>
             </Box>
-            <IconButton onClick={() => setIsEditingSlug(true)}>
+            <IconButton onClick={() => setIsEditingMeta(true)}>
               <Icon name="Pencil" size={16} />
             </IconButton>
           </Stack>
