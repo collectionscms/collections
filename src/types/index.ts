@@ -68,6 +68,8 @@ export type LocalizedPost = {
   body: string;
   bodyJson: string;
   bodyHtml: string;
+  metaTitle: string | null;
+  metaDescription: string | null;
   coverUrl: string | null;
   language: string;
   usedLanguages: string[];

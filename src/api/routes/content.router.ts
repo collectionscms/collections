@@ -11,16 +11,16 @@ import { ReviewRepository } from '../persistence/review/review.repository.js';
 import { WebhookLogRepository } from '../persistence/webhookLog/webhookLog.repository.js';
 import { WebhookSettingRepository } from '../persistence/webhookSetting/webhookSetting.repository.js';
 import { WebhookService } from '../services/webhook.service.js';
-import { archiveUseCaseSchema } from '../useCases/content/archive.useCase.schema.js';
 import { ArchiveUseCase } from '../useCases/content/archive.useCase.js';
-import { publishUseCaseSchema } from '../useCases/content/publish.useCase.schema.js';
+import { archiveUseCaseSchema } from '../useCases/content/archive.useCase.schema.js';
 import { PublishUseCase } from '../useCases/content/publish.useCase.js';
-import { requestReviewUseCaseSchema } from '../useCases/content/requestReview.useCase.schema.js';
+import { publishUseCaseSchema } from '../useCases/content/publish.useCase.schema.js';
 import { RequestReviewUseCase } from '../useCases/content/requestReview.useCase.js';
-import { trashContentUseCaseSchema } from '../useCases/content/trashContent.useCase.schema.js';
+import { requestReviewUseCaseSchema } from '../useCases/content/requestReview.useCase.schema.js';
 import { TrashContentUseCase } from '../useCases/content/trashContent.useCase.js';
-import { updateContentUseCaseSchema } from '../useCases/content/updateContent.useCase.schema.js';
+import { trashContentUseCaseSchema } from '../useCases/content/trashContent.useCase.schema.js';
 import { UpdateContentUseCase } from '../useCases/content/updateContent.useCase.js';
+import { updateContentUseCaseSchema } from '../useCases/content/updateContent.useCase.schema.js';
 
 const router = express.Router();
 
@@ -39,6 +39,8 @@ router.patch(
       bodyHtml: req.body.bodyHtml,
       coverUrl: req.body.coverUrl,
       slug: req.body.slug,
+      metaTitle: req.body.metaTitle,
+      metaDescription: req.body.metaDescription,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 

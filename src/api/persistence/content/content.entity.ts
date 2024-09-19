@@ -125,8 +125,16 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     return this.props.bodyHtml ?? '';
   }
 
-  get coverUrl(): string {
-    return this.props.coverUrl ?? '';
+  get metaTitle(): string | null {
+    return this.props.metaTitle;
+  }
+
+  get metaDescription(): string | null {
+    return this.props.metaDescription;
+  }
+
+  get coverUrl(): string | null {
+    return this.props.coverUrl;
   }
 
   get language(): string {
@@ -208,6 +216,8 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     bodyHtml,
     coverUrl,
     slug,
+    metaTitle,
+    metaDescription,
     updatedById,
   }: {
     title?: string | null;
@@ -216,6 +226,8 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     bodyHtml?: string | null;
     coverUrl?: string | null;
     slug?: string;
+    metaTitle?: string | null;
+    metaDescription?: string | null;
     updatedById: string;
   }): void {
     Object.assign(this.props, {
@@ -224,6 +236,8 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
       ...(bodyJson !== undefined && { bodyJson }),
       ...(bodyHtml !== undefined && { bodyHtml }),
       ...(coverUrl !== undefined && { coverUrl }),
+      ...(metaTitle !== undefined && { metaTitle }),
+      ...(metaDescription !== undefined && { metaDescription }),
       ...(slug !== undefined && { slug: encodeURIComponent(slug) }),
       updatedById,
     });
