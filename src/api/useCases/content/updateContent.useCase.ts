@@ -52,8 +52,8 @@ export class UpdateContentUseCase {
         bodyHtml: props.bodyHtml,
         slug: props.slug,
         updatedById: userId,
-        metaTitle: props.metaTitle,
-        metaDescription: props.metaDescription,
+        metaTitle: props.metaTitle || null,
+        metaDescription: props.metaDescription || null,
       });
 
       if (content.isPublished()) {
