@@ -282,6 +282,8 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
       language: this.props.language,
       version: this.props.version,
       coverUrl: this.props.coverUrl,
+      metaTitle: this.props.metaTitle,
+      metaDescription: this.props.metaDescription,
       publishedAt: this.props.publishedAt,
       author: {
         id: createdBy.id,

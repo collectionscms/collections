@@ -90,6 +90,8 @@ export type PublishedContent = {
   language: string;
   version: number;
   coverUrl: string | null;
+  metaTitle: string | null;
+  metaDescription: string | null;
   publishedAt: Date;
   author: {
     id: string;
