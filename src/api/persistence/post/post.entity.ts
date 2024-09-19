@@ -162,6 +162,8 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       bodyHtml: content.bodyHtml ?? '',
       language: content.language,
       version: content.version,
+      metaTitle: content.metaTitle,
+      metaDescription: content.metaDescription,
       coverUrl: content.coverUrl,
       canTranslate: content.isTranslationEnabled(project.sourceLanguage),
       usedLanguages,
@@ -222,6 +224,8 @@ export class PostEntity extends PrismaBaseEntity<Post> {
             language: content.language,
             version: content.version,
             coverUrl: content.coverUrl,
+            metaTitle: content.metaTitle,
+            metaDescription: content.metaDescription,
             publishedAt: content.publishedAt,
             author: {
               id: createdBy.id,

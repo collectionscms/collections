@@ -201,6 +201,11 @@
   "provider": "Provider",
   "notification_triggers": "Notification Triggers",
   "deleted": "Deleted",
+  "social": "Social",
+  "seo_title": "SEO Title",
+  "seo_description": "SEO Description",
+  "not_set": "Not Set",
+  "general": "General",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",

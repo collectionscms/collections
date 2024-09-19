@@ -68,6 +68,8 @@ export type LocalizedPost = {
   body: string;
   bodyJson: string;
   bodyHtml: string;
+  metaTitle: string | null;
+  metaDescription: string | null;
   coverUrl: string | null;
   language: string;
   usedLanguages: string[];
@@ -88,6 +90,8 @@ export type PublishedContent = {
   language: string;
   version: number;
   coverUrl: string | null;
+  metaTitle: string | null;
+  metaDescription: string | null;
   publishedAt: Date;
   author: {
     id: string;

@@ -1,5 +1,13 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button, FormHelperText, IconButton, Stack, TextField, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  FormHelperText,
+  IconButton,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { enqueueSnackbar } from 'notistack';
 import React, { useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
@@ -18,7 +26,7 @@ type Props = {
   onUpdated: (slug: string) => void;
 };
 
-export const SlugSettings: React.FC<Props> = ({ contentId, slug, onUpdated }) => {
+export const GeneralSettings: React.FC<Props> = ({ contentId, slug, onUpdated }) => {
   const { t } = useTranslation();
   const [isEditingSlug, setIsEditingSlug] = useState(false);
 
@@ -56,8 +64,9 @@ export const SlugSettings: React.FC<Props> = ({ contentId, slug, onUpdated }) =>
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
         {isEditingSlug ? (
-          <>
-            <Stack direction="row" gap={2}>
+          <Stack gap={2}>
+            <Stack gap={1}>
+              <Typography variant="subtitle1">{t('post_slug')}</Typography>
               <Controller
                 name="slug"
                 control={control}
@@ -70,15 +79,25 @@ export const SlugSettings: React.FC<Props> = ({ contentId, slug, onUpdated }) =>
                   />
                 )}
               />
+            </Stack>
+            <FormHelperText error>{errors.slug?.message}</FormHelperText>
+            <Stack direction="row" justifyContent="flex-end" spacing={1}>
+              <Button variant="outlined" color="secondary" onClick={() => setIsEditingSlug(false)}>
+                {t('cancel')}
+              </Button>
               <Button variant="contained" type="submit">
                 {t('save')}
               </Button>
             </Stack>
-            <FormHelperText error>{errors.slug?.message}</FormHelperText>
-          </>
+          </Stack>
         ) : (
           <Stack direction="row" alignItems="center" gap={1}>
-            <Typography flexGrow={1}>{decodeURIComponent(slug)}</Typography>
+            <Box flexGrow="1">
+              <Stack gap={1}>
+                <Typography variant="subtitle1">{t('post_slug')}</Typography>
+                <Typography>{decodeURIComponent(slug)}</Typography>
+              </Stack>
+            </Box>
             <IconButton onClick={() => setIsEditingSlug(true)}>
               <Icon name="Pencil" size={16} />
             </IconButton>
