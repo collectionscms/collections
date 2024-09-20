@@ -36,7 +36,7 @@ export const authConfig: Omit<AuthConfig, 'raw'> = {
   },
   providers: [
     CredentialsProvider({
-      name: 'Credentials',
+      id: 'login',
       credentials: {
         email: { label: 'email', type: 'text' },
         password: { label: 'password', type: 'password' },
