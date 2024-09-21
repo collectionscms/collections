@@ -6,7 +6,6 @@ import { UserRepository } from '../../persistence/user/user.repository.js';
 import { UserProjectEntity } from '../../persistence/userProject/userProject.entity.js';
 import { UserProjectRepository } from '../../persistence/userProject/userProject.repository.js';
 import { BypassPrismaClient } from '../../database/prisma/client.js';
-import { SignUpMailService } from '../../services/signUpMail.service.js';
 import { oneWayHash } from '../../utilities/oneWayHash.js';
 import { SignUpUseCaseSchemaType } from './signUp.useCase.schema.js';
 
@@ -15,8 +14,7 @@ export class SignUpUseCase {
     private readonly prisma: BypassPrismaClient,
     private readonly userRepository: UserRepository,
     private readonly invitationRepository: InvitationRepository,
-    private readonly userProjectRepository: UserProjectRepository,
-    private readonly mailService: SignUpMailService
+    private readonly userProjectRepository: UserProjectRepository
   ) {}
 
   async execute(props: SignUpUseCaseSchemaType): Promise<Me> {
@@ -31,8 +29,10 @@ export class SignUpUseCase {
         email: props.email,
         password: hashed,
         isActive: false,
+        provider: 'email',
       });
-    entity.generateConfirmationToken();
+    // TODO
+    // entity.generateConfirmationToken();
 
     const invitation = props.token
       ? await this.invitationRepository.findOneByToken(this.prisma, props.token)
@@ -62,7 +62,7 @@ export class SignUpUseCase {
     });
 
     // send email
-    await this.mailService.sendVerify(result);
+    // await this.mailService.sendVerify(result);
 
     return {
       id: result.id,

@@ -1,8 +1,12 @@
 import { User } from '@prisma/client';
-import dayjs from 'dayjs';
 import { v4 } from 'uuid';
 import { oneWayHash } from '../../utilities/oneWayHash.js';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
+
+export const Provider = {
+  email: 'email',
+} as const;
+export type ProviderType = (typeof Provider)[keyof typeof Provider];
 
 export class UserEntity extends PrismaBaseEntity<User> {
   static Construct({
@@ -10,11 +14,13 @@ export class UserEntity extends PrismaBaseEntity<User> {
     email,
     password,
     isActive,
+    provider,
   }: {
     name: string;
     email: string;
     password: string;
     isActive: boolean;
+    provider: ProviderType;
   }): UserEntity {
     return new UserEntity({
       id: v4(),
@@ -22,11 +28,8 @@ export class UserEntity extends PrismaBaseEntity<User> {
       email,
       password,
       isActive,
-      confirmationToken: null,
-      confirmedAt: null,
+      provider,
       avatarUrl: null,
-      resetPasswordToken: null,
-      resetPasswordExpiration: null,
       createdAt: new Date(),
       updatedAt: new Date(),
     });
@@ -44,7 +47,7 @@ export class UserEntity extends PrismaBaseEntity<User> {
     return this.props.name;
   }
 
-  get password(): string {
+  get password(): string | null {
     return this.props.password;
   }
 
@@ -52,42 +55,12 @@ export class UserEntity extends PrismaBaseEntity<User> {
     return this.props.isActive;
   }
 
-  get confirmationToken(): string | null {
-    return this.props.confirmationToken;
-  }
-
-  get confirmedAt(): Date | null {
-    return this.props.confirmedAt;
-  }
-
   get avatarUrl(): string | null {
     return this.props.avatarUrl;
   }
 
-  get resetPasswordToken(): string | null {
-    return this.props.resetPasswordToken;
-  }
-
-  get resetPasswordExpiration(): Date | null {
-    return this.props.resetPasswordExpiration;
-  }
-
-  resetPassword(): void {
-    this.props.resetPasswordToken = v4();
-    this.props.resetPasswordExpiration = dayjs().add(1, 'hour').toDate();
-  }
-
-  generateConfirmationToken(): void {
-    this.props.confirmationToken = v4();
-  }
-
   async hashPassword(password: string): Promise<void> {
     this.props.password = await oneWayHash(password);
-  }
-
-  verified(): void {
-    this.props.confirmedAt = new Date();
-    this.props.isActive = true;
   }
 
   update(params: { name?: string; email?: string; password?: string }) {
