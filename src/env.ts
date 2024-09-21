@@ -56,10 +56,15 @@ type AllowedEnvironmentVariable =
   | 'HASH_ASSOCIATED_DATA'
 
   // /////////////////////////////////////
-  // Security
+  // Auth
+  // see: https://authjs.dev/reference/core#jwt
   // /////////////////////////////////////
   // Secret string for the project
   | 'AUTH_SECRET'
+  | 'AUTH_GITHUB_ID'
+  | 'AUTH_GITHUB_SECRET'
+  | 'AUTH_GOOGLE_ID'
+  | 'AUTH_GOOGLE_SECRET'
 
   // /////////////////////////////////////
   // CORS
@@ -82,10 +87,17 @@ type AllowedEnvironmentVariable =
 
   // /////////////////////////////////////
   // Email
+  // see: https://www.twilio.com/docs/sendgrid/ui/account-and-settings/api-keys#storing-an-api-key-in-an-environment-variable
   // /////////////////////////////////////
   | 'EMAIL_TRANSPORT'
   | 'EMAIL_FROM'
   | 'EMAIL_SENDGRID_API_KEY'
+
+  // /////////////////////////////////////
+  // Editor
+  // see: https://tiptap.dev/docs/guides/pro-extensions
+  // /////////////////////////////////////
+  | 'TIPTAP_PRO_TOKEN'
 
   // /////////////////////////////////////
   // System
@@ -93,7 +105,7 @@ type AllowedEnvironmentVariable =
   | 'RESERVED_SUBDOMAINS'
 
   // /////////////////////////////////////
-  // Third party services
+  // Collections Plugin
   // /////////////////////////////////////
   | 'TRANSLATE_API_KEY';
 
