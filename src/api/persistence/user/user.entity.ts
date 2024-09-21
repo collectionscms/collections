@@ -63,17 +63,9 @@ export class UserEntity extends PrismaBaseEntity<User> {
     this.props.password = await oneWayHash(password);
   }
 
-  update(params: { name?: string; email?: string; password?: string }) {
+  update(params: { name?: string }) {
     if (params.name) {
       this.props.name = params.name;
-    }
-
-    if (params.email) {
-      this.props.email = params.email;
-    }
-
-    if (params.password) {
-      this.props.password = params.password;
     }
   }
 }

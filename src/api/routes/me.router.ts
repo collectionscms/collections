@@ -63,8 +63,7 @@ router.patch(
   asyncHandler(async (req: Request, res: Response) => {
     const validated = updateProfileUseCaseSchema.safeParse({
       userId: res.user.id,
-      ...req.body,
-      password: req.body.password || null,
+      name: req.body.name,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
