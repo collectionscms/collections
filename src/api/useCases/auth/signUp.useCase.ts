@@ -1,11 +1,12 @@
+import { v4 } from 'uuid';
 import { InvalidTokenException } from '../../../exceptions/invalidToken.js';
 import { Me } from '../../../types/index.js';
+import { BypassPrismaClient } from '../../database/prisma/client.js';
 import { InvitationRepository } from '../../persistence/invitation/invitation.repository.js';
 import { UserEntity } from '../../persistence/user/user.entity.js';
 import { UserRepository } from '../../persistence/user/user.repository.js';
 import { UserProjectEntity } from '../../persistence/userProject/userProject.entity.js';
 import { UserProjectRepository } from '../../persistence/userProject/userProject.repository.js';
-import { BypassPrismaClient } from '../../database/prisma/client.js';
 import { oneWayHash } from '../../utilities/oneWayHash.js';
 import { SignUpUseCaseSchemaType } from './signUp.useCase.schema.js';
 
@@ -30,9 +31,8 @@ export class SignUpUseCase {
         password: hashed,
         isActive: false,
         provider: 'email',
+        providerId: v4(),
       });
-    // TODO
-    // entity.generateConfirmationToken();
 
     const invitation = props.token
       ? await this.invitationRepository.findOneByToken(this.prisma, props.token)

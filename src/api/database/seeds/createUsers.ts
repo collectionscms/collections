@@ -24,6 +24,7 @@ export const createUsers = async (
         password: await oneWayHash(user.password),
         isActive: true,
         provider: 'email',
+        providerId: v4(),
         userProjects: {
           create: user.userProjects.map((userProject) => ({
             id: v4(),

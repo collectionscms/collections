@@ -22,6 +22,7 @@ CREATE TABLE "User" (
     "isActive" BOOLEAN NOT NULL DEFAULT true,
     "avatarUrl" VARCHAR(255),
     "provider" VARCHAR(255) NOT NULL,
+    "providerId" VARCHAR(255) NOT NULL,
     "createdAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMPTZ(6) NOT NULL,
 
@@ -244,7 +245,7 @@ CREATE TABLE "WebhookLog" (
 CREATE UNIQUE INDEX "Project_subdomain_key" ON "Project"("subdomain");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+CREATE UNIQUE INDEX "User_provider_providerId_key" ON "User"("provider", "providerId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "UserProject_userId_projectId_key" ON "UserProject"("userId", "projectId");

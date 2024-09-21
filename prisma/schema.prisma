@@ -35,11 +35,12 @@ model Project {
 model User {
   id                           String           @id @db.Uuid
   name                         String           @db.VarChar(255)
-  email                        String           @unique
+  email                        String
   password                     String?          @db.VarChar(255)
   isActive                     Boolean          @default(true)
   avatarUrl                    String?          @db.VarChar(255)
   provider                     String           @db.VarChar(255)
+  providerId                   String           @db.VarChar(255)
   createdAt                    DateTime         @default(now()) @db.Timestamptz(6)
   updatedAt                    DateTime         @updatedAt @db.Timestamptz(6)
   userProjects                 UserProject[]
@@ -53,6 +54,8 @@ model User {
   createdByHasPosts            Post[]           @relation("CreatedBy")
   createdByHasContentHistories ContentHistory[] @relation("CreatedBy")
   updatedByHasContentHistories ContentHistory[] @relation("UpdatedBy")
+
+  @@unique([provider, providerId])
 }
 
 model UserProject {

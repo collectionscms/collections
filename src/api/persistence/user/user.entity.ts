@@ -15,13 +15,16 @@ export class UserEntity extends PrismaBaseEntity<User> {
     password,
     isActive,
     provider,
+    providerId,
   }: {
     name: string;
     email: string;
     password: string;
     isActive: boolean;
     provider: ProviderType;
+    providerId: string;
   }): UserEntity {
+    const now = new Date();
     return new UserEntity({
       id: v4(),
       name,
@@ -29,9 +32,10 @@ export class UserEntity extends PrismaBaseEntity<User> {
       password,
       isActive,
       provider,
+      providerId,
       avatarUrl: null,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      createdAt: now,
+      updatedAt: now,
     });
   }
 
