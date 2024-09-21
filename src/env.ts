@@ -65,6 +65,7 @@ type AllowedEnvironmentVariable =
   | 'AUTH_GITHUB_SECRET'
   | 'AUTH_GOOGLE_ID'
   | 'AUTH_GOOGLE_SECRET'
+  | 'PUBLIC_AUTH_PROVIDERS'
 
   // /////////////////////////////////////
   // CORS
@@ -130,6 +131,9 @@ export const defaults: Partial<Record<AllowedEnvironmentVariable, any>> = {
   HASH_TIME_COST: 3,
   HASH_PARALLELISM: 1,
   HASH_TYPE: 2,
+
+  // Auth
+  PUBLIC_AUTH_PROVIDERS: 'email,google,github',
 
   // CORS
   CORS_ENABLED: false,
