@@ -23,9 +23,9 @@ export class AcceptInvitationUseCase {
   async execute(
     props: AcceptInvitationUseCaseSchemaType
   ): Promise<AcceptInvitationUseCaseResponse> {
-    const { token, userId, email } = props;
+    const { inviteToken, userId, email } = props;
 
-    const invitation = await this.invitationRepository.findOneByToken(this.prisma, token);
+    const invitation = await this.invitationRepository.findOneByToken(this.prisma, inviteToken);
     if (invitation.email !== email || invitation.isAccepted()) {
       throw new InvalidTokenException();
     }

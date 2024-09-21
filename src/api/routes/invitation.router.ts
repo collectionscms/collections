@@ -47,7 +47,7 @@ router.post(
   authenticatedUser,
   asyncHandler(async (req: Request, res: Response) => {
     const validated = acceptInvitationUseCaseSchema.safeParse({
-      token: req.body.token,
+      inviteToken: req.body.inviteToken,
       userId: res.user.id,
       email: res.user.email,
     });
