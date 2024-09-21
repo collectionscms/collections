@@ -131,6 +131,8 @@
   "seo_description": "SEO ディスクリプション",
   "not_set": "未設定",
   "general": "一般",
+  "login_title": "Collections へようこそ",
+  "login_subtitle": "今なら無料トライアルで、クレジットカードも不要",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",

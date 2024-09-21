@@ -131,6 +131,8 @@
   "seo_description": "SEO Description",
   "not_set": "Not Set",
   "general": "General",
+  "login_title": "Welcome to Collections",
+  "login_subtitle": "Now it's a free trial, no credit card required.",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",
