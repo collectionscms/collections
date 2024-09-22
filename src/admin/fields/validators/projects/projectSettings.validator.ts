@@ -8,7 +8,7 @@ export type FormValues = {
 
 export const projectSettingsValidator = (): ObjectSchema<FormValues> => {
   return yup.object().shape({
-    name: yup.string().required().max(100),
+    name: yup.string().required().max(250),
     subdomain: yup.string().required(),
   });
 };

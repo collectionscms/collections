@@ -8,7 +8,7 @@ export type FormValues = {
 
 export const createApiKeyValidator = (): ObjectSchema<FormValues> => {
   return yup.object().shape({
-    name: yup.string().required().max(60),
+    name: yup.string().required().max(250),
     permissions: yup.array().of(yup.string().required()).min(1).required(),
   });
 };

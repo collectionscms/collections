@@ -8,7 +8,7 @@ export type FormValues = {
 
 export const inviteUserValidator = (): ObjectSchema<FormValues> => {
   return yup.object().shape({
-    email: yup.string().required().email().max(250),
+    email: yup.string().required().email(),
     roleId: yup.string().required(),
   });
 };
