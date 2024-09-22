@@ -121,45 +121,67 @@ export const MenuList = React.forwardRef((props: MenuListProps, ref) => {
         maxHeight: 'min(80vh, 20rem)',
         flexWrap: 'wrap',
         marginBottom: 2,
-        padding: 1,
+        px: 1,
+        py: 1.5,
         width: 300,
         boxShadow: '0px 9px 24px rgba(0, 0, 0, 0.1)',
       }}
       ref={scrollContainer}
     >
-      {props.items.map((group, groupIndex: number) => (
-        <Box key={`${group.title}`}>
-          <Typography
-            variant="subtitle2"
-            color={theme.palette.text.secondary}
-            sx={{
-              mx: 1,
-              mb: 0.5,
-              mt: 2,
-              letterSpacing: '0.05em',
-              '&:first-of-type': {
-                marginTop: '0.125rem',
-              },
-            }}
-          >
-            {group.title}
-          </Typography>
-          <Stack rowGap={0.5}>
-            {group.commands.map((command: Command, commandIndex: number) => (
-              <DropdownButton
-                key={`${command.label}`}
-                isActive={
-                  selectedGroupIndex === groupIndex && selectedCommandIndex === commandIndex
-                }
-                onClick={createCommandClickHandler(groupIndex, commandIndex)}
-              >
-                <Icon name={command.iconName} size={16} />
-                <Typography sx={{ ml: 1 }}>{command.label}</Typography>
-              </DropdownButton>
-            ))}
-          </Stack>
-        </Box>
-      ))}
+      <Stack gap={2}>
+        {props.items.map((group, groupIndex: number) => (
+          <Box key={`${group.title}`}>
+            <Typography
+              variant="subtitle2"
+              color={theme.palette.text.secondary}
+              sx={{
+                mx: 1,
+                mb: 0.5,
+                mt: 2,
+                letterSpacing: '0.05em',
+                '&:first-of-type': {
+                  marginTop: '0.125rem',
+                },
+              }}
+            >
+              {group.title}
+            </Typography>
+            <Stack rowGap={0.5}>
+              {group.commands.map((command: Command, commandIndex: number) => (
+                <DropdownButton
+                  key={`${command.label}`}
+                  isActive={
+                    selectedGroupIndex === groupIndex && selectedCommandIndex === commandIndex
+                  }
+                  onClick={createCommandClickHandler(groupIndex, commandIndex)}
+                >
+                  <Box
+                    sx={{
+                      width: 38,
+                      height: 38,
+                      border: 1,
+                      borderColor: 'divider',
+                      borderRadius: 1,
+                      display: 'flex',
+                    }}
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <Icon name={command.iconName} size={22} strokeWidth={2} />
+                  </Box>
+
+                  <Stack sx={{ ml: 2, textAlign: 'left' }}>
+                    <Typography>{command.label}</Typography>
+                    <Typography variant="caption" color="text.secondary">
+                      {command.description}
+                    </Typography>
+                  </Stack>
+                </DropdownButton>
+              ))}
+            </Stack>
+          </Box>
+        ))}
+      </Stack>
     </Paper>
   );
 });
