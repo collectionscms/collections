@@ -5,39 +5,36 @@ import { UnknownException } from '../../exceptions/storage/unknown.js';
 import { bypassPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { InvitationRepository } from '../persistence/invitation/invitation.repository.js';
-import { UserRepository } from '../persistence/user/user.repository.js';
 import { UserProjectRepository } from '../persistence/userProject/userProject.repository.js';
 import { signInErrorUseCaseSchema } from '../useCases/auth/signInError.useCase.schema.js';
-import { SignUpUseCase } from '../useCases/auth/signUp.useCase.js';
-import { signUpUseCaseSchema } from '../useCases/auth/signUp.useCase.schema.js';
+import { SignInWithAcceptInvitationUseCase } from '../useCases/auth/signInWithAcceptInvitation.useCase.js';
+import { signInWithAcceptInvitationUseCaseSchema } from '../useCases/auth/signInWithAcceptInvitation.useCase.schema.js';
 
 const router = express.Router();
 
-router.post(
-  '/sign-up',
+// Called back after Auth.js and OAuth provider integration.
+router.get(
+  '/auth/providers/:provider',
   asyncHandler(async (req: Request, res: Response) => {
-    const validated = signUpUseCaseSchema.safeParse({
-      email: req.body.email,
-      password: req.body.password,
-      token: req.body.token,
+    const validated = signInWithAcceptInvitationUseCaseSchema.safeParse({
+      inviteToken: req.query?.inviteToken,
+      userId: res.user.id,
     });
-    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
-    const useCase = new SignUpUseCase(
-      bypassPrisma,
-      new UserRepository(),
-      new InvitationRepository(),
-      new UserProjectRepository()
-    );
-    const me = await useCase.execute(validated.data);
+    if (validated.success) {
+      const useCase = new SignInWithAcceptInvitationUseCase(
+        bypassPrisma,
+        new UserProjectRepository(),
+        new InvitationRepository()
+      );
+      await useCase.execute(validated.data);
+    }
 
-    return res.json({
-      me,
-    });
+    return res.redirect('/admin');
   })
 );
 
-// Called when an exception is thrown by auth.js authorize
+// Called when an exception is thrown by Auth.js authentication.
 router.get(
   '/auth/signin',
   asyncHandler(async (req: Request, res: Response) => {
