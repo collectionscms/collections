@@ -9,8 +9,8 @@ export type FormValues = {
 
 export const updateRoleValidator = (): ObjectSchema<FormValues> => {
   return yup.object().shape({
-    name: yup.string().required().max(60),
-    description: yup.string().notRequired().max(250),
+    name: yup.string().required().max(250),
+    description: yup.string().notRequired(),
     permissions: yup.array().of(yup.string().required()).min(1).required(),
   });
 };

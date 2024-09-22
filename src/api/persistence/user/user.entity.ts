@@ -71,6 +71,10 @@ export class UserEntity extends PrismaBaseEntity<User> {
     return this.props.providerId;
   }
 
+  get updatedAt(): Date {
+    return this.props.updatedAt;
+  }
+
   async hashPassword(password: string): Promise<void> {
     this.props.password = await oneWayHash(password);
   }

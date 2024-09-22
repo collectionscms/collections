@@ -1,3 +1,4 @@
+import { LoadingOutlined } from '@ant-design/icons';
 import {
   Box,
   Button,
@@ -27,7 +28,6 @@ import { PostContextProvider, usePost } from '../Context/index.js';
 import { PostFooter } from './PostFooter/index.js';
 import { PostHeader } from './PostHeader/index.js';
 import { PublishSettings } from './PostHeader/PublishSettings/index.js';
-import { LoadingOutlined } from '@ant-design/icons';
 
 const toJson = (value?: string | null) => {
   return value ? JSON.parse(value) : '';
@@ -95,6 +95,10 @@ export const EditPostPageImpl: React.FC = () => {
       const handleUpdate = () => {
         setIsDirty(true);
       };
+
+      // Set the cursor to the beginning of the editor
+      editor.commands.setTextSelection(0);
+      editor.view.focus();
 
       editor.on('update', handleUpdate);
 
@@ -388,7 +392,6 @@ export const EditPostPageImpl: React.FC = () => {
                 multiline
                 placeholder={t('title')}
                 value={postTitle}
-                autoFocus
                 onChange={(e) => handleChangeTitle(e.target.value)}
                 sx={{
                   '.MuiOutlinedInput-notchedOutline': {

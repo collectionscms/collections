@@ -15,7 +15,7 @@ export type FormValues = {
 
 export const updateWebhookSettingValidator = (t: TFunction): ObjectSchema<FormValues> => {
   return yup.object().shape({
-    name: yup.string().required().max(60),
+    name: yup.string().required().max(250),
     enabled: yup.boolean().required(),
     url: urlSchema(t).required(),
     onPublish: yup.boolean().required(),

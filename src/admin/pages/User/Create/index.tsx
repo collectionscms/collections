@@ -84,6 +84,7 @@ const CreateUserPageImpl: React.FC = () => {
                         <TextField
                           {...field}
                           type="text"
+                          placeholder="example@collections.dev"
                           fullWidth
                           error={errors.email !== undefined}
                         />
