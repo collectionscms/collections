@@ -74,10 +74,6 @@ export const Switch = (theme: Theme) => {
               opacity: 0.3,
             },
           },
-          // '&.Mui-focusVisible': {
-          //   outline: `2px solid #000`,
-          //   outlineOffset: -2
-          // }
         },
         root: {
           color: theme.palette.text.primary,
