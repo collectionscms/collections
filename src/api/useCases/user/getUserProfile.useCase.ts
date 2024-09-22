@@ -1,6 +1,6 @@
 import { UserProfile } from '../../../types/index.js';
-import { UserRepository } from '../../persistence/user/user.repository.js';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
+import { UserRepository } from '../../persistence/user/user.repository.js';
 
 export class GetUserProfileUseCase {
   constructor(
@@ -18,6 +18,7 @@ export class GetUserProfileUseCase {
       isActive: userRole.user.isActive,
       isRegistered: true,
       role: userRole.role.toResponse(),
+      updatedAt: userRole.user.updatedAt,
     };
   }
 }

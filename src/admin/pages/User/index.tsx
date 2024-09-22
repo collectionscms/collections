@@ -1,5 +1,6 @@
 import { Chip, Stack, Typography } from '@mui/material';
 import { Role } from '@prisma/client';
+import dayjs from 'dayjs';
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -56,6 +57,14 @@ const UserPageImpl: React.FC = () => {
         accessor: 'role',
         Cell: ({ value }: { value: Role }) => {
           return <Typography>{value.name}</Typography>;
+        },
+      },
+      {
+        id: 'updatedAt',
+        Header: t('updated_at'),
+        accessor: 'updatedAt',
+        Cell: ({ value }: { value: Date }) => {
+          return <Typography>{dayjs(value).format(t('date_format.long'))}</Typography>;
         },
       },
     ],

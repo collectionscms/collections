@@ -16,6 +16,7 @@ export type UserProfile = {
   isActive: boolean;
   isRegistered: boolean;
   role: Role;
+  updatedAt: Date;
 };
 
 export type ProjectRole = {
