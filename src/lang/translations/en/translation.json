@@ -132,6 +132,8 @@
   "not_set": "Not Set",
   "general": "General",
   "login_title": "Welcome to Collections",
+  "sign_in_with_google": "Sign in with Google",
+  "sign_in_with_github": "Sign in with GitHub",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",

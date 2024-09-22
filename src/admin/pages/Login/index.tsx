@@ -1,4 +1,4 @@
-import { GithubOutlined, GoogleOutlined } from '@ant-design/icons';
+import { GithubOutlined } from '@ant-design/icons';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Box,
@@ -92,7 +92,7 @@ export const Login: React.FC = () => {
           <Stack gap={2}>
             {/* Email */}
             {enabledEmailSignIn && (
-              <Stack component="form" onSubmit={handleSubmit(onSubmit)} key="email">
+              <Stack component="form" onSubmit={handleSubmit(onSubmit)} key="email" sx={{ mb: 3 }}>
                 <Grid container gap={1}>
                   <Grid xs={12}>
                     <Stack spacing={1}>
@@ -165,9 +165,14 @@ export const Login: React.FC = () => {
                   size="large"
                 >
                   <Stack flexDirection="row" alignItems="center" gap={1}>
-                    <GoogleOutlined style={{ fontSize: 18 }} />
+                    <Box
+                      component="img"
+                      src={`https://cdn.collections.dev/google-logo.svg`}
+                      sx={{ width: 28, height: 28 }}
+                      alt="google-logo"
+                    />
                     <Typography sx={{ fontWeight: 'bold', fontSize: 16 }}>
-                      Sign in with Google
+                      {t('sign_in_with_google')}
                     </Typography>
                   </Stack>
                 </Button>
@@ -192,9 +197,9 @@ export const Login: React.FC = () => {
                   size="large"
                 >
                   <Stack flexDirection="row" alignItems="center" gap={1}>
-                    <GithubOutlined style={{ fontSize: 18 }} />
+                    <GithubOutlined style={{ fontSize: 24 }} />
                     <Typography sx={{ fontWeight: 'bold', fontSize: 16 }}>
-                      Sign in with GitHub
+                      {t('sign_in_with_github')}
                     </Typography>
                   </Stack>
                 </Button>

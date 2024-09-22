@@ -132,6 +132,8 @@
   "not_set": "未設定",
   "general": "一般",
   "login_title": "Collections へようこそ",
+  "sign_in_with_google": "Googleでログイン",
+  "sign_in_with_github": "GitHubでログイン",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",
