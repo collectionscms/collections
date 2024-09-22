@@ -156,13 +156,15 @@ export const Login: React.FC = () => {
                   value={`/api/auth/providers/google${requestParams}`}
                 />
                 <Button
-                  disableElevation
                   fullWidth
-                  sx={{ height: 48 }}
-                  variant="contained"
+                  variant="outlined"
                   color="secondary"
                   type="submit"
                   size="large"
+                  sx={{
+                    height: 48,
+                    color: 'text.primary',
+                  }}
                 >
                   <Stack flexDirection="row" alignItems="center" gap={1}>
                     <Box
@@ -190,11 +192,14 @@ export const Login: React.FC = () => {
                 />
                 <Button
                   fullWidth
-                  sx={{ height: 48 }}
-                  variant="contained"
+                  variant="outlined"
                   color="secondary"
                   type="submit"
                   size="large"
+                  sx={{
+                    height: 48,
+                    color: 'text.primary',
+                  }}
                 >
                   <Stack flexDirection="row" alignItems="center" gap={1}>
                     <GithubOutlined style={{ fontSize: 24 }} />
