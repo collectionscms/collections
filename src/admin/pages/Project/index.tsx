@@ -78,7 +78,7 @@ const ProjectImpl: React.FC = () => {
                           id="projectName"
                           type="text"
                           fullWidth
-                          placeholder={`${t('input_placeholder')} Collections`}
+                          placeholder="My Project"
                           error={errors.name !== undefined}
                         />
                       )}

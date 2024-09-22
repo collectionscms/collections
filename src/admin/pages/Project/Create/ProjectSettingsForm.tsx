@@ -80,7 +80,7 @@ export const ProjectSettingsForm: React.FC<Props> = ({
                     id="projectName"
                     type="text"
                     fullWidth
-                    placeholder={`${t('input_placeholder')} My Project`}
+                    placeholder="My Project"
                     error={errors.name !== undefined}
                   />
                 )}
@@ -101,7 +101,7 @@ export const ProjectSettingsForm: React.FC<Props> = ({
                       id="projectName"
                       type="text"
                       fullWidth
-                      placeholder={`${t('input_placeholder')} my-project`}
+                      placeholder="my-project"
                       error={errors.subdomain !== undefined}
                     />
                     <Typography>.collections.dev</Typography>
