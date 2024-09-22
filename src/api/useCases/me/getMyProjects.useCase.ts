@@ -1,6 +1,6 @@
 import { Permission, Project, Role } from '@prisma/client';
-import { UserRepository } from '../../persistence/user/user.repository.js';
 import { BypassPrismaType } from '../../database/prisma/client.js';
+import { UserRepository } from '../../persistence/user/user.repository.js';
 
 type GetMyProjectsUseCaseResponse = {
   projectRoles: {

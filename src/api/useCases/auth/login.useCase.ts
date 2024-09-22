@@ -1,6 +1,6 @@
 import { Me } from '../../../types/index.js';
-import { UserRepository } from '../../persistence/user/user.repository.js';
 import { BypassPrismaType } from '../../database/prisma/client.js';
+import { UserRepository } from '../../persistence/user/user.repository.js';
 
 export class LoginUseCase {
   constructor(
@@ -14,6 +14,8 @@ export class LoginUseCase {
     return {
       id: user.id,
       email: user.email,
+      provider: user.provider,
+      providerId: user.providerId,
     };
   }
 }

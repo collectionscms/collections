@@ -23,10 +23,8 @@ export const createUsers = async (
         avatarUrl: faker.image.avatarGitHub(),
         password: await oneWayHash(user.password),
         isActive: true,
-        confirmationToken: user.confirmationToken,
-        confirmedAt: user.confirmedAt,
-        // confirmationToken: v4(),
-        // confirmedAt: new Date(),
+        provider: 'email',
+        providerId: v4(),
         userProjects: {
           create: user.userProjects.map((userProject) => ({
             id: v4(),

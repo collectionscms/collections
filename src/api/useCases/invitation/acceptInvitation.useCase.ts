@@ -1,10 +1,10 @@
 import { Permission, Project, Role } from '@prisma/client';
 import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
 import { InvalidTokenException } from '../../../exceptions/invalidToken.js';
+import { BypassPrismaClient } from '../../database/prisma/client.js';
 import { InvitationRepository } from '../../persistence/invitation/invitation.repository.js';
 import { UserProjectEntity } from '../../persistence/userProject/userProject.entity.js';
 import { UserProjectRepository } from '../../persistence/userProject/userProject.repository.js';
-import { BypassPrismaType, projectPrisma } from '../../database/prisma/client.js';
 import { AcceptInvitationUseCaseSchemaType } from './acceptInvitation.useCase.schema.js';
 
 export type AcceptInvitationUseCaseResponse = {
@@ -15,7 +15,7 @@ export type AcceptInvitationUseCaseResponse = {
 
 export class AcceptInvitationUseCase {
   constructor(
-    private readonly prisma: BypassPrismaType,
+    private readonly prisma: BypassPrismaClient,
     private readonly userProjectRepository: UserProjectRepository,
     private readonly invitationRepository: InvitationRepository
   ) {}
@@ -23,10 +23,10 @@ export class AcceptInvitationUseCase {
   async execute(
     props: AcceptInvitationUseCaseSchemaType
   ): Promise<AcceptInvitationUseCaseResponse> {
-    const { token, userId, email } = props;
+    const { inviteToken, userId } = props;
 
-    const invitation = await this.invitationRepository.findOneByToken(this.prisma, token);
-    if (invitation.email !== email || invitation.isAccepted()) {
+    const invitation = await this.invitationRepository.findOneByToken(this.prisma, inviteToken);
+    if (invitation.isAccepted()) {
       throw new InvalidTokenException();
     }
 
@@ -36,7 +36,7 @@ export class AcceptInvitationUseCase {
       roleId: invitation.roleId,
     });
 
-    const projectRole = await projectPrisma(invitation.projectId).$transaction(async (tx) => {
+    const projectRole = await this.prisma.$transaction(async (tx) => {
       await this.userProjectRepository.create(tx, entity);
 
       invitation.acceptInvitation();
