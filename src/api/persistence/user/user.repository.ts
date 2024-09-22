@@ -37,10 +37,15 @@ export class UserRepository {
     return UserEntity.Reconstruct<User, UserEntity>(record);
   }
 
-  async findOneByEmail(prisma: BypassPrismaType, email: string): Promise<UserEntity | null> {
+  async findOneByProvider(
+    prisma: BypassPrismaType,
+    provider: string,
+    providerId: string
+  ): Promise<UserEntity | null> {
     const user = await prisma.user.findFirst({
       where: {
-        email,
+        provider,
+        providerId,
       },
     });
 

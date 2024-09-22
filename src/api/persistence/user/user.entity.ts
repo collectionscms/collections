@@ -3,25 +3,25 @@ import { v4 } from 'uuid';
 import { oneWayHash } from '../../utilities/oneWayHash.js';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 
-export const Provider = {
+export const AuthProvider = {
   email: 'email',
+  github: 'github',
+  google: 'google',
 } as const;
-export type ProviderType = (typeof Provider)[keyof typeof Provider];
+export type AuthProviderType = (typeof AuthProvider)[keyof typeof AuthProvider];
 
 export class UserEntity extends PrismaBaseEntity<User> {
   static Construct({
     name,
     email,
-    password,
     isActive,
     provider,
     providerId,
   }: {
     name: string;
     email: string;
-    password: string;
     isActive: boolean;
-    provider: ProviderType;
+    provider: AuthProviderType;
     providerId: string;
   }): UserEntity {
     const now = new Date();
@@ -29,7 +29,7 @@ export class UserEntity extends PrismaBaseEntity<User> {
       id: v4(),
       name,
       email,
-      password,
+      password: null,
       isActive,
       provider,
       providerId,
@@ -61,6 +61,14 @@ export class UserEntity extends PrismaBaseEntity<User> {
 
   get avatarUrl(): string | null {
     return this.props.avatarUrl;
+  }
+
+  get provider(): string {
+    return this.props.provider;
+  }
+
+  get providerId(): string {
+    return this.props.providerId;
   }
 
   async hashPassword(password: string): Promise<void> {
