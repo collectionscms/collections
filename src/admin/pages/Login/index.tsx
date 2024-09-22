@@ -36,7 +36,10 @@ export const Login: React.FC = () => {
   const [csrfToken, setCsrfToken] = useState('');
 
   const loginPageText = process.env.PUBLIC_LOGIN_PAGE_TEXT ?? '';
-  const enabledCredentialsSignIn = process.env.PUBLIC_ENABLED_CREDENTIALS_SIGN_IN === 'true';
+  const authProviders = process.env.PUBLIC_AUTH_PROVIDERS?.split(',') ?? [];
+  const enabledEmailSignIn = authProviders.includes('email');
+  const enabledGoogleSignIn = authProviders.includes('google');
+  const enabledGitHubSignIn = authProviders.includes('github');
 
   const inviteToken = new URLSearchParams(location.search).get('inviteToken') ?? '';
   const requestParams = inviteToken ? `?inviteToken=${inviteToken}` : '';
@@ -83,12 +86,12 @@ export const Login: React.FC = () => {
           {t('login_title')}
         </Typography>
         <Typography variant="h5" sx={{ mb: 5, textAlign: 'center' }}>
-          {t('login_subtitle')}
+          {loginPageText && <Box dangerouslySetInnerHTML={{ __html: loginPageText }} />}
         </Typography>
         <Stack>
           <Stack gap={2}>
             {/* Email */}
-            {enabledCredentialsSignIn && (
+            {enabledEmailSignIn && (
               <Stack component="form" onSubmit={handleSubmit(onSubmit)} key="email">
                 <Grid container gap={1}>
                   <Grid xs={12}>
@@ -144,60 +147,60 @@ export const Login: React.FC = () => {
             )}
 
             {/* Google */}
-            <form action="/api/auth/signin/google" method="POST">
-              <input type="hidden" name="csrfToken" value={csrfToken} />
-              <input
-                type="hidden"
-                name="callbackUrl"
-                value={`/api/auth/providers/google${requestParams}`}
-              />
-              <Button
-                disableElevation
-                fullWidth
-                sx={{ height: 48 }}
-                variant="contained"
-                color="secondary"
-                type="submit"
-                size="large"
-              >
-                <Stack flexDirection="row" alignItems="center" gap={1}>
-                  <GoogleOutlined style={{ fontSize: 18 }} />
-                  <Typography sx={{ fontWeight: 'bold', fontSize: 16 }}>
-                    Sign in with Google
-                  </Typography>
-                </Stack>
-              </Button>
-            </form>
+            {enabledGoogleSignIn && (
+              <form action="/api/auth/signin/google" method="POST">
+                <input type="hidden" name="csrfToken" value={csrfToken} />
+                <input
+                  type="hidden"
+                  name="callbackUrl"
+                  value={`/api/auth/providers/google${requestParams}`}
+                />
+                <Button
+                  disableElevation
+                  fullWidth
+                  sx={{ height: 48 }}
+                  variant="contained"
+                  color="secondary"
+                  type="submit"
+                  size="large"
+                >
+                  <Stack flexDirection="row" alignItems="center" gap={1}>
+                    <GoogleOutlined style={{ fontSize: 18 }} />
+                    <Typography sx={{ fontWeight: 'bold', fontSize: 16 }}>
+                      Sign in with Google
+                    </Typography>
+                  </Stack>
+                </Button>
+              </form>
+            )}
 
             {/* GitHub */}
-            <form action="/api/auth/signin/github" method="POST">
-              <input type="hidden" name="csrfToken" value={csrfToken} />
-              <input
-                type="hidden"
-                name="callbackUrl"
-                value={`/api/auth/providers/github${requestParams}`}
-              />
-              <Button
-                fullWidth
-                sx={{ height: 48 }}
-                variant="contained"
-                color="secondary"
-                type="submit"
-                size="large"
-              >
-                <Stack flexDirection="row" alignItems="center" gap={1}>
-                  <GithubOutlined style={{ fontSize: 18 }} />
-                  <Typography sx={{ fontWeight: 'bold', fontSize: 16 }}>
-                    Sign in with GitHub
-                  </Typography>
-                </Stack>
-              </Button>
-            </form>
+            {enabledGitHubSignIn && (
+              <form action="/api/auth/signin/github" method="POST">
+                <input type="hidden" name="csrfToken" value={csrfToken} />
+                <input
+                  type="hidden"
+                  name="callbackUrl"
+                  value={`/api/auth/providers/github${requestParams}`}
+                />
+                <Button
+                  fullWidth
+                  sx={{ height: 48 }}
+                  variant="contained"
+                  color="secondary"
+                  type="submit"
+                  size="large"
+                >
+                  <Stack flexDirection="row" alignItems="center" gap={1}>
+                    <GithubOutlined style={{ fontSize: 18 }} />
+                    <Typography sx={{ fontWeight: 'bold', fontSize: 16 }}>
+                      Sign in with GitHub
+                    </Typography>
+                  </Stack>
+                </Button>
+              </form>
+            )}
           </Stack>
-
-          {loginPageText && (
-            <Box dangerouslySetInnerHTML={{ __html: loginPageText }} sx={{ mt: 2 }} />
-          )}
         </Stack>
       </AuthCard>
     </>

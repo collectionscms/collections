@@ -65,7 +65,7 @@ type AllowedEnvironmentVariable =
   | 'AUTH_GITHUB_SECRET'
   | 'AUTH_GOOGLE_ID'
   | 'AUTH_GOOGLE_SECRET'
-  | 'PUBLIC_ENABLED_CREDENTIALS_SIGN_IN'
+  | 'PUBLIC_AUTH_PROVIDERS'
 
   // /////////////////////////////////////
   // CORS
@@ -133,7 +133,7 @@ export const defaults: Partial<Record<AllowedEnvironmentVariable, any>> = {
   HASH_TYPE: 2,
 
   // Auth
-  PUBLIC_ENABLED_CREDENTIALS_SIGN_IN: true,
+  PUBLIC_AUTH_PROVIDERS: 'email,google,github',
 
   // CORS
   CORS_ENABLED: false,

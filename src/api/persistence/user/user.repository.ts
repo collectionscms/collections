@@ -1,6 +1,5 @@
 import { User } from '@auth/express';
 import { Permission, Project, Role } from '@prisma/client';
-import { RecordNotUniqueException } from '../../../exceptions/database/recordNotUnique.js';
 import { InvalidCredentialsException } from '../../../exceptions/invalidCredentials.js';
 import { BypassPrismaType, ProjectPrismaType } from '../../database/prisma/client.js';
 import { comparePasswords } from '../../utilities/comparePasswords.js';
