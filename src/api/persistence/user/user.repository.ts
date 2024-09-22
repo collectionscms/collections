@@ -132,19 +132,6 @@ export class UserRepository {
     };
   }
 
-  async checkUniqueEmail(prisma: BypassPrismaType, email: string, ownId?: string) {
-    const user = await prisma.user.findFirst({
-      where: {
-        email,
-        isActive: true,
-      },
-    });
-
-    if ((user && !ownId) || (user && ownId && user.id !== ownId)) {
-      throw new RecordNotUniqueException('already_registered_email');
-    }
-  }
-
   async upsert(prisma: BypassPrismaType, entity: UserEntity): Promise<UserEntity> {
     const user = await prisma.user.upsert({
       update: entity.toPersistence(),
