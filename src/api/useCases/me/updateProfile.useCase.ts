@@ -1,7 +1,6 @@
 import { User } from '@prisma/client';
-import { UserRepository } from '../../persistence/user/user.repository.js';
 import { BypassPrismaType } from '../../database/prisma/client.js';
-import { oneWayHash } from '../../utilities/oneWayHash.js';
+import { UserRepository } from '../../persistence/user/user.repository.js';
 import { UpdateProfileUseCaseSchemaType } from './updateProfile.useCase.schema.js';
 
 export class UpdateProfileUseCase {
@@ -11,16 +10,11 @@ export class UpdateProfileUseCase {
   ) {}
 
   async execute(props: UpdateProfileUseCaseSchemaType): Promise<User> {
-    const { name, email, password, userId } = props;
+    const { name, userId } = props;
 
-    await this.userRepository.checkUniqueEmail(this.prisma, email, userId);
-
-    const hashed = password ? await oneWayHash(password) : undefined;
     const user = await this.userRepository.findOneById(this.prisma, userId);
     user.update({
       name: name,
-      email: email,
-      password: hashed,
     });
 
     const updatedUser = await this.userRepository.updateProfile(this.prisma, user);

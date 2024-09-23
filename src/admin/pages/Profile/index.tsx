@@ -49,8 +49,6 @@ const ProfilePageImpl: React.FC = () => {
   } = useForm<FormValues>({
     defaultValues: {
       name: user?.name,
-      email: user?.email,
-      password: '',
     },
     resolver: yupResolver(updateUserSchema(t)),
   });
@@ -61,8 +59,6 @@ const ProfilePageImpl: React.FC = () => {
   };
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
-    if (!form.password) delete form.password;
-
     try {
       reset(form);
       await trigger(form);
@@ -140,43 +136,6 @@ const ProfilePageImpl: React.FC = () => {
                       )}
                     />
                     <FormHelperText error>{errors.name?.message}</FormHelperText>
-                  </Stack>
-                </Grid>
-                <Grid xs={12} sm={6}>
-                  <Stack spacing={1}>
-                    <InputLabel required>{t('email')}</InputLabel>
-                    <Controller
-                      name="email"
-                      control={control}
-                      render={({ field }) => (
-                        <TextField
-                          {...field}
-                          type="text"
-                          fullWidth
-                          error={errors.email !== undefined}
-                        />
-                      )}
-                    />
-                    <FormHelperText error>{errors.email?.message}</FormHelperText>
-                  </Stack>
-                </Grid>
-                <Grid xs={12} sm={6}>
-                  <Stack spacing={1}>
-                    <InputLabel required>{t('password')}</InputLabel>
-                    <Controller
-                      name="password"
-                      control={control}
-                      render={({ field }) => (
-                        <TextField
-                          {...field}
-                          type="password"
-                          placeholder={t('hidden_for_security')}
-                          fullWidth
-                          error={errors.password !== undefined}
-                        />
-                      )}
-                    />
-                    <FormHelperText error>{errors.password?.message}</FormHelperText>
                   </Stack>
                 </Grid>
                 <Grid xs={12}>

@@ -16,6 +16,7 @@ export type UserProfile = {
   isActive: boolean;
   isRegistered: boolean;
   role: Role;
+  updatedAt: Date;
 };
 
 export type ProjectRole = {
@@ -27,6 +28,8 @@ export type ProjectRole = {
 export type Me = {
   id: string;
   email: string;
+  provider: string;
+  providerId: string;
 };
 
 export type ApiError = {

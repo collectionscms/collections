@@ -15,10 +15,10 @@ import { apiKeys } from './data/apiKeys.js';
 import { contents } from './data/contents.js';
 import { enProject, jpProject, projects } from './data/projects.js';
 import {
-  contributorPermissions,
   editorPermissions,
   projectRoles,
   viewerPermissions,
+  writerPermissions,
 } from './data/roles.js';
 import { users } from './data/users.js';
 import { webhookSettings } from './data/webhookSettings.js';
@@ -68,14 +68,14 @@ export const seedDev = async (): Promise<void> => {
           permissions: editorPermissions,
         });
 
-        // contributor
+        // writer
         await createRole(tx, {
-          id: projectRole.contributor,
-          name: i18next.t('seed.role.contributor'),
-          description: i18next.t('seed.role.contributor_description'),
+          id: projectRole.writer,
+          name: i18next.t('seed.role.writer'),
+          description: i18next.t('seed.role.writer_description'),
           isAdmin: false,
           projectId,
-          permissions: contributorPermissions,
+          permissions: writerPermissions,
         });
 
         // viewer

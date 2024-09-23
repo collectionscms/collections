@@ -1,4 +1,3 @@
-import { LoadingOutlined } from '@ant-design/icons';
 import {
   AppBarProps,
   Button,
@@ -102,8 +101,7 @@ export const PostHeader: React.FC<Props> = ({
               <StatusDot status={post.status.currentStatus} />
             </Stack>
             {isSaving && (
-              <Stack flexDirection="row" alignItems="center" gap={1}>
-                <LoadingOutlined style={{ fontSize: 12, color: theme.palette.secondary.light }} />
+              <Stack flexDirection="row" alignItems="center">
                 <Typography sx={{ fontSize: 12 }} color="secondary">
                   {t('saving')}
                 </Typography>

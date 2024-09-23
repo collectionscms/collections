@@ -1,6 +1,5 @@
 import { User } from '@auth/express';
 import { Permission, Project, Role } from '@prisma/client';
-import { RecordNotUniqueException } from '../../../exceptions/database/recordNotUnique.js';
 import { InvalidCredentialsException } from '../../../exceptions/invalidCredentials.js';
 import { BypassPrismaType, ProjectPrismaType } from '../../database/prisma/client.js';
 import { comparePasswords } from '../../utilities/comparePasswords.js';
@@ -20,7 +19,7 @@ export class UserRepository {
       },
     });
 
-    if (!user || !comparePasswords(user.password, password)) {
+    if (!user || !user.password || !comparePasswords(user.password, password)) {
       throw new InvalidCredentialsException('incorrect_email_or_password');
     }
 
@@ -37,23 +36,15 @@ export class UserRepository {
     return UserEntity.Reconstruct<User, UserEntity>(record);
   }
 
-  async findOneByEmail(prisma: BypassPrismaType, email: string): Promise<UserEntity | null> {
-    const user = await prisma.user.findFirst({
-      where: {
-        email,
-      },
-    });
-
-    return user ? UserEntity.Reconstruct<User, UserEntity>(user) : null;
-  }
-
-  async findOneByConfirmationToken(
+  async findOneByProvider(
     prisma: BypassPrismaType,
-    token: string
+    provider: string,
+    providerId: string
   ): Promise<UserEntity | null> {
     const user = await prisma.user.findFirst({
       where: {
-        confirmationToken: token,
+        provider,
+        providerId,
       },
     });
 
@@ -145,79 +136,6 @@ export class UserRepository {
     };
   }
 
-  async checkUniqueEmail(prisma: BypassPrismaType, email: string, ownId?: string) {
-    const user = await prisma.user.findFirst({
-      where: {
-        email,
-        isActive: true,
-      },
-    });
-
-    if ((user && !ownId) || (user && ownId && user.id !== ownId)) {
-      throw new RecordNotUniqueException('already_registered_email');
-    }
-  }
-
-  async verified(prisma: BypassPrismaType, entity: UserEntity): Promise<UserEntity> {
-    const user = await prisma.user.update({
-      where: {
-        id: entity.id,
-      },
-      data: {
-        confirmedAt: entity.confirmedAt,
-        isActive: entity.isActive,
-      },
-    });
-
-    return UserEntity.Reconstruct<User, UserEntity>(user);
-  }
-
-  async findOneByResetToken(prisma: BypassPrismaType, token: string): Promise<UserEntity> {
-    const user = await prisma.user.findFirst({
-      where: {
-        resetPasswordToken: token,
-        resetPasswordExpiration: {
-          gt: new Date(),
-        },
-      },
-    });
-
-    if (!user) throw new InvalidCredentialsException('token_invalid_or_expired');
-
-    return UserEntity.Reconstruct<User, UserEntity>(user);
-  }
-
-  async updatePassword(prisma: BypassPrismaType, entity: UserEntity): Promise<UserEntity> {
-    const updatedUser = await prisma.user.update({
-      where: {
-        id: entity.id,
-      },
-      data: {
-        password: entity.password,
-        resetPasswordExpiration: new Date(),
-      },
-    });
-
-    return UserEntity.Reconstruct<User, UserEntity>(updatedUser);
-  }
-
-  async updateResetPasswordToken(
-    prisma: BypassPrismaType,
-    entity: UserEntity
-  ): Promise<UserEntity> {
-    const user = await prisma.user.update({
-      where: {
-        id: entity.id,
-      },
-      data: {
-        resetPasswordToken: entity.resetPasswordToken,
-        resetPasswordExpiration: entity.resetPasswordExpiration,
-      },
-    });
-
-    return UserEntity.Reconstruct<User, UserEntity>(user);
-  }
-
   async upsert(prisma: BypassPrismaType, entity: UserEntity): Promise<UserEntity> {
     const user = await prisma.user.upsert({
       update: entity.toPersistence(),
@@ -237,8 +155,6 @@ export class UserRepository {
       },
       data: {
         name: user.name,
-        email: user.email,
-        password: user.password,
       },
     });
 

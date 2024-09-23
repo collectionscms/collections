@@ -1,11 +1,16 @@
 import { AuthConfig } from '@auth/core';
+import { CredentialsSignin } from '@auth/express';
 import CredentialsProvider from '@auth/express/providers/credentials';
+import GitHub from '@auth/express/providers/github';
+import Google from '@auth/express/providers/google';
 import { env } from '../../env.js';
 import { logger } from '../../utilities/logger.js';
-import { UserRepository } from '../persistence/user/user.repository.js';
 import { bypassPrisma } from '../database/prisma/client.js';
+import { AuthProvider } from '../persistence/user/user.entity.js';
+import { UserRepository } from '../persistence/user/user.repository.js';
 import { LoginUseCase } from '../useCases/auth/login.useCase.js';
-import { CredentialsSignin } from '@auth/express';
+import { OAuthSignInUseCase } from '../useCases/auth/oAuthSignIn.useCase.js';
+import { oAuthSingInUseCaseSchema } from '../useCases/auth/oAuthSignIn.useCase.schema.js';
 
 const useSecureCookies = env.PUBLIC_SERVER_ORIGIN.startsWith('https://');
 const hostName = env.SERVER_HOST;
@@ -16,10 +21,20 @@ class InvalidLoginError extends CredentialsSignin {
 }
 
 export const authConfig: Omit<AuthConfig, 'raw'> = {
+  trustHost: true,
   callbacks: {
-    jwt(params: any) {
+    async jwt(params: any) {
       const { token, user } = params;
-      if (user) {
+      if (!user) return token;
+
+      if (user.provider !== AuthProvider.email) {
+        // OAuth
+        const validated = oAuthSingInUseCaseSchema.safeParse(user);
+        if (validated.success) {
+          const useCase = new OAuthSignInUseCase(bypassPrisma, new UserRepository());
+          token.user = await useCase.execute(validated.data);
+        }
+      } else {
         token.user = user;
       }
 
@@ -35,8 +50,30 @@ export const authConfig: Omit<AuthConfig, 'raw'> = {
     },
   },
   providers: [
+    GitHub({
+      profile(profile) {
+        return {
+          email: profile.email,
+          name: profile.name,
+          image: profile.avatar_url,
+          provider: 'github',
+          providerId: profile.id.toString(),
+        };
+      },
+    }),
+    Google({
+      profile(profile) {
+        return {
+          email: profile.email,
+          name: profile.name,
+          image: profile.picture,
+          provider: 'google',
+          providerId: profile.sub,
+        };
+      },
+    }),
     CredentialsProvider({
-      name: 'Credentials',
+      id: 'login',
       credentials: {
         email: { label: 'email', type: 'text' },
         password: { label: 'password', type: 'password' },

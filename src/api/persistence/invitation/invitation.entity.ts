@@ -57,6 +57,10 @@ export class InvitationEntity extends PrismaBaseEntity<Invitation> {
     return this.props.status;
   }
 
+  get updatedAt(): Date {
+    return this.props.updatedAt;
+  }
+
   acceptInvitation(): void {
     this.props.status = Status.Accepted;
   }

@@ -1,7 +1,7 @@
 import { UserProfile } from '../../../types/index.js';
+import { ProjectPrismaType } from '../../database/prisma/client.js';
 import { InvitationRepository } from '../../persistence/invitation/invitation.repository.js';
 import { UserRepository } from '../../persistence/user/user.repository.js';
-import { ProjectPrismaType } from '../../database/prisma/client.js';
 
 export class GetUserProfilesUseCase {
   constructor(
@@ -22,6 +22,7 @@ export class GetUserProfilesUseCase {
         isActive: false,
         isRegistered: false,
         role: role.toResponse(),
+        updatedAt: invitation.updatedAt,
       })),
       ...userRoles.map(({ user, role }) => ({
         id: user.id,
@@ -30,6 +31,7 @@ export class GetUserProfilesUseCase {
         isActive: user.isActive,
         isRegistered: true,
         role: role.toResponse(),
+        updatedAt: user.updatedAt,
       })),
     ];
   }

@@ -7,6 +7,6 @@ export type FormValues = {
 
 export const updateSlugValidator = (): ObjectSchema<FormValues> => {
   return yup.object().shape({
-    slug: yup.string().required().max(100),
+    slug: yup.string().required().max(250),
   });
 };

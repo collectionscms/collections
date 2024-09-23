@@ -33,7 +33,7 @@ export const groups = (t: TFunction): Group[] => [
         name: 'text',
         label: t('editor.text'),
         iconName: 'Pilcrow',
-        description: 'Medium priority section title',
+        description: t('editor.text_description'),
         aliases: ['paragraph'],
         action: (editor) => {
           editor.chain().focus().setParagraph().run();
@@ -43,8 +43,8 @@ export const groups = (t: TFunction): Group[] => [
         name: 'heading1',
         label: t('editor.heading'),
         iconName: 'Heading1',
-        description: 'High priority section title',
-        aliases: ['h1'],
+        description: t('editor.heading_description'),
+        aliases: ['heading', 'h1'],
         action: (editor) => {
           editor.chain().focus().setHeading({ level: 1 }).run();
         },
@@ -53,7 +53,7 @@ export const groups = (t: TFunction): Group[] => [
         name: 'heading2',
         label: t('editor.subheading'),
         iconName: 'Heading2',
-        description: 'Medium priority section title',
+        description: t('editor.subheading_description'),
         aliases: ['h2'],
         action: (editor) => {
           editor.chain().focus().setHeading({ level: 2 }).run();
@@ -63,7 +63,7 @@ export const groups = (t: TFunction): Group[] => [
         name: 'heading3',
         label: t('editor.subtitle'),
         iconName: 'Heading3',
-        description: 'Low priority section title',
+        description: t('editor.subtitle_description'),
         aliases: ['h3'],
         action: (editor) => {
           editor.chain().focus().setHeading({ level: 3 }).run();
@@ -73,8 +73,8 @@ export const groups = (t: TFunction): Group[] => [
         name: 'bulletList',
         label: t('editor.list'),
         iconName: 'List',
-        description: 'Unordered list of items',
-        aliases: ['ul'],
+        description: t('editor.list_description'),
+        aliases: ['ul', 'b', 'bu', 'bul'],
         action: (editor) => {
           editor.chain().focus().toggleBulletList().run();
         },
@@ -83,7 +83,7 @@ export const groups = (t: TFunction): Group[] => [
         name: 'numberedList',
         label: t('editor.numbered_list'),
         iconName: 'ListOrdered',
-        description: 'Ordered list of items',
+        description: t('editor.numbered_list_description'),
         aliases: ['ol'],
         action: (editor) => {
           editor.chain().focus().toggleOrderedList().run();
@@ -93,7 +93,7 @@ export const groups = (t: TFunction): Group[] => [
         name: 'blockquote',
         label: t('editor.quote'),
         iconName: 'Quote',
-        description: 'Element for quoting',
+        description: t('editor.quote_description'),
         action: (editor) => {
           editor.chain().focus().setBlockquote().run();
         },
@@ -102,7 +102,7 @@ export const groups = (t: TFunction): Group[] => [
         name: 'codeBlock',
         label: t('editor.code_block'),
         iconName: 'SquareCode',
-        description: 'Code block with syntax highlighting',
+        description: t('editor.code_block_description'),
         shouldBeHidden: (editor) => editor.isActive('columns'),
         action: (editor) => {
           editor.chain().focus().setCodeBlock().run();
@@ -118,7 +118,7 @@ export const groups = (t: TFunction): Group[] => [
         name: 'image',
         label: t('editor.image'),
         iconName: 'Image',
-        description: 'Insert an image',
+        description: t('editor.image_description'),
         aliases: ['img'],
         action: (editor) => {
           editor.chain().focus().setImageUpload().run();
@@ -128,7 +128,7 @@ export const groups = (t: TFunction): Group[] => [
         name: 'horizontalRule',
         label: t('editor.divider'),
         iconName: 'Minus',
-        description: 'Insert a horizontal divider',
+        description: t('editor.divider_description'),
         aliases: ['hr'],
         action: (editor) => {
           editor.chain().focus().setHorizontalRule().run();

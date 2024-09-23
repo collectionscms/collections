@@ -18,13 +18,11 @@ CREATE TABLE "User" (
     "id" UUID NOT NULL,
     "name" VARCHAR(255) NOT NULL,
     "email" TEXT NOT NULL,
-    "password" VARCHAR(255) NOT NULL,
+    "password" VARCHAR(255),
     "isActive" BOOLEAN NOT NULL DEFAULT true,
-    "confirmationToken" VARCHAR(255),
-    "confirmedAt" TIMESTAMP(3),
     "avatarUrl" VARCHAR(255),
-    "resetPasswordToken" VARCHAR(255),
-    "resetPasswordExpiration" TIMESTAMP(3),
+    "provider" VARCHAR(255) NOT NULL,
+    "providerId" VARCHAR(255) NOT NULL,
     "createdAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMPTZ(6) NOT NULL,
 
@@ -247,7 +245,7 @@ CREATE TABLE "WebhookLog" (
 CREATE UNIQUE INDEX "Project_subdomain_key" ON "Project"("subdomain");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+CREATE UNIQUE INDEX "User_provider_providerId_key" ON "User"("provider", "providerId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "UserProject_userId_projectId_key" ON "UserProject"("userId", "projectId");

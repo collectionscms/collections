@@ -1,19 +1,19 @@
+import { GithubOutlined } from '@ant-design/icons';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Box,
   Button,
   FormHelperText,
   InputLabel,
-  Link,
   Stack,
   TextField,
   Typography,
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { logger } from '../../../utilities/logger.js';
 import { AuthCard } from '../../@extended/components/AuthCard/index.js';
 import { Loader } from '../../components/elements/Loader/index.js';
@@ -32,7 +32,18 @@ export const Login: React.FC = () => {
   const { me, getCsrfToken, login } = useAuth();
   const navigate = useNavigate();
   const { trigger, isMutating } = login();
-  const { data: csrfToken } = getCsrfToken();
+  const { data } = getCsrfToken();
+  const [csrfToken, setCsrfToken] = useState('');
+
+  const loginPageText = process.env.PUBLIC_LOGIN_PAGE_TEXT ?? '';
+  const authProviders = process.env.PUBLIC_AUTH_PROVIDERS?.split(',') ?? [];
+  const enabledEmailSignIn = authProviders.includes('email');
+  const enabledGoogleSignIn = authProviders.includes('google');
+  const enabledGitHubSignIn = authProviders.includes('github');
+
+  const inviteToken = new URLSearchParams(location.search).get('inviteToken') ?? '';
+  const requestParams = inviteToken ? `?inviteToken=${inviteToken}` : '';
+
   const {
     control,
     handleSubmit,
@@ -44,10 +55,11 @@ export const Login: React.FC = () => {
   });
 
   useEffect(() => {
-    if (csrfToken) {
-      setValue('csrfToken', csrfToken);
+    if (data) {
+      setValue('csrfToken', data);
+      setCsrfToken(data);
     }
-  }, [csrfToken]);
+  }, [data]);
 
   useEffect(() => {
     if (!me) return;
@@ -64,81 +76,143 @@ export const Login: React.FC = () => {
 
   if (me) return <Loading />;
 
-  const loginPageText = process.env.PUBLIC_LOGIN_PAGE_TEXT ?? '';
-
   return (
-    <AuthCard>
-      <Stack spacing={3.5}>
-        <Stack direction="row" justifyContent="left" alignItems="center" spacing={1}>
-          <Box sx={{ width: '40px', height: '40px' }}>
-            <Logo />
-          </Box>
-          <Typography variant="h3">Collections</Typography>
-        </Stack>
-        <Stack component="form" onSubmit={handleSubmit(onSubmit)}>
-          <Grid container spacing={3}>
-            <Grid xs={12}>
-              <Stack spacing={1}>
-                <InputLabel htmlFor="email">{t('email')}</InputLabel>
-                <Controller
-                  name="email"
-                  control={control}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      id="email"
-                      type="text"
-                      error={errors.email !== undefined}
-                    />
-                  )}
-                />
-                <FormHelperText error>{errors.email?.message}</FormHelperText>
+    <>
+      <Box sx={{ position: 'absolute', top: 30 }}>
+        <Logo variant="logo" props={{ width: 'auto', height: 28 }} />
+      </Box>
+      <AuthCard sx={{ width: { xs: 400, lg: 475 } }}>
+        <Typography variant="h3" sx={{ mb: 1, textAlign: 'center' }}>
+          {t('login_title')}
+        </Typography>
+        <Typography variant="h5" sx={{ mb: 5, textAlign: 'center' }}>
+          {loginPageText && <Box dangerouslySetInnerHTML={{ __html: loginPageText }} />}
+        </Typography>
+        <Stack>
+          <Stack gap={2}>
+            {/* Email */}
+            {enabledEmailSignIn && (
+              <Stack component="form" onSubmit={handleSubmit(onSubmit)} key="email" sx={{ mb: 3 }}>
+                <Grid container gap={1}>
+                  <Grid xs={12}>
+                    <Stack spacing={1}>
+                      <InputLabel htmlFor="email">{t('email')}</InputLabel>
+                      <Controller
+                        name="email"
+                        control={control}
+                        render={({ field }) => (
+                          <TextField
+                            {...field}
+                            id="email"
+                            type="text"
+                            error={errors.email !== undefined}
+                          />
+                        )}
+                      />
+                      <FormHelperText error>{errors.email?.message}</FormHelperText>
+                    </Stack>
+                  </Grid>
+                  <Grid xs={12}>
+                    <Stack spacing={1}>
+                      <InputLabel htmlFor="password">{t('password')}</InputLabel>
+                      <Controller
+                        name="password"
+                        control={control}
+                        render={({ field }) => (
+                          <TextField
+                            {...field}
+                            id="password"
+                            type="password"
+                            error={errors.password !== undefined}
+                          />
+                        )}
+                      />
+                      <FormHelperText error>{errors.password?.message}</FormHelperText>
+                    </Stack>
+                  </Grid>
+                  <Grid xs={12} sx={{ mt: 2 }}>
+                    <Button
+                      disableElevation
+                      fullWidth
+                      variant="contained"
+                      type="submit"
+                      size="large"
+                      disabled={isMutating}
+                    >
+                      {t('login')}
+                    </Button>
+                  </Grid>
+                </Grid>
               </Stack>
-            </Grid>
-            <Grid xs={12}>
-              <Stack spacing={1}>
-                <InputLabel htmlFor="password">{t('password')}</InputLabel>
-                <Controller
-                  name="password"
-                  control={control}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      id="password"
-                      type="password"
-                      error={errors.password !== undefined}
-                    />
-                  )}
+            )}
+
+            {/* Google */}
+            {enabledGoogleSignIn && (
+              <form action="/api/auth/signin/google" method="POST">
+                <input type="hidden" name="csrfToken" value={csrfToken} />
+                <input
+                  type="hidden"
+                  name="callbackUrl"
+                  value={`/api/auth/providers/google${requestParams}`}
                 />
-                <FormHelperText error>{errors.password?.message}</FormHelperText>
-              </Stack>
-            </Grid>
-            <Grid xs={12} sx={{ mt: -1 }}>
-              <Link variant="h6" component={RouterLink} to="/admin/auth/sign-up">
-                {t('create_account')}
-              </Link>
-            </Grid>
-            <Grid xs={12} sx={{ mt: -1 }}>
-              <Link variant="h6" component={RouterLink} to="/admin/auth/forgot">
-                {t('forgot')}
-              </Link>
-            </Grid>
-            <Grid xs={12}>
-              <Button
-                disableElevation
-                fullWidth
-                variant="contained"
-                type="submit"
-                size="large"
-                disabled={isMutating}
-              >
-                {t('login')}
-              </Button>
-            </Grid>
-            {loginPageText && <div dangerouslySetInnerHTML={{ __html: loginPageText }} />}
-          </Grid>
+                <Button
+                  fullWidth
+                  variant="outlined"
+                  color="secondary"
+                  type="submit"
+                  size="large"
+                  sx={{
+                    height: 48,
+                    color: 'text.primary',
+                  }}
+                >
+                  <Stack flexDirection="row" alignItems="center" gap={1}>
+                    <Box
+                      component="img"
+                      src={`https://cdn.collections.dev/google-logo.svg`}
+                      sx={{ width: 28, height: 28 }}
+                      alt="google-logo"
+                    />
+                    <Typography sx={{ fontWeight: 'bold', fontSize: 16 }}>
+                      {t('sign_in_with_google')}
+                    </Typography>
+                  </Stack>
+                </Button>
+              </form>
+            )}
+
+            {/* GitHub */}
+            {enabledGitHubSignIn && (
+              <form action="/api/auth/signin/github" method="POST">
+                <input type="hidden" name="csrfToken" value={csrfToken} />
+                <input
+                  type="hidden"
+                  name="callbackUrl"
+                  value={`/api/auth/providers/github${requestParams}`}
+                />
+                <Button
+                  fullWidth
+                  variant="outlined"
+                  color="secondary"
+                  type="submit"
+                  size="large"
+                  sx={{
+                    height: 48,
+                    color: 'text.primary',
+                  }}
+                >
+                  <Stack flexDirection="row" alignItems="center" gap={1}>
+                    <GithubOutlined style={{ fontSize: 24 }} />
+                    <Typography sx={{ fontWeight: 'bold', fontSize: 16 }}>
+                      {t('sign_in_with_github')}
+                    </Typography>
+                  </Stack>
+                </Button>
+              </form>
+            )}
+          </Stack>
         </Stack>
-      </Stack>
-    </AuthCard>
+      </AuthCard>
+    </>
   );
 };

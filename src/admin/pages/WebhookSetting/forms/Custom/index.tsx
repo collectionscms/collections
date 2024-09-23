@@ -18,7 +18,13 @@ export const CustomForm: React.FC<Props> = (props) => {
           name="url"
           control={props.control}
           render={({ field }) => (
-            <TextField {...field} type="text" fullWidth error={props.errors.url !== undefined} />
+            <TextField
+              {...field}
+              type="text"
+              fullWidth
+              placeholder="https://..."
+              error={props.errors.url !== undefined}
+            />
           )}
         />
         <FormHelperText error>{props.errors.url?.message}</FormHelperText>

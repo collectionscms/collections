@@ -15,8 +15,13 @@ export const NavHeader: React.FC = () => {
         pl: '24px',
       }}
     >
-      <ButtonBase disableRipple component={RouterLink} to={'/admin'} sx={{ width: 30, height: 30 }}>
-        <Logo />
+      <ButtonBase
+        disableRipple
+        component={RouterLink}
+        to={'/admin'}
+        sx={{ width: 'auto', height: 30 }}
+      >
+        <Logo variant="icon" props={{ width: 'auto', height: 30 }} />
       </ButtonBase>
     </NavHeaderStyled>
   );

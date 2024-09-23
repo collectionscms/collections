@@ -74,6 +74,7 @@ export const GeneralSettings: React.FC<Props> = ({ contentId, slug, onUpdated })
                   <TextField
                     {...field}
                     type="text"
+                    placeholder="my-first-post"
                     sx={{ flexGrow: 1 }}
                     error={errors.slug !== undefined}
                   />

@@ -1,5 +1,5 @@
-import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
-import React, { FC, Fragment } from 'react';
+import { Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
+import React, { FC, Fragment, ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Cell, Column, HeaderGroup, Row, useExpanded, useTable } from 'react-table';
 import { EmptyTable } from '../../../@extended/components/EmptyTable/index.js';
@@ -9,9 +9,15 @@ type Props = {
   columns: Column[];
   data: any[];
   renderRowSubComponent?: FC<any>;
+  emptyComponent?: ReactNode;
 };
 
-export const ReactTable: React.FC<Props> = ({ columns, data, renderRowSubComponent }) => {
+export const ReactTable: React.FC<Props> = ({
+  columns,
+  data,
+  renderRowSubComponent,
+  emptyComponent,
+}) => {
   const { t } = useTranslation();
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow, visibleColumns } =
@@ -63,7 +69,16 @@ export const ReactTable: React.FC<Props> = ({ columns, data, renderRowSubCompone
             })}
           </>
         ) : (
-          <EmptyTable msg={t('no_contents')} colSpan={12} />
+          <EmptyTable
+            emptyComponent={
+              emptyComponent || (
+                <Typography align="center" color="secondary">
+                  {t('no_contents')}
+                </Typography>
+              )
+            }
+            colSpan={columns.length}
+          />
         )}
       </TableBody>
     </Table>

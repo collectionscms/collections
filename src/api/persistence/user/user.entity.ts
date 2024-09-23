@@ -1,34 +1,41 @@
 import { User } from '@prisma/client';
-import dayjs from 'dayjs';
 import { v4 } from 'uuid';
 import { oneWayHash } from '../../utilities/oneWayHash.js';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
+
+export const AuthProvider = {
+  email: 'email',
+  github: 'github',
+  google: 'google',
+} as const;
+export type AuthProviderType = (typeof AuthProvider)[keyof typeof AuthProvider];
 
 export class UserEntity extends PrismaBaseEntity<User> {
   static Construct({
     name,
     email,
-    password,
     isActive,
+    provider,
+    providerId,
   }: {
     name: string;
     email: string;
-    password: string;
     isActive: boolean;
+    provider: AuthProviderType;
+    providerId: string;
   }): UserEntity {
+    const now = new Date();
     return new UserEntity({
       id: v4(),
       name,
       email,
-      password,
+      password: null,
       isActive,
-      confirmationToken: null,
-      confirmedAt: null,
+      provider,
+      providerId,
       avatarUrl: null,
-      resetPasswordToken: null,
-      resetPasswordExpiration: null,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      createdAt: now,
+      updatedAt: now,
     });
   }
 
@@ -44,7 +51,7 @@ export class UserEntity extends PrismaBaseEntity<User> {
     return this.props.name;
   }
 
-  get password(): string {
+  get password(): string | null {
     return this.props.password;
   }
 
@@ -52,55 +59,29 @@ export class UserEntity extends PrismaBaseEntity<User> {
     return this.props.isActive;
   }
 
-  get confirmationToken(): string | null {
-    return this.props.confirmationToken;
-  }
-
-  get confirmedAt(): Date | null {
-    return this.props.confirmedAt;
-  }
-
   get avatarUrl(): string | null {
     return this.props.avatarUrl;
   }
 
-  get resetPasswordToken(): string | null {
-    return this.props.resetPasswordToken;
+  get provider(): string {
+    return this.props.provider;
   }
 
-  get resetPasswordExpiration(): Date | null {
-    return this.props.resetPasswordExpiration;
+  get providerId(): string {
+    return this.props.providerId;
   }
 
-  resetPassword(): void {
-    this.props.resetPasswordToken = v4();
-    this.props.resetPasswordExpiration = dayjs().add(1, 'hour').toDate();
-  }
-
-  generateConfirmationToken(): void {
-    this.props.confirmationToken = v4();
+  get updatedAt(): Date {
+    return this.props.updatedAt;
   }
 
   async hashPassword(password: string): Promise<void> {
     this.props.password = await oneWayHash(password);
   }
 
-  verified(): void {
-    this.props.confirmedAt = new Date();
-    this.props.isActive = true;
-  }
-
-  update(params: { name?: string; email?: string; password?: string }) {
+  update(params: { name?: string }) {
     if (params.name) {
       this.props.name = params.name;
-    }
-
-    if (params.email) {
-      this.props.email = params.email;
-    }
-
-    if (params.password) {
-      this.props.password = params.password;
     }
   }
 }

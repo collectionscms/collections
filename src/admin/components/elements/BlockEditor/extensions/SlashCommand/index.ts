@@ -224,7 +224,7 @@ export const SlashCommand = (t: TFunction) =>
                   popup?.[0].show();
                 }
 
-                return component.ref?.onKeyDown(props);
+                return component?.ref?.onKeyDown(props);
               },
 
               onExit(props) {
@@ -233,7 +233,7 @@ export const SlashCommand = (t: TFunction) =>
                   const { view } = props.editor;
                   view.dom.parentElement?.removeEventListener('scroll', scrollHandler);
                 }
-                component.destroy();
+                component?.destroy();
               },
             };
           },
