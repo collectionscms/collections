@@ -49,7 +49,7 @@
     "@auth/express": "0.6.0",
     "@aws-sdk/client-s3": "3.629.0",
     "@collectionscms/plugin-translate": "1.0.1",
-    "@emotion/react": "11.13.0",
+    "@emotion/react": "11.13.3",
     "@emotion/styled": "11.13.0",
     "@hookform/resolvers": "3.9.0",
     "@mui/lab": "5.0.0-alpha.173",
