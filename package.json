@@ -60,7 +60,7 @@
     "@radix-ui/react-popover": "1.1.1",
     "@tiptap-pro/extension-drag-handle": "2.10.11",
     "@tiptap-pro/extension-drag-handle-react": "2.11.2",
-    "@tiptap-pro/extension-file-handler": "2.10.9",
+    "@tiptap-pro/extension-file-handler": "2.11.2",
     "@tiptap-pro/extension-node-range": "2.11.2",
     "@tiptap/core": "2.7.2",
     "@tiptap/extension-bullet-list": "2.7.2",
