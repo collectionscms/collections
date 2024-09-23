@@ -1,6 +1,7 @@
 {
   "user": "User",
   "role": "Role",
+  "project": "Project",
   "project_setting": "Project Settings",
   "setting": "Setting",
   "profile": "Profile",
@@ -134,6 +135,8 @@
   "login_title": "Welcome to Collections",
   "sign_in_with_google": "Sign in with Google",
   "sign_in_with_github": "Sign in with GitHub",
+  "create_your_first_project": "Create your first project on Collections!",
+  "invitation_from_existing_project": "Alternatively, you may receive an invitation to join an existing project.",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",

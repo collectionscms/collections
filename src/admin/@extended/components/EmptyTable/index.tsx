@@ -1,5 +1,6 @@
-import { Stack, TableCell, TableRow, Typography, styled } from '@mui/material';
-import React from 'react';
+/* eslint-disable max-len */
+import { Stack, TableCell, TableRow, styled } from '@mui/material';
+import React, { ReactNode } from 'react';
 
 const StyledGridOverlay = styled(Stack)(({ theme }) => ({
   height: '400px',
@@ -27,7 +28,12 @@ const StyledGridOverlay = styled(Stack)(({ theme }) => ({
   },
 }));
 
-export const EmptyTable = ({ msg, colSpan }: { msg: string; colSpan?: number }) => {
+type Props = {
+  colSpan: number;
+  emptyComponent: ReactNode;
+};
+
+export const EmptyTable: React.FC<Props> = ({ colSpan, emptyComponent }) => {
   return (
     <TableRow>
       <TableCell colSpan={colSpan}>
@@ -65,9 +71,7 @@ export const EmptyTable = ({ msg, colSpan }: { msg: string; colSpan?: number }) 
               </g>
             </g>
           </svg>
-          <Typography align="center" color="secondary">
-            {msg}
-          </Typography>
+          {emptyComponent}
         </StyledGridOverlay>
       </TableCell>
     </TableRow>
