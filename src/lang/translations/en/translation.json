@@ -383,8 +383,8 @@
       "admin_description": "Administrator role with all permissions.",
       "editor": "Editor",
       "editor_description": "Editor role with permission to create, edit and publish posts.",
-      "contributor": "Contributor",
-      "contributor_description": "Contributor role with permission to create posts.",
+      "writer": "Writer",
+      "writer_description": "Writer role with permission to create posts.",
       "viewer": "Viewer",
       "viewer_description": "Viewer role with viewing posts only."
     }

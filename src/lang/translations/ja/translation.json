@@ -383,8 +383,8 @@
       "admin_description": "すべての権限をもつ管理者ロール",
       "editor": "エディター",
       "editor_description": "記事の作成・編集・公開ができるエディターロール",
-      "contributor": "投稿者",
-      "contributor_description": "記事の作成ができる投稿者ロール",
+      "writer": "ライター",
+      "writer_description": "記事の作成ができるライターロール",
       "viewer": "ビューアー",
       "viewer_description": "記事の閲覧のみ可能なビューアーロール"
     }
