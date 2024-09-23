@@ -5,6 +5,7 @@ import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';
 import { validateAccess } from '../middlewares/validateAccess.js';
 import { InvitationRepository } from '../persistence/invitation/invitation.repository.js';
+import { ProjectRepository } from '../persistence/project/project.repository.js';
 import { UserProjectRepository } from '../persistence/userProject/userProject.repository.js';
 import { InvitationMailService } from '../services/invitationMail.service.js';
 import { AcceptInvitationUseCase } from '../useCases/invitation/acceptInvitation.useCase.js';
@@ -31,6 +32,7 @@ router.post(
       projectPrisma(validated.data.projectId),
       new UserProjectRepository(),
       new InvitationRepository(),
+      new ProjectRepository(),
       new InvitationMailService()
     );
 

@@ -7,14 +7,14 @@ export const projectRoles = {
     language: 'en-us',
     admin: v4(),
     editor: v4(),
-    contributor: v4(),
+    writer: v4(),
     viewer: v4(),
   },
   [jpProject]: {
     language: 'ja',
     admin: v4(),
     editor: v4(),
-    contributor: v4(),
+    writer: v4(),
     viewer: v4(),
   },
 };
@@ -33,7 +33,7 @@ export const editorPermissions = [
   ...roleActions.webhookSetting,
 ];
 
-export const contributorPermissions = [
+export const writerPermissions = [
   'readOwnPost',
   'createPost',
   'updatePost',
