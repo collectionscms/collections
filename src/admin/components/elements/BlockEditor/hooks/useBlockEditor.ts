@@ -3,7 +3,6 @@ import { Content, Extension } from '@tiptap/core';
 import CharacterCount from '@tiptap/extension-character-count';
 import Heading from '@tiptap/extension-heading';
 import Placeholder from '@tiptap/extension-placeholder';
-import TaskItem from '@tiptap/extension-task-item';
 import Underline from '@tiptap/extension-underline';
 import { useEditor } from '@tiptap/react';
 import { StarterKit } from '@tiptap/starter-kit';
@@ -62,9 +61,6 @@ export const useBlockEditor = ({
       }),
       CodeBlockLowlight.configure({
         lowlight,
-      }),
-      TaskItem.configure({
-        nested: true,
       }),
       ImageUpload,
       ImageBlock,

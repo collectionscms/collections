@@ -5,11 +5,7 @@ import React, { useCallback, useRef } from 'react';
 interface ImageBlockViewProps {
   editor: Editor;
   getPos: () => number;
-  node: Node & {
-    attrs: {
-      src: string;
-    };
-  };
+  node: Node;
   updateAttributes: (attrs: Record<string, string>) => void;
 }
 
