@@ -16,9 +16,9 @@ export class MailService {
     });
   }
 
-  async sendEmail(projectName: string, message: Message): Promise<void> {
+  async sendEmail(message: Message): Promise<void> {
     try {
-      const from = `${projectName} <${env.EMAIL_FROM as string}>`;
+      const from = `Collections <${env.EMAIL_FROM as string}>`;
       this.mailer.sendMail({ from, ...message });
     } catch (e) {
       logger.error(`Failed to send mail to ${message.to}, subject: ${message.subject}`, e);

@@ -1,9 +1,10 @@
 import { Invitation } from '@prisma/client';
 import { RecordNotUniqueException } from '../../../exceptions/database/recordNotUnique.js';
+import { ProjectPrismaType } from '../../database/prisma/client.js';
 import { InvitationEntity } from '../../persistence/invitation/invitation.entity.js';
 import { InvitationRepository } from '../../persistence/invitation/invitation.repository.js';
+import { ProjectRepository } from '../../persistence/project/project.repository.js';
 import { UserProjectRepository } from '../../persistence/userProject/userProject.repository.js';
-import { ProjectPrismaType } from '../../database/prisma/client.js';
 import { InvitationMailService } from '../../services/invitationMail.service.js';
 import { InviteUserUseCaseSchemaType } from './inviteUser.useCase.schema.js';
 
@@ -12,6 +13,7 @@ export class InviteUserUseCase {
     private readonly prisma: ProjectPrismaType,
     private readonly userProjectRepository: UserProjectRepository,
     private readonly invitationRepository: InvitationRepository,
+    private readonly projectRepository: ProjectRepository,
     private readonly invitationMailService: InvitationMailService
   ) {}
 
@@ -44,7 +46,9 @@ export class InviteUserUseCase {
         })
       ));
 
-    await this.invitationMailService.sendInvitation(entity);
+    // Send invitation email
+    const project = await this.projectRepository.findOneById(this.prisma, projectId);
+    await this.invitationMailService.sendInvitation(project.sourceLanguage, project.name, entity);
 
     return entity.toResponse();
   }

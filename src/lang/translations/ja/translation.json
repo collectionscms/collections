@@ -294,6 +294,12 @@
     "short": "YYYY/MM/DD",
     "long": "YYYY/MM/DD HH:mm"
   },
+  "emails": {
+    "invitation": {
+      "subject": "Collectionsの「{{projectName}}」プロジェクトに参加する",
+      "body": "Collectionsの「{{projectName}}」プロジェクトに参加する。<br/><br/>{{url}}</a><br/><br/>ご希望でない場合は、このメールを無視してください。"
+    }
+  },
   "error": {
     "invalid_user_credentials": "無効なユーザ認証情報です。",
     "incorrect_email_or_password": "メールアドレスまたはパスワードが正しくありません。",

@@ -294,6 +294,12 @@
     "short": "MM/DD/YYYY",
     "long": "MM/DD/YYYY hh:mm A"
   },
+  "emails": {
+    "invitation": {
+      "subject": "Join the \"{{projectName}}\" project on Collections",
+      "body": "Join the \"{{projectName}}\" project on Collections<br/><br/>{{url}}</a><br/><br/>If you did not request this, please ignore this email and your password will remain unchanged."
+    }
+  },
   "error": {
     "invalid_user_credentials": "Invalid user credentials.",
     "incorrect_email_or_password": "Incorrect email address or password.",
