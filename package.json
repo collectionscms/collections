@@ -47,7 +47,7 @@
   "dependencies": {
     "@ant-design/icons": "5.4.0",
     "@auth/express": "0.6.0",
-    "@aws-sdk/client-s3": "3.629.0",
+    "@aws-sdk/client-s3": "3.654.0",
     "@collectionscms/plugin-translate": "1.0.1",
     "@emotion/react": "11.13.3",
     "@emotion/styled": "11.13.0",
