@@ -137,6 +137,7 @@
   "sign_in_with_github": "GitHubでログイン",
   "create_your_first_project": "Collections で最初のプロジェクトを作成しよう！",
   "invitation_from_existing_project": "または、既存のプロジェクトから招待を受けることもできます。",
+  "excerpt": "抜粋",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",

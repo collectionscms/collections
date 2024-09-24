@@ -58,6 +58,7 @@ export class UpdateContentUseCase {
         bodyHtml: props.bodyHtml,
         slug: props.slug,
         updatedById: userId,
+        excerpt: props.excerpt || null,
         metaTitle: props.metaTitle || null,
         metaDescription: props.metaDescription || null,
       });

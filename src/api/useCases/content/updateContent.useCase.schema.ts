@@ -10,6 +10,7 @@ export const updateContentUseCaseSchema = z.object({
   bodyHtml: z.string().optional().nullable(),
   coverUrl: z.string().optional().nullable(),
   slug: z.string().optional(),
+  excerpt: z.string().optional().nullable(),
   metaTitle: z.string().optional().nullable(),
   metaDescription: z.string().optional().nullable(),
 });

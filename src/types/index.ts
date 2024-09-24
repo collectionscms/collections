@@ -71,6 +71,7 @@ export type LocalizedPost = {
   body: string;
   bodyJson: string;
   bodyHtml: string;
+  excerpt: string | null;
   metaTitle: string | null;
   metaDescription: string | null;
   coverUrl: string | null;
@@ -93,6 +94,7 @@ export type PublishedContent = {
   language: string;
   version: number;
   coverUrl: string | null;
+  excerpt: string | null;
   metaTitle: string | null;
   metaDescription: string | null;
   publishedAt: Date;

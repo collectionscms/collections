@@ -128,6 +128,10 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     return this.props.bodyHtml ?? '';
   }
 
+  get excerpt(): string | null {
+    return this.props.excerpt;
+  }
+
   get metaTitle(): string | null {
     return this.props.metaTitle;
   }
@@ -219,6 +223,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     bodyHtml,
     coverUrl,
     slug,
+    excerpt,
     metaTitle,
     metaDescription,
     updatedById,
@@ -229,6 +234,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     bodyHtml?: string | null;
     coverUrl?: string | null;
     slug?: string;
+    excerpt?: string | null;
     metaTitle?: string | null;
     metaDescription?: string | null;
     updatedById: string;
@@ -239,6 +245,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
       ...(bodyJson !== undefined && { bodyJson }),
       ...(bodyHtml !== undefined && { bodyHtml }),
       ...(coverUrl !== undefined && { coverUrl }),
+      ...(excerpt !== undefined && { excerpt }),
       ...(metaTitle !== undefined && { metaTitle }),
       ...(metaDescription !== undefined && { metaDescription }),
       ...(slug !== undefined && { slug: encodeURIComponent(slug) }),
@@ -285,6 +292,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
       language: this.props.language,
       version: this.props.version,
       coverUrl: this.props.coverUrl,
+      excerpt: this.props.excerpt,
       metaTitle: this.props.metaTitle,
       metaDescription: this.props.metaDescription,
       publishedAt: this.props.publishedAt,
