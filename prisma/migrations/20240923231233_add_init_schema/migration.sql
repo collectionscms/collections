@@ -142,6 +142,7 @@ CREATE TABLE "Content" (
     "body" TEXT,
     "bodyJson" TEXT,
     "bodyHtml" TEXT,
+    "excerpt" TEXT,
     "metaTitle" VARCHAR(255),
     "metaDescription" TEXT,
     "coverUrl" VARCHAR(255),

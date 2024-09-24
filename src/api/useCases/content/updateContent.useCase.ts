@@ -30,7 +30,13 @@ export class UpdateContentUseCase {
     if (slug) {
       const encodedSlug = encodeURIComponent(slug);
       const sameSlugContent = await this.contentRepository.findOneBySlug(this.prisma, encodedSlug);
-      if (sameSlugContent?.content && sameSlugContent?.content.id !== id) {
+
+      if (
+        sameSlugContent?.content &&
+        sameSlugContent?.content.id !== id &&
+        // todo refactoring
+        sameSlugContent?.content.postId !== post.post.id
+      ) {
         throw new RecordNotUniqueException('already_registered_post_slug');
       }
     }
@@ -52,6 +58,7 @@ export class UpdateContentUseCase {
         bodyHtml: props.bodyHtml,
         slug: props.slug,
         updatedById: userId,
+        excerpt: props.excerpt || null,
         metaTitle: props.metaTitle || null,
         metaDescription: props.metaDescription || null,
       });

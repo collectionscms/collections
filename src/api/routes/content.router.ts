@@ -39,6 +39,7 @@ router.patch(
       bodyHtml: req.body.bodyHtml,
       coverUrl: req.body.coverUrl,
       slug: req.body.slug,
+      excerpt: req.body.excerpt,
       metaTitle: req.body.metaTitle,
       metaDescription: req.body.metaDescription,
     });

@@ -23,12 +23,13 @@ import { usePost } from '../../../../Context/index.js';
 type Props = {
   contentId: string;
   slug: string;
+  excerpt: string | null;
   onUpdated: (slug: string) => void;
 };
 
-export const GeneralSettings: React.FC<Props> = ({ contentId, slug, onUpdated }) => {
+export const GeneralSettings: React.FC<Props> = ({ contentId, slug, excerpt, onUpdated }) => {
   const { t } = useTranslation();
-  const [isEditingSlug, setIsEditingSlug] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
   const { updateContent } = usePost();
   const { trigger: updateContentTrigger } = updateContent(contentId);
@@ -40,6 +41,7 @@ export const GeneralSettings: React.FC<Props> = ({ contentId, slug, onUpdated })
   } = useForm<FormValues>({
     defaultValues: {
       slug,
+      excerpt,
     },
     resolver: yupResolver(updateSlugValidator()),
   });
@@ -47,7 +49,7 @@ export const GeneralSettings: React.FC<Props> = ({ contentId, slug, onUpdated })
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
       await updateContentTrigger(form);
-      setIsEditingSlug(false);
+      setIsEditing(false);
       onUpdated(form.slug);
       enqueueSnackbar(t('toast.updated_successfully'), {
         anchorOrigin: {
@@ -63,7 +65,7 @@ export const GeneralSettings: React.FC<Props> = ({ contentId, slug, onUpdated })
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
-        {isEditingSlug ? (
+        {isEditing ? (
           <Stack gap={2}>
             <Stack gap={1}>
               <Typography variant="subtitle1">{t('post_slug')}</Typography>
@@ -82,8 +84,26 @@ export const GeneralSettings: React.FC<Props> = ({ contentId, slug, onUpdated })
               />
             </Stack>
             <FormHelperText error>{errors.slug?.message}</FormHelperText>
+            <Stack gap={1}>
+              <Typography variant="subtitle1">{t('excerpt')}</Typography>
+              <Controller
+                name="excerpt"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    type="text"
+                    multiline
+                    rows={3}
+                    sx={{ flexGrow: 1 }}
+                    error={errors.excerpt !== undefined}
+                  />
+                )}
+              />
+            </Stack>
+            <FormHelperText error>{errors.excerpt?.message}</FormHelperText>
             <Stack direction="row" justifyContent="flex-end" spacing={1}>
-              <Button variant="outlined" color="secondary" onClick={() => setIsEditingSlug(false)}>
+              <Button variant="outlined" color="secondary" onClick={() => setIsEditing(false)}>
                 {t('cancel')}
               </Button>
               <Button variant="contained" type="submit">
@@ -94,12 +114,16 @@ export const GeneralSettings: React.FC<Props> = ({ contentId, slug, onUpdated })
         ) : (
           <Stack direction="row" alignItems="center" gap={1}>
             <Box flexGrow="1">
-              <Stack gap={1}>
+              <Stack gap={1} sx={{ mb: 3 }}>
                 <Typography variant="subtitle1">{t('post_slug')}</Typography>
                 <Typography>{decodeURIComponent(slug)}</Typography>
               </Stack>
+              <Stack gap={1}>
+                <Typography variant="subtitle1">{t('excerpt')}</Typography>
+                <Typography>{excerpt ?? t('not_set')}</Typography>
+              </Stack>
             </Box>
-            <IconButton onClick={() => setIsEditingSlug(true)}>
+            <IconButton onClick={() => setIsEditing(true)}>
               <Icon name="Pencil" size={16} />
             </IconButton>
           </Stack>

@@ -165,6 +165,7 @@ export const Settings: React.FC<Props> = ({ open, post, onClose, onTrashed }) =>
               <GeneralSettings
                 contentId={mutatedPost.contentId}
                 slug={mutatedPost.slug}
+                excerpt={mutatedPost.excerpt}
                 onUpdated={(slug) => handleUpdatedPost({ slug })}
               />
             </MainCard>
