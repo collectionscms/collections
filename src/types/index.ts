@@ -91,10 +91,10 @@ export type PublishedContent = {
   title: string;
   body: string;
   bodyHtml: string;
+  excerpt: string;
   language: string;
   version: number;
   coverUrl: string | null;
-  excerpt: string | null;
   metaTitle: string | null;
   metaDescription: string | null;
   publishedAt: Date;
