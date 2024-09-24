@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 import { Command } from 'commander';
 import { seedDev } from './api/database/seeds/dev.js';
-import { scriptBuild } from './scripts/commands/build.js';
-import { scriptDev } from './scripts/commands/dev.js';
-import { scriptStart } from './scripts/commands/start.js';
+import { scriptBuild } from './scripts/commands/build.command.js';
+import { scriptDev } from './scripts/commands/dev.command.js';
+import { scriptStart } from './scripts/commands/start.command.js';
 
 const program = new Command();
 
