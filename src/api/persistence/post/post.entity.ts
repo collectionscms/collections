@@ -224,7 +224,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
             bodyHtml: content.bodyHtml ?? '',
             language: content.language,
             version: content.version,
-            excerpt: content.excerpt,
+            excerpt: content.getExcerptOrBodyPreview(),
             coverUrl: content.coverUrl,
             metaTitle: content.metaTitle,
             metaDescription: content.metaDescription,
