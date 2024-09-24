@@ -16,6 +16,8 @@ export const ContentStatus = {
 } as const;
 export type ContentStatusType = (typeof ContentStatus)[keyof typeof ContentStatus];
 
+const EXCERPT_LENGTH = 150;
+
 type ContentProps = Omit<
   Content,
   | 'id'
@@ -184,6 +186,12 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     return v4().trim().replace(/-/g, '').substring(0, 10);
   };
 
+  getExcerptOrBodyPreview(): string {
+    const text = this.excerpt || this.body;
+    const preview = text.slice(0, EXCERPT_LENGTH);
+    return text.length > EXCERPT_LENGTH ? `${preview}...` : preview;
+  }
+
   changeStatus({ status, updatedById }: { status: string; updatedById?: string }) {
     this.props.status = status;
 
@@ -292,7 +300,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
       language: this.props.language,
       version: this.props.version,
       coverUrl: this.props.coverUrl,
-      excerpt: this.props.excerpt,
+      excerpt: this.getExcerptOrBodyPreview(),
       metaTitle: this.props.metaTitle,
       metaDescription: this.props.metaDescription,
       publishedAt: this.props.publishedAt,
