@@ -1,8 +1,8 @@
 import { Content } from '@prisma/client';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
 import { ContentRepository } from '../../persistence/content/content.repository.js';
-import { ContentHistoryEntity } from '../../persistence/contentHistory/contentHistory.entity.js';
-import { ContentHistoryRepository } from '../../persistence/contentHistory/contentHistory.repository.js';
+import { ContentRevisionEntity } from '../../persistence/contentRevision/contentRevision.entity.js';
+import { ContentRevisionRepository } from '../../persistence/contentRevision/contentRevision.repository.js';
 import { WebhookTriggerEvent } from '../../persistence/webhookLog/webhookLog.entity.js';
 import { WebhookService } from '../../services/webhook.service.js';
 import { TrashPostUseCaseSchemaType } from './trashPost.useCase.schema.js';
@@ -11,7 +11,7 @@ export class TrashPostUseCase {
   constructor(
     private readonly prisma: ProjectPrismaClient,
     private readonly contentRepository: ContentRepository,
-    private readonly contentHistoryRepository: ContentHistoryRepository,
+    private readonly contentRevisionRepository: ContentRevisionRepository,
     private readonly webhookService: WebhookService
   ) {}
 
@@ -25,10 +25,10 @@ export class TrashPostUseCase {
         await this.contentRepository.delete(tx, content);
         result.push(content);
 
-        const contentHistory = ContentHistoryEntity.Construct({
+        const contentRevision = ContentRevisionEntity.Construct({
           ...content.toResponse(),
         });
-        await this.contentHistoryRepository.create(tx, contentHistory);
+        await this.contentRevisionRepository.create(tx, contentRevision);
       }
 
       return result;

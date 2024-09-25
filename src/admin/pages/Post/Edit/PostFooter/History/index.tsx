@@ -19,7 +19,7 @@ export type Props = {
 };
 
 export const History: React.FC<Props> = ({ post, onReverted }) => {
-  const { contentId, histories, version, status } = post;
+  const { contentId, revisions: revisions, version, status } = post;
 
   const theme = useTheme();
   const { t } = useTranslation();
@@ -44,7 +44,7 @@ export const History: React.FC<Props> = ({ post, onReverted }) => {
     }
   };
 
-  const sortedHistories = histories.sort(
+  const sortedRevisions = revisions.sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   );
 
@@ -120,7 +120,7 @@ export const History: React.FC<Props> = ({ post, onReverted }) => {
                 }}
               >
                 <Stack sx={{ p: 2 }} gap={2}>
-                  {sortedHistories.map((history) => (
+                  {sortedRevisions.map((history) => (
                     <Stack key={history.id} flexDirection="row" gap={2}>
                       <Avatar variant="rounded" size="md" color="secondary" type="filled">
                         <Typography variant="h5">v{history.version}</Typography>

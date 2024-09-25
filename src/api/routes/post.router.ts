@@ -7,7 +7,7 @@ import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';
 import { validateAccess } from '../middlewares/validateAccess.js';
 import { ContentRepository } from '../persistence/content/content.repository.js';
-import { ContentHistoryRepository } from '../persistence/contentHistory/contentHistory.repository.js';
+import { ContentRevisionRepository } from '../persistence/contentRevision/contentRevision.repository.js';
 import { PostRepository } from '../persistence/post/post.repository.js';
 import { ProjectRepository } from '../persistence/project/project.repository.js';
 import { WebhookLogRepository } from '../persistence/webhookLog/webhookLog.repository.js';
@@ -74,7 +74,7 @@ router.get(
       projectPrisma(validated.data.projectId),
       new ProjectRepository(),
       new PostRepository(),
-      new ContentHistoryRepository()
+      new ContentRevisionRepository()
     );
 
     const permissions = res.projectRole?.permissions ?? [];
@@ -104,7 +104,7 @@ router.post(
       new ProjectRepository(),
       new PostRepository(),
       new ContentRepository(),
-      new ContentHistoryRepository()
+      new ContentRevisionRepository()
     );
     const post = await useCase.execute(validated.data);
 
@@ -130,7 +130,7 @@ router.post(
     const useCase = new CreateContentUseCase(
       projectPrisma(validated.data.projectId),
       new ContentRepository(),
-      new ContentHistoryRepository()
+      new ContentRevisionRepository()
     );
     const content = await useCase.execute(validated.data);
 
@@ -182,7 +182,7 @@ router.delete(
     const useCase = new TrashLanguageContentUseCase(
       projectPrisma(validated.data.projectId),
       new ContentRepository(),
-      new ContentHistoryRepository(),
+      new ContentRevisionRepository(),
       new WebhookService(new WebhookSettingRepository(), new WebhookLogRepository())
     );
     await useCase.execute(validated.data);
@@ -205,7 +205,7 @@ router.delete(
     const useCase = new TrashPostUseCase(
       projectPrisma(validated.data.projectId),
       new ContentRepository(),
-      new ContentHistoryRepository(),
+      new ContentRevisionRepository(),
       new WebhookService(new WebhookSettingRepository(), new WebhookLogRepository())
     );
     await useCase.execute(validated.data);

@@ -4,8 +4,8 @@ import { RecordNotUniqueException } from '../../../exceptions/database/recordNot
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
 import { ContentEntity } from '../../persistence/content/content.entity.js';
 import { ContentRepository } from '../../persistence/content/content.repository.js';
-import { ContentHistoryEntity } from '../../persistence/contentHistory/contentHistory.entity.js';
-import { ContentHistoryRepository } from '../../persistence/contentHistory/contentHistory.repository.js';
+import { ContentRevisionEntity } from '../../persistence/contentRevision/contentRevision.entity.js';
+import { ContentRevisionRepository } from '../../persistence/contentRevision/contentRevision.repository.js';
 import { PostRepository } from '../../persistence/post/post.repository.js';
 import { UpdateContentUseCaseSchemaType } from './updateContent.useCase.schema.js';
 
@@ -14,7 +14,7 @@ export class UpdateContentUseCase {
     private readonly prisma: ProjectPrismaClient,
     private readonly contentRepository: ContentRepository,
     private readonly postRepository: PostRepository,
-    private readonly contentHistoryRepository: ContentHistoryRepository
+    private readonly contentRevisionRepository: ContentRevisionRepository
   ) {}
 
   async execute(props: UpdateContentUseCaseSchemaType): Promise<Content> {
@@ -66,10 +66,10 @@ export class UpdateContentUseCase {
       if (content.isPublished()) {
         // create new version content
         const createdContent = await this.contentRepository.create(tx, entity);
-        const history = ContentHistoryEntity.Construct({
+        const history = ContentRevisionEntity.Construct({
           ...entity.toResponse(),
         });
-        await this.contentHistoryRepository.create(tx, history);
+        await this.contentRevisionRepository.create(tx, history);
 
         return createdContent.content;
       } else {

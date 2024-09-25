@@ -2,8 +2,8 @@ import { UnexpectedException } from '../../exceptions/unexpected.js';
 import { ProjectPrismaType } from '../database/prisma/client';
 import { ContentStatusType } from '../persistence/content/content.entity.js';
 import { ContentRepository } from '../persistence/content/content.repository.js';
-import { ContentHistoryEntity } from '../persistence/contentHistory/contentHistory.entity.js';
-import { ContentHistoryRepository } from '../persistence/contentHistory/contentHistory.repository.js';
+import { ContentRevisionEntity } from '../persistence/contentRevision/contentRevision.entity.js';
+import { ContentRevisionRepository } from '../persistence/contentRevision/contentRevision.repository.js';
 import {
   ReviewEntity,
   ReviewStatus,
@@ -15,7 +15,7 @@ export class ChangeReviewStatusService {
   constructor(
     private readonly reviewRepository: ReviewRepository,
     private readonly contentRepository: ContentRepository,
-    private readonly contentHistoryRepository: ContentHistoryRepository
+    private readonly contentRevisionRepository: ContentRevisionRepository
   ) {}
 
   async execute(
@@ -45,10 +45,10 @@ export class ChangeReviewStatusService {
     });
     await this.contentRepository.updateStatus(prisma, content);
 
-    const contentHistory = ContentHistoryEntity.Construct({
+    const contentRevision = ContentRevisionEntity.Construct({
       ...content.toResponse(),
     });
-    await this.contentHistoryRepository.create(prisma, contentHistory);
+    await this.contentRevisionRepository.create(prisma, contentRevision);
 
     const updatedReview = await this.reviewRepository.updateStatus(prisma, review);
     return updatedReview;

@@ -58,7 +58,7 @@ export const createPost = async (
       contents: {
         create: postContents,
       },
-      contentHistories: {
+      contentRevisions: {
         create: postContents,
       },
     },

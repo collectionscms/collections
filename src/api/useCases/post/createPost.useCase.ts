@@ -1,8 +1,8 @@
 import { LocalizedPost } from '../../../types/index.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
 import { ContentRepository } from '../../persistence/content/content.repository.js';
-import { ContentHistoryEntity } from '../../persistence/contentHistory/contentHistory.entity.js';
-import { ContentHistoryRepository } from '../../persistence/contentHistory/contentHistory.repository.js';
+import { ContentRevisionEntity } from '../../persistence/contentRevision/contentRevision.entity.js';
+import { ContentRevisionRepository } from '../../persistence/contentRevision/contentRevision.repository.js';
 import { PostEntity } from '../../persistence/post/post.entity.js';
 import { PostRepository } from '../../persistence/post/post.repository.js';
 import { ProjectRepository } from '../../persistence/project/project.repository.js';
@@ -14,7 +14,7 @@ export class CreatePostUseCase {
     private readonly projectRepository: ProjectRepository,
     private readonly postRepository: PostRepository,
     private readonly contentRepository: ContentRepository,
-    private readonly contentHistoryRepository: ContentHistoryRepository
+    private readonly contentRevisionRepository: ContentRevisionRepository
   ) {}
 
   async execute(props: CreatePostUseCaseSchemaType): Promise<LocalizedPost> {
@@ -35,17 +35,17 @@ export class CreatePostUseCase {
         content
       );
 
-      const contentHistory = ContentHistoryEntity.Construct({
+      const contentRevision = ContentRevisionEntity.Construct({
         ...createdContent.toResponse(),
       });
-      await this.contentHistoryRepository.create(tx, contentHistory);
+      await this.contentRevisionRepository.create(tx, contentRevision);
 
       return {
         post: createdPost,
         content: createdContent,
         createdBy: createdBy,
         updatedBy: createdBy,
-        histories: [contentHistory],
+        revisions: [contentRevision],
       };
     });
 
@@ -55,7 +55,7 @@ export class CreatePostUseCase {
       result.content,
       result.createdBy,
       result.updatedBy,
-      result.histories
+      result.revisions
     );
   }
 }

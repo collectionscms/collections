@@ -10,7 +10,7 @@ import {
   StatusHistory,
 } from '../../../types/index.js';
 import { ContentEntity } from '../content/content.entity.js';
-import { ContentHistoryEntity } from '../contentHistory/contentHistory.entity.js';
+import { ContentRevisionEntity } from '../contentRevision/contentRevision.entity.js';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 import { ProjectEntity } from '../project/project.entity.js';
 import { UserEntity } from '../user/user.entity.js';
@@ -142,12 +142,12 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     content: ContentEntity,
     createdBy: UserEntity,
     updatedBy: UserEntity,
-    histories: ContentHistoryEntity[]
+    revisions: ContentRevisionEntity[]
   ): LocalizedPost {
-    const latestHistories = this.getLatestHistoriesByLanguage(
+    const latestRevisions = this.getLatestRevisionsByLanguage(
       content.language,
       content.version,
-      histories
+      revisions
     );
 
     return {
@@ -172,7 +172,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       targetLanguageCode: content.languageCode?.code ?? null,
       createdByName: createdBy.name,
       updatedByName: updatedBy.name,
-      histories: latestHistories,
+      revisions: latestRevisions,
     };
   }
 
@@ -244,21 +244,21 @@ export class PostEntity extends PrismaBaseEntity<Post> {
   }
 
   /**
-   * Get the latest history of each version in the same language.
+   * Get the latest revision of each version in the same language.
    * @param language
    * @param currentVersion
-   * @param histories
+   * @param revisions
    * @returns
    */
-  private getLatestHistoriesByLanguage(
+  private getLatestRevisionsByLanguage(
     language: string,
     currentVersion: number,
-    histories: ContentHistoryEntity[]
+    revisions: ContentRevisionEntity[]
   ) {
-    const filteredHistories = histories.filter((history) => history.language === language);
+    const filteredRevisions = revisions.filter((history) => history.language === language);
 
-    const latestHistories: { [version: number]: ContentHistoryEntity } = filteredHistories.reduce(
-      (acc: { [version: number]: ContentHistoryEntity }, history) => {
+    const latestRevisions: { [version: number]: ContentRevisionEntity } = filteredRevisions.reduce(
+      (acc: { [version: number]: ContentRevisionEntity }, history) => {
         const version = history.version;
         if (version > currentVersion) {
           // Deleted case
@@ -273,6 +273,6 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       {}
     );
 
-    return Object.values(latestHistories).map((history) => history.toResponse());
+    return Object.values(latestRevisions).map((history) => history.toResponse());
   }
 }

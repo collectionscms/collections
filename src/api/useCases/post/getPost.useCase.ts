@@ -1,6 +1,6 @@
 import { LocalizedPost } from '../../../types/index.js';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
-import { ContentHistoryRepository } from '../../persistence/contentHistory/contentHistory.repository.js';
+import { ContentRevisionRepository } from '../../persistence/contentRevision/contentRevision.repository.js';
 import { PostRepository } from '../../persistence/post/post.repository.js';
 import { ProjectRepository } from '../../persistence/project/project.repository.js';
 import { GetPostUseCaseSchemaType } from './getPost.useCase.schema.js';
@@ -10,7 +10,7 @@ export class GetPostUseCase {
     private readonly prisma: ProjectPrismaType,
     private readonly projectRepository: ProjectRepository,
     private readonly postRepository: PostRepository,
-    private readonly contentHistoryRepository: ContentHistoryRepository
+    private readonly contentRevisionRepository: ContentRevisionRepository
   ) {}
 
   async execute(props: GetPostUseCaseSchemaType, hasReadAllPost: boolean): Promise<LocalizedPost> {
@@ -29,7 +29,7 @@ export class GetPostUseCase {
       .filter((c) => c.content.language === props.language)
       .reduce((a, b) => (b.content.version > a.content.version ? b : a));
 
-    const histories = await this.contentHistoryRepository.findManyByPostIdWithLanguage(
+    const revisions = await this.contentRevisionRepository.findManyByPostIdWithLanguage(
       this.prisma,
       post.id,
       languageContent.content.language
@@ -41,7 +41,7 @@ export class GetPostUseCase {
       languageContent.content,
       languageContent.createdBy,
       languageContent.updatedBy,
-      histories
+      revisions
     );
   }
 }

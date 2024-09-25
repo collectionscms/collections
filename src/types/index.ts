@@ -1,7 +1,7 @@
 import {
   ApiKey,
   Content,
-  ContentHistory,
+  ContentRevision,
   File,
   Permission,
   Project,
@@ -82,7 +82,7 @@ export type LocalizedPost = {
   targetLanguageCode: string | null;
   createdByName: string;
   updatedByName: string;
-  histories: ContentHistory[];
+  revisions: ContentRevision[];
 };
 
 export type PublishedContent = {

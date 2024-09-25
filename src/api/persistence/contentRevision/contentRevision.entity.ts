@@ -1,9 +1,9 @@
-import { ContentHistory } from '@prisma/client';
+import { ContentRevision } from '@prisma/client';
 import { v4 } from 'uuid';
 import { UnexpectedException } from '../../../exceptions/unexpected.js';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 
-export class ContentHistoryEntity extends PrismaBaseEntity<ContentHistory> {
+export class ContentRevisionEntity extends PrismaBaseEntity<ContentRevision> {
   static Construct({
     projectId,
     postId,
@@ -36,8 +36,8 @@ export class ContentHistoryEntity extends PrismaBaseEntity<ContentHistory> {
     updatedById: string;
     version: number;
     deletedAt: Date | null;
-  }): ContentHistoryEntity {
-    return new ContentHistoryEntity({
+  }): ContentRevisionEntity {
+    return new ContentRevisionEntity({
       id: v4(),
       projectId,
       postId,
@@ -84,14 +84,14 @@ export class ContentHistoryEntity extends PrismaBaseEntity<ContentHistory> {
     return this.props.createdAt;
   }
 
-  private copyProps(): ContentHistory {
+  private copyProps(): ContentRevision {
     const copy = {
       ...this.props,
     };
     return Object.freeze(copy);
   }
 
-  toResponse(): ContentHistory {
+  toResponse(): ContentRevision {
     return this.copyProps();
   }
 }

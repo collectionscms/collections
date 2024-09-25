@@ -1,8 +1,8 @@
 import { User } from '@auth/express';
-import { Content, ContentHistory, Post } from '@prisma/client';
+import { Content, ContentRevision, Post } from '@prisma/client';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
 import { ContentEntity } from '../content/content.entity.js';
-import { ContentHistoryEntity } from '../contentHistory/contentHistory.entity.js';
+import { ContentRevisionEntity } from '../contentRevision/contentRevision.entity.js';
 import { UserEntity } from '../user/user.entity.js';
 import { PostEntity } from './post.entity.js';
 
@@ -18,13 +18,13 @@ export class PostRepository {
       contents: {
         content: ContentEntity;
         updatedBy: UserEntity;
-        histories: ContentHistoryEntity[];
+        revisions: ContentRevisionEntity[];
       }[];
     }[]
   > {
     const records = await prisma.post.findMany({
       include: {
-        contentHistories: true,
+        contentRevisions: true,
         contents: {
           include: {
             updatedBy: true,
@@ -50,8 +50,8 @@ export class PostRepository {
         contents.push({
           content: ContentEntity.Reconstruct<Content, ContentEntity>(content),
           updatedBy: UserEntity.Reconstruct<User, UserEntity>(content.updatedBy),
-          histories: record.contentHistories.map((history) =>
-            ContentHistoryEntity.Reconstruct<ContentHistory, ContentHistoryEntity>(history)
+          revisions: record.contentRevisions.map((revision) =>
+            ContentRevisionEntity.Reconstruct<ContentRevision, ContentRevisionEntity>(revision)
           ),
         });
       }

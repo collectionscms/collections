@@ -1,8 +1,8 @@
 import { Content } from '@prisma/client';
 import { ContentStatus } from '../../persistence/content/content.entity.js';
 import { ContentRepository } from '../../persistence/content/content.repository.js';
-import { ContentHistoryEntity } from '../../persistence/contentHistory/contentHistory.entity.js';
-import { ContentHistoryRepository } from '../../persistence/contentHistory/contentHistory.repository.js';
+import { ContentRevisionEntity } from '../../persistence/contentRevision/contentRevision.entity.js';
+import { ContentRevisionRepository } from '../../persistence/contentRevision/contentRevision.repository.js';
 import { ReviewEntity } from '../../persistence/review/review.entity.js';
 import { ReviewRepository } from '../../persistence/review/review.repository.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
@@ -12,7 +12,7 @@ export class RequestReviewUseCase {
   constructor(
     private readonly prisma: ProjectPrismaClient,
     private readonly contentRepository: ContentRepository,
-    private readonly contentHistoryRepository: ContentHistoryRepository,
+    private readonly contentRevisionRepository: ContentRevisionRepository,
     private readonly reviewRepository: ReviewRepository
   ) {}
 
@@ -42,10 +42,10 @@ export class RequestReviewUseCase {
       }
       this.reviewRepository.upsert(tx, review);
 
-      const contentHistory = ContentHistoryEntity.Construct({
+      const contentRevision = ContentRevisionEntity.Construct({
         ...result.toResponse(),
       });
-      await this.contentHistoryRepository.create(tx, contentHistory);
+      await this.contentRevisionRepository.create(tx, contentRevision);
 
       return result;
     });

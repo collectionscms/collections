@@ -5,7 +5,7 @@ import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';
 import { validateAccess } from '../middlewares/validateAccess.js';
 import { ContentRepository } from '../persistence/content/content.repository.js';
-import { ContentHistoryRepository } from '../persistence/contentHistory/contentHistory.repository.js';
+import { ContentRevisionRepository } from '../persistence/contentRevision/contentRevision.repository.js';
 import { PostRepository } from '../persistence/post/post.repository.js';
 import { ReviewRepository } from '../persistence/review/review.repository.js';
 import { WebhookLogRepository } from '../persistence/webhookLog/webhookLog.repository.js';
@@ -49,7 +49,7 @@ router.patch(
       projectPrisma(validated.data.projectId),
       new ContentRepository(),
       new PostRepository(),
-      new ContentHistoryRepository()
+      new ContentRevisionRepository()
     );
     await useCase.execute(validated.data);
 
@@ -73,7 +73,7 @@ router.patch(
     const useCase = new RequestReviewUseCase(
       projectPrisma(validated.data.projectId),
       new ContentRepository(),
-      new ContentHistoryRepository(),
+      new ContentRevisionRepository(),
       new ReviewRepository()
     );
     await useCase.execute(validated.data);
@@ -97,7 +97,7 @@ router.patch(
     const useCase = new PublishUseCase(
       projectPrisma(validated.data.projectId),
       new ContentRepository(),
-      new ContentHistoryRepository(),
+      new ContentRevisionRepository(),
       new WebhookService(new WebhookSettingRepository(), new WebhookLogRepository())
     );
     await useCase.execute(validated.data);
@@ -121,7 +121,7 @@ router.patch(
     const useCase = new ArchiveUseCase(
       projectPrisma(validated.data.projectId),
       new ContentRepository(),
-      new ContentHistoryRepository(),
+      new ContentRevisionRepository(),
       new WebhookService(new WebhookSettingRepository(), new WebhookLogRepository())
     );
     await useCase.execute(validated.data);
@@ -145,7 +145,7 @@ router.delete(
     const useCase = new TrashContentUseCase(
       projectPrisma(validated.data.projectId),
       new ContentRepository(),
-      new ContentHistoryRepository(),
+      new ContentRevisionRepository(),
       new WebhookService(new WebhookSettingRepository(), new WebhookLogRepository())
     );
     await useCase.execute(validated.data);

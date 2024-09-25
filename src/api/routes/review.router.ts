@@ -5,7 +5,7 @@ import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';
 import { validateAccess } from '../middlewares/validateAccess.js';
 import { ContentRepository } from '../persistence/content/content.repository.js';
-import { ContentHistoryRepository } from '../persistence/contentHistory/contentHistory.repository.js';
+import { ContentRevisionRepository } from '../persistence/contentRevision/contentRevision.repository.js';
 import { ReviewRepository } from '../persistence/review/review.repository.js';
 import { ChangeReviewStatusService } from '../services/changeReviewStatus.service.js';
 import { approveReviewUseCaseSchema } from '../useCases/review/approveReview.useCase.schema.js';
@@ -90,7 +90,7 @@ router.patch(
       new ChangeReviewStatusService(
         new ReviewRepository(),
         new ContentRepository(),
-        new ContentHistoryRepository()
+        new ContentRevisionRepository()
       )
     );
 
@@ -119,7 +119,7 @@ router.patch(
       new ChangeReviewStatusService(
         new ReviewRepository(),
         new ContentRepository(),
-        new ContentHistoryRepository()
+        new ContentRevisionRepository()
       )
     );
 

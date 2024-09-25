@@ -22,7 +22,7 @@ model Project {
   roles             Role[]
   posts             Post[]
   contents          Content[]
-  contentHistories  ContentHistory[]
+  contentRevisions  ContentRevision[]
   apiKeys           ApiKey[]
   invitations       Invitation[]
   rolePermissions   RolePermission[]
@@ -33,27 +33,27 @@ model Project {
 }
 
 model User {
-  id                           String           @id @db.Uuid
-  name                         String           @db.VarChar(255)
+  id                           String            @id @db.Uuid
+  name                         String            @db.VarChar(255)
   email                        String
-  password                     String?          @db.VarChar(255)
-  isActive                     Boolean          @default(true)
-  avatarUrl                    String?          @db.VarChar(255)
-  provider                     String           @db.VarChar(255)
-  providerId                   String           @db.VarChar(255)
-  createdAt                    DateTime         @default(now()) @db.Timestamptz(6)
-  updatedAt                    DateTime         @updatedAt @db.Timestamptz(6)
+  password                     String?           @db.VarChar(255)
+  isActive                     Boolean           @default(true)
+  avatarUrl                    String?           @db.VarChar(255)
+  provider                     String            @db.VarChar(255)
+  providerId                   String            @db.VarChar(255)
+  createdAt                    DateTime          @default(now()) @db.Timestamptz(6)
+  updatedAt                    DateTime          @updatedAt @db.Timestamptz(6)
   userProjects                 UserProject[]
   invitations                  Invitation[]
-  revieweeHasReviews           Review[]         @relation("Reviewee")
-  reviewerHasReviews           Review[]         @relation("Reviewer")
-  createdByHasContents         Content[]        @relation("CreatedBy")
-  updatedByHasContents         Content[]        @relation("UpdatedBy")
-  createdByHasApiKeys          ApiKey[]         @relation("CreatedBy")
-  updatedByHasApiKeys          ApiKey[]         @relation("UpdatedBy")
-  createdByHasPosts            Post[]           @relation("CreatedBy")
-  createdByHasContentHistories ContentHistory[] @relation("CreatedBy")
-  updatedByHasContentHistories ContentHistory[] @relation("UpdatedBy")
+  revieweeHasReviews           Review[]          @relation("Reviewee")
+  reviewerHasReviews           Review[]          @relation("Reviewer")
+  createdByHasContents         Content[]         @relation("CreatedBy")
+  updatedByHasContents         Content[]         @relation("UpdatedBy")
+  createdByHasApiKeys          ApiKey[]          @relation("CreatedBy")
+  updatedByHasApiKeys          ApiKey[]          @relation("UpdatedBy")
+  createdByHasPosts            Post[]            @relation("CreatedBy")
+  createdByHasContentRevisions ContentRevision[] @relation("CreatedBy")
+  updatedByHasContentRevisions ContentRevision[] @relation("UpdatedBy")
 
   @@unique([provider, providerId])
 }
@@ -135,16 +135,16 @@ model File {
 }
 
 model Post {
-  id               String           @id @db.Uuid
-  projectId        String           @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
-  createdById      String           @db.Uuid
-  createdAt        DateTime         @default(now()) @db.Timestamptz(6)
-  updatedAt        DateTime         @updatedAt @db.Timestamptz(6)
-  project          Project          @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  createdBy        User             @relation(name: "CreatedBy", fields: [createdById], references: [id], onDelete: NoAction)
+  id               String            @id @db.Uuid
+  projectId        String            @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
+  createdById      String            @db.Uuid
+  createdAt        DateTime          @default(now()) @db.Timestamptz(6)
+  updatedAt        DateTime          @updatedAt @db.Timestamptz(6)
+  project          Project           @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  createdBy        User              @relation(name: "CreatedBy", fields: [createdById], references: [id], onDelete: NoAction)
   contents         Content[]
   reviews          Review[]
-  contentHistories ContentHistory[]
+  contentRevisions ContentRevision[]
 }
 
 model Review {
@@ -194,7 +194,7 @@ model Content {
   reviews         Review[]
 }
 
-model ContentHistory {
+model ContentRevision {
   id          String    @id @db.Uuid
   projectId   String    @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
   postId      String    @db.Uuid
