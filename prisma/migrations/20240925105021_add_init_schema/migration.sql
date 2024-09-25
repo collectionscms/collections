@@ -164,6 +164,7 @@ CREATE TABLE "ContentRevision" (
     "id" UUID NOT NULL,
     "projectId" UUID NOT NULL DEFAULT (current_setting('app.current_project_id'::text))::uuid,
     "postId" UUID NOT NULL,
+    "contentId" UUID NOT NULL,
     "slug" TEXT NOT NULL,
     "title" VARCHAR(255),
     "body" TEXT,
@@ -322,6 +323,9 @@ ALTER TABLE "ContentRevision" ADD CONSTRAINT "ContentRevision_projectId_fkey" FO
 
 -- AddForeignKey
 ALTER TABLE "ContentRevision" ADD CONSTRAINT "ContentRevision_postId_fkey" FOREIGN KEY ("postId") REFERENCES "Post"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ContentRevision" ADD CONSTRAINT "ContentRevision_contentId_fkey" FOREIGN KEY ("contentId") REFERENCES "Content"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "ContentRevision" ADD CONSTRAINT "ContentRevision_createdById_fkey" FOREIGN KEY ("createdById") REFERENCES "User"("id") ON DELETE NO ACTION ON UPDATE CASCADE;

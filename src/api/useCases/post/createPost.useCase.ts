@@ -37,6 +37,7 @@ export class CreatePostUseCase {
 
       const contentRevision = ContentRevisionEntity.Construct({
         ...createdContent.toResponse(),
+        contentId: createdContent.id,
       });
       await this.contentRevisionRepository.create(tx, contentRevision);
 

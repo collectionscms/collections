@@ -7,6 +7,7 @@ export class ContentRevisionEntity extends PrismaBaseEntity<ContentRevision> {
   static Construct({
     projectId,
     postId,
+    contentId,
     slug,
     coverUrl,
     title,
@@ -23,6 +24,7 @@ export class ContentRevisionEntity extends PrismaBaseEntity<ContentRevision> {
   }: {
     projectId: string;
     postId: string;
+    contentId: string;
     slug: string;
     coverUrl?: string | null;
     title?: string | null;
@@ -40,6 +42,7 @@ export class ContentRevisionEntity extends PrismaBaseEntity<ContentRevision> {
     return new ContentRevisionEntity({
       id: v4(),
       projectId,
+      contentId,
       postId,
       slug,
       coverUrl: coverUrl || null,

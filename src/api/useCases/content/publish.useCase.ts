@@ -30,6 +30,7 @@ export class PublishUseCase {
 
       const contentRevision = ContentRevisionEntity.Construct({
         ...result.toResponse(),
+        contentId: content.id,
       });
       await this.contentRevisionRepository.create(tx, contentRevision);
 

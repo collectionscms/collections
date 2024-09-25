@@ -29,10 +29,30 @@ export const createPost = async (
   const postId = options?.postId ?? v4();
 
   const postContents = [];
+  const contentRevisions = [];
   for (const content of contents) {
+    const contentId = v4();
     postContents.push({
+      id: contentId,
+      projectId,
+      status: content.status,
+      publishedAt: content.status === ContentStatus.published ? currentTime : null,
+      language: content.language,
+      version: 1,
+      slug: encodeURIComponent(content.slug),
+      title: content.title,
+      body: content.body,
+      bodyJson: content.bodyJson,
+      bodyHtml: content.bodyHtml,
+      coverUrl: content.coverUrl,
+      createdById: user.id,
+      updatedById: user.id,
+    });
+
+    contentRevisions.push({
       id: v4(),
       projectId,
+      contentId,
       status: content.status,
       publishedAt: content.status === ContentStatus.published ? currentTime : null,
       language: content.language,
@@ -59,7 +79,7 @@ export const createPost = async (
         create: postContents,
       },
       contentRevisions: {
-        create: postContents,
+        create: contentRevisions,
       },
     },
   });

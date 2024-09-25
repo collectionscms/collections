@@ -32,6 +32,7 @@ export class TrashLanguageContentUseCase {
 
         const contentRevision = ContentRevisionEntity.Construct({
           ...content.toResponse(),
+          contentId: content.id,
         });
         await this.contentRevisionRepository.create(tx, contentRevision);
       }

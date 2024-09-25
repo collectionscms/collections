@@ -1,9 +1,9 @@
 import { Content } from '@prisma/client';
+import { ProjectPrismaClient } from '../../database/prisma/client.js';
 import { ContentEntity } from '../../persistence/content/content.entity.js';
 import { ContentRepository } from '../../persistence/content/content.repository.js';
 import { ContentRevisionEntity } from '../../persistence/contentRevision/contentRevision.entity.js';
 import { ContentRevisionRepository } from '../../persistence/contentRevision/contentRevision.repository.js';
-import { ProjectPrismaClient } from '../../database/prisma/client.js';
 import { CreateContentUseCaseSchemaType } from './createContent.useCase.schema.js';
 
 export class CreateContentUseCase {
@@ -27,6 +27,7 @@ export class CreateContentUseCase {
 
       const contentRevision = ContentRevisionEntity.Construct({
         ...result.content.toResponse(),
+        contentId: result.content.id,
       });
       await this.contentRevisionRepository.create(tx, contentRevision);
 

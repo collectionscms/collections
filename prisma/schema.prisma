@@ -166,38 +166,40 @@ model Review {
 }
 
 model Content {
-  id              String    @id @db.Uuid
-  projectId       String    @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
-  postId          String    @db.Uuid
-  slug            String
-  title           String?   @db.VarChar(255)
-  body            String?
-  bodyJson        String?
-  bodyHtml        String?
-  excerpt         String?
-  metaTitle       String?   @db.VarChar(255)
-  metaDescription String?
-  coverUrl        String?   @db.VarChar(255)
-  language        String    @db.VarChar(255)
-  status          String    @db.VarChar(255)
-  version         Int       @default(1)
-  publishedAt     DateTime? @db.Timestamptz(6)
-  deletedAt       DateTime? @db.Timestamptz(6)
-  createdById     String    @db.Uuid
-  updatedById     String    @db.Uuid
-  createdAt       DateTime  @default(now()) @db.Timestamptz(6)
-  updatedAt       DateTime  @updatedAt @db.Timestamptz(6)
-  project         Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  post            Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
-  createdBy       User      @relation(name: "CreatedBy", fields: [createdById], references: [id], onDelete: NoAction)
-  updatedBy       User      @relation(name: "UpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction)
-  reviews         Review[]
+  id               String            @id @db.Uuid
+  projectId        String            @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
+  postId           String            @db.Uuid
+  slug             String
+  title            String?           @db.VarChar(255)
+  body             String?
+  bodyJson         String?
+  bodyHtml         String?
+  excerpt          String?
+  metaTitle        String?           @db.VarChar(255)
+  metaDescription  String?
+  coverUrl         String?           @db.VarChar(255)
+  language         String            @db.VarChar(255)
+  status           String            @db.VarChar(255)
+  version          Int               @default(1)
+  publishedAt      DateTime?         @db.Timestamptz(6)
+  deletedAt        DateTime?         @db.Timestamptz(6)
+  createdById      String            @db.Uuid
+  updatedById      String            @db.Uuid
+  createdAt        DateTime          @default(now()) @db.Timestamptz(6)
+  updatedAt        DateTime          @updatedAt @db.Timestamptz(6)
+  project          Project           @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  post             Post              @relation(fields: [postId], references: [id], onDelete: Cascade)
+  createdBy        User              @relation(name: "CreatedBy", fields: [createdById], references: [id], onDelete: NoAction)
+  updatedBy        User              @relation(name: "UpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction)
+  reviews          Review[]
+  contentRevisions ContentRevision[]
 }
 
 model ContentRevision {
   id          String    @id @db.Uuid
   projectId   String    @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
   postId      String    @db.Uuid
+  contentId   String    @db.Uuid
   slug        String
   title       String?   @db.VarChar(255)
   body        String?
@@ -214,6 +216,7 @@ model ContentRevision {
   createdAt   DateTime  @default(now()) @db.Timestamptz(6)
   project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
   post        Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
+  content     Content   @relation(fields: [contentId], references: [id], onDelete: Cascade)
   createdBy   User      @relation(name: "CreatedBy", fields: [createdById], references: [id], onDelete: NoAction)
   updatedBy   User      @relation(name: "UpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction)
 }

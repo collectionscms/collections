@@ -68,6 +68,7 @@ export class UpdateContentUseCase {
         const createdContent = await this.contentRepository.create(tx, entity);
         const history = ContentRevisionEntity.Construct({
           ...entity.toResponse(),
+          contentId: entity.id,
         });
         await this.contentRevisionRepository.create(tx, history);
 

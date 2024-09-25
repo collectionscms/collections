@@ -10,6 +10,7 @@ import {
   ReviewStatusType,
 } from '../persistence/review/review.entity.js';
 import { ReviewRepository } from '../persistence/review/review.repository.js';
+import { content } from '../routes/content.router.js';
 
 export class ChangeReviewStatusService {
   constructor(
@@ -47,6 +48,7 @@ export class ChangeReviewStatusService {
 
     const contentRevision = ContentRevisionEntity.Construct({
       ...content.toResponse(),
+      contentId: content.id,
     });
     await this.contentRevisionRepository.create(prisma, contentRevision);
 
