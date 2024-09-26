@@ -247,14 +247,6 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     this.props.updatedById = userId;
   }
 
-  hasNewVersion(contents: ContentEntity[]): boolean {
-    return contents.some(
-      (c) =>
-        c.props.language === this.props.language &&
-        c.props.currentVersion > this.props.currentVersion
-    );
-  }
-
   isPublished(): boolean {
     return this.props.status === ContentStatus.published;
   }

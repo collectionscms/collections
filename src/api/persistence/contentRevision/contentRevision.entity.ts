@@ -111,6 +111,22 @@ export class ContentRevisionEntity extends PrismaBaseEntity<ContentRevision> {
     return Object.freeze(copy);
   }
 
+  static getVersionRevision = (
+    version: number,
+    language: string,
+    revisions: ContentRevisionEntity[]
+  ) => {
+    const currentRevision = revisions.find(
+      (revision) => revision.version === version && revision.language === language
+    );
+
+    if (!currentRevision) {
+      throw new UnexpectedException({ message: 'Current revision not found' });
+    }
+
+    return currentRevision;
+  };
+
   updateContent({
     title,
     body,

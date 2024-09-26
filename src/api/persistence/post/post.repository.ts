@@ -17,7 +17,6 @@ export class PostRepository {
       post: PostEntity;
       contents: {
         content: ContentEntity;
-        updatedBy: UserEntity;
         revisions: ContentRevisionEntity[];
       }[];
     }[]
@@ -26,9 +25,6 @@ export class PostRepository {
       include: {
         contentRevisions: true,
         contents: {
-          include: {
-            updatedBy: true,
-          },
           where: {
             deletedAt: null,
           },
@@ -49,7 +45,6 @@ export class PostRepository {
       for (const content of record.contents) {
         contents.push({
           content: ContentEntity.Reconstruct<Content, ContentEntity>(content),
-          updatedBy: UserEntity.Reconstruct<User, UserEntity>(content.updatedBy),
           revisions: record.contentRevisions.map((revision) =>
             ContentRevisionEntity.Reconstruct<ContentRevision, ContentRevisionEntity>(revision)
           ),

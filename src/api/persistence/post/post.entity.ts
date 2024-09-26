@@ -1,4 +1,4 @@
-import { Post } from '@prisma/client';
+import { Content, Post } from '@prisma/client';
 import { v4 } from 'uuid';
 import { UnexpectedException } from '../../../exceptions/unexpected.js';
 import {
@@ -76,53 +76,42 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     sourceLanguage: string,
     contents: {
       content: ContentEntity;
-      updatedBy: UserEntity;
+      revisions: ContentRevisionEntity[];
     }[]
   ): SourceLanguagePostItem {
-    const sortedContents = contents.sort(
-      (a, b) => b.content.currentVersion - a.content.currentVersion
-    );
-
     const sourceLngContent =
-      sortedContents.filter((c) => c.content.language === sourceLanguage)[0] || sortedContents[0];
+      contents.filter((c) => c.content.language === sourceLanguage)[0] || contents[0];
 
-    // Filter for latest ver content in other languages
-    const otherLngContents = Object.values(
-      sortedContents.reduce(
-        (acc, c) => {
-          if (
-            c.content.id !== sourceLngContent.content.id &&
-            c.content.language !== sourceLanguage
-          ) {
-            if (!acc[c.content.language]) {
-              acc[c.content.language] = c;
-            }
-          }
-          return acc;
-        },
-        {} as Record<string, (typeof sortedContents)[0]>
-      )
+    const sourceLngContentRevision = ContentRevisionEntity.getVersionRevision(
+      sourceLngContent.content.currentVersion,
+      sourceLanguage,
+      sourceLngContent.revisions
     );
+
+    const otherLngContents = contents.filter((c) => c.content.id !== sourceLngContent.content.id);
 
     return {
       ...this.toLocalizedContentItem(
-        sourceLngContent.content,
-        sourceLngContent.updatedBy,
+        sourceLngContentRevision.toContentResponse(),
         sourceLngContent.content.statusHistory()
       ),
-      localizedContents: otherLngContents.map((otherLngContent) =>
-        this.toLocalizedContentItem(
-          otherLngContent.content,
-          otherLngContent.updatedBy,
+      localizedContents: otherLngContents.map((otherLngContent) => {
+        const otherLngContentRevision = ContentRevisionEntity.getVersionRevision(
+          otherLngContent.content.currentVersion,
+          otherLngContent.content.language,
+          otherLngContent.revisions
+        );
+
+        return this.toLocalizedContentItem(
+          otherLngContentRevision.toContentResponse(),
           otherLngContent.content.statusHistory()
-        )
-      ),
+        );
+      }),
     };
   }
 
   private toLocalizedContentItem(
-    content: ContentEntity,
-    updatedBy: UserEntity,
+    content: Content,
     statusHistory: StatusHistory
   ): LocalizedContentItem {
     return {
@@ -132,7 +121,6 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       slug: content.slug,
       language: content.language,
       status: statusHistory,
-      updatedByName: updatedBy.name,
       updatedAt: content.updatedAt,
     };
   }
