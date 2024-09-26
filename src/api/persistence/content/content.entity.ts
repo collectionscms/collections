@@ -5,6 +5,7 @@ import { env } from '../../../env.js';
 import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
 import { UnexpectedException } from '../../../exceptions/unexpected.js';
 import { PublishedContent, StatusHistory } from '../../../types/index.js';
+import { ContentRevisionEntity } from '../contentRevision/contentRevision.entity.js';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 import { UserEntity } from '../user/user.entity.js';
 
@@ -21,6 +22,7 @@ const EXCERPT_LENGTH = 150;
 type ContentProps = Omit<
   Content,
   | 'id'
+  | 'slug'
   | 'title'
   | 'body'
   | 'bodyJson'
@@ -37,6 +39,7 @@ type ContentProps = Omit<
   | 'createdAt'
   | 'updatedAt'
 > & {
+  slug?: string | null;
   excerpt?: string | null;
   metaTitle?: string | null;
   metaDescription?: string | null;
@@ -49,13 +52,41 @@ type ContentProps = Omit<
 };
 
 export class ContentEntity extends PrismaBaseEntity<Content> {
-  static Construct(props: ContentProps): ContentEntity {
+  static Construct(props: ContentProps): {
+    content: ContentEntity;
+    contentRevision: ContentRevisionEntity;
+  } {
     const now = new Date();
-    return new ContentEntity({
-      id: v4(),
+    const contentId = v4();
+    const slug = props.slug ?? this.generateSlug();
+
+    const contentRevision = ContentRevisionEntity.Construct({
       projectId: props.projectId,
       postId: props.postId,
-      slug: props.slug,
+      contentId,
+      slug,
+      title: props.title ?? null,
+      body: props.body ?? null,
+      bodyJson: props.bodyJson ?? null,
+      bodyHtml: props.bodyHtml ?? null,
+      excerpt: props.excerpt ?? null,
+      metaTitle: props.metaTitle ?? null,
+      metaDescription: props.metaDescription ?? null,
+      coverUrl: props.coverUrl ?? null,
+      language: props.language,
+      status: ContentStatus.draft,
+      publishedAt: null,
+      version: props.currentVersion ?? 1,
+      createdById: props.createdById,
+      updatedById: props.createdById,
+      deletedAt: null,
+    });
+
+    const content = new ContentEntity({
+      id: contentId,
+      projectId: props.projectId,
+      postId: props.postId,
+      slug,
       title: props.title ?? null,
       body: props.body ?? null,
       bodyJson: props.bodyJson ?? null,
@@ -74,6 +105,8 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
       createdAt: now,
       updatedAt: now,
     });
+
+    return { content, contentRevision };
   }
 
   private isValid() {

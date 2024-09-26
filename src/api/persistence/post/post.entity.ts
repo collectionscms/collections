@@ -24,7 +24,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     projectId: string;
     language: string;
     createdById: string;
-  }): { post: PostEntity; content: ContentEntity } {
+  }): { post: PostEntity; content: ContentEntity; contentRevision: ContentRevisionEntity } {
     const postId = v4();
     const post = new PostEntity({
       id: postId,
@@ -34,15 +34,14 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       updatedAt: new Date(),
     });
 
-    const content = ContentEntity.Construct({
+    const { content, contentRevision } = ContentEntity.Construct({
       projectId,
       postId,
       language,
-      slug: ContentEntity.generateSlug(),
       createdById,
     });
 
-    return { post, content };
+    return { post, content, contentRevision };
   }
 
   private isValid() {
@@ -80,7 +79,9 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       updatedBy: UserEntity;
     }[]
   ): SourceLanguagePostItem {
-    const sortedContents = contents.sort((a, b) => b.content.version - a.content.version);
+    const sortedContents = contents.sort(
+      (a, b) => b.content.currentVersion - a.content.currentVersion
+    );
 
     const sourceLngContent =
       sortedContents.filter((c) => c.content.language === sourceLanguage)[0] || sortedContents[0];
@@ -146,7 +147,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
   ): LocalizedPost {
     const latestRevisions = this.getLatestRevisionsByLanguage(
       content.language,
-      content.version,
+      content.currentVersion,
       revisions
     );
 
@@ -161,7 +162,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       bodyJson: content.bodyJson ?? '',
       bodyHtml: content.bodyHtml ?? '',
       language: content.language,
-      version: content.version,
+      version: content.currentVersion,
       excerpt: content.excerpt,
       metaTitle: content.metaTitle,
       metaDescription: content.metaDescription,
@@ -223,7 +224,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
             body: content.body ?? '',
             bodyHtml: content.bodyHtml ?? '',
             language: content.language,
-            version: content.version,
+            version: content.currentVersion,
             excerpt: content.getExcerptOrBodyPreview(),
             coverUrl: content.coverUrl,
             metaTitle: content.metaTitle,

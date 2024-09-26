@@ -14,6 +14,9 @@ export class ContentRevisionEntity extends PrismaBaseEntity<ContentRevision> {
     body,
     bodyJson,
     bodyHtml,
+    excerpt,
+    metaTitle,
+    metaDescription,
     publishedAt,
     language,
     status,
@@ -31,6 +34,9 @@ export class ContentRevisionEntity extends PrismaBaseEntity<ContentRevision> {
     body?: string | null;
     bodyJson?: string | null;
     bodyHtml?: string | null;
+    excerpt?: string | null;
+    metaTitle?: string | null;
+    metaDescription?: string | null;
     publishedAt?: Date | null;
     language: string;
     status: string;
@@ -50,6 +56,9 @@ export class ContentRevisionEntity extends PrismaBaseEntity<ContentRevision> {
       body: body || null,
       bodyJson: bodyJson || null,
       bodyHtml: bodyHtml || null,
+      excerpt: excerpt || null,
+      metaTitle: metaTitle ?? null,
+      metaDescription: metaDescription ?? null,
       language,
       status,
       publishedAt: publishedAt || null,
@@ -73,6 +82,10 @@ export class ContentRevisionEntity extends PrismaBaseEntity<ContentRevision> {
 
   public beforeInsertValidate(): void {
     this.isValid();
+  }
+
+  get id(): string {
+    return this.props.id;
   }
 
   get version(): number {

@@ -1,7 +1,6 @@
 import { LocalizedPost } from '../../../types/index.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
 import { ContentRepository } from '../../persistence/content/content.repository.js';
-import { ContentRevisionEntity } from '../../persistence/contentRevision/contentRevision.entity.js';
 import { ContentRevisionRepository } from '../../persistence/contentRevision/contentRevision.repository.js';
 import { PostEntity } from '../../persistence/post/post.entity.js';
 import { PostRepository } from '../../persistence/post/post.repository.js';
@@ -22,7 +21,7 @@ export class CreatePostUseCase {
 
     const project = await this.projectRepository.findOneById(this.prisma, props.projectId);
 
-    const { post, content } = PostEntity.Construct({
+    const { post, content, contentRevision } = PostEntity.Construct({
       projectId: projectId,
       language: sourceLanguage,
       createdById: userId,
@@ -30,15 +29,12 @@ export class CreatePostUseCase {
 
     const result = await this.prisma.$transaction(async (tx) => {
       const createdPost = await this.postRepository.create(tx, post);
+
       const { content: createdContent, createdBy } = await this.contentRepository.create(
         tx,
         content
       );
 
-      const contentRevision = ContentRevisionEntity.Construct({
-        ...createdContent.toResponse(),
-        contentId: createdContent.id,
-      });
       await this.contentRevisionRepository.create(tx, contentRevision);
 
       return {
