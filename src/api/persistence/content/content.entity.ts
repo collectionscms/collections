@@ -29,7 +29,7 @@ type ContentProps = Omit<
   | 'metaTitle'
   | 'metaDescription'
   | 'coverUrl'
-  | 'version'
+  | 'currentVersion'
   | 'status'
   | 'updatedById'
   | 'publishedAt'
@@ -45,7 +45,7 @@ type ContentProps = Omit<
   body?: string | null;
   bodyJson?: string | null;
   bodyHtml?: string | null;
-  version?: number;
+  currentVersion?: number;
 };
 
 export class ContentEntity extends PrismaBaseEntity<Content> {
@@ -67,7 +67,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
       language: props.language,
       status: ContentStatus.draft,
       publishedAt: null,
-      version: props.version ?? 1,
+      currentVersion: props.currentVersion ?? 1,
       createdById: props.createdById,
       updatedById: props.createdById,
       deletedAt: null,
@@ -162,8 +162,8 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     return this.props.deletedAt;
   }
 
-  get version(): number {
-    return this.props.version;
+  get currentVersion(): number {
+    return this.props.currentVersion;
   }
 
   get createdById(): string {
@@ -216,7 +216,9 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
 
   hasNewVersion(contents: ContentEntity[]): boolean {
     return contents.some(
-      (c) => c.props.language === this.props.language && c.props.version > this.props.version
+      (c) =>
+        c.props.language === this.props.language &&
+        c.props.currentVersion > this.props.currentVersion
     );
   }
 
@@ -273,7 +275,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
   statusHistory = (): StatusHistory => {
     return {
       prevStatus:
-        this.props.version > 1 && this.props.status !== ContentStatus.published
+        this.props.currentVersion > 1 && this.props.status !== ContentStatus.published
           ? ContentStatus.published
           : null,
       currentStatus: this.props.status,
@@ -298,7 +300,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
       body: this.props.body ?? '',
       bodyHtml: this.props.bodyHtml ?? '',
       language: this.props.language,
-      version: this.props.version,
+      version: this.props.currentVersion,
       coverUrl: this.props.coverUrl,
       excerpt: this.getExcerptOrBodyPreview(),
       metaTitle: this.props.metaTitle,

@@ -27,7 +27,7 @@ export class GetPostUseCase {
 
     const languageContent = contents
       .filter((c) => c.content.language === props.language)
-      .reduce((a, b) => (b.content.version > a.content.version ? b : a));
+      .reduce((a, b) => (b.content.currentVersion > a.content.currentVersion ? b : a));
 
     const revisions = await this.contentRevisionRepository.findManyByPostIdWithLanguage(
       this.prisma,

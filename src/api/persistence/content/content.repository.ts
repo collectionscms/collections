@@ -78,7 +78,7 @@ export class ContentRepository {
         deletedAt: null,
       },
       orderBy: {
-        version: 'desc',
+        currentVersion: 'desc',
       },
       include: {
         createdBy: true,
@@ -101,7 +101,7 @@ export class ContentRepository {
         deletedAt: null,
       },
       orderBy: {
-        version: 'desc',
+        currentVersion: 'desc',
       },
       include: {
         createdBy: true,

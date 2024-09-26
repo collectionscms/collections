@@ -83,7 +83,7 @@ export class PostRepository {
             status: 'published',
           },
           orderBy: {
-            version: 'desc',
+            currentVersion: 'desc',
           },
         },
       },
@@ -133,7 +133,7 @@ export class PostRepository {
             status: 'published',
           },
           orderBy: {
-            version: 'desc',
+            currentVersion: 'desc',
           },
         },
       },

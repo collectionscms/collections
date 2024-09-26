@@ -45,6 +45,7 @@ export class RequestReviewUseCase {
       const contentRevision = ContentRevisionEntity.Construct({
         ...result.toResponse(),
         contentId: result.id,
+        version: result.currentVersion,
       });
       await this.contentRevisionRepository.create(tx, contentRevision);
 
