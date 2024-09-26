@@ -6,7 +6,6 @@ import { authenticatedUser } from '../middlewares/auth.js';
 import { validateAccess } from '../middlewares/validateAccess.js';
 import { ContentRepository } from '../persistence/content/content.repository.js';
 import { ContentRevisionRepository } from '../persistence/contentRevision/contentRevision.repository.js';
-import { PostRepository } from '../persistence/post/post.repository.js';
 import { ReviewRepository } from '../persistence/review/review.repository.js';
 import { WebhookLogRepository } from '../persistence/webhookLog/webhookLog.repository.js';
 import { WebhookSettingRepository } from '../persistence/webhookSetting/webhookSetting.repository.js';
@@ -48,7 +47,6 @@ router.patch(
     const useCase = new UpdateContentUseCase(
       projectPrisma(validated.data.projectId),
       new ContentRepository(),
-      new PostRepository(),
       new ContentRevisionRepository()
     );
     await useCase.execute(validated.data);

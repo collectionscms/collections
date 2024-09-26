@@ -1,6 +1,7 @@
-import { ContentRevision } from '@prisma/client';
+import { Content, ContentRevision } from '@prisma/client';
 import { v4 } from 'uuid';
 import { UnexpectedException } from '../../../exceptions/unexpected.js';
+import { ContentStatus } from '../content/content.entity.js';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 
 export class ContentRevisionEntity extends PrismaBaseEntity<ContentRevision> {
@@ -107,7 +108,57 @@ export class ContentRevisionEntity extends PrismaBaseEntity<ContentRevision> {
     return Object.freeze(copy);
   }
 
+  updateContent({
+    title,
+    body,
+    bodyJson,
+    bodyHtml,
+    coverUrl,
+    slug,
+    excerpt,
+    metaTitle,
+    metaDescription,
+    updatedById,
+  }: {
+    title?: string | null;
+    body?: string | null;
+    bodyJson?: string | null;
+    bodyHtml?: string | null;
+    coverUrl?: string | null;
+    slug?: string;
+    excerpt?: string | null;
+    metaTitle?: string | null;
+    metaDescription?: string | null;
+    updatedById: string;
+  }): void {
+    Object.assign(this.props, {
+      ...(title !== undefined && { title }),
+      ...(body !== undefined && { body }),
+      ...(bodyJson !== undefined && { bodyJson }),
+      ...(bodyHtml !== undefined && { bodyHtml }),
+      ...(coverUrl !== undefined && { coverUrl }),
+      ...(excerpt !== undefined && { excerpt }),
+      ...(metaTitle !== undefined && { metaTitle }),
+      ...(metaDescription !== undefined && { metaDescription }),
+      ...(slug !== undefined && { slug: encodeURIComponent(slug) }),
+      updatedById,
+    });
+  }
+
+  isPublished(): boolean {
+    return this.props.status === ContentStatus.published;
+  }
+
   toResponse(): ContentRevision {
     return this.copyProps();
+  }
+
+  toContentResponse(): Content {
+    return {
+      ...this.copyProps(),
+      id: this.props.contentId,
+      currentVersion: this.props.version,
+      updatedAt: this.props.createdAt,
+    };
   }
 }
