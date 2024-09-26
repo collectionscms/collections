@@ -19,8 +19,9 @@ export class GetContentUseCase {
       this.prisma,
       props.contentId
     );
+    const latestRevision = contentWithRevisions?.revisions[0];
 
-    if (!contentWithRevisions) {
+    if (!contentWithRevisions || !latestRevision) {
       throw new RecordNotFoundException('record_not_found');
     }
 
@@ -31,8 +32,6 @@ export class GetContentUseCase {
       contentId: content.id,
       language: content.language,
     }));
-
-    const latestRevision = revisions[0];
 
     return content.toLocalizedContentResponse(project, languageContents, latestRevision, revisions);
   }

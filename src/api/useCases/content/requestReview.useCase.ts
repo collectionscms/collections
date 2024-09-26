@@ -1,11 +1,11 @@
 import { Content } from '@prisma/client';
+import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
+import { ProjectPrismaClient } from '../../database/prisma/client.js';
 import { ContentStatus } from '../../persistence/content/content.entity.js';
 import { ContentRepository } from '../../persistence/content/content.repository.js';
-import { ContentRevisionEntity } from '../../persistence/contentRevision/contentRevision.entity.js';
 import { ContentRevisionRepository } from '../../persistence/contentRevision/contentRevision.repository.js';
 import { ReviewEntity } from '../../persistence/review/review.entity.js';
 import { ReviewRepository } from '../../persistence/review/review.repository.js';
-import { ProjectPrismaClient } from '../../database/prisma/client.js';
 import { RequestReviewUseCaseSchemaType } from './requestReview.useCase.schema.js';
 
 export class RequestReviewUseCase {
@@ -19,39 +19,39 @@ export class RequestReviewUseCase {
   async execute(props: RequestReviewUseCaseSchemaType): Promise<Content> {
     const { projectId, id, userId, comment } = props;
 
-    const { content } = await this.contentRepository.findOneById(this.prisma, id);
-    content.changeStatus({
+    const contentWithRevisions = await this.contentRepository.findOneWithRevisionsById(
+      this.prisma,
+      id
+    );
+    const latestRevision = contentWithRevisions?.revisions[0];
+
+    if (!contentWithRevisions || !latestRevision) {
+      throw new RecordNotFoundException('record_not_found');
+    }
+
+    latestRevision.changeStatus({
       status: ContentStatus.review,
       updatedById: userId,
     });
 
-    const updatedContent = await this.prisma.$transaction(async (tx) => {
-      const result = await this.contentRepository.updateStatus(tx, content);
-
+    const updatedRevision = await this.prisma.$transaction(async (tx) => {
       let review = await this.reviewRepository.findOneByContentId(tx, id);
       if (review) {
         review.requestReview(comment);
       } else {
         review = ReviewEntity.Construct({
           projectId,
-          postId: content.postId,
-          contentId: content.id,
+          postId: contentWithRevisions.content.postId,
+          contentId: contentWithRevisions.content.id,
           revieweeId: userId,
           comment: comment as string,
         });
       }
       this.reviewRepository.upsert(tx, review);
 
-      const contentRevision = ContentRevisionEntity.Construct({
-        ...result.toResponse(),
-        contentId: result.id,
-        version: result.currentVersion,
-      });
-      await this.contentRevisionRepository.create(tx, contentRevision);
-
-      return result;
+      return await this.contentRevisionRepository.update(tx, latestRevision);
     });
 
-    return updatedContent.toResponse();
+    return updatedRevision.toContentResponse();
   }
 }

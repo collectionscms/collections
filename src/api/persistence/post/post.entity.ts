@@ -93,7 +93,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     return {
       ...this.toLocalizedContentItem(
         sourceLngContentRevision.toContentResponse(),
-        sourceLngContent.content.statusHistory()
+        sourceLngContent.content.getStatusHistory(sourceLngContentRevision)
       ),
       localizedContents: otherLngContents.map((otherLngContent) => {
         const otherLngContentRevision = ContentRevisionEntity.getVersionRevision(
@@ -104,7 +104,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
 
         return this.toLocalizedContentItem(
           otherLngContentRevision.toContentResponse(),
-          otherLngContent.content.statusHistory()
+          otherLngContent.content.getStatusHistory(otherLngContentRevision)
         );
       }),
     };
@@ -143,7 +143,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       id: this.props.id,
       slug: content.slug,
       contentId: content.id,
-      status: content.statusHistory(),
+      status: content.getStatusHistory(revisions[0]),
       updatedAt: content.updatedAt,
       title: content.title ?? '',
       body: content.body ?? '',

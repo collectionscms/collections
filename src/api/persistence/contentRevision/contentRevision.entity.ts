@@ -232,6 +232,18 @@ export class ContentRevisionEntity extends PrismaBaseEntity<ContentRevision> {
     return this.props.status === ContentStatus.published;
   }
 
+  changeStatus({ status, updatedById }: { status: string; updatedById?: string }) {
+    this.props.status = status;
+
+    if (status === ContentStatus.published) {
+      this.props.publishedAt = new Date();
+    }
+
+    if (updatedById) {
+      this.props.updatedById = updatedById;
+    }
+  }
+
   toResponse(): ContentRevision {
     return this.copyProps();
   }

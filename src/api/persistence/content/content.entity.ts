@@ -298,13 +298,10 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     return sourceLanguage !== this.props.language;
   }
 
-  statusHistory = (): StatusHistory => {
+  getStatusHistory = (revision: ContentRevisionEntity): StatusHistory => {
     return {
-      prevStatus:
-        this.props.currentVersion > 1 && this.props.status !== ContentStatus.published
-          ? ContentStatus.published
-          : null,
-      currentStatus: this.props.status,
+      currentStatus: revision.status,
+      prevStatus: revision.version !== this.props.currentVersion ? this.props.status : null,
     };
   };
 
@@ -318,10 +315,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
       id: this.props.id,
       postId: this.props.postId,
       slug: latestRevision.slug,
-      status: {
-        currentStatus: latestRevision.status,
-        prevStatus: latestRevision.status !== this.props.status ? this.props.status : null,
-      },
+      status: this.getStatusHistory(latestRevision),
       updatedAt: latestRevision.updatedAt,
       version: latestRevision.version,
       title: latestRevision.title ?? '',
