@@ -19,8 +19,6 @@ import { TrashLanguageContentUseCase } from '../useCases/content/trashLanguageCo
 import { trashLanguageContentUseCaseSchema } from '../useCases/content/trashLanguageContent.useCase.schema.js';
 import { CreatePostUseCase } from '../useCases/post/createPost.useCase.js';
 import { createPostUseCaseSchema } from '../useCases/post/createPost.useCase.schema.js';
-import { GetPostUseCase } from '../useCases/post/getPost.useCase.js';
-import { getPostUseCaseSchema } from '../useCases/post/getPost.useCase.schema.js';
 import { GetPostsUseCase } from '../useCases/post/getPosts.useCase.js';
 import { getPostsUseCaseSchema } from '../useCases/post/getPosts.useCase.schema.js';
 import { TranslateContentUseCase } from '../useCases/post/translateContent.useCase.js';
@@ -52,38 +50,6 @@ router.get(
     const posts = await useCase.execute(validated.data, hasReadAllPost);
 
     res.json({ posts });
-  })
-);
-
-router.get(
-  '/posts/:id',
-  authenticatedUser,
-  validateAccess(['readOwnPost', 'readAllPost']),
-  asyncHandler(async (req: Request, res: Response) => {
-    const language = req.query.language || res.projectRole?.sourceLanguage;
-
-    const validated = getPostUseCaseSchema.safeParse({
-      projectId: res.projectRole?.id,
-      postId: req.params.id,
-      userId: res.user.id,
-      language,
-    });
-    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
-
-    const useCase = new GetPostUseCase(
-      projectPrisma(validated.data.projectId),
-      new ProjectRepository(),
-      new PostRepository(),
-      new ContentRevisionRepository()
-    );
-
-    const permissions = res.projectRole?.permissions ?? [];
-    const hasReadAllPost = permissions.map((p) => p.action).includes('readAllPost');
-    const post = await useCase.execute(validated.data, hasReadAllPost);
-
-    res.json({
-      post,
-    });
   })
 );
 

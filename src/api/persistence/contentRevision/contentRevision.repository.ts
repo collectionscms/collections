@@ -21,24 +21,6 @@ export class ContentRevisionRepository {
     return ContentRevisionEntity.Reconstruct<ContentRevision, ContentRevisionEntity>(record);
   }
 
-  async findManyByPostIdWithLanguage(
-    prisma: ProjectPrismaType,
-    postId: string,
-    language: string
-  ): Promise<ContentRevisionEntity[]> {
-    const record = await prisma.contentRevision.findMany({
-      where: {
-        postId,
-        language,
-        deletedAt: null,
-      },
-    });
-
-    return record.map((r) =>
-      ContentRevisionEntity.Reconstruct<ContentRevision, ContentRevisionEntity>(r)
-    );
-  }
-
   async create(
     prisma: ProjectPrismaType,
     entity: ContentRevisionEntity
@@ -50,17 +32,6 @@ export class ContentRevisionRepository {
     });
 
     return ContentRevisionEntity.Reconstruct<ContentRevision, ContentRevisionEntity>(record);
-  }
-
-  async createMany(
-    prisma: ProjectPrismaType,
-    entities: ContentRevisionEntity[]
-  ): Promise<ContentRevisionEntity[]> {
-    await prisma.contentRevision.createMany({
-      data: entities.map((entity) => entity.toPersistence()),
-    });
-
-    return entities;
   }
 
   async update(
