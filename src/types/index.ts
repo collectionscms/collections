@@ -59,31 +59,6 @@ export type SourceLanguagePostItem = LocalizedContentItem & {
   localizedContents: LocalizedContentItem[];
 };
 
-export type LocalizedPost = {
-  id: string;
-  slug: string;
-  contentId: string;
-  status: StatusHistory;
-  updatedAt: Date;
-  version: number;
-  title: string;
-  body: string;
-  bodyJson: string;
-  bodyHtml: string;
-  excerpt: string | null;
-  metaTitle: string | null;
-  metaDescription: string | null;
-  coverUrl: string | null;
-  language: string;
-  usedLanguages: string[];
-  canTranslate: boolean;
-  sourceLanguageCode: string | null;
-  targetLanguageCode: string | null;
-  createdByName: string;
-  updatedByName: string;
-  revisions: ContentRevision[];
-};
-
 export type RevisedContent = {
   id: string;
   postId: string;

@@ -2,12 +2,7 @@ import { ApiKey, Content, Project } from '@prisma/client';
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWR, { SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
-import {
-  LocalizedPost,
-  RevisedContent,
-  SourceLanguagePostItem,
-  UploadFile,
-} from '../../../../types/index.js';
+import { RevisedContent, SourceLanguagePostItem, UploadFile } from '../../../../types/index.js';
 import { api } from '../../../utilities/api.js';
 
 type PostContext = {
@@ -18,17 +13,7 @@ type PostContext = {
       suspense: true;
     }
   >;
-  getPost: (
-    id: string,
-    language: string | null
-  ) => SWRResponse<
-    LocalizedPost,
-    Error,
-    {
-      suspense: true;
-    }
-  >;
-  createPost: () => SWRMutationResponse<LocalizedPost, any, string>;
+  createPost: () => SWRMutationResponse<RevisedContent, any, string>;
   trashPost: (postId: string) => SWRMutationResponse<void, any, string>;
   createContent: (postId: string) => SWRMutationResponse<Content, any, string, Record<string, any>>;
   trashLanguageContent: (
@@ -78,18 +63,9 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       }
     );
 
-  const getPost = (id: string, language: string | null) =>
-    useSWR(
-      `/posts/${id}${language ? `?language=${language}` : ''}`,
-      (url) => api.get<{ post: LocalizedPost }>(url).then((res) => res.data.post),
-      {
-        suspense: true,
-      }
-    );
-
   const createPost = () =>
     useSWRMutation('/posts', async (url: string) => {
-      return api.post<{ post: LocalizedPost }>(url).then((res) => res.data.post);
+      return api.post<{ content: RevisedContent }>(url).then((res) => res.data.content);
     });
 
   const trashPost = (postId: string) =>
@@ -184,7 +160,6 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
   const value = useMemo(
     () => ({
       getPosts,
-      getPost,
       createPost,
       trashPost,
       createContent,
@@ -202,7 +177,6 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
     }),
     [
       getPosts,
-      getPost,
       createPost,
       trashPost,
       createContent,

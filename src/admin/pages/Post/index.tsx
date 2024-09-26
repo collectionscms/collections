@@ -68,8 +68,8 @@ export const PostPageImpl: React.FC = () => {
   };
 
   const handleCreatePost = async () => {
-    const post = await trigger();
-    navigate(`${post.id}`);
+    const content = await trigger();
+    navigate(`/admin/contents/${content.id}`);
   };
 
   const handleOpenMenu = (currentTarget: EventTarget, post: SourceLanguagePostItem) => {

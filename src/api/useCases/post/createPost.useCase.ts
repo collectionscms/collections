@@ -1,4 +1,4 @@
-import { LocalizedPost } from '../../../types/index.js';
+import { RevisedContent } from '../../../types/index.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
 import { ContentRepository } from '../../persistence/content/content.repository.js';
 import { ContentRevisionRepository } from '../../persistence/contentRevision/contentRevision.repository.js';
@@ -16,7 +16,7 @@ export class CreatePostUseCase {
     private readonly contentRevisionRepository: ContentRevisionRepository
   ) {}
 
-  async execute(props: CreatePostUseCaseSchemaType): Promise<LocalizedPost> {
+  async execute(props: CreatePostUseCaseSchemaType): Promise<RevisedContent> {
     const { userId, projectId, sourceLanguage } = props;
 
     const project = await this.projectRepository.findOneById(this.prisma, props.projectId);
@@ -46,12 +46,10 @@ export class CreatePostUseCase {
       };
     });
 
-    return result.post.toLocalizedPostResponse(
+    return result.content.toRevisedContentResponse(
       project,
-      [result.content.language],
-      result.content,
-      result.createdBy,
-      result.updatedBy,
+      [{ contentId: result.content.id, language: result.content.language }],
+      result.revisions[0],
       result.revisions
     );
   }

@@ -305,7 +305,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     };
   };
 
-  toLocalizedContentResponse(
+  toRevisedContentResponse(
     project: ProjectEntity,
     languageContents: { contentId: string; language: string }[],
     latestRevision: ContentRevisionEntity,

@@ -3,7 +3,6 @@ import { v4 } from 'uuid';
 import { UnexpectedException } from '../../../exceptions/unexpected.js';
 import {
   LocalizedContentItem,
-  LocalizedPost,
   PublishedContent,
   PublishedPost,
   SourceLanguagePostItem,
@@ -12,7 +11,6 @@ import {
 import { ContentEntity } from '../content/content.entity.js';
 import { ContentRevisionEntity } from '../contentRevision/contentRevision.entity.js';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
-import { ProjectEntity } from '../project/project.entity.js';
 import { UserEntity } from '../user/user.entity.js';
 
 export class PostEntity extends PrismaBaseEntity<Post> {
@@ -125,46 +123,6 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     };
   }
 
-  toLocalizedPostResponse(
-    project: ProjectEntity,
-    usedLanguages: string[],
-    content: ContentEntity,
-    createdBy: UserEntity,
-    updatedBy: UserEntity,
-    revisions: ContentRevisionEntity[]
-  ): LocalizedPost {
-    const latestRevisions = this.getLatestRevisionsByLanguage(
-      content.language,
-      content.currentVersion,
-      revisions
-    );
-
-    return {
-      id: this.props.id,
-      slug: content.slug,
-      contentId: content.id,
-      status: content.getStatusHistory(revisions[0]),
-      updatedAt: content.updatedAt,
-      title: content.title ?? '',
-      body: content.body ?? '',
-      bodyJson: content.bodyJson ?? '',
-      bodyHtml: content.bodyHtml ?? '',
-      language: content.language,
-      version: content.currentVersion,
-      excerpt: content.excerpt,
-      metaTitle: content.metaTitle,
-      metaDescription: content.metaDescription,
-      coverUrl: content.coverUrl,
-      canTranslate: content.isTranslationEnabled(project.sourceLanguage),
-      usedLanguages,
-      sourceLanguageCode: project.sourceLanguageCode?.code ?? null,
-      targetLanguageCode: content.languageCode?.code ?? null,
-      createdByName: createdBy.name,
-      updatedByName: updatedBy.name,
-      revisions: latestRevisions,
-    };
-  }
-
   /**
    * Convert entity to published post response
    * @param language
@@ -230,38 +188,5 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       },
       {} as { [language: string]: PublishedContent }
     );
-  }
-
-  /**
-   * Get the latest revision of each version in the same language.
-   * @param language
-   * @param currentVersion
-   * @param revisions
-   * @returns
-   */
-  private getLatestRevisionsByLanguage(
-    language: string,
-    currentVersion: number,
-    revisions: ContentRevisionEntity[]
-  ) {
-    const filteredRevisions = revisions.filter((history) => history.language === language);
-
-    const latestRevisions: { [version: number]: ContentRevisionEntity } = filteredRevisions.reduce(
-      (acc: { [version: number]: ContentRevisionEntity }, history) => {
-        const version = history.version;
-        if (version > currentVersion) {
-          // Deleted case
-          return acc;
-        }
-
-        if (!acc[version] || acc[version].updatedAt < history.updatedAt) {
-          acc[version] = history;
-        }
-        return acc;
-      },
-      {}
-    );
-
-    return Object.values(latestRevisions).map((history) => history.toResponse());
   }
 }

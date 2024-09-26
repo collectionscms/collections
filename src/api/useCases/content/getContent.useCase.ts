@@ -33,6 +33,6 @@ export class GetContentUseCase {
       language: content.language,
     }));
 
-    return content.toLocalizedContentResponse(project, languageContents, latestRevision, revisions);
+    return content.toRevisedContentResponse(project, languageContents, latestRevision, revisions);
   }
 }

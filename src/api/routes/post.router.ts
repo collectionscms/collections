@@ -72,10 +72,10 @@ router.post(
       new ContentRepository(),
       new ContentRevisionRepository()
     );
-    const post = await useCase.execute(validated.data);
+    const content = await useCase.execute(validated.data);
 
     res.json({
-      post,
+      content,
     });
   })
 );
