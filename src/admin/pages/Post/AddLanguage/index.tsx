@@ -4,8 +4,9 @@ import { enqueueSnackbar } from 'notistack';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { languages } from '../../../../constants/languages.js';
-import { LocalizedPost } from '../../../../types/index.js';
+import { RevisedContent } from '../../../../types/index.js';
 import { logger } from '../../../../utilities/logger.js';
 import { LanguageAutocomplete } from '../../../components/elements/LanguageAutocomplete/index.js';
 import { ModalDialog } from '../../../components/elements/ModalDialog/index.js';
@@ -17,17 +18,17 @@ import { usePost } from '../Context/index.js';
 
 export type Props = {
   open: boolean;
-  post: LocalizedPost;
+  content: RevisedContent;
   onClose: () => void;
-  onChanged: (language: string) => void;
 };
 
-export const AddLanguage: React.FC<Props> = ({ open, post, onClose, onChanged }) => {
-  const { createContent } = usePost();
+export const AddLanguage: React.FC<Props> = ({ open, content, onClose }) => {
   const { t } = useTranslation();
-  const { trigger: createContentTrigger } = createContent(post.id);
+  const navigate = useNavigate();
+  const { createContent } = usePost();
+  const { trigger: createContentTrigger } = createContent(content.postId);
   const enabledLanguages = languages.filter(
-    (language) => !post.usedLanguages.includes(language.code)
+    (language) => !content.languageContents.some((lc) => lc.language === language.code)
   );
 
   const {
@@ -43,14 +44,15 @@ export const AddLanguage: React.FC<Props> = ({ open, post, onClose, onChanged })
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
-      await createContentTrigger(form);
-      onChanged(form.language);
+      const content = await createContentTrigger(form);
+      navigate(`/admin/contents/${content.id}`);
       enqueueSnackbar(t('toast.created_successfully'), {
         anchorOrigin: {
           vertical: 'bottom',
           horizontal: 'center',
         },
       });
+      onClose();
     } catch (error) {
       logger.error(error);
     }

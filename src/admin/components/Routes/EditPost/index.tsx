@@ -20,7 +20,7 @@ export const EditPostRoutes = () => {
   }
 
   return {
-    path: '/admin/posts',
+    path: '/admin/contents',
     element: <EditorLayout />,
     children,
   };

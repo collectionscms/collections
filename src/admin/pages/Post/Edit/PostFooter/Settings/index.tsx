@@ -14,7 +14,7 @@ import { enqueueSnackbar } from 'notistack';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { LocalizedPost } from '../../../../../../types/index.js';
+import { RevisedContent } from '../../../../../../types/index.js';
 import { logger } from '../../../../../../utilities/logger.js';
 import { IconButton } from '../../../../../@extended/components/IconButton/index.js';
 import { MainCard } from '../../../../../@extended/components/MainCard/index.js';
@@ -28,21 +28,24 @@ import { SocialSettings } from '../../PostHeader/PublishSettings/SocialSettings/
 
 export type Props = {
   open: boolean;
-  post: LocalizedPost;
+  content: RevisedContent;
   onClose: () => void;
   onTrashed: () => void;
 };
 
-export const Settings: React.FC<Props> = ({ open, post, onClose, onTrashed }) => {
+export const Settings: React.FC<Props> = ({ open, content, onClose, onTrashed }) => {
   const theme = useTheme();
   const { t } = useTranslation();
   const navigate = useNavigate();
 
   const { hasPermission } = useAuth();
-  const { trashPost, trashLanguageContent, getPost } = usePost();
-  const { trigger: trashPostTrigger } = trashPost(post.id);
-  const { trigger: trashLanguageContentTrigger } = trashLanguageContent(post.id, post.language);
-  const { data: mutatedPost, mutate } = getPost(post.id, post.language);
+  const { trashPost, trashLanguageContent, getContent } = usePost();
+  const { trigger: trashPostTrigger } = trashPost(content.id);
+  const { trigger: trashLanguageContentTrigger } = trashLanguageContent(
+    content.id,
+    content.language
+  );
+  const { data: mutatedContent, mutate } = getContent(content.id);
 
   const [openContentTrash, setOpenContentTrash] = useState(false);
   const [openPostTrash, setOpenPostTrash] = useState(false);
@@ -99,16 +102,16 @@ export const Settings: React.FC<Props> = ({ open, post, onClose, onTrashed }) =>
   };
 
   const handleUpdatedPost = ({
-    slug = post.slug,
-    metaTitle = post.metaTitle,
-    metaDescription = post.metaDescription,
+    slug = content.slug,
+    metaTitle = content.metaTitle,
+    metaDescription = content.metaDescription,
   }: {
     slug?: string;
     metaTitle?: string | null;
     metaDescription?: string | null;
   }) => {
     mutate({
-      ...post,
+      ...content,
       slug,
       metaTitle,
       metaDescription,
@@ -121,7 +124,7 @@ export const Settings: React.FC<Props> = ({ open, post, onClose, onTrashed }) =>
         open={openContentTrash}
         color="error"
         title={t('dialog.confirm_content_trash_title', {
-          language: t(`languages.${post.language}` as unknown as TemplateStringsArray),
+          language: t(`languages.${content.language}` as unknown as TemplateStringsArray),
         })}
         body={t('dialog.confirm_content_trash')}
         execute={{ label: t('move_to_trash'), action: handleTrashLanguageContent }}
@@ -148,7 +151,7 @@ export const Settings: React.FC<Props> = ({ open, post, onClose, onTrashed }) =>
             <Box width="100%">
               <Typography variant="h3" align="center">
                 {t('language_post_settings', {
-                  language: t(`languages.${post.language}` as unknown as TemplateStringsArray),
+                  language: t(`languages.${content.language}` as unknown as TemplateStringsArray),
                 })}
               </Typography>
             </Box>
@@ -163,9 +166,9 @@ export const Settings: React.FC<Props> = ({ open, post, onClose, onTrashed }) =>
             </Stack>
             <MainCard>
               <GeneralSettings
-                contentId={mutatedPost.contentId}
-                slug={mutatedPost.slug}
-                excerpt={mutatedPost.excerpt}
+                contentId={mutatedContent.id}
+                slug={mutatedContent.slug}
+                excerpt={mutatedContent.excerpt}
                 onUpdated={(slug) => handleUpdatedPost({ slug })}
               />
             </MainCard>
@@ -176,9 +179,9 @@ export const Settings: React.FC<Props> = ({ open, post, onClose, onTrashed }) =>
             </Stack>
             <MainCard>
               <SocialSettings
-                contentId={mutatedPost.contentId}
-                metaTitle={mutatedPost.metaTitle}
-                metaDescription={mutatedPost.metaDescription}
+                contentId={mutatedContent.id}
+                metaTitle={mutatedContent.metaTitle}
+                metaDescription={mutatedContent.metaDescription}
                 onUpdated={(metaTitle, metaDescription) =>
                   handleUpdatedPost({
                     metaTitle,
@@ -195,21 +198,21 @@ export const Settings: React.FC<Props> = ({ open, post, onClose, onTrashed }) =>
                   <Typography variant={'h4'}>{t('danger_zone')}</Typography>
                 </Stack>
                 <MainCard>
-                  {post.usedLanguages.length > 1 && (
+                  {content.languageContents.length > 1 && (
                     <>
                       <Stack flexDirection="row">
                         <Box flexGrow="1">
                           <Typography variant="subtitle1" sx={{ mb: 0.5 }}>
                             {t('remove_language_content', {
                               language: t(
-                                `languages.${post.language}` as unknown as TemplateStringsArray
+                                `languages.${content.language}` as unknown as TemplateStringsArray
                               ),
                             })}
                           </Typography>
                           <Typography variant="caption" color="textSecondary">
                             {t('move_lang_content_to_trash', {
                               language: t(
-                                `languages.${post.language}` as unknown as TemplateStringsArray
+                                `languages.${content.language}` as unknown as TemplateStringsArray
                               ),
                             })}
                           </Typography>

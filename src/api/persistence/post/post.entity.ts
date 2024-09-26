@@ -254,7 +254,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
           return acc;
         }
 
-        if (!acc[version] || acc[version].createdAt < history.createdAt) {
+        if (!acc[version] || acc[version].updatedAt < history.updatedAt) {
           acc[version] = history;
         }
         return acc;

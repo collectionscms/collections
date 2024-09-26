@@ -4,9 +4,10 @@ import { getLanguageCodeType, LanguageCode } from '../../../constants/languages.
 import { env } from '../../../env.js';
 import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
 import { UnexpectedException } from '../../../exceptions/unexpected.js';
-import { PublishedContent, StatusHistory } from '../../../types/index.js';
+import { PublishedContent, RevisedContent, StatusHistory } from '../../../types/index.js';
 import { ContentRevisionEntity } from '../contentRevision/contentRevision.entity.js';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
+import { ProjectEntity } from '../project/project.entity.js';
 import { UserEntity } from '../user/user.entity.js';
 
 export const ContentStatus = {
@@ -306,6 +307,39 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
       currentStatus: this.props.status,
     };
   };
+
+  toLocalizedContentResponse(
+    project: ProjectEntity,
+    languageContents: { contentId: string; language: string }[],
+    latestRevision: ContentRevisionEntity,
+    revisions: ContentRevisionEntity[]
+  ): RevisedContent {
+    return {
+      id: this.props.id,
+      postId: this.props.postId,
+      slug: latestRevision.slug,
+      status: {
+        currentStatus: latestRevision.status,
+        prevStatus: latestRevision.status !== this.props.status ? this.props.status : null,
+      },
+      updatedAt: latestRevision.updatedAt,
+      version: latestRevision.version,
+      title: latestRevision.title ?? '',
+      body: latestRevision.body ?? '',
+      bodyJson: latestRevision.bodyJson ?? '',
+      bodyHtml: latestRevision.bodyHtml ?? '',
+      excerpt: latestRevision.excerpt,
+      metaTitle: latestRevision.metaTitle,
+      metaDescription: latestRevision.metaDescription,
+      coverUrl: latestRevision.coverUrl,
+      language: latestRevision.language,
+      languageContents,
+      canTranslate: this.isTranslationEnabled(project.sourceLanguage),
+      sourceLanguageCode: project.sourceLanguageCode?.code ?? null,
+      targetLanguageCode: this.languageCode?.code ?? null,
+      revisions: revisions.map((revision) => revision.toResponse()),
+    };
+  }
 
   /**
    * Convert entity to published content response

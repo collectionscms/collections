@@ -1,5 +1,6 @@
-import { Content, User } from '@prisma/client';
+import { Content, ContentRevision, User } from '@prisma/client';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
+import { ContentRevisionEntity } from '../contentRevision/contentRevision.entity.js';
 import { UserEntity } from '../user/user.entity.js';
 import { ContentEntity } from './content.entity.js';
 
@@ -63,6 +64,39 @@ export class ContentRepository {
     return {
       content: ContentEntity.Reconstruct<Content, ContentEntity>(record),
       createdBy: UserEntity.Reconstruct<User, UserEntity>(record.createdBy),
+    };
+  }
+
+  async findOneWithRevisionsById(
+    prisma: ProjectPrismaType,
+    id: string
+  ): Promise<{ content: ContentEntity; revisions: ContentRevisionEntity[] } | null> {
+    const record = await prisma.content.findFirst({
+      where: {
+        id,
+        deletedAt: null,
+      },
+      include: {
+        contentRevisions: {
+          where: {
+            deletedAt: null,
+          },
+          orderBy: {
+            version: 'desc',
+          },
+        },
+      },
+    });
+
+    if (!record) {
+      return null;
+    }
+
+    return {
+      content: ContentEntity.Reconstruct<Content, ContentEntity>(record),
+      revisions: record.contentRevisions.map((r) =>
+        ContentRevisionEntity.Reconstruct<ContentRevision, ContentRevisionEntity>(r)
+      ),
     };
   }
 

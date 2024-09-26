@@ -4,7 +4,7 @@ import { enqueueSnackbar } from 'notistack';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import SimpleBar from 'simplebar-react';
-import { LocalizedPost } from '../../../../../../types/index.js';
+import { RevisedContent } from '../../../../../../types/index.js';
 import { logger } from '../../../../../../utilities/logger.js';
 import { Avatar } from '../../../../../@extended/components/Avatar/index.js';
 import { IconButton } from '../../../../../@extended/components/IconButton/index.js';
@@ -14,19 +14,19 @@ import { ModalDialog } from '../../../../../components/elements/ModalDialog/inde
 import { usePost } from '../../../Context/index.js';
 
 export type Props = {
-  post: LocalizedPost;
+  content: RevisedContent;
   onReverted: () => void;
 };
 
-export const History: React.FC<Props> = ({ post, onReverted }) => {
-  const { contentId, revisions: revisions, version, status } = post;
+export const History: React.FC<Props> = ({ content, onReverted }) => {
+  const { id, revisions, version, status } = content;
 
   const theme = useTheme();
   const { t } = useTranslation();
   const [openRevert, setOpenRevert] = useState(false);
 
   const { trashContent } = usePost();
-  const { trigger: trashContentTrigger } = trashContent(contentId);
+  const { trigger: trashContentTrigger } = trashContent(id);
 
   const handleRevert = async () => {
     try {
@@ -43,10 +43,6 @@ export const History: React.FC<Props> = ({ post, onReverted }) => {
       logger.error(error);
     }
   };
-
-  const sortedRevisions = revisions.sort(
-    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-  );
 
   const [open, setOpen] = useState(false);
   const handleToggle = () => {
@@ -120,10 +116,10 @@ export const History: React.FC<Props> = ({ post, onReverted }) => {
                 }}
               >
                 <Stack sx={{ p: 2 }} gap={2}>
-                  {sortedRevisions.map((history) => (
-                    <Stack key={history.id} flexDirection="row" gap={2}>
+                  {revisions.map((revision) => (
+                    <Stack key={revision.id} flexDirection="row" gap={2}>
                       <Avatar variant="rounded" size="md" color="secondary" type="filled">
-                        <Typography variant="h5">v{history.version}</Typography>
+                        <Typography variant="h5">v{revision.version}</Typography>
                       </Avatar>
                       <Stack
                         flexDirection="row"
@@ -133,13 +129,13 @@ export const History: React.FC<Props> = ({ post, onReverted }) => {
                       >
                         <Stack>
                           <Typography variant="h6" component="span">
-                            {t(`${history.status}` as unknown as TemplateStringsArray)}
+                            {t(`${revision.status}` as unknown as TemplateStringsArray)}
                           </Typography>
                           <Typography color="textSecondary" variant="subtitle2">
-                            {dayjs(history.createdAt).format(t('date_format.long'))}
+                            {dayjs(revision.createdAt).format(t('date_format.long'))}
                           </Typography>
                         </Stack>
-                        {status.currentStatus === 'draft' && version - 1 === history.version && (
+                        {status.currentStatus === 'draft' && version - 1 === revision.version && (
                           <Tooltip title={t('restore')}>
                             <IconButton color="secondary" onClick={() => setOpenRevert(true)}>
                               <Icon name="Undo2" size={14} />

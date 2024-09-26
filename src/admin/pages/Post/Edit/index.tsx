@@ -13,7 +13,7 @@ import {
 import React, { useEffect, useRef, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useTranslation } from 'react-i18next';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { logger } from '../../../../utilities/logger.js';
 import { IconButton } from '../../../@extended/components/IconButton/index.js';
 import { useBlockEditor } from '../../../components/elements/BlockEditor/hooks/useBlockEditor.js';
@@ -39,31 +39,27 @@ export const EditPostPageImpl: React.FC = () => {
   const { id } = useParams();
   if (!id) throw new Error('id is not defined');
 
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const language = queryParams.get('language');
-
-  const { getPost, updateContent, createFileImage, translateContent } = usePost();
-  const { data: post, mutate } = getPost(id, language);
-  const { trigger: updateContentTrigger, isMutating: isSaving } = updateContent(post.contentId);
-  const { trigger: translateTrigger } = translateContent(post.id);
+  const { getContent, updateContent, createFileImage, translateContent } = usePost();
+  const { data: content, mutate } = getContent(id);
+  const { trigger: updateContentTrigger, isMutating: isSaving } = updateContent(content.id);
+  const { trigger: translateTrigger } = translateContent(content.id);
 
   const [isDirty, setIsDirty] = useState(false);
   const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
 
-  if (!post) return <></>;
+  if (!content) return <></>;
 
   useEffect(() => {
-    setPostTitle(post.title);
-    setUploadCover(post.coverUrl ?? null);
-    editor?.commands.setContent(toJson(post.bodyJson));
-  }, [post]);
+    setPostTitle(content.title);
+    setUploadCover(content.coverUrl ?? null);
+    editor?.commands.setContent(toJson(content.bodyJson));
+  }, [content]);
 
   // /////////////////////////////////////
   // Editor
   // /////////////////////////////////////
 
-  const [postTitle, setPostTitle] = useState(post.title);
+  const [postTitle, setPostTitle] = useState(content.title);
 
   const handleChangeTitle = (value: string) => {
     setPostTitle(value);
@@ -73,7 +69,7 @@ export const EditPostPageImpl: React.FC = () => {
   const { mode } = useColorMode();
   const ref = React.useRef<HTMLButtonElement>(null);
   const { editor, characterCount } = useBlockEditor({
-    initialContent: toJson(post.bodyJson),
+    initialContent: toJson(content.bodyJson),
     ref: ref,
     mode,
   });
@@ -128,7 +124,7 @@ export const EditPostPageImpl: React.FC = () => {
   // /////////////////////////////////////
 
   const inputRef = useRef<HTMLInputElement>(null);
-  const [uploadCover, setUploadCover] = useState<string | null>(post.coverUrl);
+  const [uploadCover, setUploadCover] = useState<string | null>(content.coverUrl);
   const { trigger: createFileImageTrigger } = createFileImage();
 
   const handleUploadCover = async () => {
@@ -228,8 +224,8 @@ export const EditPostPageImpl: React.FC = () => {
   // Language
   // /////////////////////////////////////
 
-  const handleChangeLanguage = (language: string) => {
-    navigate(`${window.location.pathname}?language=${language}`);
+  const handleChangeLanguage = (contentId: string) => {
+    navigate(`/admin/contents/${contentId}`);
   };
 
   const [openAddLanguage, setOpenAddLanguage] = useState(false);
@@ -241,22 +237,13 @@ export const EditPostPageImpl: React.FC = () => {
     setOpenAddLanguage(false);
   };
 
-  const handleAddedLanguage = (language: string) => {
-    setOpenAddLanguage(false);
-    handleChangeLanguage(language);
-    mutate({
-      ...post,
-      usedLanguages: [...post.usedLanguages, language],
-    });
-  };
-
   const [isTranslating, setIsTranslating] = useState(false);
   const handleTranslate = async () => {
     try {
       setIsTranslating(true);
       const response = await translateTrigger({
-        sourceLanguage: post.sourceLanguageCode,
-        targetLanguage: post.targetLanguageCode,
+        sourceLanguage: content.sourceLanguageCode,
+        targetLanguage: content.targetLanguageCode,
       });
       handleChangeTitle(response.title);
       editor?.commands.setContent(response.body);
@@ -272,8 +259,8 @@ export const EditPostPageImpl: React.FC = () => {
       <Button ref={ref} onClick={handleSaveContent} />
       <ConfirmDiscardDialog open={showPrompt} onDiscard={proceed} onKeepEditing={stay} />
       <PostHeader
-        post={post}
-        currentLanguage={post.language}
+        content={content}
+        currentLanguage={content.language}
         isSaving={isSaving}
         onChangeLanguage={handleChangeLanguage}
         onOpenAddLanguage={handleOpenAddLanguage}
@@ -281,31 +268,30 @@ export const EditPostPageImpl: React.FC = () => {
         onOpenPublishSettings={handleOpenPublishSettings}
       />
       <PostFooter
-        post={post}
+        content={content}
         onTrashed={handleMutate}
         onReverted={handleMutate}
         characters={characterCount.characters()}
       />
       <PublishSettings
         open={openPublishSettings}
-        contentId={post.contentId}
-        post={post}
+        content={content}
         onClose={() => setOpenPublishSettings(false)}
       />
       <Box component="main" sx={{ minHeight: '100vh' }}>
         <Toolbar sx={{ mt: 0 }} />
         <Container sx={{ py: 6 }}>
           <Box sx={{ maxWidth: '42rem', marginLeft: 'auto', marginRight: 'auto' }}>
-            {post.title.length === 0 && post.body.length === 0 && post.canTranslate && (
+            {content.title.length === 0 && content.body.length === 0 && content.canTranslate && (
               <Stack direction="row" gap={1} sx={{ mb: 4, alignItems: 'center' }} color="secondary">
                 <Icon name="Languages" size={16} />
                 <Typography>
                   {t('translate_source_to_target', {
                     sourceLanguage: t(
-                      `languages.${post.sourceLanguageCode}` as unknown as TemplateStringsArray
+                      `languages.${content.sourceLanguageCode}` as unknown as TemplateStringsArray
                     ),
                     targetLanguage: t(
-                      `languages.${post.targetLanguageCode}` as unknown as TemplateStringsArray
+                      `languages.${content.targetLanguageCode}` as unknown as TemplateStringsArray
                     ),
                   })}
                 </Typography>
@@ -426,9 +412,9 @@ export const EditPostPageImpl: React.FC = () => {
       </Box>
       <AddLanguage
         open={openAddLanguage}
-        post={post}
+        content={content}
         onClose={handleCloseAddLanguage}
-        onChanged={(language) => handleAddedLanguage(language)}
+        // onChanged={(language) => handleAddedLanguage(language)}
       />
     </>
   );

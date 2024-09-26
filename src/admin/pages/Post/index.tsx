@@ -113,7 +113,7 @@ export const PostPageImpl: React.FC = () => {
           const title = post.title || t('untitled');
           return hasPermission('updatePost') ? (
             <Link
-              href={`${post.postId}?language=${post.language}`}
+              href={`/admin/contents/${post.contentId}`}
               sx={{ wordBreak: 'break-word', whiteSpace: 'normal' }}
             >
               {title}

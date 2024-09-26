@@ -6,12 +6,15 @@ import { authenticatedUser } from '../middlewares/auth.js';
 import { validateAccess } from '../middlewares/validateAccess.js';
 import { ContentRepository } from '../persistence/content/content.repository.js';
 import { ContentRevisionRepository } from '../persistence/contentRevision/contentRevision.repository.js';
+import { ProjectRepository } from '../persistence/project/project.repository.js';
 import { ReviewRepository } from '../persistence/review/review.repository.js';
 import { WebhookLogRepository } from '../persistence/webhookLog/webhookLog.repository.js';
 import { WebhookSettingRepository } from '../persistence/webhookSetting/webhookSetting.repository.js';
 import { WebhookService } from '../services/webhook.service.js';
 import { ArchiveUseCase } from '../useCases/content/archive.useCase.js';
 import { archiveUseCaseSchema } from '../useCases/content/archive.useCase.schema.js';
+import { GetContentUseCase } from '../useCases/content/getContent.useCase.js';
+import { getContentUseCaseSchema } from '../useCases/content/getContent.useCase.schema.js';
 import { PublishUseCase } from '../useCases/content/publish.useCase.js';
 import { publishUseCaseSchema } from '../useCases/content/publish.useCase.schema.js';
 import { RequestReviewUseCase } from '../useCases/content/requestReview.useCase.js';
@@ -22,6 +25,32 @@ import { UpdateContentUseCase } from '../useCases/content/updateContent.useCase.
 import { updateContentUseCaseSchema } from '../useCases/content/updateContent.useCase.schema.js';
 
 const router = express.Router();
+
+router.get(
+  '/contents/:id',
+  authenticatedUser,
+  validateAccess(['updatePost']),
+  asyncHandler(async (req: Request, res: Response) => {
+    const validated = getContentUseCaseSchema.safeParse({
+      projectId: res.projectRole?.id,
+      contentId: req.params.id,
+      userId: res.user.id,
+    });
+    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
+
+    const useCase = new GetContentUseCase(
+      projectPrisma(validated.data.projectId),
+      new ProjectRepository(),
+      new ContentRepository()
+    );
+
+    const content = await useCase.execute(validated.data);
+
+    res.json({
+      content,
+    });
+  })
+);
 
 router.patch(
   '/contents/:id',

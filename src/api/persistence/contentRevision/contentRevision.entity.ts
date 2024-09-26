@@ -92,16 +92,80 @@ export class ContentRevisionEntity extends PrismaBaseEntity<ContentRevision> {
     return this.props.id;
   }
 
-  get version(): number {
-    return this.props.version;
+  get projectId(): string {
+    return this.props.projectId;
+  }
+
+  get postId(): string {
+    return this.props.postId;
+  }
+
+  get slug(): string {
+    return this.props.slug;
+  }
+
+  get title(): string {
+    return this.props.title ?? '';
+  }
+
+  get body(): string {
+    return this.props.body ?? '';
+  }
+
+  get bodyJson(): string {
+    return this.props.bodyJson ?? '';
+  }
+
+  get bodyHtml(): string {
+    return this.props.bodyHtml ?? '';
+  }
+
+  get excerpt(): string | null {
+    return this.props.excerpt;
+  }
+
+  get metaTitle(): string | null {
+    return this.props.metaTitle;
+  }
+
+  get metaDescription(): string | null {
+    return this.props.metaDescription;
+  }
+
+  get coverUrl(): string | null {
+    return this.props.coverUrl;
   }
 
   get language(): string {
     return this.props.language;
   }
 
-  get createdAt(): Date {
-    return this.props.createdAt;
+  get status(): string {
+    return this.props.status;
+  }
+
+  get publishedAt(): Date | null {
+    return this.props.publishedAt;
+  }
+
+  get deletedAt(): Date | null {
+    return this.props.deletedAt;
+  }
+
+  get version(): number {
+    return this.props.version;
+  }
+
+  get createdById(): string {
+    return this.props.createdById;
+  }
+
+  get updatedById(): string {
+    return this.props.updatedById;
+  }
+
+  get updatedAt(): Date {
+    return this.props.updatedAt;
   }
 
   private copyProps(): ContentRevision {

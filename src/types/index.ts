@@ -84,6 +84,29 @@ export type LocalizedPost = {
   revisions: ContentRevision[];
 };
 
+export type RevisedContent = {
+  id: string;
+  postId: string;
+  slug: string;
+  status: StatusHistory;
+  updatedAt: Date;
+  version: number;
+  title: string;
+  body: string;
+  bodyJson: string;
+  bodyHtml: string;
+  excerpt: string | null;
+  metaTitle: string | null;
+  metaDescription: string | null;
+  coverUrl: string | null;
+  language: string;
+  languageContents: { contentId: string; language: string }[];
+  canTranslate: boolean;
+  sourceLanguageCode: string | null;
+  targetLanguageCode: string | null;
+  revisions: ContentRevision[];
+};
+
 export type PublishedContent = {
   id: string;
   slug: string;

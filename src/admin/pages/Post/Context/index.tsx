@@ -1,8 +1,13 @@
-import { ApiKey, Project } from '@prisma/client';
+import { ApiKey, Content, Project } from '@prisma/client';
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWR, { SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
-import { LocalizedPost, SourceLanguagePostItem, UploadFile } from '../../../../types/index.js';
+import {
+  LocalizedPost,
+  RevisedContent,
+  SourceLanguagePostItem,
+  UploadFile,
+} from '../../../../types/index.js';
 import { api } from '../../../utilities/api.js';
 
 type PostContext = {
@@ -25,11 +30,18 @@ type PostContext = {
   >;
   createPost: () => SWRMutationResponse<LocalizedPost, any, string>;
   trashPost: (postId: string) => SWRMutationResponse<void, any, string>;
-  createContent: (postId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
+  createContent: (postId: string) => SWRMutationResponse<Content, any, string, Record<string, any>>;
   trashLanguageContent: (
     postId: string,
     language: string
   ) => SWRMutationResponse<void, any, string>;
+  getContent: (id: string) => SWRResponse<
+    RevisedContent,
+    Error,
+    {
+      suspense: true;
+    }
+  >;
   updateContent: (contentId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
   trashContent: (contentId: string) => SWRMutationResponse<void, any, string>;
   translateContent: (
@@ -89,7 +101,7 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
     useSWRMutation(
       `/posts/${postId}/contents`,
       async (url: string, { arg }: { arg: Record<string, any> }) => {
-        return api.post(url, arg).then((res) => res.data);
+        return api.post<{ content: Content }>(url, arg).then((res) => res.data.content);
       }
     );
 
@@ -103,6 +115,15 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       `/posts/${postId}/translate`,
       async (url: string, { arg }: { arg: Record<string, any> }) => {
         return api.post(url, arg).then((res) => res.data);
+      }
+    );
+
+  const getContent = (id: string) =>
+    useSWR(
+      `/contents/${id}`,
+      (url) => api.get<{ content: RevisedContent }>(url).then((res) => res.data.content),
+      {
+        suspense: true,
       }
     );
 
@@ -169,6 +190,7 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       createContent,
       updateContent,
       trashContent,
+      getContent,
       trashLanguageContent,
       translateContent,
       requestReview,
@@ -186,6 +208,7 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       createContent,
       updateContent,
       trashContent,
+      getContent,
       trashLanguageContent,
       translateContent,
       requestReview,
