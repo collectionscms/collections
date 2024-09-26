@@ -46,6 +46,8 @@ export class ContentRevisionEntity extends PrismaBaseEntity<ContentRevision> {
     version: number;
     deletedAt: Date | null;
   }): ContentRevisionEntity {
+    const now = new Date();
+
     return new ContentRevisionEntity({
       id: v4(),
       projectId,
@@ -67,7 +69,8 @@ export class ContentRevisionEntity extends PrismaBaseEntity<ContentRevision> {
       createdById,
       updatedById,
       deletedAt,
-      createdAt: new Date(),
+      createdAt: now,
+      updatedAt: now,
     });
   }
 
@@ -158,7 +161,6 @@ export class ContentRevisionEntity extends PrismaBaseEntity<ContentRevision> {
       ...this.copyProps(),
       id: this.props.contentId,
       currentVersion: this.props.version,
-      updatedAt: this.props.createdAt,
     };
   }
 }

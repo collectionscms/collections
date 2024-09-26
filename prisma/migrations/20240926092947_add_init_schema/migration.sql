@@ -182,6 +182,7 @@ CREATE TABLE "ContentRevision" (
     "createdById" UUID NOT NULL,
     "updatedById" UUID NOT NULL,
     "createdAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMPTZ(6) NOT NULL,
 
     CONSTRAINT "ContentRevision_pkey" PRIMARY KEY ("id")
 );
@@ -254,6 +255,9 @@ CREATE UNIQUE INDEX "User_provider_providerId_key" ON "User"("provider", "provid
 
 -- CreateIndex
 CREATE UNIQUE INDEX "UserProject_userId_projectId_key" ON "UserProject"("userId", "projectId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Content_projectId_slug_key" ON "Content"("projectId", "slug");
 
 -- AddForeignKey
 ALTER TABLE "UserProject" ADD CONSTRAINT "UserProject_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

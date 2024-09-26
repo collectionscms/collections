@@ -193,6 +193,8 @@ model Content {
   updatedBy        User              @relation(name: "UpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction)
   reviews          Review[]
   contentRevisions ContentRevision[]
+
+  @@unique([projectId, slug])
 }
 
 model ContentRevision {
@@ -217,6 +219,7 @@ model ContentRevision {
   createdById     String    @db.Uuid
   updatedById     String    @db.Uuid
   createdAt       DateTime  @default(now()) @db.Timestamptz(6)
+  updatedAt       DateTime  @updatedAt @db.Timestamptz(6)
   project         Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
   post            Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
   content         Content   @relation(fields: [contentId], references: [id], onDelete: Cascade)
