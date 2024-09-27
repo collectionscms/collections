@@ -195,6 +195,7 @@ model Content {
   contentRevisions ContentRevision[]
 
   @@unique([projectId, slug])
+  @@unique([postId, language])
 }
 
 model ContentRevision {

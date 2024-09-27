@@ -259,6 +259,9 @@ CREATE UNIQUE INDEX "UserProject_userId_projectId_key" ON "UserProject"("userId"
 -- CreateIndex
 CREATE UNIQUE INDEX "Content_projectId_slug_key" ON "Content"("projectId", "slug");
 
+-- CreateIndex
+CREATE UNIQUE INDEX "Content_postId_language_key" ON "Content"("postId", "language");
+
 -- AddForeignKey
 ALTER TABLE "UserProject" ADD CONSTRAINT "UserProject_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
