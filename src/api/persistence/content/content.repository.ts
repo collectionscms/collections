@@ -24,26 +24,6 @@ export class ContentRepository {
     };
   }
 
-  async findOneByPostIdAndLanguage(
-    prisma: ProjectPrismaType,
-    excludeId: string,
-    postId: string,
-    language: string
-  ): Promise<ContentEntity | null> {
-    const record = await prisma.content.findFirst({
-      where: {
-        id: {
-          not: excludeId,
-        },
-        postId,
-        language,
-        deletedAt: null,
-      },
-    });
-
-    return record ? ContentEntity.Reconstruct<Content, ContentEntity>(record) : null;
-  }
-
   async findOneBySlug(
     prisma: ProjectPrismaType,
     slug: string
@@ -70,7 +50,11 @@ export class ContentRepository {
   async findOneWithRevisionsById(
     prisma: ProjectPrismaType,
     id: string
-  ): Promise<{ content: ContentEntity; revisions: ContentRevisionEntity[] } | null> {
+  ): Promise<{
+    content: ContentEntity;
+    createdBy: UserEntity;
+    revisions: ContentRevisionEntity[];
+  } | null> {
     const record = await prisma.content.findFirst({
       where: {
         id,
@@ -85,6 +69,7 @@ export class ContentRepository {
             version: 'desc',
           },
         },
+        createdBy: true,
       },
     });
 
@@ -94,6 +79,7 @@ export class ContentRepository {
 
     return {
       content: ContentEntity.Reconstruct<Content, ContentEntity>(record),
+      createdBy: UserEntity.Reconstruct<User, UserEntity>(record.createdBy),
       revisions: record.contentRevisions.map((r) =>
         ContentRevisionEntity.Reconstruct<ContentRevision, ContentRevisionEntity>(r)
       ),
@@ -189,7 +175,21 @@ export class ContentRepository {
       where: {
         id: contentEntity.id,
       },
-      data: contentEntity.toPersistence(),
+      data: {
+        title: contentEntity.title,
+        slug: contentEntity.slug,
+        excerpt: contentEntity.excerpt,
+        body: contentEntity.body,
+        bodyJson: contentEntity.bodyJson,
+        bodyHtml: contentEntity.bodyHtml,
+        metaTitle: contentEntity.metaTitle,
+        metaDescription: contentEntity.metaDescription,
+        coverUrl: contentEntity.coverUrl,
+        currentVersion: contentEntity.currentVersion,
+        status: contentEntity.status,
+        publishedAt: contentEntity.publishedAt,
+        updatedById: contentEntity.updatedById,
+      },
     });
 
     return ContentEntity.Reconstruct<Content, ContentEntity>(record);

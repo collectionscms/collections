@@ -229,10 +229,6 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
   changeStatus({ status, updatedById }: { status: string; updatedById?: string }) {
     this.props.status = status;
 
-    if (status === ContentStatus.published) {
-      this.props.publishedAt = new Date();
-    }
-
     if (updatedById) {
       this.props.updatedById = updatedById;
     }
@@ -285,6 +281,48 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
       ...(metaTitle !== undefined && { metaTitle }),
       ...(metaDescription !== undefined && { metaDescription }),
       ...(slug !== undefined && { slug: encodeURIComponent(slug) }),
+      updatedById,
+    });
+  }
+
+  publish({
+    title,
+    body,
+    bodyJson,
+    bodyHtml,
+    coverUrl,
+    slug,
+    excerpt,
+    metaTitle,
+    metaDescription,
+    currentVersion,
+    updatedById,
+  }: {
+    title: string;
+    body: string;
+    bodyJson: string;
+    bodyHtml: string;
+    coverUrl: string | null;
+    slug: string;
+    excerpt: string | null;
+    metaTitle: string | null;
+    metaDescription: string | null;
+    currentVersion: number;
+    updatedById: string;
+  }) {
+    Object.assign(this.props, {
+      title,
+      body,
+      bodyJson,
+      bodyHtml,
+      coverUrl,
+      excerpt,
+      metaTitle,
+      metaDescription,
+      slug,
+      status: ContentStatus.published,
+      currentVersion,
+      publishedAt: new Date(),
       updatedById,
     });
   }
