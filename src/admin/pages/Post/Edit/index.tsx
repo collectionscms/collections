@@ -208,6 +208,11 @@ export const EditPostPageImpl: React.FC = () => {
     mutate();
   };
 
+  const handleTrashed = () => {
+    const languageContent = content.languageContents.filter((c) => c.contentId !== content.id)?.[0];
+    navigate(`/admin/contents/${languageContent.contentId}`);
+  };
+
   // /////////////////////////////////////
   // Open settings
   // /////////////////////////////////////
@@ -269,7 +274,7 @@ export const EditPostPageImpl: React.FC = () => {
       />
       <PostFooter
         content={content}
-        onTrashed={handleMutate}
+        onTrashed={handleTrashed}
         onReverted={handleMutate}
         characters={characterCount.characters()}
       />

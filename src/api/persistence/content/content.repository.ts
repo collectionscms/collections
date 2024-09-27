@@ -209,6 +209,7 @@ export class ContentRepository {
         status: contentEntity.status,
         publishedAt: contentEntity.publishedAt,
         updatedById: contentEntity.updatedById,
+        deletedAt: contentEntity.deletedAt,
       },
     });
 

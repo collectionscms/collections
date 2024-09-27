@@ -1,6 +1,6 @@
 import { Content } from '@prisma/client';
+import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
-import { ContentStatus } from '../../persistence/content/content.entity.js';
 import { ContentRepository } from '../../persistence/content/content.repository.js';
 import { ContentRevisionEntity } from '../../persistence/contentRevision/contentRevision.entity.js';
 import { ContentRevisionRepository } from '../../persistence/contentRevision/contentRevision.repository.js';
@@ -19,21 +19,36 @@ export class TrashContentUseCase {
   async execute(props: TrashContentUseCaseSchemaType): Promise<Content> {
     const { id, userId } = props;
 
-    const { content, createdBy } = await this.contentRepository.findOneById(this.prisma, id);
+    const contentWithRevisions = await this.contentRepository.findOneWithRevisionsById(
+      this.prisma,
+      id
+    );
 
-    content.delete(userId);
+    if (!contentWithRevisions) {
+      throw new RecordNotFoundException('record_not_found');
+    }
 
-    const deletedContent = await this.prisma.$transaction(async (tx) => {
-      const deletedContent = await this.contentRepository.delete(tx, content);
+    const latestRevision = ContentRevisionEntity.getLatestRevisionOfLanguage(
+      contentWithRevisions.revisions,
+      contentWithRevisions.content.language
+    );
 
-      const contentRevision = ContentRevisionEntity.Construct({
-        ...content.toResponse(),
-        contentId: content.id,
-        version: content.currentVersion,
-      });
+    const contentRevision = ContentRevisionEntity.Construct({
+      ...latestRevision.toResponse(),
+      version: latestRevision.version + 1,
+      createdById: userId,
+      updatedById: userId,
+    });
+    contentRevision.trash();
+
+    const content = contentWithRevisions.content;
+    content.trash(contentRevision.version, userId);
+
+    const trashedContent = await this.prisma.$transaction(async (tx) => {
       await this.contentRevisionRepository.create(tx, contentRevision);
+      const result = await this.contentRepository.updateStatus(tx, content);
 
-      return deletedContent;
+      return result;
     });
 
     if (content.isPublished()) {
@@ -41,10 +56,10 @@ export class TrashContentUseCase {
         this.prisma,
         content.projectId,
         WebhookTriggerEvent.deletePublished,
-        deletedContent.toPublishedContentResponse(createdBy)
+        trashedContent.toPublishedContentResponse(contentWithRevisions.createdBy)
       );
     }
 
-    return deletedContent.toResponse();
+    return trashedContent.toResponse();
   }
 }

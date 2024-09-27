@@ -15,8 +15,6 @@ import { WebhookSettingRepository } from '../persistence/webhookSetting/webhookS
 import { WebhookService } from '../services/webhook.service.js';
 import { CreateContentUseCase } from '../useCases/content/createContent.useCase.js';
 import { createContentUseCaseSchema } from '../useCases/content/createContent.useCase.schema.js';
-import { TrashLanguageContentUseCase } from '../useCases/content/trashLanguageContent.useCase.js';
-import { trashLanguageContentUseCaseSchema } from '../useCases/content/trashLanguageContent.useCase.schema.js';
 import { CreatePostUseCase } from '../useCases/post/createPost.useCase.js';
 import { createPostUseCaseSchema } from '../useCases/post/createPost.useCase.schema.js';
 import { GetPostsUseCase } from '../useCases/post/getPosts.useCase.js';
@@ -129,30 +127,6 @@ router.post(
     res.json({
       ...response,
     });
-  })
-);
-
-router.delete(
-  '/posts/:id/languages/:language',
-  authenticatedUser,
-  validateAccess(['trashPost']),
-  asyncHandler(async (req: Request, res: Response) => {
-    const validated = trashLanguageContentUseCaseSchema.safeParse({
-      postId: req.params.id,
-      projectId: res.projectRole?.id,
-      userId: res.user.id,
-      language: req.params.language,
-    });
-    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
-
-    const useCase = new TrashLanguageContentUseCase(
-      projectPrisma(validated.data.projectId),
-      new ContentRepository(),
-      new ContentRevisionRepository(),
-      new WebhookService(new WebhookSettingRepository(), new WebhookLogRepository())
-    );
-    await useCase.execute(validated.data);
-    res.status(204).send();
   })
 );
 

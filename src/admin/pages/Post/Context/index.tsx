@@ -16,10 +16,6 @@ type PostContext = {
   createPost: () => SWRMutationResponse<RevisedContent, any, string>;
   trashPost: (postId: string) => SWRMutationResponse<void, any, string>;
   createContent: (postId: string) => SWRMutationResponse<Content, any, string, Record<string, any>>;
-  trashLanguageContent: (
-    postId: string,
-    language: string
-  ) => SWRMutationResponse<void, any, string>;
   getContent: (id: string) => SWRResponse<
     RevisedContent,
     Error,
@@ -80,11 +76,6 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
         return api.post<{ content: Content }>(url, arg).then((res) => res.data.content);
       }
     );
-
-  const trashLanguageContent = (postId: string, language: string) =>
-    useSWRMutation(`/posts/${postId}/languages/${language}`, async (url: string) => {
-      return api.delete(url).then((res) => res.data);
-    });
 
   const translateContent = (postId: string) =>
     useSWRMutation(
@@ -166,7 +157,6 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       updateContent,
       trashContent,
       getContent,
-      trashLanguageContent,
       translateContent,
       requestReview,
       publish,
@@ -183,7 +173,6 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       updateContent,
       trashContent,
       getContent,
-      trashLanguageContent,
       translateContent,
       requestReview,
       publish,

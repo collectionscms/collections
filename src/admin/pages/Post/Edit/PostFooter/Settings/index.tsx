@@ -39,12 +39,9 @@ export const Settings: React.FC<Props> = ({ open, content, onClose, onTrashed })
   const navigate = useNavigate();
 
   const { hasPermission } = useAuth();
-  const { trashPost, trashLanguageContent, getContent } = usePost();
+  const { trashPost, trashContent, getContent } = usePost();
   const { trigger: trashPostTrigger } = trashPost(content.id);
-  const { trigger: trashLanguageContentTrigger } = trashLanguageContent(
-    content.id,
-    content.language
-  );
+  const { trigger: trashContentTrigger } = trashContent(content.id);
   const { data: mutatedContent, mutate } = getContent(content.id);
 
   const [openContentTrash, setOpenContentTrash] = useState(false);
@@ -61,19 +58,19 @@ export const Settings: React.FC<Props> = ({ open, content, onClose, onTrashed })
     },
   };
 
-  const handleOpenLanguageContent = () => {
+  const toggleOpenLanguageContent = () => {
     setOpenContentTrash((open) => !open);
   };
 
-  const handleOpenPostTrash = () => {
+  const toggleOpenPostTrash = () => {
     setOpenPostTrash((open) => !open);
   };
 
-  const handleTrashLanguageContent = async () => {
+  const handleTrashContent = async () => {
     try {
-      await trashLanguageContentTrigger();
+      await trashContentTrigger();
       onTrashed();
-      handleOpenLanguageContent();
+      toggleOpenLanguageContent();
       enqueueSnackbar(t('toast.move_to_trash'), {
         anchorOrigin: {
           vertical: 'bottom',
@@ -94,7 +91,7 @@ export const Settings: React.FC<Props> = ({ open, content, onClose, onTrashed })
           horizontal: 'center',
         },
       });
-      handleOpenPostTrash();
+      toggleOpenPostTrash();
       navigate('/admin/posts');
     } catch (error) {
       logger.error(error);
@@ -127,8 +124,8 @@ export const Settings: React.FC<Props> = ({ open, content, onClose, onTrashed })
           language: t(`languages.${content.language}` as unknown as TemplateStringsArray),
         })}
         body={t('dialog.confirm_content_trash')}
-        execute={{ label: t('move_to_trash'), action: handleTrashLanguageContent }}
-        cancel={{ label: t('cancel'), action: handleOpenLanguageContent }}
+        execute={{ label: t('move_to_trash'), action: handleTrashContent }}
+        cancel={{ label: t('cancel'), action: toggleOpenLanguageContent }}
       />
       <ModalDialog
         open={openPostTrash}
@@ -136,7 +133,7 @@ export const Settings: React.FC<Props> = ({ open, content, onClose, onTrashed })
         title={t('dialog.confirm_all_content_trash_title')}
         body={t('dialog.confirm_content_trash')}
         execute={{ label: t('move_to_trash'), action: handleTrashPost }}
-        cancel={{ label: t('cancel'), action: handleOpenPostTrash }}
+        cancel={{ label: t('cancel'), action: toggleOpenPostTrash }}
       />
       <Dialog
         open={open}
@@ -221,7 +218,7 @@ export const Settings: React.FC<Props> = ({ open, content, onClose, onTrashed })
                           color="error"
                           startIcon={<Icon name="Trash2" size={16} />}
                           sx={{ pl: 1.5 }}
-                          onClick={handleOpenLanguageContent}
+                          onClick={toggleOpenLanguageContent}
                         >
                           {t('move_to_trash')}
                         </Button>
@@ -242,7 +239,7 @@ export const Settings: React.FC<Props> = ({ open, content, onClose, onTrashed })
                       color="error"
                       startIcon={<Icon name="Trash2" size={16} />}
                       sx={{ pl: 1.5 }}
-                      onClick={handleOpenPostTrash}
+                      onClick={toggleOpenPostTrash}
                     >
                       {t('move_to_trash')}
                     </Button>

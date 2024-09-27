@@ -15,6 +15,7 @@ export const ContentStatus = {
   review: 'review',
   published: 'published',
   archived: 'archived',
+  trashed: 'trashed',
 } as const;
 export type ContentStatusType = (typeof ContentStatus)[keyof typeof ContentStatus];
 
@@ -329,6 +330,13 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
   archive(currentVersion: number, updatedById: string) {
     this.props.currentVersion = currentVersion;
     this.props.status = ContentStatus.archived;
+    this.props.updatedById = updatedById;
+  }
+
+  trash(currentVersion: number, updatedById: string) {
+    this.props.currentVersion = currentVersion;
+    this.props.status = ContentStatus.trashed;
+    this.props.deletedAt = new Date();
     this.props.updatedById = updatedById;
   }
 

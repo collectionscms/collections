@@ -232,6 +232,11 @@ export class ContentRevisionEntity extends PrismaBaseEntity<ContentRevision> {
     this.props.status = ContentStatus.archived;
   }
 
+  trash() {
+    this.props.status = ContentStatus.trashed;
+    this.props.deletedAt = new Date();
+  }
+
   changeStatus({ status, updatedById }: { status: string; updatedById?: string }) {
     this.props.status = status;
 
