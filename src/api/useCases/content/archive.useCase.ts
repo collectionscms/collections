@@ -1,6 +1,6 @@
 import { Content } from '@prisma/client';
+import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
-import { ContentStatus } from '../../persistence/content/content.entity.js';
 import { ContentRepository } from '../../persistence/content/content.repository.js';
 import { ContentRevisionEntity } from '../../persistence/contentRevision/contentRevision.entity.js';
 import { ContentRevisionRepository } from '../../persistence/contentRevision/contentRevision.repository.js';
@@ -19,22 +19,34 @@ export class ArchiveUseCase {
   async execute(props: ArchiveUseCaseSchemaType): Promise<Content> {
     const { id, userId } = props;
 
-    const { content, createdBy } = await this.contentRepository.findOneById(this.prisma, id);
+    const contentWithRevisions = await this.contentRepository.findOneWithRevisionsById(
+      this.prisma,
+      id
+    );
 
-    content.changeStatus({
-      status: ContentStatus.archived,
+    if (!contentWithRevisions) {
+      throw new RecordNotFoundException('record_not_found');
+    }
+
+    const latestRevision = ContentRevisionEntity.getLatestRevisionOfLanguage(
+      contentWithRevisions.revisions,
+      contentWithRevisions.content.language
+    );
+
+    const contentRevision = ContentRevisionEntity.Construct({
+      ...latestRevision.toResponse(),
+      version: latestRevision.version + 1,
+      createdById: userId,
       updatedById: userId,
     });
+    contentRevision.archive();
+
+    const content = contentWithRevisions.content;
+    content.archive(contentRevision.version, userId);
 
     const updatedContent = await this.prisma.$transaction(async (tx) => {
-      const result = await this.contentRepository.updateStatus(tx, content);
-
-      const contentRevision = ContentRevisionEntity.Construct({
-        ...result.toResponse(),
-        contentId: result.id,
-        version: result.currentVersion,
-      });
       await this.contentRevisionRepository.create(tx, contentRevision);
+      const result = await this.contentRepository.updateStatus(tx, content);
 
       return result;
     });

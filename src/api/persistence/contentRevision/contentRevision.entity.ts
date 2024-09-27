@@ -20,7 +20,6 @@ export class ContentRevisionEntity extends PrismaBaseEntity<ContentRevision> {
     metaDescription,
     publishedAt,
     language,
-    status,
     createdById,
     updatedById,
     version,
@@ -40,7 +39,6 @@ export class ContentRevisionEntity extends PrismaBaseEntity<ContentRevision> {
     metaDescription?: string | null;
     publishedAt?: Date | null;
     language: string;
-    status: string;
     createdById: string;
     updatedById: string;
     version: number;
@@ -222,6 +220,16 @@ export class ContentRevisionEntity extends PrismaBaseEntity<ContentRevision> {
 
   isPublished(): boolean {
     return this.props.status === ContentStatus.published;
+  }
+
+  publish(updatedById: string) {
+    this.props.status = ContentStatus.published;
+    this.props.publishedAt = new Date();
+    this.props.updatedById = updatedById;
+  }
+
+  archive() {
+    this.props.status = ContentStatus.archived;
   }
 
   changeStatus({ status, updatedById }: { status: string; updatedById?: string }) {

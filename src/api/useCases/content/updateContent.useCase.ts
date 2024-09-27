@@ -39,6 +39,8 @@ export class UpdateContentUseCase {
         const contentRevision = ContentRevisionEntity.Construct({
           ...revision.toResponse(),
           version: revision.version + 1,
+          createdById: props.userId,
+          updatedById: props.userId,
         });
         return await this.contentRevisionRepository.create(tx, contentRevision);
       } else {

@@ -1,13 +1,12 @@
 import { Content } from '@prisma/client';
 import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
-import { ContentStatus } from '../../persistence/content/content.entity.js';
 import { ContentRepository } from '../../persistence/content/content.repository.js';
+import { ContentRevisionEntity } from '../../persistence/contentRevision/contentRevision.entity.js';
 import { ContentRevisionRepository } from '../../persistence/contentRevision/contentRevision.repository.js';
 import { WebhookTriggerEvent } from '../../persistence/webhookLog/webhookLog.entity.js';
 import { WebhookService } from '../../services/webhook.service.js';
 import { PublishUseCaseSchemaType } from './publish.useCase.schema.js';
-import { ContentRevisionEntity } from '../../persistence/contentRevision/contentRevision.entity.js';
 
 export class PublishUseCase {
   constructor(
@@ -31,11 +30,7 @@ export class PublishUseCase {
       contentWithRevisions.revisions,
       contentWithRevisions.content.language
     );
-
-    latestRevision.changeStatus({
-      status: ContentStatus.published,
-      updatedById: userId,
-    });
+    latestRevision.publish(userId);
 
     const content = contentWithRevisions.content;
     content.publish({

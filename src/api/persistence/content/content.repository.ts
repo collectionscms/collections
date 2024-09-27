@@ -205,6 +205,7 @@ export class ContentRepository {
         id: contentEntity.id,
       },
       data: {
+        currentVersion: contentEntity.currentVersion,
         status: contentEntity.status,
         publishedAt: contentEntity.publishedAt,
         updatedById: contentEntity.updatedById,

@@ -75,7 +75,6 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
       metaDescription: props.metaDescription ?? null,
       coverUrl: props.coverUrl ?? null,
       language: props.language,
-      status: ContentStatus.draft,
       publishedAt: null,
       version: props.currentVersion ?? 1,
       createdById: props.createdById,
@@ -325,6 +324,12 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
       publishedAt: new Date(),
       updatedById,
     });
+  }
+
+  archive(currentVersion: number, updatedById: string) {
+    this.props.currentVersion = currentVersion;
+    this.props.status = ContentStatus.archived;
+    this.props.updatedById = updatedById;
   }
 
   isSameLanguageContent(language: string) {
