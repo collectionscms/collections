@@ -8,7 +8,6 @@ import { post } from './post.router.js';
 import { project } from './project.router.js';
 import { review } from './review.router.js';
 import { role } from './role.router.js';
-import { trashedContent } from './trashedContent.router.js';
 import { user } from './user.router.js';
 import { webhookSetting } from './webhookSetting.router.js';
 
@@ -21,7 +20,6 @@ tenantApiRouter.use(project);
 tenantApiRouter.use(me);
 tenantApiRouter.use(file);
 tenantApiRouter.use(post);
-tenantApiRouter.use(trashedContent);
 tenantApiRouter.use(content);
 tenantApiRouter.use(invitation);
 tenantApiRouter.use(review);

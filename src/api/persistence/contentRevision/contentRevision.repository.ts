@@ -49,4 +49,19 @@ export class ContentRevisionRepository {
 
     return ContentRevisionEntity.Reconstruct<ContentRevision, ContentRevisionEntity>(record);
   }
+
+  async deleteAfterVersion(
+    prisma: ProjectPrismaType,
+    contentId: string,
+    version: number
+  ): Promise<void> {
+    await prisma.contentRevision.deleteMany({
+      where: {
+        contentId,
+        version: {
+          gt: version,
+        },
+      },
+    });
+  }
 }

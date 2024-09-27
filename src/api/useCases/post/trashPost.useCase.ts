@@ -37,11 +37,11 @@ export class TrashPostUseCase {
         });
         contentRevision.trash();
 
-        content.trash(contentRevision.version, userId);
+        content.trash(userId);
         result.push(content);
 
         await this.contentRevisionRepository.create(tx, contentRevision);
-        await this.contentRepository.updateStatus(tx, content);
+        await this.contentRepository.trash(tx, content);
       }
 
       return result;

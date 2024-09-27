@@ -5,11 +5,8 @@ import { UserEntity } from '../user/user.entity.js';
 import { ContentEntity } from './content.entity.js';
 
 export class ContentRepository {
-  async findOneById(
-    prisma: ProjectPrismaType,
-    id: string
-  ): Promise<{ content: ContentEntity; createdBy: UserEntity }> {
-    const { createdBy, ...content } = await prisma.content.findFirstOrThrow({
+  async findOneById(prisma: ProjectPrismaType, id: string): Promise<ContentEntity | null> {
+    const record = await prisma.content.findFirst({
       where: {
         id,
       },
@@ -18,10 +15,9 @@ export class ContentRepository {
       },
     });
 
-    return {
-      content: ContentEntity.Reconstruct<Content, ContentEntity>(content),
-      createdBy: UserEntity.Reconstruct<User, UserEntity>(createdBy),
-    };
+    if (!record) return null;
+
+    return ContentEntity.Reconstruct<Content, ContentEntity>(record);
   }
 
   async findOneBySlug(
@@ -252,6 +248,22 @@ export class ContentRepository {
     return ContentEntity.Reconstruct<Content, ContentEntity>(record);
   }
 
+  async trash(prisma: ProjectPrismaType, contentEntity: ContentEntity): Promise<ContentEntity> {
+    contentEntity.beforeUpdateValidate();
+    const record = await prisma.content.update({
+      where: {
+        id: contentEntity.id,
+      },
+      data: {
+        status: contentEntity.status,
+        updatedById: contentEntity.updatedById,
+        deletedAt: contentEntity.deletedAt,
+      },
+    });
+
+    return ContentEntity.Reconstruct<Content, ContentEntity>(record);
+  }
+
   async restore(prisma: ProjectPrismaType, contentEntity: ContentEntity): Promise<ContentEntity> {
     contentEntity.beforeUpdateValidate();
     const record = await prisma.content.update({
@@ -259,6 +271,8 @@ export class ContentRepository {
         id: contentEntity.id,
       },
       data: {
+        status: contentEntity.status,
+        currentVersion: contentEntity.currentVersion,
         deletedAt: contentEntity.deletedAt,
         updatedById: contentEntity.updatedById,
       },

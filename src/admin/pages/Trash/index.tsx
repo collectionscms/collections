@@ -1,7 +1,9 @@
 import { Typography } from '@mui/material';
+import { Content } from '@prisma/client';
 import dayjs from 'dayjs';
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Row } from 'react-table';
 import { MainCard } from '../../@extended/components/MainCard/index.js';
 import { NationalFlagIcon } from '../../components/elements/NationalFlagIcon/index.js';
 import { ReactTable } from '../../components/elements/ReactTable/index.js';
@@ -53,7 +55,7 @@ const TrashPageImpl: React.FC = () => {
         accessor: 'id',
         width: 40,
         Cell: ({ value }: { value: string }) => {
-          return <RestoreButton postId={value} onRestored={mutate} />;
+          return <RestoreButton contentId={value} onRestored={mutate} />;
         },
       },
     ],

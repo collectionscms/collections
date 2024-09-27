@@ -12,7 +12,7 @@ type TrashContext = {
       suspense: true;
     }
   >;
-  restore: (postId: string) => SWRMutationResponse<void, any, string>;
+  restore: (contentId: string) => SWRMutationResponse<void, any, string>;
 };
 
 const Context = createContext({} as TrashContext);
@@ -20,7 +20,7 @@ const Context = createContext({} as TrashContext);
 export const TrashContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const getTrashedContents = () =>
     useSWR(
-      '/trashed/contents',
+      '/trash/contents',
       (url) => api.get<{ contents: Content[] }>(url).then((res) => res.data.contents),
       {
         suspense: true,
@@ -28,7 +28,7 @@ export const TrashContextProvider: React.FC<{ children: React.ReactNode }> = ({ 
     );
 
   const restore = (contentId: string) =>
-    useSWRMutation(`/trashed/contents/${contentId}/restore`, async (url: string) => {
+    useSWRMutation(`/contents/${contentId}/restore`, async (url: string) => {
       return api.patch(url).then((res) => res.data);
     });
 

@@ -239,9 +239,10 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     this.props.updatedById = userId;
   }
 
-  restore(userId: string) {
-    this.props.deletedAt = null;
+  restore(status: string, userId: string) {
+    this.props.status = status;
     this.props.updatedById = userId;
+    this.props.deletedAt = null;
   }
 
   isPublished(): boolean {
@@ -333,8 +334,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     this.props.updatedById = updatedById;
   }
 
-  trash(currentVersion: number, updatedById: string) {
-    this.props.currentVersion = currentVersion;
+  trash(updatedById: string) {
     this.props.status = ContentStatus.trashed;
     this.props.deletedAt = new Date();
     this.props.updatedById = updatedById;

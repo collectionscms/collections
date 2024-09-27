@@ -1,8 +1,9 @@
 import { Content } from '@prisma/client';
-import { ConflictException } from '../../../exceptions/conflict.js';
+import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
 import { ContentRepository } from '../../persistence/content/content.repository.js';
-import { PostRepository } from '../../persistence/post/post.repository.js';
+import { ContentRevisionRepository } from '../../persistence/contentRevision/contentRevision.repository.js';
+import { UserRepository } from '../../persistence/user/user.repository.js';
 import { WebhookTriggerEvent } from '../../persistence/webhookLog/webhookLog.entity.js';
 import { WebhookService } from '../../services/webhook.service.js';
 import { RestoreContentUseCaseSchemaType } from './restoreContent.useCase.schema.js';
@@ -10,25 +11,35 @@ import { RestoreContentUseCaseSchemaType } from './restoreContent.useCase.schema
 export class RestoreContentUseCase {
   constructor(
     private readonly prisma: ProjectPrismaClient,
-    private readonly postRepository: PostRepository,
+    private readonly userRepository: UserRepository,
     private readonly contentRepository: ContentRepository,
+    private readonly contentRevisionRepository: ContentRevisionRepository,
     private readonly webhookService: WebhookService
   ) {}
 
   async execute({ id, userId }: RestoreContentUseCaseSchemaType): Promise<Content> {
-    const { content, createdBy } = await this.contentRepository.findOneById(this.prisma, id);
-    const post = await this.postRepository.findOneWithContentsById(this.prisma, content.postId);
+    const content = await this.contentRepository.findOneById(this.prisma, id);
+    const revision = await this.contentRevisionRepository.findLatestOneByContentId(this.prisma, id);
 
-    const sameLanguageContent = post.contents.find((c) => c.content.language === content.language);
-    if (sameLanguageContent) {
-      throw new ConflictException('already_has_same_language_content');
+    if (!content || !revision) {
+      throw new RecordNotFoundException('record_not_found');
     }
 
-    content.restore(userId);
+    content.restore(revision.status, userId);
 
-    const restoredContent = await this.contentRepository.restore(this.prisma, content);
+    const restoredContent = await this.prisma.$transaction(async (tx) => {
+      const result = await this.contentRepository.restore(this.prisma, content);
 
-    if (content.isPublished()) {
+      // delete all revisions after restored version
+      const previousVersion = revision.version - 1;
+      await this.contentRevisionRepository.deleteAfterVersion(tx, content.id, previousVersion);
+
+      return result;
+    });
+
+    if (restoredContent.isPublished()) {
+      const createdBy = await this.userRepository.findOneById(this.prisma, userId);
+
       await this.webhookService.send(
         this.prisma,
         content.projectId,

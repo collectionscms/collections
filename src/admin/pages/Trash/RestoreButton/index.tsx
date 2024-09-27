@@ -4,20 +4,19 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { logger } from '../../../../utilities/logger.js';
 import { IconButton } from '../../../@extended/components/IconButton/index.js';
-import { ModalDialog } from '../../../components/elements/ModalDialog/index.js';
 import { Icon } from '../../../components/elements/Icon/index.js';
-import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
-import { TrashContextProvider, useTrash } from '../Context/index.js';
+import { ModalDialog } from '../../../components/elements/ModalDialog/index.js';
+import { useTrash } from '../Context/index.js';
 
 type Props = {
-  postId: string;
+  contentId: string;
   onRestored: () => void;
 };
 
-export const RestoreButtonImpl: React.FC<Props> = ({ postId, onRestored }) => {
+export const RestoreButton: React.FC<Props> = ({ contentId, onRestored }) => {
   const { t } = useTranslation();
   const { restore } = useTrash();
-  const { trigger } = restore(postId);
+  const { trigger } = restore(contentId);
   const [openRestore, setOpenRestore] = useState(false);
 
   const handleRestore = async () => {
@@ -58,5 +57,3 @@ export const RestoreButtonImpl: React.FC<Props> = ({ postId, onRestored }) => {
     </>
   );
 };
-
-export const RestoreButton = ComposeWrapper({ context: TrashContextProvider })(RestoreButtonImpl);

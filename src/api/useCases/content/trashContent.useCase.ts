@@ -42,11 +42,11 @@ export class TrashContentUseCase {
     contentRevision.trash();
 
     const content = contentWithRevisions.content;
-    content.trash(contentRevision.version, userId);
+    content.trash(userId);
 
     const trashedContent = await this.prisma.$transaction(async (tx) => {
       await this.contentRevisionRepository.create(tx, contentRevision);
-      const result = await this.contentRepository.updateStatus(tx, content);
+      const result = await this.contentRepository.trash(tx, content);
 
       return result;
     });
