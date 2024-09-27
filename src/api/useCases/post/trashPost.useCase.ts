@@ -16,27 +16,38 @@ export class TrashPostUseCase {
   ) {}
 
   async execute({ id, userId }: TrashPostUseCaseSchemaType): Promise<Content[]> {
-    const contents = await this.contentRepository.findManyByPostId(this.prisma, id);
+    const contentWithRevisions = await this.contentRepository.findManyWithRevisionsByPostId(
+      this.prisma,
+      id
+    );
 
-    const deletedContents = await this.prisma.$transaction(async (tx) => {
+    const trashedContent = await this.prisma.$transaction(async (tx) => {
       const result = [];
-      for (const { content, createdBy } of contents) {
-        content.delete(userId);
-        await this.contentRepository.delete(tx, content);
-        result.push(content);
+      for (const { content, revisions } of contentWithRevisions) {
+        const latestRevision = ContentRevisionEntity.getLatestRevisionOfLanguage(
+          revisions,
+          content.language
+        );
 
         const contentRevision = ContentRevisionEntity.Construct({
-          ...content.toResponse(),
-          contentId: content.id,
-          version: content.currentVersion,
+          ...latestRevision.toResponse(),
+          version: latestRevision.version + 1,
+          createdById: userId,
+          updatedById: userId,
         });
+        contentRevision.trash();
+
+        content.trash(contentRevision.version, userId);
+        result.push(content);
+
         await this.contentRevisionRepository.create(tx, contentRevision);
+        await this.contentRepository.updateStatus(tx, content);
       }
 
       return result;
     });
 
-    const publishedContents = deletedContents.filter((content) => content.isPublished());
+    const publishedContents = trashedContent.filter((content) => content.isPublished());
     for (const content of publishedContents) {
       await this.webhookService.send(
         this.prisma,
@@ -46,6 +57,6 @@ export class TrashPostUseCase {
       );
     }
 
-    return deletedContents.map((content) => content.toResponse());
+    return trashedContent.map((content) => content.toResponse());
   }
 }

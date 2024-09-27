@@ -40,7 +40,7 @@ export const Settings: React.FC<Props> = ({ open, content, onClose, onTrashed })
 
   const { hasPermission } = useAuth();
   const { trashPost, trashContent, getContent } = usePost();
-  const { trigger: trashPostTrigger } = trashPost(content.id);
+  const { trigger: trashPostTrigger } = trashPost(content.postId);
   const { trigger: trashContentTrigger } = trashContent(content.id);
   const { data: mutatedContent, mutate } = getContent(content.id);
 

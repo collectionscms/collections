@@ -1,7 +1,6 @@
 import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
 import { RevisedContent } from '../../../types/index.js';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
-import { ContentEntity } from '../../persistence/content/content.entity.js';
 import { ContentRepository } from '../../persistence/content/content.repository.js';
 import { ContentRevisionEntity } from '../../persistence/contentRevision/contentRevision.entity.js';
 import { ProjectRepository } from '../../persistence/project/project.repository.js';

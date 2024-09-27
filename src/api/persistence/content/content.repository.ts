@@ -134,6 +134,42 @@ export class ContentRepository {
     }));
   }
 
+  async findManyWithRevisionsByPostId(
+    prisma: ProjectPrismaType,
+    postId: string
+  ): Promise<
+    { content: ContentEntity; createdBy: UserEntity; revisions: ContentRevisionEntity[] }[]
+  > {
+    const records = await prisma.content.findMany({
+      where: {
+        postId,
+        deletedAt: null,
+      },
+      orderBy: {
+        currentVersion: 'desc',
+      },
+      include: {
+        contentRevisions: {
+          where: {
+            deletedAt: null,
+          },
+          orderBy: {
+            version: 'desc',
+          },
+        },
+        createdBy: true,
+      },
+    });
+
+    return records.map((record) => ({
+      content: ContentEntity.Reconstruct<Content, ContentEntity>(record),
+      createdBy: UserEntity.Reconstruct<User, UserEntity>(record.createdBy),
+      revisions: record.contentRevisions.map((r) =>
+        ContentRevisionEntity.Reconstruct<ContentRevision, ContentRevisionEntity>(r)
+      ),
+    }));
+  }
+
   async findManyTrashed(prisma: ProjectPrismaType): Promise<ContentEntity[]> {
     const records = await prisma.content.findMany({
       where: {
@@ -214,30 +250,6 @@ export class ContentRepository {
     });
 
     return ContentEntity.Reconstruct<Content, ContentEntity>(record);
-  }
-
-  async delete(prisma: ProjectPrismaType, contentEntity: ContentEntity): Promise<ContentEntity> {
-    contentEntity.beforeUpdateValidate();
-    const record = await prisma.content.update({
-      where: {
-        id: contentEntity.id,
-      },
-      data: {
-        deletedAt: contentEntity.deletedAt,
-        updatedById: contentEntity.updatedById,
-      },
-    });
-
-    return ContentEntity.Reconstruct<Content, ContentEntity>(record);
-  }
-
-  async hardDelete(prisma: ProjectPrismaType, contentEntity: ContentEntity): Promise<void> {
-    contentEntity.beforeUpdateValidate();
-    await prisma.content.delete({
-      where: {
-        id: contentEntity.id,
-      },
-    });
   }
 
   async restore(prisma: ProjectPrismaType, contentEntity: ContentEntity): Promise<ContentEntity> {
