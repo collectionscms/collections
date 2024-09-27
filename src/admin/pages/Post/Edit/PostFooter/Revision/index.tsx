@@ -1,4 +1,5 @@
 import { Box, Drawer, Stack, Tooltip, Typography, useTheme } from '@mui/material';
+import { ContentRevision } from '@prisma/client';
 import dayjs from 'dayjs';
 import { enqueueSnackbar } from 'notistack';
 import React, { useState } from 'react';
@@ -18,19 +19,29 @@ export type Props = {
   onReverted: () => void;
 };
 
-export const History: React.FC<Props> = ({ content, onReverted }) => {
-  const { id, revisions, version, status } = content;
+export const Revision: React.FC<Props> = ({ content, onReverted }) => {
+  const { id, revisions } = content;
 
   const theme = useTheme();
   const { t } = useTranslation();
-  const [openRevert, setOpenRevert] = useState(false);
 
-  const { trashContent } = usePost();
-  const { trigger: trashContentTrigger } = trashContent(id);
+  const [openRevert, setOpenRevert] = useState(false);
+  const [revertRevision, setRevertRevision] = useState<ContentRevision | null>(null);
+  const toggleRevertMode = (revision: ContentRevision) => {
+    setOpenRevert(!openRevert);
+    setRevertRevision(revision);
+  };
+
+  const { revertContent } = usePost();
+  const { trigger: revertContentTrigger } = revertContent(id);
 
   const handleRevert = async () => {
+    if (!revertRevision) return;
+
     try {
-      await trashContentTrigger();
+      await revertContentTrigger({
+        contentRevisionId: revertRevision.id,
+      });
       onReverted();
       enqueueSnackbar(t('toast.post_reverted'), {
         anchorOrigin: {
@@ -54,8 +65,8 @@ export const History: React.FC<Props> = ({ content, onReverted }) => {
       <ModalDialog
         open={openRevert}
         title={t('dialog.confirm_revert_previous_version_title')}
-        body={t('dialog.confirm_revert_previous_version')}
-        execute={{ label: t('restore'), action: handleRevert }}
+        body={t('dialog.confirm_revert_previous_version', { version: revertRevision?.version })}
+        execute={{ label: t('revert'), action: handleRevert }}
         cancel={{ label: t('cancel'), action: () => setOpenRevert(false) }}
       />
       <Tooltip title={t('version_history')} placement="top-start">
@@ -135,9 +146,15 @@ export const History: React.FC<Props> = ({ content, onReverted }) => {
                             {dayjs(revision.createdAt).format(t('date_format.long'))}
                           </Typography>
                         </Stack>
-                        {status.currentStatus === 'draft' && version - 1 === revision.version && (
-                          <Tooltip title={t('restore')}>
-                            <IconButton color="secondary" onClick={() => setOpenRevert(true)}>
+                        {revision.status === 'published' && (
+                          <Tooltip
+                            title={t('revert_to', { version: revision.version })}
+                            placement="right"
+                          >
+                            <IconButton
+                              color="secondary"
+                              onClick={() => toggleRevertMode(revision)}
+                            >
                               <Icon name="Undo2" size={14} />
                             </IconButton>
                           </Tooltip>

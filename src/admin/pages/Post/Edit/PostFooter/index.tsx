@@ -4,8 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { RevisedContent } from '../../../../../types/index.js';
 import { IconButton } from '../../../../@extended/components/IconButton/index.js';
 import { Icon } from '../../../../components/elements/Icon/index.js';
-import { History } from './History/index.js';
 import { Information } from './Information/index.js';
+import { Revision } from './Revision/index.js';
 import { Settings } from './Settings/index.js';
 
 export type Props = {
@@ -39,7 +39,7 @@ export const PostFooter: React.FC<Props> = ({ content, characters, onTrashed, on
       }}
     >
       <Stack flexDirection="row" gap={2}>
-        <History content={content} onReverted={onReverted} />
+        <Revision content={content} onReverted={onReverted} />
         <Information characters={characters} />
       </Stack>
       <Tooltip title={t('setting')}>

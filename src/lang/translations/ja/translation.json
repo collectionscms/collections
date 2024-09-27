@@ -85,6 +85,7 @@
   "slug": "スラッグ",
   "version_history": "バージョン履歴",
   "delete_post": "記事を削除",
+  "revert": "戻す",
   "revert_previous_version": "前のバージョンに戻す",
   "api_key": "APIキー",
   "generate_api_key": "APIキーを生成",
@@ -138,6 +139,7 @@
   "create_your_first_project": "Collections で最初のプロジェクトを作成しよう！",
   "invitation_from_existing_project": "または、既存のプロジェクトから招待を受けることもできます。",
   "excerpt": "抜粋",
+  "revert_to": "v{{version}}に戻す",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",
@@ -154,7 +156,7 @@
     "confirm_post_restore_title": "元にもどしますか？",
     "confirm_post_restore": "記事を元に戻そうとしています。よろしいですか？",
     "confirm_revert_previous_version_title": "以前のバージョンに戻しますか？",
-    "confirm_revert_previous_version": "書きかけの記事はごみ箱に移動します。"
+    "confirm_revert_previous_version": "記事をv{{version}}に戻します。実行後は取り消すことができませんがよろしいですか？"
   },
   "toast": {
     "created_successfully": "登録しました",

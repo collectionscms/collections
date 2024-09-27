@@ -245,6 +245,12 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     this.props.deletedAt = null;
   }
 
+  revert(status: string, version: number, userId: string) {
+    this.props.status = status;
+    this.props.currentVersion = version;
+    this.props.updatedById = userId;
+  }
+
   isPublished(): boolean {
     return this.props.status === ContentStatus.published;
   }

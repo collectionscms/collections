@@ -1,4 +1,4 @@
-import { ApiKey, Content, Project } from '@prisma/client';
+import { ApiKey, Content } from '@prisma/client';
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWR, { SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
@@ -24,6 +24,7 @@ type PostContext = {
     }
   >;
   updateContent: (contentId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
+  revertContent: (contentId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
   trashContent: (contentId: string) => SWRMutationResponse<void, any, string>;
   translateContent: (
     contentId: string
@@ -38,13 +39,6 @@ type PostContext = {
     Record<string, any>
   >;
   getApiKeys: () => SWRMutationResponse<ApiKey[], Error>;
-  getProject: () => SWRResponse<
-    Project,
-    Error,
-    {
-      suspense: true;
-    }
-  >;
 };
 
 const Context = createContext({} as PostContext);
@@ -102,6 +96,14 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       }
     );
 
+  const revertContent = (contentId: string) =>
+    useSWRMutation(
+      `/contents/${contentId}/revert`,
+      async (url: string, { arg }: { arg: Record<string, any> }) => {
+        return api.patch(url, arg).then((res) => res.data);
+      }
+    );
+
   const trashContent = (contentId: string) =>
     useSWRMutation(`/contents/${contentId}/trash`, async (url: string) => {
       return api.delete(url).then((res) => res.data);
@@ -141,13 +143,6 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       return api.get<{ apiKeys: ApiKey[] }>(url).then((res) => res.data.apiKeys);
     });
 
-  const getProject = () =>
-    useSWR(
-      '/projects',
-      (url) => api.get<{ project: Project }>(url).then((res) => res.data.project),
-      { suspense: true }
-    );
-
   const value = useMemo(
     () => ({
       getPosts,
@@ -155,6 +150,7 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       trashPost,
       createContent,
       updateContent,
+      revertContent,
       trashContent,
       getContent,
       translateContent,
@@ -163,7 +159,6 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       archive,
       createFileImage,
       getApiKeys,
-      getProject,
     }),
     [
       getPosts,
@@ -171,6 +166,7 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       trashPost,
       createContent,
       updateContent,
+      revertContent,
       trashContent,
       getContent,
       translateContent,
@@ -179,7 +175,6 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       archive,
       createFileImage,
       getApiKeys,
-      getProject,
     ]
   );
 

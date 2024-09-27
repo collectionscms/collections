@@ -85,6 +85,7 @@
   "slug": "Slug",
   "version_history": "Version History",
   "delete_post": "Delete post",
+  "revert": "Revert",
   "revert_previous_version": "Revert previous version",
   "api_key": "API key",
   "generate_api_key": "Generate API key",
@@ -138,6 +139,7 @@
   "create_your_first_project": "Create your first project on Collections!",
   "invitation_from_existing_project": "Alternatively, you may receive an invitation to join an existing project.",
   "excerpt": "Excerpt",
+  "revert_to": "Revert to v{{version}}",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",
@@ -154,7 +156,7 @@
     "confirm_post_restore_title": "Do you want to restore it?",
     "confirm_post_restore": "Are you sure you want to restore the post.",
     "confirm_revert_previous_version_title": "Are you sure you want to revert to the previous version?",
-    "confirm_revert_previous_version": "Writings will be moved to the trash."
+    "confirm_revert_previous_version": "Revert the post to v{{version}}. This action cannot be undone, are you sure?"
   },
   "toast": {
     "created_successfully": "Created successfully.",

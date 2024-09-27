@@ -24,6 +24,8 @@ import { RequestReviewUseCase } from '../useCases/content/requestReview.useCase.
 import { requestReviewUseCaseSchema } from '../useCases/content/requestReview.useCase.schema.js';
 import { RestoreContentUseCase } from '../useCases/content/restoreContent.useCase.js';
 import { restoreContentUseCaseSchema } from '../useCases/content/restoreContent.useCase.schema.js';
+import { RevertContentUseCase } from '../useCases/content/revertContent.useCase.js';
+import { revertContentUseCaseSchema } from '../useCases/content/revertContent.useCase.schema.js';
 import { TrashContentUseCase } from '../useCases/content/trashContent.useCase.js';
 import { trashContentUseCaseSchema } from '../useCases/content/trashContent.useCase.schema.js';
 import { UpdateContentUseCase } from '../useCases/content/updateContent.useCase.js';
@@ -197,6 +199,32 @@ router.patch(
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
     const useCase = new RestoreContentUseCase(
+      projectPrisma(validated.data.projectId),
+      new UserRepository(),
+      new ContentRepository(),
+      new ContentRevisionRepository(),
+      new WebhookService(new WebhookSettingRepository(), new WebhookLogRepository())
+    );
+    await useCase.execute(validated.data);
+
+    res.status(204).send();
+  })
+);
+
+router.patch(
+  '/contents/:id/revert',
+  authenticatedUser,
+  validateAccess(['updatePost']),
+  asyncHandler(async (req: Request, res: Response) => {
+    const validated = revertContentUseCaseSchema.safeParse({
+      id: req.params.id,
+      projectId: res.projectRole?.id,
+      userId: res.user.id,
+      contentRevisionId: req.body.contentRevisionId,
+    });
+    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
+
+    const useCase = new RevertContentUseCase(
       projectPrisma(validated.data.projectId),
       new UserRepository(),
       new ContentRepository(),

@@ -3,6 +3,18 @@ import { ProjectPrismaType } from '../../database/prisma/client.js';
 import { ContentRevisionEntity } from './contentRevision.entity.js';
 
 export class ContentRevisionRepository {
+  async findOneById(prisma: ProjectPrismaType, id: string): Promise<ContentRevisionEntity | null> {
+    const record = await prisma.contentRevision.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!record) return null;
+
+    return ContentRevisionEntity.Reconstruct<ContentRevision, ContentRevisionEntity>(record);
+  }
+
   async findLatestOneByContentId(
     prisma: ProjectPrismaType,
     contentId: string
