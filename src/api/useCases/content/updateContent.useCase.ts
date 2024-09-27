@@ -2,8 +2,8 @@ import { Content } from '@prisma/client';
 import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
 import { RecordNotUniqueException } from '../../../exceptions/database/recordNotUnique.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
-import { ContentEntity } from '../../persistence/content/content.entity.js';
 import { ContentRepository } from '../../persistence/content/content.repository.js';
+import { ContentRevisionEntity } from '../../persistence/contentRevision/contentRevision.entity.js';
 import { ContentRevisionRepository } from '../../persistence/contentRevision/contentRevision.repository.js';
 import { UpdateContentUseCaseSchemaType } from './updateContent.useCase.schema.js';
 
@@ -35,23 +35,11 @@ export class UpdateContentUseCase {
 
     const createdOrUpdatedRevision = await this.prisma.$transaction(async (tx) => {
       if (revision.isPublished()) {
-        // create new version content
-        const { content, contentRevision } = ContentEntity.Construct({
+        // create new version revision
+        const contentRevision = ContentRevisionEntity.Construct({
           ...revision.toResponse(),
-          coverUrl: props.coverUrl,
-          title: props.title,
-          body: props.body,
-          bodyJson: props.bodyJson,
-          bodyHtml: props.bodyHtml,
-          slug: props.slug,
-          excerpt: props.excerpt || null,
-          metaTitle: props.metaTitle || null,
-          metaDescription: props.metaDescription || null,
-          createdById: props.userId,
-          currentVersion: revision.version + 1,
+          version: revision.version + 1,
         });
-
-        await this.contentRepository.create(tx, content);
         return await this.contentRevisionRepository.create(tx, contentRevision);
       } else {
         // update current revision

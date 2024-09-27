@@ -7,6 +7,7 @@ import { ContentRevisionRepository } from '../../persistence/contentRevision/con
 import { WebhookTriggerEvent } from '../../persistence/webhookLog/webhookLog.entity.js';
 import { WebhookService } from '../../services/webhook.service.js';
 import { PublishUseCaseSchemaType } from './publish.useCase.schema.js';
+import { ContentRevisionEntity } from '../../persistence/contentRevision/contentRevision.entity.js';
 
 export class PublishUseCase {
   constructor(
@@ -21,11 +22,15 @@ export class PublishUseCase {
       this.prisma,
       id
     );
-    const latestRevision = contentWithRevisions?.revisions[0];
 
-    if (!contentWithRevisions || !latestRevision) {
+    if (!contentWithRevisions) {
       throw new RecordNotFoundException('record_not_found');
     }
+
+    const latestRevision = ContentRevisionEntity.getLatestRevisionOfLanguage(
+      contentWithRevisions.revisions,
+      contentWithRevisions.content.language
+    );
 
     latestRevision.changeStatus({
       status: ContentStatus.published,

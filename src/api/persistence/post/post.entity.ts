@@ -80,10 +80,9 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     const sourceLngContent =
       contents.filter((c) => c.content.language === sourceLanguage)[0] || contents[0];
 
-    const sourceLngContentRevision = ContentRevisionEntity.getVersionRevision(
-      sourceLngContent.content.currentVersion,
-      sourceLanguage,
-      sourceLngContent.revisions
+    const sourceLngContentRevision = ContentRevisionEntity.getLatestRevisionOfLanguage(
+      sourceLngContent.revisions,
+      sourceLanguage
     );
 
     const otherLngContents = contents.filter((c) => c.content.id !== sourceLngContent.content.id);
@@ -94,10 +93,9 @@ export class PostEntity extends PrismaBaseEntity<Post> {
         sourceLngContent.content.getStatusHistory(sourceLngContentRevision)
       ),
       localizedContents: otherLngContents.map((otherLngContent) => {
-        const otherLngContentRevision = ContentRevisionEntity.getVersionRevision(
-          otherLngContent.content.currentVersion,
-          otherLngContent.content.language,
-          otherLngContent.revisions
+        const otherLngContentRevision = ContentRevisionEntity.getLatestRevisionOfLanguage(
+          otherLngContent.revisions,
+          otherLngContent.content.language
         );
 
         return this.toLocalizedContentItem(

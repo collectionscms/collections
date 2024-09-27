@@ -1,7 +1,9 @@
 import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
 import { RevisedContent } from '../../../types/index.js';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
+import { ContentEntity } from '../../persistence/content/content.entity.js';
 import { ContentRepository } from '../../persistence/content/content.repository.js';
+import { ContentRevisionEntity } from '../../persistence/contentRevision/contentRevision.entity.js';
 import { ProjectRepository } from '../../persistence/project/project.repository.js';
 import { GetContentUseCaseSchemaType } from './getContent.useCase.schema.js';
 
@@ -19,13 +21,17 @@ export class GetContentUseCase {
       this.prisma,
       props.contentId
     );
-    const latestRevision = contentWithRevisions?.revisions[0];
 
-    if (!contentWithRevisions || !latestRevision) {
+    if (!contentWithRevisions) {
       throw new RecordNotFoundException('record_not_found');
     }
 
     const { content, revisions } = contentWithRevisions;
+
+    const latestRevision = ContentRevisionEntity.getLatestRevisionOfLanguage(
+      revisions,
+      content.language
+    );
 
     const record = await this.contentRepository.findManyByPostId(this.prisma, content.postId);
     const languageContents = record.map(({ content }) => ({

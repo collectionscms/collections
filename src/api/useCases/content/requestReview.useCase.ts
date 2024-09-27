@@ -3,6 +3,7 @@ import { RecordNotFoundException } from '../../../exceptions/database/recordNotF
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
 import { ContentStatus } from '../../persistence/content/content.entity.js';
 import { ContentRepository } from '../../persistence/content/content.repository.js';
+import { ContentRevisionEntity } from '../../persistence/contentRevision/contentRevision.entity.js';
 import { ContentRevisionRepository } from '../../persistence/contentRevision/contentRevision.repository.js';
 import { ReviewEntity } from '../../persistence/review/review.entity.js';
 import { ReviewRepository } from '../../persistence/review/review.repository.js';
@@ -23,11 +24,15 @@ export class RequestReviewUseCase {
       this.prisma,
       id
     );
-    const latestRevision = contentWithRevisions?.revisions[0];
 
-    if (!contentWithRevisions || !latestRevision) {
+    if (!contentWithRevisions) {
       throw new RecordNotFoundException('record_not_found');
     }
+
+    const latestRevision = ContentRevisionEntity.getLatestRevisionOfLanguage(
+      contentWithRevisions.revisions,
+      contentWithRevisions.content.language
+    );
 
     latestRevision.changeStatus({
       status: ContentStatus.review,

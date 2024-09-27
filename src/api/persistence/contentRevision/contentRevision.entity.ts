@@ -63,7 +63,7 @@ export class ContentRevisionEntity extends PrismaBaseEntity<ContentRevision> {
       metaTitle: metaTitle ?? null,
       metaDescription: metaDescription ?? null,
       language,
-      status,
+      status: ContentStatus.draft,
       publishedAt: publishedAt || null,
       version,
       createdById,
@@ -175,20 +175,12 @@ export class ContentRevisionEntity extends PrismaBaseEntity<ContentRevision> {
     return Object.freeze(copy);
   }
 
-  static getVersionRevision = (
-    version: number,
-    language: string,
-    revisions: ContentRevisionEntity[]
-  ) => {
-    const currentRevision = revisions.find(
-      (revision) => revision.version === version && revision.language === language
-    );
+  static getLatestRevisionOfLanguage = (revisions: ContentRevisionEntity[], language: string) => {
+    const latestRevision = revisions
+      .filter((revision) => revision.language === language)
+      .sort((a, b) => b.version - a.version)[0];
 
-    if (!currentRevision) {
-      throw new UnexpectedException({ message: 'Current revision not found' });
-    }
-
-    return currentRevision;
+    return latestRevision;
   };
 
   updateContent({
