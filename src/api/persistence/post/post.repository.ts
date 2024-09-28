@@ -27,6 +27,9 @@ export class PostRepository {
           where: {
             deletedAt: null,
           },
+          orderBy: {
+            version: 'desc',
+          },
         },
         contents: {
           where: {

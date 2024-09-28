@@ -60,6 +60,9 @@ export class ContentRepository {
           where: {
             deletedAt: null,
           },
+          orderBy: {
+            version: 'desc',
+          },
         },
         createdBy: true,
       },
@@ -118,6 +121,9 @@ export class ContentRepository {
         contentRevisions: {
           where: {
             deletedAt: null,
+          },
+          orderBy: {
+            version: 'desc',
           },
         },
         createdBy: true,
