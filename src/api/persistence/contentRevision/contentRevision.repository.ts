@@ -54,6 +54,23 @@ export class ContentRevisionRepository {
     return ContentRevisionEntity.Reconstruct<ContentRevision, ContentRevisionEntity>(record);
   }
 
+  async findManyTrashed(prisma: ProjectPrismaType): Promise<ContentRevisionEntity[]> {
+    const records = await prisma.contentRevision.findMany({
+      where: {
+        deletedAt: {
+          not: null,
+        },
+      },
+      orderBy: {
+        deletedAt: 'desc',
+      },
+    });
+
+    return records.map((record) =>
+      ContentRevisionEntity.Reconstruct<ContentRevision, ContentRevisionEntity>(record)
+    );
+  }
+
   async create(
     prisma: ProjectPrismaType,
     entity: ContentRevisionEntity

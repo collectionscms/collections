@@ -4,69 +4,16 @@ import { UnexpectedException } from '../../../exceptions/unexpected.js';
 import { ContentStatus } from '../content/content.entity.js';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 
+type ContentRevisionProps = Omit<ContentRevision, 'id' | 'status' | 'createdAt' | 'updatedAt'>;
+
 export class ContentRevisionEntity extends PrismaBaseEntity<ContentRevision> {
-  static Construct({
-    projectId,
-    postId,
-    contentId,
-    slug,
-    coverUrl,
-    title,
-    body,
-    bodyJson,
-    bodyHtml,
-    excerpt,
-    metaTitle,
-    metaDescription,
-    publishedAt,
-    language,
-    createdById,
-    updatedById,
-    version,
-    deletedAt,
-  }: {
-    projectId: string;
-    postId: string;
-    contentId: string;
-    slug: string;
-    coverUrl?: string | null;
-    title?: string | null;
-    body?: string | null;
-    bodyJson?: string | null;
-    bodyHtml?: string | null;
-    excerpt?: string | null;
-    metaTitle?: string | null;
-    metaDescription?: string | null;
-    publishedAt?: Date | null;
-    language: string;
-    createdById: string;
-    updatedById: string;
-    version: number;
-    deletedAt: Date | null;
-  }): ContentRevisionEntity {
+  static Construct(props: ContentRevisionProps): ContentRevisionEntity {
     const now = new Date();
 
     return new ContentRevisionEntity({
+      ...props,
       id: v4(),
-      projectId,
-      contentId,
-      postId,
-      slug,
-      coverUrl: coverUrl || null,
-      title: title || null,
-      body: body || null,
-      bodyJson: bodyJson || null,
-      bodyHtml: bodyHtml || null,
-      excerpt: excerpt || null,
-      metaTitle: metaTitle ?? null,
-      metaDescription: metaDescription ?? null,
-      language,
       status: ContentStatus.draft,
-      publishedAt: publishedAt || null,
-      version,
-      createdById,
-      updatedById,
-      deletedAt,
       createdAt: now,
       updatedAt: now,
     });
@@ -78,11 +25,11 @@ export class ContentRevisionEntity extends PrismaBaseEntity<ContentRevision> {
     }
   }
 
-  public beforeUpdateValidate(): void {
+  beforeUpdateValidate(): void {
     this.isValid();
   }
 
-  public beforeInsertValidate(): void {
+  beforeInsertValidate(): void {
     this.isValid();
   }
 
@@ -226,6 +173,11 @@ export class ContentRevisionEntity extends PrismaBaseEntity<ContentRevision> {
     this.props.status = ContentStatus.draft;
   }
 
+  review(updatedById: string) {
+    this.props.status = ContentStatus.review;
+    this.props.updatedById = updatedById;
+  }
+
   publish(updatedById: string) {
     this.props.status = ContentStatus.published;
     this.props.publishedAt = new Date();
@@ -239,18 +191,6 @@ export class ContentRevisionEntity extends PrismaBaseEntity<ContentRevision> {
   trash() {
     this.props.status = ContentStatus.trashed;
     this.props.deletedAt = new Date();
-  }
-
-  changeStatus({ status, updatedById }: { status: string; updatedById?: string }) {
-    this.props.status = status;
-
-    if (status === ContentStatus.published) {
-      this.props.publishedAt = new Date();
-    }
-
-    if (updatedById) {
-      this.props.updatedById = updatedById;
-    }
   }
 
   toResponse(): ContentRevision {

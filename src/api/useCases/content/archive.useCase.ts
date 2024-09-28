@@ -28,9 +28,11 @@ export class ArchiveUseCase {
       throw new RecordNotFoundException('record_not_found');
     }
 
+    const { content, revisions } = contentWithRevisions;
+
     const latestRevision = ContentRevisionEntity.getLatestRevisionOfLanguage(
-      contentWithRevisions.revisions,
-      contentWithRevisions.content.language
+      revisions,
+      content.language
     );
 
     const contentRevision = ContentRevisionEntity.Construct({
@@ -41,7 +43,6 @@ export class ArchiveUseCase {
     });
     contentRevision.archive();
 
-    const content = contentWithRevisions.content;
     content.archive(contentRevision.version, userId);
 
     const updatedContent = await this.prisma.$transaction(async (tx) => {

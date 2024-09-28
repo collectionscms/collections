@@ -1,7 +1,6 @@
 import { Content } from '@prisma/client';
 import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
-import { ContentStatus } from '../../persistence/content/content.entity.js';
 import { ContentRepository } from '../../persistence/content/content.repository.js';
 import { ContentRevisionEntity } from '../../persistence/contentRevision/contentRevision.entity.js';
 import { ContentRevisionRepository } from '../../persistence/contentRevision/contentRevision.repository.js';
@@ -29,15 +28,13 @@ export class RequestReviewUseCase {
       throw new RecordNotFoundException('record_not_found');
     }
 
-    const latestRevision = ContentRevisionEntity.getLatestRevisionOfLanguage(
-      contentWithRevisions.revisions,
-      contentWithRevisions.content.language
-    );
+    const { content, revisions } = contentWithRevisions;
 
-    latestRevision.changeStatus({
-      status: ContentStatus.review,
-      updatedById: userId,
-    });
+    const latestRevision = ContentRevisionEntity.getLatestRevisionOfLanguage(
+      revisions,
+      content.language
+    );
+    latestRevision.review(userId);
 
     const updatedRevision = await this.prisma.$transaction(async (tx) => {
       let review = await this.reviewRepository.findOneByContentId(tx, id);
@@ -46,8 +43,8 @@ export class RequestReviewUseCase {
       } else {
         review = ReviewEntity.Construct({
           projectId,
-          postId: contentWithRevisions.content.postId,
-          contentId: contentWithRevisions.content.id,
+          postId: content.postId,
+          contentId: content.id,
           revieweeId: userId,
           comment: comment as string,
         });

@@ -23,7 +23,11 @@ export class PostRepository {
   > {
     const records = await prisma.post.findMany({
       include: {
-        contentRevisions: true,
+        contentRevisions: {
+          where: {
+            deletedAt: null,
+          },
+        },
         contents: {
           where: {
             deletedAt: null,

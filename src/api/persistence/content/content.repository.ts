@@ -48,7 +48,6 @@ export class ContentRepository {
     id: string
   ): Promise<{
     content: ContentEntity;
-    createdBy: UserEntity;
     revisions: ContentRevisionEntity[];
   } | null> {
     const record = await prisma.content.findFirst({
@@ -61,9 +60,6 @@ export class ContentRepository {
           where: {
             deletedAt: null,
           },
-          orderBy: {
-            version: 'desc',
-          },
         },
         createdBy: true,
       },
@@ -75,7 +71,6 @@ export class ContentRepository {
 
     return {
       content: ContentEntity.Reconstruct<Content, ContentEntity>(record),
-      createdBy: UserEntity.Reconstruct<User, UserEntity>(record.createdBy),
       revisions: record.contentRevisions.map((r) =>
         ContentRevisionEntity.Reconstruct<ContentRevision, ContentRevisionEntity>(r)
       ),
@@ -124,9 +119,6 @@ export class ContentRepository {
           where: {
             deletedAt: null,
           },
-          orderBy: {
-            version: 'desc',
-          },
         },
         createdBy: true,
       },
@@ -135,37 +127,6 @@ export class ContentRepository {
     return records.map((record) => ({
       content: ContentEntity.Reconstruct<Content, ContentEntity>(record),
       createdBy: UserEntity.Reconstruct<User, UserEntity>(record.createdBy),
-      revisions: record.contentRevisions.map((r) =>
-        ContentRevisionEntity.Reconstruct<ContentRevision, ContentRevisionEntity>(r)
-      ),
-    }));
-  }
-
-  async findManyTrashedWithRevisions(
-    prisma: ProjectPrismaType
-  ): Promise<{ content: ContentEntity; revisions: ContentRevisionEntity[] }[]> {
-    const records = await prisma.content.findMany({
-      where: {
-        deletedAt: {
-          not: null,
-        },
-      },
-      include: {
-        contentRevisions: {
-          where: {
-            deletedAt: {
-              not: null,
-            },
-          },
-        },
-      },
-      orderBy: {
-        deletedAt: 'desc',
-      },
-    });
-
-    return records.map((record) => ({
-      content: ContentEntity.Reconstruct<Content, ContentEntity>(record),
       revisions: record.contentRevisions.map((r) =>
         ContentRevisionEntity.Reconstruct<ContentRevision, ContentRevisionEntity>(r)
       ),

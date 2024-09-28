@@ -4,6 +4,7 @@ import { ProjectPrismaClient } from '../../database/prisma/client.js';
 import { ContentRepository } from '../../persistence/content/content.repository.js';
 import { ContentRevisionEntity } from '../../persistence/contentRevision/contentRevision.entity.js';
 import { ContentRevisionRepository } from '../../persistence/contentRevision/contentRevision.repository.js';
+import { UserRepository } from '../../persistence/user/user.repository.js';
 import { WebhookTriggerEvent } from '../../persistence/webhookLog/webhookLog.entity.js';
 import { WebhookService } from '../../services/webhook.service.js';
 import { PublishUseCaseSchemaType } from './publish.useCase.schema.js';
@@ -13,6 +14,7 @@ export class PublishUseCase {
     private readonly prisma: ProjectPrismaClient,
     private readonly contentRepository: ContentRepository,
     private readonly contentRevisionRepository: ContentRevisionRepository,
+    private readonly userRepository: UserRepository,
     private readonly webhookService: WebhookService
   ) {}
 
@@ -26,13 +28,15 @@ export class PublishUseCase {
       throw new RecordNotFoundException('record_not_found');
     }
 
+    const { content, revisions } = contentWithRevisions;
+
     const latestRevision = ContentRevisionEntity.getLatestRevisionOfLanguage(
-      contentWithRevisions.revisions,
-      contentWithRevisions.content.language
+      revisions,
+      content.language
     );
+
     latestRevision.publish(userId);
 
-    const content = contentWithRevisions.content;
     content.publish({
       slug: latestRevision.slug,
       title: latestRevision.title,
@@ -54,11 +58,13 @@ export class PublishUseCase {
       return result;
     });
 
+    const createdBy = await this.userRepository.findOneById(this.prisma, content.createdById);
+
     await this.webhookService.send(
       this.prisma,
       updatedContent.projectId,
       WebhookTriggerEvent.publish,
-      updatedContent.toPublishedContentResponse(contentWithRevisions.createdBy)
+      updatedContent.toPublishedContentResponse(createdBy)
     );
 
     return updatedContent.toResponse();
