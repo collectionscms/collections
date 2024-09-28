@@ -33,30 +33,29 @@ export class UpdateContentUseCase {
       }
     }
 
+    revision.updateContent({
+      coverUrl: props.coverUrl,
+      title: props.title,
+      body: props.body,
+      bodyJson: props.bodyJson,
+      bodyHtml: props.bodyHtml,
+      slug: props.slug,
+      updatedById: props.userId,
+      excerpt: props.excerpt || null,
+      metaTitle: props.metaTitle || null,
+      metaDescription: props.metaDescription || null,
+    });
+
     const createdOrUpdatedRevision = await this.prisma.$transaction(async (tx) => {
       if (revision.isPublished()) {
         // create new version revision
         const contentRevision = ContentRevisionEntity.Construct({
           ...revision.toResponse(),
           version: revision.version + 1,
-          createdById: props.userId,
-          updatedById: props.userId,
         });
         return await this.contentRevisionRepository.create(tx, contentRevision);
       } else {
         // update current revision
-        revision.updateContent({
-          coverUrl: props.coverUrl,
-          title: props.title,
-          body: props.body,
-          bodyJson: props.bodyJson,
-          bodyHtml: props.bodyHtml,
-          slug: props.slug,
-          updatedById: props.userId,
-          excerpt: props.excerpt || null,
-          metaTitle: props.metaTitle || null,
-          metaDescription: props.metaDescription || null,
-        });
         return await this.contentRevisionRepository.update(tx, revision);
       }
     });
