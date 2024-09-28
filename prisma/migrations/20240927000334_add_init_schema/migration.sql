@@ -148,7 +148,7 @@ CREATE TABLE "Content" (
     "coverUrl" VARCHAR(255),
     "language" VARCHAR(255) NOT NULL,
     "status" VARCHAR(255) NOT NULL,
-    "version" INTEGER NOT NULL DEFAULT 1,
+    "currentVersion" INTEGER NOT NULL DEFAULT 1,
     "publishedAt" TIMESTAMPTZ(6),
     "deletedAt" TIMESTAMPTZ(6),
     "createdById" UUID NOT NULL,
@@ -160,15 +160,19 @@ CREATE TABLE "Content" (
 );
 
 -- CreateTable
-CREATE TABLE "ContentHistory" (
+CREATE TABLE "ContentRevision" (
     "id" UUID NOT NULL,
     "projectId" UUID NOT NULL DEFAULT (current_setting('app.current_project_id'::text))::uuid,
     "postId" UUID NOT NULL,
+    "contentId" UUID NOT NULL,
     "slug" TEXT NOT NULL,
     "title" VARCHAR(255),
     "body" TEXT,
     "bodyJson" TEXT,
     "bodyHtml" TEXT,
+    "excerpt" TEXT,
+    "metaTitle" VARCHAR(255),
+    "metaDescription" TEXT,
     "coverUrl" VARCHAR(255),
     "language" VARCHAR(255) NOT NULL,
     "status" VARCHAR(255) NOT NULL,
@@ -178,8 +182,9 @@ CREATE TABLE "ContentHistory" (
     "createdById" UUID NOT NULL,
     "updatedById" UUID NOT NULL,
     "createdAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMPTZ(6) NOT NULL,
 
-    CONSTRAINT "ContentHistory_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "ContentRevision_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -251,6 +256,12 @@ CREATE UNIQUE INDEX "User_provider_providerId_key" ON "User"("provider", "provid
 -- CreateIndex
 CREATE UNIQUE INDEX "UserProject_userId_projectId_key" ON "UserProject"("userId", "projectId");
 
+-- CreateIndex
+CREATE UNIQUE INDEX "Content_projectId_slug_key" ON "Content"("projectId", "slug");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Content_postId_language_key" ON "Content"("postId", "language");
+
 -- AddForeignKey
 ALTER TABLE "UserProject" ADD CONSTRAINT "UserProject_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
@@ -318,16 +329,19 @@ ALTER TABLE "Content" ADD CONSTRAINT "Content_createdById_fkey" FOREIGN KEY ("cr
 ALTER TABLE "Content" ADD CONSTRAINT "Content_updatedById_fkey" FOREIGN KEY ("updatedById") REFERENCES "User"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ContentHistory" ADD CONSTRAINT "ContentHistory_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Project"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "ContentRevision" ADD CONSTRAINT "ContentRevision_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Project"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ContentHistory" ADD CONSTRAINT "ContentHistory_postId_fkey" FOREIGN KEY ("postId") REFERENCES "Post"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "ContentRevision" ADD CONSTRAINT "ContentRevision_postId_fkey" FOREIGN KEY ("postId") REFERENCES "Post"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ContentHistory" ADD CONSTRAINT "ContentHistory_createdById_fkey" FOREIGN KEY ("createdById") REFERENCES "User"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
+ALTER TABLE "ContentRevision" ADD CONSTRAINT "ContentRevision_contentId_fkey" FOREIGN KEY ("contentId") REFERENCES "Content"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ContentHistory" ADD CONSTRAINT "ContentHistory_updatedById_fkey" FOREIGN KEY ("updatedById") REFERENCES "User"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
+ALTER TABLE "ContentRevision" ADD CONSTRAINT "ContentRevision_createdById_fkey" FOREIGN KEY ("createdById") REFERENCES "User"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ContentRevision" ADD CONSTRAINT "ContentRevision_updatedById_fkey" FOREIGN KEY ("updatedById") REFERENCES "User"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "ApiKey" ADD CONSTRAINT "ApiKey_createdById_fkey" FOREIGN KEY ("createdById") REFERENCES "User"("id") ON DELETE NO ACTION ON UPDATE CASCADE;

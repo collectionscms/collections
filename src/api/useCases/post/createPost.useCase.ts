@@ -1,8 +1,7 @@
-import { LocalizedPost } from '../../../types/index.js';
+import { RevisedContent } from '../../../types/index.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
 import { ContentRepository } from '../../persistence/content/content.repository.js';
-import { ContentHistoryEntity } from '../../persistence/contentHistory/contentHistory.entity.js';
-import { ContentHistoryRepository } from '../../persistence/contentHistory/contentHistory.repository.js';
+import { ContentRevisionRepository } from '../../persistence/contentRevision/contentRevision.repository.js';
 import { PostEntity } from '../../persistence/post/post.entity.js';
 import { PostRepository } from '../../persistence/post/post.repository.js';
 import { ProjectRepository } from '../../persistence/project/project.repository.js';
@@ -14,15 +13,15 @@ export class CreatePostUseCase {
     private readonly projectRepository: ProjectRepository,
     private readonly postRepository: PostRepository,
     private readonly contentRepository: ContentRepository,
-    private readonly contentHistoryRepository: ContentHistoryRepository
+    private readonly contentRevisionRepository: ContentRevisionRepository
   ) {}
 
-  async execute(props: CreatePostUseCaseSchemaType): Promise<LocalizedPost> {
+  async execute(props: CreatePostUseCaseSchemaType): Promise<RevisedContent> {
     const { userId, projectId, sourceLanguage } = props;
 
     const project = await this.projectRepository.findOneById(this.prisma, props.projectId);
 
-    const { post, content } = PostEntity.Construct({
+    const { post, content, contentRevision } = PostEntity.Construct({
       projectId: projectId,
       language: sourceLanguage,
       createdById: userId,
@@ -30,32 +29,28 @@ export class CreatePostUseCase {
 
     const result = await this.prisma.$transaction(async (tx) => {
       const createdPost = await this.postRepository.create(tx, post);
+
       const { content: createdContent, createdBy } = await this.contentRepository.create(
         tx,
         content
       );
 
-      const contentHistory = ContentHistoryEntity.Construct({
-        ...createdContent.toResponse(),
-      });
-      await this.contentHistoryRepository.create(tx, contentHistory);
+      await this.contentRevisionRepository.create(tx, contentRevision);
 
       return {
         post: createdPost,
         content: createdContent,
         createdBy: createdBy,
         updatedBy: createdBy,
-        histories: [contentHistory],
+        revisions: [contentRevision],
       };
     });
 
-    return result.post.toLocalizedPostResponse(
+    return result.content.toRevisedContentResponse(
       project,
-      [result.content.language],
-      result.content,
-      result.createdBy,
-      result.updatedBy,
-      result.histories
+      [{ contentId: result.content.id, language: result.content.language }],
+      result.revisions[0],
+      result.revisions
     );
   }
 }

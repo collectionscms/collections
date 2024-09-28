@@ -7,7 +7,7 @@ import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';
 import { validateAccess } from '../middlewares/validateAccess.js';
 import { ContentRepository } from '../persistence/content/content.repository.js';
-import { ContentHistoryRepository } from '../persistence/contentHistory/contentHistory.repository.js';
+import { ContentRevisionRepository } from '../persistence/contentRevision/contentRevision.repository.js';
 import { PostRepository } from '../persistence/post/post.repository.js';
 import { ProjectRepository } from '../persistence/project/project.repository.js';
 import { WebhookLogRepository } from '../persistence/webhookLog/webhookLog.repository.js';
@@ -15,12 +15,8 @@ import { WebhookSettingRepository } from '../persistence/webhookSetting/webhookS
 import { WebhookService } from '../services/webhook.service.js';
 import { CreateContentUseCase } from '../useCases/content/createContent.useCase.js';
 import { createContentUseCaseSchema } from '../useCases/content/createContent.useCase.schema.js';
-import { TrashLanguageContentUseCase } from '../useCases/content/trashLanguageContent.useCase.js';
-import { trashLanguageContentUseCaseSchema } from '../useCases/content/trashLanguageContent.useCase.schema.js';
 import { CreatePostUseCase } from '../useCases/post/createPost.useCase.js';
 import { createPostUseCaseSchema } from '../useCases/post/createPost.useCase.schema.js';
-import { GetPostUseCase } from '../useCases/post/getPost.useCase.js';
-import { getPostUseCaseSchema } from '../useCases/post/getPost.useCase.schema.js';
 import { GetPostsUseCase } from '../useCases/post/getPosts.useCase.js';
 import { getPostsUseCaseSchema } from '../useCases/post/getPosts.useCase.schema.js';
 import { TranslateContentUseCase } from '../useCases/post/translateContent.useCase.js';
@@ -55,38 +51,6 @@ router.get(
   })
 );
 
-router.get(
-  '/posts/:id',
-  authenticatedUser,
-  validateAccess(['readOwnPost', 'readAllPost']),
-  asyncHandler(async (req: Request, res: Response) => {
-    const language = req.query.language || res.projectRole?.sourceLanguage;
-
-    const validated = getPostUseCaseSchema.safeParse({
-      projectId: res.projectRole?.id,
-      postId: req.params.id,
-      userId: res.user.id,
-      language,
-    });
-    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
-
-    const useCase = new GetPostUseCase(
-      projectPrisma(validated.data.projectId),
-      new ProjectRepository(),
-      new PostRepository(),
-      new ContentHistoryRepository()
-    );
-
-    const permissions = res.projectRole?.permissions ?? [];
-    const hasReadAllPost = permissions.map((p) => p.action).includes('readAllPost');
-    const post = await useCase.execute(validated.data, hasReadAllPost);
-
-    res.json({
-      post,
-    });
-  })
-);
-
 router.post(
   '/posts',
   authenticatedUser,
@@ -104,12 +68,12 @@ router.post(
       new ProjectRepository(),
       new PostRepository(),
       new ContentRepository(),
-      new ContentHistoryRepository()
+      new ContentRevisionRepository()
     );
-    const post = await useCase.execute(validated.data);
+    const content = await useCase.execute(validated.data);
 
     res.json({
-      post,
+      content,
     });
   })
 );
@@ -130,7 +94,7 @@ router.post(
     const useCase = new CreateContentUseCase(
       projectPrisma(validated.data.projectId),
       new ContentRepository(),
-      new ContentHistoryRepository()
+      new ContentRevisionRepository()
     );
     const content = await useCase.execute(validated.data);
 
@@ -155,7 +119,7 @@ router.post(
 
     const useCase = new TranslateContentUseCase(
       projectPrisma(validated.data.projectId),
-      new ContentRepository(),
+      new ContentRevisionRepository(),
       new Translator(env.TRANSLATE_API_KEY)
     );
     const response = await useCase.execute(validated.data);
@@ -163,30 +127,6 @@ router.post(
     res.json({
       ...response,
     });
-  })
-);
-
-router.delete(
-  '/posts/:id/languages/:language',
-  authenticatedUser,
-  validateAccess(['trashPost']),
-  asyncHandler(async (req: Request, res: Response) => {
-    const validated = trashLanguageContentUseCaseSchema.safeParse({
-      postId: req.params.id,
-      projectId: res.projectRole?.id,
-      userId: res.user.id,
-      language: req.params.language,
-    });
-    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
-
-    const useCase = new TrashLanguageContentUseCase(
-      projectPrisma(validated.data.projectId),
-      new ContentRepository(),
-      new ContentHistoryRepository(),
-      new WebhookService(new WebhookSettingRepository(), new WebhookLogRepository())
-    );
-    await useCase.execute(validated.data);
-    res.status(204).send();
   })
 );
 
@@ -205,7 +145,7 @@ router.delete(
     const useCase = new TrashPostUseCase(
       projectPrisma(validated.data.projectId),
       new ContentRepository(),
-      new ContentHistoryRepository(),
+      new ContentRevisionRepository(),
       new WebhookService(new WebhookSettingRepository(), new WebhookLogRepository())
     );
     await useCase.execute(validated.data);

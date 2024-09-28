@@ -1,8 +1,8 @@
-import { ApiKey, Project } from '@prisma/client';
+import { ApiKey, Content } from '@prisma/client';
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWR, { SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
-import { LocalizedPost, SourceLanguagePostItem, UploadFile } from '../../../../types/index.js';
+import { RevisedContent, SourceLanguagePostItem, UploadFile } from '../../../../types/index.js';
 import { api } from '../../../utilities/api.js';
 
 type PostContext = {
@@ -13,28 +13,22 @@ type PostContext = {
       suspense: true;
     }
   >;
-  getPost: (
-    id: string,
-    language: string | null
-  ) => SWRResponse<
-    LocalizedPost,
+  createPost: () => SWRMutationResponse<RevisedContent, any, string>;
+  trashPost: (postId: string) => SWRMutationResponse<void, any, string>;
+  createContent: (postId: string) => SWRMutationResponse<Content, any, string, Record<string, any>>;
+  translateContent: (
+    postId: string
+  ) => SWRMutationResponse<{ title: string; body: string }, any, string, Record<string, any>>;
+  getContent: (id: string) => SWRResponse<
+    RevisedContent,
     Error,
     {
       suspense: true;
     }
   >;
-  createPost: () => SWRMutationResponse<LocalizedPost, any, string>;
-  trashPost: (postId: string) => SWRMutationResponse<void, any, string>;
-  createContent: (postId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
-  trashLanguageContent: (
-    postId: string,
-    language: string
-  ) => SWRMutationResponse<void, any, string>;
   updateContent: (contentId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
+  revertContent: (contentId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
   trashContent: (contentId: string) => SWRMutationResponse<void, any, string>;
-  translateContent: (
-    contentId: string
-  ) => SWRMutationResponse<{ title: string; body: string }, any, string, Record<string, any>>;
   requestReview: (contentId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
   publish: (contentId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
   archive: (contentId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
@@ -45,13 +39,6 @@ type PostContext = {
     Record<string, any>
   >;
   getApiKeys: () => SWRMutationResponse<ApiKey[], Error>;
-  getProject: () => SWRResponse<
-    Project,
-    Error,
-    {
-      suspense: true;
-    }
-  >;
 };
 
 const Context = createContext({} as PostContext);
@@ -66,18 +53,9 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       }
     );
 
-  const getPost = (id: string, language: string | null) =>
-    useSWR(
-      `/posts/${id}${language ? `?language=${language}` : ''}`,
-      (url) => api.get<{ post: LocalizedPost }>(url).then((res) => res.data.post),
-      {
-        suspense: true,
-      }
-    );
-
   const createPost = () =>
     useSWRMutation('/posts', async (url: string) => {
-      return api.post<{ post: LocalizedPost }>(url).then((res) => res.data.post);
+      return api.post<{ content: RevisedContent }>(url).then((res) => res.data.content);
     });
 
   const trashPost = (postId: string) =>
@@ -89,14 +67,9 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
     useSWRMutation(
       `/posts/${postId}/contents`,
       async (url: string, { arg }: { arg: Record<string, any> }) => {
-        return api.post(url, arg).then((res) => res.data);
+        return api.post<{ content: Content }>(url, arg).then((res) => res.data.content);
       }
     );
-
-  const trashLanguageContent = (postId: string, language: string) =>
-    useSWRMutation(`/posts/${postId}/languages/${language}`, async (url: string) => {
-      return api.delete(url).then((res) => res.data);
-    });
 
   const translateContent = (postId: string) =>
     useSWRMutation(
@@ -106,9 +79,26 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       }
     );
 
+  const getContent = (id: string) =>
+    useSWR(
+      `/contents/${id}`,
+      (url) => api.get<{ content: RevisedContent }>(url).then((res) => res.data.content),
+      {
+        suspense: true,
+      }
+    );
+
   const updateContent = (contentId: string) =>
     useSWRMutation(
       `/contents/${contentId}`,
+      async (url: string, { arg }: { arg: Record<string, any> }) => {
+        return api.patch(url, arg).then((res) => res.data);
+      }
+    );
+
+  const revertContent = (contentId: string) =>
+    useSWRMutation(
+      `/contents/${contentId}/revert`,
       async (url: string, { arg }: { arg: Record<string, any> }) => {
         return api.patch(url, arg).then((res) => res.data);
       }
@@ -153,47 +143,38 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       return api.get<{ apiKeys: ApiKey[] }>(url).then((res) => res.data.apiKeys);
     });
 
-  const getProject = () =>
-    useSWR(
-      '/projects',
-      (url) => api.get<{ project: Project }>(url).then((res) => res.data.project),
-      { suspense: true }
-    );
-
   const value = useMemo(
     () => ({
       getPosts,
-      getPost,
       createPost,
       trashPost,
       createContent,
       updateContent,
+      revertContent,
       trashContent,
-      trashLanguageContent,
+      getContent,
       translateContent,
       requestReview,
       publish,
       archive,
       createFileImage,
       getApiKeys,
-      getProject,
     }),
     [
       getPosts,
-      getPost,
       createPost,
       trashPost,
       createContent,
       updateContent,
+      revertContent,
       trashContent,
-      trashLanguageContent,
+      getContent,
       translateContent,
       requestReview,
       publish,
       archive,
       createFileImage,
       getApiKeys,
-      getProject,
     ]
   );
 

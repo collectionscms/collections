@@ -1,18 +1,16 @@
-import { Post } from '@prisma/client';
+import { Content, Post } from '@prisma/client';
 import { v4 } from 'uuid';
 import { UnexpectedException } from '../../../exceptions/unexpected.js';
 import {
   LocalizedContentItem,
-  LocalizedPost,
   PublishedContent,
   PublishedPost,
   SourceLanguagePostItem,
   StatusHistory,
 } from '../../../types/index.js';
 import { ContentEntity } from '../content/content.entity.js';
-import { ContentHistoryEntity } from '../contentHistory/contentHistory.entity.js';
+import { ContentRevisionEntity } from '../contentRevision/contentRevision.entity.js';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
-import { ProjectEntity } from '../project/project.entity.js';
 import { UserEntity } from '../user/user.entity.js';
 
 export class PostEntity extends PrismaBaseEntity<Post> {
@@ -24,7 +22,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     projectId: string;
     language: string;
     createdById: string;
-  }): { post: PostEntity; content: ContentEntity } {
+  }): { post: PostEntity; content: ContentEntity; contentRevision: ContentRevisionEntity } {
     const postId = v4();
     const post = new PostEntity({
       id: postId,
@@ -34,15 +32,14 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       updatedAt: new Date(),
     });
 
-    const content = ContentEntity.Construct({
+    const { content, contentRevision } = ContentEntity.Construct({
       projectId,
       postId,
       language,
-      slug: ContentEntity.generateSlug(),
       createdById,
     });
 
-    return { post, content };
+    return { post, content, contentRevision };
   }
 
   private isValid() {
@@ -77,51 +74,40 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     sourceLanguage: string,
     contents: {
       content: ContentEntity;
-      updatedBy: UserEntity;
+      revisions: ContentRevisionEntity[];
     }[]
   ): SourceLanguagePostItem {
-    const sortedContents = contents.sort((a, b) => b.content.version - a.content.version);
-
     const sourceLngContent =
-      sortedContents.filter((c) => c.content.language === sourceLanguage)[0] || sortedContents[0];
+      contents.filter((c) => c.content.language === sourceLanguage)[0] || contents[0];
 
-    // Filter for latest ver content in other languages
-    const otherLngContents = Object.values(
-      sortedContents.reduce(
-        (acc, c) => {
-          if (
-            c.content.id !== sourceLngContent.content.id &&
-            c.content.language !== sourceLanguage
-          ) {
-            if (!acc[c.content.language]) {
-              acc[c.content.language] = c;
-            }
-          }
-          return acc;
-        },
-        {} as Record<string, (typeof sortedContents)[0]>
-      )
+    const sourceLngContentRevision = ContentRevisionEntity.getLatestRevisionOfLanguage(
+      sourceLngContent.revisions,
+      sourceLanguage
     );
+
+    const otherLngContents = contents.filter((c) => c.content.id !== sourceLngContent.content.id);
 
     return {
       ...this.toLocalizedContentItem(
-        sourceLngContent.content,
-        sourceLngContent.updatedBy,
-        sourceLngContent.content.statusHistory()
+        sourceLngContentRevision.toContentResponse(),
+        sourceLngContent.content.getStatusHistory(sourceLngContentRevision)
       ),
-      localizedContents: otherLngContents.map((otherLngContent) =>
-        this.toLocalizedContentItem(
-          otherLngContent.content,
-          otherLngContent.updatedBy,
-          otherLngContent.content.statusHistory()
-        )
-      ),
+      localizedContents: otherLngContents.map((otherLngContent) => {
+        const otherLngContentRevision = ContentRevisionEntity.getLatestRevisionOfLanguage(
+          otherLngContent.revisions,
+          otherLngContent.content.language
+        );
+
+        return this.toLocalizedContentItem(
+          otherLngContentRevision.toContentResponse(),
+          otherLngContent.content.getStatusHistory(otherLngContentRevision)
+        );
+      }),
     };
   }
 
   private toLocalizedContentItem(
-    content: ContentEntity,
-    updatedBy: UserEntity,
+    content: Content,
     statusHistory: StatusHistory
   ): LocalizedContentItem {
     return {
@@ -131,48 +117,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       slug: content.slug,
       language: content.language,
       status: statusHistory,
-      updatedByName: updatedBy.name,
       updatedAt: content.updatedAt,
-    };
-  }
-
-  toLocalizedPostResponse(
-    project: ProjectEntity,
-    usedLanguages: string[],
-    content: ContentEntity,
-    createdBy: UserEntity,
-    updatedBy: UserEntity,
-    histories: ContentHistoryEntity[]
-  ): LocalizedPost {
-    const latestHistories = this.getLatestHistoriesByLanguage(
-      content.language,
-      content.version,
-      histories
-    );
-
-    return {
-      id: this.props.id,
-      slug: content.slug,
-      contentId: content.id,
-      status: content.statusHistory(),
-      updatedAt: content.updatedAt,
-      title: content.title ?? '',
-      body: content.body ?? '',
-      bodyJson: content.bodyJson ?? '',
-      bodyHtml: content.bodyHtml ?? '',
-      language: content.language,
-      version: content.version,
-      excerpt: content.excerpt,
-      metaTitle: content.metaTitle,
-      metaDescription: content.metaDescription,
-      coverUrl: content.coverUrl,
-      canTranslate: content.isTranslationEnabled(project.sourceLanguage),
-      usedLanguages,
-      sourceLanguageCode: project.sourceLanguageCode?.code ?? null,
-      targetLanguageCode: content.languageCode?.code ?? null,
-      createdByName: createdBy.name,
-      updatedByName: updatedBy.name,
-      histories: latestHistories,
     };
   }
 
@@ -223,7 +168,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
             body: content.body ?? '',
             bodyHtml: content.bodyHtml ?? '',
             language: content.language,
-            version: content.version,
+            version: content.currentVersion,
             excerpt: content.getExcerptOrBodyPreview(),
             coverUrl: content.coverUrl,
             metaTitle: content.metaTitle,
@@ -241,38 +186,5 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       },
       {} as { [language: string]: PublishedContent }
     );
-  }
-
-  /**
-   * Get the latest history of each version in the same language.
-   * @param language
-   * @param currentVersion
-   * @param histories
-   * @returns
-   */
-  private getLatestHistoriesByLanguage(
-    language: string,
-    currentVersion: number,
-    histories: ContentHistoryEntity[]
-  ) {
-    const filteredHistories = histories.filter((history) => history.language === language);
-
-    const latestHistories: { [version: number]: ContentHistoryEntity } = filteredHistories.reduce(
-      (acc: { [version: number]: ContentHistoryEntity }, history) => {
-        const version = history.version;
-        if (version > currentVersion) {
-          // Deleted case
-          return acc;
-        }
-
-        if (!acc[version] || acc[version].createdAt < history.createdAt) {
-          acc[version] = history;
-        }
-        return acc;
-      },
-      {}
-    );
-
-    return Object.values(latestHistories).map((history) => history.toResponse());
   }
 }

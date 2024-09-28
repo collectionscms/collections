@@ -1,8 +1,8 @@
 import { User } from '@auth/express';
-import { Content, ContentHistory, Post } from '@prisma/client';
+import { Content, ContentRevision, Post } from '@prisma/client';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
 import { ContentEntity } from '../content/content.entity.js';
-import { ContentHistoryEntity } from '../contentHistory/contentHistory.entity.js';
+import { ContentRevisionEntity } from '../contentRevision/contentRevision.entity.js';
 import { UserEntity } from '../user/user.entity.js';
 import { PostEntity } from './post.entity.js';
 
@@ -17,18 +17,21 @@ export class PostRepository {
       post: PostEntity;
       contents: {
         content: ContentEntity;
-        updatedBy: UserEntity;
-        histories: ContentHistoryEntity[];
+        revisions: ContentRevisionEntity[];
       }[];
     }[]
   > {
     const records = await prisma.post.findMany({
       include: {
-        contentHistories: true,
-        contents: {
-          include: {
-            updatedBy: true,
+        contentRevisions: {
+          where: {
+            deletedAt: null,
           },
+          orderBy: {
+            version: 'desc',
+          },
+        },
+        contents: {
           where: {
             deletedAt: null,
           },
@@ -49,9 +52,8 @@ export class PostRepository {
       for (const content of record.contents) {
         contents.push({
           content: ContentEntity.Reconstruct<Content, ContentEntity>(content),
-          updatedBy: UserEntity.Reconstruct<User, UserEntity>(content.updatedBy),
-          histories: record.contentHistories.map((history) =>
-            ContentHistoryEntity.Reconstruct<ContentHistory, ContentHistoryEntity>(history)
+          revisions: record.contentRevisions.map((revision) =>
+            ContentRevisionEntity.Reconstruct<ContentRevision, ContentRevisionEntity>(revision)
           ),
         });
       }
@@ -83,7 +85,7 @@ export class PostRepository {
             status: 'published',
           },
           orderBy: {
-            version: 'desc',
+            currentVersion: 'desc',
           },
         },
       },
@@ -133,7 +135,7 @@ export class PostRepository {
             status: 'published',
           },
           orderBy: {
-            version: 'desc',
+            currentVersion: 'desc',
           },
         },
       },

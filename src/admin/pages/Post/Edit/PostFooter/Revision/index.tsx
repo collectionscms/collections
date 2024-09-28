@@ -1,10 +1,11 @@
 import { Box, Drawer, Stack, Tooltip, Typography, useTheme } from '@mui/material';
+import { ContentRevision } from '@prisma/client';
 import dayjs from 'dayjs';
 import { enqueueSnackbar } from 'notistack';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import SimpleBar from 'simplebar-react';
-import { LocalizedPost } from '../../../../../../types/index.js';
+import { RevisedContent } from '../../../../../../types/index.js';
 import { logger } from '../../../../../../utilities/logger.js';
 import { Avatar } from '../../../../../@extended/components/Avatar/index.js';
 import { IconButton } from '../../../../../@extended/components/IconButton/index.js';
@@ -14,23 +15,33 @@ import { ModalDialog } from '../../../../../components/elements/ModalDialog/inde
 import { usePost } from '../../../Context/index.js';
 
 export type Props = {
-  post: LocalizedPost;
+  content: RevisedContent;
   onReverted: () => void;
 };
 
-export const History: React.FC<Props> = ({ post, onReverted }) => {
-  const { contentId, histories, version, status } = post;
+export const Revision: React.FC<Props> = ({ content, onReverted }) => {
+  const { id, revisions } = content;
 
   const theme = useTheme();
   const { t } = useTranslation();
-  const [openRevert, setOpenRevert] = useState(false);
 
-  const { trashContent } = usePost();
-  const { trigger: trashContentTrigger } = trashContent(contentId);
+  const [openRevert, setOpenRevert] = useState(false);
+  const [revertRevision, setRevertRevision] = useState<ContentRevision | null>(null);
+  const toggleRevertMode = (revision: ContentRevision) => {
+    setOpenRevert(!openRevert);
+    setRevertRevision(revision);
+  };
+
+  const { revertContent } = usePost();
+  const { trigger: revertContentTrigger } = revertContent(id);
 
   const handleRevert = async () => {
+    if (!revertRevision) return;
+
     try {
-      await trashContentTrigger();
+      await revertContentTrigger({
+        contentRevisionId: revertRevision.id,
+      });
       onReverted();
       enqueueSnackbar(t('toast.post_reverted'), {
         anchorOrigin: {
@@ -44,10 +55,6 @@ export const History: React.FC<Props> = ({ post, onReverted }) => {
     }
   };
 
-  const sortedHistories = histories.sort(
-    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-  );
-
   const [open, setOpen] = useState(false);
   const handleToggle = () => {
     setOpen(!open);
@@ -58,8 +65,8 @@ export const History: React.FC<Props> = ({ post, onReverted }) => {
       <ModalDialog
         open={openRevert}
         title={t('dialog.confirm_revert_previous_version_title')}
-        body={t('dialog.confirm_revert_previous_version')}
-        execute={{ label: t('restore'), action: handleRevert }}
+        body={t('dialog.confirm_revert_previous_version', { version: revertRevision?.version })}
+        execute={{ label: t('revert'), action: handleRevert }}
         cancel={{ label: t('cancel'), action: () => setOpenRevert(false) }}
       />
       <Tooltip title={t('version_history')} placement="top-start">
@@ -120,10 +127,10 @@ export const History: React.FC<Props> = ({ post, onReverted }) => {
                 }}
               >
                 <Stack sx={{ p: 2 }} gap={2}>
-                  {sortedHistories.map((history) => (
-                    <Stack key={history.id} flexDirection="row" gap={2}>
+                  {revisions.map((revision) => (
+                    <Stack key={revision.id} flexDirection="row" gap={2}>
                       <Avatar variant="rounded" size="md" color="secondary" type="filled">
-                        <Typography variant="h5">v{history.version}</Typography>
+                        <Typography variant="h5">v{revision.version}</Typography>
                       </Avatar>
                       <Stack
                         flexDirection="row"
@@ -133,19 +140,26 @@ export const History: React.FC<Props> = ({ post, onReverted }) => {
                       >
                         <Stack>
                           <Typography variant="h6" component="span">
-                            {t(`${history.status}` as unknown as TemplateStringsArray)}
+                            {t(`${revision.status}` as unknown as TemplateStringsArray)}
                           </Typography>
                           <Typography color="textSecondary" variant="subtitle2">
-                            {dayjs(history.createdAt).format(t('date_format.long'))}
+                            {dayjs(revision.createdAt).format(t('date_format.long'))}
                           </Typography>
                         </Stack>
-                        {status.currentStatus === 'draft' && version - 1 === history.version && (
-                          <Tooltip title={t('restore')}>
-                            <IconButton color="secondary" onClick={() => setOpenRevert(true)}>
-                              <Icon name="Undo2" size={14} />
-                            </IconButton>
-                          </Tooltip>
-                        )}
+                        {content.version !== revision.version &&
+                          revision.status === 'published' && (
+                            <Tooltip
+                              title={t('revert_to', { version: revision.version })}
+                              placement="right"
+                            >
+                              <IconButton
+                                color="secondary"
+                                onClick={() => toggleRevertMode(revision)}
+                              >
+                                <Icon name="Undo2" size={14} />
+                              </IconButton>
+                            </Tooltip>
+                          )}
                       </Stack>
                     </Stack>
                   ))}

@@ -1,14 +1,12 @@
-import { Content, User } from '@prisma/client';
+import { Content, ContentRevision, User } from '@prisma/client';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
+import { ContentRevisionEntity } from '../contentRevision/contentRevision.entity.js';
 import { UserEntity } from '../user/user.entity.js';
 import { ContentEntity } from './content.entity.js';
 
 export class ContentRepository {
-  async findOneById(
-    prisma: ProjectPrismaType,
-    id: string
-  ): Promise<{ content: ContentEntity; createdBy: UserEntity }> {
-    const { createdBy, ...content } = await prisma.content.findFirstOrThrow({
+  async findOneById(prisma: ProjectPrismaType, id: string): Promise<ContentEntity | null> {
+    const record = await prisma.content.findFirst({
       where: {
         id,
       },
@@ -17,30 +15,9 @@ export class ContentRepository {
       },
     });
 
-    return {
-      content: ContentEntity.Reconstruct<Content, ContentEntity>(content),
-      createdBy: UserEntity.Reconstruct<User, UserEntity>(createdBy),
-    };
-  }
+    if (!record) return null;
 
-  async findOneByPostIdAndLanguage(
-    prisma: ProjectPrismaType,
-    excludeId: string,
-    postId: string,
-    language: string
-  ): Promise<ContentEntity | null> {
-    const record = await prisma.content.findFirst({
-      where: {
-        id: {
-          not: excludeId,
-        },
-        postId,
-        language,
-        deletedAt: null,
-      },
-    });
-
-    return record ? ContentEntity.Reconstruct<Content, ContentEntity>(record) : null;
+    return ContentEntity.Reconstruct<Content, ContentEntity>(record);
   }
 
   async findOneBySlug(
@@ -66,29 +43,41 @@ export class ContentRepository {
     };
   }
 
-  async findManyByPostIdAndLanguage(
+  async findOneWithRevisionsById(
     prisma: ProjectPrismaType,
-    postId: string,
-    language: string
-  ): Promise<{ content: ContentEntity; createdBy: UserEntity }[]> {
-    const records = await prisma.content.findMany({
+    id: string
+  ): Promise<{
+    content: ContentEntity;
+    revisions: ContentRevisionEntity[];
+  } | null> {
+    const record = await prisma.content.findFirst({
       where: {
-        postId,
-        language,
+        id,
         deletedAt: null,
       },
-      orderBy: {
-        version: 'desc',
-      },
       include: {
+        contentRevisions: {
+          where: {
+            deletedAt: null,
+          },
+          orderBy: {
+            version: 'desc',
+          },
+        },
         createdBy: true,
       },
     });
 
-    return records.map((record) => ({
+    if (!record) {
+      return null;
+    }
+
+    return {
       content: ContentEntity.Reconstruct<Content, ContentEntity>(record),
-      createdBy: UserEntity.Reconstruct<User, UserEntity>(record.createdBy),
-    }));
+      revisions: record.contentRevisions.map((r) =>
+        ContentRevisionEntity.Reconstruct<ContentRevision, ContentRevisionEntity>(r)
+      ),
+    };
   }
 
   async findManyByPostId(
@@ -101,7 +90,7 @@ export class ContentRepository {
         deletedAt: null,
       },
       orderBy: {
-        version: 'desc',
+        currentVersion: 'desc',
       },
       include: {
         createdBy: true,
@@ -114,19 +103,40 @@ export class ContentRepository {
     }));
   }
 
-  async findManyTrashed(prisma: ProjectPrismaType): Promise<ContentEntity[]> {
+  async findManyWithRevisionsByPostId(
+    prisma: ProjectPrismaType,
+    postId: string
+  ): Promise<
+    { content: ContentEntity; createdBy: UserEntity; revisions: ContentRevisionEntity[] }[]
+  > {
     const records = await prisma.content.findMany({
       where: {
-        deletedAt: {
-          not: null,
-        },
+        postId,
+        deletedAt: null,
       },
       orderBy: {
-        deletedAt: 'desc',
+        currentVersion: 'desc',
+      },
+      include: {
+        contentRevisions: {
+          where: {
+            deletedAt: null,
+          },
+          orderBy: {
+            version: 'desc',
+          },
+        },
+        createdBy: true,
       },
     });
 
-    return records.map((record) => ContentEntity.Reconstruct<Content, ContentEntity>(record));
+    return records.map((record) => ({
+      content: ContentEntity.Reconstruct<Content, ContentEntity>(record),
+      createdBy: UserEntity.Reconstruct<User, UserEntity>(record.createdBy),
+      revisions: record.contentRevisions.map((r) =>
+        ContentRevisionEntity.Reconstruct<ContentRevision, ContentRevisionEntity>(r)
+      ),
+    }));
   }
 
   async create(
@@ -155,7 +165,21 @@ export class ContentRepository {
       where: {
         id: contentEntity.id,
       },
-      data: contentEntity.toPersistence(),
+      data: {
+        title: contentEntity.title,
+        slug: contentEntity.slug,
+        excerpt: contentEntity.excerpt,
+        body: contentEntity.body,
+        bodyJson: contentEntity.bodyJson,
+        bodyHtml: contentEntity.bodyHtml,
+        metaTitle: contentEntity.metaTitle,
+        metaDescription: contentEntity.metaDescription,
+        coverUrl: contentEntity.coverUrl,
+        currentVersion: contentEntity.currentVersion,
+        status: contentEntity.status,
+        publishedAt: contentEntity.publishedAt,
+        updatedById: contentEntity.updatedById,
+      },
     });
 
     return ContentEntity.Reconstruct<Content, ContentEntity>(record);
@@ -171,37 +195,31 @@ export class ContentRepository {
         id: contentEntity.id,
       },
       data: {
+        currentVersion: contentEntity.currentVersion,
         status: contentEntity.status,
         publishedAt: contentEntity.publishedAt,
         updatedById: contentEntity.updatedById,
+        deletedAt: contentEntity.deletedAt,
       },
     });
 
     return ContentEntity.Reconstruct<Content, ContentEntity>(record);
   }
 
-  async delete(prisma: ProjectPrismaType, contentEntity: ContentEntity): Promise<ContentEntity> {
+  async trash(prisma: ProjectPrismaType, contentEntity: ContentEntity): Promise<ContentEntity> {
     contentEntity.beforeUpdateValidate();
     const record = await prisma.content.update({
       where: {
         id: contentEntity.id,
       },
       data: {
-        deletedAt: contentEntity.deletedAt,
+        status: contentEntity.status,
         updatedById: contentEntity.updatedById,
+        deletedAt: contentEntity.deletedAt,
       },
     });
 
     return ContentEntity.Reconstruct<Content, ContentEntity>(record);
-  }
-
-  async hardDelete(prisma: ProjectPrismaType, contentEntity: ContentEntity): Promise<void> {
-    contentEntity.beforeUpdateValidate();
-    await prisma.content.delete({
-      where: {
-        id: contentEntity.id,
-      },
-    });
   }
 
   async restore(prisma: ProjectPrismaType, contentEntity: ContentEntity): Promise<ContentEntity> {
@@ -211,7 +229,25 @@ export class ContentRepository {
         id: contentEntity.id,
       },
       data: {
+        status: contentEntity.status,
+        currentVersion: contentEntity.currentVersion,
         deletedAt: contentEntity.deletedAt,
+        updatedById: contentEntity.updatedById,
+      },
+    });
+
+    return ContentEntity.Reconstruct<Content, ContentEntity>(record);
+  }
+
+  async revert(prisma: ProjectPrismaType, contentEntity: ContentEntity): Promise<ContentEntity> {
+    contentEntity.beforeUpdateValidate();
+    const record = await prisma.content.update({
+      where: {
+        id: contentEntity.id,
+      },
+      data: {
+        status: contentEntity.status,
+        currentVersion: contentEntity.currentVersion,
         updatedById: contentEntity.updatedById,
       },
     });

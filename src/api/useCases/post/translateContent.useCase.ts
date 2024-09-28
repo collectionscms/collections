@@ -1,9 +1,8 @@
 import { Translator } from '@collectionscms/plugin-translate';
 import { getLanguageCodeType } from '../../../constants/languages.js';
-import { env } from '../../../env.js';
 import { InvalidPayloadException } from '../../../exceptions/invalidPayload.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
-import { ContentRepository } from '../../persistence/content/content.repository.js';
+import { ContentRevisionRepository } from '../../persistence/contentRevision/contentRevision.repository.js';
 import { TranslateContentUseCaseSchemaType } from './translateContent.useCase.schema.js';
 
 type TranslateContentResponse = {
@@ -14,7 +13,7 @@ type TranslateContentResponse = {
 export class TranslateContentUseCase {
   constructor(
     private readonly prisma: ProjectPrismaClient,
-    private readonly contentRepository: ContentRepository,
+    private readonly contentRevisionRepository: ContentRevisionRepository,
     private readonly translator: Translator
   ) {}
 
@@ -28,19 +27,15 @@ export class TranslateContentUseCase {
       throw new InvalidPayloadException('bad_request');
     }
 
-    const sourceLngContents = await this.contentRepository.findManyByPostIdAndLanguage(
+    const sourceLngRevision = await this.contentRevisionRepository.findOneByPostIdAndLanguage(
       this.prisma,
       id,
       sourceLanguageCode.code
     );
 
-    const content = sourceLngContents[0]?.content;
-    if (!content) {
-      return { title: '', body: '' };
-    }
+    const title = sourceLngRevision?.title ?? '';
+    const body = sourceLngRevision?.bodyHtml ?? '';
 
-    const title = content.title ?? '';
-    const body = content.bodyHtml ?? '';
     if (!title && !body) {
       return { title: '', body: '' };
     }

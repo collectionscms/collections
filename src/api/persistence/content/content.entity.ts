@@ -4,8 +4,10 @@ import { getLanguageCodeType, LanguageCode } from '../../../constants/languages.
 import { env } from '../../../env.js';
 import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
 import { UnexpectedException } from '../../../exceptions/unexpected.js';
-import { PublishedContent, StatusHistory } from '../../../types/index.js';
+import { PublishedContent, RevisedContent, StatusHistory } from '../../../types/index.js';
+import { ContentRevisionEntity } from '../contentRevision/contentRevision.entity.js';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
+import { ProjectEntity } from '../project/project.entity.js';
 import { UserEntity } from '../user/user.entity.js';
 
 export const ContentStatus = {
@@ -13,6 +15,7 @@ export const ContentStatus = {
   review: 'review',
   published: 'published',
   archived: 'archived',
+  trashed: 'trashed',
 } as const;
 export type ContentStatusType = (typeof ContentStatus)[keyof typeof ContentStatus];
 
@@ -21,6 +24,7 @@ const EXCERPT_LENGTH = 150;
 type ContentProps = Omit<
   Content,
   | 'id'
+  | 'slug'
   | 'title'
   | 'body'
   | 'bodyJson'
@@ -29,7 +33,7 @@ type ContentProps = Omit<
   | 'metaTitle'
   | 'metaDescription'
   | 'coverUrl'
-  | 'version'
+  | 'currentVersion'
   | 'status'
   | 'updatedById'
   | 'publishedAt'
@@ -37,6 +41,7 @@ type ContentProps = Omit<
   | 'createdAt'
   | 'updatedAt'
 > & {
+  slug?: string | null;
   excerpt?: string | null;
   metaTitle?: string | null;
   metaDescription?: string | null;
@@ -45,17 +50,44 @@ type ContentProps = Omit<
   body?: string | null;
   bodyJson?: string | null;
   bodyHtml?: string | null;
-  version?: number;
+  currentVersion?: number;
 };
 
 export class ContentEntity extends PrismaBaseEntity<Content> {
-  static Construct(props: ContentProps): ContentEntity {
+  static Construct(props: ContentProps): {
+    content: ContentEntity;
+    contentRevision: ContentRevisionEntity;
+  } {
     const now = new Date();
-    return new ContentEntity({
-      id: v4(),
+    const contentId = v4();
+    const slug = props.slug ?? this.generateSlug();
+
+    const contentRevision = ContentRevisionEntity.Construct({
       projectId: props.projectId,
       postId: props.postId,
-      slug: props.slug,
+      contentId,
+      slug,
+      title: props.title ?? null,
+      body: props.body ?? null,
+      bodyJson: props.bodyJson ?? null,
+      bodyHtml: props.bodyHtml ?? null,
+      excerpt: props.excerpt ?? null,
+      metaTitle: props.metaTitle ?? null,
+      metaDescription: props.metaDescription ?? null,
+      coverUrl: props.coverUrl ?? null,
+      language: props.language,
+      publishedAt: null,
+      version: props.currentVersion ?? 1,
+      createdById: props.createdById,
+      updatedById: props.createdById,
+      deletedAt: null,
+    });
+
+    const content = new ContentEntity({
+      id: contentId,
+      projectId: props.projectId,
+      postId: props.postId,
+      slug,
       title: props.title ?? null,
       body: props.body ?? null,
       bodyJson: props.bodyJson ?? null,
@@ -67,13 +99,15 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
       language: props.language,
       status: ContentStatus.draft,
       publishedAt: null,
-      version: props.version ?? 1,
+      currentVersion: props.currentVersion ?? 1,
       createdById: props.createdById,
       updatedById: props.createdById,
       deletedAt: null,
       createdAt: now,
       updatedAt: now,
     });
+
+    return { content, contentRevision };
   }
 
   private isValid() {
@@ -82,7 +116,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     }
   }
 
-  public beforeUpdateValidate(): void {
+  beforeUpdateValidate(): void {
     this.isValid();
 
     if (!encodeURIComponent(this.props.slug)) {
@@ -90,7 +124,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     }
   }
 
-  public beforeInsertValidate(): void {
+  beforeInsertValidate(): void {
     this.isValid();
 
     if (!encodeURIComponent(this.props.slug)) {
@@ -162,8 +196,8 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     return this.props.deletedAt;
   }
 
-  get version(): number {
-    return this.props.version;
+  get currentVersion(): number {
+    return this.props.currentVersion;
   }
 
   get createdById(): string {
@@ -192,36 +226,75 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     return text.length > EXCERPT_LENGTH ? `${preview}...` : preview;
   }
 
-  changeStatus({ status, updatedById }: { status: string; updatedById?: string }) {
+  draft(updatedById: string) {
+    this.props.status = ContentStatus.draft;
+    this.props.updatedById = updatedById;
+  }
+
+  restore(status: string, userId: string) {
     this.props.status = status;
-
-    if (status === ContentStatus.published) {
-      this.props.publishedAt = new Date();
-    }
-
-    if (updatedById) {
-      this.props.updatedById = updatedById;
-    }
-  }
-
-  delete(userId: string) {
-    this.props.deletedAt = new Date();
     this.props.updatedById = userId;
-  }
-
-  restore(userId: string) {
     this.props.deletedAt = null;
+  }
+
+  revert(status: string, version: number, userId: string) {
+    this.props.status = status;
+    this.props.currentVersion = version;
     this.props.updatedById = userId;
   }
 
-  hasNewVersion(contents: ContentEntity[]): boolean {
-    return contents.some(
-      (c) => c.props.language === this.props.language && c.props.version > this.props.version
-    );
+  publish({
+    title,
+    body,
+    bodyJson,
+    bodyHtml,
+    coverUrl,
+    slug,
+    excerpt,
+    metaTitle,
+    metaDescription,
+    currentVersion,
+    updatedById,
+  }: {
+    title: string;
+    body: string;
+    bodyJson: string;
+    bodyHtml: string;
+    coverUrl: string | null;
+    slug: string;
+    excerpt: string | null;
+    metaTitle: string | null;
+    metaDescription: string | null;
+    currentVersion: number;
+    updatedById: string;
+  }) {
+    Object.assign(this.props, {
+      title,
+      body,
+      bodyJson,
+      bodyHtml,
+      coverUrl,
+      excerpt,
+      metaTitle,
+      metaDescription,
+      slug,
+      status: ContentStatus.published,
+      currentVersion,
+      publishedAt: new Date(),
+      updatedById,
+    });
   }
 
-  isPublished(): boolean {
-    return this.props.status === ContentStatus.published;
+  archive(currentVersion: number, updatedById: string) {
+    this.props.currentVersion = currentVersion;
+    this.props.status = ContentStatus.archived;
+    this.props.updatedById = updatedById;
+  }
+
+  trash(updatedById: string) {
+    this.props.status = ContentStatus.trashed;
+    this.props.deletedAt = new Date();
+    this.props.updatedById = updatedById;
   }
 
   updateContent({
@@ -261,8 +334,8 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     });
   }
 
-  isSameLanguageContent(language: string) {
-    return this.props.language.toLocaleLowerCase() === language.toLocaleLowerCase();
+  isPublished(): boolean {
+    return this.props.status === ContentStatus.published;
   }
 
   isTranslationEnabled(sourceLanguage: string): boolean {
@@ -270,18 +343,53 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     return sourceLanguage !== this.props.language;
   }
 
-  statusHistory = (): StatusHistory => {
+  getStatusHistory = (revision: ContentRevisionEntity): StatusHistory => {
     return {
-      prevStatus:
-        this.props.version > 1 && this.props.status !== ContentStatus.published
-          ? ContentStatus.published
-          : null,
-      currentStatus: this.props.status,
+      currentStatus: revision.status,
+      prevStatus: revision.version !== this.props.currentVersion ? this.props.status : null,
     };
   };
 
   /**
-   * Convert entity to published content response
+   * Return content results for the latest revision for internal use.
+   * @param project
+   * @param languageContents
+   * @param latestRevision
+   * @param revisions
+   * @returns
+   */
+  toRevisedContentResponse(
+    project: ProjectEntity,
+    languageContents: { contentId: string; language: string }[],
+    latestRevision: ContentRevisionEntity,
+    revisions: ContentRevisionEntity[]
+  ): RevisedContent {
+    return {
+      id: this.props.id,
+      postId: this.props.postId,
+      slug: latestRevision.slug,
+      status: this.getStatusHistory(latestRevision),
+      updatedAt: latestRevision.updatedAt,
+      version: latestRevision.version,
+      title: latestRevision.title ?? '',
+      body: latestRevision.body ?? '',
+      bodyJson: latestRevision.bodyJson ?? '',
+      bodyHtml: latestRevision.bodyHtml ?? '',
+      excerpt: latestRevision.excerpt,
+      metaTitle: latestRevision.metaTitle,
+      metaDescription: latestRevision.metaDescription,
+      coverUrl: latestRevision.coverUrl,
+      language: latestRevision.language,
+      languageContents,
+      canTranslate: this.isTranslationEnabled(project.sourceLanguage),
+      sourceLanguageCode: project.sourceLanguageCode?.code ?? null,
+      targetLanguageCode: this.languageCode?.code ?? null,
+      revisions: revisions.map((revision) => revision.toResponse()),
+    };
+  }
+
+  /**
+   * Returns published content results for external use.
    * @param content
    * @param createdBy
    * @returns
@@ -298,7 +406,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
       body: this.props.body ?? '',
       bodyHtml: this.props.bodyHtml ?? '',
       language: this.props.language,
-      version: this.props.version,
+      version: this.props.currentVersion,
       coverUrl: this.props.coverUrl,
       excerpt: this.getExcerptOrBodyPreview(),
       metaTitle: this.props.metaTitle,

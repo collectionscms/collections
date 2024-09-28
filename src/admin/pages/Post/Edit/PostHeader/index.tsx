@@ -12,7 +12,7 @@ import {
 import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { LocalizedPost } from '../../../../../types/index.js';
+import { RevisedContent } from '../../../../../types/index.js';
 import { IconButton } from '../../../../@extended/components/IconButton/index.js';
 import { Icon } from '../../../../components/elements/Icon/index.js';
 import { NationalFlagIcon } from '../../../../components/elements/NationalFlagIcon/index.js';
@@ -20,17 +20,17 @@ import { StatusDot } from '../../../../components/elements/StatusDot/index.js';
 import { AppBarStyled } from '../AppBarStyled.js';
 
 export type Props = {
-  post: LocalizedPost;
+  content: RevisedContent;
   currentLanguage: string;
   isSaving: boolean;
-  onChangeLanguage: (language: string) => void;
+  onChangeLanguage: (contentId: string) => void;
   onOpenAddLanguage: () => void;
   onOpenPublishSettings: () => void;
   onReverted: () => void;
 };
 
 export const PostHeader: React.FC<Props> = ({
-  post,
+  content,
   currentLanguage,
   isSaving,
   onChangeLanguage,
@@ -73,8 +73,8 @@ export const PostHeader: React.FC<Props> = ({
     setLanguageOpen(false);
   };
 
-  const handleChangeLanguage = (language: string) => {
-    onChangeLanguage(language);
+  const handleChangeLanguage = (contentId: string) => {
+    onChangeLanguage(contentId);
     setLanguageOpen(false);
   };
 
@@ -92,13 +92,13 @@ export const PostHeader: React.FC<Props> = ({
               <Icon name="ArrowLeft" size={28} />
             </IconButton>
             <Stack direction="row" gap={1.5}>
-              {post.status.prevStatus && (
+              {content.status.prevStatus && (
                 <>
                   <StatusDot status="published" />
                   <Divider orientation="vertical" flexItem variant="middle" />
                 </>
               )}
-              <StatusDot status={post.status.currentStatus} />
+              <StatusDot status={content.status.currentStatus} />
             </Stack>
             {isSaving && (
               <Stack flexDirection="row" alignItems="center">
@@ -138,9 +138,9 @@ export const PostHeader: React.FC<Props> = ({
           open={languageOpen}
           onClose={handleCloseLanguage}
         >
-          {post.usedLanguages.map((language: string) => (
+          {content.languageContents.map(({ contentId, language }) => (
             <MenuItem
-              onClick={() => handleChangeLanguage(language)}
+              onClick={() => handleChangeLanguage(contentId)}
               selected={currentLanguage === language}
               key={language}
             >

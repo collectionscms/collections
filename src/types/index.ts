@@ -1,7 +1,7 @@
 import {
   ApiKey,
   Content,
-  ContentHistory,
+  ContentRevision,
   File,
   Permission,
   Project,
@@ -52,7 +52,6 @@ export type LocalizedContentItem = {
   slug: string;
   status: StatusHistory;
   language: string;
-  updatedByName: string;
   updatedAt: Date;
 };
 
@@ -60,10 +59,10 @@ export type SourceLanguagePostItem = LocalizedContentItem & {
   localizedContents: LocalizedContentItem[];
 };
 
-export type LocalizedPost = {
+export type RevisedContent = {
   id: string;
+  postId: string;
   slug: string;
-  contentId: string;
   status: StatusHistory;
   updatedAt: Date;
   version: number;
@@ -76,13 +75,11 @@ export type LocalizedPost = {
   metaDescription: string | null;
   coverUrl: string | null;
   language: string;
-  usedLanguages: string[];
+  languageContents: { contentId: string; language: string }[];
   canTranslate: boolean;
   sourceLanguageCode: string | null;
   targetLanguageCode: string | null;
-  createdByName: string;
-  updatedByName: string;
-  histories: ContentHistory[];
+  revisions: ContentRevision[];
 };
 
 export type PublishedContent = {

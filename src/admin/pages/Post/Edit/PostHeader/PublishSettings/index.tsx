@@ -23,7 +23,7 @@ import React, { useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { LocalizedPost } from '../../../../../../types/index.js';
+import { RevisedContent } from '../../../../../../types/index.js';
 import { logger } from '../../../../../../utilities/logger.js';
 import { IconButton } from '../../../../../@extended/components/IconButton/index.js';
 import { MainCard } from '../../../../../@extended/components/MainCard/index.js';
@@ -40,21 +40,20 @@ import { SocialSettings } from './SocialSettings/index.js';
 
 export type Props = {
   open: boolean;
-  contentId: string;
-  post: LocalizedPost;
+  content: RevisedContent;
   onClose: () => void;
 };
 
-export const PublishSettings: React.FC<Props> = ({ open, contentId, post, onClose }) => {
+export const PublishSettings: React.FC<Props> = ({ open, content, onClose }) => {
   const { hasPermission } = useAuth();
   const { t } = useTranslation();
   const navigate = useNavigate();
   const theme = useTheme();
-  const { requestReview, publish, archive, getPost } = usePost();
-  const { trigger: requestReviewTrigger } = requestReview(contentId);
-  const { trigger: publishTrigger } = publish(contentId);
-  const { trigger: archiveTrigger } = archive(contentId);
-  const { data: mutatedPost, mutate } = getPost(post.id, post.language);
+  const { requestReview, publish, archive, getContent } = usePost();
+  const { trigger: requestReviewTrigger } = requestReview(content.id);
+  const { trigger: publishTrigger } = publish(content.id);
+  const { trigger: archiveTrigger } = archive(content.id);
+  const { data: mutatedContent, mutate } = getContent(content.id);
 
   const appBar: AppBarProps = {
     position: 'fixed',
@@ -76,15 +75,15 @@ export const PublishSettings: React.FC<Props> = ({ open, contentId, post, onClos
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
-      status: post.status.currentStatus === 'published' ? 'published' : 'review',
+      status: content.status.currentStatus === 'published' ? 'published' : 'review',
       comment: '',
     },
     resolver: yupResolver(editContentValidator()),
   });
 
   useEffect(() => {
-    setValue('status', post.status.currentStatus === 'published' ? 'published' : 'review');
-  }, [post.status.currentStatus]);
+    setValue('status', content.status.currentStatus === 'published' ? 'published' : 'review');
+  }, [content.status.currentStatus]);
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
@@ -127,16 +126,16 @@ export const PublishSettings: React.FC<Props> = ({ open, contentId, post, onClos
   };
 
   const handleUpdatedPost = ({
-    slug = post.slug,
-    metaTitle = post.metaTitle,
-    metaDescription = post.metaDescription,
+    slug = content.slug,
+    metaTitle = content.metaTitle,
+    metaDescription = content.metaDescription,
   }: {
     slug?: string;
     metaTitle?: string | null;
     metaDescription?: string | null;
   }) => {
     mutate({
-      ...post,
+      ...content,
       slug,
       metaTitle,
       metaDescription,
@@ -158,7 +157,7 @@ export const PublishSettings: React.FC<Props> = ({ open, contentId, post, onClos
             <Box width="100%">
               <Typography variant="h3" align="center">
                 {t('language_publish_settings', {
-                  language: t(`languages.${post.language}` as unknown as TemplateStringsArray),
+                  language: t(`languages.${content.language}` as unknown as TemplateStringsArray),
                 })}
               </Typography>
             </Box>
@@ -179,7 +178,7 @@ export const PublishSettings: React.FC<Props> = ({ open, contentId, post, onClos
                     control={control}
                     render={({ field }) => (
                       <RadioGroup value={field.value} name="radio-buttons-group" row>
-                        {post.status.currentStatus === 'published' && (
+                        {content.status.currentStatus === 'published' && (
                           <FormControlLabel
                             {...field}
                             value="archived"
@@ -243,9 +242,9 @@ export const PublishSettings: React.FC<Props> = ({ open, contentId, post, onClos
             </Stack>
             <MainCard>
               <GeneralSettings
-                contentId={mutatedPost.contentId}
-                slug={mutatedPost.slug}
-                excerpt={mutatedPost.excerpt}
+                contentId={mutatedContent.id}
+                slug={mutatedContent.slug}
+                excerpt={mutatedContent.excerpt}
                 onUpdated={(slug) => handleUpdatedPost({ slug })}
               />
             </MainCard>
@@ -256,9 +255,9 @@ export const PublishSettings: React.FC<Props> = ({ open, contentId, post, onClos
             </Stack>
             <MainCard>
               <SocialSettings
-                contentId={mutatedPost.contentId}
-                metaTitle={mutatedPost.metaTitle}
-                metaDescription={mutatedPost.metaDescription}
+                contentId={mutatedContent.id}
+                metaTitle={mutatedContent.metaTitle}
+                metaDescription={mutatedContent.metaDescription}
                 onUpdated={(metaTitle, metaDescription) =>
                   handleUpdatedPost({
                     metaTitle,

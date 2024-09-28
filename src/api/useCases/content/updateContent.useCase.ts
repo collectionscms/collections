@@ -1,84 +1,53 @@
 import { Content } from '@prisma/client';
-import { ConflictException } from '../../../exceptions/conflict.js';
-import { RecordNotUniqueException } from '../../../exceptions/database/recordNotUnique.js';
+import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
-import { ContentEntity } from '../../persistence/content/content.entity.js';
-import { ContentRepository } from '../../persistence/content/content.repository.js';
-import { ContentHistoryEntity } from '../../persistence/contentHistory/contentHistory.entity.js';
-import { ContentHistoryRepository } from '../../persistence/contentHistory/contentHistory.repository.js';
-import { PostRepository } from '../../persistence/post/post.repository.js';
+import { ContentRevisionEntity } from '../../persistence/contentRevision/contentRevision.entity.js';
+import { ContentRevisionRepository } from '../../persistence/contentRevision/contentRevision.repository.js';
 import { UpdateContentUseCaseSchemaType } from './updateContent.useCase.schema.js';
 
 export class UpdateContentUseCase {
   constructor(
     private readonly prisma: ProjectPrismaClient,
-    private readonly contentRepository: ContentRepository,
-    private readonly postRepository: PostRepository,
-    private readonly contentHistoryRepository: ContentHistoryRepository
+    private readonly contentRevisionRepository: ContentRevisionRepository
   ) {}
 
   async execute(props: UpdateContentUseCaseSchemaType): Promise<Content> {
-    const { id, userId, slug } = props;
+    const revision = await this.contentRevisionRepository.findLatestOneByContentId(
+      this.prisma,
+      props.id
+    );
 
-    const { content } = await this.contentRepository.findOneById(this.prisma, id);
-    const post = await this.postRepository.findOneWithContentsById(this.prisma, content.postId);
-
-    if (content.hasNewVersion(post.contents.map((c) => c.content))) {
-      throw new ConflictException('already_updated_by_another_user');
+    if (!revision) {
+      throw new RecordNotFoundException('record_not_found');
     }
 
-    if (slug) {
-      const encodedSlug = encodeURIComponent(slug);
-      const sameSlugContent = await this.contentRepository.findOneBySlug(this.prisma, encodedSlug);
+    revision.updateContent({
+      coverUrl: props.coverUrl,
+      title: props.title,
+      body: props.body,
+      bodyJson: props.bodyJson,
+      bodyHtml: props.bodyHtml,
+      slug: props.slug,
+      updatedById: props.userId,
+      excerpt: props.excerpt || null,
+      metaTitle: props.metaTitle || null,
+      metaDescription: props.metaDescription || null,
+    });
 
-      if (
-        sameSlugContent?.content &&
-        sameSlugContent?.content.id !== id &&
-        // todo refactoring
-        sameSlugContent?.content.postId !== post.post.id
-      ) {
-        throw new RecordNotUniqueException('already_registered_post_slug');
-      }
-    }
-
-    const updatedContent = await this.prisma.$transaction(async (tx) => {
-      let entity = content.isPublished()
-        ? ContentEntity.Construct({
-            ...content.toResponse(),
-            createdById: userId,
-            version: content.version + 1,
-          })
-        : ContentEntity.Reconstruct<Content, ContentEntity>(content.toResponse());
-
-      entity.updateContent({
-        coverUrl: props.coverUrl,
-        title: props.title,
-        body: props.body,
-        bodyJson: props.bodyJson,
-        bodyHtml: props.bodyHtml,
-        slug: props.slug,
-        updatedById: userId,
-        excerpt: props.excerpt || null,
-        metaTitle: props.metaTitle || null,
-        metaDescription: props.metaDescription || null,
-      });
-
-      if (content.isPublished()) {
-        // create new version content
-        const createdContent = await this.contentRepository.create(tx, entity);
-        const history = ContentHistoryEntity.Construct({
-          ...entity.toResponse(),
+    const createdOrUpdatedRevision = await this.prisma.$transaction(async (tx) => {
+      if (revision.isPublished()) {
+        // create new version revision
+        const contentRevision = ContentRevisionEntity.Construct({
+          ...revision.toResponse(),
+          version: revision.version + 1,
         });
-        await this.contentHistoryRepository.create(tx, history);
-
-        return createdContent.content;
+        return await this.contentRevisionRepository.create(tx, contentRevision);
       } else {
-        // update current content
-        const updatedContent = await this.contentRepository.update(tx, entity);
-        return updatedContent;
+        // update current revision
+        return await this.contentRevisionRepository.update(tx, revision);
       }
     });
 
-    return updatedContent.toResponse();
+    return createdOrUpdatedRevision.toContentResponse();
   }
 }

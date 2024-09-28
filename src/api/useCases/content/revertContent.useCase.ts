@@ -6,9 +6,9 @@ import { ContentRevisionRepository } from '../../persistence/contentRevision/con
 import { UserRepository } from '../../persistence/user/user.repository.js';
 import { WebhookTriggerEvent } from '../../persistence/webhookLog/webhookLog.entity.js';
 import { WebhookService } from '../../services/webhook.service.js';
-import { RestoreContentUseCaseSchemaType } from './restoreContent.useCase.schema.js';
+import { RevertContentUseCaseSchemaType } from './revertContent.useCase.schema.js';
 
-export class RestoreContentUseCase {
+export class RevertContentUseCase {
   constructor(
     private readonly prisma: ProjectPrismaClient,
     private readonly userRepository: UserRepository,
@@ -17,37 +17,42 @@ export class RestoreContentUseCase {
     private readonly webhookService: WebhookService
   ) {}
 
-  async execute({ id, userId }: RestoreContentUseCaseSchemaType): Promise<Content> {
+  async execute({
+    id,
+    userId,
+    contentRevisionId,
+  }: RevertContentUseCaseSchemaType): Promise<Content> {
     const content = await this.contentRepository.findOneById(this.prisma, id);
-    const revision = await this.contentRevisionRepository.findLatestOneByContentId(this.prisma, id);
+    const revision = await this.contentRevisionRepository.findOneById(
+      this.prisma,
+      contentRevisionId
+    );
 
     if (!content || !revision) {
       throw new RecordNotFoundException('record_not_found');
     }
 
-    content.restore(revision.status, userId);
+    content.revert(revision.status, revision.version, userId);
 
-    const restoredContent = await this.prisma.$transaction(async (tx) => {
-      const result = await this.contentRepository.restore(this.prisma, content);
+    const revertedContent = await this.prisma.$transaction(async (tx) => {
+      const result = await this.contentRepository.revert(this.prisma, content);
 
-      // delete all revisions after restored version
-      const previousVersion = revision.version - 1;
-      await this.contentRevisionRepository.deleteAfterVersion(tx, content.id, previousVersion);
-
+      // delete all revisions after reverted version
+      await this.contentRevisionRepository.deleteAfterVersion(tx, content.id, revision.version);
       return result;
     });
 
-    if (restoredContent.isPublished()) {
+    if (revertedContent.isPublished()) {
       const createdBy = await this.userRepository.findOneById(this.prisma, userId);
 
       await this.webhookService.send(
         this.prisma,
         content.projectId,
         WebhookTriggerEvent.deletePublished,
-        restoredContent.toPublishedContentResponse(createdBy)
+        revertedContent.toPublishedContentResponse(createdBy)
       );
     }
 
-    return restoredContent.toResponse();
+    return revertedContent.toResponse();
   }
 }
