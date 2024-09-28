@@ -166,11 +166,22 @@ export class ContentRepository {
     }));
   }
 
-  async findManyTrashed(prisma: ProjectPrismaType): Promise<ContentEntity[]> {
+  async findManyTrashedWithRevisions(
+    prisma: ProjectPrismaType
+  ): Promise<{ content: ContentEntity; revisions: ContentRevisionEntity[] }[]> {
     const records = await prisma.content.findMany({
       where: {
         deletedAt: {
           not: null,
+        },
+      },
+      include: {
+        contentRevisions: {
+          where: {
+            deletedAt: {
+              not: null,
+            },
+          },
         },
       },
       orderBy: {
@@ -178,7 +189,12 @@ export class ContentRepository {
       },
     });
 
-    return records.map((record) => ContentEntity.Reconstruct<Content, ContentEntity>(record));
+    return records.map((record) => ({
+      content: ContentEntity.Reconstruct<Content, ContentEntity>(record),
+      revisions: record.contentRevisions.map((r) =>
+        ContentRevisionEntity.Reconstruct<ContentRevision, ContentRevisionEntity>(r)
+      ),
+    }));
   }
 
   async create(

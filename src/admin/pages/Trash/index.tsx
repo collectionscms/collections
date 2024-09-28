@@ -27,17 +27,17 @@ const TrashPageImpl: React.FC = () => {
         },
       },
       {
+        id: 'slug',
+        Header: t('slug'),
+        accessor: 'slug',
+      },
+      {
         id: 'language',
         Header: t('language'),
         accessor: 'language',
         Cell: ({ value }: { value: string }) => {
           return <NationalFlagIcon code={value} props={{ width: 20 }} />;
         },
-      },
-      {
-        id: 'currentVersion',
-        Header: t('version'),
-        accessor: 'currentVersion',
       },
       {
         id: 'deletedAt',

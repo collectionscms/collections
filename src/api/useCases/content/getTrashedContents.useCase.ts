@@ -1,6 +1,7 @@
 import { Content } from '@prisma/client';
-import { ContentRepository } from '../../persistence/content/content.repository.js';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
+import { ContentRepository } from '../../persistence/content/content.repository.js';
+import { ContentRevisionEntity } from '../../persistence/contentRevision/contentRevision.entity.js';
 
 export class GetTrashedContentsUseCase {
   constructor(
@@ -9,7 +10,17 @@ export class GetTrashedContentsUseCase {
   ) {}
 
   async execute(): Promise<Content[]> {
-    const records = await this.contentRepository.findManyTrashed(this.prisma);
-    return records.map((record) => record.toResponse());
+    const records = await this.contentRepository.findManyTrashedWithRevisions(this.prisma);
+
+    const contents = records.map(({ content, revisions }) => {
+      const latestRevision = ContentRevisionEntity.getLatestRevisionOfLanguage(
+        revisions,
+        content.language
+      );
+
+      return latestRevision.toContentResponse();
+    });
+
+    return contents;
   }
 }
