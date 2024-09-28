@@ -7,6 +7,106 @@ import { UserEntity } from '../user/user.entity.js';
 import { PostEntity } from './post.entity.js';
 
 export class PostRepository {
+  async findOnePublishedById(
+    prisma: ProjectPrismaType,
+    id: string
+  ): Promise<{
+    post: PostEntity;
+    contents: {
+      content: ContentEntity;
+      createdBy: UserEntity;
+      updatedBy: UserEntity;
+    }[];
+  } | null> {
+    const record = await prisma.post.findFirst({
+      where: {
+        id,
+      },
+      include: {
+        contents: {
+          include: {
+            createdBy: true,
+            updatedBy: true,
+          },
+          where: {
+            deletedAt: null,
+            status: 'published',
+          },
+          orderBy: {
+            currentVersion: 'desc',
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+    if (!record) {
+      return null;
+    }
+
+    const post = PostEntity.Reconstruct<Post, PostEntity>(record);
+    const contents = record.contents.map((content) => ({
+      content: ContentEntity.Reconstruct<Content, ContentEntity>(content),
+      createdBy: UserEntity.Reconstruct<User, UserEntity>(content.createdBy),
+      updatedBy: UserEntity.Reconstruct<User, UserEntity>(content.updatedBy),
+    }));
+
+    return {
+      post,
+      contents,
+    };
+  }
+
+  async findOneWithContentsById(
+    prisma: ProjectPrismaType,
+    id: string,
+    options?: {
+      userId?: string;
+    }
+  ): Promise<{
+    post: PostEntity;
+    contents: {
+      content: ContentEntity;
+      createdBy: UserEntity;
+      updatedBy: UserEntity;
+    }[];
+  }> {
+    const record = await prisma.post.findFirstOrThrow({
+      where: {
+        id,
+        createdById: options?.userId,
+      },
+      include: {
+        contents: {
+          include: {
+            createdBy: true,
+            updatedBy: true,
+          },
+          where: {
+            deletedAt: null,
+          },
+        },
+      },
+    });
+
+    const post = PostEntity.Reconstruct<Post, PostEntity>(record);
+    const contents = [];
+    for (const content of record.contents) {
+      contents.push({
+        content: ContentEntity.Reconstruct<Content, ContentEntity>(content),
+        createdBy: UserEntity.Reconstruct<User, UserEntity>(content.createdBy),
+        updatedBy: UserEntity.Reconstruct<User, UserEntity>(content.updatedBy),
+      });
+    }
+
+    return {
+      post,
+      contents,
+    };
+  }
+
   async findMany(
     prisma: ProjectPrismaType,
     options?: {
@@ -107,106 +207,6 @@ export class PostRepository {
         contents,
       };
     });
-  }
-
-  async findOnePublishedById(
-    prisma: ProjectPrismaType,
-    id: string
-  ): Promise<{
-    post: PostEntity;
-    contents: {
-      content: ContentEntity;
-      createdBy: UserEntity;
-      updatedBy: UserEntity;
-    }[];
-  } | null> {
-    const record = await prisma.post.findFirst({
-      where: {
-        id,
-      },
-      include: {
-        contents: {
-          include: {
-            createdBy: true,
-            updatedBy: true,
-          },
-          where: {
-            deletedAt: null,
-            status: 'published',
-          },
-          orderBy: {
-            currentVersion: 'desc',
-          },
-        },
-      },
-      orderBy: {
-        createdAt: 'desc',
-      },
-    });
-
-    if (!record) {
-      return null;
-    }
-
-    const post = PostEntity.Reconstruct<Post, PostEntity>(record);
-    const contents = record.contents.map((content) => ({
-      content: ContentEntity.Reconstruct<Content, ContentEntity>(content),
-      createdBy: UserEntity.Reconstruct<User, UserEntity>(content.createdBy),
-      updatedBy: UserEntity.Reconstruct<User, UserEntity>(content.updatedBy),
-    }));
-
-    return {
-      post,
-      contents,
-    };
-  }
-
-  async findOneWithContentsById(
-    prisma: ProjectPrismaType,
-    id: string,
-    options?: {
-      userId?: string;
-    }
-  ): Promise<{
-    post: PostEntity;
-    contents: {
-      content: ContentEntity;
-      createdBy: UserEntity;
-      updatedBy: UserEntity;
-    }[];
-  }> {
-    const record = await prisma.post.findFirstOrThrow({
-      where: {
-        id,
-        createdById: options?.userId,
-      },
-      include: {
-        contents: {
-          include: {
-            createdBy: true,
-            updatedBy: true,
-          },
-          where: {
-            deletedAt: null,
-          },
-        },
-      },
-    });
-
-    const post = PostEntity.Reconstruct<Post, PostEntity>(record);
-    const contents = [];
-    for (const content of record.contents) {
-      contents.push({
-        content: ContentEntity.Reconstruct<Content, ContentEntity>(content),
-        createdBy: UserEntity.Reconstruct<User, UserEntity>(content.createdBy),
-        updatedBy: UserEntity.Reconstruct<User, UserEntity>(content.updatedBy),
-      });
-    }
-
-    return {
-      post,
-      contents,
-    };
   }
 
   async create(prisma: ProjectPrismaType, postEntity: PostEntity): Promise<PostEntity> {
