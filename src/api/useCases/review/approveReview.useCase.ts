@@ -1,10 +1,12 @@
 import { Review } from '@prisma/client';
 import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
+import { RecordNotUniqueException } from '../../../exceptions/database/recordNotUnique.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
 import { ContentRepository } from '../../persistence/content/content.repository.js';
 import { ContentRevisionEntity } from '../../persistence/contentRevision/contentRevision.entity.js';
 import { ContentRevisionRepository } from '../../persistence/contentRevision/contentRevision.repository.js';
 import { ReviewRepository } from '../../persistence/review/review.repository.js';
+import { ContentService } from '../../services/content.service.js';
 import { ApproveReviewUseCaseSchemaType } from './approveReview.useCase.schema.js';
 
 export class ApproveReviewUseCase {
@@ -12,7 +14,8 @@ export class ApproveReviewUseCase {
     private readonly prisma: ProjectPrismaClient,
     private readonly reviewRepository: ReviewRepository,
     private readonly contentRepository: ContentRepository,
-    private readonly contentRevisionRepository: ContentRevisionRepository
+    private readonly contentRevisionRepository: ContentRevisionRepository,
+    private readonly contentService: ContentService
   ) {}
 
   async execute(
@@ -58,6 +61,15 @@ export class ApproveReviewUseCase {
       currentVersion: latestRevision.version,
       updatedById: userId,
     });
+
+    const isUniqueSlug = await this.contentService.isUniqueSlug(
+      this.prisma,
+      content.id,
+      latestRevision.slug
+    );
+    if (!isUniqueSlug) {
+      throw new RecordNotUniqueException('already_registered_post_slug');
+    }
 
     const updatedReview = await this.prisma.$transaction(async (tx) => {
       await this.contentRevisionRepository.update(tx, latestRevision);

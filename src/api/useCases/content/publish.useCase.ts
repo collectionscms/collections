@@ -1,11 +1,13 @@
 import { Content } from '@prisma/client';
 import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
+import { RecordNotUniqueException } from '../../../exceptions/database/recordNotUnique.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
 import { ContentRepository } from '../../persistence/content/content.repository.js';
 import { ContentRevisionEntity } from '../../persistence/contentRevision/contentRevision.entity.js';
 import { ContentRevisionRepository } from '../../persistence/contentRevision/contentRevision.repository.js';
 import { UserRepository } from '../../persistence/user/user.repository.js';
 import { WebhookTriggerEvent } from '../../persistence/webhookLog/webhookLog.entity.js';
+import { ContentService } from '../../services/content.service.js';
 import { WebhookService } from '../../services/webhook.service.js';
 import { PublishUseCaseSchemaType } from './publish.useCase.schema.js';
 
@@ -15,6 +17,7 @@ export class PublishUseCase {
     private readonly contentRepository: ContentRepository,
     private readonly contentRevisionRepository: ContentRevisionRepository,
     private readonly userRepository: UserRepository,
+    private readonly contentService: ContentService,
     private readonly webhookService: WebhookService
   ) {}
 
@@ -50,6 +53,15 @@ export class PublishUseCase {
       currentVersion: latestRevision.version,
       updatedById: userId,
     });
+
+    const isUniqueSlug = await this.contentService.isUniqueSlug(
+      this.prisma,
+      content.id,
+      latestRevision.slug
+    );
+    if (!isUniqueSlug) {
+      throw new RecordNotUniqueException('already_registered_post_slug');
+    }
 
     const updatedContent = await this.prisma.$transaction(async (tx) => {
       const result = await this.contentRepository.update(tx, content);

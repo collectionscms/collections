@@ -11,6 +11,7 @@ import { ReviewRepository } from '../persistence/review/review.repository.js';
 import { UserRepository } from '../persistence/user/user.repository.js';
 import { WebhookLogRepository } from '../persistence/webhookLog/webhookLog.repository.js';
 import { WebhookSettingRepository } from '../persistence/webhookSetting/webhookSetting.repository.js';
+import { ContentService } from '../services/content.service.js';
 import { WebhookService } from '../services/webhook.service.js';
 import { ArchiveUseCase } from '../useCases/content/archive.useCase.js';
 import { archiveUseCaseSchema } from '../useCases/content/archive.useCase.schema.js';
@@ -104,7 +105,6 @@ router.patch(
 
     const useCase = new UpdateContentUseCase(
       projectPrisma(validated.data.projectId),
-      new ContentRepository(),
       new ContentRevisionRepository()
     );
     await useCase.execute(validated.data);
@@ -155,6 +155,7 @@ router.patch(
       new ContentRepository(),
       new ContentRevisionRepository(),
       new UserRepository(),
+      new ContentService(new ContentRepository()),
       new WebhookService(new WebhookSettingRepository(), new WebhookLogRepository())
     );
     await useCase.execute(validated.data);

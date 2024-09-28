@@ -1,8 +1,6 @@
 import { Content } from '@prisma/client';
 import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
-import { RecordNotUniqueException } from '../../../exceptions/database/recordNotUnique.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
-import { ContentRepository } from '../../persistence/content/content.repository.js';
 import { ContentRevisionEntity } from '../../persistence/contentRevision/contentRevision.entity.js';
 import { ContentRevisionRepository } from '../../persistence/contentRevision/contentRevision.repository.js';
 import { UpdateContentUseCaseSchemaType } from './updateContent.useCase.schema.js';
@@ -10,7 +8,6 @@ import { UpdateContentUseCaseSchemaType } from './updateContent.useCase.schema.j
 export class UpdateContentUseCase {
   constructor(
     private readonly prisma: ProjectPrismaClient,
-    private readonly contentRepository: ContentRepository,
     private readonly contentRevisionRepository: ContentRevisionRepository
   ) {}
 
@@ -22,15 +19,6 @@ export class UpdateContentUseCase {
 
     if (!revision) {
       throw new RecordNotFoundException('record_not_found');
-    }
-
-    if (props.slug) {
-      const encodedSlug = encodeURIComponent(props.slug);
-      const sameSlugContent = await this.contentRepository.findOneBySlug(this.prisma, encodedSlug);
-
-      if (sameSlugContent?.content && sameSlugContent?.content.id !== props.id) {
-        throw new RecordNotUniqueException('already_registered_post_slug');
-      }
     }
 
     revision.updateContent({

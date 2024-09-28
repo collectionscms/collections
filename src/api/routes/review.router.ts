@@ -7,6 +7,7 @@ import { validateAccess } from '../middlewares/validateAccess.js';
 import { ContentRepository } from '../persistence/content/content.repository.js';
 import { ContentRevisionRepository } from '../persistence/contentRevision/contentRevision.repository.js';
 import { ReviewRepository } from '../persistence/review/review.repository.js';
+import { ContentService } from '../services/content.service.js';
 import { ApproveReviewUseCase } from '../useCases/review/approveReview.useCase.js';
 import { approveReviewUseCaseSchema } from '../useCases/review/approveReview.useCase.schema.js';
 import { CloseReviewUseCase } from '../useCases/review/closeReview.useCase.js';
@@ -115,7 +116,8 @@ router.patch(
       projectPrisma(validated.data.projectId),
       new ReviewRepository(),
       new ContentRepository(),
-      new ContentRevisionRepository()
+      new ContentRevisionRepository(),
+      new ContentService(new ContentRepository())
     );
 
     const permissions = res.projectRole?.permissions ?? [];
