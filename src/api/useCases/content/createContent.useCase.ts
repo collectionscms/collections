@@ -1,4 +1,5 @@
 import { Content } from '@prisma/client';
+import { RecordNotUniqueException } from '../../../exceptions/database/recordNotUnique.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
 import { ContentEntity } from '../../persistence/content/content.entity.js';
 import { ContentRepository } from '../../persistence/content/content.repository.js';
@@ -12,13 +13,29 @@ export class CreateContentUseCase {
     private readonly contentRevisionRepository: ContentRevisionRepository
   ) {}
 
-  async execute(props: CreateContentUseCaseSchemaType): Promise<Content> {
+  async execute({
+    id,
+    projectId,
+    language,
+    userId,
+  }: CreateContentUseCaseSchemaType): Promise<Content> {
+    const contents = await this.contentRepository.findWithDeletedByPostId(this.prisma, id);
+    const languageContent = contents.find((c) => c.language === language);
+
+    if (languageContent) {
+      if (languageContent.deletedAt) {
+        await this.contentRepository.delete(this.prisma, languageContent);
+      } else {
+        throw new RecordNotUniqueException('already_has_same_language_content');
+      }
+    }
+
     const { content, contentRevision } = ContentEntity.Construct({
-      projectId: props.projectId,
-      postId: props.id,
-      language: props.language,
+      projectId: projectId,
+      postId: id,
+      language: language,
       slug: ContentEntity.generateSlug(),
-      createdById: props.userId,
+      createdById: userId,
       currentVersion: 1,
     });
 

@@ -7,108 +7,6 @@ import { UserEntity } from '../user/user.entity.js';
 import { PostEntity } from './post.entity.js';
 
 export class PostRepository {
-  async findMany(
-    prisma: ProjectPrismaType,
-    options?: {
-      userId?: string;
-    }
-  ): Promise<
-    {
-      post: PostEntity;
-      contents: {
-        content: ContentEntity;
-        revisions: ContentRevisionEntity[];
-      }[];
-    }[]
-  > {
-    const records = await prisma.post.findMany({
-      include: {
-        contentRevisions: {
-          where: {
-            deletedAt: null,
-          },
-          orderBy: {
-            version: 'desc',
-          },
-        },
-        contents: {
-          where: {
-            deletedAt: null,
-          },
-        },
-      },
-      where: {
-        createdById: options?.userId,
-      },
-      orderBy: {
-        createdAt: 'desc',
-      },
-    });
-
-    const filteredRecords = records.filter((record) => record.contents.length > 0);
-    return filteredRecords.map((record) => {
-      const post = PostEntity.Reconstruct<Post, PostEntity>(record);
-      const contents = [];
-      for (const content of record.contents) {
-        contents.push({
-          content: ContentEntity.Reconstruct<Content, ContentEntity>(content),
-          revisions: record.contentRevisions.map((revision) =>
-            ContentRevisionEntity.Reconstruct<ContentRevision, ContentRevisionEntity>(revision)
-          ),
-        });
-      }
-
-      return {
-        post,
-        contents,
-      };
-    });
-  }
-
-  async findManyPublished(prisma: ProjectPrismaType): Promise<
-    {
-      post: PostEntity;
-      contents: {
-        content: ContentEntity;
-        createdBy: UserEntity;
-      }[];
-    }[]
-  > {
-    const records = await prisma.post.findMany({
-      include: {
-        contents: {
-          include: {
-            createdBy: true,
-          },
-          where: {
-            deletedAt: null,
-            status: 'published',
-          },
-          orderBy: {
-            currentVersion: 'desc',
-          },
-        },
-      },
-      orderBy: {
-        createdAt: 'desc',
-      },
-    });
-
-    const filteredRecords = records.filter((record) => record.contents.length > 0);
-    return filteredRecords.map((record) => {
-      const post = PostEntity.Reconstruct<Post, PostEntity>(record);
-      const contents = record.contents.map((content) => ({
-        content: ContentEntity.Reconstruct<Content, ContentEntity>(content),
-        createdBy: UserEntity.Reconstruct<User, UserEntity>(content.createdBy),
-      }));
-
-      return {
-        post,
-        contents,
-      };
-    });
-  }
-
   async findOnePublishedById(
     prisma: ProjectPrismaType,
     id: string
@@ -207,6 +105,110 @@ export class PostRepository {
       post,
       contents,
     };
+  }
+
+  async findMany(
+    prisma: ProjectPrismaType,
+    options?: {
+      userId?: string;
+    }
+  ): Promise<
+    {
+      post: PostEntity;
+      contents: {
+        content: ContentEntity;
+        revisions: ContentRevisionEntity[];
+      }[];
+    }[]
+  > {
+    const records = await prisma.post.findMany({
+      include: {
+        contents: {
+          where: {
+            deletedAt: null,
+          },
+          include: {
+            contentRevisions: {
+              where: {
+                deletedAt: null,
+              },
+              orderBy: {
+                version: 'desc',
+              },
+            },
+          },
+        },
+      },
+      where: {
+        createdById: options?.userId,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+    const filteredRecords = records.filter((record) => record.contents.length > 0);
+    return filteredRecords.map((record) => {
+      const post = PostEntity.Reconstruct<Post, PostEntity>(record);
+      const contents = [];
+      for (const content of record.contents) {
+        contents.push({
+          content: ContentEntity.Reconstruct<Content, ContentEntity>(content),
+          revisions: content.contentRevisions.map((revision) =>
+            ContentRevisionEntity.Reconstruct<ContentRevision, ContentRevisionEntity>(revision)
+          ),
+        });
+      }
+
+      return {
+        post,
+        contents,
+      };
+    });
+  }
+
+  async findManyPublished(prisma: ProjectPrismaType): Promise<
+    {
+      post: PostEntity;
+      contents: {
+        content: ContentEntity;
+        createdBy: UserEntity;
+      }[];
+    }[]
+  > {
+    const records = await prisma.post.findMany({
+      include: {
+        contents: {
+          include: {
+            createdBy: true,
+          },
+          where: {
+            deletedAt: null,
+            status: 'published',
+          },
+          orderBy: {
+            currentVersion: 'desc',
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+    const filteredRecords = records.filter((record) => record.contents.length > 0);
+    return filteredRecords.map((record) => {
+      const post = PostEntity.Reconstruct<Post, PostEntity>(record);
+      const contents = record.contents.map((content) => ({
+        content: ContentEntity.Reconstruct<Content, ContentEntity>(content),
+        createdBy: UserEntity.Reconstruct<User, UserEntity>(content.createdBy),
+      }));
+
+      return {
+        post,
+        contents,
+      };
+    });
   }
 
   async create(prisma: ProjectPrismaType, postEntity: PostEntity): Promise<PostEntity> {
