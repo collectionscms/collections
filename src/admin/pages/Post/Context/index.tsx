@@ -16,6 +16,9 @@ type PostContext = {
   createPost: () => SWRMutationResponse<RevisedContent, any, string>;
   trashPost: (postId: string) => SWRMutationResponse<void, any, string>;
   createContent: (postId: string) => SWRMutationResponse<Content, any, string, Record<string, any>>;
+  translateContent: (
+    postId: string
+  ) => SWRMutationResponse<{ title: string; body: string }, any, string, Record<string, any>>;
   getContent: (id: string) => SWRResponse<
     RevisedContent,
     Error,
@@ -26,9 +29,6 @@ type PostContext = {
   updateContent: (contentId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
   revertContent: (contentId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
   trashContent: (contentId: string) => SWRMutationResponse<void, any, string>;
-  translateContent: (
-    contentId: string
-  ) => SWRMutationResponse<{ title: string; body: string }, any, string, Record<string, any>>;
   requestReview: (contentId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
   publish: (contentId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
   archive: (contentId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;

@@ -42,7 +42,7 @@ export const EditPostPageImpl: React.FC = () => {
   const { getContent, updateContent, createFileImage, translateContent } = usePost();
   const { data: content, mutate } = getContent(id);
   const { trigger: updateContentTrigger, isMutating: isSaving } = updateContent(content.id);
-  const { trigger: translateTrigger } = translateContent(content.id);
+  const { trigger: translateTrigger } = translateContent(content.postId);
 
   const [isDirty, setIsDirty] = useState(false);
   const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);

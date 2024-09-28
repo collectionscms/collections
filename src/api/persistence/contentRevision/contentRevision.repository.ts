@@ -15,6 +15,27 @@ export class ContentRevisionRepository {
     return ContentRevisionEntity.Reconstruct<ContentRevision, ContentRevisionEntity>(record);
   }
 
+  async findOneByPostIdAndLanguage(
+    prisma: ProjectPrismaType,
+    postId: string,
+    language: string
+  ): Promise<ContentRevisionEntity | null> {
+    const record = await prisma.contentRevision.findFirst({
+      where: {
+        postId,
+        language,
+        deletedAt: null,
+      },
+      orderBy: {
+        version: 'desc',
+      },
+    });
+
+    if (!record) return null;
+
+    return ContentRevisionEntity.Reconstruct<ContentRevision, ContentRevisionEntity>(record);
+  }
+
   async findLatestOneByContentId(
     prisma: ProjectPrismaType,
     contentId: string

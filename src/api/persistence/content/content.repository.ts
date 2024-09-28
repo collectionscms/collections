@@ -82,31 +82,6 @@ export class ContentRepository {
     };
   }
 
-  async findManyByPostIdAndLanguage(
-    prisma: ProjectPrismaType,
-    postId: string,
-    language: string
-  ): Promise<{ content: ContentEntity; createdBy: UserEntity }[]> {
-    const records = await prisma.content.findMany({
-      where: {
-        postId,
-        language,
-        deletedAt: null,
-      },
-      orderBy: {
-        currentVersion: 'desc',
-      },
-      include: {
-        createdBy: true,
-      },
-    });
-
-    return records.map((record) => ({
-      content: ContentEntity.Reconstruct<Content, ContentEntity>(record),
-      createdBy: UserEntity.Reconstruct<User, UserEntity>(record.createdBy),
-    }));
-  }
-
   async findManyByPostId(
     prisma: ProjectPrismaType,
     postId: string

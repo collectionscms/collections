@@ -119,7 +119,7 @@ router.post(
 
     const useCase = new TranslateContentUseCase(
       projectPrisma(validated.data.projectId),
-      new ContentRepository(),
+      new ContentRevisionRepository(),
       new Translator(env.TRANSLATE_API_KEY)
     );
     const response = await useCase.execute(validated.data);
