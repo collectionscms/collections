@@ -103,6 +103,19 @@ export class ContentRepository {
     }));
   }
 
+  async findWithDeletedByPostId(
+    prisma: ProjectPrismaType,
+    postId: string
+  ): Promise<ContentEntity[]> {
+    const records = await prisma.content.findMany({
+      where: {
+        postId,
+      },
+    });
+
+    return records.map((record) => ContentEntity.Reconstruct<Content, ContentEntity>(record));
+  }
+
   async findManyWithRevisionsByPostId(
     prisma: ProjectPrismaType,
     postId: string
@@ -253,5 +266,13 @@ export class ContentRepository {
     });
 
     return ContentEntity.Reconstruct<Content, ContentEntity>(record);
+  }
+
+  async delete(prisma: ProjectPrismaType, contentEntity: ContentEntity): Promise<void> {
+    await prisma.content.delete({
+      where: {
+        id: contentEntity.id,
+      },
+    });
   }
 }
