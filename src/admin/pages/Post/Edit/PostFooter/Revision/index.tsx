@@ -146,19 +146,20 @@ export const Revision: React.FC<Props> = ({ content, onReverted }) => {
                             {dayjs(revision.createdAt).format(t('date_format.long'))}
                           </Typography>
                         </Stack>
-                        {revision.status === 'published' && (
-                          <Tooltip
-                            title={t('revert_to', { version: revision.version })}
-                            placement="right"
-                          >
-                            <IconButton
-                              color="secondary"
-                              onClick={() => toggleRevertMode(revision)}
+                        {content.version !== revision.version &&
+                          revision.status === 'published' && (
+                            <Tooltip
+                              title={t('revert_to', { version: revision.version })}
+                              placement="right"
                             >
-                              <Icon name="Undo2" size={14} />
-                            </IconButton>
-                          </Tooltip>
-                        )}
+                              <IconButton
+                                color="secondary"
+                                onClick={() => toggleRevertMode(revision)}
+                              >
+                                <Icon name="Undo2" size={14} />
+                              </IconButton>
+                            </Tooltip>
+                          )}
                       </Stack>
                     </Stack>
                   ))}

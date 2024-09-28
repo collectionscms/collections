@@ -7,15 +7,14 @@ import { validateAccess } from '../middlewares/validateAccess.js';
 import { ContentRepository } from '../persistence/content/content.repository.js';
 import { ContentRevisionRepository } from '../persistence/contentRevision/contentRevision.repository.js';
 import { ReviewRepository } from '../persistence/review/review.repository.js';
-import { ChangeReviewStatusService } from '../services/changeReviewStatus.service.js';
-import { approveReviewUseCaseSchema } from '../useCases/review/approveReview.useCase.schema.js';
 import { ApproveReviewUseCase } from '../useCases/review/approveReview.useCase.js';
-import { closeReviewUseCaseSchema } from '../useCases/review/closeReview.useCase.schema.js';
+import { approveReviewUseCaseSchema } from '../useCases/review/approveReview.useCase.schema.js';
 import { CloseReviewUseCase } from '../useCases/review/closeReview.useCase.js';
-import { getReviewUseCaseSchema } from '../useCases/review/getReview.useCase.schema.js';
+import { closeReviewUseCaseSchema } from '../useCases/review/closeReview.useCase.schema.js';
 import { GetReviewUseCase } from '../useCases/review/getReview.useCase.js';
-import { getReviewsUseCaseSchema } from '../useCases/review/getReviews.useCase.schema.js';
+import { getReviewUseCaseSchema } from '../useCases/review/getReview.useCase.schema.js';
 import { GetReviewsUseCase } from '../useCases/review/getReviews.useCase.js';
+import { getReviewsUseCaseSchema } from '../useCases/review/getReviews.useCase.schema.js';
 
 const router = express.Router();
 
@@ -87,11 +86,9 @@ router.patch(
 
     const useCase = new CloseReviewUseCase(
       projectPrisma(validated.data.projectId),
-      new ChangeReviewStatusService(
-        new ReviewRepository(),
-        new ContentRepository(),
-        new ContentRevisionRepository()
-      )
+      new ReviewRepository(),
+      new ContentRepository(),
+      new ContentRevisionRepository()
     );
 
     const permissions = res.projectRole?.permissions ?? [];
@@ -116,11 +113,9 @@ router.patch(
 
     const useCase = new ApproveReviewUseCase(
       projectPrisma(validated.data.projectId),
-      new ChangeReviewStatusService(
-        new ReviewRepository(),
-        new ContentRepository(),
-        new ContentRevisionRepository()
-      )
+      new ReviewRepository(),
+      new ContentRepository(),
+      new ContentRevisionRepository()
     );
 
     const permissions = res.projectRole?.permissions ?? [];

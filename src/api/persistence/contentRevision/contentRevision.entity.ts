@@ -222,6 +222,10 @@ export class ContentRevisionEntity extends PrismaBaseEntity<ContentRevision> {
     return this.props.status === ContentStatus.published;
   }
 
+  draft() {
+    this.props.status = ContentStatus.draft;
+  }
+
   publish(updatedById: string) {
     this.props.status = ContentStatus.published;
     this.props.publishedAt = new Date();

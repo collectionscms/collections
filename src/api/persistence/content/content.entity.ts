@@ -234,6 +234,12 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     }
   }
 
+  // Review
+  draft(updatedById: string) {
+    this.props.status = ContentStatus.draft;
+    this.props.updatedById = updatedById;
+  }
+
   delete(userId: string) {
     this.props.deletedAt = new Date();
     this.props.updatedById = userId;
