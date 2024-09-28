@@ -123,17 +123,19 @@ export class PostRepository {
   > {
     const records = await prisma.post.findMany({
       include: {
-        contentRevisions: {
-          where: {
-            deletedAt: null,
-          },
-          orderBy: {
-            version: 'desc',
-          },
-        },
         contents: {
           where: {
             deletedAt: null,
+          },
+          include: {
+            contentRevisions: {
+              where: {
+                deletedAt: null,
+              },
+              orderBy: {
+                version: 'desc',
+              },
+            },
           },
         },
       },
@@ -152,7 +154,7 @@ export class PostRepository {
       for (const content of record.contents) {
         contents.push({
           content: ContentEntity.Reconstruct<Content, ContentEntity>(content),
-          revisions: record.contentRevisions.map((revision) =>
+          revisions: content.contentRevisions.map((revision) =>
             ContentRevisionEntity.Reconstruct<ContentRevision, ContentRevisionEntity>(revision)
           ),
         });

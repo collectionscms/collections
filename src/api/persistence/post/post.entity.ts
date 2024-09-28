@@ -82,7 +82,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
 
     const sourceLngContentRevision = ContentRevisionEntity.getLatestRevisionOfLanguage(
       sourceLngContent.revisions,
-      sourceLanguage
+      sourceLngContent.content.language
     );
 
     const otherLngContents = contents.filter((c) => c.content.id !== sourceLngContent.content.id);
