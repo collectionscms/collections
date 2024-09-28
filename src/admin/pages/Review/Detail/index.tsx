@@ -67,10 +67,10 @@ const ReviewDetailPageImpl: React.FC = () => {
                   <Icon name="FileText" size={16} />
                   <Icon name="ChevronRight" size={16} />
                   {!review.content.deletedAt ? (
-                    <Link href={`/admin/contents/${review.contentId}`}>{review.content.title}</Link>
+                    <Link href={`/admin/contents/${review.contentId}`}>{review.content.id}</Link>
                   ) : (
                     <Stack flexDirection="row" gap={1}>
-                      <Typography>{review.content.title}</Typography>
+                      <Typography>{review.content.id}</Typography>
                       <Typography variant="caption" color="text.secondary">
                         ({t('deleted')})
                       </Typography>
