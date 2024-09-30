@@ -1,4 +1,4 @@
-import { Translator } from '@collectionscms/plugin-translate';
+import { Translator } from '@collectionscms/plugin-text-generator';
 import express, { Request, Response } from 'express';
 import { env } from '../../env.js';
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
