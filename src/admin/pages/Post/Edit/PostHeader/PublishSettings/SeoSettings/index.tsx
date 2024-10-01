@@ -27,7 +27,7 @@ type Props = {
   onUpdated: (metaTitle: string | null, metaDescription: string | null) => void;
 };
 
-export const SocialSettings: React.FC<Props> = ({
+export const SeoSettings: React.FC<Props> = ({
   contentId,
   metaTitle,
   metaDescription,

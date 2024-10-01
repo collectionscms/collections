@@ -36,7 +36,7 @@ import {
 import { usePost } from '../../../Context/index.js';
 import { AppBarStyled } from '../../AppBarStyled.js';
 import { GeneralSettings } from './GeneralSettings/index.js';
-import { SocialSettings } from './SocialSettings/index.js';
+import { SeoSettings } from './SeoSettings/index.js';
 
 export type Props = {
   open: boolean;
@@ -251,10 +251,10 @@ export const PublishSettings: React.FC<Props> = ({ open, content, onClose }) => 
 
             {/* SEO */}
             <Stack sx={{ pt: 5, pb: 1.5 }}>
-              <Typography variant={'h4'}>{t('social')}</Typography>
+              <Typography variant={'h4'}>{t('seo')}</Typography>
             </Stack>
             <MainCard>
-              <SocialSettings
+              <SeoSettings
                 contentId={mutatedContent.id}
                 metaTitle={mutatedContent.metaTitle}
                 metaDescription={mutatedContent.metaDescription}

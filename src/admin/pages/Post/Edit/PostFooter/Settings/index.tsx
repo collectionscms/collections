@@ -24,7 +24,7 @@ import { useAuth } from '../../../../../components/utilities/Auth/index.js';
 import { usePost } from '../../../Context/index.js';
 import { AppBarStyled } from '../../AppBarStyled.js';
 import { GeneralSettings } from '../../PostHeader/PublishSettings/GeneralSettings/index.js';
-import { SocialSettings } from '../../PostHeader/PublishSettings/SocialSettings/index.js';
+import { SeoSettings } from '../../PostHeader/PublishSettings/SeoSettings/index.js';
 
 export type Props = {
   open: boolean;
@@ -172,10 +172,10 @@ export const Settings: React.FC<Props> = ({ open, content, onClose, onTrashed })
 
             {/* SEO */}
             <Stack sx={{ pt: 5, pb: 1.5 }}>
-              <Typography variant={'h4'}>{t('social')}</Typography>
+              <Typography variant={'h4'}>{t('seo')}</Typography>
             </Stack>
             <MainCard>
-              <SocialSettings
+              <SeoSettings
                 contentId={mutatedContent.id}
                 metaTitle={mutatedContent.metaTitle}
                 metaDescription={mutatedContent.metaDescription}
