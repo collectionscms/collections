@@ -108,7 +108,9 @@ type AllowedEnvironmentVariable =
   // /////////////////////////////////////
   // Collections Plugin
   // /////////////////////////////////////
-  | 'TRANSLATE_API_KEY';
+  | 'TRANSLATE_API_KEY'
+  | 'TEXT_GENERATOR_API_KEY'
+  | 'TEXT_GENERATOR_MODEL';
 
 export const defaults: Partial<Record<AllowedEnvironmentVariable, any>> = {
   // General
