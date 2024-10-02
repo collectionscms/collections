@@ -338,9 +338,18 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     return this.props.status === ContentStatus.published;
   }
 
-  isTranslationEnabled(sourceLanguage: string): boolean {
+  isTranslationEnabled(
+    sourceLanguage: LanguageCode | null,
+    targetLanguage: LanguageCode | null
+  ): boolean {
+    // Non-translatable language
+    if (!sourceLanguage?.sourceLanguageCode || !targetLanguage?.targetLanguageCode) return false;
+
+    // Api key is not set
     if (!env.TRANSLATE_API_KEY) return false;
-    return sourceLanguage !== this.props.language;
+
+    // Same language
+    return sourceLanguage.code !== this.props.language;
   }
 
   getStatusHistory = (revision: ContentRevisionEntity): StatusHistory => {
@@ -364,6 +373,9 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     latestRevision: ContentRevisionEntity,
     revisions: ContentRevisionEntity[]
   ): RevisedContent {
+    const sourceLanguage = getLanguageCodeType(project.sourceLanguage);
+    const targetLanguage = getLanguageCodeType(latestRevision.language);
+
     return {
       id: this.props.id,
       postId: this.props.postId,
@@ -381,7 +393,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
       coverUrl: latestRevision.coverUrl,
       language: latestRevision.language,
       languageContents,
-      canTranslate: this.isTranslationEnabled(project.sourceLanguage),
+      canTranslate: this.isTranslationEnabled(sourceLanguage, targetLanguage),
       sourceLanguageCode: project.sourceLanguageCode?.code ?? null,
       targetLanguageCode: this.languageCode?.code ?? null,
       revisions: revisions.map((revision) => revision.toResponse()),

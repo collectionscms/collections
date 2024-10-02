@@ -32,13 +32,14 @@ export const IsoLanguageCode = {
   tr: 'tr',
   uk: 'uk',
   'zh-cn': 'zh-cn',
+  'zh-tw': 'zh-tw',
 } as const;
 export type IsoLanguageCodeType = (typeof IsoLanguageCode)[keyof typeof IsoLanguageCode];
 
 export type LanguageCode = {
   code: IsoLanguageCodeType;
-  sourceLanguageCode: SourceLanguageCode;
-  targetLanguageCode: TargetLanguageCode;
+  sourceLanguageCode: SourceLanguageCode | null;
+  targetLanguageCode: TargetLanguageCode | null;
   englishName: string;
 };
 
@@ -89,6 +90,12 @@ export const languages: readonly LanguageCode[] = [
   { code: 'tr', sourceLanguageCode: 'tr', targetLanguageCode: 'tr', englishName: 'Turkish' },
   { code: 'uk', sourceLanguageCode: 'uk', targetLanguageCode: 'uk', englishName: 'Ukrainian' },
   { code: 'zh-cn', sourceLanguageCode: 'zh', targetLanguageCode: 'zh', englishName: 'Chinese' },
+  {
+    code: 'zh-tw',
+    sourceLanguageCode: null,
+    targetLanguageCode: null,
+    englishName: 'Traditional Chinese',
+  },
 ];
 
 export const getLanguageCodeType = (language: string): LanguageCode | null => {

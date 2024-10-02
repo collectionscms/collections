@@ -19,6 +19,10 @@ export class TextGenerationUsageEntity extends PrismaBaseEntity<TextGenerationUs
     return this.props.id;
   }
 
+  get sourceText(): Prisma.JsonValue {
+    return this.props.sourceText;
+  }
+
   get generatedText(): Prisma.JsonValue {
     return this.props.generatedText;
   }

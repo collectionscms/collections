@@ -45,6 +45,10 @@ export class ContentRevisionEntity extends PrismaBaseEntity<ContentRevision> {
     return this.props.postId;
   }
 
+  get contentId(): string {
+    return this.props.contentId;
+  }
+
   get slug(): string {
     return this.props.slug;
   }
