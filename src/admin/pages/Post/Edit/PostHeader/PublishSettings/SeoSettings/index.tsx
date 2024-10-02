@@ -100,6 +100,9 @@ export const SeoSettings: React.FC<Props> = ({
           variant="outlined"
           color="secondary"
           size="small"
+          style={{
+            borderRadius: '16px',
+          }}
           disabled={isMutatingSummary}
           onClick={onClickSummarize}
         >
