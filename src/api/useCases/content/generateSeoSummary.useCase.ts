@@ -59,7 +59,11 @@ export class GenerateSeoSummaryUseCase {
     const usages: TextGenerationUsageEntity[] = [];
 
     let body = latestRevision.body;
-    if (sourceLanguage.sourceLanguageCode !== 'en') {
+    if (
+      sourceLanguage.sourceLanguageCode !== 'en' &&
+      sourceLanguage.sourceLanguageCode &&
+      targetLanguage.targetLanguageCode
+    ) {
       // Translate the body to English
       const translatedBody = await this.translator.translate(
         [latestRevision.body],
@@ -75,8 +79,6 @@ export class GenerateSeoSummaryUseCase {
           userId,
           sourceText: latestRevision.body,
           generatedText: translatedBody,
-          sourceLanguage: sourceLanguage.sourceLanguageCode,
-          targetLanguage: targetLanguage.targetLanguageCode,
           context: 'translated for summary',
         })
       );
@@ -99,8 +101,6 @@ export class GenerateSeoSummaryUseCase {
         userId,
         sourceText: latestRevision.body,
         generatedText: summarizedSeo,
-        sourceLanguage: sourceLanguage.sourceLanguageCode,
-        targetLanguage: targetLanguage.targetLanguageCode,
         context: 'summary for seo',
       })
     );

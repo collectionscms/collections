@@ -37,8 +37,8 @@ export type IsoLanguageCodeType = (typeof IsoLanguageCode)[keyof typeof IsoLangu
 
 export type LanguageCode = {
   code: IsoLanguageCodeType;
-  sourceLanguageCode: SourceLanguageCode;
-  targetLanguageCode: TargetLanguageCode;
+  sourceLanguageCode: SourceLanguageCode | null;
+  targetLanguageCode: TargetLanguageCode | null;
   englishName: string;
 };
 

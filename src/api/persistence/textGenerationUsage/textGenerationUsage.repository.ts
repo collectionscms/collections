@@ -36,6 +36,7 @@ export class TextGenerationUsageRepository {
     await prisma.textGenerationUsage.createMany({
       data: entities.map((entity) => ({
         ...entity.toPersistence(),
+        sourceText: entity.sourceText || {},
         generatedText: entity.generatedText || {},
       })),
     });
