@@ -1,6 +1,8 @@
 ## ⭐ What is Collections
 
-Collections is headless CMS that simplifies multilingual content delivery with a smooth writing experience, powerful AI-driven translation, and an intuitive API.
+Collections is a headless CMS for answer engine optimization (AEO).
+
+Our mission is to deliver both human and AI friendly content as people are moving from “Google it” to “Ask AI”.
 
 <hr/>
 <h4>
@@ -10,10 +12,10 @@ Collections is headless CMS that simplifies multilingual content delivery with a
 
 ### Features
 
-- 🌐 Multilingual content by AI
+- 🪄 AI supports SEO
+- 🌐 Multilingual content
 - 🖊 Notion-like editor
-- 🛡 Fine-grained permission
-- 🔒 Multi-tenancy project
+- 🕘️ Article versioning
 
 ## 📚 Usage & Documentation
 
@@ -64,10 +66,9 @@ To chat with other community members you can join the [Collections Discord](http
 
 ## 💚 Tech Stack
 
-- Self-hosted - know where your data is stored!
 - DB - PostgreSQL
 - Backend - Node.js, Express
-- Admin - React, MUI
+- Frontend - React, MUI
 
 Enjoy!!!
 
