@@ -19,6 +19,7 @@ import {
   updateSlugValidator,
 } from '../../../../../../fields/validators/posts/updateSlug.validator.js';
 import { usePost } from '../../../../Context/index.js';
+import { TitleTooltip } from '../ui/TitleTooltip/index.js';
 
 type Props = {
   contentId: string;
@@ -85,7 +86,7 @@ export const GeneralSettings: React.FC<Props> = ({ contentId, slug, excerpt, onU
             </Stack>
             <FormHelperText error>{errors.slug?.message}</FormHelperText>
             <Stack gap={1}>
-              <Typography variant="subtitle1">{t('excerpt')}</Typography>
+              <TitleTooltip tooltip={t('excerpt_tooltip')} title={t('excerpt')} />
               <Controller
                 name="excerpt"
                 control={control}
@@ -119,7 +120,7 @@ export const GeneralSettings: React.FC<Props> = ({ contentId, slug, excerpt, onU
                 <Typography>{decodeURIComponent(slug)}</Typography>
               </Stack>
               <Stack gap={1}>
-                <Typography variant="subtitle1">{t('excerpt')}</Typography>
+                <TitleTooltip tooltip={t('excerpt_tooltip')} title={t('excerpt')} />
                 <Typography>{excerpt ?? t('not_set')}</Typography>
               </Stack>
             </Box>

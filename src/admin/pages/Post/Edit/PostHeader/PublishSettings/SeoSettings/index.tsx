@@ -20,6 +20,7 @@ import {
   updateMetaValidator,
 } from '../../../../../../fields/validators/posts/updateMeta.validator.js';
 import { usePost } from '../../../../Context/index.js';
+import { TitleTooltip } from '../ui/TitleTooltip/index.js';
 
 type Props = {
   contentId: string;
@@ -106,7 +107,7 @@ export const SeoSettings: React.FC<Props> = ({
           disabled={isMutatingSummary}
           onClick={onClickSummarize}
         >
-          <Stack flexDirection="row" alignItems="center" gap={0.5}>
+          <Stack flexDirection="row" alignItems="center" gap={0.5} sx={{ px: 0.5 }}>
             <Icon name="Sparkles" size={16} />
             <Typography variant="button">{t('ai_summarizes_post')}</Typography>
           </Stack>
@@ -117,7 +118,7 @@ export const SeoSettings: React.FC<Props> = ({
           {isEditingMeta ? (
             <Stack gap={2}>
               <Stack gap={1}>
-                <Typography variant="subtitle1">{t('seo_title')}</Typography>
+                <TitleTooltip tooltip={t('seo_title_tooltip')} title={t('seo_title')} />
                 <Controller
                   name="metaTitle"
                   control={control}
@@ -133,7 +134,7 @@ export const SeoSettings: React.FC<Props> = ({
               </Stack>
               <FormHelperText error>{errors.metaTitle?.message}</FormHelperText>
               <Stack gap={1}>
-                <Typography variant="subtitle1">{t('seo_description')}</Typography>
+                <TitleTooltip tooltip={t('seo_description_tooltip')} title={t('seo_description')} />
                 <Controller
                   name="metaDescription"
                   control={control}
@@ -167,15 +168,18 @@ export const SeoSettings: React.FC<Props> = ({
             <Stack direction="row" alignItems="center" gap={1}>
               <Box flexGrow="1">
                 <Stack gap={1} sx={{ mb: 3 }}>
-                  <Typography variant="subtitle1">{t('seo_title')}</Typography>
+                  <TitleTooltip tooltip={t('seo_title_tooltip')} title={t('seo_title')} />
                   <Typography>{metaTitle ?? t('not_set')}</Typography>
                 </Stack>
                 <Stack gap={1}>
-                  <Typography variant="subtitle1">{t('seo_description')}</Typography>
+                  <TitleTooltip
+                    tooltip={t('seo_description_tooltip')}
+                    title={t('seo_description')}
+                  />
                   <Typography>{metaDescription ?? t('not_set')}</Typography>
                 </Stack>
               </Box>
-              <IconButton onClick={() => setIsEditingMeta(true)}>
+              <IconButton color="secondary" onClick={() => setIsEditingMeta(true)}>
                 <Icon name="Pencil" size={16} />
               </IconButton>
             </Stack>
