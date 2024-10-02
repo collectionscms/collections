@@ -1,4 +1,4 @@
-import { SourceLanguageCode, TargetLanguageCode } from '@collectionscms/plugin-translate';
+import { SourceLanguageCode, TargetLanguageCode } from '@collectionscms/plugin-text-generator';
 
 export const IsoLanguageCode = {
   bg: 'bg',
@@ -37,42 +37,58 @@ export type IsoLanguageCodeType = (typeof IsoLanguageCode)[keyof typeof IsoLangu
 
 export type LanguageCode = {
   code: IsoLanguageCodeType;
-  sourceLanguageCode: SourceLanguageCode | null;
-  targetLanguageCode: TargetLanguageCode | null;
+  sourceLanguageCode: SourceLanguageCode;
+  targetLanguageCode: TargetLanguageCode;
+  englishName: string;
 };
 
 export const languages: readonly LanguageCode[] = [
-  { code: 'bg', sourceLanguageCode: 'bg', targetLanguageCode: 'bg' },
-  { code: 'cs', sourceLanguageCode: 'cs', targetLanguageCode: 'cs' },
-  { code: 'da', sourceLanguageCode: 'da', targetLanguageCode: 'da' },
-  { code: 'de', sourceLanguageCode: 'de', targetLanguageCode: 'de' },
-  { code: 'el', sourceLanguageCode: 'el', targetLanguageCode: 'el' },
-  { code: 'en-gb', sourceLanguageCode: 'en', targetLanguageCode: 'en-GB' },
-  { code: 'en-us', sourceLanguageCode: 'en', targetLanguageCode: 'en-US' },
-  { code: 'es', sourceLanguageCode: 'es', targetLanguageCode: 'es' },
-  { code: 'et', sourceLanguageCode: 'et', targetLanguageCode: 'et' },
-  { code: 'fi', sourceLanguageCode: 'fi', targetLanguageCode: 'fi' },
-  { code: 'fr', sourceLanguageCode: 'fr', targetLanguageCode: 'fr' },
-  { code: 'hu', sourceLanguageCode: 'hu', targetLanguageCode: 'hu' },
-  { code: 'id', sourceLanguageCode: 'id', targetLanguageCode: 'id' },
-  { code: 'it', sourceLanguageCode: 'it', targetLanguageCode: 'it' },
-  { code: 'ja', sourceLanguageCode: 'ja', targetLanguageCode: 'ja' },
-  { code: 'ko', sourceLanguageCode: 'ko', targetLanguageCode: 'ko' },
-  { code: 'lt', sourceLanguageCode: 'lt', targetLanguageCode: 'lt' },
-  { code: 'lv', sourceLanguageCode: 'lv', targetLanguageCode: 'lv' },
-  { code: 'nb', sourceLanguageCode: 'nb', targetLanguageCode: 'nb' },
-  { code: 'nl', sourceLanguageCode: 'nl', targetLanguageCode: 'nl' },
-  { code: 'pl', sourceLanguageCode: 'pl', targetLanguageCode: 'pl' },
-  { code: 'pt-br', sourceLanguageCode: 'pt', targetLanguageCode: 'pt-BR' },
-  { code: 'pt-pt', sourceLanguageCode: 'pt', targetLanguageCode: 'pt-PT' },
-  { code: 'ro', sourceLanguageCode: 'ro', targetLanguageCode: 'ro' },
-  { code: 'ru', sourceLanguageCode: 'ru', targetLanguageCode: 'ru' },
-  { code: 'sk', sourceLanguageCode: 'sk', targetLanguageCode: 'sk' },
-  { code: 'sl', sourceLanguageCode: 'sl', targetLanguageCode: 'sl' },
-  { code: 'sv', sourceLanguageCode: 'sv', targetLanguageCode: 'sv' },
-  { code: 'tr', sourceLanguageCode: 'tr', targetLanguageCode: 'tr' },
-  { code: 'uk', sourceLanguageCode: 'uk', targetLanguageCode: 'uk' },
-  { code: 'zh-cn', sourceLanguageCode: 'zh', targetLanguageCode: 'zh' },
+  { code: 'bg', sourceLanguageCode: 'bg', targetLanguageCode: 'bg', englishName: 'Bulgarian' },
+  { code: 'cs', sourceLanguageCode: 'cs', targetLanguageCode: 'cs', englishName: 'Czech' },
+  { code: 'da', sourceLanguageCode: 'da', targetLanguageCode: 'da', englishName: 'Danish' },
+  { code: 'de', sourceLanguageCode: 'de', targetLanguageCode: 'de', englishName: 'German' },
+  { code: 'el', sourceLanguageCode: 'el', targetLanguageCode: 'el', englishName: 'Modern Greek' },
+  { code: 'en-gb', sourceLanguageCode: 'en', targetLanguageCode: 'en-GB', englishName: 'English' },
+  { code: 'en-us', sourceLanguageCode: 'en', targetLanguageCode: 'en-US', englishName: 'English' },
+  { code: 'es', sourceLanguageCode: 'es', targetLanguageCode: 'es', englishName: 'Spanish' },
+  { code: 'et', sourceLanguageCode: 'et', targetLanguageCode: 'et', englishName: 'Estonian' },
+  { code: 'fi', sourceLanguageCode: 'fi', targetLanguageCode: 'fi', englishName: 'Finnish' },
+  { code: 'fr', sourceLanguageCode: 'fr', targetLanguageCode: 'fr', englishName: 'French' },
+  { code: 'hu', sourceLanguageCode: 'hu', targetLanguageCode: 'hu', englishName: 'Hungarian' },
+  { code: 'id', sourceLanguageCode: 'id', targetLanguageCode: 'id', englishName: 'Indonesian' },
+  { code: 'it', sourceLanguageCode: 'it', targetLanguageCode: 'it', englishName: 'Italian' },
+  { code: 'ja', sourceLanguageCode: 'ja', targetLanguageCode: 'ja', englishName: 'Japanese' },
+  { code: 'ko', sourceLanguageCode: 'ko', targetLanguageCode: 'ko', englishName: 'Korean' },
+  { code: 'lt', sourceLanguageCode: 'lt', targetLanguageCode: 'lt', englishName: 'Lithuanian' },
+  { code: 'lv', sourceLanguageCode: 'lv', targetLanguageCode: 'lv', englishName: 'Latvian' },
+  {
+    code: 'nb',
+    sourceLanguageCode: 'nb',
+    targetLanguageCode: 'nb',
+    englishName: 'Norwegian Bokmal',
+  },
+  { code: 'nl', sourceLanguageCode: 'nl', targetLanguageCode: 'nl', englishName: 'Dutch' },
+  { code: 'pl', sourceLanguageCode: 'pl', targetLanguageCode: 'pl', englishName: 'Polish' },
+  {
+    code: 'pt-br',
+    sourceLanguageCode: 'pt',
+    targetLanguageCode: 'pt-BR',
+    englishName: 'Portuguese',
+  },
+  {
+    code: 'pt-pt',
+    sourceLanguageCode: 'pt',
+    targetLanguageCode: 'pt-PT',
+    englishName: 'Portuguese',
+  },
+  { code: 'ro', sourceLanguageCode: 'ro', targetLanguageCode: 'ro', englishName: 'Romanian' },
+  { code: 'ru', sourceLanguageCode: 'ru', targetLanguageCode: 'ru', englishName: 'Russian' },
+  { code: 'sk', sourceLanguageCode: 'sk', targetLanguageCode: 'sk', englishName: 'Slovak' },
+  { code: 'sl', sourceLanguageCode: 'sl', targetLanguageCode: 'sl', englishName: 'Slovenian' },
+  { code: 'sv', sourceLanguageCode: 'sv', targetLanguageCode: 'sv', englishName: 'Swedish' },
+  { code: 'tr', sourceLanguageCode: 'tr', targetLanguageCode: 'tr', englishName: 'Turkish' },
+  { code: 'uk', sourceLanguageCode: 'uk', targetLanguageCode: 'uk', englishName: 'Ukrainian' },
+  { code: 'zh-cn', sourceLanguageCode: 'zh', targetLanguageCode: 'zh', englishName: 'Chinese' },
 ];
 
 export const getLanguageCodeType = (language: string): LanguageCode | null => {

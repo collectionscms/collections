@@ -8,52 +8,54 @@ datasource db {
 }
 
 model Project {
-  id                String             @id @db.Uuid
-  name              String             @db.VarChar(255)
-  description       String?            @db.VarChar(255)
-  subdomain         String             @unique @db.VarChar(255)
-  iconUrl           String?            @db.VarChar(255)
-  enabled           Boolean            @default(true)
-  sourceLanguage    String             @db.VarChar(255)
-  createdAt         DateTime           @default(now()) @db.Timestamptz(6)
-  updatedAt         DateTime           @updatedAt @db.Timestamptz(6)
-  userProjects      UserProject[]
-  files             File[]
-  roles             Role[]
-  posts             Post[]
-  contents          Content[]
-  contentRevisions  ContentRevision[]
-  apiKeys           ApiKey[]
-  invitations       Invitation[]
-  rolePermissions   RolePermission[]
-  reivews           Review[]
-  apiKeyPermissions ApiKeyPermission[]
-  webhookSettings   WebhookSetting[]
-  webhookLogs       WebhookLog[]
+  id                   String                @id @db.Uuid
+  name                 String                @db.VarChar(255)
+  description          String?               @db.VarChar(255)
+  subdomain            String                @unique @db.VarChar(255)
+  iconUrl              String?               @db.VarChar(255)
+  enabled              Boolean               @default(true)
+  sourceLanguage       String                @db.VarChar(255)
+  createdAt            DateTime              @default(now()) @db.Timestamptz(6)
+  updatedAt            DateTime              @updatedAt @db.Timestamptz(6)
+  userProjects         UserProject[]
+  files                File[]
+  roles                Role[]
+  posts                Post[]
+  contents             Content[]
+  contentRevisions     ContentRevision[]
+  apiKeys              ApiKey[]
+  invitations          Invitation[]
+  rolePermissions      RolePermission[]
+  reivews              Review[]
+  apiKeyPermissions    ApiKeyPermission[]
+  webhookSettings      WebhookSetting[]
+  webhookLogs          WebhookLog[]
+  textGenerationUsages TextGenerationUsage[]
 }
 
 model User {
-  id                           String            @id @db.Uuid
-  name                         String            @db.VarChar(255)
+  id                           String                @id @db.Uuid
+  name                         String                @db.VarChar(255)
   email                        String
-  password                     String?           @db.VarChar(255)
-  isActive                     Boolean           @default(true)
-  avatarUrl                    String?           @db.VarChar(255)
-  provider                     String            @db.VarChar(255)
-  providerId                   String            @db.VarChar(255)
-  createdAt                    DateTime          @default(now()) @db.Timestamptz(6)
-  updatedAt                    DateTime          @updatedAt @db.Timestamptz(6)
+  password                     String?               @db.VarChar(255)
+  isActive                     Boolean               @default(true)
+  avatarUrl                    String?               @db.VarChar(255)
+  provider                     String                @db.VarChar(255)
+  providerId                   String                @db.VarChar(255)
+  createdAt                    DateTime              @default(now()) @db.Timestamptz(6)
+  updatedAt                    DateTime              @updatedAt @db.Timestamptz(6)
   userProjects                 UserProject[]
   invitations                  Invitation[]
-  revieweeHasReviews           Review[]          @relation("Reviewee")
-  reviewerHasReviews           Review[]          @relation("Reviewer")
-  createdByHasContents         Content[]         @relation("CreatedBy")
-  updatedByHasContents         Content[]         @relation("UpdatedBy")
-  createdByHasApiKeys          ApiKey[]          @relation("CreatedBy")
-  updatedByHasApiKeys          ApiKey[]          @relation("UpdatedBy")
-  createdByHasPosts            Post[]            @relation("CreatedBy")
-  createdByHasContentRevisions ContentRevision[] @relation("CreatedBy")
-  updatedByHasContentRevisions ContentRevision[] @relation("UpdatedBy")
+  revieweeHasReviews           Review[]              @relation("Reviewee")
+  reviewerHasReviews           Review[]              @relation("Reviewer")
+  createdByHasContents         Content[]             @relation("CreatedBy")
+  updatedByHasContents         Content[]             @relation("UpdatedBy")
+  createdByHasApiKeys          ApiKey[]              @relation("CreatedBy")
+  updatedByHasApiKeys          ApiKey[]              @relation("UpdatedBy")
+  createdByHasPosts            Post[]                @relation("CreatedBy")
+  createdByHasContentRevisions ContentRevision[]     @relation("CreatedBy")
+  updatedByHasContentRevisions ContentRevision[]     @relation("UpdatedBy")
+  textGenerationUsages         TextGenerationUsage[]
 
   @@unique([provider, providerId])
 }
@@ -166,33 +168,34 @@ model Review {
 }
 
 model Content {
-  id               String            @id @db.Uuid
-  projectId        String            @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
-  postId           String            @db.Uuid
-  slug             String
-  title            String?           @db.VarChar(255)
-  body             String?
-  bodyJson         String?
-  bodyHtml         String?
-  excerpt          String?
-  metaTitle        String?           @db.VarChar(255)
-  metaDescription  String?
-  coverUrl         String?           @db.VarChar(255)
-  language         String            @db.VarChar(255)
-  status           String            @db.VarChar(255)
-  currentVersion   Int               @default(1)
-  publishedAt      DateTime?         @db.Timestamptz(6)
-  deletedAt        DateTime?         @db.Timestamptz(6)
-  createdById      String            @db.Uuid
-  updatedById      String            @db.Uuid
-  createdAt        DateTime          @default(now()) @db.Timestamptz(6)
-  updatedAt        DateTime          @updatedAt @db.Timestamptz(6)
-  project          Project           @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  post             Post              @relation(fields: [postId], references: [id], onDelete: Cascade)
-  createdBy        User              @relation(name: "CreatedBy", fields: [createdById], references: [id], onDelete: NoAction)
-  updatedBy        User              @relation(name: "UpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction)
-  reviews          Review[]
-  contentRevisions ContentRevision[]
+  id                   String                @id @db.Uuid
+  projectId            String                @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
+  postId               String                @db.Uuid
+  slug                 String
+  title                String?               @db.VarChar(255)
+  body                 String?
+  bodyJson             String?
+  bodyHtml             String?
+  excerpt              String?
+  metaTitle            String?               @db.VarChar(255)
+  metaDescription      String?
+  coverUrl             String?               @db.VarChar(255)
+  language             String                @db.VarChar(255)
+  status               String                @db.VarChar(255)
+  currentVersion       Int                   @default(1)
+  publishedAt          DateTime?             @db.Timestamptz(6)
+  deletedAt            DateTime?             @db.Timestamptz(6)
+  createdById          String                @db.Uuid
+  updatedById          String                @db.Uuid
+  createdAt            DateTime              @default(now()) @db.Timestamptz(6)
+  updatedAt            DateTime              @updatedAt @db.Timestamptz(6)
+  project              Project               @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  post                 Post                  @relation(fields: [postId], references: [id], onDelete: Cascade)
+  createdBy            User                  @relation(name: "CreatedBy", fields: [createdById], references: [id], onDelete: NoAction)
+  updatedBy            User                  @relation(name: "UpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction)
+  reviews              Review[]
+  contentRevisions     ContentRevision[]
+  textGenerationUsages TextGenerationUsage[]
 
   @@unique([projectId, slug])
   @@unique([postId, language])
@@ -283,4 +286,20 @@ model WebhookLog {
   responseBody String?
   createdAt    DateTime @default(now()) @db.Timestamptz(6)
   project      Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model TextGenerationUsage {
+  id             String   @id @db.Uuid
+  projectId      String   @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
+  contentId      String   @db.Uuid
+  userId         String   @db.Uuid
+  sourceLanguage String   @db.VarChar(255)
+  targetLanguage String   @db.VarChar(255)
+  sourceText     String
+  generatedText  Json
+  context        String   @db.VarChar(255)
+  createdAt      DateTime @default(now()) @db.Timestamptz(6)
+  project        Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  content        Content  @relation(fields: [contentId], references: [id], onDelete: Cascade)
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

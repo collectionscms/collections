@@ -1,4 +1,4 @@
-import { Translator } from '@collectionscms/plugin-translate';
+import { Translator } from '@collectionscms/plugin-text-generator';
 import { getLanguageCodeType } from '../../../constants/languages.js';
 import { InvalidPayloadException } from '../../../exceptions/invalidPayload.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';

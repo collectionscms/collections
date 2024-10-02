@@ -128,9 +128,11 @@
   "provider": "プロバイダー",
   "notification_triggers": "通知のタイミング",
   "deleted": "削除済み",
-  "social": "ソーシャル",
-  "seo_title": "SEO タイトル",
-  "seo_description": "SEO ディスクリプション",
+  "seo": "SEO",
+  "seo_title_tooltip": "推奨されるSEOタイトルの長さは60文字以下です。",
+  "seo_title": "SEOタイトル",
+  "seo_description": "SEOディスクリプション",
+  "seo_description_tooltip": "推奨されるSEOディスクリプションの長さは50〜160文字以下です。",
   "not_set": "未設定",
   "general": "一般",
   "login_title": "Collections へようこそ",
@@ -139,7 +141,9 @@
   "create_your_first_project": "Collections で最初のプロジェクトを作成しよう！",
   "invitation_from_existing_project": "または、既存のプロジェクトから招待を受けることもできます。",
   "excerpt": "抜粋",
+  "excerpt_tooltip": "記事の要約や紹介文のためのフィールド。未設定の場合は、コンテンツ冒頭の150文字を使用します。",
   "revert_to": "v{{version}}に戻す",
+  "ai_summarizes_post": "AIが記事を要約",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",
@@ -324,7 +328,8 @@
     "already_invited_email": "すでに招待済みです。",
     "unauthorized_user": "不正なユーザーです。",
     "already_has_same_language_content": "すでに同じ言語のコンテンツがあります。",
-    "already_registered_post_slug": "すでに登録済みのスラッグです。"
+    "already_registered_p{ost_slug": "すでに登録済みのスラッグです。",
+    "unable_to_repeat": "繰り返しの実行はできません。後ほどリトライしてください。"
   },
   "yup": {
     "mixed": {

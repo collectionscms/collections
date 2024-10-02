@@ -128,9 +128,11 @@
   "provider": "Provider",
   "notification_triggers": "Notification Triggers",
   "deleted": "Deleted",
-  "social": "Social",
+  "seo": "SEO",
   "seo_title": "SEO Title",
+  "seo_title_tooltip": "The recommended length for a SEO title is under 60 characters.",
   "seo_description": "SEO Description",
+  "seo_description_tooltip": "The recommended length for a SEO description is between 50-160 characters.",
   "not_set": "Not Set",
   "general": "General",
   "login_title": "Welcome to Collections",
@@ -139,7 +141,9 @@
   "create_your_first_project": "Create your first project on Collections!",
   "invitation_from_existing_project": "Alternatively, you may receive an invitation to join an existing project.",
   "excerpt": "Excerpt",
+  "excerpt_tooltip": "Field for article summary or introduction. If not set, use 150 characters at the beginning of the content.",
   "revert_to": "Revert to v{{version}}",
+  "ai_summarizes_post": "AI summarizes post",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",
@@ -324,7 +328,8 @@
     "already_invited_email": "Already invited.",
     "unauthorized_user": "Unauthorized user.",
     "already_has_same_language_content": "Already has same language content.",
-    "already_registered_post_slug": "Already registered slug."
+    "already_registered_post_slug": "Already registered slug.",
+    "unable_to_repeat": "Unable to repeat. Please retry later."
   },
   "yup": {
     "mixed": {
