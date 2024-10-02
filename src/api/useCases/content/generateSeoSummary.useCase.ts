@@ -79,7 +79,7 @@ export class GenerateSeoSummaryUseCase {
           userId,
           sourceText: latestRevision.body,
           generatedText: translatedBody,
-          context: 'translated for summary',
+          context: 'translate for summary',
         })
       );
     }

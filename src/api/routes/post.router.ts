@@ -10,6 +10,7 @@ import { ContentRepository } from '../persistence/content/content.repository.js'
 import { ContentRevisionRepository } from '../persistence/contentRevision/contentRevision.repository.js';
 import { PostRepository } from '../persistence/post/post.repository.js';
 import { ProjectRepository } from '../persistence/project/project.repository.js';
+import { TextGenerationUsageRepository } from '../persistence/textGenerationUsage/textGenerationUsage.repository.js';
 import { WebhookLogRepository } from '../persistence/webhookLog/webhookLog.repository.js';
 import { WebhookSettingRepository } from '../persistence/webhookSetting/webhookSetting.repository.js';
 import { WebhookService } from '../services/webhook.service.js';
@@ -112,6 +113,7 @@ router.post(
     const validated = translateContentUseCaseSchema.safeParse({
       id: req.params.id,
       projectId: res.projectRole?.id,
+      userId: res.user.id,
       sourceLanguage: req.body.sourceLanguage,
       targetLanguage: req.body.targetLanguage,
     });
@@ -120,6 +122,7 @@ router.post(
     const useCase = new TranslateContentUseCase(
       projectPrisma(validated.data.projectId),
       new ContentRevisionRepository(),
+      new TextGenerationUsageRepository(),
       new Translator(env.TRANSLATE_API_KEY)
     );
     const response = await useCase.execute(validated.data);
