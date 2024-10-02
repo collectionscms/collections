@@ -140,6 +140,7 @@
   "invitation_from_existing_project": "Alternatively, you may receive an invitation to join an existing project.",
   "excerpt": "Excerpt",
   "revert_to": "Revert to v{{version}}",
+  "ai_summarizes_post": "AI summarizes post",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",

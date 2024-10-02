@@ -9,10 +9,11 @@ import {
   Typography,
 } from '@mui/material';
 import { enqueueSnackbar } from 'notistack';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { logger } from '../../../../../../../utilities/logger.js';
+import { MainCard } from '../../../../../../@extended/components/MainCard/index.js';
 import { Icon } from '../../../../../../components/elements/Icon/index.js';
 import {
   FormValues,
@@ -35,11 +36,14 @@ export const SeoSettings: React.FC<Props> = ({
 }) => {
   const { t } = useTranslation();
   const [isEditingMeta, setIsEditingMeta] = useState(false);
-  const { updateContent } = usePost();
-  const { trigger: updateContentTrigger } = updateContent(contentId);
+  const { updateContent, generateSeoSummary } = usePost();
+  const { trigger: updateContentTrigger, isMutating } = updateContent(contentId);
+  const { trigger: generateSeoSummaryTrigger, isMutating: isMutatingSummary } =
+    generateSeoSummary(contentId);
 
   const {
     control,
+    setValue,
     handleSubmit,
     formState: { errors },
   } = useForm<FormValues>({
@@ -49,6 +53,26 @@ export const SeoSettings: React.FC<Props> = ({
     },
     resolver: yupResolver(updateMetaValidator()),
   });
+
+  useEffect(() => {
+    setValue('metaTitle', metaTitle);
+    setValue('metaDescription', metaDescription);
+  }, [metaTitle, metaDescription]);
+
+  const onClickSummarize = async () => {
+    try {
+      const seo = await generateSeoSummaryTrigger();
+      onUpdated(seo.metaTitle ?? null, seo.metaDescription ?? null);
+      enqueueSnackbar(t('toast.updated_successfully'), {
+        anchorOrigin: {
+          vertical: 'bottom',
+          horizontal: 'center',
+        },
+      });
+    } catch (error) {
+      logger.error(error);
+    }
+  };
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
@@ -68,70 +92,93 @@ export const SeoSettings: React.FC<Props> = ({
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        {isEditingMeta ? (
-          <Stack gap={2}>
-            <Stack gap={1}>
-              <Typography variant="subtitle1">{t('seo_title')}</Typography>
-              <Controller
-                name="metaTitle"
-                control={control}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    type="text"
-                    sx={{ flexGrow: 1 }}
-                    error={errors.metaTitle !== undefined}
-                  />
-                )}
-              />
-            </Stack>
-            <FormHelperText error>{errors.metaTitle?.message}</FormHelperText>
-            <Stack gap={1}>
-              <Typography variant="subtitle1">{t('seo_description')}</Typography>
-              <Controller
-                name="metaDescription"
-                control={control}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    type="text"
-                    multiline
-                    rows={3}
-                    sx={{ flexGrow: 1 }}
-                    error={errors.metaDescription !== undefined}
-                  />
-                )}
-              />
-            </Stack>
-            <FormHelperText error>{errors.metaDescription?.message}</FormHelperText>
-            <Stack direction="row" justifyContent="flex-end" spacing={1}>
-              <Button variant="outlined" color="secondary" onClick={() => setIsEditingMeta(false)}>
-                {t('cancel')}
-              </Button>
-              <Button variant="contained" type="submit">
-                {t('save')}
-              </Button>
-            </Stack>
+      <Stack flexDirection="row" alignItems="center" sx={{ pb: 1.5 }}>
+        <Typography variant={'h4'} sx={{ flexGrow: 1 }}>
+          {t('seo')}
+        </Typography>
+        <Button
+          variant="outlined"
+          color="secondary"
+          size="small"
+          disabled={isMutatingSummary}
+          onClick={onClickSummarize}
+        >
+          <Stack flexDirection="row" alignItems="center" gap={0.5}>
+            <Icon name="Sparkles" size={16} />
+            <Typography variant="button">{t('ai_summarizes_post')}</Typography>
           </Stack>
-        ) : (
-          <Stack direction="row" alignItems="center" gap={1}>
-            <Box flexGrow="1">
-              <Stack gap={1} sx={{ mb: 3 }}>
+        </Button>
+      </Stack>
+      <MainCard>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          {isEditingMeta ? (
+            <Stack gap={2}>
+              <Stack gap={1}>
                 <Typography variant="subtitle1">{t('seo_title')}</Typography>
-                <Typography>{metaTitle ?? t('not_set')}</Typography>
+                <Controller
+                  name="metaTitle"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      type="text"
+                      sx={{ flexGrow: 1 }}
+                      error={errors.metaTitle !== undefined}
+                    />
+                  )}
+                />
               </Stack>
+              <FormHelperText error>{errors.metaTitle?.message}</FormHelperText>
               <Stack gap={1}>
                 <Typography variant="subtitle1">{t('seo_description')}</Typography>
-                <Typography>{metaDescription ?? t('not_set')}</Typography>
+                <Controller
+                  name="metaDescription"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      type="text"
+                      multiline
+                      rows={3}
+                      sx={{ flexGrow: 1 }}
+                      error={errors.metaDescription !== undefined}
+                    />
+                  )}
+                />
               </Stack>
-            </Box>
-            <IconButton onClick={() => setIsEditingMeta(true)}>
-              <Icon name="Pencil" size={16} />
-            </IconButton>
-          </Stack>
-        )}
-      </form>
+              <FormHelperText error>{errors.metaDescription?.message}</FormHelperText>
+              <Stack direction="row" justifyContent="flex-end" spacing={1}>
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  onClick={() => setIsEditingMeta(false)}
+                >
+                  {t('cancel')}
+                </Button>
+                <Button variant="contained" type="submit">
+                  {t('save')}
+                </Button>
+              </Stack>
+            </Stack>
+          ) : (
+            <Stack direction="row" alignItems="center" gap={1}>
+              <Box flexGrow="1">
+                <Stack gap={1} sx={{ mb: 3 }}>
+                  <Typography variant="subtitle1">{t('seo_title')}</Typography>
+                  <Typography>{metaTitle ?? t('not_set')}</Typography>
+                </Stack>
+                <Stack gap={1}>
+                  <Typography variant="subtitle1">{t('seo_description')}</Typography>
+                  <Typography>{metaDescription ?? t('not_set')}</Typography>
+                </Stack>
+              </Box>
+              <IconButton onClick={() => setIsEditingMeta(true)}>
+                <Icon name="Pencil" size={16} />
+              </IconButton>
+            </Stack>
+          )}
+        </form>
+      </MainCard>
     </>
   );
 };

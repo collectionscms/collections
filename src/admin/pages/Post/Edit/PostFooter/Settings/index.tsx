@@ -171,10 +171,7 @@ export const Settings: React.FC<Props> = ({ open, content, onClose, onTrashed })
             </MainCard>
 
             {/* SEO */}
-            <Stack sx={{ pt: 5, pb: 1.5 }}>
-              <Typography variant={'h4'}>{t('seo')}</Typography>
-            </Stack>
-            <MainCard>
+            <Box sx={{ pt: 5 }}>
               <SeoSettings
                 contentId={mutatedContent.id}
                 metaTitle={mutatedContent.metaTitle}
@@ -186,7 +183,7 @@ export const Settings: React.FC<Props> = ({ open, content, onClose, onTrashed })
                   })
                 }
               />
-            </MainCard>
+            </Box>
 
             {/* Trash post */}
             {hasPermission('trashPost') && (

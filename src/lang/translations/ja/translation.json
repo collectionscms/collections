@@ -140,6 +140,7 @@
   "invitation_from_existing_project": "または、既存のプロジェクトから招待を受けることもできます。",
   "excerpt": "抜粋",
   "revert_to": "v{{version}}に戻す",
+  "ai_summarizes_post": "AIが記事を要約",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",

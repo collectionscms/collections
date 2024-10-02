@@ -250,10 +250,7 @@ export const PublishSettings: React.FC<Props> = ({ open, content, onClose }) => 
             </MainCard>
 
             {/* SEO */}
-            <Stack sx={{ pt: 5, pb: 1.5 }}>
-              <Typography variant={'h4'}>{t('seo')}</Typography>
-            </Stack>
-            <MainCard>
+            <Box sx={{ pt: 5 }}>
               <SeoSettings
                 contentId={mutatedContent.id}
                 metaTitle={mutatedContent.metaTitle}
@@ -265,7 +262,7 @@ export const PublishSettings: React.FC<Props> = ({ open, content, onClose }) => 
                   })
                 }
               />
-            </MainCard>
+            </Box>
           </Container>
         </>
       )}
