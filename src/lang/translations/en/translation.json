@@ -144,6 +144,7 @@
   "excerpt_tooltip": "Field for article summary or introduction. If not set, use 150 characters at the beginning of the content.",
   "revert_to": "Revert to v{{version}}",
   "ai_summarizes_post": "AI summarizes post",
+  "untranslatable": "Untranslatable",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",

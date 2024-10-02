@@ -144,6 +144,7 @@
   "excerpt_tooltip": "記事の要約や紹介文のためのフィールド。未設定の場合は、コンテンツ冒頭の150文字を使用します。",
   "revert_to": "v{{version}}に戻す",
   "ai_summarizes_post": "AIが記事を要約",
+  "untranslatable": "翻訳不可",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",
