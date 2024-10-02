@@ -247,6 +247,22 @@ CREATE TABLE "WebhookLog" (
     CONSTRAINT "WebhookLog_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "TextGenerationUsage" (
+    "id" UUID NOT NULL,
+    "projectId" UUID NOT NULL DEFAULT (current_setting('app.current_project_id'::text))::uuid,
+    "contentId" UUID NOT NULL,
+    "userId" UUID NOT NULL,
+    "sourceLanguage" VARCHAR(255) NOT NULL,
+    "targetLanguage" VARCHAR(255) NOT NULL,
+    "sourceText" TEXT NOT NULL,
+    "generatedText" JSONB NOT NULL,
+    "context" VARCHAR(255) NOT NULL,
+    "createdAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "TextGenerationUsage_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "Project_subdomain_key" ON "Project"("subdomain");
 
@@ -366,3 +382,12 @@ ALTER TABLE "WebhookSetting" ADD CONSTRAINT "WebhookSetting_projectId_fkey" FORE
 
 -- AddForeignKey
 ALTER TABLE "WebhookLog" ADD CONSTRAINT "WebhookLog_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Project"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TextGenerationUsage" ADD CONSTRAINT "TextGenerationUsage_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Project"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TextGenerationUsage" ADD CONSTRAINT "TextGenerationUsage_contentId_fkey" FOREIGN KEY ("contentId") REFERENCES "Content"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TextGenerationUsage" ADD CONSTRAINT "TextGenerationUsage_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
