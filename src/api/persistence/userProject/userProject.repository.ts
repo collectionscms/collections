@@ -77,6 +77,8 @@ export class UserProjectRepository {
     prisma: ProjectPrismaClient,
     entity: UserProjectEntity
   ): Promise<UserProjectEntity> {
+    entity.beforeUpdateValidate();
+
     const userProject = await prisma.userProject.update({
       where: {
         userId_projectId: {

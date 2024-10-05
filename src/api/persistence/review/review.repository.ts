@@ -148,6 +148,8 @@ export class ReviewRepository {
   }
 
   async updateStatus(prisma: ProjectPrismaType, review: ReviewEntity): Promise<ReviewEntity> {
+    review.beforeUpdateValidate();
+
     const record = await prisma.review.update({
       where: { id: review.id },
       data: { status: review.status },

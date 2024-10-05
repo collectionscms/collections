@@ -149,6 +149,8 @@ export class UserRepository {
   }
 
   async updateProfile(prisma: BypassPrismaType, user: UserEntity): Promise<UserEntity> {
+    user.beforeUpdateValidate();
+
     const updatedUser = await prisma.user.update({
       where: {
         id: user.id,

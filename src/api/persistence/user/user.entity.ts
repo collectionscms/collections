@@ -2,6 +2,7 @@ import { User } from '@prisma/client';
 import { v4 } from 'uuid';
 import { oneWayHash } from '../../utilities/oneWayHash.js';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
+import { UnexpectedException } from '../../../exceptions/unexpected.js';
 
 export const AuthProvider = {
   email: 'email',
@@ -37,6 +38,20 @@ export class UserEntity extends PrismaBaseEntity<User> {
       createdAt: now,
       updatedAt: now,
     });
+  }
+
+  private isValid() {
+    if (!this.props.id) {
+      throw new UnexpectedException({ message: 'id is required' });
+    }
+  }
+
+  beforeUpdateValidate(): void {
+    this.isValid();
+  }
+
+  beforeInsertValidate(): void {
+    this.isValid();
   }
 
   get id(): string {
