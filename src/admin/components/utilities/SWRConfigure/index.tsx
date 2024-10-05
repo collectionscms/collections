@@ -26,9 +26,6 @@ export const SWRConfigure: React.FC<Props> = ({ children }) => {
               });
             }
 
-            // Refresh the token,  No snack bar display.
-            if (apiError.code === 'token_expired') return;
-
             let message = `${t(`error.${apiError.code}` as unknown as TemplateStringsArray)}`;
             if (apiError.extensions?.message) {
               message += `(${apiError.extensions.message})`;
