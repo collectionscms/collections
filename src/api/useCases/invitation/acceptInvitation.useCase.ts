@@ -26,6 +26,10 @@ export class AcceptInvitationUseCase {
     const { inviteToken, userId } = props;
 
     const invitation = await this.invitationRepository.findOneByToken(this.prisma, inviteToken);
+    if (!invitation) {
+      throw new RecordNotFoundException('record_not_found');
+    }
+
     if (invitation.isAccepted()) {
       throw new InvalidTokenException();
     }

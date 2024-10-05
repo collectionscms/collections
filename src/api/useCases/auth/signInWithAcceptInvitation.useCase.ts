@@ -1,4 +1,5 @@
 import { Invitation } from '@prisma/client';
+import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
 import { BypassPrismaClient } from '../../database/prisma/client.js';
 import { InvitationRepository } from '../../persistence/invitation/invitation.repository.js';
 import { UserProjectEntity } from '../../persistence/userProject/userProject.entity.js';
@@ -16,6 +17,10 @@ export class SignInWithAcceptInvitationUseCase {
     const { inviteToken, userId } = props;
 
     const invitation = await this.invitationRepository.findOneByToken(this.prisma, inviteToken);
+    if (!invitation) {
+      throw new RecordNotFoundException('record_not_found');
+    }
+
     if (invitation.isAccepted()) {
       return invitation.toResponse();
     }

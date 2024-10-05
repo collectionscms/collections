@@ -1,3 +1,4 @@
+import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
 import { ReviewWithContentAndParticipant } from '../../../types/index.js';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
 import { ReviewRepository } from '../../persistence/review/review.repository.js';
@@ -13,7 +14,7 @@ export class GetReviewUseCase {
     props: GetReviewUseCaseSchemaType,
     hasReadAllReview: boolean
   ): Promise<ReviewWithContentAndParticipant> {
-    const record = hasReadAllReview
+    const reviewWithContent = hasReadAllReview
       ? await this.reviewRepository.findOneWithContentAndParticipant(this.prisma, props.reviewId)
       : await this.reviewRepository.findOwnOneWithContentAndParticipant(
           this.prisma,
@@ -21,11 +22,15 @@ export class GetReviewUseCase {
           props.reviewId
         );
 
+    if (!reviewWithContent) {
+      throw new RecordNotFoundException('record_not_found');
+    }
+
     return {
-      ...record.review.toResponse(),
-      content: record.content.toResponse(),
-      revieweeName: record.reviewee.name,
-      reviewerName: record.reviewer?.name ?? null,
+      ...reviewWithContent.review.toResponse(),
+      content: reviewWithContent.content.toResponse(),
+      revieweeName: reviewWithContent.reviewee.name,
+      reviewerName: reviewWithContent.reviewer?.name ?? null,
     };
   }
 }
