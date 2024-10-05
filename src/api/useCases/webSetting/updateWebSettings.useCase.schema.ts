@@ -1,8 +1,8 @@
 import { z } from 'zod';
 
 export const updateWebSettingsUseCaseSchema = z.object({
-  id: z.string(),
-  projectId: z.string(),
+  id: z.string().uuid(),
+  projectId: z.string().uuid(),
   name: z.string(),
   enabled: z.boolean(),
   url: z.string().url().nullable(),

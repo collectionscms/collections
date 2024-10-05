@@ -1,5 +1,5 @@
 import { z } from 'zod';
 
 export const getMyProjectsUseCaseSchema = z.object({
-  userId: z.string(),
+  userId: z.string().uuid(),
 });

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
 export const getUserProfileUseCaseSchema = z.object({
-  projectId: z.string(),
-  userId: z.string(),
+  projectId: z.string().uuid(),
+  userId: z.string().uuid(),
 });

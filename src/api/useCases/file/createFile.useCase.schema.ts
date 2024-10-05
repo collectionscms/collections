@@ -1,5 +1,5 @@
 import { z } from 'zod';
 
 export const createFileUseCaseSchema = z.object({
-  projectId: z.string().nullable(),
+  projectId: z.string().uuid().nullable(),
 });
