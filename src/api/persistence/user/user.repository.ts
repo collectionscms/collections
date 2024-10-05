@@ -54,8 +54,8 @@ export class UserRepository {
   async findUserRole(
     prisma: ProjectPrismaType,
     userId: string
-  ): Promise<{ user: UserEntity; role: RoleEntity }> {
-    const record = await prisma.userProject.findFirstOrThrow({
+  ): Promise<{ user: UserEntity; role: RoleEntity } | null> {
+    const record = await prisma.userProject.findFirst({
       where: {
         userId,
       },
@@ -64,6 +64,8 @@ export class UserRepository {
         role: true,
       },
     });
+
+    if (!record) return null;
 
     return {
       user: UserEntity.Reconstruct<User, UserEntity>(record.user),
