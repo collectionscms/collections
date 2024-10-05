@@ -48,6 +48,8 @@ export class RoleRepository {
   }
 
   async create(prisma: ProjectPrismaType, entity: RoleEntity): Promise<RoleEntity> {
+    entity.beforeInsertValidate();
+
     const record = await prisma.role.create({
       data: entity.toPersistence(),
     });

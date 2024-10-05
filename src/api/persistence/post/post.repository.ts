@@ -212,6 +212,8 @@ export class PostRepository {
   }
 
   async create(prisma: ProjectPrismaType, postEntity: PostEntity): Promise<PostEntity> {
+    postEntity.beforeInsertValidate();
+
     const record = await prisma.post.create({
       data: postEntity.toPersistence(),
     });
