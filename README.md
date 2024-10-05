@@ -1,8 +1,8 @@
 ## ⭐ What is Collections
 
-Collections is a headless CMS for answer engine optimization (AEO).
+Collections is a headless CMS for Answer Engine Optimization (AEO).
 
-Our mission is to deliver both human and AI friendly content as people are moving from “Google it” to “Ask AI”.
+Our mission is to deliver both human and AI friendly content as people are moving from `Google it` to `Ask AI`.
 
 <hr/>
 <h4>
