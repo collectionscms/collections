@@ -162,7 +162,6 @@ export const Login: React.FC = () => {
                   type="submit"
                   size="large"
                   sx={{
-                    height: 48,
                     color: 'text.primary',
                   }}
                 >
@@ -170,12 +169,10 @@ export const Login: React.FC = () => {
                     <Box
                       component="img"
                       src={`https://cdn.collections.dev/google-logo.svg`}
-                      sx={{ width: 28, height: 28 }}
+                      sx={{ width: 20, height: 20 }}
                       alt="google-logo"
                     />
-                    <Typography sx={{ fontWeight: 'bold', fontSize: 16 }}>
-                      {t('sign_in_with_google')}
-                    </Typography>
+                    <Typography sx={{ fontSize: 16 }}>{t('sign_in_with_google')}</Typography>
                   </Stack>
                 </Button>
               </form>
@@ -197,15 +194,12 @@ export const Login: React.FC = () => {
                   type="submit"
                   size="large"
                   sx={{
-                    height: 48,
                     color: 'text.primary',
                   }}
                 >
                   <Stack flexDirection="row" alignItems="center" gap={1}>
-                    <GithubOutlined style={{ fontSize: 24 }} />
-                    <Typography sx={{ fontWeight: 'bold', fontSize: 16 }}>
-                      {t('sign_in_with_github')}
-                    </Typography>
+                    <GithubOutlined style={{ fontSize: 20 }} />
+                    <Typography sx={{ fontSize: 16 }}>{t('sign_in_with_github')}</Typography>
                   </Stack>
                 </Button>
               </form>
