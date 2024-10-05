@@ -1,9 +1,9 @@
 import { z } from 'zod';
 
 export const updateContentUseCaseSchema = z.object({
-  id: z.string(),
-  projectId: z.string(),
-  userId: z.string(),
+  id: z.string().uuid(),
+  projectId: z.string().uuid(),
+  userId: z.string().uuid(),
   title: z.string().optional().nullable(),
   body: z.string().optional().nullable(),
   bodyJson: z.string().optional().nullable(),

@@ -1,7 +1,8 @@
+import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
 import { UnauthorizedException } from '../../../exceptions/unauthorized.js';
 import { ProjectWithRole } from '../../../types/index.js';
-import { ApiKeyRepository } from '../../persistence/apiKey/apiKey.repository.js';
 import { BypassPrismaType } from '../../database/prisma/client.js';
+import { ApiKeyRepository } from '../../persistence/apiKey/apiKey.repository.js';
 
 export class GetApiKeyProjectRolesUseCase {
   constructor(
@@ -15,15 +16,20 @@ export class GetApiKeyProjectRolesUseCase {
       throw new UnauthorizedException();
     }
 
-    const { permissions } = await this.apiKeyRepository.findOneWithPermissions(
+    const apiKeyWithPermission = await this.apiKeyRepository.findOneWithPermissions(
       this.prisma,
       apiKeyWithProject.apiKey.id
     );
+    if (!apiKeyWithPermission) {
+      throw new RecordNotFoundException('record_not_found');
+    }
 
     return {
       ...apiKeyWithProject.project.toResponse(),
       isAdmin: false,
-      permissions: permissions.map((permission) => ({ action: permission.permissionAction })),
+      permissions: apiKeyWithPermission.permissions.map((permission) => ({
+        action: permission.permissionAction,
+      })),
     };
   }
 }

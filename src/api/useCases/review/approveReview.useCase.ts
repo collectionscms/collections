@@ -22,13 +22,19 @@ export class ApproveReviewUseCase {
     { userId, reviewId }: ApproveReviewUseCaseSchemaType,
     hasReadAllReview: boolean
   ): Promise<Review> {
-    const { review } = hasReadAllReview
+    const reviewWithContent = hasReadAllReview
       ? await this.reviewRepository.findOneWithContentAndParticipant(this.prisma, reviewId)
       : await this.reviewRepository.findOwnOneWithContentAndParticipant(
           this.prisma,
           userId,
           reviewId
         );
+
+    if (!reviewWithContent) {
+      throw new RecordNotFoundException('record_not_found');
+    }
+
+    const { review } = reviewWithContent;
     review.approve();
 
     const contentWithRevisions = await this.contentRepository.findOneWithRevisionsById(

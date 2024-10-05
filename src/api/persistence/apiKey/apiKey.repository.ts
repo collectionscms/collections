@@ -42,8 +42,8 @@ export class ApiKeyRepository {
   ): Promise<{
     apiKey: ApiKeyEntity;
     permissions: ApiKeyPermissionEntity[];
-  }> {
-    const record = await prisma.apiKey.findUniqueOrThrow({
+  } | null> {
+    const record = await prisma.apiKey.findUnique({
       where: {
         id,
       },
@@ -51,6 +51,8 @@ export class ApiKeyRepository {
         apiKeyPermissions: true,
       },
     });
+
+    if (!record) return null;
 
     return {
       apiKey: ApiKeyEntity.Reconstruct<ApiKey, ApiKeyEntity>(record),

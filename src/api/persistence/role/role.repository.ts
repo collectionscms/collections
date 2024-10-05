@@ -25,8 +25,8 @@ export class RoleRepository {
   ): Promise<{
     role: RoleEntity;
     permissions: PermissionEntity[];
-  }> {
-    const records = await prisma.role.findUniqueOrThrow({
+  } | null> {
+    const record = await prisma.role.findUnique({
       where: {
         id,
       },
@@ -39,15 +39,19 @@ export class RoleRepository {
       },
     });
 
+    if (!record) return null;
+
     return {
-      role: RoleEntity.Reconstruct<Role, RoleEntity>(records),
-      permissions: records.rolePermissions.map((rolePermission) =>
+      role: RoleEntity.Reconstruct<Role, RoleEntity>(record),
+      permissions: record.rolePermissions.map((rolePermission) =>
         PermissionEntity.Reconstruct<Permission, PermissionEntity>(rolePermission.permission)
       ),
     };
   }
 
   async create(prisma: ProjectPrismaType, entity: RoleEntity): Promise<RoleEntity> {
+    entity.beforeInsertValidate();
+
     const record = await prisma.role.create({
       data: entity.toPersistence(),
     });

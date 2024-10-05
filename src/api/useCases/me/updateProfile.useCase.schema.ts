@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const updateProfileUseCaseSchema = z.object({
-  userId: z.string(),
+  userId: z.string().uuid(),
   name: z.string(),
 });
 

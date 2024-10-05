@@ -1,9 +1,9 @@
 import { z } from 'zod';
 
 export const getReviewUseCaseSchema = z.object({
-  projectId: z.string(),
-  userId: z.string(),
-  reviewId: z.string(),
+  projectId: z.string().uuid(),
+  userId: z.string().uuid(),
+  reviewId: z.string().uuid(),
 });
 
 export type GetReviewUseCaseSchemaType = z.infer<typeof getReviewUseCaseSchema>;

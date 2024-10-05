@@ -1,10 +1,10 @@
 import { z } from 'zod';
 
 export const revertContentUseCaseSchema = z.object({
-  id: z.string(),
-  projectId: z.string(),
-  userId: z.string(),
-  contentRevisionId: z.string(),
+  id: z.string().uuid(),
+  projectId: z.string().uuid(),
+  userId: z.string().uuid(),
+  contentRevisionId: z.string().uuid(),
 });
 
 export type RevertContentUseCaseSchemaType = z.infer<typeof revertContentUseCaseSchema>;

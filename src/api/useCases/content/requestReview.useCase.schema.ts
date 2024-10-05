@@ -1,9 +1,9 @@
 import { z } from 'zod';
 
 export const requestReviewUseCaseSchema = z.object({
-  id: z.string(),
-  projectId: z.string(),
-  userId: z.string(),
+  id: z.string().uuid(),
+  projectId: z.string().uuid(),
+  userId: z.string().uuid(),
   comment: z.string(),
 });
 
