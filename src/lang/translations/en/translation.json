@@ -97,6 +97,7 @@
   "role_permission": "Role Permissions",
   "api_key_permission": "API Key Permissions",
   "extension_permission": "Extension Permissions",
+  "webhook_permission": "Webhookの Permissions",
   "no_permissions": "No Permissions",
   "open_in_new_tab": "Open in new tab",
   "edit_link": "Edit link",
@@ -299,7 +300,11 @@
       "createApiKey": "Create",
       "updateApiKey": "Update",
       "deleteApiKey": "Delete",
-      "readTemplate": "Read template"
+      "readTemplate": "Read template",
+      "readWebhookSetting": "Read",
+      "createWebhookSetting": "Create",
+      "updateWebhookSetting": "Edit",
+      "deleteWebhookSetting": "Delete"
     }
   },
   "date_format": {

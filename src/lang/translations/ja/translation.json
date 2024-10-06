@@ -97,6 +97,7 @@
   "role_permission": "ロールの権限",
   "api_key_permission": "APIキーの権限",
   "extension_permission": "拡張の権限",
+  "webhook_permission": "Webhookの権限",
   "no_permissions": "権限がありません",
   "open_in_new_tab": "新しいタブで開く",
   "edit_link": "リンクを編集",
@@ -299,7 +300,11 @@
       "createApiKey": "新規登録",
       "updateApiKey": "編集",
       "deleteApiKey": "削除",
-      "readTemplate": "テンプレートの閲覧"
+      "readTemplate": "テンプレートの閲覧",
+      "readWebhookSetting": "閲覧",
+      "createWebhookSetting": "新規登録",
+      "updateWebhookSetting": "編集",
+      "deleteWebhookSetting": "削除"
     }
   },
   "date_format": {
