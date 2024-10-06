@@ -323,7 +323,6 @@
     "no_file_req_body": "リクエストボディにファイルがありません。",
     "invalid_access_key": "アクセスキーが有効ではありません。",
     "invalid_secret_key": "シークレットキーが有効ではありません。",
-    "token_expired": "トークンの有効期限が切れました。",
     "invalid_token": "無効なトークンです。",
     "bad_request": "リクエストの内容が正しくありません。",
     "unable_delete_user": "削除できないユーザーです。",

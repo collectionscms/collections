@@ -186,12 +186,14 @@ export const PublishSettings: React.FC<Props> = ({ open, content, onClose }) => 
                             label={t('archived')}
                           />
                         )}
-                        <FormControlLabel
-                          {...field}
-                          value="review"
-                          control={<Radio />}
-                          label={t('review')}
-                        />
+                        {content.status.currentStatus !== 'published' && (
+                          <FormControlLabel
+                            {...field}
+                            value="review"
+                            control={<Radio />}
+                            label={t('review')}
+                          />
+                        )}
                         {hasPermission('publishPost') && (
                           <FormControlLabel
                             {...field}

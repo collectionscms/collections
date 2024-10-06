@@ -323,7 +323,6 @@
     "no_file_req_body": "No file in request body.",
     "invalid_access_key": "Invalid access key.",
     "invalid_secret_key": "Invalid secret key.",
-    "token_expired": "Token expired.",
     "invalid_token": "Invalid token.",
     "bad_request": "Request is incorrect.",
     "unable_delete_user": "Unable to delete user.",
