@@ -234,7 +234,8 @@
     "on_publish": "When the post is published.",
     "on_archive": "When the published post is archived.",
     "on_delete_published": "When the published post is trashed.",
-    "on_restore_published": "When the published post is restored from the trash."
+    "on_restore_published": "When the published post is restored from the trash.",
+    "on_revert": "When the post version is reverted"
   },
   "editor": {
     "text": "Text",

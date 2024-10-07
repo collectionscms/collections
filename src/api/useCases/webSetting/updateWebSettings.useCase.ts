@@ -24,6 +24,7 @@ export class UpdateWebSettingsUseCase {
       onArchive: props.onArchive,
       onDeletePublished: props.onDeletePublished,
       onRestorePublished: props.onRestorePublished,
+      onRevert: props.onRevert,
     });
 
     const result = await this.webhookSettingRepository.update(this.prisma, webhookSetting);
