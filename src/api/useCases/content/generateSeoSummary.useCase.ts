@@ -1,7 +1,6 @@
 import { TextGenerator, Translator } from '@collectionscms/plugin-text-generator';
 import { getLanguageCodeType } from '../../../constants/languages.js';
 import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
-import { ForbiddenException } from '../../../exceptions/forbidden.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
 import { ContentRepository } from '../../persistence/content/content.repository.js';
 import { ContentRevisionEntity } from '../../persistence/contentRevision/contentRevision.entity.js';
@@ -46,15 +45,6 @@ export class GenerateSeoSummaryUseCase {
       revisions,
       content.language
     );
-
-    // Check if the latest usage is not generated
-    const latestUsage = await this.textGenerationUsageRepository.findLatestOneByContentId(
-      this.prisma,
-      content.id
-    );
-    if (latestUsage && !latestUsage.isGenerate()) {
-      throw new ForbiddenException('unable_to_repeat');
-    }
 
     const usages: TextGenerationUsageEntity[] = [];
 
