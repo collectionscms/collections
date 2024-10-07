@@ -8,6 +8,7 @@ import { authenticatedUser } from '../middlewares/auth.js';
 import { validateAccess } from '../middlewares/validateAccess.js';
 import { ContentRepository } from '../persistence/content/content.repository.js';
 import { ContentRevisionRepository } from '../persistence/contentRevision/contentRevision.repository.js';
+import { PermissionEntity } from '../persistence/permission/permission.entity.js';
 import { PostRepository } from '../persistence/post/post.repository.js';
 import { ProjectRepository } from '../persistence/project/project.repository.js';
 import { TextGenerationUsageRepository } from '../persistence/textGenerationUsage/textGenerationUsage.repository.js';
@@ -36,6 +37,8 @@ router.get(
       projectId: res.projectRole?.id,
       sourceLanguage: res.projectRole?.sourceLanguage,
       userId: res.user.id,
+      isAdmin: res.projectRole?.isAdmin,
+      permissions: res.projectRole?.permissions,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
@@ -44,8 +47,9 @@ router.get(
       new PostRepository()
     );
 
-    const permissions = res.projectRole?.permissions ?? [];
-    const hasReadAllPost = permissions.map((p) => p.action).includes('readAllPost');
+    const hasReadAllPost =
+      validated.data.isAdmin ||
+      PermissionEntity.hasPermission(validated.data.permissions, 'readAllPost');
     const posts = await useCase.execute(validated.data, hasReadAllPost);
 
     res.json({ posts });
