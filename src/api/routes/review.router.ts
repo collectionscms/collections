@@ -6,6 +6,7 @@ import { authenticatedUser } from '../middlewares/auth.js';
 import { validateAccess } from '../middlewares/validateAccess.js';
 import { ContentRepository } from '../persistence/content/content.repository.js';
 import { ContentRevisionRepository } from '../persistence/contentRevision/contentRevision.repository.js';
+import { PermissionEntity } from '../persistence/permission/permission.entity.js';
 import { ReviewRepository } from '../persistence/review/review.repository.js';
 import { ContentService } from '../services/content.service.js';
 import { ApproveReviewUseCase } from '../useCases/review/approveReview.useCase.js';
@@ -28,6 +29,8 @@ router.get(
       projectId: res.projectRole?.id,
       userId: res.user?.id,
       status: req.query.status,
+      isAdmin: res.projectRole?.isAdmin,
+      permissions: res.projectRole?.permissions,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
@@ -36,8 +39,9 @@ router.get(
       new ReviewRepository()
     );
 
-    const permissions = res.projectRole?.permissions ?? [];
-    const hasReadAllReview = permissions.map((p) => p.action).includes('readAllReview');
+    const hasReadAllReview =
+      validated.data.isAdmin ||
+      PermissionEntity.hasPermission(validated.data.permissions, 'readAllReview');
     const reviews = await useCase.execute(validated.data, hasReadAllReview);
 
     res.json({
@@ -55,6 +59,8 @@ router.get(
       projectId: res.projectRole?.id,
       userId: res.user?.id,
       reviewId: req.params.id,
+      isAdmin: res.projectRole?.isAdmin,
+      permissions: res.projectRole?.permissions,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
@@ -63,8 +69,9 @@ router.get(
       new ReviewRepository()
     );
 
-    const permissions = res.projectRole?.permissions ?? [];
-    const hasReadAllReview = permissions.map((p) => p.action).includes('readAllReview');
+    const hasReadAllReview =
+      validated.data.isAdmin ||
+      PermissionEntity.hasPermission(validated.data.permissions, 'readAllReview');
     const review = await useCase.execute(validated.data, hasReadAllReview);
 
     res.json({
@@ -82,6 +89,8 @@ router.patch(
       projectId: res.projectRole?.id,
       userId: res.user?.id,
       reviewId: req.params.id,
+      isAdmin: res.projectRole?.isAdmin,
+      permissions: res.projectRole?.permissions,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
@@ -92,8 +101,9 @@ router.patch(
       new ContentRevisionRepository()
     );
 
-    const permissions = res.projectRole?.permissions ?? [];
-    const hasReadAllReview = permissions.map((p) => p.action).includes('readAllReview');
+    const hasReadAllReview =
+      validated.data.isAdmin ||
+      PermissionEntity.hasPermission(validated.data.permissions, 'readAllReview');
     await useCase.execute(validated.data, hasReadAllReview);
 
     res.status(204).end();
@@ -109,6 +119,8 @@ router.patch(
       projectId: res.projectRole?.id,
       userId: res.user?.id,
       reviewId: req.params.id,
+      isAdmin: res.projectRole?.isAdmin,
+      permissions: res.projectRole?.permissions,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
@@ -120,8 +132,9 @@ router.patch(
       new ContentService(new ContentRepository())
     );
 
-    const permissions = res.projectRole?.permissions ?? [];
-    const hasReadAllReview = permissions.map((p) => p.action).includes('readAllReview');
+    const hasReadAllReview =
+      validated.data.isAdmin ||
+      PermissionEntity.hasPermission(validated.data.permissions, 'readAllReview');
     await useCase.execute(validated.data, hasReadAllReview);
 
     res.status(204).end();

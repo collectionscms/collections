@@ -34,4 +34,15 @@ export class PermissionEntity extends PrismaBaseEntity<Permission> {
   get action(): string {
     return this.props.action;
   }
+
+  static hasPermission = (
+    permissions:
+      | {
+          action: string;
+        }[]
+      | null,
+    action: string
+  ) => {
+    return permissions?.map((p) => p.action).includes(action) ?? false;
+  };
 }
