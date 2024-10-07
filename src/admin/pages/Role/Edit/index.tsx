@@ -62,6 +62,7 @@ const EditRolePageImpl: React.FC = () => {
     { label: t('user_permission'), permissions: roleActions.user },
     { label: t('role_permission'), permissions: roleActions.role },
     { label: t('api_key_permission'), permissions: roleActions.apiKey },
+    { label: t('webhook_permission'), permissions: roleActions.webhookSetting },
     { label: t('extension_permission'), permissions: roleActions.extension },
   ];
 
