@@ -269,6 +269,7 @@ model WebhookSetting {
   onArchive          Boolean  @default(false)
   onDeletePublished  Boolean  @default(false)
   onRestorePublished Boolean  @default(false)
+  onRevert           Boolean  @default(false)
   createdAt          DateTime @default(now()) @db.Timestamptz(6)
   updatedAt          DateTime @updatedAt @db.Timestamptz(6)
   project            Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)

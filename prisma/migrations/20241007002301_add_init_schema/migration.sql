@@ -225,6 +225,7 @@ CREATE TABLE "WebhookSetting" (
     "onArchive" BOOLEAN NOT NULL DEFAULT false,
     "onDeletePublished" BOOLEAN NOT NULL DEFAULT false,
     "onRestorePublished" BOOLEAN NOT NULL DEFAULT false,
+    "onRevert" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMPTZ(6) NOT NULL,
 
