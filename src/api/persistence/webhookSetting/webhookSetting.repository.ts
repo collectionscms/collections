@@ -70,6 +70,7 @@ export class WebhookSettingRepository {
         onArchive: record.onArchive,
         onDeletePublished: record.onDeletePublished,
         onRestorePublished: record.onRestorePublished,
+        onRevert: record.onRevert,
       },
     });
     return WebhookSettingEntity.Reconstruct<WebhookSetting, WebhookSettingEntity>(result);

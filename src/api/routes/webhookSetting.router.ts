@@ -75,6 +75,7 @@ router.post(
       onArchive: req.body.onArchive,
       onDeletePublished: req.body.onDeletePublished,
       onRestorePublished: req.body.onRestorePublished,
+      onRevert: req.body.onRevert,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
@@ -103,6 +104,7 @@ router.patch(
       onArchive: req.body.onArchive,
       onDeletePublished: req.body.onDeletePublished,
       onRestorePublished: req.body.onRestorePublished,
+      onRevert: req.body.onRevert,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
