@@ -418,8 +418,8 @@ export const EditPostPageImpl: React.FC = () => {
       <AddLanguage
         open={openAddLanguage}
         content={content}
+        onAdd={(language) => handleChangeLanguage(language)}
         onClose={handleCloseAddLanguage}
-        // onChanged={(language) => handleAddedLanguage(language)}
       />
     </>
   );

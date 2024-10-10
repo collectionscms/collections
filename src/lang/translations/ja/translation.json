@@ -283,7 +283,7 @@
       "trashPost": "削除",
       "publishPost": "レビューなしで公開",
       "archivePost": "公開済み記事の終了",
-      "readOwnReview": "閲覧（申請者かレビューワーが自分）",
+      "readOwnReview": "閲覧（申請者が自分）",
       "readAllReview": "閲覧（すべて）",
       "createReview": "新規レビューの申請",
       "approveReview": "承認",

@@ -283,7 +283,7 @@
       "trashPost": "Delete",
       "publishPost": "Publish without review",
       "archivePost": "Closing of published posts",
-      "readOwnReview": "Read (Applicant or reviewer is themselves)",
+      "readOwnReview": "Read (applicant is self)",
       "readAllReview": "Read (All)",
       "createReview": "Request for new review",
       "approveReview": "Approve",
