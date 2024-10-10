@@ -1,8 +1,20 @@
-## ⭐ What is Collections
+# Collections CMS
 
-Collections is a headless CMS for Answer Engine Optimization (AEO).
+<p align="center">
+  <a href="https://collections.dev/">
+    <img src="https://cdn.collections.dev/logo/icon-light-1024.png" width="140px" alt="Collections CMS" />
+  </a>
+</p>
+
+Collections is a headless CMS with AI summary and multilingual support for Answer Engine Optimization(AEO).
 
 Our mission is to deliver both human and AI friendly content as people are moving from `Google it` to `Ask AI`.
+
+## ⭐ Why does Collections focus on AEO?
+
+What makes good content for readers? That's where we began. Sentences should be concise, the desired information easily accessible, and it should be readable in their native language.
+
+This is the kind of content that answer engines, like ChatGPT, are seeking. As the way people search for information evolves, we believe optimizing content for these engines will be crucial. And this shift presents a valuable opportunity to attract future users!
 
 <hr/>
 <h4>
@@ -12,7 +24,7 @@ Our mission is to deliver both human and AI friendly content as people are movin
 
 ### Features
 
-- 🪄 AI supports SEO
+- 🪄 Summary and SEO by AI
 - 🌐 Multilingual content
 - 🖊 Notion-like editor
 - 🕘️ Article versioning
