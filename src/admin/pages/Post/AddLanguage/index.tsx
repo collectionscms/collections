@@ -4,7 +4,6 @@ import { enqueueSnackbar } from 'notistack';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 import { languages } from '../../../../constants/languages.js';
 import { RevisedContent } from '../../../../types/index.js';
 import { logger } from '../../../../utilities/logger.js';
@@ -19,12 +18,12 @@ import { usePost } from '../Context/index.js';
 export type Props = {
   open: boolean;
   content: RevisedContent;
+  onAdd: (contentId: string) => void;
   onClose: () => void;
 };
 
-export const AddLanguage: React.FC<Props> = ({ open, content, onClose }) => {
+export const AddLanguage: React.FC<Props> = ({ open, content, onAdd, onClose }) => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const { createContent } = usePost();
   const { trigger: createContentTrigger } = createContent(content.postId);
   const enabledLanguages = languages.filter(
@@ -45,7 +44,7 @@ export const AddLanguage: React.FC<Props> = ({ open, content, onClose }) => {
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
       const content = await createContentTrigger(form);
-      navigate(`/admin/contents/${content.id}`);
+      onAdd(content.id);
       enqueueSnackbar(t('toast.created_successfully'), {
         anchorOrigin: {
           vertical: 'bottom',
