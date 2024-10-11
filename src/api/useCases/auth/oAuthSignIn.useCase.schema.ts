@@ -5,7 +5,7 @@ export const oAuthSingInUseCaseSchema = z.object({
   email: z.string().email(),
   name: z.string(),
   provider: z.nativeEnum(AuthProvider),
-  providerId: z.string().uuid(),
+  providerId: z.string(),
 });
 
 export type OAuthSingInUseCaseSchemaType = z.infer<typeof oAuthSingInUseCaseSchema>;

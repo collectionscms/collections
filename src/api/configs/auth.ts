@@ -33,6 +33,9 @@ export const authConfig: Omit<AuthConfig, 'raw'> = {
         if (validated.success) {
           const useCase = new OAuthSignInUseCase(bypassPrisma, new UserRepository());
           token.user = await useCase.execute(validated.data);
+        } else {
+          logger.error(validated.error);
+          throw new InvalidLoginError();
         }
       } else {
         token.user = user;
