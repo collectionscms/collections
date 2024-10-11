@@ -320,6 +320,7 @@
     }
   },
   "error": {
+    "invalid_credentials": "Invalid credentials",
     "incorrect_email_or_password": "Incorrect email address or password.",
     "can_not_delete_role_in_use": "Cannot delete roles in use.",
     "can_not_delete_last_admin_role": "At least one administrator is required.",
