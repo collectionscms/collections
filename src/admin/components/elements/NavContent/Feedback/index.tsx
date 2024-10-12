@@ -43,9 +43,9 @@ export const Feedback: React.FC = () => {
         },
       }}
     >
-      <Stack flexDirection="row" alignItems="center" gap={0.75}>
-        <Icon name="Sticker" size={13} />
+      <Stack flexDirection="row" alignItems="center" gap={1}>
         <Typography variant="caption">{t('share_your_feedback')}</Typography>
+        <Icon name="MoveUpRight" size={10} />
       </Stack>
     </ListItemButton>
   );
