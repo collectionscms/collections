@@ -152,6 +152,9 @@ export const defaults: Partial<Record<AllowedEnvironmentVariable, any>> = {
 
   // Email
   EMAIL_TRANSPORT: 'sendgrid',
+
+  // System
+  RESERVED_SUBDOMAINS: 'app',
 };
 
 export let env: Record<string, any> = {
