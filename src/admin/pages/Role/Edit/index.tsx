@@ -184,12 +184,14 @@ const EditRolePageImpl: React.FC = () => {
                               )}
                             />
                           </Grid>
-                          <FormHelperText error>{errors.permissions?.message}</FormHelperText>
                         </Grid>
                       );
                     })}
                   </Grid>
                 )}
+                <Grid xs={12}>
+                  <FormHelperText error>{errors.permissions?.message}</FormHelperText>
+                </Grid>
 
                 <Grid xs={12}>
                   <Stack

@@ -169,10 +169,12 @@ const CreateRolePageImpl: React.FC = () => {
                           )}
                         />
                       </Grid>
-                      <FormHelperText error>{errors.permissions?.message}</FormHelperText>
                     </Grid>
                   );
                 })}
+                <Grid xs={12}>
+                  <FormHelperText error>{errors.permissions?.message}</FormHelperText>
+                </Grid>
 
                 <Grid xs={12}>
                   <Stack direction="row" justifyContent="flex-end" spacing={1}>
