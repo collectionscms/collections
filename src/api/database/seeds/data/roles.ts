@@ -25,7 +25,7 @@ export const editorPermissions = [
   'readRole',
   'createRole',
   'readUser',
-  ...roleActions.invitation,
+  'inviteUser',
   ...roleActions.review,
   'createApiKey',
   'readApiKey',
