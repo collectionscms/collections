@@ -148,6 +148,7 @@
   "ai_summarizes_post": "AI summarizes post",
   "untranslatable": "Untranslatable",
   "admin_has_all_permissions": "Administrator has all permissions",
+  "share_your_feedback": "Please share your feedback",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",
