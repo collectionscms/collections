@@ -4,14 +4,12 @@ import React, { useMemo } from 'react';
 import { Avatar } from '../../../@extended/components/Avatar/index.js';
 import { getAddNewProjectUrl, getUrlForTenant } from '../../../utilities/urlGenerator.js';
 import { useAuth } from '../../utilities/Auth/index.js';
-import { useColorMode } from '../../utilities/ColorMode/index.js';
 import { Icon } from '../Icon/index.js';
 import { Link } from '../Link/index.js';
-import { BottomContent } from '../NavContent/BottomContent/index.js';
+import { BottomContent } from './BottomContent/index.js';
 
 export const ActivityBar: React.FC = () => {
   const theme = useTheme();
-  const colorMode = useColorMode();
   const { currentProjectRole, projects } = useAuth();
   const bottomContent = useMemo(() => <BottomContent />, []);
 
@@ -20,7 +18,6 @@ export const ActivityBar: React.FC = () => {
       <Box
         sx={{
           width: 60,
-          height: '100vh',
           position: 'relative',
           paddingY: '16px',
           borderRight: `1px solid ${theme.palette.divider}`,

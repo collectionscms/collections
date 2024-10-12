@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Avatar } from '../../../../@extended/components/Avatar/index.js';
 import { IconButton } from '../../../../@extended/components/IconButton/index.js';
-import { getMeUrl } from '../../../../utilities/urlGenerator.js';
+import { getMeUrl, getProjectListUrl } from '../../../../utilities/urlGenerator.js';
 import { Icon } from '../../Icon/index.js';
 
 export const BottomContent: React.FC = () => {
@@ -23,6 +23,10 @@ export const BottomContent: React.FC = () => {
 
   const handleProfile = () => {
     window.location.href = getMeUrl();
+  };
+
+  const handleProjectList = () => {
+    window.location.href = getProjectListUrl();
   };
 
   return (
@@ -58,6 +62,14 @@ export const BottomContent: React.FC = () => {
                 <Icon name="UserRound" size={16} />
               </ListItemIcon>
               {t('profile')}
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding>
+            <ListItemButton onClick={handleProjectList}>
+              <ListItemIcon>
+                <Icon name="List" size={16} />
+              </ListItemIcon>
+              {t('project_list')}
             </ListItemButton>
           </ListItem>
         </List>

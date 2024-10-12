@@ -28,15 +28,15 @@ export const Nav: React.FC<Props> = ({ window, open, variable, toggleDrawer }) =
   const container = window !== undefined ? () => window().document.body : undefined;
   const sidebar = useMemo(
     () => (
-      <Stack direction="row">
+      <Stack direction="row" sx={{ height: '100vh' }}>
         <ActivityBar />
         {variable === 'profile' && (
-          <Box sx={{ width: 240 }}>
+          <Box sx={{ position: 'relative', width: 240 }}>
             <NavContent navGroupItems={profileGroups} />
           </Box>
         )}
         {variable === 'tenant' && (
-          <Box sx={{ width: 240 }}>
+          <Box sx={{ position: 'relative', width: 240 }}>
             <NavContent navGroupItems={tenantGroups} />
           </Box>
         )}
