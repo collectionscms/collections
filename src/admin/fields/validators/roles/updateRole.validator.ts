@@ -11,6 +11,6 @@ export const updateRoleValidator = (): ObjectSchema<FormValues> => {
   return yup.object().shape({
     name: yup.string().required().max(250),
     description: yup.string().notRequired(),
-    permissions: yup.array().of(yup.string().required()).min(1).required(),
+    permissions: yup.array().of(yup.string().required()).min(0).required(),
   });
 };

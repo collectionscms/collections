@@ -50,7 +50,6 @@ const CreateRolePageImpl: React.FC = () => {
   const formPermissions = [
     { label: t('post_permission'), permissions: roleActions.post },
     { label: t('review_permission'), permissions: roleActions.review },
-    { label: t('invitation_permission'), permissions: roleActions.invitation },
     { label: t('project_permission'), permissions: roleActions.project },
     { label: t('user_permission'), permissions: roleActions.user },
     { label: t('role_permission'), permissions: roleActions.role },
@@ -169,10 +168,12 @@ const CreateRolePageImpl: React.FC = () => {
                           )}
                         />
                       </Grid>
-                      <FormHelperText error>{errors.permissions?.message}</FormHelperText>
                     </Grid>
                   );
                 })}
+                <Grid xs={12}>
+                  <FormHelperText error>{errors.permissions?.message}</FormHelperText>
+                </Grid>
 
                 <Grid xs={12}>
                   <Stack direction="row" justifyContent="flex-end" spacing={1}>

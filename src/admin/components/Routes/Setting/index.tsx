@@ -184,7 +184,7 @@ export const SettingRoutes = () => {
   // Webhooks
   // /////////////////////////////////////
 
-  if (hasPermission('readWebhook')) {
+  if (hasPermission('readWebhookSetting')) {
     children.push({
       path: 'webhooks',
       element: (
@@ -206,7 +206,7 @@ export const SettingRoutes = () => {
     });
   }
 
-  if (hasPermission('editWebhookSetting')) {
+  if (hasPermission('updateWebhookSetting')) {
     children.push({
       path: 'webhooks/:id',
       element: (
