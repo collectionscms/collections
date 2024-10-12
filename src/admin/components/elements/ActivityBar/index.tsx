@@ -6,7 +6,7 @@ import { getAddNewProjectUrl, getUrlForTenant } from '../../../utilities/urlGene
 import { useAuth } from '../../utilities/Auth/index.js';
 import { Icon } from '../Icon/index.js';
 import { Link } from '../Link/index.js';
-import { BottomContent } from '../NavContent/BottomContent/index.js';
+import { BottomContent } from './BottomContent/index.js';
 
 export const ActivityBar: React.FC = () => {
   const theme = useTheme();
@@ -18,7 +18,6 @@ export const ActivityBar: React.FC = () => {
       <Box
         sx={{
           width: 60,
-          height: '100vh',
           position: 'relative',
           paddingY: '16px',
           borderRight: `1px solid ${theme.palette.divider}`,
