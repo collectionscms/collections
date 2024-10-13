@@ -19,7 +19,7 @@ export const ContentStatus = {
 } as const;
 export type ContentStatusType = (typeof ContentStatus)[keyof typeof ContentStatus];
 
-const EXCERPT_LENGTH = 150;
+const SUMMARY_LENGTH = 150;
 
 type ContentProps = Omit<
   Content,
@@ -29,7 +29,7 @@ type ContentProps = Omit<
   | 'body'
   | 'bodyJson'
   | 'bodyHtml'
-  | 'excerpt'
+  | 'summary'
   | 'metaTitle'
   | 'metaDescription'
   | 'coverUrl'
@@ -42,7 +42,7 @@ type ContentProps = Omit<
   | 'updatedAt'
 > & {
   slug?: string | null;
-  excerpt?: string | null;
+  summary?: string | null;
   metaTitle?: string | null;
   metaDescription?: string | null;
   coverUrl?: string | null;
@@ -71,7 +71,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
       body: props.body ?? null,
       bodyJson: props.bodyJson ?? null,
       bodyHtml: props.bodyHtml ?? null,
-      excerpt: props.excerpt ?? null,
+      summary: props.summary ?? null,
       metaTitle: props.metaTitle ?? null,
       metaDescription: props.metaDescription ?? null,
       coverUrl: props.coverUrl ?? null,
@@ -92,7 +92,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
       body: props.body ?? null,
       bodyJson: props.bodyJson ?? null,
       bodyHtml: props.bodyHtml ?? null,
-      excerpt: props.excerpt ?? null,
+      summary: props.summary ?? null,
       metaTitle: props.metaTitle ?? null,
       metaDescription: props.metaDescription ?? null,
       coverUrl: props.coverUrl ?? null,
@@ -164,8 +164,8 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     return this.props.bodyHtml ?? '';
   }
 
-  get excerpt(): string | null {
-    return this.props.excerpt;
+  get summary(): string | null {
+    return this.props.summary;
   }
 
   get metaTitle(): string | null {
@@ -220,10 +220,10 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     return v4().trim().replace(/-/g, '').substring(0, 10);
   };
 
-  getExcerptOrBodyPreview(): string {
-    const text = this.excerpt || this.body;
-    const preview = text.slice(0, EXCERPT_LENGTH);
-    return text.length > EXCERPT_LENGTH ? `${preview}...` : preview;
+  getSummaryOrBodyPreview(): string {
+    const text = this.summary || this.body;
+    const preview = text.slice(0, SUMMARY_LENGTH);
+    return text.length > SUMMARY_LENGTH ? `${preview}...` : preview;
   }
 
   draft(updatedById: string) {
@@ -250,7 +250,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     bodyHtml,
     coverUrl,
     slug,
-    excerpt,
+    summary,
     metaTitle,
     metaDescription,
     currentVersion,
@@ -262,7 +262,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     bodyHtml: string;
     coverUrl: string | null;
     slug: string;
-    excerpt: string | null;
+    summary: string | null;
     metaTitle: string | null;
     metaDescription: string | null;
     currentVersion: number;
@@ -274,7 +274,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
       bodyJson,
       bodyHtml,
       coverUrl,
-      excerpt,
+      summary,
       metaTitle,
       metaDescription,
       slug,
@@ -387,7 +387,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
       body: latestRevision.body ?? '',
       bodyJson: latestRevision.bodyJson ?? '',
       bodyHtml: latestRevision.bodyHtml ?? '',
-      excerpt: latestRevision.excerpt,
+      summary: latestRevision.summary,
       metaTitle: latestRevision.metaTitle,
       metaDescription: latestRevision.metaDescription,
       coverUrl: latestRevision.coverUrl,
@@ -420,7 +420,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
       language: this.props.language,
       version: this.props.currentVersion,
       coverUrl: this.props.coverUrl,
-      excerpt: this.getExcerptOrBodyPreview(),
+      excerpt: this.getSummaryOrBodyPreview(),
       metaTitle: this.props.metaTitle,
       metaDescription: this.props.metaDescription,
       publishedAt: this.props.publishedAt,

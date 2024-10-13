@@ -181,7 +181,7 @@ export class ContentRepository {
       data: {
         title: contentEntity.title,
         slug: contentEntity.slug,
-        excerpt: contentEntity.excerpt,
+        summary: contentEntity.summary,
         body: contentEntity.body,
         bodyJson: contentEntity.bodyJson,
         bodyHtml: contentEntity.bodyHtml,

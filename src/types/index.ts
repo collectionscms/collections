@@ -70,7 +70,7 @@ export type RevisedContent = {
   body: string;
   bodyJson: string;
   bodyHtml: string;
-  excerpt: string | null;
+  summary: string | null;
   metaTitle: string | null;
   metaDescription: string | null;
   coverUrl: string | null;

@@ -176,7 +176,7 @@ model Content {
   body                 String?
   bodyJson             String?
   bodyHtml             String?
-  excerpt              String?
+  summary              String?
   metaTitle            String?               @db.VarChar(255)
   metaDescription      String?
   coverUrl             String?               @db.VarChar(255)
@@ -211,7 +211,7 @@ model ContentRevision {
   body            String?
   bodyJson        String?
   bodyHtml        String?
-  excerpt         String?
+  summary         String?
   metaTitle       String?   @db.VarChar(255)
   metaDescription String?
   coverUrl        String?   @db.VarChar(255)

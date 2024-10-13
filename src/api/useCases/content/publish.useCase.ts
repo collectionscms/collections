@@ -46,7 +46,7 @@ export class PublishUseCase {
       body: latestRevision.body,
       bodyJson: latestRevision.bodyJson,
       bodyHtml: latestRevision.bodyHtml,
-      excerpt: latestRevision.excerpt,
+      summary: latestRevision.summary,
       metaTitle: latestRevision.metaTitle,
       metaDescription: latestRevision.metaDescription,
       coverUrl: latestRevision.coverUrl,
