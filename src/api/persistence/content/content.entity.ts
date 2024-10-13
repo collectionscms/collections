@@ -304,7 +304,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     bodyHtml,
     coverUrl,
     slug,
-    excerpt,
+    summary,
     metaTitle,
     metaDescription,
     updatedById,
@@ -315,7 +315,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     bodyHtml?: string | null;
     coverUrl?: string | null;
     slug?: string;
-    excerpt?: string | null;
+    summary?: string | null;
     metaTitle?: string | null;
     metaDescription?: string | null;
     updatedById: string;
@@ -326,7 +326,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
       ...(bodyJson !== undefined && { bodyJson }),
       ...(bodyHtml !== undefined && { bodyHtml }),
       ...(coverUrl !== undefined && { coverUrl }),
-      ...(excerpt !== undefined && { excerpt }),
+      ...(summary !== undefined && { summary }),
       ...(metaTitle !== undefined && { metaTitle }),
       ...(metaDescription !== undefined && { metaDescription }),
       ...(slug !== undefined && { slug: encodeURIComponent(slug) }),
@@ -420,7 +420,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
       language: this.props.language,
       version: this.props.currentVersion,
       coverUrl: this.props.coverUrl,
-      excerpt: this.getSummaryOrBodyPreview(),
+      summary: this.getSummaryOrBodyPreview(),
       metaTitle: this.props.metaTitle,
       metaDescription: this.props.metaDescription,
       publishedAt: this.props.publishedAt,

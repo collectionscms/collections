@@ -29,7 +29,7 @@ export class UpdateContentUseCase {
       bodyHtml: props.bodyHtml,
       slug: props.slug,
       updatedById: props.userId,
-      excerpt: props.excerpt || null,
+      summary: props.summary || null,
       metaTitle: props.metaTitle || null,
       metaDescription: props.metaDescription || null,
     });

@@ -139,7 +139,7 @@ export class ContentRevisionEntity extends PrismaBaseEntity<ContentRevision> {
     bodyHtml,
     coverUrl,
     slug,
-    excerpt,
+    summary,
     metaTitle,
     metaDescription,
     updatedById,
@@ -150,7 +150,7 @@ export class ContentRevisionEntity extends PrismaBaseEntity<ContentRevision> {
     bodyHtml?: string | null;
     coverUrl?: string | null;
     slug?: string;
-    excerpt?: string | null;
+    summary?: string | null;
     metaTitle?: string | null;
     metaDescription?: string | null;
     updatedById: string;
@@ -161,7 +161,7 @@ export class ContentRevisionEntity extends PrismaBaseEntity<ContentRevision> {
       ...(bodyJson !== undefined && { bodyJson }),
       ...(bodyHtml !== undefined && { bodyHtml }),
       ...(coverUrl !== undefined && { coverUrl }),
-      ...(excerpt !== undefined && { excerpt }),
+      ...(summary !== undefined && { summary }),
       ...(metaTitle !== undefined && { metaTitle }),
       ...(metaDescription !== undefined && { metaDescription }),
       ...(slug !== undefined && { slug: encodeURIComponent(slug) }),

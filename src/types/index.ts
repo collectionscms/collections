@@ -88,7 +88,7 @@ export type PublishedContent = {
   title: string;
   body: string;
   bodyHtml: string;
-  excerpt: string;
+  summary: string;
   language: string;
   version: number;
   coverUrl: string | null;
