@@ -44,7 +44,7 @@ export const useBlockEditor = ({
     extensions: [
       Underline,
       CharacterCount,
-      Placeholder.configure({ placeholder: t('write_the_text') }),
+      Placeholder.configure({ placeholder: `${t('write_the_text')}...` }),
       Link.configure({
         openOnClick: false,
         autolink: true,

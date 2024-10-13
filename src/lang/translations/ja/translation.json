@@ -142,10 +142,12 @@
   "create_your_first_project": "Collections で最初のプロジェクトを作成しよう！",
   "invitation_from_existing_project": "または、既存のプロジェクトから招待を受けることもできます。",
   "revert_to": "v{{version}}に戻す",
-  "ai_summarizes_post": "AIが記事を要約",
+  "ai_summarizes_post": "AIが本文を要約",
   "untranslatable": "翻訳不可",
   "admin_has_all_permissions": "管理者は全ての権限を持っています",
   "share_your_feedback": "ご意見をお聞かせください",
+  "add_summary": "要約を追加",
+  "summary_tooltip": "記事をわかりやすく整理した要約は、回答エンジンに引用されやすくなります。",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",

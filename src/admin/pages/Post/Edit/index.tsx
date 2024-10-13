@@ -9,13 +9,14 @@ import {
   Typography,
   alpha,
   useTheme,
+  IconButton,
+  Tooltip,
 } from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { logger } from '../../../../utilities/logger.js';
-import { IconButton } from '../../../@extended/components/IconButton/index.js';
 import { useBlockEditor } from '../../../components/elements/BlockEditor/hooks/useBlockEditor.js';
 import { BlockEditor } from '../../../components/elements/BlockEditor/index.js';
 import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscardDialog/index.js';
@@ -51,12 +52,13 @@ export const EditPostPageImpl: React.FC = () => {
 
   useEffect(() => {
     setPostTitle(content.title);
+    setSummary(content.summary);
     setUploadCover(content.coverUrl ?? null);
     editor?.commands.setContent(toJson(content.bodyJson));
   }, [content]);
 
   // /////////////////////////////////////
-  // Editor
+  // Title and Summary
   // /////////////////////////////////////
 
   const [postTitle, setPostTitle] = useState(content.title);
@@ -65,6 +67,18 @@ export const EditPostPageImpl: React.FC = () => {
     setPostTitle(value);
     setIsDirty(true);
   };
+
+  const [summary, setSummary] = useState(content.summary);
+  const [showSummaryToolButton, setShowSummaryToolButton] = useState(false);
+
+  const handleChangeSummary = (value: string) => {
+    setSummary(value);
+    setIsDirty(true);
+  };
+
+  // /////////////////////////////////////
+  // Editor
+  // /////////////////////////////////////
 
   const { mode } = useColorMode();
   const ref = React.useRef<HTMLButtonElement>(null);
@@ -167,6 +181,7 @@ export const EditPostPageImpl: React.FC = () => {
   const buildParams = () => {
     return {
       title: postTitle,
+      summary: summary,
       body: editor?.getText() ?? null,
       bodyJson: JSON.stringify(editor?.getJSON()) ?? null,
       bodyHtml: editor?.getHTML() ?? null,
@@ -184,6 +199,7 @@ export const EditPostPageImpl: React.FC = () => {
 
   const saveContent = async (data: {
     title: string;
+    summary: string | null;
     body: string | null;
     bodyJson: string | null;
     bodyHtml: string | null;
@@ -286,7 +302,7 @@ export const EditPostPageImpl: React.FC = () => {
       <Box component="main" sx={{ minHeight: '100vh' }}>
         <Toolbar sx={{ mt: 0 }} />
         <Container sx={{ py: 6 }}>
-          <Box sx={{ maxWidth: '42rem', marginLeft: 'auto', marginRight: 'auto' }}>
+          <Box sx={{ maxWidth: '42rem', marginLeft: 'auto', marginRight: 'auto', mb: 4 }}>
             {content.title.length === 0 && content.body.length === 0 && content.canTranslate && (
               <Stack direction="row" gap={1} sx={{ mb: 4, alignItems: 'center' }} color="secondary">
                 <Icon name="Languages" size={16} />
@@ -339,13 +355,13 @@ export const EditPostPageImpl: React.FC = () => {
                   }}
                 >
                   <IconButton
-                    shape="rounded"
                     color="secondary"
                     sx={{
                       position: 'absolute',
                       top: 8,
                       right: 8,
                       backgroundColor: alpha('#fff', 0.7),
+                      borderRadius: '50%',
                     }}
                     onClick={handleDeleteCover}
                   >
@@ -376,14 +392,89 @@ export const EditPostPageImpl: React.FC = () => {
               )}
             </Box>
 
-            <Stack spacing={1} sx={{ mb: 8 }}>
+            <TextField
+              type="text"
+              fullWidth
+              multiline
+              placeholder={t('title')}
+              value={postTitle}
+              onChange={(e) => handleChangeTitle(e.target.value)}
+              sx={{
+                '.MuiOutlinedInput-notchedOutline': {
+                  border: 'none !important',
+                },
+                '.MuiOutlinedInput-root': {
+                  padding: 0,
+                  lineHeight: 1.85,
+                },
+                '.MuiOutlinedInput-input': {
+                  color: theme.palette.text.primary,
+                },
+                '.Mui-focused': {
+                  boxShadow: 'none !important',
+                },
+                '& fieldset': { border: 'none' },
+                p: 0,
+              }}
+              inputProps={{
+                style: {
+                  padding: 0,
+                  fontSize: '2.25rem',
+                  lineHeight: '2.7rem',
+                  fontWeight: 'bold',
+                },
+              }}
+              onKeyDown={handleKeyDown}
+            />
+          </Box>
+
+          {/* Summary */}
+          <Stack
+            flexDirection="row"
+            sx={{ position: 'relative' }}
+            onMouseOver={() => setShowSummaryToolButton(true)}
+            onMouseLeave={() => setShowSummaryToolButton(false)}
+          >
+            {showSummaryToolButton && (
+              <Stack
+                flexDirection="row"
+                sx={{
+                  alignItems: 'center',
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  transform: 'translate3d(197px, -4px, 0)',
+                }}
+                gap={0.25}
+              >
+                <Tooltip title={t('summary_tooltip')} placement="bottom">
+                  <IconButton size="small" color="secondary" sx={{ borderRadius: 1.5 }}>
+                    <Icon name="CircleHelp" size={18} />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title={t('ai_summarizes_post')} placement="bottom">
+                  <IconButton size="small" color="secondary" sx={{ borderRadius: 1.5 }}>
+                    <Icon name="Sparkles" size={18} />
+                  </IconButton>
+                </Tooltip>
+              </Stack>
+            )}
+            <Box
+              sx={{
+                maxWidth: '42rem',
+                marginLeft: 'auto',
+                marginRight: 'auto',
+                mb: 8,
+                width: '100%',
+              }}
+            >
               <TextField
                 type="text"
                 fullWidth
                 multiline
-                placeholder={t('title')}
-                value={postTitle}
-                onChange={(e) => handleChangeTitle(e.target.value)}
+                placeholder={`${t('add_summary')}...`}
+                value={summary}
+                onChange={(e) => handleChangeSummary(e.target.value)}
                 sx={{
                   '.MuiOutlinedInput-notchedOutline': {
                     border: 'none !important',
@@ -404,14 +495,14 @@ export const EditPostPageImpl: React.FC = () => {
                 inputProps={{
                   style: {
                     padding: 0,
-                    fontSize: '1.875rem',
-                    lineHeight: '2.25rem',
+                    fontSize: '1.15rem',
+                    lineHeight: '1.38rem',
                   },
                 }}
                 onKeyDown={handleKeyDown}
               />
-            </Stack>
-          </Box>
+            </Box>
+          </Stack>
           <BlockEditor editor={editor} />
         </Container>
       </Box>
