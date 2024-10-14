@@ -69,7 +69,7 @@ export class GenerateSeoUseCase {
           userId,
           sourceText: latestRevision.body,
           generatedText: translatedBody,
-          context: 'translate for summary',
+          context: 'translate for seo',
         })
       );
     }
@@ -91,7 +91,7 @@ export class GenerateSeoUseCase {
         userId,
         sourceText: latestRevision.body,
         generatedText: summarizedSeo,
-        context: 'summary for seo',
+        context: 'generate for seo',
       })
     );
 
