@@ -1,4 +1,4 @@
-import { TextGenerator, Translator } from '@collectionscms/plugin-text-generator';
+import { TextGenerator } from '@collectionscms/plugin-text-generator';
 import { getLanguageCodeType } from '../../../constants/languages.js';
 import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
@@ -7,6 +7,7 @@ import { ContentRevisionEntity } from '../../persistence/contentRevision/content
 import { ContentRevisionRepository } from '../../persistence/contentRevision/contentRevision.repository.js';
 import { TextGenerationUsageEntity } from '../../persistence/textGenerationUsage/textGenerationUsage.entity.js';
 import { TextGenerationUsageRepository } from '../../persistence/textGenerationUsage/textGenerationUsage.repository.js';
+import { TextGenerationService } from '../../services/textGeneration.service.js';
 import { GenerateSeoUseCaseSchemaType } from './generateSeo.useCase.schema.js';
 
 export class GenerateSeoUseCase {
@@ -15,7 +16,7 @@ export class GenerateSeoUseCase {
     private readonly contentRepository: ContentRepository,
     private readonly contentRevisionRepository: ContentRevisionRepository,
     private readonly textGenerationUsageRepository: TextGenerationUsageRepository,
-    private readonly translator: Translator,
+    private readonly textGenerationService: TextGenerationService,
     private readonly textGenerator: TextGenerator
   ) {}
 
@@ -46,36 +47,28 @@ export class GenerateSeoUseCase {
       content.language
     );
 
-    const usages: TextGenerationUsageEntity[] = [];
+    // Text to English
+    const { englishText, isTranslated } = await this.textGenerationService.translateToEnglish(
+      latestRevision.body,
+      sourceLanguage,
+      targetLanguage
+    );
 
-    let body = latestRevision.body;
-    if (
-      sourceLanguage.sourceLanguageCode !== 'en' &&
-      sourceLanguage.sourceLanguageCode &&
-      targetLanguage.targetLanguageCode
-    ) {
-      // Translate the body to English
-      const translatedBody = await this.translator.translate(
-        [latestRevision.body],
-        sourceLanguage.sourceLanguageCode,
-        targetLanguage.targetLanguageCode
-      );
-      body = translatedBody[0].text;
-
-      usages.push(
-        TextGenerationUsageEntity.Construct({
-          projectId: content.projectId,
-          contentId: content.id,
-          userId,
-          sourceText: latestRevision.body,
-          generatedText: translatedBody,
-          context: 'translate for seo',
-        })
-      );
-    }
+    const usages = isTranslated
+      ? [
+          TextGenerationUsageEntity.Construct({
+            projectId: content.projectId,
+            contentId: content.id,
+            userId,
+            sourceText: latestRevision.body,
+            generatedText: englishText,
+            context: 'translate for seo',
+          }),
+        ]
+      : [];
 
     // Generate seo
-    const seo = await this.textGenerator.generateSeo(body, sourceLanguage.englishName);
+    const seo = await this.textGenerator.generateSeo(englishText, sourceLanguage.englishName);
     if (seo.title && seo.description) {
       latestRevision.updateContent({
         metaTitle: seo.title,

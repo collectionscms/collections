@@ -1,4 +1,4 @@
-import { TextGenerator, Translator } from '@collectionscms/plugin-text-generator';
+import { TextGenerator } from '@collectionscms/plugin-text-generator';
 import { getLanguageCodeType } from '../../../constants/languages.js';
 import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
@@ -6,6 +6,7 @@ import { ContentRepository } from '../../persistence/content/content.repository.
 import { ContentRevisionEntity } from '../../persistence/contentRevision/contentRevision.entity.js';
 import { TextGenerationUsageEntity } from '../../persistence/textGenerationUsage/textGenerationUsage.entity.js';
 import { TextGenerationUsageRepository } from '../../persistence/textGenerationUsage/textGenerationUsage.repository.js';
+import { TextGenerationService } from '../../services/textGeneration.service.js';
 import { GenerateSeoUseCaseSchemaType } from './generateSeo.useCase.schema.js';
 
 export class GenerateSummaryUseCase {
@@ -13,7 +14,7 @@ export class GenerateSummaryUseCase {
     private readonly prisma: ProjectPrismaClient,
     private readonly contentRepository: ContentRepository,
     private readonly textGenerationUsageRepository: TextGenerationUsageRepository,
-    private readonly translator: Translator,
+    private readonly textGenerationService: TextGenerationService,
     private readonly textGenerator: TextGenerator
   ) {}
 
@@ -41,36 +42,31 @@ export class GenerateSummaryUseCase {
       content.language
     );
 
-    const usages: TextGenerationUsageEntity[] = [];
+    // Text to English
+    const { englishText, isTranslated } = await this.textGenerationService.translateToEnglish(
+      latestRevision.body,
+      sourceLanguage,
+      targetLanguage
+    );
 
-    let body = latestRevision.body;
-    if (
-      sourceLanguage.sourceLanguageCode !== 'en' &&
-      sourceLanguage.sourceLanguageCode &&
-      targetLanguage.targetLanguageCode
-    ) {
-      // Translate the body to English
-      const translatedBody = await this.translator.translate(
-        [latestRevision.body],
-        sourceLanguage.sourceLanguageCode,
-        targetLanguage.targetLanguageCode
-      );
-      body = translatedBody[0].text;
-
-      usages.push(
-        TextGenerationUsageEntity.Construct({
-          projectId: content.projectId,
-          contentId: content.id,
-          userId,
-          sourceText: latestRevision.body,
-          generatedText: translatedBody,
-          context: 'translate for summary',
-        })
-      );
-    }
+    const usages = isTranslated
+      ? [
+          TextGenerationUsageEntity.Construct({
+            projectId: content.projectId,
+            contentId: content.id,
+            userId,
+            sourceText: latestRevision.body,
+            generatedText: englishText,
+            context: 'translate for summary',
+          }),
+        ]
+      : [];
 
     // Generate summary
-    const summaries = await this.textGenerator.generateSummary(body, sourceLanguage.englishName);
+    const summaries = await this.textGenerator.generateSummary(
+      englishText,
+      sourceLanguage.englishName
+    );
     const summaryHtml = generateSummaryHtml(summaries);
 
     usages.push(
@@ -80,7 +76,7 @@ export class GenerateSummaryUseCase {
         userId,
         sourceText: latestRevision.body,
         generatedText: summaries,
-        context: 'generate for seo',
+        context: 'generate for summary',
       })
     );
     await this.textGenerationUsageRepository.createMany(this.prisma, usages);
