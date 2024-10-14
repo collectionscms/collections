@@ -37,10 +37,9 @@ export const SeoSettings: React.FC<Props> = ({
 }) => {
   const { t } = useTranslation();
   const [isEditingMeta, setIsEditingMeta] = useState(false);
-  const { updateContent, generateSeoSummary } = usePost();
+  const { updateContent, generateSeo } = usePost();
   const { trigger: updateContentTrigger, isMutating } = updateContent(contentId);
-  const { trigger: generateSeoSummaryTrigger, isMutating: isMutatingSummary } =
-    generateSeoSummary(contentId);
+  const { trigger: generateSeoTrigger, isMutating: isMutatingSummary } = generateSeo(contentId);
 
   const {
     control,
@@ -62,7 +61,7 @@ export const SeoSettings: React.FC<Props> = ({
 
   const onClickSummarize = async () => {
     try {
-      const seo = await generateSeoSummaryTrigger();
+      const seo = await generateSeoTrigger();
       onUpdated(seo.metaTitle ?? null, seo.metaDescription ?? null);
       enqueueSnackbar(t('toast.updated_successfully'), {
         anchorOrigin: {

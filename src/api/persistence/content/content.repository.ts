@@ -180,8 +180,8 @@ export class ContentRepository {
       },
       data: {
         title: contentEntity.title,
+        subtitle: contentEntity.subtitle,
         slug: contentEntity.slug,
-        excerpt: contentEntity.excerpt,
         body: contentEntity.body,
         bodyJson: contentEntity.bodyJson,
         bodyHtml: contentEntity.bodyHtml,

@@ -15,11 +15,14 @@ import { UserRepository } from '../persistence/user/user.repository.js';
 import { WebhookLogRepository } from '../persistence/webhookLog/webhookLog.repository.js';
 import { WebhookSettingRepository } from '../persistence/webhookSetting/webhookSetting.repository.js';
 import { ContentService } from '../services/content.service.js';
+import { TextGenerationService } from '../services/textGeneration.service.js';
 import { WebhookService } from '../services/webhook.service.js';
 import { ArchiveUseCase } from '../useCases/content/archive.useCase.js';
 import { archiveUseCaseSchema } from '../useCases/content/archive.useCase.schema.js';
-import { GenerateSeoSummaryUseCase } from '../useCases/content/generateSeoSummary.useCase.js';
-import { generateSeoSummaryUseCaseSchema } from '../useCases/content/generateSeoSummary.useCase.schema.js';
+import { GenerateSeoUseCase } from '../useCases/content/generateSeo.useCase.js';
+import { generateSeoUseCaseSchema } from '../useCases/content/generateSeo.useCase.schema.js';
+import { GenerateSummaryUseCase } from '../useCases/content/generateSummary.useCase.js';
+import { generateSummaryUseCaseSchema } from '../useCases/content/generateSummary.useCase.schema.js';
 import { GetContentUseCase } from '../useCases/content/getContent.useCase.js';
 import { getContentUseCaseSchema } from '../useCases/content/getContent.useCase.schema.js';
 import { GetTrashedContentsUseCase } from '../useCases/content/getTrashedContents.useCase.js';
@@ -97,12 +100,12 @@ router.patch(
       id: req.params.id,
       userId: res.user.id,
       title: req.body.title,
+      subtitle: req.body.subtitle,
       body: req.body.body,
       bodyJson: req.body.bodyJson,
       bodyHtml: req.body.bodyHtml,
       coverUrl: req.body.coverUrl,
       slug: req.body.slug,
-      excerpt: req.body.excerpt,
       metaTitle: req.body.metaTitle,
       metaDescription: req.body.metaDescription,
     });
@@ -119,29 +122,56 @@ router.patch(
 );
 
 router.post(
-  '/contents/:id/seo-summary',
+  '/contents/:id/generate-seo',
   authenticatedUser,
   validateAccess(['updatePost']),
   asyncHandler(async (req: Request, res: Response) => {
-    const validated = generateSeoSummaryUseCaseSchema.safeParse({
+    const validated = generateSeoUseCaseSchema.safeParse({
       projectId: res.projectRole?.id,
       id: req.params.id,
       userId: res.user.id,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
-    const useCase = new GenerateSeoSummaryUseCase(
+    const useCase = new GenerateSeoUseCase(
       projectPrisma(validated.data.projectId),
       new ContentRepository(),
       new ContentRevisionRepository(),
       new TextGenerationUsageRepository(),
-      new Translator(env.TRANSLATOR_API_KEY),
+      new TextGenerationService(new Translator(env.TRANSLATOR_API_KEY)),
       new TextGenerator(env.TEXT_GENERATOR_API_KEY, env.TEXT_GENERATOR_MODEL)
     );
     const seo = await useCase.execute(validated.data);
 
     res.json({
       seo,
+    });
+  })
+);
+
+router.post(
+  '/contents/:id/generate-summary',
+  authenticatedUser,
+  validateAccess(['updatePost']),
+  asyncHandler(async (req: Request, res: Response) => {
+    const validated = generateSummaryUseCaseSchema.safeParse({
+      projectId: res.projectRole?.id,
+      id: req.params.id,
+      userId: res.user.id,
+    });
+    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
+
+    const useCase = new GenerateSummaryUseCase(
+      projectPrisma(validated.data.projectId),
+      new ContentRepository(),
+      new TextGenerationUsageRepository(),
+      new TextGenerationService(new Translator(env.TRANSLATOR_API_KEY)),
+      new TextGenerator(env.TEXT_GENERATOR_API_KEY, env.TEXT_GENERATOR_MODEL)
+    );
+    const summary = await useCase.execute(validated.data);
+
+    res.json({
+      summary,
     });
   })
 );

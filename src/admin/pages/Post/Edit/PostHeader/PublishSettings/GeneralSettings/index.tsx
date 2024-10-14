@@ -24,11 +24,10 @@ import { TitleTooltip } from '../ui/TitleTooltip/index.js';
 type Props = {
   contentId: string;
   slug: string;
-  excerpt: string | null;
   onUpdated: (slug: string) => void;
 };
 
-export const GeneralSettings: React.FC<Props> = ({ contentId, slug, excerpt, onUpdated }) => {
+export const GeneralSettings: React.FC<Props> = ({ contentId, slug, onUpdated }) => {
   const { t } = useTranslation();
   const [isEditing, setIsEditing] = useState(false);
 
@@ -42,7 +41,6 @@ export const GeneralSettings: React.FC<Props> = ({ contentId, slug, excerpt, onU
   } = useForm<FormValues>({
     defaultValues: {
       slug,
-      excerpt,
     },
     resolver: yupResolver(updateSlugValidator()),
   });
@@ -85,24 +83,6 @@ export const GeneralSettings: React.FC<Props> = ({ contentId, slug, excerpt, onU
               />
             </Stack>
             <FormHelperText error>{errors.slug?.message}</FormHelperText>
-            <Stack gap={1}>
-              <TitleTooltip tooltip={t('excerpt_tooltip')} title={t('excerpt')} />
-              <Controller
-                name="excerpt"
-                control={control}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    type="text"
-                    multiline
-                    rows={3}
-                    sx={{ flexGrow: 1 }}
-                    error={errors.excerpt !== undefined}
-                  />
-                )}
-              />
-            </Stack>
-            <FormHelperText error>{errors.excerpt?.message}</FormHelperText>
             <Stack direction="row" justifyContent="flex-end" spacing={1}>
               <Button variant="outlined" color="secondary" onClick={() => setIsEditing(false)}>
                 {t('cancel')}
@@ -115,13 +95,9 @@ export const GeneralSettings: React.FC<Props> = ({ contentId, slug, excerpt, onU
         ) : (
           <Stack direction="row" alignItems="center" gap={1}>
             <Box flexGrow="1">
-              <Stack gap={1} sx={{ mb: 3 }}>
+              <Stack gap={1}>
                 <Typography variant="subtitle1">{t('post_slug')}</Typography>
                 <Typography>{decodeURIComponent(slug)}</Typography>
-              </Stack>
-              <Stack gap={1}>
-                <TitleTooltip tooltip={t('excerpt_tooltip')} title={t('excerpt')} />
-                <Typography>{excerpt ?? t('not_set')}</Typography>
               </Stack>
             </Box>
             <IconButton onClick={() => setIsEditing(true)}>

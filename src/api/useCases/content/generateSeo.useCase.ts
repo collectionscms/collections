@@ -1,4 +1,4 @@
-import { TextGenerator, Translator } from '@collectionscms/plugin-text-generator';
+import { TextGenerator } from '@collectionscms/plugin-text-generator';
 import { getLanguageCodeType } from '../../../constants/languages.js';
 import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
@@ -7,22 +7,23 @@ import { ContentRevisionEntity } from '../../persistence/contentRevision/content
 import { ContentRevisionRepository } from '../../persistence/contentRevision/contentRevision.repository.js';
 import { TextGenerationUsageEntity } from '../../persistence/textGenerationUsage/textGenerationUsage.entity.js';
 import { TextGenerationUsageRepository } from '../../persistence/textGenerationUsage/textGenerationUsage.repository.js';
-import { GenerateSeoSummaryUseCaseSchemaType } from './generateSeoSummary.useCase.schema.js';
+import { TextGenerationService } from '../../services/textGeneration.service.js';
+import { GenerateSeoUseCaseSchemaType } from './generateSeo.useCase.schema.js';
 
-export class GenerateSeoSummaryUseCase {
+export class GenerateSeoUseCase {
   constructor(
     private readonly prisma: ProjectPrismaClient,
     private readonly contentRepository: ContentRepository,
     private readonly contentRevisionRepository: ContentRevisionRepository,
     private readonly textGenerationUsageRepository: TextGenerationUsageRepository,
-    private readonly translator: Translator,
+    private readonly textGenerationService: TextGenerationService,
     private readonly textGenerator: TextGenerator
   ) {}
 
   async execute({
     id,
     userId,
-  }: GenerateSeoSummaryUseCaseSchemaType): Promise<{ metaTitle: string; metaDescription: string }> {
+  }: GenerateSeoUseCaseSchemaType): Promise<{ metaTitle: string; metaDescription: string }> {
     const contentWithRevisions = await this.contentRepository.findOneWithRevisionsById(
       this.prisma,
       id
@@ -46,40 +47,33 @@ export class GenerateSeoSummaryUseCase {
       content.language
     );
 
-    const usages: TextGenerationUsageEntity[] = [];
-
-    let body = latestRevision.body;
-    if (
-      sourceLanguage.sourceLanguageCode !== 'en' &&
-      sourceLanguage.sourceLanguageCode &&
-      targetLanguage.targetLanguageCode
-    ) {
-      // Translate the body to English
-      const translatedBody = await this.translator.translate(
-        [latestRevision.body],
-        sourceLanguage.sourceLanguageCode,
-        targetLanguage.targetLanguageCode
+    // Text to English
+    const { englishText, isTranslated } =
+      await this.textGenerationService.translateToEnglishIfNeeded(
+        latestRevision.body,
+        sourceLanguage,
+        targetLanguage
       );
-      body = translatedBody[0].text;
 
-      usages.push(
-        TextGenerationUsageEntity.Construct({
-          projectId: content.projectId,
-          contentId: content.id,
-          userId,
-          sourceText: latestRevision.body,
-          generatedText: translatedBody,
-          context: 'translate for summary',
-        })
-      );
-    }
+    const usages = isTranslated
+      ? [
+          TextGenerationUsageEntity.Construct({
+            projectId: content.projectId,
+            contentId: content.id,
+            userId,
+            sourceText: latestRevision.body,
+            generatedText: englishText,
+            context: 'translate for seo',
+          }),
+        ]
+      : [];
 
-    // Summarize the body
-    const summarizedSeo = await this.textGenerator.summarizeSeo(body, sourceLanguage.englishName);
-    if (summarizedSeo.title && summarizedSeo.description) {
+    // Generate seo
+    const seo = await this.textGenerator.generateSeo(englishText, sourceLanguage.englishName);
+    if (seo.title && seo.description) {
       latestRevision.updateContent({
-        metaTitle: summarizedSeo.title,
-        metaDescription: summarizedSeo.description,
+        metaTitle: seo.title,
+        metaDescription: seo.description,
         updatedById: userId,
       });
     }
@@ -90,8 +84,8 @@ export class GenerateSeoSummaryUseCase {
         contentId: content.id,
         userId,
         sourceText: latestRevision.body,
-        generatedText: summarizedSeo,
-        context: 'summary for seo',
+        generatedText: seo,
+        context: 'generate for seo',
       })
     );
 
@@ -111,6 +105,6 @@ export class GenerateSeoSummaryUseCase {
       await this.textGenerationUsageRepository.createMany(tx, usages);
     });
 
-    return { metaTitle: summarizedSeo.title, metaDescription: summarizedSeo.description };
+    return { metaTitle: seo.title, metaDescription: seo.description };
   }
 }

@@ -173,10 +173,10 @@ model Content {
   postId               String                @db.Uuid
   slug                 String
   title                String?               @db.VarChar(255)
+  subtitle             String?
   body                 String?
   bodyJson             String?
   bodyHtml             String?
-  excerpt              String?
   metaTitle            String?               @db.VarChar(255)
   metaDescription      String?
   coverUrl             String?               @db.VarChar(255)
@@ -208,10 +208,10 @@ model ContentRevision {
   contentId       String    @db.Uuid
   slug            String
   title           String?   @db.VarChar(255)
+  subtitle        String?
   body            String?
   bodyJson        String?
   bodyHtml        String?
-  excerpt         String?
   metaTitle       String?   @db.VarChar(255)
   metaDescription String?
   coverUrl        String?   @db.VarChar(255)
