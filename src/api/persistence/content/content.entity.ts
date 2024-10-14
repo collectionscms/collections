@@ -152,8 +152,8 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     return this.props.title ?? '';
   }
 
-  get subtitle(): string | null {
-    return this.props.subtitle;
+  get subtitle(): string {
+    return this.props.subtitle ?? '';
   }
 
   get body(): string {
