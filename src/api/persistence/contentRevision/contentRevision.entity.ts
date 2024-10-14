@@ -57,6 +57,10 @@ export class ContentRevisionEntity extends PrismaBaseEntity<ContentRevision> {
     return this.props.title ?? '';
   }
 
+  get subtitle(): string | null {
+    return this.props.subtitle;
+  }
+
   get body(): string {
     return this.props.body ?? '';
   }
@@ -67,10 +71,6 @@ export class ContentRevisionEntity extends PrismaBaseEntity<ContentRevision> {
 
   get bodyHtml(): string {
     return this.props.bodyHtml ?? '';
-  }
-
-  get excerpt(): string | null {
-    return this.props.excerpt;
   }
 
   get metaTitle(): string | null {
@@ -134,34 +134,34 @@ export class ContentRevisionEntity extends PrismaBaseEntity<ContentRevision> {
 
   updateContent({
     title,
+    subtitle,
     body,
     bodyJson,
     bodyHtml,
     coverUrl,
     slug,
-    excerpt,
     metaTitle,
     metaDescription,
     updatedById,
   }: {
     title?: string | null;
+    subtitle?: string | null;
     body?: string | null;
     bodyJson?: string | null;
     bodyHtml?: string | null;
     coverUrl?: string | null;
     slug?: string;
-    excerpt?: string | null;
     metaTitle?: string | null;
     metaDescription?: string | null;
     updatedById: string;
   }): void {
     Object.assign(this.props, {
       ...(title !== undefined && { title }),
+      ...(subtitle !== undefined && { subtitle }),
       ...(body !== undefined && { body }),
       ...(bodyJson !== undefined && { bodyJson }),
       ...(bodyHtml !== undefined && { bodyHtml }),
       ...(coverUrl !== undefined && { coverUrl }),
-      ...(excerpt !== undefined && { excerpt }),
       ...(metaTitle !== undefined && { metaTitle }),
       ...(metaDescription !== undefined && { metaDescription }),
       ...(slug !== undefined && { slug: encodeURIComponent(slug) }),
