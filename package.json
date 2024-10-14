@@ -1,7 +1,7 @@
 {
   "name": "@collectionscms/collections",
-  "version": "2.0.0-beta.4",
-  "description": "Open-source headless CMS with automatic translation by AI and seamless multilingual delivery.",
+  "version": "2.0.0-rc.1",
+  "description": "Headless CMS with AI summary and multilingual support for Answer Engine Optimization(AEO)",
   "license": "MIT",
   "type": "module",
   "engines": {
@@ -189,17 +189,12 @@
   "keywords": [
     "cms",
     "headless",
-    "content management system",
-    "content management platform",
-    "open source",
-    "admin panel",
-    "backoffice",
-    "dashboard",
-    "api",
-    "framework",
-    "rest",
-    "jam",
-    "jamstack"
+    "jamstack",
+    "headless-cms",
+    "seo",
+    "aeo",
+    "writing",
+    "publishing"
   ],
   "optionalDependencies": {
     "nodemailer-sendgrid": "1.0.3"
