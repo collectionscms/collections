@@ -67,7 +67,7 @@ export type RevisedContent = {
   updatedAt: Date;
   version: number;
   title: string;
-  subtitle: string | null;
+  subtitle: string;
   body: string;
   bodyJson: string;
   bodyHtml: string;
