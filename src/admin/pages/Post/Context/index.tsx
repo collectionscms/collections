@@ -18,7 +18,12 @@ type PostContext = {
   createContent: (postId: string) => SWRMutationResponse<Content, any, string, Record<string, any>>;
   translateContent: (
     postId: string
-  ) => SWRMutationResponse<{ title: string; body: string }, any, string, Record<string, any>>;
+  ) => SWRMutationResponse<
+    { title: string; subtitle: string; body: string },
+    any,
+    string,
+    Record<string, any>
+  >;
   getContent: (id: string) => SWRResponse<
     RevisedContent,
     Error,

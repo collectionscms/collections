@@ -335,7 +335,7 @@ export const EditPostPageImpl: React.FC = () => {
         <Container sx={{ py: 6 }}>
           <Box sx={{ maxWidth: '42rem', marginLeft: 'auto', marginRight: 'auto', mb: 6 }}>
             {postTitle.length === 0 &&
-              postSubtitle?.length === 0 &&
+              postSubtitle.length === 0 &&
               characterCount.characters() === 0 &&
               content.canTranslate && (
                 <Stack
@@ -356,17 +356,15 @@ export const EditPostPageImpl: React.FC = () => {
                     })}
                   </Typography>
                   {isTranslating ? (
-                    <>
-                      <Box
-                        width={64}
-                        height={40}
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                      >
-                        <LoadingOutlined size={14} />
-                      </Box>
-                    </>
+                    <Box
+                      width={64}
+                      height={40}
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                    >
+                      <LoadingOutlined size={14} />
+                    </Box>
                   ) : (
                     <Button
                       variant="text"

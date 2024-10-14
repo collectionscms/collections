@@ -48,11 +48,12 @@ export class GenerateSeoUseCase {
     );
 
     // Text to English
-    const { englishText, isTranslated } = await this.textGenerationService.translateToEnglish(
-      latestRevision.body,
-      sourceLanguage,
-      targetLanguage
-    );
+    const { englishText, isTranslated } =
+      await this.textGenerationService.translateToEnglishIfNeeded(
+        latestRevision.body,
+        sourceLanguage,
+        targetLanguage
+      );
 
     const usages = isTranslated
       ? [

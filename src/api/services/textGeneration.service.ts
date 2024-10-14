@@ -4,7 +4,7 @@ import { LanguageCode } from '../../constants/languages.js';
 export class TextGenerationService {
   constructor(private readonly translator: Translator) {}
 
-  async translateToEnglish(
+  async translateToEnglishIfNeeded(
     text: string,
     sourceLanguage: LanguageCode,
     targetLanguage: LanguageCode
@@ -17,7 +17,6 @@ export class TextGenerationService {
       sourceLanguage.sourceLanguageCode &&
       targetLanguage.targetLanguageCode
     ) {
-      // Translate the body to English
       const translatedBody = await this.translator.translate(
         [text],
         sourceLanguage.sourceLanguageCode,

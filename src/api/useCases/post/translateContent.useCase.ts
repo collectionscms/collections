@@ -41,10 +41,10 @@ export class TranslateContentUseCase {
       return { title: '', subtitle: '', body: '' };
     }
 
-    // Exclude blank text
     const title = sourceLngRevision.title.trim();
     const subtitle = sourceLngRevision.subtitle.trim();
     const body = sourceLngRevision.bodyHtml.trim();
+    // Exclude blank texts
     const nonEmptyTexts = [title, subtitle, body].filter((text) => text !== '');
 
     let textResults = await this.translator.translate(
@@ -58,17 +58,18 @@ export class TranslateContentUseCase {
       contentId: sourceLngRevision.contentId,
       userId,
       sourceText: {
-        title: sourceLngRevision.title,
-        body: sourceLngRevision.bodyHtml,
+        title,
+        body,
       },
       generatedText: textResults,
       context: 'translate',
     });
     this.textGenerationUsageRepository.create(this.prisma, usage);
 
-    if (!title) textResults.splice(0, 0, { text: '' });
-    if (!subtitle) textResults.splice(1, 0, { text: '' });
-    if (!body) textResults.splice(2, 0, { text: '' });
+    const fields = [title, subtitle, body];
+    fields.forEach((field, index) => {
+      if (!field) textResults.splice(index, 0, { text: '' });
+    });
 
     return {
       title: textResults[0].text,
