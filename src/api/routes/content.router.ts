@@ -18,8 +18,8 @@ import { ContentService } from '../services/content.service.js';
 import { WebhookService } from '../services/webhook.service.js';
 import { ArchiveUseCase } from '../useCases/content/archive.useCase.js';
 import { archiveUseCaseSchema } from '../useCases/content/archive.useCase.schema.js';
-import { GenerateSeoSummaryUseCase } from '../useCases/content/generateSeoSummary.useCase.js';
-import { generateSeoSummaryUseCaseSchema } from '../useCases/content/generateSeoSummary.useCase.schema.js';
+import { GenerateSeoUseCase } from '../useCases/content/generateSeo.useCase.js';
+import { generateSeoUseCaseSchema } from '../useCases/content/generateSeo.useCase.schema.js';
 import { GetContentUseCase } from '../useCases/content/getContent.useCase.js';
 import { getContentUseCaseSchema } from '../useCases/content/getContent.useCase.schema.js';
 import { GetTrashedContentsUseCase } from '../useCases/content/getTrashedContents.useCase.js';
@@ -119,18 +119,18 @@ router.patch(
 );
 
 router.post(
-  '/contents/:id/seo-summary',
+  '/contents/:id/generate-seo',
   authenticatedUser,
   validateAccess(['updatePost']),
   asyncHandler(async (req: Request, res: Response) => {
-    const validated = generateSeoSummaryUseCaseSchema.safeParse({
+    const validated = generateSeoUseCaseSchema.safeParse({
       projectId: res.projectRole?.id,
       id: req.params.id,
       userId: res.user.id,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
-    const useCase = new GenerateSeoSummaryUseCase(
+    const useCase = new GenerateSeoUseCase(
       projectPrisma(validated.data.projectId),
       new ContentRepository(),
       new ContentRevisionRepository(),

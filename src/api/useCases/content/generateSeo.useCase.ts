@@ -7,9 +7,9 @@ import { ContentRevisionEntity } from '../../persistence/contentRevision/content
 import { ContentRevisionRepository } from '../../persistence/contentRevision/contentRevision.repository.js';
 import { TextGenerationUsageEntity } from '../../persistence/textGenerationUsage/textGenerationUsage.entity.js';
 import { TextGenerationUsageRepository } from '../../persistence/textGenerationUsage/textGenerationUsage.repository.js';
-import { GenerateSeoSummaryUseCaseSchemaType } from './generateSeoSummary.useCase.schema.js';
+import { GenerateSeoUseCaseSchemaType } from './generateSeo.useCase.schema.js';
 
-export class GenerateSeoSummaryUseCase {
+export class GenerateSeoUseCase {
   constructor(
     private readonly prisma: ProjectPrismaClient,
     private readonly contentRepository: ContentRepository,
@@ -22,7 +22,7 @@ export class GenerateSeoSummaryUseCase {
   async execute({
     id,
     userId,
-  }: GenerateSeoSummaryUseCaseSchemaType): Promise<{ metaTitle: string; metaDescription: string }> {
+  }: GenerateSeoUseCaseSchemaType): Promise<{ metaTitle: string; metaDescription: string }> {
     const contentWithRevisions = await this.contentRepository.findOneWithRevisionsById(
       this.prisma,
       id

@@ -27,7 +27,7 @@ type PostContext = {
     }
   >;
   updateContent: (contentId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
-  generateSeoSummary: (
+  generateSeo: (
     contentId: string
   ) => SWRMutationResponse<{ metaTitle: string; metaDescription: string }, any, string>;
   revertContent: (contentId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
@@ -99,8 +99,8 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       }
     );
 
-  const generateSeoSummary = (contentId: string) =>
-    useSWRMutation(`/contents/${contentId}/seo-summary`, async (url: string) => {
+  const generateSeo = (contentId: string) =>
+    useSWRMutation(`/contents/${contentId}/generate-seo`, async (url: string) => {
       return api
         .post<{
           seo: {
@@ -165,7 +165,7 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       trashPost,
       createContent,
       updateContent,
-      generateSeoSummary,
+      generateSeo,
       revertContent,
       trashContent,
       getContent,
@@ -182,7 +182,7 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       trashPost,
       createContent,
       updateContent,
-      generateSeoSummary,
+      generateSeo,
       revertContent,
       trashContent,
       getContent,
