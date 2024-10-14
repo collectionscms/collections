@@ -74,12 +74,12 @@ export class GenerateSeoUseCase {
       );
     }
 
-    // Summarize the body
-    const summarizedSeo = await this.textGenerator.summarizeSeo(body, sourceLanguage.englishName);
-    if (summarizedSeo.title && summarizedSeo.description) {
+    // Generate seo
+    const seo = await this.textGenerator.generateSeo(body, sourceLanguage.englishName);
+    if (seo.title && seo.description) {
       latestRevision.updateContent({
-        metaTitle: summarizedSeo.title,
-        metaDescription: summarizedSeo.description,
+        metaTitle: seo.title,
+        metaDescription: seo.description,
         updatedById: userId,
       });
     }
@@ -90,7 +90,7 @@ export class GenerateSeoUseCase {
         contentId: content.id,
         userId,
         sourceText: latestRevision.body,
-        generatedText: summarizedSeo,
+        generatedText: seo,
         context: 'generate for seo',
       })
     );
@@ -111,6 +111,6 @@ export class GenerateSeoUseCase {
       await this.textGenerationUsageRepository.createMany(tx, usages);
     });
 
-    return { metaTitle: summarizedSeo.title, metaDescription: summarizedSeo.description };
+    return { metaTitle: seo.title, metaDescription: seo.description };
   }
 }
