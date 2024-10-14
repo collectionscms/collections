@@ -1,8 +1,8 @@
 import { z } from 'zod';
 
 export const updateWebSettingsUseCaseSchema = z.object({
-  id: z.string(),
-  projectId: z.string(),
+  id: z.string().uuid(),
+  projectId: z.string().uuid(),
   name: z.string(),
   enabled: z.boolean(),
   url: z.string().url().nullable(),
@@ -10,6 +10,7 @@ export const updateWebSettingsUseCaseSchema = z.object({
   onArchive: z.boolean(),
   onDeletePublished: z.boolean(),
   onRestorePublished: z.boolean(),
+  onRevert: z.boolean(),
 });
 
 export type UpdateWebSettingsUseCaseSchemaType = z.infer<typeof updateWebSettingsUseCaseSchema>;

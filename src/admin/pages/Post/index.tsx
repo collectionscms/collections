@@ -99,7 +99,7 @@ export const PostPageImpl: React.FC = () => {
               {collapseIcon}
             </Box>
           ) : (
-            <Box sx={{ opacity: 0.1 }}>{collapseIcon}</Box>
+            <Box sx={{ display: 'flex', alignItems: 'center', opacity: 0.1 }}>{collapseIcon}</Box>
           );
         },
         SubCell: () => null,

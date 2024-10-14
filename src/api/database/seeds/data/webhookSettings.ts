@@ -12,6 +12,7 @@ export const webhookSettings = (projectId: string) => {
       onArchive: true,
       onDeletePublished: true,
       onRestorePublished: true,
+      onRevert: true,
     },
     {
       name: 'Vercel deployment',
@@ -23,6 +24,7 @@ export const webhookSettings = (projectId: string) => {
       onArchive: true,
       onDeletePublished: true,
       onRestorePublished: true,
+      onRevert: true,
     },
   ];
 

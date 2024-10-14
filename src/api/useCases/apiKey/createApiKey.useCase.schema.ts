@@ -1,9 +1,9 @@
 import { z } from 'zod';
 
 export const createApiKeyUseCaseSchema = z.object({
-  projectId: z.string(),
+  projectId: z.string().uuid(),
   name: z.string(),
-  createdById: z.string(),
+  createdById: z.string().uuid(),
   permissions: z.array(z.string()),
 });
 

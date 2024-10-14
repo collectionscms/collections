@@ -10,13 +10,16 @@ export class WebhookSettingRepository {
     );
   }
 
-  async findOne(prisma: ProjectPrismaType, id: string): Promise<WebhookSettingEntity> {
-    const record = await prisma.webhookSetting.findUniqueOrThrow({
+  async findOne(prisma: ProjectPrismaType, id: string): Promise<WebhookSettingEntity | null> {
+    const webhookSetting = await prisma.webhookSetting.findUnique({
       where: {
         id,
       },
     });
-    return WebhookSettingEntity.Reconstruct<WebhookSetting, WebhookSettingEntity>(record);
+
+    if (!webhookSetting) return null;
+
+    return WebhookSettingEntity.Reconstruct<WebhookSetting, WebhookSettingEntity>(webhookSetting);
   }
 
   async findEnabledManyByProjectId(
@@ -67,6 +70,7 @@ export class WebhookSettingRepository {
         onArchive: record.onArchive,
         onDeletePublished: record.onDeletePublished,
         onRestorePublished: record.onRestorePublished,
+        onRevert: record.onRevert,
       },
     });
     return WebhookSettingEntity.Reconstruct<WebhookSetting, WebhookSettingEntity>(result);

@@ -19,13 +19,19 @@ export class CloseReviewUseCase {
     { userId, reviewId }: CloseReviewUseCaseSchemaType,
     hasReadAllReview: boolean
   ): Promise<Review> {
-    const { review } = hasReadAllReview
+    const reviewWithContent = hasReadAllReview
       ? await this.reviewRepository.findOneWithContentAndParticipant(this.prisma, reviewId)
       : await this.reviewRepository.findOwnOneWithContentAndParticipant(
           this.prisma,
           userId,
           reviewId
         );
+
+    if (!reviewWithContent) {
+      throw new RecordNotFoundException('record_not_found');
+    }
+
+    const { review } = reviewWithContent;
     review.close();
 
     const contentWithRevisions = await this.contentRepository.findOneWithRevisionsById(

@@ -55,6 +55,7 @@ const CreateWebhookSettingPageImpl: React.FC = () => {
       onArchive: true,
       onDeletePublished: true,
       onRestorePublished: true,
+      onRevert: true,
     },
     resolver: yupResolver(createWebhookSettingValidator(t)),
   });
@@ -76,7 +77,7 @@ const CreateWebhookSettingPageImpl: React.FC = () => {
   ];
 
   const notificationTriggers: {
-    value: 'onPublish' | 'onArchive' | 'onDeletePublished' | 'onRestorePublished';
+    value: 'onPublish' | 'onArchive' | 'onDeletePublished' | 'onRestorePublished' | 'onRevert';
     label: string;
   }[] = [
     {
@@ -94,6 +95,10 @@ const CreateWebhookSettingPageImpl: React.FC = () => {
     {
       value: 'onRestorePublished',
       label: t('providers_field.on_restore_published'),
+    },
+    {
+      value: 'onRevert',
+      label: t('providers_field.on_revert'),
     },
   ];
 
@@ -231,7 +236,6 @@ const CreateWebhookSettingPageImpl: React.FC = () => {
                       ))}
                     </Stack>
                   </Grid>
-                  <FormHelperText error>{errors.onPublish?.message}</FormHelperText>
                 </Grid>
 
                 <Grid xs={12}>

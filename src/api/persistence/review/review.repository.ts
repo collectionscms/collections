@@ -48,8 +48,8 @@ export class ReviewRepository {
     content: ContentEntity;
     reviewee: UserEntity;
     reviewer: UserEntity | null;
-  }> {
-    const record = await prisma.review.findFirstOrThrow({
+  } | null> {
+    const record = await prisma.review.findFirst({
       where: {
         id,
         OR: [{ revieweeId: userId }, { reviewerId: userId }],
@@ -60,6 +60,8 @@ export class ReviewRepository {
         reviewer: true,
       },
     });
+
+    if (!record) return null;
 
     return {
       review: ReviewEntity.Reconstruct<Review, ReviewEntity>(record),
@@ -110,8 +112,8 @@ export class ReviewRepository {
     content: ContentEntity;
     reviewee: UserEntity;
     reviewer: UserEntity | null;
-  }> {
-    const record = await prisma.review.findUniqueOrThrow({
+  } | null> {
+    const record = await prisma.review.findUnique({
       where: { id },
       include: {
         content: true,
@@ -119,6 +121,8 @@ export class ReviewRepository {
         reviewer: true,
       },
     });
+
+    if (!record) return null;
 
     return {
       review: ReviewEntity.Reconstruct<Review, ReviewEntity>(record),
@@ -148,6 +152,8 @@ export class ReviewRepository {
   }
 
   async updateStatus(prisma: ProjectPrismaType, review: ReviewEntity): Promise<ReviewEntity> {
+    review.beforeUpdateValidate();
+
     const record = await prisma.review.update({
       where: { id: review.id },
       data: { status: review.status },

@@ -1,4 +1,4 @@
-import { Translator } from '@collectionscms/plugin-translate';
+import { Translator } from '@collectionscms/plugin-text-generator';
 import express, { Request, Response } from 'express';
 import { env } from '../../env.js';
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
@@ -8,8 +8,10 @@ import { authenticatedUser } from '../middlewares/auth.js';
 import { validateAccess } from '../middlewares/validateAccess.js';
 import { ContentRepository } from '../persistence/content/content.repository.js';
 import { ContentRevisionRepository } from '../persistence/contentRevision/contentRevision.repository.js';
+import { PermissionEntity } from '../persistence/permission/permission.entity.js';
 import { PostRepository } from '../persistence/post/post.repository.js';
 import { ProjectRepository } from '../persistence/project/project.repository.js';
+import { TextGenerationUsageRepository } from '../persistence/textGenerationUsage/textGenerationUsage.repository.js';
 import { WebhookLogRepository } from '../persistence/webhookLog/webhookLog.repository.js';
 import { WebhookSettingRepository } from '../persistence/webhookSetting/webhookSetting.repository.js';
 import { WebhookService } from '../services/webhook.service.js';
@@ -35,6 +37,8 @@ router.get(
       projectId: res.projectRole?.id,
       sourceLanguage: res.projectRole?.sourceLanguage,
       userId: res.user.id,
+      isAdmin: res.projectRole?.isAdmin,
+      permissions: res.projectRole?.permissions,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
@@ -43,8 +47,9 @@ router.get(
       new PostRepository()
     );
 
-    const permissions = res.projectRole?.permissions ?? [];
-    const hasReadAllPost = permissions.map((p) => p.action).includes('readAllPost');
+    const hasReadAllPost =
+      validated.data.isAdmin ||
+      PermissionEntity.hasPermission(validated.data.permissions, 'readAllPost');
     const posts = await useCase.execute(validated.data, hasReadAllPost);
 
     res.json({ posts });
@@ -112,6 +117,7 @@ router.post(
     const validated = translateContentUseCaseSchema.safeParse({
       id: req.params.id,
       projectId: res.projectRole?.id,
+      userId: res.user.id,
       sourceLanguage: req.body.sourceLanguage,
       targetLanguage: req.body.targetLanguage,
     });
@@ -120,6 +126,7 @@ router.post(
     const useCase = new TranslateContentUseCase(
       projectPrisma(validated.data.projectId),
       new ContentRevisionRepository(),
+      new TextGenerationUsageRepository(),
       new Translator(env.TRANSLATE_API_KEY)
     );
     const response = await useCase.execute(validated.data);

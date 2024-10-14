@@ -18,7 +18,12 @@ type PostContext = {
   createContent: (postId: string) => SWRMutationResponse<Content, any, string, Record<string, any>>;
   translateContent: (
     postId: string
-  ) => SWRMutationResponse<{ title: string; body: string }, any, string, Record<string, any>>;
+  ) => SWRMutationResponse<
+    { title: string; subtitle: string; body: string },
+    any,
+    string,
+    Record<string, any>
+  >;
   getContent: (id: string) => SWRResponse<
     RevisedContent,
     Error,
@@ -27,6 +32,10 @@ type PostContext = {
     }
   >;
   updateContent: (contentId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
+  generateSeo: (
+    contentId: string
+  ) => SWRMutationResponse<{ metaTitle: string; metaDescription: string }, any, string>;
+  generateSummary: (contentId: string) => SWRMutationResponse<{ body: string }, any, string>;
   revertContent: (contentId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
   trashContent: (contentId: string) => SWRMutationResponse<void, any, string>;
   requestReview: (contentId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
@@ -96,6 +105,29 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       }
     );
 
+  const generateSeo = (contentId: string) =>
+    useSWRMutation(`/contents/${contentId}/generate-seo`, async (url: string) => {
+      return api
+        .post<{
+          seo: {
+            metaTitle: string;
+            metaDescription: string;
+          };
+        }>(url)
+        .then((res) => res.data.seo);
+    });
+
+  const generateSummary = (contentId: string) =>
+    useSWRMutation(`/contents/${contentId}/generate-summary`, async (url: string) => {
+      return api
+        .post<{
+          summary: {
+            body: string;
+          };
+        }>(url)
+        .then((res) => res.data.summary);
+    });
+
   const revertContent = (contentId: string) =>
     useSWRMutation(
       `/contents/${contentId}/revert`,
@@ -150,6 +182,8 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       trashPost,
       createContent,
       updateContent,
+      generateSeo,
+      generateSummary,
       revertContent,
       trashContent,
       getContent,
@@ -166,6 +200,8 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       trashPost,
       createContent,
       updateContent,
+      generateSeo,
+      generateSummary,
       revertContent,
       trashContent,
       getContent,

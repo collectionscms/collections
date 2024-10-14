@@ -6,10 +6,12 @@ import {
   Stack,
   TextField,
   Toolbar,
+  Tooltip,
   Typography,
   alpha,
   useTheme,
 } from '@mui/material';
+import { enqueueSnackbar } from 'notistack';
 import React, { useEffect, useRef, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useTranslation } from 'react-i18next';
@@ -39,10 +41,14 @@ export const EditPostPageImpl: React.FC = () => {
   const { id } = useParams();
   if (!id) throw new Error('id is not defined');
 
-  const { getContent, updateContent, createFileImage, translateContent } = usePost();
+  const { getContent, updateContent, createFileImage, translateContent, generateSummary } =
+    usePost();
   const { data: content, mutate } = getContent(id);
   const { trigger: updateContentTrigger, isMutating: isSaving } = updateContent(content.id);
   const { trigger: translateTrigger } = translateContent(content.postId);
+  const { trigger: generateSummaryTrigger, isMutating: isGeneratingSummary } = generateSummary(
+    content.id
+  );
 
   const [isDirty, setIsDirty] = useState(false);
   const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
@@ -51,12 +57,13 @@ export const EditPostPageImpl: React.FC = () => {
 
   useEffect(() => {
     setPostTitle(content.title);
+    setPostSubtitle(content.subtitle);
     setUploadCover(content.coverUrl ?? null);
     editor?.commands.setContent(toJson(content.bodyJson));
   }, [content]);
 
   // /////////////////////////////////////
-  // Editor
+  // Title
   // /////////////////////////////////////
 
   const [postTitle, setPostTitle] = useState(content.title);
@@ -65,6 +72,49 @@ export const EditPostPageImpl: React.FC = () => {
     setPostTitle(value);
     setIsDirty(true);
   };
+
+  const handleKeyDownInTitle = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.nativeEvent.isComposing || e.key !== 'Enter') return;
+    e.preventDefault();
+    subTitleRef.current?.focus();
+  };
+
+  // /////////////////////////////////////
+  // Subtitle
+  // /////////////////////////////////////
+
+  const subTitleRef = useRef<HTMLInputElement>(null);
+  const [postSubtitle, setPostSubtitle] = useState(content.subtitle);
+
+  const handleChangeSubtitle = (value: string) => {
+    setPostSubtitle(value);
+    setIsDirty(true);
+  };
+
+  const handleKeyDownInSubtitle = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.nativeEvent.isComposing || e.key !== 'Enter') return;
+    e.preventDefault();
+    editor?.commands.focus();
+  };
+
+  const handleGenerateSummary = async () => {
+    try {
+      const summary = await generateSummaryTrigger();
+      editor?.commands.setContent(`${summary.body}${editor?.getText()}`);
+      enqueueSnackbar(t('toast.updated_successfully'), {
+        anchorOrigin: {
+          vertical: 'bottom',
+          horizontal: 'center',
+        },
+      });
+    } catch (error) {
+      logger.error(error);
+    }
+  };
+
+  // /////////////////////////////////////
+  // Editor
+  // /////////////////////////////////////
 
   const { mode } = useColorMode();
   const ref = React.useRef<HTMLButtonElement>(null);
@@ -167,6 +217,7 @@ export const EditPostPageImpl: React.FC = () => {
   const buildParams = () => {
     return {
       title: postTitle,
+      subtitle: postSubtitle,
       body: editor?.getText() ?? null,
       bodyJson: JSON.stringify(editor?.getJSON()) ?? null,
       bodyHtml: editor?.getHTML() ?? null,
@@ -184,6 +235,7 @@ export const EditPostPageImpl: React.FC = () => {
 
   const saveContent = async (data: {
     title: string;
+    subtitle: string | null;
     body: string | null;
     bodyJson: string | null;
     bodyHtml: string | null;
@@ -192,12 +244,6 @@ export const EditPostPageImpl: React.FC = () => {
     await updateContentTrigger(data);
     setIsDirty(false);
     mutate();
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.nativeEvent.isComposing || e.key !== 'Enter') return;
-    e.preventDefault();
-    editor?.commands.focus();
   };
 
   // /////////////////////////////////////
@@ -251,6 +297,7 @@ export const EditPostPageImpl: React.FC = () => {
         targetLanguage: content.targetLanguageCode,
       });
       handleChangeTitle(response.title);
+      handleChangeSubtitle(response.subtitle);
       editor?.commands.setContent(response.body);
     } catch (error) {
       logger.error(error);
@@ -274,9 +321,9 @@ export const EditPostPageImpl: React.FC = () => {
       />
       <PostFooter
         content={content}
+        characters={characterCount.characters()}
         onTrashed={handleTrashed}
         onReverted={handleMutate}
-        characters={characterCount.characters()}
       />
       <PublishSettings
         open={openPublishSettings}
@@ -286,22 +333,29 @@ export const EditPostPageImpl: React.FC = () => {
       <Box component="main" sx={{ minHeight: '100vh' }}>
         <Toolbar sx={{ mt: 0 }} />
         <Container sx={{ py: 6 }}>
-          <Box sx={{ maxWidth: '42rem', marginLeft: 'auto', marginRight: 'auto' }}>
-            {content.title.length === 0 && content.body.length === 0 && content.canTranslate && (
-              <Stack direction="row" gap={1} sx={{ mb: 4, alignItems: 'center' }} color="secondary">
-                <Icon name="Languages" size={16} />
-                <Typography>
-                  {t('translate_source_to_target', {
-                    sourceLanguage: t(
-                      `languages.${content.sourceLanguageCode}` as unknown as TemplateStringsArray
-                    ),
-                    targetLanguage: t(
-                      `languages.${content.targetLanguageCode}` as unknown as TemplateStringsArray
-                    ),
-                  })}
-                </Typography>
-                {isTranslating ? (
-                  <>
+          <Box sx={{ maxWidth: '42rem', marginLeft: 'auto', marginRight: 'auto', mb: 6 }}>
+            {postTitle.length === 0 &&
+              postSubtitle.length === 0 &&
+              characterCount.characters() === 0 &&
+              content.canTranslate && (
+                <Stack
+                  direction="row"
+                  gap={1}
+                  sx={{ mb: 4, alignItems: 'center' }}
+                  color="secondary"
+                >
+                  <Icon name="Languages" size={16} />
+                  <Typography>
+                    {t('translate_source_to_target', {
+                      sourceLanguage: t(
+                        `languages.${content.sourceLanguageCode}` as unknown as TemplateStringsArray
+                      ),
+                      targetLanguage: t(
+                        `languages.${content.targetLanguageCode}` as unknown as TemplateStringsArray
+                      ),
+                    })}
+                  </Typography>
+                  {isTranslating ? (
                     <Box
                       width={64}
                       height={40}
@@ -311,55 +365,29 @@ export const EditPostPageImpl: React.FC = () => {
                     >
                       <LoadingOutlined size={14} />
                     </Box>
-                  </>
-                ) : (
-                  <Button
-                    variant="text"
-                    size="small"
-                    color="secondary"
-                    sx={{
-                      width: 40,
-                      height: 40,
-                      textDecoration: 'underline',
-                      textDecorationStyle: 'dotted',
-                      textUnderlineOffset: '0.3rem',
-                    }}
-                    onClick={handleTranslate}
-                  >
-                    {t('i_do')}
-                  </Button>
-                )}
-              </Stack>
-            )}
-            <Box sx={{ mb: 2 }}>
-              {uploadCover ? (
-                <Box
-                  sx={{
-                    position: 'relative',
-                  }}
-                >
-                  <IconButton
-                    shape="rounded"
-                    color="secondary"
-                    sx={{
-                      position: 'absolute',
-                      top: 8,
-                      right: 8,
-                      backgroundColor: alpha('#fff', 0.7),
-                    }}
-                    onClick={handleDeleteCover}
-                  >
-                    <Icon name="X" size={20} strokeWidth={1.5} />
-                  </IconButton>
-                  <img
-                    src={uploadCover}
-                    style={{
-                      width: '100%',
-                      objectFit: 'cover',
-                    }}
-                  />
-                </Box>
-              ) : (
+                  ) : (
+                    <Button
+                      variant="text"
+                      size="small"
+                      color="secondary"
+                      sx={{
+                        width: 40,
+                        height: 40,
+                        textDecoration: 'underline',
+                        textDecorationStyle: 'dotted',
+                        textUnderlineOffset: '0.3rem',
+                      }}
+                      onClick={handleTranslate}
+                    >
+                      {t('i_do')}
+                    </Button>
+                  )}
+                </Stack>
+              )}
+
+            {/* Actions */}
+            <Stack flexDirection="row" gap={2} sx={{ mb: 2 }}>
+              {!uploadCover && (
                 <Button variant="text" color="secondary" component="label">
                   <Stack direction="row" alignItems="center" gap={1}>
                     <Icon name="Image" size={16} />
@@ -374,43 +402,129 @@ export const EditPostPageImpl: React.FC = () => {
                   </Stack>
                 </Button>
               )}
-            </Box>
 
-            <Stack spacing={1} sx={{ mb: 8 }}>
-              <TextField
-                type="text"
-                fullWidth
-                multiline
-                placeholder={t('title')}
-                value={postTitle}
-                onChange={(e) => handleChangeTitle(e.target.value)}
-                sx={{
-                  '.MuiOutlinedInput-notchedOutline': {
-                    border: 'none !important',
-                  },
-                  '.MuiOutlinedInput-root': {
-                    padding: 0,
-                    lineHeight: 1.85,
-                  },
-                  '.MuiOutlinedInput-input': {
-                    color: theme.palette.text.primary,
-                  },
-                  '.Mui-focused': {
-                    boxShadow: 'none !important',
-                  },
-                  '& fieldset': { border: 'none' },
-                  p: 0,
-                }}
-                inputProps={{
-                  style: {
-                    padding: 0,
-                    fontSize: '1.875rem',
-                    lineHeight: '2.25rem',
-                  },
-                }}
-                onKeyDown={handleKeyDown}
-              />
+              <Tooltip title={t('summary_tooltip')} placement="right">
+                <Button
+                  variant="text"
+                  color="secondary"
+                  component="label"
+                  disabled={characterCount.characters() === 0 || isGeneratingSummary}
+                  onClick={handleGenerateSummary}
+                >
+                  <Stack direction="row" alignItems="center" gap={1}>
+                    {isGeneratingSummary ? (
+                      <LoadingOutlined size={16} />
+                    ) : (
+                      <Icon name="Sparkles" size={16} />
+                    )}
+                    <Typography variant="button">{t('add_summary')}</Typography>
+                  </Stack>
+                </Button>
+              </Tooltip>
             </Stack>
+
+            {/* Cover */}
+            {uploadCover && (
+              <Box
+                sx={{
+                  position: 'relative',
+                  mb: 2,
+                }}
+              >
+                <IconButton
+                  shape="rounded"
+                  color="secondary"
+                  sx={{
+                    position: 'absolute',
+                    top: 8,
+                    right: 8,
+                    backgroundColor: alpha('#fff', 0.7),
+                  }}
+                  onClick={handleDeleteCover}
+                >
+                  <Icon name="X" size={20} strokeWidth={1.5} />
+                </IconButton>
+                <img
+                  src={uploadCover}
+                  style={{
+                    width: '100%',
+                    objectFit: 'cover',
+                  }}
+                />
+              </Box>
+            )}
+
+            {/* Title */}
+            <TextField
+              type="text"
+              fullWidth
+              multiline
+              placeholder={t('title')}
+              value={postTitle}
+              onChange={(e) => handleChangeTitle(e.target.value)}
+              sx={{
+                '.MuiOutlinedInput-notchedOutline': {
+                  border: 'none !important',
+                },
+                '.MuiOutlinedInput-root': {
+                  padding: 0,
+                  lineHeight: 1.85,
+                },
+                '.MuiOutlinedInput-input': {
+                  color: theme.palette.text.primary,
+                },
+                '.Mui-focused': {
+                  boxShadow: 'none !important',
+                },
+                '& fieldset': { border: 'none' },
+                p: 0,
+                mb: 4,
+              }}
+              inputProps={{
+                style: {
+                  padding: 0,
+                  fontSize: '2.25rem',
+                  lineHeight: '2.7rem',
+                  fontWeight: 'bold',
+                },
+              }}
+              onKeyDown={handleKeyDownInTitle}
+            />
+
+            <TextField
+              type="text"
+              inputRef={subTitleRef}
+              fullWidth
+              multiline
+              placeholder={`${t('add_subtitle')}…`}
+              value={postSubtitle}
+              onChange={(e) => handleChangeSubtitle(e.target.value)}
+              sx={{
+                '.MuiOutlinedInput-notchedOutline': {
+                  border: 'none !important',
+                },
+                '.MuiOutlinedInput-root': {
+                  padding: 0,
+                  lineHeight: 1.85,
+                },
+                '.MuiOutlinedInput-input': {
+                  color: theme.palette.text.secondary,
+                },
+                '.Mui-focused': {
+                  boxShadow: 'none !important',
+                },
+                '& fieldset': { border: 'none' },
+                p: 0,
+              }}
+              inputProps={{
+                style: {
+                  padding: 0,
+                  fontSize: '1.15rem',
+                  lineHeight: '1.725rem',
+                },
+              }}
+              onKeyDown={handleKeyDownInSubtitle}
+            />
           </Box>
           <BlockEditor editor={editor} />
         </Container>
@@ -418,8 +532,8 @@ export const EditPostPageImpl: React.FC = () => {
       <AddLanguage
         open={openAddLanguage}
         content={content}
+        onAdd={(language) => handleChangeLanguage(language)}
         onClose={handleCloseAddLanguage}
-        // onChanged={(language) => handleAddedLanguage(language)}
       />
     </>
   );

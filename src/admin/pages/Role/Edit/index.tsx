@@ -7,6 +7,7 @@ import {
   InputLabel,
   Stack,
   TextField,
+  Typography,
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { useSnackbar } from 'notistack';
@@ -57,11 +58,11 @@ const EditRolePageImpl: React.FC = () => {
   const formPermissions = [
     { label: t('post_permission'), permissions: roleActions.post },
     { label: t('review_permission'), permissions: roleActions.review },
-    { label: t('invitation_permission'), permissions: roleActions.invitation },
     { label: t('project_permission'), permissions: roleActions.project },
     { label: t('user_permission'), permissions: roleActions.user },
     { label: t('role_permission'), permissions: roleActions.role },
     { label: t('api_key_permission'), permissions: roleActions.apiKey },
+    { label: t('webhook_permission'), permissions: roleActions.webhookSetting },
     { label: t('extension_permission'), permissions: roleActions.extension },
   ];
 
@@ -131,55 +132,65 @@ const EditRolePageImpl: React.FC = () => {
                 </Grid>
 
                 {/* Permissions */}
-                {formPermissions.map((formPermission) => {
-                  return (
-                    <Grid xs={12} key={formPermission.label}>
-                      <InputLabel sx={{ mb: 2 }}>{formPermission.label}</InputLabel>
-                      <Grid container spacing={2}>
-                        <Controller
-                          name="permissions"
-                          control={control}
-                          render={({ field }) => (
-                            <>
-                              {Object.values(formPermission.permissions).map((permission) => {
-                                return (
-                                  <Grid xs={6} sm={4} sx={{ py: 0.5 }} key={permission}>
-                                    <Stack>
-                                      <FormControlLabel
-                                        {...field}
-                                        value={permission}
-                                        control={
-                                          <Checkbox
+                {role.isAdmin ? (
+                  <Grid xs={12}>
+                    <Typography>{t('admin_has_all_permissions')}</Typography>
+                  </Grid>
+                ) : (
+                  <Grid xs={12}>
+                    {formPermissions.map((formPermission) => {
+                      return (
+                        <Grid xs={12} key={formPermission.label}>
+                          <InputLabel sx={{ mb: 2 }}>{formPermission.label}</InputLabel>
+                          <Grid container spacing={2} sx={{ mb: 2 }}>
+                            <Controller
+                              name="permissions"
+                              control={control}
+                              render={({ field }) => (
+                                <>
+                                  {Object.values(formPermission.permissions).map((permission) => {
+                                    return (
+                                      <Grid xs={6} sm={4} sx={{ py: 0.5 }} key={permission}>
+                                        <Stack>
+                                          <FormControlLabel
                                             {...field}
-                                            checked={watch('permissions').includes(permission)}
-                                            onChange={() => {
-                                              if (!field.value.includes(permission)) {
-                                                field.onChange([...field.value, permission]);
-                                                return;
-                                              }
-                                              const newTopics = field.value.filter(
-                                                (topic) => topic !== permission
-                                              );
-                                              field.onChange(newTopics);
-                                            }}
+                                            value={permission}
+                                            control={
+                                              <Checkbox
+                                                {...field}
+                                                checked={watch('permissions').includes(permission)}
+                                                onChange={() => {
+                                                  if (!field.value.includes(permission)) {
+                                                    field.onChange([...field.value, permission]);
+                                                    return;
+                                                  }
+                                                  const newTopics = field.value.filter(
+                                                    (topic) => topic !== permission
+                                                  );
+                                                  field.onChange(newTopics);
+                                                }}
+                                              />
+                                            }
+                                            label={t(
+                                              `permissions.action.${permission}` as unknown as TemplateStringsArray
+                                            )}
                                           />
-                                        }
-                                        label={t(
-                                          `permissions.action.${permission}` as unknown as TemplateStringsArray
-                                        )}
-                                      />
-                                    </Stack>
-                                  </Grid>
-                                );
-                              })}
-                            </>
-                          )}
-                        />
-                      </Grid>
-                      <FormHelperText error>{errors.permissions?.message}</FormHelperText>
-                    </Grid>
-                  );
-                })}
+                                        </Stack>
+                                      </Grid>
+                                    );
+                                  })}
+                                </>
+                              )}
+                            />
+                          </Grid>
+                        </Grid>
+                      );
+                    })}
+                  </Grid>
+                )}
+                <Grid xs={12}>
+                  <FormHelperText error>{errors.permissions?.message}</FormHelperText>
+                </Grid>
 
                 <Grid xs={12}>
                   <Stack

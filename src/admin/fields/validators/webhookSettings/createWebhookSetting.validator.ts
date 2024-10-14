@@ -11,6 +11,7 @@ export type FormValues = {
   onArchive: boolean;
   onDeletePublished: boolean;
   onRestorePublished: boolean;
+  onRevert: boolean;
 };
 
 export const createWebhookSettingValidator = (t: TFunction): ObjectSchema<FormValues> => {
@@ -22,5 +23,6 @@ export const createWebhookSettingValidator = (t: TFunction): ObjectSchema<FormVa
     onArchive: yup.boolean().required(),
     onDeletePublished: yup.boolean().required(),
     onRestorePublished: yup.boolean().required(),
+    onRevert: yup.boolean().required(),
   });
 };

@@ -19,6 +19,8 @@ export class FileRepository {
   }
 
   async create(prisma: ProjectPrismaType, file: FileEntity): Promise<FileEntity> {
+    file.beforeInsertValidate();
+
     const createdFile = await prisma.file.create({
       data: file.toPersistence(),
     });

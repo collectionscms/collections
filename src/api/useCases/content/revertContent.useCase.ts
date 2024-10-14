@@ -48,7 +48,7 @@ export class RevertContentUseCase {
       await this.webhookService.send(
         this.prisma,
         content.projectId,
-        WebhookTriggerEvent.deletePublished,
+        WebhookTriggerEvent.revert,
         revertedContent.toPublishedContentResponse(createdBy)
       );
     }

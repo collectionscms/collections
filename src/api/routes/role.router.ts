@@ -1,31 +1,31 @@
 import express, { Request, Response } from 'express';
 import { InvalidPayloadException } from '../../exceptions/invalidPayload.js';
-import { RoleRepository } from '../persistence/role/role.repository.js';
-import { UserProjectRepository } from '../persistence/userProject/userProject.repository.js';
 import { projectPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';
-import { createRoleUseCaseSchema } from '../useCases/role/createRole.useCase.schema.js';
-import { CreateRoleUseCase } from '../useCases/role/createRole.useCase.js';
-import { deleteRoleUseCaseSchema } from '../useCases/role/deleteRole.useCase.schema.js';
-import { DeleteRoleUseCase } from '../useCases/role/deleteRole.useCase.js';
-import { getPermissionsUseCaseSchema } from '../useCases/role/getPermissions.useCase.schema.js';
-import { GetPermissionsUseCase } from '../useCases/role/getPermissions.useCase.js';
-import { getRoleUseCaseSchema } from '../useCases/role/getRole.useCase.schema.js';
-import { GetRoleUseCase } from '../useCases/role/getRole.useCase.js';
-import { getRolesUseCaseSchema } from '../useCases/role/getRoles.useCase.schema.js';
-import { GetRolesUseCase } from '../useCases/role/getRoles.useCase.js';
-import { updateRoleUseCaseSchema } from '../useCases/role/updateRole.useCase.schema.js';
-import { UpdateRoleUseCase } from '../useCases/role/updateRole.useCase.js';
 import { validateAccess } from '../middlewares/validateAccess.js';
+import { RoleRepository } from '../persistence/role/role.repository.js';
 import { RolePermissionRepository } from '../persistence/rolePermission/rolePermission.repository.js';
+import { UserProjectRepository } from '../persistence/userProject/userProject.repository.js';
+import { CreateRoleUseCase } from '../useCases/role/createRole.useCase.js';
+import { createRoleUseCaseSchema } from '../useCases/role/createRole.useCase.schema.js';
+import { DeleteRoleUseCase } from '../useCases/role/deleteRole.useCase.js';
+import { deleteRoleUseCaseSchema } from '../useCases/role/deleteRole.useCase.schema.js';
+import { GetPermissionsUseCase } from '../useCases/role/getPermissions.useCase.js';
+import { getPermissionsUseCaseSchema } from '../useCases/role/getPermissions.useCase.schema.js';
+import { GetRoleUseCase } from '../useCases/role/getRole.useCase.js';
+import { getRoleUseCaseSchema } from '../useCases/role/getRole.useCase.schema.js';
+import { GetRolesUseCase } from '../useCases/role/getRoles.useCase.js';
+import { getRolesUseCaseSchema } from '../useCases/role/getRoles.useCase.schema.js';
+import { UpdateRoleUseCase } from '../useCases/role/updateRole.useCase.js';
+import { updateRoleUseCaseSchema } from '../useCases/role/updateRole.useCase.schema.js';
 
 const router = express.Router();
 
 router.get(
   '/roles',
   authenticatedUser,
-  validateAccess(['readRole']),
+  validateAccess(['readRole', 'inviteUser', 'readUser']), // Allow access also during invitations and user editing
   asyncHandler(async (_req: Request, res: Response) => {
     const validated = getRolesUseCaseSchema.safeParse({
       projectId: res.projectRole?.id,

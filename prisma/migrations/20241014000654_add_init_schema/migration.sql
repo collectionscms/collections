@@ -139,10 +139,10 @@ CREATE TABLE "Content" (
     "postId" UUID NOT NULL,
     "slug" TEXT NOT NULL,
     "title" VARCHAR(255),
+    "subtitle" TEXT,
     "body" TEXT,
     "bodyJson" TEXT,
     "bodyHtml" TEXT,
-    "excerpt" TEXT,
     "metaTitle" VARCHAR(255),
     "metaDescription" TEXT,
     "coverUrl" VARCHAR(255),
@@ -167,10 +167,10 @@ CREATE TABLE "ContentRevision" (
     "contentId" UUID NOT NULL,
     "slug" TEXT NOT NULL,
     "title" VARCHAR(255),
+    "subtitle" TEXT,
     "body" TEXT,
     "bodyJson" TEXT,
     "bodyHtml" TEXT,
-    "excerpt" TEXT,
     "metaTitle" VARCHAR(255),
     "metaDescription" TEXT,
     "coverUrl" VARCHAR(255),
@@ -225,6 +225,7 @@ CREATE TABLE "WebhookSetting" (
     "onArchive" BOOLEAN NOT NULL DEFAULT false,
     "onDeletePublished" BOOLEAN NOT NULL DEFAULT false,
     "onRestorePublished" BOOLEAN NOT NULL DEFAULT false,
+    "onRevert" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMPTZ(6) NOT NULL,
 
@@ -245,6 +246,20 @@ CREATE TABLE "WebhookLog" (
     "createdAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "WebhookLog_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "TextGenerationUsage" (
+    "id" UUID NOT NULL,
+    "projectId" UUID NOT NULL DEFAULT (current_setting('app.current_project_id'::text))::uuid,
+    "contentId" UUID NOT NULL,
+    "userId" UUID NOT NULL,
+    "sourceText" JSONB NOT NULL,
+    "generatedText" JSONB NOT NULL,
+    "context" VARCHAR(255) NOT NULL,
+    "createdAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "TextGenerationUsage_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -366,3 +381,12 @@ ALTER TABLE "WebhookSetting" ADD CONSTRAINT "WebhookSetting_projectId_fkey" FORE
 
 -- AddForeignKey
 ALTER TABLE "WebhookLog" ADD CONSTRAINT "WebhookLog_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Project"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TextGenerationUsage" ADD CONSTRAINT "TextGenerationUsage_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Project"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TextGenerationUsage" ADD CONSTRAINT "TextGenerationUsage_contentId_fkey" FOREIGN KEY ("contentId") REFERENCES "Content"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TextGenerationUsage" ADD CONSTRAINT "TextGenerationUsage_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

@@ -1,6 +1,7 @@
 import { File } from '@prisma/client';
 import { v4 } from 'uuid';
 import { env } from '../../../env.js';
+import { UnexpectedException } from '../../../exceptions/unexpected.js';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 
 export class FileEntity extends PrismaBaseEntity<File> {
@@ -35,6 +36,20 @@ export class FileEntity extends PrismaBaseEntity<File> {
       width,
       height,
     });
+  }
+
+  private isValid() {
+    if (!this.props.id) {
+      throw new UnexpectedException({ message: 'id is required' });
+    }
+  }
+
+  beforeUpdateValidate(): void {
+    this.isValid();
+  }
+
+  beforeInsertValidate(): void {
+    this.isValid();
   }
 
   get id(): string {

@@ -16,6 +16,10 @@ export const getMeUrl = () => {
   return generateUrlWithCurrentDomain('/admin/me', process.env.PUBLIC_PORTAL_SUBDOMAIN as string);
 };
 
+export const getProjectListUrl = () => {
+  return generateUrlWithCurrentDomain('/admin', process.env.PUBLIC_PORTAL_SUBDOMAIN as string);
+};
+
 export const getUrlForTenant = (subdomain: string, path: string) => {
   return generateUrlWithCurrentDomain(path, subdomain);
 };

@@ -24,14 +24,14 @@ export class InvitationRepository {
     });
   }
 
-  async findOneByToken(prisma: BypassPrismaType, token: string): Promise<InvitationEntity> {
-    const record = await prisma.invitation.findFirstOrThrow({
+  async findOneByToken(prisma: BypassPrismaType, token: string): Promise<InvitationEntity | null> {
+    const record = await prisma.invitation.findFirst({
       where: {
         token,
       },
     });
 
-    return InvitationEntity.Reconstruct<Invitation, InvitationEntity>(record);
+    return record ? InvitationEntity.Reconstruct<Invitation, InvitationEntity>(record) : null;
   }
 
   async create(

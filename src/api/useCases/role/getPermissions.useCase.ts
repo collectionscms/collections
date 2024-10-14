@@ -1,6 +1,7 @@
 import { Permission } from '@prisma/client';
-import { RoleRepository } from '../../persistence/role/role.repository.js';
+import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
+import { RoleRepository } from '../../persistence/role/role.repository.js';
 
 export class GetPermissionsUseCase {
   constructor(
@@ -10,6 +11,9 @@ export class GetPermissionsUseCase {
 
   async execute(roleId: string): Promise<Permission[]> {
     const rolePermissions = await this.roleRepository.findOneWithPermissions(this.prisma, roleId);
+    if (!rolePermissions) {
+      throw new RecordNotFoundException('record_not_found');
+    }
 
     return rolePermissions.permissions.map((permission) => permission.toResponse());
   }

@@ -61,6 +61,7 @@ const EditWebhookSettingPageImpl: React.FC = () => {
       onArchive: webhookSetting.onArchive,
       onDeletePublished: webhookSetting.onDeletePublished,
       onRestorePublished: webhookSetting.onRestorePublished,
+      onRevert: webhookSetting.onRevert,
     },
     resolver: yupResolver(updateWebhookSettingValidator(t)),
   });
@@ -83,7 +84,7 @@ const EditWebhookSettingPageImpl: React.FC = () => {
   const provider = providers.filter((item) => item.value === webhookSetting.provider)[0];
 
   const notificationTriggers: {
-    value: 'onPublish' | 'onArchive' | 'onDeletePublished' | 'onRestorePublished';
+    value: 'onPublish' | 'onArchive' | 'onDeletePublished' | 'onRestorePublished' | 'onRevert';
     label: string;
   }[] = [
     {
@@ -101,6 +102,10 @@ const EditWebhookSettingPageImpl: React.FC = () => {
     {
       value: 'onRestorePublished',
       label: t('providers_field.on_restore_published'),
+    },
+    {
+      value: 'onRevert',
+      label: t('providers_field.on_revert'),
     },
   ];
 
@@ -211,7 +216,6 @@ const EditWebhookSettingPageImpl: React.FC = () => {
                       ))}
                     </Stack>
                   </Grid>
-                  <FormHelperText error>{errors.onPublish?.message}</FormHelperText>
                 </Grid>
 
                 {/* Enabled */}

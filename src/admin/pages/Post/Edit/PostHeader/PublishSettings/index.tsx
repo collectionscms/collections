@@ -36,7 +36,7 @@ import {
 import { usePost } from '../../../Context/index.js';
 import { AppBarStyled } from '../../AppBarStyled.js';
 import { GeneralSettings } from './GeneralSettings/index.js';
-import { SocialSettings } from './SocialSettings/index.js';
+import { SeoSettings } from './SeoSettings/index.js';
 
 export type Props = {
   open: boolean;
@@ -186,12 +186,14 @@ export const PublishSettings: React.FC<Props> = ({ open, content, onClose }) => 
                             label={t('archived')}
                           />
                         )}
-                        <FormControlLabel
-                          {...field}
-                          value="review"
-                          control={<Radio />}
-                          label={t('review')}
-                        />
+                        {content.status.currentStatus !== 'published' && (
+                          <FormControlLabel
+                            {...field}
+                            value="review"
+                            control={<Radio />}
+                            label={t('review')}
+                          />
+                        )}
                         {hasPermission('publishPost') && (
                           <FormControlLabel
                             {...field}
@@ -244,17 +246,13 @@ export const PublishSettings: React.FC<Props> = ({ open, content, onClose }) => 
               <GeneralSettings
                 contentId={mutatedContent.id}
                 slug={mutatedContent.slug}
-                excerpt={mutatedContent.excerpt}
                 onUpdated={(slug) => handleUpdatedPost({ slug })}
               />
             </MainCard>
 
             {/* SEO */}
-            <Stack sx={{ pt: 5, pb: 1.5 }}>
-              <Typography variant={'h4'}>{t('social')}</Typography>
-            </Stack>
-            <MainCard>
-              <SocialSettings
+            <Box sx={{ pt: 5 }}>
+              <SeoSettings
                 contentId={mutatedContent.id}
                 metaTitle={mutatedContent.metaTitle}
                 metaDescription={mutatedContent.metaDescription}
@@ -265,7 +263,7 @@ export const PublishSettings: React.FC<Props> = ({ open, content, onClose }) => 
                   })
                 }
               />
-            </MainCard>
+            </Box>
           </Container>
         </>
       )}

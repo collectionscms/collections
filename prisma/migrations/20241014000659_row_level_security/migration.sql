@@ -13,6 +13,7 @@ ALTER TABLE "ApiKeyPermission" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE "Invitation" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE "WebhookSetting" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE "WebhookLog" ENABLE ROW LEVEL SECURITY;
+ALTER TABLE "TextGenerationUsage" ENABLE ROW LEVEL SECURITY;
 
 -- Force Row Level Security for table owners
 ALTER TABLE "Project" FORCE ROW LEVEL SECURITY;
@@ -29,6 +30,7 @@ ALTER TABLE "ApiKeyPermission" FORCE ROW LEVEL SECURITY;
 ALTER TABLE "Invitation" FORCE ROW LEVEL SECURITY;
 ALTER TABLE "WebhookSetting" FORCE ROW LEVEL SECURITY;
 ALTER TABLE "WebhookLog" FORCE ROW LEVEL SECURITY;
+ALTER TABLE "TextGenerationUsage" FORCE ROW LEVEL SECURITY;
 
 -- Create row security policies
 CREATE POLICY tenant_isolation_policy ON "Project" USING ("id" = current_setting('app.current_project_id', TRUE)::uuid);
@@ -45,6 +47,7 @@ CREATE POLICY tenant_isolation_policy ON "ApiKeyPermission" USING ("projectId" =
 CREATE POLICY tenant_isolation_policy ON "Invitation" USING ("projectId" = current_setting('app.current_project_id', TRUE)::uuid);
 CREATE POLICY tenant_isolation_policy ON "WebhookSetting" USING ("projectId" = current_setting('app.current_project_id', TRUE)::uuid);
 CREATE POLICY tenant_isolation_policy ON "WebhookLog" USING ("projectId" = current_setting('app.current_project_id', TRUE)::uuid);
+CREATE POLICY tenant_isolation_policy ON "TextGenerationUsage" USING ("projectId" = current_setting('app.current_project_id', TRUE)::uuid);
 
 -- Create policies to bypass RLS
 CREATE POLICY bypass_rls_policy ON "Project" USING (current_setting('app.bypass_rls', TRUE)::text = 'on');
@@ -61,3 +64,4 @@ CREATE POLICY bypass_rls_policy ON "ApiKeyPermission" USING (current_setting('ap
 CREATE POLICY bypass_rls_policy ON "Invitation" USING (current_setting('app.bypass_rls', TRUE)::text = 'on');
 CREATE POLICY bypass_rls_policy ON "WebhookSetting" USING (current_setting('app.bypass_rls', TRUE)::text = 'on');
 CREATE POLICY bypass_rls_policy ON "WebhookLog" USING (current_setting('app.bypass_rls', TRUE)::text = 'on');
+CREATE POLICY bypass_rls_policy ON "TextGenerationUsage" USING (current_setting('app.bypass_rls', TRUE)::text = 'on');

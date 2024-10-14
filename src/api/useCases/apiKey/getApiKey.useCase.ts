@@ -1,6 +1,7 @@
+import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
 import { ApiKeyWithPermissions } from '../../../types/index.js';
-import { ApiKeyRepository } from '../../persistence/apiKey/apiKey.repository.js';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
+import { ApiKeyRepository } from '../../persistence/apiKey/apiKey.repository.js';
 import { GetApiKeyUseCaseSchemaType } from './getApiKey.useCase.schema.js';
 
 export class GetApiKeyUseCase {
@@ -10,14 +11,20 @@ export class GetApiKeyUseCase {
   ) {}
 
   async execute({ apiKeyId }: GetApiKeyUseCaseSchemaType): Promise<ApiKeyWithPermissions> {
-    const { apiKey, permissions } = await this.apiKeyRepository.findOneWithPermissions(
+    const apiKeyWithPermission = await this.apiKeyRepository.findOneWithPermissions(
       this.prisma,
       apiKeyId
     );
 
+    if (!apiKeyWithPermission) {
+      throw new RecordNotFoundException('record_not_found');
+    }
+
     return {
-      ...apiKey.toResponse(),
-      permissions: permissions.map((permission) => permission.permissionAction),
+      ...apiKeyWithPermission.apiKey.toResponse(),
+      permissions: apiKeyWithPermission.permissions.map(
+        (permission) => permission.permissionAction
+      ),
     };
   }
 }
