@@ -24,12 +24,12 @@ export class UpdateContentUseCase {
     revision.updateContent({
       coverUrl: props.coverUrl,
       title: props.title,
+      subtitle: props.subtitle || null,
       body: props.body,
       bodyJson: props.bodyJson,
       bodyHtml: props.bodyHtml,
       slug: props.slug,
       updatedById: props.userId,
-      excerpt: props.excerpt || null,
       metaTitle: props.metaTitle || null,
       metaDescription: props.metaDescription || null,
     });

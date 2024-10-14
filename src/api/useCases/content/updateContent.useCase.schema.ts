@@ -5,12 +5,12 @@ export const updateContentUseCaseSchema = z.object({
   projectId: z.string().uuid(),
   userId: z.string().uuid(),
   title: z.string().optional().nullable(),
+  subtitle: z.string().optional().nullable(),
   body: z.string().optional().nullable(),
   bodyJson: z.string().optional().nullable(),
   bodyHtml: z.string().optional().nullable(),
   coverUrl: z.string().optional().nullable(),
   slug: z.string().optional(),
-  excerpt: z.string().optional().nullable(),
   metaTitle: z.string().optional().nullable(),
   metaDescription: z.string().optional().nullable(),
 });

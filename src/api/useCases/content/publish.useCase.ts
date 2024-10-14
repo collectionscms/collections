@@ -43,10 +43,10 @@ export class PublishUseCase {
     content.publish({
       slug: latestRevision.slug,
       title: latestRevision.title,
+      subtitle: latestRevision.subtitle,
       body: latestRevision.body,
       bodyJson: latestRevision.bodyJson,
       bodyHtml: latestRevision.bodyHtml,
-      excerpt: latestRevision.excerpt,
       metaTitle: latestRevision.metaTitle,
       metaDescription: latestRevision.metaDescription,
       coverUrl: latestRevision.coverUrl,

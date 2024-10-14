@@ -97,12 +97,12 @@ router.patch(
       id: req.params.id,
       userId: res.user.id,
       title: req.body.title,
+      subtitle: req.body.subtitle,
       body: req.body.body,
       bodyJson: req.body.bodyJson,
       bodyHtml: req.body.bodyHtml,
       coverUrl: req.body.coverUrl,
       slug: req.body.slug,
-      excerpt: req.body.excerpt,
       metaTitle: req.body.metaTitle,
       metaDescription: req.body.metaDescription,
     });

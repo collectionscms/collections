@@ -141,8 +141,6 @@
   "sign_in_with_github": "Sign in with GitHub",
   "create_your_first_project": "Create your first project on Collections!",
   "invitation_from_existing_project": "Alternatively, you may receive an invitation to join an existing project.",
-  "excerpt": "Excerpt",
-  "excerpt_tooltip": "Field for article summary or introduction. If not set, use 150 characters at the beginning of the content.",
   "revert_to": "Revert to v{{version}}",
   "ai_summarizes_post": "AI summarizes post",
   "untranslatable": "Untranslatable",
