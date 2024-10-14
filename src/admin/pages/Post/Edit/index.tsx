@@ -51,12 +51,13 @@ export const EditPostPageImpl: React.FC = () => {
 
   useEffect(() => {
     setPostTitle(content.title);
+    setPostSubtitle(content.subtitle);
     setUploadCover(content.coverUrl ?? null);
     editor?.commands.setContent(toJson(content.bodyJson));
   }, [content]);
 
   // /////////////////////////////////////
-  // Editor
+  // Title
   // /////////////////////////////////////
 
   const [postTitle, setPostTitle] = useState(content.title);
@@ -65,6 +66,34 @@ export const EditPostPageImpl: React.FC = () => {
     setPostTitle(value);
     setIsDirty(true);
   };
+
+  const handleKeyDownInTitle = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.nativeEvent.isComposing || e.key !== 'Enter') return;
+    e.preventDefault();
+    subTitleRef.current?.focus();
+  };
+
+  // /////////////////////////////////////
+  // Subtitle
+  // /////////////////////////////////////
+
+  const subTitleRef = useRef<HTMLInputElement>(null);
+  const [postSubtitle, setPostSubtitle] = useState(content.subtitle);
+
+  const handleChangeSubtitle = (value: string) => {
+    setPostSubtitle(value);
+    setIsDirty(true);
+  };
+
+  const handleKeyDownInSubtitle = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.nativeEvent.isComposing || e.key !== 'Enter') return;
+    e.preventDefault();
+    editor?.commands.focus();
+  };
+
+  // /////////////////////////////////////
+  // Editor
+  // /////////////////////////////////////
 
   const { mode } = useColorMode();
   const ref = React.useRef<HTMLButtonElement>(null);
@@ -167,6 +196,7 @@ export const EditPostPageImpl: React.FC = () => {
   const buildParams = () => {
     return {
       title: postTitle,
+      subtitle: postSubtitle,
       body: editor?.getText() ?? null,
       bodyJson: JSON.stringify(editor?.getJSON()) ?? null,
       bodyHtml: editor?.getHTML() ?? null,
@@ -184,6 +214,7 @@ export const EditPostPageImpl: React.FC = () => {
 
   const saveContent = async (data: {
     title: string;
+    subtitle: string | null;
     body: string | null;
     bodyJson: string | null;
     bodyHtml: string | null;
@@ -192,12 +223,6 @@ export const EditPostPageImpl: React.FC = () => {
     await updateContentTrigger(data);
     setIsDirty(false);
     mutate();
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.nativeEvent.isComposing || e.key !== 'Enter') return;
-    e.preventDefault();
-    editor?.commands.focus();
   };
 
   // /////////////////////////////////////
@@ -286,7 +311,7 @@ export const EditPostPageImpl: React.FC = () => {
       <Box component="main" sx={{ minHeight: '100vh' }}>
         <Toolbar sx={{ mt: 0 }} />
         <Container sx={{ py: 6 }}>
-          <Box sx={{ maxWidth: '42rem', marginLeft: 'auto', marginRight: 'auto' }}>
+          <Box sx={{ maxWidth: '42rem', marginLeft: 'auto', marginRight: 'auto', mb: 6 }}>
             {content.title.length === 0 && content.body.length === 0 && content.canTranslate && (
               <Stack direction="row" gap={1} sx={{ mb: 4, alignItems: 'center' }} color="secondary">
                 <Icon name="Languages" size={16} />
@@ -376,41 +401,77 @@ export const EditPostPageImpl: React.FC = () => {
               )}
             </Box>
 
-            <Stack spacing={1} sx={{ mb: 8 }}>
-              <TextField
-                type="text"
-                fullWidth
-                multiline
-                placeholder={t('title')}
-                value={postTitle}
-                onChange={(e) => handleChangeTitle(e.target.value)}
-                sx={{
-                  '.MuiOutlinedInput-notchedOutline': {
-                    border: 'none !important',
-                  },
-                  '.MuiOutlinedInput-root': {
-                    padding: 0,
-                    lineHeight: 1.85,
-                  },
-                  '.MuiOutlinedInput-input': {
-                    color: theme.palette.text.primary,
-                  },
-                  '.Mui-focused': {
-                    boxShadow: 'none !important',
-                  },
-                  '& fieldset': { border: 'none' },
-                  p: 0,
-                }}
-                inputProps={{
-                  style: {
-                    padding: 0,
-                    fontSize: '1.875rem',
-                    lineHeight: '2.25rem',
-                  },
-                }}
-                onKeyDown={handleKeyDown}
-              />
-            </Stack>
+            {/* Title */}
+            <TextField
+              type="text"
+              fullWidth
+              multiline
+              placeholder={t('title')}
+              value={postTitle}
+              onChange={(e) => handleChangeTitle(e.target.value)}
+              sx={{
+                '.MuiOutlinedInput-notchedOutline': {
+                  border: 'none !important',
+                },
+                '.MuiOutlinedInput-root': {
+                  padding: 0,
+                  lineHeight: 1.85,
+                },
+                '.MuiOutlinedInput-input': {
+                  color: theme.palette.text.primary,
+                },
+                '.Mui-focused': {
+                  boxShadow: 'none !important',
+                },
+                '& fieldset': { border: 'none' },
+                p: 0,
+                mb: 4,
+              }}
+              inputProps={{
+                style: {
+                  padding: 0,
+                  fontSize: '2.25rem',
+                  lineHeight: '2.7rem',
+                  fontWeight: 'bold',
+                },
+              }}
+              onKeyDown={handleKeyDownInTitle}
+            />
+
+            <TextField
+              type="text"
+              inputRef={subTitleRef}
+              fullWidth
+              multiline
+              placeholder={`${t('add_subtitle')}…`}
+              value={postSubtitle}
+              onChange={(e) => handleChangeSubtitle(e.target.value)}
+              sx={{
+                '.MuiOutlinedInput-notchedOutline': {
+                  border: 'none !important',
+                },
+                '.MuiOutlinedInput-root': {
+                  padding: 0,
+                  lineHeight: 1.85,
+                },
+                '.MuiOutlinedInput-input': {
+                  color: theme.palette.text.secondary,
+                },
+                '.Mui-focused': {
+                  boxShadow: 'none !important',
+                },
+                '& fieldset': { border: 'none' },
+                p: 0,
+              }}
+              inputProps={{
+                style: {
+                  padding: 0,
+                  fontSize: '1.15rem',
+                  lineHeight: '1.725rem',
+                },
+              }}
+              onKeyDown={handleKeyDownInSubtitle}
+            />
           </Box>
           <BlockEditor editor={editor} />
         </Container>
