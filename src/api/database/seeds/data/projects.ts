@@ -11,7 +11,7 @@ export const projects = [
     enabled: true,
     sourceLanguage: 'en-us',
     iconUrl: null,
-    name: 'EN Project',
+    name: 'English Project',
   },
   {
     id: jpProject,
@@ -20,6 +20,6 @@ export const projects = [
     enabled: true,
     sourceLanguage: 'ja',
     iconUrl: null,
-    name: 'JA Project',
+    name: '日本語プロジェクト',
   },
 ];

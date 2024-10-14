@@ -9,6 +9,7 @@ export const createPost = async (
     language: string;
     slug: string;
     title: string;
+    subtitle: string;
     body: string;
     bodyJson: string;
     bodyHtml: string;
@@ -41,6 +42,7 @@ export const createPost = async (
       currentVersion: 1,
       slug: encodeURIComponent(content.slug),
       title: content.title,
+      subtitle: content.subtitle,
       body: content.body,
       bodyJson: content.bodyJson,
       bodyHtml: content.bodyHtml,
@@ -59,6 +61,7 @@ export const createPost = async (
       version: 1,
       slug: encodeURIComponent(content.slug),
       title: content.title,
+      subtitle: content.subtitle,
       body: content.body,
       bodyJson: content.bodyJson,
       bodyHtml: content.bodyHtml,
