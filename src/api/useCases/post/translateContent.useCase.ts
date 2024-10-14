@@ -9,6 +9,7 @@ import { TranslateContentUseCaseSchemaType } from './translateContent.useCase.sc
 
 type TranslateContentResponse = {
   title: string;
+  subtitle: string;
   body: string;
 };
 
@@ -37,11 +38,17 @@ export class TranslateContentUseCase {
     );
 
     if (!sourceLngRevision) {
-      return { title: '', body: '' };
+      return { title: '', subtitle: '', body: '' };
     }
 
-    const textResults = await this.translator.translate(
-      [sourceLngRevision.title, sourceLngRevision.bodyHtml],
+    // Exclude blank text
+    const title = sourceLngRevision.title.trim();
+    const subtitle = sourceLngRevision.subtitle.trim();
+    const body = sourceLngRevision.bodyHtml.trim();
+    const nonEmptyTexts = [title, subtitle, body].filter((text) => text !== '');
+
+    let textResults = await this.translator.translate(
+      nonEmptyTexts,
       sourceLanguageCode.sourceLanguageCode,
       targetLanguageCode.targetLanguageCode
     );
@@ -59,9 +66,14 @@ export class TranslateContentUseCase {
     });
     this.textGenerationUsageRepository.create(this.prisma, usage);
 
+    if (!title) textResults.splice(0, 0, { text: '' });
+    if (!subtitle) textResults.splice(1, 0, { text: '' });
+    if (!body) textResults.splice(2, 0, { text: '' });
+
     return {
       title: textResults[0].text,
-      body: textResults[textResults.length - 1].text,
+      subtitle: textResults[1].text,
+      body: textResults[2].text,
     };
   }
 }

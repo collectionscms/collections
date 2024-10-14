@@ -297,6 +297,7 @@ export const EditPostPageImpl: React.FC = () => {
         targetLanguage: content.targetLanguageCode,
       });
       handleChangeTitle(response.title);
+      handleChangeSubtitle(response.subtitle);
       editor?.commands.setContent(response.body);
     } catch (error) {
       logger.error(error);
