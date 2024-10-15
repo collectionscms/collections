@@ -127,7 +127,7 @@ router.post(
       projectPrisma(validated.data.projectId),
       new ContentRevisionRepository(),
       new TextGenerationUsageRepository(),
-      new Translator(env.TRANSLATE_API_KEY)
+      new Translator(env.TRANSLATOR_API_KEY)
     );
     const response = await useCase.execute(validated.data);
 

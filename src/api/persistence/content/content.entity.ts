@@ -346,7 +346,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     if (!sourceLanguage?.sourceLanguageCode || !targetLanguage?.targetLanguageCode) return false;
 
     // Api key is not set
-    if (!env.TRANSLATE_API_KEY) return false;
+    if (!env.TRANSLATOR_API_KEY) return false;
 
     // Same language
     return sourceLanguage.code !== this.props.language;

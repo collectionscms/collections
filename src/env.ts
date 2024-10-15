@@ -108,7 +108,7 @@ type AllowedEnvironmentVariable =
   // /////////////////////////////////////
   // Collections Plugin
   // /////////////////////////////////////
-  | 'TRANSLATE_API_KEY'
+  | 'TRANSLATOR_API_KEY'
   | 'TEXT_GENERATOR_API_KEY'
   | 'TEXT_GENERATOR_MODEL';
 
