@@ -147,8 +147,6 @@
   "admin_has_all_permissions": "管理者は全ての権限を持っています",
   "share_your_feedback": "ご意見をお聞かせください",
   "add_subtitle": "サブタイトルを追加",
-  "add_summary": "AI生成の要約を挿入",
-  "summary_tooltip": "記事をわかりやすく整理した要約は、回答エンジンに引用されやすくなります。",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",

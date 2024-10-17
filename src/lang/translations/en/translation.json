@@ -147,8 +147,6 @@
   "admin_has_all_permissions": "Administrator has all permissions",
   "share_your_feedback": "Please share your feedback",
   "add_subtitle": "Add a subtitle",
-  "add_summary": "Insert AI-generated summary",
-  "summary_tooltip": "Summaries that organize posts in an easy-to-understand manner are more likely to be cited by response engines.",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",

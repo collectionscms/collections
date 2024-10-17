@@ -21,8 +21,6 @@ import { ArchiveUseCase } from '../useCases/content/archive.useCase.js';
 import { archiveUseCaseSchema } from '../useCases/content/archive.useCase.schema.js';
 import { GenerateSeoUseCase } from '../useCases/content/generateSeo.useCase.js';
 import { generateSeoUseCaseSchema } from '../useCases/content/generateSeo.useCase.schema.js';
-import { GenerateSummaryUseCase } from '../useCases/content/generateSummary.useCase.js';
-import { generateSummaryUseCaseSchema } from '../useCases/content/generateSummary.useCase.schema.js';
 import { GetContentUseCase } from '../useCases/content/getContent.useCase.js';
 import { getContentUseCaseSchema } from '../useCases/content/getContent.useCase.schema.js';
 import { GetTrashedContentsUseCase } from '../useCases/content/getTrashedContents.useCase.js';
@@ -145,33 +143,6 @@ router.post(
 
     res.json({
       seo,
-    });
-  })
-);
-
-router.post(
-  '/contents/:id/generate-summary',
-  authenticatedUser,
-  validateAccess(['updatePost']),
-  asyncHandler(async (req: Request, res: Response) => {
-    const validated = generateSummaryUseCaseSchema.safeParse({
-      projectId: res.projectRole?.id,
-      id: req.params.id,
-      userId: res.user.id,
-    });
-    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
-
-    const useCase = new GenerateSummaryUseCase(
-      projectPrisma(validated.data.projectId),
-      new ContentRepository(),
-      new TextGenerationUsageRepository(),
-      new TextGenerationService(new Translator(env.TRANSLATOR_API_KEY)),
-      new TextGenerator(env.TEXT_GENERATOR_API_KEY, env.TEXT_GENERATOR_MODEL)
-    );
-    const summary = await useCase.execute(validated.data);
-
-    res.json({
-      summary,
     });
   })
 );
