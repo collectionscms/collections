@@ -46,7 +46,11 @@ export class AcceptInvitationUseCase {
       invitation.acceptInvitation();
       await this.invitationRepository.updateStatus(tx, invitation);
 
-      const projectRole = await this.userProjectRepository.findOneWithRoleByUserId(tx, userId);
+      const projectRole = await this.userProjectRepository.findOneWithRoleByUserProjectId(
+        tx,
+        entity.projectId,
+        entity.userId
+      );
       if (!projectRole) {
         throw new RecordNotFoundException('record_not_found');
       }
