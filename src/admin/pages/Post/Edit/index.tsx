@@ -41,14 +41,10 @@ export const EditPostPageImpl: React.FC = () => {
   const { id } = useParams();
   if (!id) throw new Error('id is not defined');
 
-  const { getContent, updateContent, createFileImage, translateContent, generateSummary } =
-    usePost();
+  const { getContent, updateContent, createFileImage, translateContent } = usePost();
   const { data: content, mutate } = getContent(id);
   const { trigger: updateContentTrigger, isMutating: isSaving } = updateContent(content.id);
   const { trigger: translateTrigger } = translateContent(content.postId);
-  const { trigger: generateSummaryTrigger, isMutating: isGeneratingSummary } = generateSummary(
-    content.id
-  );
 
   const [isDirty, setIsDirty] = useState(false);
   const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
@@ -95,21 +91,6 @@ export const EditPostPageImpl: React.FC = () => {
     if (e.nativeEvent.isComposing || e.key !== 'Enter') return;
     e.preventDefault();
     editor?.commands.focus();
-  };
-
-  const handleGenerateSummary = async () => {
-    try {
-      const summary = await generateSummaryTrigger();
-      editor?.commands.setContent(`${summary.body}${editor?.getText()}`);
-      enqueueSnackbar(t('toast.updated_successfully'), {
-        anchorOrigin: {
-          vertical: 'bottom',
-          horizontal: 'center',
-        },
-      });
-    } catch (error) {
-      logger.error(error);
-    }
   };
 
   // /////////////////////////////////////
@@ -402,25 +383,6 @@ export const EditPostPageImpl: React.FC = () => {
                   </Stack>
                 </Button>
               )}
-
-              <Tooltip title={t('summary_tooltip')} placement="right">
-                <Button
-                  variant="text"
-                  color="secondary"
-                  component="label"
-                  disabled={characterCount.characters() === 0 || isGeneratingSummary}
-                  onClick={handleGenerateSummary}
-                >
-                  <Stack direction="row" alignItems="center" gap={1}>
-                    {isGeneratingSummary ? (
-                      <LoadingOutlined size={16} />
-                    ) : (
-                      <Icon name="Sparkles" size={16} />
-                    )}
-                    <Typography variant="button">{t('add_summary')}</Typography>
-                  </Stack>
-                </Button>
-              </Tooltip>
             </Stack>
 
             {/* Cover */}
