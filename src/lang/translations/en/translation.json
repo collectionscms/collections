@@ -142,7 +142,7 @@
   "create_your_first_project": "Create your first project on Collections!",
   "invitation_from_existing_project": "Alternatively, you may receive an invitation to join an existing project.",
   "revert_to": "Revert to v{{version}}",
-  "ai_summarizes_post": "AI summarizes post",
+  "generate_with_ai": "Generate with AI",
   "untranslatable": "Untranslatable",
   "admin_has_all_permissions": "Administrator has all permissions",
   "share_your_feedback": "Please share your feedback",

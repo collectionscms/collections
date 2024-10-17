@@ -1,3 +1,4 @@
+import { LoadingOutlined } from '@ant-design/icons';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Box,
@@ -38,8 +39,8 @@ export const SeoSettings: React.FC<Props> = ({
   const { t } = useTranslation();
   const [isEditingMeta, setIsEditingMeta] = useState(false);
   const { updateContent, generateSeo } = usePost();
-  const { trigger: updateContentTrigger, isMutating } = updateContent(contentId);
-  const { trigger: generateSeoTrigger, isMutating: isMutatingSummary } = generateSeo(contentId);
+  const { trigger: updateContentTrigger } = updateContent(contentId);
+  const { trigger: generateSeoTrigger, isMutating: isGenerateSeo } = generateSeo(contentId);
 
   const {
     control,
@@ -59,7 +60,7 @@ export const SeoSettings: React.FC<Props> = ({
     setValue('metaDescription', metaDescription);
   }, [metaTitle, metaDescription]);
 
-  const onClickSummarize = async () => {
+  const onClickGenerateSeo = async () => {
     try {
       const seo = await generateSeoTrigger();
       onUpdated(seo.metaTitle ?? null, seo.metaDescription ?? null);
@@ -103,12 +104,12 @@ export const SeoSettings: React.FC<Props> = ({
           style={{
             borderRadius: '16px',
           }}
-          disabled={isMutatingSummary}
-          onClick={onClickSummarize}
+          disabled={isGenerateSeo}
+          onClick={onClickGenerateSeo}
         >
           <Stack flexDirection="row" alignItems="center" gap={0.5} sx={{ px: 0.5 }}>
-            <Icon name="Sparkles" size={16} />
-            <Typography variant="button">{t('ai_summarizes_post')}</Typography>
+            {isGenerateSeo ? <LoadingOutlined size={16} /> : <Icon name="Sparkles" size={16} />}
+            <Typography variant="button">{t('generate_with_ai')}</Typography>
           </Stack>
         </Button>
       </Stack>
