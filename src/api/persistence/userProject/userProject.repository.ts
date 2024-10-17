@@ -63,6 +63,45 @@ export class UserProjectRepository {
     };
   }
 
+  async findOneWithRoleByUserProjectId(
+    prisma: ProjectPrismaType,
+    projectId: string,
+    userId: string
+  ): Promise<{
+    project: ProjectEntity;
+    role: RoleEntity;
+    permissions: PermissionEntity[];
+  } | null> {
+    const record = await prisma.userProject.findFirst({
+      where: {
+        userId,
+        projectId,
+      },
+      include: {
+        project: true,
+        role: {
+          include: {
+            rolePermissions: {
+              include: {
+                permission: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (!record) return null;
+
+    return {
+      project: ProjectEntity.Reconstruct<Project, ProjectEntity>(record.project),
+      role: RoleEntity.Reconstruct<Role, RoleEntity>(record.role),
+      permissions: record.role.rolePermissions.map((rolePermission) =>
+        PermissionEntity.Reconstruct<Permission, PermissionEntity>(rolePermission.permission)
+      ),
+    };
+  }
+
   async create(prisma: ProjectPrismaType, entity: UserProjectEntity): Promise<UserProjectEntity> {
     entity.beforeInsertValidate();
 
