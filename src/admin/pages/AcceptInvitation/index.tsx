@@ -19,21 +19,20 @@ const AcceptInvitationImpl: React.FC = () => {
     if (!me) return;
 
     const accept = async () => {
-      const project = await trigger({
-        inviteToken,
-      });
-
-      window.location.href = getUrlForTenant(project.subdomain, '/admin');
+      try {
+        const project = await trigger({
+          inviteToken,
+        });
+        window.location.href = getUrlForTenant(project.subdomain, '/admin');
+      } catch (error) {
+        logger.error(error);
+      }
     };
 
-    try {
-      accept();
-    } catch (error) {
-      logger.error(error);
-    }
+    accept();
   }, [me]);
 
-  return <Loading />;
+  return !me ? <Loading /> : <></>;
 };
 
 export const AcceptInvitation = ComposeWrapper({ context: AcceptInvitationContextProvider })(
