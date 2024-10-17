@@ -6,7 +6,7 @@
   </a>
 </p>
 
-Collections is a headless CMS that accelerates global site building, with multilingual and AI-powered SEO optimization.
+Collections is a headless CMS that accelerates global site building, with multilingual and AI SEO generation.
 
 No more using multiple CMSs or paid plug-ins.
 
