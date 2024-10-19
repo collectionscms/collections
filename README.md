@@ -12,7 +12,7 @@ No more using multiple CMSs or paid plug-ins.
 
 ## ⭐ Why Collections Focus on multilingual?
 
-The advent of AI search has changed the way information is acquired. Keywords have been replaced by questions in the user's native language, and AI now recommends the most relevant content based on search intent. Multilingualism has become essential for websites to reach potential customers.
+AI search has changed the way people search for information. Keywords have been replaced by questions in the user's native language, and AI now recommends the most relevant content based on search intent. Multilingual support is essential for future websites to reach potential customers.
 
 <hr/>
 <h4>
