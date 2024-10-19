@@ -29,20 +29,17 @@ export const editorPermissions = [
   ...roleActions.review,
   'createApiKey',
   'readApiKey',
-  ...roleActions.extension,
   ...roleActions.webhookSetting,
 ];
 
 export const writerPermissions = [
   'readOwnPost',
-  'createPost',
-  'updatePost',
+  'savePost',
   'publishPost',
   'readProject',
   'readRole',
   'readUser',
   'readOwnReview',
-  'createReview',
   'closeReview',
 ];
 

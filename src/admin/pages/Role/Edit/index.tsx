@@ -63,7 +63,6 @@ const EditRolePageImpl: React.FC = () => {
     { label: t('role_permission'), permissions: roleActions.role },
     { label: t('api_key_permission'), permissions: roleActions.apiKey },
     { label: t('webhook_permission'), permissions: roleActions.webhookSetting },
-    { label: t('extension_permission'), permissions: roleActions.extension },
   ];
 
   const navigateToList = () => {
@@ -150,7 +149,7 @@ const EditRolePageImpl: React.FC = () => {
                                 <>
                                   {Object.values(formPermission.permissions).map((permission) => {
                                     return (
-                                      <Grid xs={6} sm={4} sx={{ py: 0.5 }} key={permission}>
+                                      <Grid xs={6} sm={3} sx={{ py: 0.5 }} key={permission}>
                                         <Stack>
                                           <FormControlLabel
                                             {...field}

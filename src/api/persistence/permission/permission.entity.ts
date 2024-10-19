@@ -2,19 +2,11 @@ import { Permission } from '@prisma/client';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 
 export const roleActions = {
-  post: [
-    'readOwnPost',
-    'readAllPost',
-    'createPost',
-    'updatePost',
-    'trashPost',
-    'publishPost',
-    'archivePost',
-  ],
+  post: ['readOwnPost', 'readAllPost', 'savePost', 'trashPost', 'publishPost', 'archivePost'],
   project: ['readProject', 'updateProject'],
   role: ['readRole', 'createRole', 'updateRole', 'deleteRole'],
   user: ['readUser', 'inviteUser', 'updateUser', 'deleteUser'],
-  review: ['readOwnReview', 'readAllReview', 'createReview', 'approveReview', 'closeReview'],
+  review: ['readOwnReview', 'readAllReview', 'approveReview', 'closeReview'],
   apiKey: ['readApiKey', 'createApiKey', 'updateApiKey', 'deleteApiKey'],
   webhookSetting: [
     'readWebhookSetting',
@@ -22,7 +14,6 @@ export const roleActions = {
     'updateWebhookSetting',
     'deleteWebhookSetting',
   ],
-  extension: ['readTemplate'],
 };
 
 export const apiKeyActions = {
