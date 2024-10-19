@@ -75,14 +75,14 @@ export const PublishSettings: React.FC<Props> = ({ open, content, onClose }) => 
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
-      status: content.status.currentStatus === 'published' ? 'published' : 'review',
+      status: content.status.isPublished ? 'published' : 'review',
       comment: '',
     },
     resolver: yupResolver(editContentValidator()),
   });
 
   useEffect(() => {
-    setValue('status', content.status.currentStatus === 'published' ? 'published' : 'review');
+    setValue('status', content.status.isPublished ? 'published' : 'review');
   }, [content.status.currentStatus]);
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
@@ -161,7 +161,12 @@ export const PublishSettings: React.FC<Props> = ({ open, content, onClose }) => 
                 })}
               </Typography>
             </Box>
-            <Button variant="contained" type="submit" sx={{ position: 'absolute', right: 24 }}>
+            <Button
+              variant="contained"
+              type="submit"
+              disabled={content.status.isReviewing}
+              sx={{ position: 'absolute', right: 24 }}
+            >
               {getPublishButtonLabel()}
             </Button>
           </Toolbar>
@@ -178,7 +183,7 @@ export const PublishSettings: React.FC<Props> = ({ open, content, onClose }) => 
                     control={control}
                     render={({ field }) => (
                       <RadioGroup value={field.value} name="radio-buttons-group" row>
-                        {content.status.currentStatus === 'published' && (
+                        {content.status.isPublished && (
                           <FormControlLabel
                             {...field}
                             value="archived"
@@ -186,7 +191,7 @@ export const PublishSettings: React.FC<Props> = ({ open, content, onClose }) => 
                             label={t('archived')}
                           />
                         )}
-                        {content.status.currentStatus !== 'published' && (
+                        {!content.status.isPublished && (
                           <FormControlLabel
                             {...field}
                             value="review"

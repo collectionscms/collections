@@ -396,6 +396,8 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     return {
       currentStatus: revision.status,
       prevStatus: revision.version !== this.props.currentVersion ? this.props.status : null,
+      isReviewing: revision.status === ContentStatus.review,
+      isPublished: revision.status === ContentStatus.published,
     };
   };
 
