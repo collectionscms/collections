@@ -8,7 +8,11 @@ import { ContentRepository } from '../persistence/content/content.repository.js'
 import { ContentRevisionRepository } from '../persistence/contentRevision/contentRevision.repository.js';
 import { PermissionEntity } from '../persistence/permission/permission.entity.js';
 import { ReviewRepository } from '../persistence/review/review.repository.js';
+import { UserRepository } from '../persistence/user/user.repository.js';
+import { WebhookLogRepository } from '../persistence/webhookLog/webhookLog.repository.js';
+import { WebhookSettingRepository } from '../persistence/webhookSetting/webhookSetting.repository.js';
 import { ContentService } from '../services/content.service.js';
+import { WebhookService } from '../services/webhook.service.js';
 import { ApproveReviewUseCase } from '../useCases/review/approveReview.useCase.js';
 import { approveReviewUseCaseSchema } from '../useCases/review/approveReview.useCase.schema.js';
 import { CloseReviewUseCase } from '../useCases/review/closeReview.useCase.js';
@@ -128,8 +132,9 @@ router.patch(
       projectPrisma(validated.data.projectId),
       new ReviewRepository(),
       new ContentRepository(),
-      new ContentRevisionRepository(),
-      new ContentService(new ContentRepository())
+      new UserRepository(),
+      new ContentService(new ContentRepository(), new ContentRevisionRepository()),
+      new WebhookService(new WebhookSettingRepository(), new WebhookLogRepository())
     );
 
     const hasReadAllReview =

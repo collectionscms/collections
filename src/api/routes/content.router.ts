@@ -187,9 +187,8 @@ router.patch(
     const useCase = new PublishUseCase(
       projectPrisma(validated.data.projectId),
       new ContentRepository(),
-      new ContentRevisionRepository(),
       new UserRepository(),
-      new ContentService(new ContentRepository()),
+      new ContentService(new ContentRepository(), new ContentRevisionRepository()),
       new WebhookService(new WebhookSettingRepository(), new WebhookLogRepository())
     );
     await useCase.execute(validated.data);
