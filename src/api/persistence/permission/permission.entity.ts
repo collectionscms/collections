@@ -14,7 +14,7 @@ export const roleActions = {
   project: ['readProject', 'updateProject'],
   role: ['readRole', 'createRole', 'updateRole', 'deleteRole'],
   user: ['readUser', 'inviteUser', 'updateUser', 'deleteUser'],
-  review: ['readOwnReview', 'readAllReview', 'createReview', 'approveReview', 'closeReview'],
+  review: ['readOwnReview', 'readAllReview', 'approveReview', 'closeReview'],
   apiKey: ['readApiKey', 'createApiKey', 'updateApiKey', 'deleteApiKey'],
   webhookSetting: [
     'readWebhookSetting',

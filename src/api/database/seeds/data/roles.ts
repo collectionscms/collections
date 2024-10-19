@@ -42,7 +42,6 @@ export const writerPermissions = [
   'readRole',
   'readUser',
   'readOwnReview',
-  'createReview',
   'closeReview',
 ];
 
