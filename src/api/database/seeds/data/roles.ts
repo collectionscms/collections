@@ -34,8 +34,7 @@ export const editorPermissions = [
 
 export const writerPermissions = [
   'readOwnPost',
-  'createPost',
-  'updatePost',
+  'savePost',
   'publishPost',
   'readProject',
   'readRole',

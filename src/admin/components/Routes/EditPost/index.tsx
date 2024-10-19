@@ -12,7 +12,7 @@ export const EditPostRoutes = () => {
 
   const children = [{ path: '*', element: <NotFound /> }];
 
-  if (hasPermission('updatePost')) {
+  if (hasPermission('savePost')) {
     children.push({
       path: ':id',
       element: <EditPost />,

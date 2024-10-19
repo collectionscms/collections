@@ -59,7 +59,7 @@ router.get(
 router.post(
   '/posts',
   authenticatedUser,
-  validateAccess(['createPost']),
+  validateAccess(['savePost']),
   asyncHandler(async (req: Request, res: Response) => {
     const validated = createPostUseCaseSchema.safeParse({
       projectId: res.projectRole?.id,
@@ -86,7 +86,7 @@ router.post(
 router.post(
   '/posts/:id/contents',
   authenticatedUser,
-  validateAccess(['createPost']),
+  validateAccess(['savePost']),
   asyncHandler(async (req: Request, res: Response) => {
     const validated = createContentUseCaseSchema.safeParse({
       projectId: res.projectRole?.id,
@@ -112,7 +112,7 @@ router.post(
 router.post(
   '/posts/:id/translate',
   authenticatedUser,
-  validateAccess(['updatePost']),
+  validateAccess(['savePost']),
   asyncHandler(async (req: Request, res: Response) => {
     const validated = translateContentUseCaseSchema.safeParse({
       id: req.params.id,

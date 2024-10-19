@@ -111,7 +111,7 @@ export const PostPageImpl: React.FC = () => {
         Cell: ({ row }: { row: Row }) => {
           const post = row.original as SourceLanguagePostItem;
           const title = post.title || t('untitled');
-          return hasPermission('updatePost') ? (
+          return hasPermission('savePost') ? (
             <Link
               href={`/admin/contents/${post.contentId}`}
               sx={{ wordBreak: 'break-word', whiteSpace: 'normal' }}
@@ -215,7 +215,7 @@ export const PostPageImpl: React.FC = () => {
         secondary={
           <Stack direction="row" alignItems="center" spacing={1}>
             <ApiPreview path="posts" apiKeys={apiKeys} />
-            {hasPermission('createPost') && <CreateNewButton onClick={handleCreatePost} />}
+            {hasPermission('savePost') && <CreateNewButton onClick={handleCreatePost} />}
           </Stack>
         }
       >

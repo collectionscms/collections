@@ -149,7 +149,7 @@ const EditRolePageImpl: React.FC = () => {
                                 <>
                                   {Object.values(formPermission.permissions).map((permission) => {
                                     return (
-                                      <Grid xs={6} sm={4} sx={{ py: 0.5 }} key={permission}>
+                                      <Grid xs={6} sm={3} sx={{ py: 0.5 }} key={permission}>
                                         <Stack>
                                           <FormControlLabel
                                             {...field}

@@ -43,7 +43,7 @@ const router = express.Router();
 router.get(
   '/contents/:id',
   authenticatedUser,
-  validateAccess(['updatePost']),
+  validateAccess(['savePost']),
   asyncHandler(async (req: Request, res: Response) => {
     const validated = getContentUseCaseSchema.safeParse({
       projectId: res.projectRole?.id,
@@ -91,7 +91,7 @@ router.get(
 router.patch(
   '/contents/:id',
   authenticatedUser,
-  validateAccess(['updatePost']),
+  validateAccess(['savePost']),
   asyncHandler(async (req: Request, res: Response) => {
     const validated = updateContentUseCaseSchema.safeParse({
       projectId: res.projectRole?.id,
@@ -122,7 +122,7 @@ router.patch(
 router.post(
   '/contents/:id/generate-seo',
   authenticatedUser,
-  validateAccess(['updatePost']),
+  validateAccess(['savePost']),
   asyncHandler(async (req: Request, res: Response) => {
     const validated = generateSeoUseCaseSchema.safeParse({
       projectId: res.projectRole?.id,
@@ -150,7 +150,7 @@ router.post(
 router.patch(
   '/contents/:id/request-review',
   authenticatedUser,
-  validateAccess(['updatePost']),
+  validateAccess(['savePost']),
   asyncHandler(async (req: Request, res: Response) => {
     const validated = requestReviewUseCaseSchema.safeParse({
       id: req.params.id,
@@ -249,7 +249,7 @@ router.patch(
 router.patch(
   '/contents/:id/revert',
   authenticatedUser,
-  validateAccess(['updatePost']),
+  validateAccess(['savePost']),
   asyncHandler(async (req: Request, res: Response) => {
     const validated = revertContentUseCaseSchema.safeParse({
       id: req.params.id,
