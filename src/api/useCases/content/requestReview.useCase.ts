@@ -37,19 +37,14 @@ export class RequestReviewUseCase {
     latestRevision.review(userId);
 
     const updatedRevision = await this.prisma.$transaction(async (tx) => {
-      let review = await this.reviewRepository.findOneByContentId(tx, id);
-      if (review) {
-        review.requestReview(comment);
-      } else {
-        review = ReviewEntity.Construct({
-          projectId,
-          postId: content.postId,
-          contentId: content.id,
-          revieweeId: userId,
-          comment: comment as string,
-        });
-      }
-      this.reviewRepository.upsert(tx, review);
+      const review = ReviewEntity.Construct({
+        projectId,
+        postId: content.postId,
+        contentId: content.id,
+        revieweeId: userId,
+        comment: comment as string,
+      });
+      this.reviewRepository.create(tx, review);
 
       return await this.contentRevisionRepository.update(tx, latestRevision);
     });

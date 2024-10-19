@@ -132,21 +132,11 @@ export class ReviewRepository {
     };
   }
 
-  async findOneByContentId(
-    prisma: ProjectPrismaType,
-    contentId: string
-  ): Promise<ReviewEntity | null> {
-    const record = await prisma.review.findFirst({ where: { contentId } });
-    return record ? ReviewEntity.Reconstruct<Review, ReviewEntity>(record) : null;
-  }
+  async create(prisma: ProjectPrismaType, review: ReviewEntity): Promise<ReviewEntity> {
+    review.beforeInsertValidate();
 
-  async upsert(prisma: ProjectPrismaType, review: ReviewEntity): Promise<ReviewEntity> {
-    review.beforeUpdateValidate();
-
-    const record = await prisma.review.upsert({
-      where: { id: review.id },
-      create: review.toPersistence(),
-      update: review.toPersistence(),
+    const record = await prisma.review.create({
+      data: review.toPersistence(),
     });
     return ReviewEntity.Reconstruct<Review, ReviewEntity>(record);
   }
