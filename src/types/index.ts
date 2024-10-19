@@ -43,6 +43,8 @@ export type ApiError = {
 export type StatusHistory = {
   currentStatus: string;
   prevStatus: string | null;
+  isReviewing: boolean;
+  isPublished: boolean;
 };
 
 export type LocalizedContentItem = {
