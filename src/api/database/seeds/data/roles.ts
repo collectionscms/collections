@@ -29,7 +29,6 @@ export const editorPermissions = [
   ...roleActions.review,
   'createApiKey',
   'readApiKey',
-  ...roleActions.extension,
   ...roleActions.webhookSetting,
 ];
 

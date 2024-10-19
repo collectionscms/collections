@@ -22,7 +22,6 @@ export const roleActions = {
     'updateWebhookSetting',
     'deleteWebhookSetting',
   ],
-  extension: ['readTemplate'],
 };
 
 export const apiKeyActions = {

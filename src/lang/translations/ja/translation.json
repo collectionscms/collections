@@ -301,7 +301,6 @@
       "createApiKey": "新規登録",
       "updateApiKey": "編集",
       "deleteApiKey": "削除",
-      "readTemplate": "テンプレートの閲覧",
       "readWebhookSetting": "閲覧",
       "createWebhookSetting": "新規登録",
       "updateWebhookSetting": "編集",

@@ -301,7 +301,6 @@
       "createApiKey": "Create",
       "updateApiKey": "Update",
       "deleteApiKey": "Delete",
-      "readTemplate": "Read template",
       "readWebhookSetting": "Read",
       "createWebhookSetting": "Create",
       "updateWebhookSetting": "Edit",

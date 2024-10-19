@@ -118,18 +118,15 @@ export const settingsGroupNavItems = (): Group => {
 };
 
 export const extensionsGroupNavItems = (): Group => {
-  const { hasPermission } = useAuth();
   const path = '/admin';
 
   const items: GroupItem[] = [];
 
-  if (hasPermission('readTemplate')) {
-    items.push({
-      label: 'template',
-      href: `${path}/templates`,
-      icon: 'LayoutTemplate',
-    });
-  }
+  items.push({
+    label: 'template',
+    href: `${path}/templates`,
+    icon: 'LayoutTemplate',
+  });
 
   return {
     label: 'extension',
