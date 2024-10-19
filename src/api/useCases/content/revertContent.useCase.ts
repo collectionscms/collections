@@ -32,10 +32,24 @@ export class RevertContentUseCase {
       throw new RecordNotFoundException('record_not_found');
     }
 
-    content.revert(revision.status, revision.version, userId);
+    content.revert({
+      title: revision.title,
+      subtitle: revision.subtitle,
+      body: revision.body,
+      bodyJson: revision.bodyJson,
+      bodyHtml: revision.bodyHtml,
+      coverUrl: revision.coverUrl,
+      slug: revision.slug,
+      metaTitle: revision.metaTitle,
+      metaDescription: revision.metaDescription,
+      status: revision.status,
+      version: revision.version,
+      publishedAt: revision.publishedAt,
+      updatedById: revision.updatedById,
+    });
 
     const revertedContent = await this.prisma.$transaction(async (tx) => {
-      const result = await this.contentRepository.revert(this.prisma, content);
+      const result = await this.contentRepository.update(this.prisma, content);
 
       // delete all revisions after reverted version
       await this.contentRevisionRepository.deleteAfterVersion(tx, content.id, revision.version);

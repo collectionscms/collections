@@ -237,10 +237,50 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     this.props.deletedAt = null;
   }
 
-  revert(status: string, version: number, userId: string) {
-    this.props.status = status;
-    this.props.currentVersion = version;
-    this.props.updatedById = userId;
+  revert({
+    title,
+    subtitle,
+    body,
+    bodyJson,
+    bodyHtml,
+    coverUrl,
+    slug,
+    metaTitle,
+    metaDescription,
+    status,
+    version,
+    publishedAt,
+    updatedById,
+  }: {
+    title: string;
+    subtitle: string | null;
+    body: string;
+    bodyJson: string;
+    bodyHtml: string;
+    coverUrl: string | null;
+    slug: string;
+    metaTitle: string | null;
+    metaDescription: string | null;
+    status: string;
+    publishedAt: Date | null;
+    version: number;
+    updatedById: string;
+  }) {
+    Object.assign(this.props, {
+      title,
+      subtitle,
+      body,
+      bodyJson,
+      bodyHtml,
+      coverUrl,
+      slug,
+      metaTitle,
+      metaDescription,
+      status,
+      currentVersion: version,
+      publishedAt,
+      updatedById,
+    });
   }
 
   publish({

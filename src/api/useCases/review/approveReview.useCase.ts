@@ -1,12 +1,12 @@
 import { Review } from '@prisma/client';
 import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
-import { RecordNotUniqueException } from '../../../exceptions/database/recordNotUnique.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
 import { ContentRepository } from '../../persistence/content/content.repository.js';
-import { ContentRevisionEntity } from '../../persistence/contentRevision/contentRevision.entity.js';
-import { ContentRevisionRepository } from '../../persistence/contentRevision/contentRevision.repository.js';
 import { ReviewRepository } from '../../persistence/review/review.repository.js';
+import { UserRepository } from '../../persistence/user/user.repository.js';
+import { WebhookTriggerEvent } from '../../persistence/webhookLog/webhookLog.entity.js';
 import { ContentService } from '../../services/content.service.js';
+import { WebhookService } from '../../services/webhook.service.js';
 import { ApproveReviewUseCaseSchemaType } from './approveReview.useCase.schema.js';
 
 export class ApproveReviewUseCase {
@@ -14,8 +14,9 @@ export class ApproveReviewUseCase {
     private readonly prisma: ProjectPrismaClient,
     private readonly reviewRepository: ReviewRepository,
     private readonly contentRepository: ContentRepository,
-    private readonly contentRevisionRepository: ContentRevisionRepository,
-    private readonly contentService: ContentService
+    private readonly userRepository: UserRepository,
+    private readonly contentService: ContentService,
+    private readonly webhookService: WebhookService
   ) {}
 
   async execute(
@@ -46,44 +47,29 @@ export class ApproveReviewUseCase {
       throw new RecordNotFoundException('record_not_found');
     }
 
-    const { content, revisions } = contentWithRevisions;
+    const { updatedContent, updatedReview } = await this.prisma.$transaction(async (tx) => {
+      const updatedContent = await this.contentService.publish(
+        tx,
+        userId,
+        contentWithRevisions.content,
+        contentWithRevisions.revisions
+      );
+      const updatedReview = await this.reviewRepository.updateStatus(tx, review);
 
-    const latestRevision = ContentRevisionEntity.getLatestRevisionOfLanguage(
-      revisions,
-      content.language
-    );
-    latestRevision.publish(userId);
-
-    content.publish({
-      slug: latestRevision.slug,
-      title: latestRevision.title,
-      subtitle: latestRevision.subtitle,
-      body: latestRevision.body,
-      bodyJson: latestRevision.bodyJson,
-      bodyHtml: latestRevision.bodyHtml,
-      metaTitle: latestRevision.metaTitle,
-      metaDescription: latestRevision.metaDescription,
-      coverUrl: latestRevision.coverUrl,
-      currentVersion: latestRevision.version,
-      updatedById: userId,
+      return { updatedContent, updatedReview };
     });
 
-    const isUniqueSlug = await this.contentService.isUniqueSlug(
+    const createdBy = await this.userRepository.findOneById(
       this.prisma,
-      content.id,
-      latestRevision.slug
+      updatedContent.createdById
     );
-    if (!isUniqueSlug) {
-      throw new RecordNotUniqueException('already_registered_post_slug');
-    }
 
-    const updatedReview = await this.prisma.$transaction(async (tx) => {
-      await this.contentRevisionRepository.update(tx, latestRevision);
-      await this.contentRepository.updateStatus(tx, content);
-      const result = await this.reviewRepository.updateStatus(tx, review);
-
-      return result;
-    });
+    await this.webhookService.send(
+      this.prisma,
+      updatedContent.projectId,
+      WebhookTriggerEvent.publish,
+      updatedContent.toPublishedContentResponse(createdBy)
+    );
 
     return updatedReview.toResponse();
   }

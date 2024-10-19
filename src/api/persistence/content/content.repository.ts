@@ -252,22 +252,6 @@ export class ContentRepository {
     return ContentEntity.Reconstruct<Content, ContentEntity>(record);
   }
 
-  async revert(prisma: ProjectPrismaType, contentEntity: ContentEntity): Promise<ContentEntity> {
-    contentEntity.beforeUpdateValidate();
-    const record = await prisma.content.update({
-      where: {
-        id: contentEntity.id,
-      },
-      data: {
-        status: contentEntity.status,
-        currentVersion: contentEntity.currentVersion,
-        updatedById: contentEntity.updatedById,
-      },
-    });
-
-    return ContentEntity.Reconstruct<Content, ContentEntity>(record);
-  }
-
   async delete(prisma: ProjectPrismaType, contentEntity: ContentEntity): Promise<void> {
     await prisma.content.delete({
       where: {
