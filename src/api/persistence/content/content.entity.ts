@@ -460,6 +460,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
       subtitle: this.getSubtitleOrBodyPreview(),
       body: this.props.body ?? '',
       bodyHtml: this.props.bodyHtml ?? '',
+      status: this.props.status,
       language: this.props.language,
       version: this.props.currentVersion,
       coverUrl: this.props.coverUrl,

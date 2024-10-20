@@ -4,7 +4,6 @@ import { ProjectPrismaClient } from '../../database/prisma/client.js';
 import { ContentRepository } from '../../persistence/content/content.repository.js';
 import { ContentRevisionEntity } from '../../persistence/contentRevision/contentRevision.entity.js';
 import { ContentRevisionRepository } from '../../persistence/contentRevision/contentRevision.repository.js';
-import { UserRepository } from '../../persistence/user/user.repository.js';
 import { WebhookTriggerEvent } from '../../persistence/webhookLog/webhookLog.entity.js';
 import { WebhookService } from '../../services/webhook.service.js';
 import { TrashContentUseCaseSchemaType } from './trashContent.useCase.schema.js';
@@ -14,7 +13,6 @@ export class TrashContentUseCase {
     private readonly prisma: ProjectPrismaClient,
     private readonly contentRepository: ContentRepository,
     private readonly contentRevisionRepository: ContentRevisionRepository,
-    private readonly userRepository: UserRepository,
     private readonly webhookService: WebhookService
   ) {}
 
@@ -44,7 +42,6 @@ export class TrashContentUseCase {
       updatedById: userId,
     });
     contentRevision.trash();
-
     content.trash(userId);
 
     const trashedContent = await this.prisma.$transaction(async (tx) => {
@@ -55,13 +52,10 @@ export class TrashContentUseCase {
     });
 
     if (content.isPublished()) {
-      const createdBy = await this.userRepository.findOneById(this.prisma, content.createdById);
-
       await this.webhookService.send(
         this.prisma,
-        content.projectId,
         WebhookTriggerEvent.deletePublished,
-        trashedContent.toPublishedContentResponse(createdBy)
+        trashedContent
       );
     }
 

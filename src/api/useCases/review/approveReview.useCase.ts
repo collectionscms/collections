@@ -3,7 +3,6 @@ import { RecordNotFoundException } from '../../../exceptions/database/recordNotF
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
 import { ContentRepository } from '../../persistence/content/content.repository.js';
 import { ReviewRepository } from '../../persistence/review/review.repository.js';
-import { UserRepository } from '../../persistence/user/user.repository.js';
 import { WebhookTriggerEvent } from '../../persistence/webhookLog/webhookLog.entity.js';
 import { ContentService } from '../../services/content.service.js';
 import { WebhookService } from '../../services/webhook.service.js';
@@ -14,7 +13,6 @@ export class ApproveReviewUseCase {
     private readonly prisma: ProjectPrismaClient,
     private readonly reviewRepository: ReviewRepository,
     private readonly contentRepository: ContentRepository,
-    private readonly userRepository: UserRepository,
     private readonly contentService: ContentService,
     private readonly webhookService: WebhookService
   ) {}
@@ -59,17 +57,7 @@ export class ApproveReviewUseCase {
       return { updatedContent, updatedReview };
     });
 
-    const createdBy = await this.userRepository.findOneById(
-      this.prisma,
-      updatedContent.createdById
-    );
-
-    await this.webhookService.send(
-      this.prisma,
-      updatedContent.projectId,
-      WebhookTriggerEvent.publish,
-      updatedContent.toPublishedContentResponse(createdBy)
-    );
+    await this.webhookService.send(this.prisma, WebhookTriggerEvent.publish, updatedContent);
 
     return updatedReview.toResponse();
   }

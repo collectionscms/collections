@@ -49,12 +49,7 @@ export class TrashPostUseCase {
 
     const publishedContents = trashedContent.filter((content) => content.isPublished());
     for (const content of publishedContents) {
-      await this.webhookService.send(
-        this.prisma,
-        content.projectId,
-        WebhookTriggerEvent.deletePublished,
-        null
-      );
+      await this.webhookService.send(this.prisma, WebhookTriggerEvent.deletePublished, content);
     }
 
     return trashedContent.map((content) => content.toResponse());

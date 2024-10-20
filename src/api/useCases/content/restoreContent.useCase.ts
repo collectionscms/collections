@@ -3,7 +3,6 @@ import { RecordNotFoundException } from '../../../exceptions/database/recordNotF
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
 import { ContentRepository } from '../../persistence/content/content.repository.js';
 import { ContentRevisionRepository } from '../../persistence/contentRevision/contentRevision.repository.js';
-import { UserRepository } from '../../persistence/user/user.repository.js';
 import { WebhookTriggerEvent } from '../../persistence/webhookLog/webhookLog.entity.js';
 import { WebhookService } from '../../services/webhook.service.js';
 import { RestoreContentUseCaseSchemaType } from './restoreContent.useCase.schema.js';
@@ -11,7 +10,6 @@ import { RestoreContentUseCaseSchemaType } from './restoreContent.useCase.schema
 export class RestoreContentUseCase {
   constructor(
     private readonly prisma: ProjectPrismaClient,
-    private readonly userRepository: UserRepository,
     private readonly contentRepository: ContentRepository,
     private readonly contentRevisionRepository: ContentRevisionRepository,
     private readonly webhookService: WebhookService
@@ -38,13 +36,10 @@ export class RestoreContentUseCase {
     });
 
     if (restoredContent.isPublished()) {
-      const createdBy = await this.userRepository.findOneById(this.prisma, userId);
-
       await this.webhookService.send(
         this.prisma,
-        content.projectId,
         WebhookTriggerEvent.deletePublished,
-        restoredContent.toPublishedContentResponse(createdBy)
+        restoredContent
       );
     }
 

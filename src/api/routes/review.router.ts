@@ -132,9 +132,12 @@ router.patch(
       projectPrisma(validated.data.projectId),
       new ReviewRepository(),
       new ContentRepository(),
-      new UserRepository(),
       new ContentService(new ContentRepository(), new ContentRevisionRepository()),
-      new WebhookService(new WebhookSettingRepository(), new WebhookLogRepository())
+      new WebhookService(
+        new WebhookSettingRepository(),
+        new WebhookLogRepository(),
+        new UserRepository()
+      )
     );
 
     const hasReadAllReview =

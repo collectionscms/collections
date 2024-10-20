@@ -2,7 +2,6 @@ import { Content } from '@prisma/client';
 import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
 import { ContentRepository } from '../../persistence/content/content.repository.js';
-import { UserRepository } from '../../persistence/user/user.repository.js';
 import { WebhookTriggerEvent } from '../../persistence/webhookLog/webhookLog.entity.js';
 import { ContentService } from '../../services/content.service.js';
 import { WebhookService } from '../../services/webhook.service.js';
@@ -12,7 +11,6 @@ export class PublishUseCase {
   constructor(
     private readonly prisma: ProjectPrismaClient,
     private readonly contentRepository: ContentRepository,
-    private readonly userRepository: UserRepository,
     private readonly contentService: ContentService,
     private readonly webhookService: WebhookService
   ) {}
@@ -27,26 +25,14 @@ export class PublishUseCase {
       throw new RecordNotFoundException('record_not_found');
     }
 
-    const updatedContent = await this.prisma.$transaction(async (tx) => {
-      return await this.contentService.publish(
-        tx,
-        userId,
-        contentWithRevisions.content,
-        contentWithRevisions.revisions
-      );
-    });
-
-    const createdBy = await this.userRepository.findOneById(
+    const updatedContent = await this.contentService.publish(
       this.prisma,
-      updatedContent.createdById
+      userId,
+      contentWithRevisions.content,
+      contentWithRevisions.revisions
     );
 
-    await this.webhookService.send(
-      this.prisma,
-      updatedContent.projectId,
-      WebhookTriggerEvent.publish,
-      updatedContent.toPublishedContentResponse(createdBy)
-    );
+    await this.webhookService.send(this.prisma, WebhookTriggerEvent.publish, updatedContent);
 
     return updatedContent.toResponse();
   }

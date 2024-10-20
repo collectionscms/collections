@@ -187,9 +187,12 @@ router.patch(
     const useCase = new PublishUseCase(
       projectPrisma(validated.data.projectId),
       new ContentRepository(),
-      new UserRepository(),
       new ContentService(new ContentRepository(), new ContentRevisionRepository()),
-      new WebhookService(new WebhookSettingRepository(), new WebhookLogRepository())
+      new WebhookService(
+        new WebhookSettingRepository(),
+        new WebhookLogRepository(),
+        new UserRepository()
+      )
     );
     await useCase.execute(validated.data);
 
@@ -213,7 +216,11 @@ router.patch(
       projectPrisma(validated.data.projectId),
       new ContentRepository(),
       new ContentRevisionRepository(),
-      new WebhookService(new WebhookSettingRepository(), new WebhookLogRepository())
+      new WebhookService(
+        new WebhookSettingRepository(),
+        new WebhookLogRepository(),
+        new UserRepository()
+      )
     );
     await useCase.execute(validated.data);
 
@@ -235,10 +242,13 @@ router.patch(
 
     const useCase = new RestoreContentUseCase(
       projectPrisma(validated.data.projectId),
-      new UserRepository(),
       new ContentRepository(),
       new ContentRevisionRepository(),
-      new WebhookService(new WebhookSettingRepository(), new WebhookLogRepository())
+      new WebhookService(
+        new WebhookSettingRepository(),
+        new WebhookLogRepository(),
+        new UserRepository()
+      )
     );
     await useCase.execute(validated.data);
 
@@ -261,10 +271,13 @@ router.patch(
 
     const useCase = new RevertContentUseCase(
       projectPrisma(validated.data.projectId),
-      new UserRepository(),
       new ContentRepository(),
       new ContentRevisionRepository(),
-      new WebhookService(new WebhookSettingRepository(), new WebhookLogRepository())
+      new WebhookService(
+        new WebhookSettingRepository(),
+        new WebhookLogRepository(),
+        new UserRepository()
+      )
     );
     await useCase.execute(validated.data);
 
@@ -288,8 +301,11 @@ router.delete(
       projectPrisma(validated.data.projectId),
       new ContentRepository(),
       new ContentRevisionRepository(),
-      new UserRepository(),
-      new WebhookService(new WebhookSettingRepository(), new WebhookLogRepository())
+      new WebhookService(
+        new WebhookSettingRepository(),
+        new WebhookLogRepository(),
+        new UserRepository()
+      )
     );
     await useCase.execute(validated.data);
 
