@@ -254,7 +254,7 @@ export const EditPostPageImpl: React.FC = () => {
   // /////////////////////////////////////
 
   const handleChangeLanguage = (contentId: string) => {
-    navigate(`/admin/contents/${contentId}`);
+    navigate(`/admin/contents/${contentId}`, { replace: true });
   };
 
   const [openAddLanguage, setOpenAddLanguage] = useState(false);
