@@ -54,7 +54,7 @@ export class TrashContentUseCase {
     if (content.isPublished()) {
       await this.webhookService.send(
         this.prisma,
-        WebhookTriggerEvent.deletePublished,
+        WebhookTriggerEvent.trashPublished,
         trashedContent
       );
     }

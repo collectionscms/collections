@@ -6,7 +6,7 @@ import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 export const WebhookTriggerEvent = {
   publish: 'publish',
   archive: 'archive',
-  deletePublished: 'deletePublished',
+  trashPublished: 'trashPublished',
   restorePublished: 'restorePublished',
   revert: 'revert',
 } as const;

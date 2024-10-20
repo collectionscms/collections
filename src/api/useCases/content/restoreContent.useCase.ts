@@ -29,8 +29,7 @@ export class RestoreContentUseCase {
       const result = await this.contentRepository.restore(this.prisma, content);
 
       // delete all revisions after restored version
-      const previousVersion = revision.version - 1;
-      await this.contentRevisionRepository.deleteAfterVersion(tx, content.id, previousVersion);
+      await this.contentRevisionRepository.deleteAfterVersion(tx, content.id, revision.version);
 
       return result;
     });
@@ -38,7 +37,7 @@ export class RestoreContentUseCase {
     if (restoredContent.isPublished()) {
       await this.webhookService.send(
         this.prisma,
-        WebhookTriggerEvent.deletePublished,
+        WebhookTriggerEvent.restorePublished,
         restoredContent
       );
     }

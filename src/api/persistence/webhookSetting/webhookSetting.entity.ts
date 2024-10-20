@@ -60,7 +60,7 @@ export class WebhookSettingEntity extends PrismaBaseEntity<WebhookSetting> {
         return this.props.onPublish;
       case WebhookTriggerEvent.archive:
         return this.props.onArchive;
-      case WebhookTriggerEvent.deletePublished:
+      case WebhookTriggerEvent.trashPublished:
         return this.props.onDeletePublished;
       case WebhookTriggerEvent.restorePublished:
         return this.props.onRestorePublished;

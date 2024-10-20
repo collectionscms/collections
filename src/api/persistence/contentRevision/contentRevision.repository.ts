@@ -43,6 +43,7 @@ export class ContentRevisionRepository {
     const record = await prisma.contentRevision.findFirst({
       where: {
         contentId,
+        deletedAt: null,
       },
       orderBy: {
         version: 'desc',
