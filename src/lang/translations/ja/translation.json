@@ -264,9 +264,7 @@
     "italic": "斜体",
     "underline": "下線",
     "strike_through": "取り消し線",
-    "code": "コード",
-    "duplicate": "複製",
-    "copy_to_clipboard": "クリップボードにコピー"
+    "code": "コード"
   },
   "post_review_status": {
     "pending": "申請中",
