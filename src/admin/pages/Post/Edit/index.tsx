@@ -49,12 +49,13 @@ export const EditPostPageImpl: React.FC = () => {
 
   if (!content) return <></>;
 
+  // On mount, or update content when language is changed
   useEffect(() => {
     setPostTitle(content.title);
     setPostSubtitle(content.subtitle);
     setUploadCover(content.coverUrl ?? null);
     editor?.commands.setContent(toJson(content.bodyJson));
-  }, [content]);
+  }, [content.language]);
 
   // /////////////////////////////////////
   // Title
@@ -220,8 +221,12 @@ export const EditPostPageImpl: React.FC = () => {
     bodyHtml: string | null;
     coverUrl: string | null;
   }) => {
-    await updateContentTrigger(data);
-    setIsDirty(false);
+    try {
+      await updateContentTrigger(data);
+      setIsDirty(false);
+    } catch (error) {
+      logger.error(error);
+    }
   };
 
   // /////////////////////////////////////
@@ -234,7 +239,7 @@ export const EditPostPageImpl: React.FC = () => {
 
   const handleTrashed = () => {
     const languageContent = content.languageContents.filter((c) => c.contentId !== content.id)?.[0];
-    navigate(`/admin/contents/${languageContent.contentId}`);
+    navigate(`/admin/contents/${languageContent.contentId}`, { replace: true });
   };
 
   // /////////////////////////////////////
