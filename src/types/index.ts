@@ -91,6 +91,7 @@ export type PublishedContent = {
   subtitle: string;
   body: string;
   bodyHtml: string;
+  status: string;
   language: string;
   version: number;
   coverUrl: string | null;

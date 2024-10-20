@@ -168,6 +168,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
             subtitle: content.getSubtitleOrBodyPreview(),
             body: content.body ?? '',
             bodyHtml: content.bodyHtml ?? '',
+            status: content.status,
             language: content.language,
             version: content.currentVersion,
             coverUrl: content.coverUrl,

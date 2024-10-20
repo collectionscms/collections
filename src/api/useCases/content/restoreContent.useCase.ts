@@ -3,7 +3,6 @@ import { RecordNotFoundException } from '../../../exceptions/database/recordNotF
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
 import { ContentRepository } from '../../persistence/content/content.repository.js';
 import { ContentRevisionRepository } from '../../persistence/contentRevision/contentRevision.repository.js';
-import { UserRepository } from '../../persistence/user/user.repository.js';
 import { WebhookTriggerEvent } from '../../persistence/webhookLog/webhookLog.entity.js';
 import { WebhookService } from '../../services/webhook.service.js';
 import { RestoreContentUseCaseSchemaType } from './restoreContent.useCase.schema.js';
@@ -11,7 +10,6 @@ import { RestoreContentUseCaseSchemaType } from './restoreContent.useCase.schema
 export class RestoreContentUseCase {
   constructor(
     private readonly prisma: ProjectPrismaClient,
-    private readonly userRepository: UserRepository,
     private readonly contentRepository: ContentRepository,
     private readonly contentRevisionRepository: ContentRevisionRepository,
     private readonly webhookService: WebhookService
@@ -31,20 +29,16 @@ export class RestoreContentUseCase {
       const result = await this.contentRepository.restore(this.prisma, content);
 
       // delete all revisions after restored version
-      const previousVersion = revision.version - 1;
-      await this.contentRevisionRepository.deleteAfterVersion(tx, content.id, previousVersion);
+      await this.contentRevisionRepository.deleteAfterVersion(tx, content.id, revision.version);
 
       return result;
     });
 
     if (restoredContent.isPublished()) {
-      const createdBy = await this.userRepository.findOneById(this.prisma, userId);
-
       await this.webhookService.send(
         this.prisma,
-        content.projectId,
-        WebhookTriggerEvent.deletePublished,
-        restoredContent.toPublishedContentResponse(createdBy)
+        WebhookTriggerEvent.restorePublished,
+        restoredContent
       );
     }
 

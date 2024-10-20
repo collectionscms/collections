@@ -12,6 +12,7 @@ import { PermissionEntity } from '../persistence/permission/permission.entity.js
 import { PostRepository } from '../persistence/post/post.repository.js';
 import { ProjectRepository } from '../persistence/project/project.repository.js';
 import { TextGenerationUsageRepository } from '../persistence/textGenerationUsage/textGenerationUsage.repository.js';
+import { UserRepository } from '../persistence/user/user.repository.js';
 import { WebhookLogRepository } from '../persistence/webhookLog/webhookLog.repository.js';
 import { WebhookSettingRepository } from '../persistence/webhookSetting/webhookSetting.repository.js';
 import { WebhookService } from '../services/webhook.service.js';
@@ -153,7 +154,11 @@ router.delete(
       projectPrisma(validated.data.projectId),
       new ContentRepository(),
       new ContentRevisionRepository(),
-      new WebhookService(new WebhookSettingRepository(), new WebhookLogRepository())
+      new WebhookService(
+        new WebhookSettingRepository(),
+        new WebhookLogRepository(),
+        new UserRepository()
+      )
     );
     await useCase.execute(validated.data);
 

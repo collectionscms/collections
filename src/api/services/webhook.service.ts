@@ -1,7 +1,8 @@
 import axios from 'axios';
-import { PublishedContent } from '../../types/index.js';
 import { logger } from '../../utilities/logger.js';
 import { ProjectPrismaType } from '../database/prisma/client.js';
+import { ContentEntity } from '../persistence/content/content.entity.js';
+import { UserRepository } from '../persistence/user/user.repository.js';
 import {
   WebhookLogEntity,
   WebhookTriggerEventType,
@@ -12,31 +13,45 @@ import { WebhookSettingRepository } from '../persistence/webhookSetting/webhookS
 export class WebhookService {
   constructor(
     private readonly webhookSettingRepository: WebhookSettingRepository,
-    private readonly webhookLogRepository: WebhookLogRepository
+    private readonly webhookLogRepository: WebhookLogRepository,
+    private readonly userRepository: UserRepository
   ) {}
 
+  /**
+   * Send webhook to the specified URL
+   * @param prisma
+   * @param triggerEvent
+   * @param newContent
+   */
   async send(
     prisma: ProjectPrismaType,
-    projectId: string,
     triggerEvent: WebhookTriggerEventType,
-    content: PublishedContent | null
+    newContent: ContentEntity
   ): Promise<void> {
     const settings = await this.webhookSettingRepository.findEnabledManyByProjectId(
       prisma,
-      projectId
+      newContent.projectId
     );
 
+    const createdBy = await this.userRepository.findOneById(prisma, newContent.createdById);
+
     for (const setting of settings) {
+      if (!setting.canSend(triggerEvent)) continue;
+
       let response;
       try {
         if (setting.url) {
-          response = await axios.post(setting.url, { id: content?.id, triggerEvent, content });
+          response = await axios.post(setting.url, {
+            id: newContent.id,
+            triggerEvent,
+            new: newContent.toPublishedContentResponse(createdBy),
+          });
         }
       } catch (error) {
         logger.warn(`Failed to send webhook for id:${setting.id}`, error);
       } finally {
         const entity = WebhookLogEntity.Construct({
-          projectId,
+          projectId: newContent.projectId,
           name: setting.name,
           url: setting.url,
           triggerEvent,

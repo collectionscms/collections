@@ -3,7 +3,6 @@ import { RecordNotFoundException } from '../../../exceptions/database/recordNotF
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
 import { ContentRepository } from '../../persistence/content/content.repository.js';
 import { ContentRevisionRepository } from '../../persistence/contentRevision/contentRevision.repository.js';
-import { UserRepository } from '../../persistence/user/user.repository.js';
 import { WebhookTriggerEvent } from '../../persistence/webhookLog/webhookLog.entity.js';
 import { WebhookService } from '../../services/webhook.service.js';
 import { RevertContentUseCaseSchemaType } from './revertContent.useCase.schema.js';
@@ -11,17 +10,12 @@ import { RevertContentUseCaseSchemaType } from './revertContent.useCase.schema.j
 export class RevertContentUseCase {
   constructor(
     private readonly prisma: ProjectPrismaClient,
-    private readonly userRepository: UserRepository,
     private readonly contentRepository: ContentRepository,
     private readonly contentRevisionRepository: ContentRevisionRepository,
     private readonly webhookService: WebhookService
   ) {}
 
-  async execute({
-    id,
-    userId,
-    contentRevisionId,
-  }: RevertContentUseCaseSchemaType): Promise<Content> {
+  async execute({ id, contentRevisionId }: RevertContentUseCaseSchemaType): Promise<Content> {
     const content = await this.contentRepository.findOneById(this.prisma, id);
     const revision = await this.contentRevisionRepository.findOneById(
       this.prisma,
@@ -56,16 +50,7 @@ export class RevertContentUseCase {
       return result;
     });
 
-    if (revertedContent.isPublished()) {
-      const createdBy = await this.userRepository.findOneById(this.prisma, userId);
-
-      await this.webhookService.send(
-        this.prisma,
-        content.projectId,
-        WebhookTriggerEvent.revert,
-        revertedContent.toPublishedContentResponse(createdBy)
-      );
-    }
+    await this.webhookService.send(this.prisma, WebhookTriggerEvent.revert, revertedContent);
 
     return revertedContent.toResponse();
   }

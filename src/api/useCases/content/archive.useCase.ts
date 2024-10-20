@@ -52,12 +52,7 @@ export class ArchiveUseCase {
       return result;
     });
 
-    await this.webhookService.send(
-      this.prisma,
-      updatedContent.projectId,
-      WebhookTriggerEvent.archive,
-      null
-    );
+    await this.webhookService.send(this.prisma, WebhookTriggerEvent.archive, updatedContent);
 
     return updatedContent.toResponse();
   }
