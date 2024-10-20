@@ -21,9 +21,14 @@ export class TrashPostUseCase {
       id
     );
 
-    const trashedContent = await this.prisma.$transaction(async (tx) => {
-      const result = [];
+    const { trashedContent, sendContents } = await this.prisma.$transaction(async (tx) => {
+      const trashedContent = [];
+      const sendContents = [];
       for (const { content, revisions } of contentWithRevisions) {
+        if (content.isPublished()) {
+          sendContents.push(content);
+        }
+
         const latestRevision = ContentRevisionEntity.getLatestRevisionOfLanguage(
           revisions,
           content.language
@@ -36,19 +41,18 @@ export class TrashPostUseCase {
           updatedById: userId,
         });
         contentRevision.trash();
-
         content.trash(userId);
-        result.push(content);
+
+        trashedContent.push(content);
 
         await this.contentRevisionRepository.create(tx, contentRevision);
         await this.contentRepository.trash(tx, content);
       }
 
-      return result;
+      return { trashedContent, sendContents };
     });
 
-    const publishedContents = trashedContent.filter((content) => content.isPublished());
-    for (const content of publishedContents) {
+    for (const content of sendContents) {
       await this.webhookService.send(this.prisma, WebhookTriggerEvent.trashPublished, content);
     }
 

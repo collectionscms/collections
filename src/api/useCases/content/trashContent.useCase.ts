@@ -29,6 +29,7 @@ export class TrashContentUseCase {
     }
 
     const { content, revisions } = contentWithRevisions;
+    const isPublished = content.isPublished();
 
     const latestRevision = ContentRevisionEntity.getLatestRevisionOfLanguage(
       revisions,
@@ -51,7 +52,7 @@ export class TrashContentUseCase {
       return result;
     });
 
-    if (content.isPublished()) {
+    if (isPublished) {
       await this.webhookService.send(
         this.prisma,
         WebhookTriggerEvent.trashPublished,
