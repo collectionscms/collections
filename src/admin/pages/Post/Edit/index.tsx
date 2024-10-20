@@ -6,12 +6,10 @@ import {
   Stack,
   TextField,
   Toolbar,
-  Tooltip,
   Typography,
   alpha,
   useTheme,
 } from '@mui/material';
-import { enqueueSnackbar } from 'notistack';
 import React, { useEffect, useRef, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useTranslation } from 'react-i18next';
@@ -224,7 +222,6 @@ export const EditPostPageImpl: React.FC = () => {
   }) => {
     await updateContentTrigger(data);
     setIsDirty(false);
-    mutate();
   };
 
   // /////////////////////////////////////
