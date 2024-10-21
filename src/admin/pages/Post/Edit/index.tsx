@@ -6,12 +6,10 @@ import {
   Stack,
   TextField,
   Toolbar,
-  Tooltip,
   Typography,
   alpha,
   useTheme,
 } from '@mui/material';
-import { enqueueSnackbar } from 'notistack';
 import React, { useEffect, useRef, useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useTranslation } from 'react-i18next';
@@ -51,12 +49,13 @@ export const EditPostPageImpl: React.FC = () => {
 
   if (!content) return <></>;
 
+  // On mount, or update content when language is changed
   useEffect(() => {
     setPostTitle(content.title);
     setPostSubtitle(content.subtitle);
     setUploadCover(content.coverUrl ?? null);
     editor?.commands.setContent(toJson(content.bodyJson));
-  }, [content]);
+  }, [content.language]);
 
   // /////////////////////////////////////
   // Title
@@ -222,9 +221,12 @@ export const EditPostPageImpl: React.FC = () => {
     bodyHtml: string | null;
     coverUrl: string | null;
   }) => {
-    await updateContentTrigger(data);
-    setIsDirty(false);
-    mutate();
+    try {
+      await updateContentTrigger(data);
+      setIsDirty(false);
+    } catch (error) {
+      logger.error(error);
+    }
   };
 
   // /////////////////////////////////////
@@ -237,7 +239,7 @@ export const EditPostPageImpl: React.FC = () => {
 
   const handleTrashed = () => {
     const languageContent = content.languageContents.filter((c) => c.contentId !== content.id)?.[0];
-    navigate(`/admin/contents/${languageContent.contentId}`);
+    navigate(`/admin/contents/${languageContent.contentId}`, { replace: true });
   };
 
   // /////////////////////////////////////
@@ -257,7 +259,7 @@ export const EditPostPageImpl: React.FC = () => {
   // /////////////////////////////////////
 
   const handleChangeLanguage = (contentId: string) => {
-    navigate(`/admin/contents/${contentId}`);
+    navigate(`/admin/contents/${contentId}`, { replace: true });
   };
 
   const [openAddLanguage, setOpenAddLanguage] = useState(false);
@@ -313,7 +315,7 @@ export const EditPostPageImpl: React.FC = () => {
       />
       <Box component="main" sx={{ minHeight: '100vh' }}>
         <Toolbar sx={{ mt: 0 }} />
-        <Container sx={{ py: 6 }}>
+        <Container sx={{ pt: 6, pb: 48 }}>
           <Box sx={{ maxWidth: '42rem', marginLeft: 'auto', marginRight: 'auto', mb: 6 }}>
             {postTitle.length === 0 &&
               postSubtitle.length === 0 &&

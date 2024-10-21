@@ -17,6 +17,27 @@ export const useTextMenuCommands = (editor: Editor) => {
         .run(),
     [editor]
   );
+  const onHeading = useCallback(() => {
+    if (editor.isActive('heading', { level: 1 })) {
+      editor.chain().focus().setParagraph().run();
+    } else {
+      editor.chain().focus().setHeading({ level: 1 }).run();
+    }
+  }, [editor]);
+  const onSubheading = useCallback(() => {
+    if (editor.isActive('heading', { level: 2 })) {
+      editor.chain().focus().setParagraph().run();
+    } else {
+      editor.chain().focus().setHeading({ level: 2 }).run();
+    }
+  }, [editor]);
+  const onSubtitle = useCallback(() => {
+    if (editor.isActive('heading', { level: 3 })) {
+      editor.chain().focus().setParagraph().run();
+    } else {
+      editor.chain().focus().setHeading({ level: 3 }).run();
+    }
+  }, [editor]);
 
   return {
     onBold,
@@ -26,5 +47,8 @@ export const useTextMenuCommands = (editor: Editor) => {
     onCode,
     onCodeBlock,
     onLink,
+    onHeading,
+    onSubheading,
+    onSubtitle,
   };
 };

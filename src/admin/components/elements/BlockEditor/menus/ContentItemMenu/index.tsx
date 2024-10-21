@@ -18,7 +18,7 @@ export const ContentItemMenu: React.FC<Props> = ({ editor }) => {
   const { t } = useTranslation();
   const [menuOpen, setMenuOpen] = useState(false);
   const data = useData();
-  const actions = useContentItemActions(editor, data.currentNode, data.currentNodePos);
+  const actions = useContentItemActions(editor, data.currentNodePos);
 
   useEffect(() => {
     if (menuOpen) {
@@ -39,9 +39,6 @@ export const ContentItemMenu: React.FC<Props> = ({ editor }) => {
       }}
     >
       <Stack direction="row" alignItems="center" gap={0.5}>
-        <ToolbarButton onClick={actions.handleAdd}>
-          <Icon name="Plus" />
-        </ToolbarButton>
         <Popover.Root open={menuOpen} onOpenChange={setMenuOpen}>
           <Popover.Trigger asChild>
             <ToolbarButton>
@@ -59,24 +56,6 @@ export const ContentItemMenu: React.FC<Props> = ({ editor }) => {
               }}
             >
               <Stack>
-                <DropdownButton
-                  onClick={() => {
-                    setMenuOpen(false);
-                    actions.duplicateNode();
-                  }}
-                >
-                  <Icon name="Copy" size={16} />
-                  <Typography sx={{ ml: 1 }}>{t('editor.duplicate')}</Typography>
-                </DropdownButton>
-                <DropdownButton
-                  onClick={() => {
-                    setMenuOpen(false);
-                    actions.copyNodeToClipboard();
-                  }}
-                >
-                  <Icon name="Clipboard" size={16} />
-                  <Typography sx={{ ml: 1 }}>{t('editor.copy_to_clipboard')}</Typography>
-                </DropdownButton>
                 <DropdownButton
                   color="error"
                   onClick={() => {

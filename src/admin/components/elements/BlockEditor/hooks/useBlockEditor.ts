@@ -18,6 +18,7 @@ import {
   Link,
   SlashCommand,
 } from '../extensions/index.js';
+
 const lowlight = createLowlight(common);
 
 export const useBlockEditor = ({

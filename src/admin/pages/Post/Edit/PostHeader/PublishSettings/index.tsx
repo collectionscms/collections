@@ -50,10 +50,14 @@ export const PublishSettings: React.FC<Props> = ({ open, content, onClose }) => 
   const navigate = useNavigate();
   const theme = useTheme();
   const { requestReview, publish, archive, getContent } = usePost();
-  const { trigger: requestReviewTrigger } = requestReview(content.id);
-  const { trigger: publishTrigger } = publish(content.id);
-  const { trigger: archiveTrigger } = archive(content.id);
+  const { trigger: requestReviewTrigger, isMutating: isRequestReviewing } = requestReview(
+    content.id
+  );
+  const { trigger: publishTrigger, isMutating: isPublishing } = publish(content.id);
+  const { trigger: archiveTrigger, isMutating: isArchiving } = archive(content.id);
   const { data: mutatedContent, mutate } = getContent(content.id);
+
+  const isMutating = isRequestReviewing || isPublishing || isArchiving;
 
   const appBar: AppBarProps = {
     position: 'fixed',
@@ -164,7 +168,7 @@ export const PublishSettings: React.FC<Props> = ({ open, content, onClose }) => 
             <Button
               variant="contained"
               type="submit"
-              disabled={content.status.isReviewing}
+              disabled={content.status.isReviewing || isMutating}
               sx={{ position: 'absolute', right: 24 }}
             >
               {getPublishButtonLabel()}

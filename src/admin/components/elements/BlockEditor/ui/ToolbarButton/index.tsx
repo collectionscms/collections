@@ -1,11 +1,13 @@
 import { IconButton, Stack, Tooltip, Typography } from '@mui/material';
 import React, { forwardRef } from 'react';
+import { SxProps } from '@mui/system';
 
 type Props = {
   children: React.ReactNode;
   tooltip?: string;
   shortcuts?: string[];
   color?: 'inherit' | 'primary' | 'secondary' | 'default';
+  sx?: SxProps;
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
@@ -24,7 +26,7 @@ export const ShortcutKey: React.FC<{ shortcut: string }> = ({ shortcut }) => {
 };
 
 export const ToolbarButton = forwardRef<HTMLButtonElement, Props>(
-  ({ children, onClick, shortcuts, color, tooltip, ...rest }, ref) => {
+  ({ children, onClick, shortcuts, color, tooltip, sx, ...rest }, ref) => {
     const content = (
       <IconButton
         onClick={onClick}
@@ -32,7 +34,7 @@ export const ToolbarButton = forwardRef<HTMLButtonElement, Props>(
         ref={ref}
         color={color || 'default'}
         size="small"
-        sx={{ borderRadius: 1.5 }}
+        sx={{ borderRadius: 1.5, ...sx }}
       >
         {children}
       </IconButton>
