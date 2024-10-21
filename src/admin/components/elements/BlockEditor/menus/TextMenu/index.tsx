@@ -1,16 +1,12 @@
-import { Divider, Paper, Stack } from '@mui/material';
+import { Divider, Paper, Stack, useTheme } from '@mui/material';
 import { BubbleMenu, Editor } from '@tiptap/react';
-import React, { memo } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Icon } from '../../../Icon/index.js';
 import { useTextMenuCommands } from '../../hooks/useTextMenuCommands.js';
-import { useTextMenuContentTypes } from '../../hooks/useTextMenuContentTypes.js';
 import { useTextMenuStates } from '../../hooks/useTextMenuStates.js';
-import { ContentTypeMenu } from '../../menus/ContentTypeMenu/index.js';
 import { ToolbarButton } from '../../ui/ToolbarButton/index.js';
 import { EditLinkPopover } from './EditLinkPopover.js';
-
-const MemoContentTypeMenu = memo(ContentTypeMenu);
 
 type Props = {
   editor: Editor;
@@ -18,9 +14,13 @@ type Props = {
 
 export const TextMenu: React.FC<Props> = ({ editor }) => {
   const { t } = useTranslation();
+  const theme = useTheme();
   const commands = useTextMenuCommands(editor);
-  const blockOptions = useTextMenuContentTypes(editor);
   const states = useTextMenuStates(editor);
+
+  const getBackgroundColor = (isActive: boolean) => {
+    return isActive ? theme.palette.secondary.lighter : 'transparent';
+  };
 
   return (
     <BubbleMenu
@@ -41,12 +41,11 @@ export const TextMenu: React.FC<Props> = ({ editor }) => {
         }}
       >
         <Stack direction="row" gap={0.5} alignItems="center">
-          <MemoContentTypeMenu options={blockOptions} />
-          <Divider orientation="vertical" flexItem sx={{ mx: 1, my: 0.5 }} />
           <ToolbarButton
             tooltip={`${t('editor.bold')}`}
             shortcuts={['Mod', 'B']}
             color="inherit"
+            sx={{ backgroundColor: getBackgroundColor(editor.isActive('bold')) }}
             onClick={commands.onBold}
           >
             <Icon name="Bold" size={16} />
@@ -55,6 +54,7 @@ export const TextMenu: React.FC<Props> = ({ editor }) => {
             tooltip={`${t('editor.italic')}`}
             shortcuts={['Mod', 'I']}
             color="inherit"
+            sx={{ backgroundColor: getBackgroundColor(editor.isActive('italic')) }}
             onClick={commands.onItalic}
           >
             <Icon name="Italic" size={16} />
@@ -63,6 +63,7 @@ export const TextMenu: React.FC<Props> = ({ editor }) => {
             tooltip={`${t('editor.underline')}`}
             shortcuts={['Mod', 'U']}
             color="inherit"
+            sx={{ backgroundColor: getBackgroundColor(editor.isActive('underline')) }}
             onClick={commands.onUnderline}
           >
             <Icon name="Underline" size={16} />
@@ -71,24 +72,45 @@ export const TextMenu: React.FC<Props> = ({ editor }) => {
             tooltip={`${t('editor.strike_through')}`}
             shortcuts={['Mod', 'Shift', 'S']}
             color="inherit"
+            sx={{ backgroundColor: getBackgroundColor(editor.isActive('strike')) }}
             onClick={commands.onStrike}
           >
             <Icon name="Strikethrough" size={16} />
           </ToolbarButton>
+          <Divider orientation="vertical" flexItem sx={{ mx: 1, my: 0.5 }} />
+          <ToolbarButton
+            tooltip={`${t('editor.heading')}`}
+            color="inherit"
+            sx={{ backgroundColor: getBackgroundColor(editor.isActive('heading', { level: 1 })) }}
+            onClick={commands.onHeading}
+          >
+            <Icon name="Heading1" size={16} />
+          </ToolbarButton>
+          <ToolbarButton
+            tooltip={`${t('editor.heading')}`}
+            color="inherit"
+            sx={{ backgroundColor: getBackgroundColor(editor.isActive('heading', { level: 2 })) }}
+            onClick={commands.onSubheading}
+          >
+            <Icon name="Heading2" size={16} />
+          </ToolbarButton>
+          <ToolbarButton
+            tooltip={`${t('editor.heading')}`}
+            color="inherit"
+            sx={{ backgroundColor: getBackgroundColor(editor.isActive('heading', { level: 3 })) }}
+            onClick={commands.onSubtitle}
+          >
+            <Icon name="Heading3" size={16} />
+          </ToolbarButton>
+          <Divider orientation="vertical" flexItem sx={{ mx: 1, my: 0.5 }} />
           <ToolbarButton
             tooltip={`${t('editor.code')}`}
             shortcuts={['Mod', 'E']}
             color="inherit"
+            sx={{ backgroundColor: getBackgroundColor(editor.isActive('code')) }}
             onClick={commands.onCode}
           >
             <Icon name="Code" size={16} />
-          </ToolbarButton>
-          <ToolbarButton
-            tooltip={`${t('editor.code_block')}`}
-            color="inherit"
-            onClick={commands.onCodeBlock}
-          >
-            <Icon name="CodeXml" size={16} />
           </ToolbarButton>
           <EditLinkPopover onSetLink={commands.onLink} />
         </Stack>
