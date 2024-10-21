@@ -315,7 +315,7 @@ export const EditPostPageImpl: React.FC = () => {
       />
       <Box component="main" sx={{ minHeight: '100vh' }}>
         <Toolbar sx={{ mt: 0 }} />
-        <Container sx={{ py: 6 }}>
+        <Container sx={{ pt: 6, pb: 48 }}>
           <Box sx={{ maxWidth: '42rem', marginLeft: 'auto', marginRight: 'auto', mb: 6 }}>
             {postTitle.length === 0 &&
               postSubtitle.length === 0 &&
