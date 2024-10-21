@@ -38,42 +38,40 @@ export const ContentItemMenu: React.FC<Props> = ({ editor }) => {
         zIndex: 99,
       }}
     >
-      <Stack direction="row" alignItems="center" gap={0.5}>
-        <Popover.Root open={menuOpen} onOpenChange={setMenuOpen}>
-          <Popover.Trigger asChild>
-            <ToolbarButton>
-              <Icon name="GripVertical" />
-            </ToolbarButton>
-          </Popover.Trigger>
-          <Popover.Content side="bottom" align="start">
-            <Paper
-              sx={{
-                borderRadius: 2,
-                border: '1px solid',
-                borderColor: 'divider',
-                p: 0.5,
-                boxShadow: '0px 9px 24px rgba(0, 0, 0, 0.1)',
-              }}
-            >
-              <Stack>
-                <DropdownButton
-                  color="error"
-                  onClick={() => {
-                    setMenuOpen(false);
-                    actions.deleteNode();
-                  }}
-                  sx={{
-                    color: 'error.main',
-                  }}
-                >
-                  <Icon name="Trash2" size={16} />
-                  <Typography sx={{ ml: 1 }}>{t('delete')}</Typography>
-                </DropdownButton>
-              </Stack>
-            </Paper>
-          </Popover.Content>
-        </Popover.Root>
-      </Stack>
+      <Popover.Root open={menuOpen} onOpenChange={setMenuOpen}>
+        <Popover.Trigger asChild>
+          <ToolbarButton>
+            <Icon name="GripVertical" />
+          </ToolbarButton>
+        </Popover.Trigger>
+        <Popover.Content side="bottom" align="start">
+          <Paper
+            sx={{
+              borderRadius: 2,
+              border: '1px solid',
+              borderColor: 'divider',
+              p: 0.5,
+              boxShadow: '0px 9px 24px rgba(0, 0, 0, 0.1)',
+            }}
+          >
+            <Stack>
+              <DropdownButton
+                color="error"
+                onClick={() => {
+                  setMenuOpen(false);
+                  actions.deleteNode();
+                }}
+                sx={{
+                  color: 'error.main',
+                }}
+              >
+                <Icon name="Trash2" size={16} />
+                <Typography sx={{ ml: 1 }}>{t('delete')}</Typography>
+              </DropdownButton>
+            </Stack>
+          </Paper>
+        </Popover.Content>
+      </Popover.Root>
     </DragHandle>
   );
 };
