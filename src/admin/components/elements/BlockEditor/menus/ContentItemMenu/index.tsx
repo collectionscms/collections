@@ -51,7 +51,7 @@ export const ContentItemMenu: React.FC<Props> = ({ editor }) => {
                 borderRadius: 2,
                 border: '1px solid',
                 borderColor: 'divider',
-                padding: 1,
+                p: 0.5,
                 boxShadow: '0px 9px 24px rgba(0, 0, 0, 0.1)',
               }}
             >

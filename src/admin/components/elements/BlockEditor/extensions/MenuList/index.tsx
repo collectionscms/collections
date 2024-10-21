@@ -121,8 +121,7 @@ export const MenuList = React.forwardRef((props: MenuListProps, ref) => {
         maxHeight: 'min(80vh, 20rem)',
         flexWrap: 'wrap',
         marginBottom: 2,
-        px: 1,
-        py: 1.5,
+        p: 1,
         width: 300,
         boxShadow: '0px 9px 24px rgba(0, 0, 0, 0.1)',
       }}

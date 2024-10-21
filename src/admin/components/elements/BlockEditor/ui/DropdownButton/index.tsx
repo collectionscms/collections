@@ -24,11 +24,15 @@ export const DropdownButton = ({
       color={color || 'secondary'}
       sx={{
         ...sx,
-        p: 1,
+        px: 1,
+        py: 0.5,
         justifyContent: 'flex-start',
         borderRadius: 1.5,
         color: 'inherit',
-        backgroundColor: isActive ? theme.palette.grey[100] : 'transparent',
+        backgroundColor: isActive ? theme.palette.secondary.lighter : 'transparent',
+        '&:hover': {
+          backgroundColor: theme.palette.action.hover,
+        },
       }}
       disabled={disabled}
       onClick={onClick}
