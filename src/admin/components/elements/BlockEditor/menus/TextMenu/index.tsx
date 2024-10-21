@@ -25,7 +25,7 @@ export const TextMenu: React.FC<Props> = ({ editor }) => {
   return (
     <BubbleMenu
       className="bubble-menu"
-      tippyOptions={{ popperOptions: { placement: 'top-start' } }}
+      tippyOptions={{ maxWidth: 'none', popperOptions: { placement: 'top-start' } }}
       editor={editor}
       shouldShow={states.shouldShow}
       updateDelay={100}
