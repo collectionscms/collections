@@ -24,7 +24,14 @@ export const ContentItemMenu: React.FC<Props> = ({ editor }) => {
       }}
     >
       <Stack direction="row" alignItems="center" gap={0.5}>
-        <ToolbarButton sx={{ cursor: 'grab' }}>
+        <ToolbarButton
+          sx={{
+            cursor: 'grab',
+            '&:active': {
+              cursor: 'grabbing',
+            },
+          }}
+        >
           <Icon name="GripVertical" size={16} />
         </ToolbarButton>
       </Stack>
