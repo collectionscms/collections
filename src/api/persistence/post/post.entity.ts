@@ -165,7 +165,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
             id: content.id,
             slug: content.slug,
             title: content.title ?? '',
-            subtitle: content.getSubtitleOrBodyPreview(),
+            subtitle: content.subtitle,
             body: content.body ?? '',
             bodyHtml: content.bodyHtml ?? '',
             status: content.status,

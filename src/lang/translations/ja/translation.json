@@ -147,6 +147,8 @@
   "admin_has_all_permissions": "管理者は全ての権限を持っています",
   "share_your_feedback": "ご意見をお聞かせください",
   "add_subtitle": "サブタイトルを追加",
+  "remove_subtitle": "サブタイトルを削除",
+  "upload_image": "画像をアップロード",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",
@@ -264,9 +266,7 @@
     "italic": "斜体",
     "underline": "下線",
     "strike_through": "取り消し線",
-    "code": "コード",
-    "duplicate": "複製",
-    "copy_to_clipboard": "クリップボードにコピー"
+    "code": "コード"
   },
   "post_review_status": {
     "pending": "申請中",

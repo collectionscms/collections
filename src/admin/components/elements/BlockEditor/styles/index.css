@@ -39,8 +39,8 @@
   }
 
   & > .react-renderer {
-    margin-top: 3rem;
-    margin-bottom: 3rem;
+    margin-top: 2.1rem;
+    margin-bottom: 2.1rem;
 
     &:first-child {
       margin-top: 0;

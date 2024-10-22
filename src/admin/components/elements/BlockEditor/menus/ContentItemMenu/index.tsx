@@ -18,7 +18,7 @@ export const ContentItemMenu: React.FC<Props> = ({ editor }) => {
   const { t } = useTranslation();
   const [menuOpen, setMenuOpen] = useState(false);
   const data = useData();
-  const actions = useContentItemActions(editor, data.currentNode, data.currentNodePos);
+  const actions = useContentItemActions(editor, data.currentNodePos);
 
   useEffect(() => {
     if (menuOpen) {
@@ -38,63 +38,40 @@ export const ContentItemMenu: React.FC<Props> = ({ editor }) => {
         zIndex: 99,
       }}
     >
-      <Stack direction="row" alignItems="center" gap={0.5}>
-        <ToolbarButton onClick={actions.handleAdd}>
-          <Icon name="Plus" />
-        </ToolbarButton>
-        <Popover.Root open={menuOpen} onOpenChange={setMenuOpen}>
-          <Popover.Trigger asChild>
-            <ToolbarButton>
-              <Icon name="GripVertical" />
-            </ToolbarButton>
-          </Popover.Trigger>
-          <Popover.Content side="bottom" align="start">
-            <Paper
-              sx={{
-                borderRadius: 2,
-                border: '1px solid',
-                borderColor: 'divider',
-                padding: 1,
-                boxShadow: '0px 9px 24px rgba(0, 0, 0, 0.1)',
-              }}
-            >
-              <Stack>
-                <DropdownButton
-                  onClick={() => {
-                    setMenuOpen(false);
-                    actions.duplicateNode();
-                  }}
-                >
-                  <Icon name="Copy" size={16} />
-                  <Typography sx={{ ml: 1 }}>{t('editor.duplicate')}</Typography>
-                </DropdownButton>
-                <DropdownButton
-                  onClick={() => {
-                    setMenuOpen(false);
-                    actions.copyNodeToClipboard();
-                  }}
-                >
-                  <Icon name="Clipboard" size={16} />
-                  <Typography sx={{ ml: 1 }}>{t('editor.copy_to_clipboard')}</Typography>
-                </DropdownButton>
-                <DropdownButton
-                  color="error"
-                  onClick={() => {
-                    setMenuOpen(false);
-                    actions.deleteNode();
-                  }}
-                  sx={{
-                    color: 'error.main',
-                  }}
-                >
-                  <Icon name="Trash2" size={16} />
-                  <Typography sx={{ ml: 1 }}>{t('delete')}</Typography>
-                </DropdownButton>
-              </Stack>
-            </Paper>
-          </Popover.Content>
-        </Popover.Root>
-      </Stack>
+      <Popover.Root open={menuOpen} onOpenChange={setMenuOpen}>
+        <Popover.Trigger asChild>
+          <ToolbarButton>
+            <Icon name="GripVertical" />
+          </ToolbarButton>
+        </Popover.Trigger>
+        <Popover.Content side="bottom" align="start">
+          <Paper
+            sx={{
+              borderRadius: 2,
+              border: '1px solid',
+              borderColor: 'divider',
+              p: 0.5,
+              boxShadow: '0px 9px 24px rgba(0, 0, 0, 0.1)',
+            }}
+          >
+            <Stack>
+              <DropdownButton
+                color="error"
+                onClick={() => {
+                  setMenuOpen(false);
+                  actions.deleteNode();
+                }}
+                sx={{
+                  color: 'error.main',
+                }}
+              >
+                <Icon name="Trash2" size={16} />
+                <Typography sx={{ ml: 1 }}>{t('delete')}</Typography>
+              </DropdownButton>
+            </Stack>
+          </Paper>
+        </Popover.Content>
+      </Popover.Root>
     </DragHandle>
   );
 };

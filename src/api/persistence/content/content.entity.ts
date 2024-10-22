@@ -152,8 +152,8 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     return this.props.title ?? '';
   }
 
-  get subtitle(): string {
-    return this.props.subtitle ?? '';
+  get subtitle(): string | null {
+    return this.props.subtitle;
   }
 
   get body(): string {
@@ -219,12 +219,6 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
   static generateSlug = () => {
     return v4().trim().replace(/-/g, '').substring(0, 10);
   };
-
-  getSubtitleOrBodyPreview(): string {
-    const text = this.subtitle || this.body;
-    const preview = text.slice(0, EXCERPT_LENGTH);
-    return text.length > EXCERPT_LENGTH ? `${preview}...` : preview;
-  }
 
   draft(updatedById: string) {
     this.props.status = ContentStatus.draft;
@@ -457,7 +451,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
       id: this.props.id,
       slug: this.props.slug,
       title: this.props.title ?? '',
-      subtitle: this.getSubtitleOrBodyPreview(),
+      subtitle: this.props.subtitle,
       body: this.props.body ?? '',
       bodyHtml: this.props.bodyHtml ?? '',
       status: this.props.status,

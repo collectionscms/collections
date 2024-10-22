@@ -1,4 +1,3 @@
-import { Box } from '@mui/material';
 import { Editor, NodeViewWrapper } from '@tiptap/react';
 import React, { useCallback } from 'react';
 import { ImageUploader } from './ImageUploader.js';
@@ -20,9 +19,9 @@ export const ImageUpload = ({ getPos, editor }: { getPos: () => number; editor: 
 
   return (
     <NodeViewWrapper>
-      <Box>
+      <div className="p-0 m-0" data-drag-handle>
         <ImageUploader onUpload={onUpload} />
-      </Box>
+      </div>
     </NodeViewWrapper>
   );
 };

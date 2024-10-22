@@ -42,7 +42,7 @@ export class TranslateContentUseCase {
     }
 
     const title = sourceLngRevision.title.trim();
-    const subtitle = sourceLngRevision.subtitle.trim();
+    const subtitle = sourceLngRevision.subtitle?.trim() ?? '';
     const body = sourceLngRevision.bodyHtml.trim();
     // Exclude blank texts
     const nonEmptyTexts = [title, subtitle, body].filter((text) => text !== '');
