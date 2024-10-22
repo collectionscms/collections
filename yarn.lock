@@ -2771,10 +2771,10 @@
   resolved "https://registry.yarnpkg.com/@tiptap/extension-paragraph/-/extension-paragraph-2.7.2.tgz#55ecb28fcfa5c8eaef49668a09ad79776cca0da6"
   integrity sha512-yMzUGNojNv0lLEE+38GOpgRI327EyEZK/uEHlyzbjAWRvqE6aZ+oEB4JUuoJXX2Ad9gwN16dGHnxL//ieTxrkQ==
 
-"@tiptap/extension-placeholder@2.7.2":
-  version "2.7.2"
-  resolved "https://registry.yarnpkg.com/@tiptap/extension-placeholder/-/extension-placeholder-2.7.2.tgz#c5d9d69f1c78bed778f86a00d9143549f3b9c7c2"
-  integrity sha512-2o1qJI1juloltlZkuiABgivY8deyrdaUH/3e6EZbi/ucXlByBaDWcJPsvXB0VHpW65EeHf3NLMbjsNl7SKRoFQ==
+"@tiptap/extension-placeholder@2.9.0":
+  version "2.9.0"
+  resolved "https://registry.yarnpkg.com/@tiptap/extension-placeholder/-/extension-placeholder-2.9.0.tgz#d2c2ad18539624e4291aa2056423b290ca438274"
+  integrity sha512-iJ3d0GgbAmQoHjy6+xuhyvX6feqOwFc5fLEUrVFvmtQGODmHA73bJaLYcyCFEtsB0L4de14pBFObY0BTuNkl/w==
 
 "@tiptap/extension-strike@^2.7.2":
   version "2.7.2"
