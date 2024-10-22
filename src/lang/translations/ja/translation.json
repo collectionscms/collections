@@ -147,6 +147,7 @@
   "admin_has_all_permissions": "管理者は全ての権限を持っています",
   "share_your_feedback": "ご意見をお聞かせください",
   "add_subtitle": "サブタイトルを追加",
+  "upload_image": "画像をアップロード",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",

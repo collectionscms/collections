@@ -1,9 +1,11 @@
-import { Box, Button, Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import React, { ChangeEvent, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Icon } from '../../../Icon/index.js';
 import { useFileUpload, useUploader } from './hooks.js';
 
 export const ImageUploader = ({ onUpload }: { onUpload: (url: string) => void }) => {
+  const { t } = useTranslation();
   const { uploadFile } = useUploader({ onUpload });
   const { handleUploadClick, ref } = useFileUpload();
 
@@ -14,27 +16,32 @@ export const ImageUploader = ({ onUpload }: { onUpload: (url: string) => void })
 
   return (
     <Box
-      gap={2}
+      contentEditable={false}
+      onClick={handleUploadClick}
       sx={{
         border: 1.5,
-        borderColor: 'divider',
+        borderColor: 'text.secondary',
         borderStyle: 'dashed',
-        borderRadius: 1,
+        borderRadius: 1.5,
+        transition: 'border-color 0.3s ease-in-out',
+        '&:hover': {
+          borderColor: 'text.primary',
+        },
+        p: 2,
         cursor: 'pointer',
       }}
     >
-      <Button
-        color="secondary"
-        variant="text"
-        onClick={handleUploadClick}
-        sx={{ p: 2, width: '100%', justifyContent: 'flex-start' }}
-      >
-        <Stack gap={1} direction="row" alignItems="center">
-          <Icon name="Image" />
-          <Typography variant="caption">Add an image</Typography>
-        </Stack>
-        <input hidden ref={ref} type="file" accept="image/*" onChange={onFileChange} />
-      </Button>
+      <Stack gap={1.5} direction="row" alignItems="center" color="text.secondary">
+        <Icon name="Image" />
+        <Typography variant="caption">{t('upload_image')}</Typography>
+      </Stack>
+      <input
+        hidden
+        ref={ref}
+        type="file"
+        accept=".jpg,.jpeg,.png,.webp,.gif"
+        onChange={onFileChange}
+      />
     </Box>
   );
 };
