@@ -92,7 +92,7 @@ export const groups = (t: TFunction): Group[] => [
       {
         name: 'blockquote',
         label: t('editor.quote'),
-        iconName: 'Quote',
+        iconName: 'TextQuote',
         description: t('editor.quote_description'),
         action: (editor) => {
           editor.chain().focus().setBlockquote().run();
