@@ -51,7 +51,7 @@ export class UserRepository {
     return user ? UserEntity.Reconstruct<User, UserEntity>(user) : null;
   }
 
-  async findUserRole(
+  async findOneWithUserRole(
     prisma: ProjectPrismaType,
     userId: string
   ): Promise<{ user: UserEntity; role: RoleEntity } | null> {
@@ -73,9 +73,9 @@ export class UserRepository {
     };
   }
 
-  async findUserRoles(
+  async findManyWithUserRoles(
     prisma: ProjectPrismaType
-  ): Promise<{ user: UserEntity; role: RoleEntity }[]> {
+  ): Promise<{ user: UserEntity; role: RoleEntity; updatedAt: Date }[]> {
     const records = await prisma.userProject.findMany({
       include: {
         user: true,
@@ -87,6 +87,7 @@ export class UserRepository {
       return {
         user: UserEntity.Reconstruct<User, UserEntity>(record.user),
         role: RoleEntity.Reconstruct<Role, RoleEntity>(record.role),
+        updatedAt: record.updatedAt,
       };
     });
   }
