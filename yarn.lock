@@ -2677,10 +2677,10 @@
   resolved "https://registry.yarnpkg.com/@tiptap/extension-character-count/-/extension-character-count-2.7.2.tgz#56624f4c6403140c0d8140c7182bbc5db34f8f8f"
   integrity sha512-In8YlFykDjYdEazWRXon3iG1S73BCbrWHYjxjyI2Cy+N5UI8ndxP6Rmx02eXCH31dY2G7+K3s7nPzgZVPllAsg==
 
-"@tiptap/extension-code-block-lowlight@2.7.2":
-  version "2.7.2"
-  resolved "https://registry.yarnpkg.com/@tiptap/extension-code-block-lowlight/-/extension-code-block-lowlight-2.7.2.tgz#983d6b1348c242d916b3d5d27ad46acbc79c0aee"
-  integrity sha512-YuGleeuT4KUDpbs9VwmWA5O/oE4y4PgDS0zUpGgfsKqn5SDBhRlOhdWgr/xk+Dr8zkcxJwU6Un+ygNDUpuSKLg==
+"@tiptap/extension-code-block-lowlight@2.9.0":
+  version "2.9.0"
+  resolved "https://registry.yarnpkg.com/@tiptap/extension-code-block-lowlight/-/extension-code-block-lowlight-2.9.0.tgz#a432dab364891e398e59aeb686ee0a1acb718f14"
+  integrity sha512-vvWDfdbUj+Eomyv9Kif3ChJ3Bj1ILkoJJDW1fTuwPj063Lh2JHXvrmMSz0fFc9SS0BF4T1+wsXWUOoObN485ag==
 
 "@tiptap/extension-code-block@2.7.2", "@tiptap/extension-code-block@^2.7.2":
   version "2.7.2"
