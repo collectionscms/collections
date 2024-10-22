@@ -146,7 +146,8 @@
   "untranslatable": "Untranslatable",
   "admin_has_all_permissions": "Administrator has all permissions",
   "share_your_feedback": "Please share your feedback",
-  "add_subtitle": "Add a subtitle",
+  "add_subtitle": "Add subtitle",
+  "remove_subtitle": "Remove subtitle",
   "upload_image": "Upload an image",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",

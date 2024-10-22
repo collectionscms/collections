@@ -6,6 +6,7 @@ import {
   Stack,
   TextField,
   Toolbar,
+  Tooltip,
   Typography,
   alpha,
   useTheme,
@@ -28,6 +29,7 @@ import { PostContextProvider, usePost } from '../Context/index.js';
 import { PostFooter } from './PostFooter/index.js';
 import { PostHeader } from './PostHeader/index.js';
 import { PublishSettings } from './PostHeader/PublishSettings/index.js';
+import { content } from '../../../../api/routes/content.router.js';
 
 const toJson = (value?: string | null) => {
   return value ? JSON.parse(value) : '';
@@ -71,7 +73,11 @@ export const EditPostPageImpl: React.FC = () => {
   const handleKeyDownInTitle = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.nativeEvent.isComposing || e.key !== 'Enter') return;
     e.preventDefault();
-    subTitleRef.current?.focus();
+    if (showSubtitle) {
+      subTitleRef.current?.focus();
+    } else {
+      editor?.commands.focus();
+    }
   };
 
   // /////////////////////////////////////
@@ -90,6 +96,13 @@ export const EditPostPageImpl: React.FC = () => {
     if (e.nativeEvent.isComposing || e.key !== 'Enter') return;
     e.preventDefault();
     editor?.commands.focus();
+  };
+
+  const [showSubtitle, setShowSubtitle] = useState(content.subtitle ? true : false);
+
+  const handleHideSubtitle = () => {
+    setPostSubtitle('');
+    setShowSubtitle(false);
   };
 
   // /////////////////////////////////////
@@ -369,7 +382,7 @@ export const EditPostPageImpl: React.FC = () => {
               )}
 
             {/* Actions */}
-            <Stack flexDirection="row" gap={2} sx={{ mb: 2 }}>
+            <Stack flexDirection="row" gap={3} sx={{ mb: 2 }}>
               {!uploadCover && (
                 <Button variant="text" color="secondary" component="label">
                   <Stack direction="row" alignItems="center" gap={1}>
@@ -382,6 +395,19 @@ export const EditPostPageImpl: React.FC = () => {
                       type="file"
                       onChange={handleUploadCover}
                     />
+                  </Stack>
+                </Button>
+              )}
+              {!showSubtitle && (
+                <Button
+                  variant="text"
+                  color="secondary"
+                  component="label"
+                  onClick={() => setShowSubtitle(true)}
+                >
+                  <Stack direction="row" alignItems="center" gap={1}>
+                    <Icon name="Text" size={16} />
+                    <Typography variant="button">{t('add_subtitle')}</Typography>
                   </Stack>
                 </Button>
               )}
@@ -442,7 +468,6 @@ export const EditPostPageImpl: React.FC = () => {
                 },
                 '& fieldset': { border: 'none' },
                 p: 0,
-                mb: 4,
               }}
               inputProps={{
                 style: {
@@ -455,40 +480,53 @@ export const EditPostPageImpl: React.FC = () => {
               onKeyDown={handleKeyDownInTitle}
             />
 
-            <TextField
-              type="text"
-              inputRef={subTitleRef}
-              fullWidth
-              multiline
-              placeholder={`${t('add_subtitle')}…`}
-              value={postSubtitle}
-              onChange={(e) => handleChangeSubtitle(e.target.value)}
-              sx={{
-                '.MuiOutlinedInput-notchedOutline': {
-                  border: 'none !important',
-                },
-                '.MuiOutlinedInput-root': {
-                  padding: 0,
-                  lineHeight: 1.85,
-                },
-                '.MuiOutlinedInput-input': {
-                  color: theme.palette.text.secondary,
-                },
-                '.Mui-focused': {
-                  boxShadow: 'none !important',
-                },
-                '& fieldset': { border: 'none' },
-                p: 0,
-              }}
-              inputProps={{
-                style: {
-                  padding: 0,
-                  fontSize: '1.15rem',
-                  lineHeight: '1.725rem',
-                },
-              }}
-              onKeyDown={handleKeyDownInSubtitle}
-            />
+            {showSubtitle && (
+              <Box sx={{ position: 'relative', mt: 4 }}>
+                <TextField
+                  type="text"
+                  inputRef={subTitleRef}
+                  fullWidth
+                  multiline
+                  placeholder={`${t('add_subtitle')}…`}
+                  value={postSubtitle}
+                  onChange={(e) => handleChangeSubtitle(e.target.value)}
+                  sx={{
+                    '.MuiOutlinedInput-notchedOutline': {
+                      border: 'none !important',
+                    },
+                    '.MuiOutlinedInput-root': {
+                      padding: 0,
+                      lineHeight: 1.85,
+                    },
+                    '.MuiOutlinedInput-input': {
+                      color: theme.palette.text.secondary,
+                    },
+                    '.Mui-focused': {
+                      boxShadow: 'none !important',
+                    },
+                    '& fieldset': { border: 'none' },
+                    p: 0,
+                  }}
+                  inputProps={{
+                    style: {
+                      padding: 0,
+                      fontSize: '1.15rem',
+                      lineHeight: '1.725rem',
+                    },
+                  }}
+                  onKeyDown={handleKeyDownInSubtitle}
+                />
+                <Tooltip title={t('remove_subtitle')} placement="bottom">
+                  <IconButton
+                    color="secondary"
+                    sx={{ position: 'absolute', width: 28, height: 28, p: 0 }}
+                    onClick={handleHideSubtitle}
+                  >
+                    <Icon name="X" size={20} />
+                  </IconButton>
+                </Tooltip>
+              </Box>
+            )}
           </Box>
           <BlockEditor editor={editor} />
         </Container>
