@@ -57,8 +57,8 @@ export class ContentRevisionEntity extends PrismaBaseEntity<ContentRevision> {
     return this.props.title ?? '';
   }
 
-  get subtitle(): string {
-    return this.props.subtitle ?? '';
+  get subtitle(): string | null {
+    return this.props.subtitle;
   }
 
   get body(): string {

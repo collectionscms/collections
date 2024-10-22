@@ -29,7 +29,6 @@ import { PostContextProvider, usePost } from '../Context/index.js';
 import { PostFooter } from './PostFooter/index.js';
 import { PostHeader } from './PostHeader/index.js';
 import { PublishSettings } from './PostHeader/PublishSettings/index.js';
-import { content } from '../../../../api/routes/content.router.js';
 
 const toJson = (value?: string | null) => {
   return value ? JSON.parse(value) : '';
@@ -331,7 +330,7 @@ export const EditPostPageImpl: React.FC = () => {
         <Container sx={{ pt: 6, pb: 48 }}>
           <Box sx={{ maxWidth: '42rem', marginLeft: 'auto', marginRight: 'auto', mb: 6 }}>
             {postTitle.length === 0 &&
-              postSubtitle.length === 0 &&
+              (!postSubtitle || postSubtitle.length === 0) &&
               characterCount.characters() === 0 &&
               content.canTranslate && (
                 <Stack

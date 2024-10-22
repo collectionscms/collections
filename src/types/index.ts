@@ -69,7 +69,7 @@ export type RevisedContent = {
   updatedAt: Date;
   version: number;
   title: string;
-  subtitle: string;
+  subtitle: string | null;
   body: string;
   bodyJson: string;
   bodyHtml: string;
@@ -88,7 +88,7 @@ export type PublishedContent = {
   id: string;
   slug: string;
   title: string;
-  subtitle: string;
+  subtitle: string | null;
   body: string;
   bodyHtml: string;
   status: string;
