@@ -73,6 +73,17 @@ export class UserRepository {
     };
   }
 
+  async findMany(prisma: ProjectPrismaType): Promise<UserEntity[]> {
+    const records = await prisma.userProject.findMany({
+      include: {
+        user: true,
+        role: true,
+      },
+    });
+
+    return records.map((record) => UserEntity.Reconstruct<User, UserEntity>(record.user));
+  }
+
   async findManyWithUserRoles(
     prisma: ProjectPrismaType
   ): Promise<{ user: UserEntity; role: RoleEntity; updatedAt: Date }[]> {

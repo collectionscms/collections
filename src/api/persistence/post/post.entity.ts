@@ -75,7 +75,8 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     contents: {
       content: ContentEntity;
       revisions: ContentRevisionEntity[];
-    }[]
+    }[],
+    users: UserEntity[]
   ): SourceLanguagePostItem {
     const sourceLngContent =
       contents.filter((c) => c.content.language === sourceLanguage)[0] || contents[0];
@@ -86,11 +87,19 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     );
 
     const otherLngContents = contents.filter((c) => c.content.id !== sourceLngContent.content.id);
+    const userMap = users.reduce(
+      (acc, u) => {
+        acc[u.id] = u;
+        return acc;
+      },
+      {} as { [id: string]: UserEntity }
+    );
 
     return {
       ...this.toLocalizedContentItem(
         sourceLngContentRevision.toContentResponse(),
-        sourceLngContent.content.getStatusHistory(sourceLngContentRevision)
+        sourceLngContent.content.getStatusHistory(sourceLngContentRevision),
+        userMap[sourceLngContentRevision.updatedById]?.name ?? ''
       ),
       localizedContents: otherLngContents.map((otherLngContent) => {
         const otherLngContentRevision = ContentRevisionEntity.getLatestRevisionOfLanguage(
@@ -100,7 +109,8 @@ export class PostEntity extends PrismaBaseEntity<Post> {
 
         return this.toLocalizedContentItem(
           otherLngContentRevision.toContentResponse(),
-          otherLngContent.content.getStatusHistory(otherLngContentRevision)
+          otherLngContent.content.getStatusHistory(otherLngContentRevision),
+          userMap[otherLngContentRevision.updatedById]?.name ?? ''
         );
       }),
     };
@@ -108,7 +118,8 @@ export class PostEntity extends PrismaBaseEntity<Post> {
 
   private toLocalizedContentItem(
     content: Content,
-    statusHistory: StatusHistory
+    statusHistory: StatusHistory,
+    updatedByName: string
   ): LocalizedContentItem {
     return {
       contentId: content.id,
@@ -117,6 +128,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       slug: content.slug,
       language: content.language,
       status: statusHistory,
+      updatedByName,
       updatedAt: content.updatedAt,
     };
   }

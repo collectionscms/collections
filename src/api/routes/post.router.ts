@@ -45,7 +45,8 @@ router.get(
 
     const useCase = new GetPostsUseCase(
       projectPrisma(validated.data.projectId),
-      new PostRepository()
+      new PostRepository(),
+      new UserRepository()
     );
 
     const hasReadAllPost =

@@ -174,9 +174,13 @@ export const PostPageImpl: React.FC = () => {
         id: 'updatedAt',
         Header: t('updated_at'),
         accessor: 'updatedAt',
-        width: 60,
-        Cell: ({ value }: { value: Date }) => {
-          return <Typography>{dayjs(value).format(t('date_format.long'))}</Typography>;
+        Cell: ({ row }: { row: Row }) => {
+          const post = row.original as SourceLanguagePostItem;
+          return (
+            <Typography>
+              {dayjs(post.updatedAt).format(t('date_format.long'))}, {post.updatedByName}
+            </Typography>
+          );
         },
       },
       {
