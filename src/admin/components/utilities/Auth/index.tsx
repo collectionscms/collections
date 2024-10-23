@@ -5,6 +5,7 @@ import useSWR, { SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
 import { Me, ProjectRole } from '../../../../types/index.js';
 import { logger } from '../../../../utilities/logger.js';
+import useTracker from '../../../hooks/useTracker.js';
 import { api, setAcceptLanguage } from '../../../utilities/api.js';
 
 type AuthContext = {
@@ -21,6 +22,7 @@ const Context = createContext({} as AuthContext);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { i18n } = useTranslation();
+  const { setUserId } = useTracker();
   const subdomain = window.location.host.split('.')[0];
   const projectSubdomain = subdomain === process.env.PUBLIC_PORTAL_SUBDOMAIN ? null : subdomain;
 
@@ -55,6 +57,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     api
       .get<{ me: Me }>(url)
       .then(({ data }) => {
+        if (data.me) {
+          setUserId(data.me.id);
+        }
         return data.me;
       })
       .catch((e) => {
