@@ -1,13 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import {
-  Autocomplete,
-  Box,
-  Button,
-  FormHelperText,
-  Stack,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Button, FormHelperText, Stack, Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { enqueueSnackbar } from 'notistack';
 import React from 'react';
@@ -16,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { languages } from '../../../../constants/languages.js';
 import { logger } from '../../../../utilities/logger.js';
 import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscardDialog/index.js';
+import { LanguageAutocomplete } from '../../../components/elements/LanguageAutocomplete/index.js';
 import {
   FormValues,
   selectSourceLanguageValidator,
@@ -23,7 +16,6 @@ import {
 import { useUnsavedChangesPrompt } from '../../../hooks/useUnsavedChangesPrompt.js';
 import { useProject } from '../Context/index.js';
 import { ProjectData } from './ProjectSettingsForm.js';
-import { LanguageAutocomplete } from '../../../components/elements/LanguageAutocomplete/index.js';
 
 export type SourceLanguageData = { sourceLanguage: string };
 type Props = {
@@ -81,6 +73,9 @@ export const SourceLanguageForm: React.FC<Props> = ({
       <Typography variant="h5" gutterBottom sx={{ mb: 2 }}>
         {t('select_source_language')}
       </Typography>
+      <Typography variant="body1" gutterBottom sx={{ mb: 2 }}>
+        {t('source_language_tips')}
+      </Typography>
       <ConfirmDiscardDialog open={showPrompt} onDiscard={proceed} onKeepEditing={stay} />
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={3}>
@@ -92,6 +87,9 @@ export const SourceLanguageForm: React.FC<Props> = ({
                   setValue('sourceLanguage', newValue === null ? '' : newValue.code);
                 }}
               />
+              <Typography variant="caption" color="text.secondary" sx={{ mt: 2 }}>
+                {t('can_change_later')}
+              </Typography>
               <FormHelperText error>{errors.sourceLanguage?.message}</FormHelperText>
             </Stack>
           </Grid>
