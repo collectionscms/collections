@@ -95,7 +95,10 @@ export class ContentRevisionRepository {
       where: {
         id: entity.id,
       },
-      data: entity.toPersistence(),
+      data: {
+        ...entity.toPersistence(),
+        updatedAt: new Date(),
+      },
     });
 
     return ContentRevisionEntity.Reconstruct<ContentRevision, ContentRevisionEntity>(record);
