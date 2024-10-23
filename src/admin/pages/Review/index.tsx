@@ -26,18 +26,35 @@ const ReviewPageImpl: React.FC = () => {
         accessor: 'comment',
         Cell: ({ row }: { row: Row }) => {
           const review = row.original as Review;
-          return <Link href={`${review.id}`}>{review.comment}</Link>;
+          return (
+            <Link
+              href={`${review.id}`}
+              sx={{
+                wordBreak: 'break-word',
+                whiteSpace: 'normal',
+                display: '-webkit-box',
+                WebkitBoxOrient: 'vertical',
+                WebkitLineClamp: 2,
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}
+            >
+              {review.comment}
+            </Link>
+          );
         },
       },
       {
         id: 'revieweeName',
         Header: t('requester'),
         accessor: 'revieweeName',
+        width: 60,
       },
       {
         id: 'updatedAt',
         Header: t('updated_at'),
         accessor: 'updatedAt',
+        width: 60,
         Cell: ({ value }: { value: Date }) => {
           return <Typography>{dayjs(value).format(t('date_format.long'))}</Typography>;
         },

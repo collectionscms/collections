@@ -10,7 +10,7 @@ export class GetUserProfileUseCase {
   ) {}
 
   async execute(userId: string): Promise<UserProfile> {
-    const userRole = await this.userRepository.findUserRole(this.prisma, userId);
+    const userRole = await this.userRepository.findOneWithUserRole(this.prisma, userId);
     if (!userRole) {
       throw new RecordNotFoundException('record_not_found');
     }

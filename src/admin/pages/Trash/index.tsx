@@ -23,7 +23,21 @@ const TrashPageImpl: React.FC = () => {
         accessor: 'title',
         Cell: ({ value }: { value: string }) => {
           const title = value || t('untitled');
-          return <Typography>{title}</Typography>;
+          return (
+            <Typography
+              sx={{
+                wordBreak: 'break-word',
+                whiteSpace: 'normal',
+                display: '-webkit-box',
+                WebkitBoxOrient: 'vertical',
+                WebkitLineClamp: 2,
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}
+            >
+              {title}
+            </Typography>
+          );
         },
       },
       {
@@ -35,6 +49,7 @@ const TrashPageImpl: React.FC = () => {
         id: 'language',
         Header: t('language'),
         accessor: 'language',
+        width: 40,
         Cell: ({ value }: { value: string }) => {
           return <NationalFlagIcon code={value} props={{ width: 20 }} />;
         },
@@ -43,6 +58,7 @@ const TrashPageImpl: React.FC = () => {
         id: 'deletedAt',
         Header: t('deleted_at'),
         accessor: 'deletedAt',
+        width: 60,
         Cell: ({ value }: { value: Date }) => {
           return <Typography>{dayjs(value).format(t('date_format.long'))}</Typography>;
         },

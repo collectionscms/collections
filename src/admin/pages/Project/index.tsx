@@ -17,6 +17,7 @@ import {
   updateProjectValidator,
 } from '../../fields/validators/projects/updateProject.validator.js';
 import { useUnsavedChangesPrompt } from '../../hooks/useUnsavedChangesPrompt.js';
+import { TitleTooltip } from '../Post/Edit/PostHeader/PublishSettings/ui/TitleTooltip/index.js';
 import { ProjectContextProvider, useProject } from './Context/index.js';
 
 const ProjectImpl: React.FC = () => {
@@ -88,7 +89,11 @@ const ProjectImpl: React.FC = () => {
                 </Grid>
                 <Grid xs={12} sm={6}>
                   <Stack spacing={1}>
-                    <InputLabel htmlFor="projectName">{t('source_language')}</InputLabel>
+                    <TitleTooltip
+                      tooltip={t('source_language_tips')}
+                      title={t('source_language')}
+                      variant="body1"
+                    />
                     <LanguageAutocomplete
                       languages={languages}
                       value={languages.find((item) => item.code === watch('sourceLanguage'))}

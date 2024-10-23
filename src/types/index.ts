@@ -54,6 +54,7 @@ export type LocalizedContentItem = {
   slug: string;
   status: StatusHistory;
   language: string;
+  updatedByName: string;
   updatedAt: Date;
 };
 

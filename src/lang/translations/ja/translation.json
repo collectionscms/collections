@@ -65,6 +65,8 @@
   "characters": "文字数",
   "source_language": "記事の原文言語",
   "select_source_language": "記事の原文言語を選択",
+  "source_language_tips": "執筆される記事の言語を選択してください。この言語は、自動翻訳の元言語としても使用されます。",
+  "can_change_later": "※ 後で変更も可",
   "add_to": "追加する",
   "add_cover": "カバーを追加",
   "invite": "招待",

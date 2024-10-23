@@ -65,6 +65,8 @@
   "characters": "Characters",
   "source_language": "Source Language",
   "select_source_language": "Select source language",
+  "source_language_tips": "Select the language for the post you're writing. This language will also be used as the source language for automatic translation.",
+  "can_change_later": "* Can be changed later",
   "add_to": "Add",
   "add_cover": "Add Cover",
   "invite": "Invite",

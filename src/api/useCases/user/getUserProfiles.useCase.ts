@@ -11,7 +11,7 @@ export class GetUserProfilesUseCase {
   ) {}
 
   async execute(): Promise<UserProfile[]> {
-    const userRoles = await this.userRepository.findUserRoles(this.prisma);
+    const userRoles = await this.userRepository.findManyWithUserRoles(this.prisma);
     const invitationRoles = await this.invitationRepository.findManyByPendingStatus(this.prisma);
 
     return [
@@ -24,14 +24,14 @@ export class GetUserProfilesUseCase {
         role: role.toResponse(),
         updatedAt: invitation.updatedAt,
       })),
-      ...userRoles.map(({ user, role }) => ({
+      ...userRoles.map(({ user, role, updatedAt }) => ({
         id: user.id,
         name: user.name,
         email: user.email,
         isActive: user.isActive,
         isRegistered: true,
         role: role.toResponse(),
-        updatedAt: user.updatedAt,
+        updatedAt,
       })),
     ];
   }
