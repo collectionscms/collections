@@ -31,6 +31,10 @@ export class ProjectEntity extends PrismaBaseEntity<Project> {
     if (!this.props.id) {
       throw new UnexpectedException({ message: 'id is required' });
     }
+
+    if (this.props.name !== this.props.name.toLowerCase()) {
+      throw new UnexpectedException({ message: 'name must be lowercase' });
+    }
   }
 
   public beforeUpdateValidate(): void {
