@@ -384,9 +384,7 @@
       "is_value": "{{value}}でなければなりません"
     },
     "custom": {
-      "alphanumeric_and_special_character": "半角英数字および記号「@$!%*#?&」で入力してください",
-      "alphanumeric_and_underscore": "半角英数字およびアンダースコア（_）で入力してください",
-      "alphanumeric_and_underscore_hyphens": "半角英数字および記号「-_」で入力してください"
+      "alphanumeric_and_hyphens": "半角英数字および記号「-」で入力してください"
     }
   },
   "seed": {

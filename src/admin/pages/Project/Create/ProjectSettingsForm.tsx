@@ -39,7 +39,7 @@ export const ProjectSettingsForm: React.FC<Props> = ({
       name: projectData.name,
       subdomain: projectData.subdomain,
     },
-    resolver: yupResolver(projectSettingsValidator()),
+    resolver: yupResolver(projectSettingsValidator(t)),
   });
   const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
 
@@ -102,6 +102,9 @@ export const ProjectSettingsForm: React.FC<Props> = ({
                       type="text"
                       fullWidth
                       placeholder="my-project"
+                      onChange={(e) => {
+                        field.onChange(e.target.value.toLowerCase());
+                      }}
                       error={errors.subdomain !== undefined}
                     />
                     <Typography>.collections.dev</Typography>

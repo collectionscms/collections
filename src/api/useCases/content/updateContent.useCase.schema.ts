@@ -10,7 +10,7 @@ export const updateContentUseCaseSchema = z.object({
   bodyJson: z.string().optional().nullable(),
   bodyHtml: z.string().optional().nullable(),
   coverUrl: z.string().optional().nullable(),
-  slug: z.string().optional(),
+  slug: z.string().regex(/^[a-z0-9-]+$/, `Alphanumeric characters and symbols '-'`),
   metaTitle: z.string().optional().nullable(),
   metaDescription: z.string().optional().nullable(),
 });

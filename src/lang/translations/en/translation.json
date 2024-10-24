@@ -384,9 +384,7 @@
       "is_value": "Must be {{value}}."
     },
     "custom": {
-      "alphanumeric_and_special_character": "Alphanumeric characters and symbols '@$!%*#?&'.",
-      "alphanumeric_and_underscore": "Please enter single-byte alphanumeric characters and underscore (_).",
-      "alphanumeric_and_underscore_hyphens": "Alphanumeric characters and symbols '-_'."
+      "alphanumeric_and_hyphens": "Alphanumeric characters and symbols '-'."
     }
   },
   "seed": {
