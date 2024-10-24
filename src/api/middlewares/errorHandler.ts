@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/node';
 import { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
 import { BaseException } from '../../exceptions/base.js';
 import { logger } from '../../utilities/logger.js';
@@ -10,6 +11,7 @@ export const errorHandler: ErrorRequestHandler = (
   res: Response,
   _next: NextFunction
 ) => {
+  Sentry.captureException(err);
   logger.error(err);
 
   let base = err as BaseException;
