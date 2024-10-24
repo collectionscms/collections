@@ -16,6 +16,7 @@ type AllowedEnvironmentVariable =
   | 'SERVER_HOST'
   | 'SERVER_PORT'
   | 'ADMIN_PORT'
+  | 'NODE_ENV'
 
   // /////////////////////////////////////
   // Storage
@@ -109,6 +110,7 @@ type AllowedEnvironmentVariable =
   // Tracking
   // /////////////////////////////////////
   | 'PUBLIC_AMPLITUDE_API_KEY'
+  | 'SENTRY_DSN'
 
   // /////////////////////////////////////
   // Collections Plugin
@@ -124,6 +126,7 @@ export const defaults: Partial<Record<AllowedEnvironmentVariable, any>> = {
   SERVER_HOST: 'test.com',
   SERVER_PORT: '4000',
   ADMIN_PORT: '4001',
+  NODE_ENV: 'development',
 
   // Storage
   STORAGE_DRIVER: 'local',
