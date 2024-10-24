@@ -19,7 +19,6 @@ import {
   updateSlugValidator,
 } from '../../../../../../fields/validators/posts/updateSlug.validator.js';
 import { usePost } from '../../../../Context/index.js';
-import { TitleTooltip } from '../ui/TitleTooltip/index.js';
 
 type Props = {
   contentId: string;
@@ -42,7 +41,7 @@ export const GeneralSettings: React.FC<Props> = ({ contentId, slug, onUpdated })
     defaultValues: {
       slug,
     },
-    resolver: yupResolver(updateSlugValidator()),
+    resolver: yupResolver(updateSlugValidator(t)),
   });
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
@@ -77,6 +76,9 @@ export const GeneralSettings: React.FC<Props> = ({ contentId, slug, onUpdated })
                     type="text"
                     placeholder="my-first-post"
                     sx={{ flexGrow: 1 }}
+                    onChange={(e) => {
+                      field.onChange(e.target.value.toLowerCase());
+                    }}
                     error={errors.slug !== undefined}
                   />
                 )}

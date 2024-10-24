@@ -19,8 +19,6 @@ export const ContentStatus = {
 } as const;
 export type ContentStatusType = (typeof ContentStatus)[keyof typeof ContentStatus];
 
-const EXCERPT_LENGTH = 150;
-
 type ContentProps = Omit<
   Content,
   | 'id'
@@ -113,6 +111,10 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
   private isValid() {
     if (!this.props.id) {
       throw new UnexpectedException({ message: 'id is required' });
+    }
+
+    if (this.props.slug !== this.props.slug.toLowerCase()) {
+      throw new UnexpectedException({ message: 'slug must be lowercase' });
     }
   }
 

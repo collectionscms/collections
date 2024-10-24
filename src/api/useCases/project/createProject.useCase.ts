@@ -36,7 +36,7 @@ export class CreateProjectUseCase {
     const projectEntity = ProjectEntity.Construct({
       name,
       sourceLanguage,
-      subdomain: subdomain,
+      subdomain,
     });
 
     const roleEntity = RoleEntity.Construct({
