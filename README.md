@@ -6,13 +6,17 @@
   </a>
 </p>
 
-Collections is a headless CMS that accelerates global site building, with multilingual and AI SEO generation.
+Collections is a headless CMS with AI. Build global sites faster with automatic translation and SEO optimization.
 
-No more using multiple CMSs or paid plug-ins.
+Seamlessly add multilingual announcements and articles to your website!
 
 ## ⭐ Why Collections Focus on multilingual?
 
-AI search has changed the way people search for information. Keywords have been replaced by questions in the user's native language, and AI now recommends the most relevant content based on search intent. Multilingual support is essential for future websites to reach potential customers.
+AI search has transformed the way search for information.
+
+Instead of keywords, users now ask questions in their native language, and AI recommends the most relevant content based on search intent. Multilingual support is becoming essential for websites to connect with potential customers.
+
+However, this shift is also a great opportunity to attract future users!
 
 <hr/>
 <h4>

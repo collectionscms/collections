@@ -9,7 +9,7 @@ export const createPost = async (
     language: string;
     slug: string;
     title: string;
-    subtitle: string;
+    subtitle: string | null;
     body: string;
     bodyJson: string;
     bodyHtml: string;
