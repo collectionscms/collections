@@ -147,6 +147,7 @@
     "@commitlint/cli": "19.4.0",
     "@commitlint/config-conventional": "19.5.0",
     "@faker-js/faker": "9.0.1",
+    "@sentry/webpack-plugin": "2.22.6",
     "@types/busboy": "1.5.4",
     "@types/cors": "2.8.17",
     "@types/express": "4.17.21",
