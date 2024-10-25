@@ -1,7 +1,7 @@
 {
   "name": "@collectionscms/collections",
   "version": "2.0.0-rc.1",
-  "description": "Headless CMS with AI summary and multilingual support for Answer Engine Optimization(AEO)",
+  "description": "Automatic translation and AI SEO generation. Headless CMS for fast global site launch.",
   "license": "MIT",
   "type": "module",
   "engines": {
