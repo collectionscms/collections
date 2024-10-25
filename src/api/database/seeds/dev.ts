@@ -96,8 +96,8 @@ export const seedDev = async (): Promise<void> => {
       await createApiKeys(tx, apiKeys);
 
       // posts
-      await createPost(tx, enProject, contents);
-      await createPost(tx, jpProject, contents);
+      await createPost(tx, enProject, [contents[0]]);
+      await createPost(tx, jpProject, [contents[1]]);
 
       // webhook settings
       await createWebhookSettings(tx, [
