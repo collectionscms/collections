@@ -111,6 +111,9 @@ type AllowedEnvironmentVariable =
   // /////////////////////////////////////
   | 'PUBLIC_AMPLITUDE_API_KEY'
   | 'SENTRY_DSN'
+  | 'SENTRY_ORG'
+  | 'SENTRY_PROJECT'
+  | 'SENTRY_AUTH_TOKEN'
 
   // /////////////////////////////////////
   // Collections Plugin
