@@ -1,4 +1,4 @@
-import { Stack, Tooltip } from '@mui/material';
+import { Stack, Tooltip, useTheme } from '@mui/material';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RevisedContent } from '../../../../../types/index.js';
@@ -17,6 +17,7 @@ export type Props = {
 
 export const PostFooter: React.FC<Props> = ({ content, characters, onTrashed, onReverted }) => {
   const { t } = useTranslation();
+  const theme = useTheme();
 
   // /////////////////////////////////////
   // Open settings
@@ -46,7 +47,12 @@ export const PostFooter: React.FC<Props> = ({ content, characters, onTrashed, on
         <IconButton
           color="secondary"
           shape="rounded"
-          variant="outlined"
+          variant="contained"
+          sx={{
+            color: 'text.primary',
+            backgroundColor: theme.palette.grey[200],
+            '&:hover': { backgroundColor: theme.palette.grey[300] },
+          }}
           onClick={handleOpenSettings}
         >
           <Icon strokeWidth={2} name="Settings" />

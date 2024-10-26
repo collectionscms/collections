@@ -60,13 +60,7 @@ export const TemplateCard: React.FC<Props> = ({
             </Button>
           )}
           {deployUrl && (
-            <Button
-              variant="contained"
-              color="secondary"
-              href={deployUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <Button variant="contained" href={deployUrl} target="_blank" rel="noopener noreferrer">
               {t('deploy')}
             </Button>
           )}

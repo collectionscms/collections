@@ -70,7 +70,17 @@ export const Revision: React.FC<Props> = ({ content, onReverted }) => {
         cancel={{ label: t('cancel'), action: () => setOpenRevert(false) }}
       />
       <Tooltip title={t('version_history')} placement="top-start">
-        <IconButton color="secondary" shape="rounded" variant="outlined" onClick={handleToggle}>
+        <IconButton
+          color="secondary"
+          shape="rounded"
+          variant="contained"
+          sx={{
+            color: 'text.primary',
+            backgroundColor: theme.palette.grey[200],
+            '&:hover': { backgroundColor: theme.palette.grey[300] },
+          }}
+          onClick={handleToggle}
+        >
           <Icon strokeWidth={2} name="History" />
         </IconButton>
       </Tooltip>
