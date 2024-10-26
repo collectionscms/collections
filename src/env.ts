@@ -40,23 +40,6 @@ type AllowedEnvironmentVariable =
   | 'REQ_LIMIT'
 
   // /////////////////////////////////////
-  // Hash(Argon2)
-  // see: https://github.com/ranisalt/node-argon2/wiki/Options
-  // /////////////////////////////////////
-  // The amount of memory to be used by the hash function, in KiB [65536]
-  | 'HASH_MEMORY_COST'
-  // The length of the hash function output in bytes [32]
-  | 'HASH_HASH_LENGTH'
-  // The amount of threads to compute the hash on. Each thread has a memory pool with HASH_MEMORY_COST size [1]
-  | 'HASH_PARALLELISM'
-  // The amount of threads to compute the hash on. Each thread has a memory pool with HASH_MEMORY_COST size [1]
-  | 'HASH_TIME_COST'
-  // The variant of the hash function (0: argon2d, 1: argon2i, or 2: argon2id) [2]
-  | 'HASH_TYPE'
-  // An extra and optional non-secret value. The value will be included B64 encoded in the parameters portion of the digest []
-  | 'HASH_ASSOCIATED_DATA'
-
-  // /////////////////////////////////////
   // Auth
   // see: https://authjs.dev/reference/core#jwt
   // /////////////////////////////////////
@@ -137,13 +120,6 @@ export const defaults: Partial<Record<AllowedEnvironmentVariable, any>> = {
 
   // Express
   REQ_LIMIT: '4mb',
-
-  // Hash(Argon2)
-  HASH_MEMORY_COST: 65536,
-  HASH_HASH_LENGTH: 32,
-  HASH_TIME_COST: 3,
-  HASH_PARALLELISM: 1,
-  HASH_TYPE: 2,
 
   // Auth
   PUBLIC_AUTH_PROVIDERS: 'email,google,github',
