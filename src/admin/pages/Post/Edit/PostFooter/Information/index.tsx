@@ -38,7 +38,7 @@ export const Information: React.FC<Props> = ({ characters }) => {
             <Icon strokeWidth={2} name="Info" />
           </IconButton>
         </Popover.Trigger>
-        <Popover.Content side="bottom" align="start">
+        <Popover.Content side="bottom" align="start" style={{ outline: 'none' }}>
           <Paper
             sx={{
               borderRadius: 2,
