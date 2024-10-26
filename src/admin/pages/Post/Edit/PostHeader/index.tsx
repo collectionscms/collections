@@ -100,13 +100,18 @@ export const PostHeader: React.FC<Props> = ({
               )}
               <StatusDot status={content.status.currentStatus} />
             </Stack>
-            {isSaving && (
-              <Stack flexDirection="row" alignItems="center">
-                <Typography sx={{ fontSize: 12 }} color="secondary">
-                  {t('saving')}
-                </Typography>
-              </Stack>
-            )}
+            <Stack flexDirection="row" alignItems="center">
+              <Typography
+                sx={{
+                  fontSize: 12,
+                  opacity: isSaving ? 1 : 0,
+                  transition: 'opacity 0.2s ease-in-out',
+                }}
+                color="secondary"
+              >
+                {t('saving')}
+              </Typography>
+            </Stack>
           </Stack>
           <Stack direction="row" alignItems="center" gap={2}>
             <Button variant="text" color="secondary" ref={anchorRef} onClick={handleLanguageOpen}>

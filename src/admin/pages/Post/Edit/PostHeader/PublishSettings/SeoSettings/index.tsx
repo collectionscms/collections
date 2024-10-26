@@ -101,8 +101,11 @@ export const SeoSettings: React.FC<Props> = ({
           variant="outlined"
           color="secondary"
           size="small"
-          style={{
+          sx={{
             borderRadius: '16px',
+            '&::after': {
+              borderRadius: '16px',
+            },
           }}
           disabled={isGenerateSeo}
           onClick={onClickGenerateSeo}

@@ -417,7 +417,7 @@ export const EditPostPageImpl: React.FC = () => {
               <Box
                 sx={{
                   position: 'relative',
-                  mb: 2,
+                  mb: 3,
                 }}
               >
                 <IconButton

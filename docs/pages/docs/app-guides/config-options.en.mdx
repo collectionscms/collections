@@ -56,17 +56,6 @@ DB_FILENAME="./data.db"
 | :-------- | :--------------------------- | :------------ |
 | REQ_LIMIT | Maximum size of request body | `4mb`         |
 
-## Hash
-
-| Variable             | Description                                                                                                                                              | Default Value       |
-| :------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------ |
-| HASH_MEMORY_COST     | Specifies the amount of memory used to generate the hash in KiB.                                                                                         | `4096` (4 MiB)      |
-| HASH_HASH_LENGTH     | Specifies the length of the hash function output in bytes.                                                                                               | `32`                |
-| HASH_TIME_COST       | The number of passes (iterations) used by the hash function. The hash strength can be increased at the expense of the time required for the computation. | `3`                 |
-| HASH_PARALLELISM     | Number of threads to compute hashes. Each thread has a memory pool of size `HASH_MEMORY_COST`.                                                           | `1` (single thread) |
-| HASH_TYPE            | Type of hash function (0: argon2d, 1: argon2i, or 2: argon2id).                                                                                          | `2` (argon2id)      |
-| HASH_ASSOCIATED_DATA | Additional optional non-confidential value. This value is included in the parameter portion of the digest in Base64 encoded form.                        | --                  |
-
 ## Session
 
 | Variable          | Description                                                          | Default Value |
