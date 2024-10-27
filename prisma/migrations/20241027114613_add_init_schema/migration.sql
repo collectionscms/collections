@@ -188,6 +188,25 @@ CREATE TABLE "ContentRevision" (
 );
 
 -- CreateTable
+CREATE TABLE "Tag" (
+    "id" UUID NOT NULL,
+    "projectId" UUID NOT NULL DEFAULT (current_setting('app.current_project_id'::text))::uuid,
+    "name" VARCHAR(255) NOT NULL,
+
+    CONSTRAINT "Tag_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "ContentTag" (
+    "id" UUID NOT NULL,
+    "projectId" UUID NOT NULL DEFAULT (current_setting('app.current_project_id'::text))::uuid,
+    "contentId" UUID NOT NULL,
+    "tagId" UUID NOT NULL,
+
+    CONSTRAINT "ContentTag_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "ApiKey" (
     "id" UUID NOT NULL,
     "projectId" UUID NOT NULL DEFAULT (current_setting('app.current_project_id'::text))::uuid,
@@ -357,6 +376,15 @@ ALTER TABLE "ContentRevision" ADD CONSTRAINT "ContentRevision_createdById_fkey" 
 
 -- AddForeignKey
 ALTER TABLE "ContentRevision" ADD CONSTRAINT "ContentRevision_updatedById_fkey" FOREIGN KEY ("updatedById") REFERENCES "User"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ContentTag" ADD CONSTRAINT "ContentTag_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Project"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ContentTag" ADD CONSTRAINT "ContentTag_contentId_fkey" FOREIGN KEY ("contentId") REFERENCES "Content"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ContentTag" ADD CONSTRAINT "ContentTag_tagId_fkey" FOREIGN KEY ("tagId") REFERENCES "Tag"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "ApiKey" ADD CONSTRAINT "ApiKey_createdById_fkey" FOREIGN KEY ("createdById") REFERENCES "User"("id") ON DELETE NO ACTION ON UPDATE CASCADE;
