@@ -1,6 +1,7 @@
 import { TextGenerator } from '@collectionscms/plugin-text-generator';
 import { getLanguageCodeType } from '../../../constants/languages.js';
 import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
+import { InvalidPayloadException } from '../../../exceptions/invalidPayload.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
 import { ContentRepository } from '../../persistence/content/content.repository.js';
 import { ContentRevisionEntity } from '../../persistence/contentRevision/contentRevision.entity.js';
@@ -46,6 +47,10 @@ export class GenerateSeoUseCase {
       revisions,
       content.language
     );
+
+    if (!latestRevision.body) {
+      throw new InvalidPayloadException('post_body_empty');
+    }
 
     // Text to English
     const { englishText, isTranslated } =

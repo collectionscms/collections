@@ -60,7 +60,7 @@ export const postNavItems = (): Group => {
   }
 
   return {
-    label: 'posts',
+    label: 'contents',
     items,
   };
 };

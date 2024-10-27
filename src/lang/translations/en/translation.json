@@ -1,4 +1,5 @@
 {
+  "contents": "Contents",
   "user": "User",
   "role": "Role",
   "project": "Project",
@@ -336,7 +337,8 @@
     "already_invited_email": "Already invited.",
     "unauthorized_user": "Unauthorized user.",
     "already_has_same_language_content": "Already has same language content.",
-    "already_registered_post_slug": "Already registered slug."
+    "already_registered_post_slug": "Already registered slug.",
+    "post_body_empty": "The post body is empty."
   },
   "yup": {
     "mixed": {

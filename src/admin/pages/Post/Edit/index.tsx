@@ -383,7 +383,12 @@ export const EditPostPageImpl: React.FC = () => {
             {/* Actions */}
             <Stack flexDirection="row" gap={3} sx={{ mb: 2 }}>
               {!uploadCover && (
-                <Button variant="text" color="secondary" component="label">
+                <Button
+                  variant="text"
+                  color="secondary"
+                  component="label"
+                  sx={{ color: 'text.primary' }}
+                >
                   <Stack direction="row" alignItems="center" gap={1}>
                     <Icon name="Image" size={16} />
                     <Typography variant="button">{t('add_cover')}</Typography>
@@ -402,6 +407,7 @@ export const EditPostPageImpl: React.FC = () => {
                   variant="text"
                   color="secondary"
                   component="label"
+                  sx={{ color: 'text.primary' }}
                   onClick={() => setShowSubtitle(true)}
                 >
                   <Stack direction="row" alignItems="center" gap={1}>

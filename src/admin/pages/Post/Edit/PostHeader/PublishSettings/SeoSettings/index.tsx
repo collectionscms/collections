@@ -102,6 +102,7 @@ export const SeoSettings: React.FC<Props> = ({
           color="secondary"
           size="small"
           sx={{
+            color: 'text.primary',
             borderRadius: '16px',
             '&::after': {
               borderRadius: '16px',

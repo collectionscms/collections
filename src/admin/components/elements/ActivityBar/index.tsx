@@ -67,6 +67,7 @@ export const ActivityBar: React.FC = () => {
                         variant="square"
                         type="filled"
                         sx={{
+                          backgroundColor: 'text.primary',
                           borderRadius: '10px',
                           width: 36,
                           height: 36,
