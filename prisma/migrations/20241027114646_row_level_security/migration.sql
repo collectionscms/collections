@@ -51,6 +51,7 @@ CREATE POLICY tenant_isolation_policy ON "ApiKeyPermission" USING ("projectId" =
 CREATE POLICY tenant_isolation_policy ON "Invitation" USING ("projectId" = current_setting('app.current_project_id', TRUE)::uuid);
 CREATE POLICY tenant_isolation_policy ON "WebhookSetting" USING ("projectId" = current_setting('app.current_project_id', TRUE)::uuid);
 CREATE POLICY tenant_isolation_policy ON "WebhookLog" USING ("projectId" = current_setting('app.current_project_id', TRUE)::uuid);
+CREATE POLICY tenant_isolation_policy ON "TextGenerationUsage" USING ("projectId" = current_setting('app.current_project_id', TRUE)::uuid);
 CREATE POLICY tenant_isolation_policy ON "Tag" USING ("projectId" = current_setting('app.current_project_id', TRUE)::uuid);
 CREATE POLICY tenant_isolation_policy ON "ContentTag" USING ("projectId" = current_setting('app.current_project_id', TRUE)::uuid);
 
