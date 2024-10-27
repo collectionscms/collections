@@ -371,6 +371,9 @@ export const EditPostPageImpl: React.FC = () => {
                         textDecoration: 'underline',
                         textDecorationStyle: 'dotted',
                         textUnderlineOffset: '0.3rem',
+                        '&:hover': {
+                          backgroundColor: 'transparent',
+                        },
                       }}
                       onClick={handleTranslate}
                     >
