@@ -1,5 +1,7 @@
-import { EXAMPLE_PATH } from "@/lib/constants";
-import Container from "./container";
+/* eslint-disable max-len */
+import React from 'react';
+import { EXAMPLE_PATH } from '@/lib/constants';
+import Container from './container';
 
 export function Footer() {
   return (

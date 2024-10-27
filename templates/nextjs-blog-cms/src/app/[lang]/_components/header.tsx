@@ -1,5 +1,7 @@
-import { Locale } from "@/i18n-config";
-import Link from "next/link";
+/* eslint-disable max-len */
+import React from 'react';
+import { Locale } from '@/i18n-config';
+import Link from 'next/link';
 
 type Props = {
   lang: Locale;

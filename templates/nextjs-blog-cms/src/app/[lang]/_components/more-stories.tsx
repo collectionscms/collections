@@ -1,6 +1,7 @@
-import { Locale } from "@/i18n-config";
-import { Post } from "@/interfaces/post";
-import { PostPreview } from "./post-preview";
+import React from 'react';
+import { Locale } from '@/i18n-config';
+import { Post } from '@/interfaces/post';
+import { PostPreview } from './post-preview';
 
 type Props = {
   lang: Locale;

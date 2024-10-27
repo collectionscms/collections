@@ -1,17 +1,14 @@
-import { Locale } from "@/i18n-config";
-import { getAllPosts } from "@/lib/api";
-import Container from "./_components/container";
-import { HeroPost } from "./_components/hero-post";
-import { Intro } from "./_components/intro";
-import { MoreStories } from "./_components/more-stories";
+import React from 'react';
+import { Locale } from '@/i18n-config';
+import { getAllPosts } from '@/lib/api';
+import Container from './_components/container';
+import { HeroPost } from './_components/hero-post';
+import { Intro } from './_components/intro';
+import { MoreStories } from './_components/more-stories';
 
 export const revalidate = 300;
 
-export default async function Index({
-  params: { lang },
-}: {
-  params: { lang: Locale };
-}) {
+export default async function Index({ params: { lang } }: { params: { lang: Locale } }) {
   const allPosts = await getAllPosts(revalidate);
   const posts = allPosts.filter((post) => post.contents[lang]);
   const heroPost = posts[0];

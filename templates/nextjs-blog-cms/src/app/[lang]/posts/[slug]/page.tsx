@@ -1,12 +1,13 @@
-import { Locale } from "@/i18n-config";
-import { getAllPosts, getContentBySlug } from "@/lib/api";
-import { CMS_NAME } from "@/lib/constants";
-import { Metadata } from "next";
-import { notFound } from "next/navigation";
-import Container from "../../_components/container";
-import Header from "../../_components/header";
-import { PostBody } from "../../_components/post-body";
-import { PostHeader } from "../../_components/post-header";
+import React from 'react';
+import { Locale } from '@/i18n-config';
+import { getAllPosts, getContentBySlug } from '@/lib/api';
+import { CMS_NAME } from '@/lib/constants';
+import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import Container from '../../_components/container';
+import Header from '../../_components/header';
+import { PostBody } from '../../_components/post-body';
+import { PostHeader } from '../../_components/post-header';
 
 type Params = {
   params: {

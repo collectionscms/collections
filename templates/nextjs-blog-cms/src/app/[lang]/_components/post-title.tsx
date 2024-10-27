@@ -1,4 +1,5 @@
-import { ReactNode } from "react";
+/* eslint-disable max-len */
+import React, { ReactNode } from 'react';
 
 type Props = {
   children?: ReactNode;

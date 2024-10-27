@@ -1,9 +1,10 @@
-import { Locale } from "@/i18n-config";
-import { Author } from "@/interfaces/author";
-import Link from "next/link";
-import Avatar from "./avatar";
-import CoverImage from "./cover-image";
-import DateFormatter from "./date-formatter";
+import React from 'react';
+import { Locale } from '@/i18n-config';
+import { Author } from '@/interfaces/author';
+import Link from 'next/link';
+import Avatar from './avatar';
+import CoverImage from './cover-image';
+import DateFormatter from './date-formatter';
 
 type Props = {
   title: string;
@@ -15,15 +16,7 @@ type Props = {
   lang: Locale;
 };
 
-export function HeroPost({
-  title,
-  coverUrl,
-  publishedAt,
-  subtitle,
-  author,
-  slug,
-  lang,
-}: Props) {
+export function HeroPost({ title, coverUrl, publishedAt, subtitle, author, slug, lang }: Props) {
   return (
     <section>
       {coverUrl && (

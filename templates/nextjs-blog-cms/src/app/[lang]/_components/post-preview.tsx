@@ -1,9 +1,10 @@
-import { type Author } from "@/interfaces/author";
-import Link from "next/link";
-import Avatar from "./avatar";
-import { default as CoverImage } from "./cover-image";
-import DateFormatter from "./date-formatter";
-import { Locale } from "@/i18n-config";
+import React from 'react';
+import { type Author } from '@/interfaces/author';
+import Link from 'next/link';
+import Avatar from './avatar';
+import { default as CoverImage } from './cover-image';
+import DateFormatter from './date-formatter';
+import { Locale } from '@/i18n-config';
 
 type Props = {
   title: string;
@@ -15,15 +16,7 @@ type Props = {
   lang: Locale;
 };
 
-export function PostPreview({
-  title,
-  coverUrl,
-  publishedAt,
-  subtitle,
-  author,
-  slug,
-  lang,
-}: Props) {
+export function PostPreview({ title, coverUrl, publishedAt, subtitle, author, slug, lang }: Props) {
   return (
     <div>
       {coverUrl && (
