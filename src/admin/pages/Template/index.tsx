@@ -13,9 +13,9 @@ export const TemplatePage: React.FC = () => {
         coverUrl="http://cdn.collections.dev/nextjs-blog-starter.png"
         title="Next.js Blog Starter"
         description={t('nextjs_blog_starter_description')}
-        gitHubUrl="https://github.com/collectionscms/collections/tree/main/templates/nextjs-blog-cms"
+        gitHubUrl="https://github.com/collectionscms/collections/tree/main/templates/nextjs-blog-starter"
         demoUrl="https://collections-nextjs-blog.vercel.app/"
-        deployUrl="https://vercel.com/new/clone?repository-url=https://github.com/collectionscms/nextjs-blog-starter&repository-name=collections-nextjs-blog&env=COLLECTIONS_API_ORIGIN,COLLECTIONS_API_KEY&envDescription=Required%20to%20connect%20the%20app%20with%20Collections&envLink=https://github.com/collectionscms/nextjs-blog-starter"
+        deployUrl="https://vercel.com/new/clone?repository-url=https://github.com/collectionscms/collections/tree/main/templates/nextjs-blog-starter&repository-name=collections-nextjs-blog&env=COLLECTIONS_API_ORIGIN,COLLECTIONS_API_KEY&envDescription=Required%20to%20connect%20the%20app%20with%20Collections&envLink=https://github.com/collectionscms/collections/tree/main/templates/nextjs-blog-starter"
       />
     </Grid>
   );
