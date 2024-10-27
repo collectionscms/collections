@@ -15,7 +15,7 @@ Using the Deploy button below and connect to the Collections project after addin
 | COLLECTIONS_API_ORIGIN | Enter your Collections project origin.  | https://my-project.collections.dev |
 | COLLECTIONS_API_KEY    | Enter your Collections project API key. | a6a9da5a-...                       |
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/collectionscms/nextjs-blog-starter&repository-name=collections-nextjs-blog&env=COLLECTIONS_API_ORIGIN,COLLECTIONS_API_KEY&envDescription=Required%20to%20connect%20the%20app%20with%20Collections&envLink=https://github.com/collectionscms/nextjs-blog-starter)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/collectionscms/templates/nextjs-blog-starter&repository-name=collections-nextjs-blog&env=COLLECTIONS_API_ORIGIN,COLLECTIONS_API_KEY&envDescription=Required%20to%20connect%20the%20app%20with%20Collections&envLink=https://github.com/collectionscms/templates/nextjs-blog-starter)
 
 ## How to use
 
