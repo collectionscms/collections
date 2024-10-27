@@ -336,7 +336,8 @@
     "already_invited_email": "すでに招待済みです。",
     "unauthorized_user": "不正なユーザーです。",
     "already_has_same_language_content": "すでに同じ言語のコンテンツがあります。",
-    "already_registered_post_slug": "すでに登録済みのスラッグです。"
+    "already_registered_post_slug": "すでに登録済みのスラッグです。",
+    "post_body_empty": "記事の本文が空です。"
   },
   "yup": {
     "mixed": {
