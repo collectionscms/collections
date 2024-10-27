@@ -339,7 +339,8 @@
     "unauthorized_user": "Unauthorized user.",
     "already_has_same_language_content": "Already has same language content.",
     "already_registered_post_slug": "Already registered slug.",
-    "post_body_empty": "The post body is empty."
+    "post_body_empty": "The post body is empty.",
+    "source_language_post_body_empty": "The text of the source post is empty."
   },
   "yup": {
     "mixed": {
