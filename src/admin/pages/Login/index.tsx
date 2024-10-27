@@ -85,7 +85,7 @@ export const Login: React.FC = () => {
         <Typography variant="h3" sx={{ mb: 1, textAlign: 'center' }}>
           {t('login_title')}
         </Typography>
-        <Typography variant="h5" sx={{ mb: 5, textAlign: 'center' }}>
+        <Typography variant="h5" sx={{ mt: 2, mb: 5, textAlign: 'center' }}>
           {loginPageText && <Box dangerouslySetInnerHTML={{ __html: loginPageText }} />}
         </Typography>
         <Stack>

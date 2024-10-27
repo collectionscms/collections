@@ -6,6 +6,7 @@ import {
   MenuItem,
   Stack,
   Toolbar,
+  Tooltip,
   Typography,
   useTheme,
 } from '@mui/material';
@@ -88,9 +89,11 @@ export const PostHeader: React.FC<Props> = ({
       <AppBarStyled open={true} {...appBar}>
         <Toolbar>
           <Stack direction="row" flexGrow={1} gap={2}>
-            <IconButton color="secondary" onClick={navigateToList} sx={{ p: 0 }}>
-              <Icon name="ArrowLeft" size={28} />
-            </IconButton>
+            <Tooltip title={t('exit_editing')} placement="bottom-start">
+              <IconButton color="secondary" onClick={navigateToList} sx={{ p: 0 }}>
+                <Icon name="ArrowLeft" size={28} />
+              </IconButton>
+            </Tooltip>
             <Stack direction="row" gap={1.5}>
               {content.status.prevStatus && (
                 <>
