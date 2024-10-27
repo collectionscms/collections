@@ -26,13 +26,13 @@ export interface Group {
 
 export const groups = (t: TFunction): Group[] => [
   {
-    name: 'format',
-    title: 'FORMAT',
+    name: 'basic',
+    title: 'Basic',
     commands: [
       {
         name: 'text',
         label: t('editor.text'),
-        iconName: 'Pilcrow',
+        iconName: 'Type',
         description: t('editor.text_description'),
         aliases: ['paragraph'],
         action: (editor) => {
@@ -108,11 +108,21 @@ export const groups = (t: TFunction): Group[] => [
           editor.chain().focus().setCodeBlock().run();
         },
       },
+      {
+        name: 'horizontalRule',
+        label: t('editor.divider'),
+        iconName: 'Minus',
+        description: t('editor.divider_description'),
+        aliases: ['hr'],
+        action: (editor) => {
+          editor.chain().focus().setHorizontalRule().run();
+        },
+      },
     ],
   },
   {
-    name: 'insert',
-    title: 'INSERT',
+    name: 'media',
+    title: 'Media',
     commands: [
       {
         name: 'image',
@@ -122,16 +132,6 @@ export const groups = (t: TFunction): Group[] => [
         aliases: ['img'],
         action: (editor) => {
           editor.chain().focus().setImageUpload().run();
-        },
-      },
-      {
-        name: 'horizontalRule',
-        label: t('editor.divider'),
-        iconName: 'Minus',
-        description: t('editor.divider_description'),
-        aliases: ['hr'],
-        action: (editor) => {
-          editor.chain().focus().setHorizontalRule().run();
         },
       },
     ],
