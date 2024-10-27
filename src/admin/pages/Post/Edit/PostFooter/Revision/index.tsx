@@ -112,7 +112,7 @@ export const Revision: React.FC<Props> = ({ content, onReverted }) => {
             content={false}
             secondary={
               <IconButton size="small" color="secondary" onClick={handleToggle}>
-                <Icon name="X" size={16} />
+                <Icon name="X" size={18} />
               </IconButton>
             }
           >
