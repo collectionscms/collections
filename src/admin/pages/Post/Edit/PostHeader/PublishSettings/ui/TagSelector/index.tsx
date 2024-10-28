@@ -15,12 +15,10 @@ export const TagSelector: React.FC<Props> = ({ options }) => {
       ? {
           controlBgColor: theme.palette.grey[200],
           menuBgColor: theme.palette.grey[100],
-          tagBgColor: theme.palette.grey[200],
         }
       : {
           controlBgColor: theme.palette.grey[300],
           menuBgColor: theme.palette.grey[50],
-          tagBgColor: theme.palette.grey[200],
         };
 
   return (
@@ -33,7 +31,7 @@ export const TagSelector: React.FC<Props> = ({ options }) => {
           ...styles,
           border: '1px solid ' + color.controlBgColor,
           borderRadius: 4,
-          padding: 10,
+          padding: 9,
           '&:hover': {
             borderColor: theme.palette.primary.light,
             boxShadow: 'none',
@@ -80,7 +78,7 @@ export const TagSelector: React.FC<Props> = ({ options }) => {
         }),
         multiValue: (styles) => ({
           ...styles,
-          backgroundColor: color.tagBgColor,
+          backgroundColor: theme.palette.grey[200],
           padding: '0 6px',
           borderRadius: 4,
         }),
