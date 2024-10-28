@@ -153,6 +153,7 @@
   "remove_subtitle": "Remove subtitle",
   "upload_image": "Upload an image",
   "exit_editing": "Exit editing",
+  "add_tags": "Add tags",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",

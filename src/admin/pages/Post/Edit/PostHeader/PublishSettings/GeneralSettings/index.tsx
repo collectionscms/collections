@@ -10,6 +10,7 @@ import {
   updateSlugValidator,
 } from '../../../../../../fields/validators/posts/updateSlug.validator.js';
 import { usePost } from '../../../../Context/index.js';
+import { TagSelector } from '../ui/TagSelector/index.js';
 
 type Props = {
   contentId: string;
@@ -73,6 +74,10 @@ export const GeneralSettings: React.FC<Props> = ({ contentId, slug, onUpdated })
                 />
               )}
             />
+          </Stack>
+          <Stack gap={1} sx={{ mt: 2 }}>
+            <Typography variant="subtitle1">{t('add_tags')}</Typography>
+            <TagSelector options={[]} />
           </Stack>
           <FormHelperText error>{errors.slug?.message}</FormHelperText>
           {isEditing && (

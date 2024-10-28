@@ -153,6 +153,7 @@
   "remove_subtitle": "サブタイトルを削除",
   "upload_image": "画像をアップロード",
   "exit_editing": "編集を終了",
+  "add_tags": "タグの追加",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",
