@@ -48,6 +48,7 @@ type PostContext = {
     Record<string, any>
   >;
   getApiKeys: () => SWRMutationResponse<ApiKey[], Error>;
+  getTags: () => SWRResponse<Tag[], Error>;
 };
 
 const Context = createContext({} as PostContext);
@@ -172,6 +173,9 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       return api.get<{ apiKeys: ApiKey[] }>(url).then((res) => res.data.apiKeys);
     });
 
+  const getTags = () =>
+    useSWR('/tags', (url) => api.get<{ tags: Tag[] }>(url).then((res) => res.data.tags));
+
   const value = useMemo(
     () => ({
       getPosts,
@@ -190,6 +194,7 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       createTags,
       createFileImage,
       getApiKeys,
+      getTags,
     }),
     [
       getPosts,
@@ -208,6 +213,7 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       createTags,
       createFileImage,
       getApiKeys,
+      getTags,
     ]
   );
 

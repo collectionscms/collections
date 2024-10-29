@@ -10,7 +10,6 @@ import {
   updateSlugValidator,
 } from '../../../../../../fields/validators/posts/updateSlug.validator.js';
 import { usePost } from '../../../../Context/index.js';
-import { TagSelector } from '../ui/TagSelector/index.js';
 
 type Props = {
   contentId: string;
@@ -21,9 +20,8 @@ type Props = {
 export const GeneralSettings: React.FC<Props> = ({ contentId, slug, onUpdated }) => {
   const { t } = useTranslation();
   const [isEditing, setIsEditing] = useState(false);
-  const { updateContent, createTags } = usePost();
+  const { updateContent } = usePost();
   const { trigger: updateContentTrigger } = updateContent(contentId);
-  const { trigger: createTagsTrigger } = createTags(contentId);
 
   const {
     control,
@@ -35,16 +33,6 @@ export const GeneralSettings: React.FC<Props> = ({ contentId, slug, onUpdated })
     },
     resolver: yupResolver(updateSlugValidator(t)),
   });
-
-  const handleTagChange = async (names: string[]) => {
-    try {
-      await createTagsTrigger({
-        names,
-      });
-    } catch (error) {
-      logger.error(error);
-    }
-  };
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
@@ -63,46 +51,40 @@ export const GeneralSettings: React.FC<Props> = ({ contentId, slug, onUpdated })
   };
 
   return (
-    <>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Stack gap={2}>
-          <Stack gap={1}>
-            <Typography variant="subtitle1">{t('post_slug')}</Typography>
-            <Controller
-              name="slug"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  type="text"
-                  placeholder="my-first-post"
-                  sx={{ flexGrow: 1 }}
-                  onChange={(e) => {
-                    setIsEditing(true);
-                    field.onChange(e.target.value.toLowerCase());
-                  }}
-                  error={errors.slug !== undefined}
-                />
-              )}
-            />
-          </Stack>
-          <Stack gap={1} sx={{ mt: 2 }}>
-            <Typography variant="subtitle1">{t('add_tags')}</Typography>
-            <TagSelector options={[]} onChange={handleTagChange} />
-          </Stack>
-          <FormHelperText error>{errors.slug?.message}</FormHelperText>
-          {isEditing && (
-            <Stack direction="row" justifyContent="flex-end" spacing={1}>
-              <Button variant="outlined" color="secondary" onClick={() => setIsEditing(false)}>
-                {t('cancel')}
-              </Button>
-              <Button variant="contained" type="submit">
-                {t('save')}
-              </Button>
-            </Stack>
-          )}
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Stack gap={2}>
+        <Stack gap={1}>
+          <Typography variant="subtitle1">{t('post_slug')}</Typography>
+          <Controller
+            name="slug"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                type="text"
+                placeholder="my-first-post"
+                sx={{ flexGrow: 1 }}
+                onChange={(e) => {
+                  setIsEditing(true);
+                  field.onChange(e.target.value.toLowerCase());
+                }}
+                error={errors.slug !== undefined}
+              />
+            )}
+          />
         </Stack>
-      </form>
-    </>
+        <FormHelperText error>{errors.slug?.message}</FormHelperText>
+        {isEditing && (
+          <Stack direction="row" justifyContent="flex-end" spacing={1}>
+            <Button variant="outlined" color="secondary" onClick={() => setIsEditing(false)}>
+              {t('cancel')}
+            </Button>
+            <Button variant="contained" type="submit">
+              {t('save')}
+            </Button>
+          </Stack>
+        )}
+      </Stack>
+    </form>
   );
 };

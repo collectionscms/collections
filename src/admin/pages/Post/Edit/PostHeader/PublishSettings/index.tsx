@@ -37,6 +37,7 @@ import { usePost } from '../../../Context/index.js';
 import { AppBarStyled } from '../../AppBarStyled.js';
 import { GeneralSettings } from './GeneralSettings/index.js';
 import { SeoSettings } from './SeoSettings/index.js';
+import { TagSettings } from './TagSettings/index.js';
 
 export type Props = {
   open: boolean;
@@ -246,7 +247,7 @@ export const PublishSettings: React.FC<Props> = ({ open, content, onClose }) => 
       </form>
       {watch('status') === 'published' && (
         <>
-          <Container maxWidth="sm" sx={{ mt: 1 }}>
+          <Container maxWidth="sm" sx={{ mt: 1, pb: 5 }}>
             {/* Slug */}
             <Stack sx={{ pt: 3, pb: 1.5 }}>
               <Typography variant={'h4'}>{t('general')}</Typography>
@@ -257,6 +258,14 @@ export const PublishSettings: React.FC<Props> = ({ open, content, onClose }) => 
                 slug={mutatedContent.slug}
                 onUpdated={(slug) => handleUpdatedPost({ slug })}
               />
+            </MainCard>
+
+            {/* Tag */}
+            <Stack sx={{ pt: 3, pb: 1.5 }}>
+              <Typography variant={'h4'}>{t('tags')}</Typography>
+            </Stack>
+            <MainCard>
+              <TagSettings contentId={mutatedContent.id} inputtedTags={mutatedContent.tags} />
             </MainCard>
 
             {/* SEO */}

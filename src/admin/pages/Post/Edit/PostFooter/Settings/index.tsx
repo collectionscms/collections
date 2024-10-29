@@ -25,6 +25,7 @@ import { usePost } from '../../../Context/index.js';
 import { AppBarStyled } from '../../AppBarStyled.js';
 import { GeneralSettings } from '../../PostHeader/PublishSettings/GeneralSettings/index.js';
 import { SeoSettings } from '../../PostHeader/PublishSettings/SeoSettings/index.js';
+import { TagSettings } from '../../PostHeader/PublishSettings/TagSettings/index.js';
 
 export type Props = {
   open: boolean;
@@ -156,7 +157,7 @@ export const Settings: React.FC<Props> = ({ open, content, onClose, onTrashed })
         </AppBarStyled>
         <Box component="main">
           <Toolbar sx={{ mt: 0 }} />
-          <Container maxWidth="sm">
+          <Container maxWidth="sm" sx={{ pb: 5 }}>
             {/* Slug */}
             <Stack sx={{ pt: 3, pb: 1.5 }}>
               <Typography variant={'h4'}>{t('general')}</Typography>
@@ -167,6 +168,14 @@ export const Settings: React.FC<Props> = ({ open, content, onClose, onTrashed })
                 slug={mutatedContent.slug}
                 onUpdated={(slug) => handleUpdatedPost({ slug })}
               />
+            </MainCard>
+
+            {/* Tag */}
+            <Stack sx={{ pt: 3, pb: 1.5 }}>
+              <Typography variant={'h4'}>{t('tags')}</Typography>
+            </Stack>
+            <MainCard>
+              <TagSettings contentId={mutatedContent.id} inputtedTags={mutatedContent.tags} />
             </MainCard>
 
             {/* SEO */}

@@ -7,6 +7,7 @@ import {
   Project,
   Review,
   Role,
+  Tag,
 } from '@prisma/client';
 
 export type UserProfile = {
@@ -83,6 +84,7 @@ export type RevisedContent = {
   sourceLanguageCode: string | null;
   targetLanguageCode: string | null;
   revisions: ContentRevision[];
+  tags: Tag[];
 };
 
 export type PublishedContent = {

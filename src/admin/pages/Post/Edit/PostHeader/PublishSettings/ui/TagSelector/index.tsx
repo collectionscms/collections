@@ -1,14 +1,15 @@
 import { useTheme } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 import CreatableSelect from 'react-select/creatable';
 import { useColorMode } from '../../../../../../../components/utilities/ColorMode/index.js';
 
 type Props = {
   options: Record<string, string>[];
+  values: Record<string, string>[];
   onChange: (names: string[]) => void;
 };
 
-export const TagSelector: React.FC<Props> = ({ options, onChange }) => {
+export const TagSelector: React.FC<Props> = ({ options, values, onChange }) => {
   const { mode } = useColorMode();
   const theme = useTheme();
   const color =
@@ -16,18 +17,33 @@ export const TagSelector: React.FC<Props> = ({ options, onChange }) => {
       ? {
           controlBgColor: theme.palette.grey[200],
           menuBgColor: theme.palette.grey[100],
+          valueBgColor: theme.palette.grey[200],
         }
       : {
           controlBgColor: theme.palette.grey[300],
           menuBgColor: theme.palette.grey[50],
+          valueBgColor: theme.palette.grey[300],
         };
+
+  const [inputtedValues, setInputtedValues] = useState(values);
+  const handleTagChange = (value: Record<string, string>[]) => {
+    setInputtedValues(value);
+    onChange(value.map((v) => v.value));
+  };
 
   return (
     <CreatableSelect
       isMulti
       options={options}
+      value={inputtedValues}
       unstyled={true}
-      onChange={(value) => onChange(value.map((v) => v.value))}
+      onChange={(value) =>
+        handleTagChange(
+          value.map((v) => {
+            return { value: v.value, label: v.label };
+          })
+        )
+      }
       styles={{
         control: (styles) => ({
           ...styles,
@@ -72,7 +88,7 @@ export const TagSelector: React.FC<Props> = ({ options, onChange }) => {
         }),
         valueContainer: (styles) => ({
           ...styles,
-          gap: 4,
+          gap: 6,
         }),
         placeholder: (styles) => ({
           ...styles,
@@ -80,7 +96,7 @@ export const TagSelector: React.FC<Props> = ({ options, onChange }) => {
         }),
         multiValue: (styles) => ({
           ...styles,
-          backgroundColor: theme.palette.grey[200],
+          backgroundColor: color.valueBgColor,
           padding: '0 6px',
           borderRadius: 4,
         }),
