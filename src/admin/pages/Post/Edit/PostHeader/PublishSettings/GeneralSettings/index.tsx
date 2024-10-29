@@ -21,8 +21,9 @@ type Props = {
 export const GeneralSettings: React.FC<Props> = ({ contentId, slug, onUpdated }) => {
   const { t } = useTranslation();
   const [isEditing, setIsEditing] = useState(false);
-  const { updateContent } = usePost();
+  const { updateContent, createTags } = usePost();
   const { trigger: updateContentTrigger } = updateContent(contentId);
+  const { trigger: createTagsTrigger } = createTags(contentId);
 
   const {
     control,
@@ -34,6 +35,16 @@ export const GeneralSettings: React.FC<Props> = ({ contentId, slug, onUpdated })
     },
     resolver: yupResolver(updateSlugValidator(t)),
   });
+
+  const handleTagChange = async (names: string[]) => {
+    try {
+      await createTagsTrigger({
+        names,
+      });
+    } catch (error) {
+      logger.error(error);
+    }
+  };
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
@@ -77,7 +88,7 @@ export const GeneralSettings: React.FC<Props> = ({ contentId, slug, onUpdated })
           </Stack>
           <Stack gap={1} sx={{ mt: 2 }}>
             <Typography variant="subtitle1">{t('add_tags')}</Typography>
-            <TagSelector options={[]} />
+            <TagSelector options={[]} onChange={handleTagChange} />
           </Stack>
           <FormHelperText error>{errors.slug?.message}</FormHelperText>
           {isEditing && (

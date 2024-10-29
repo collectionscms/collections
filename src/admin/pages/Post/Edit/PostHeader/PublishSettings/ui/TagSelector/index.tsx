@@ -5,9 +5,10 @@ import { useColorMode } from '../../../../../../../components/utilities/ColorMod
 
 type Props = {
   options: Record<string, string>[];
+  onChange: (names: string[]) => void;
 };
 
-export const TagSelector: React.FC<Props> = ({ options }) => {
+export const TagSelector: React.FC<Props> = ({ options, onChange }) => {
   const { mode } = useColorMode();
   const theme = useTheme();
   const color =
@@ -26,6 +27,7 @@ export const TagSelector: React.FC<Props> = ({ options }) => {
       isMulti
       options={options}
       unstyled={true}
+      onChange={(value) => onChange(value.map((v) => v.value))}
       styles={{
         control: (styles) => ({
           ...styles,

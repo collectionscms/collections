@@ -1,4 +1,4 @@
-import { ApiKey, Content } from '@prisma/client';
+import { ApiKey, Content, Tag } from '@prisma/client';
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWR, { SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
@@ -40,6 +40,7 @@ type PostContext = {
   requestReview: (contentId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
   publish: (contentId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
   archive: (contentId: string) => SWRMutationResponse<void, any, string, Record<string, any>>;
+  createTags: (contentId: string) => SWRMutationResponse<Tag[], any, string, Record<string, any>>;
   createFileImage: () => SWRMutationResponse<
     { files: UploadFile[] },
     any,
@@ -153,6 +154,14 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       }
     );
 
+  const createTags = (contentId: string) =>
+    useSWRMutation(
+      `/contents/${contentId}/tags`,
+      async (url: string, { arg }: { arg: Record<string, any> }) => {
+        return api.post<{ tags: Tag[] }>(url, arg).then((res) => res.data.tags);
+      }
+    );
+
   const createFileImage = () =>
     useSWRMutation(`/files`, async (url: string, { arg }: { arg: Record<string, any> }) => {
       return api.post<{ files: UploadFile[] }>(url, arg).then((res) => res.data);
@@ -178,6 +187,7 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       requestReview,
       publish,
       archive,
+      createTags,
       createFileImage,
       getApiKeys,
     }),
@@ -195,6 +205,7 @@ export const PostContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
       requestReview,
       publish,
       archive,
+      createTags,
       createFileImage,
       getApiKeys,
     ]

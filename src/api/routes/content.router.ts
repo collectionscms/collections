@@ -8,8 +8,10 @@ import { authenticatedUser } from '../middlewares/auth.js';
 import { validateAccess } from '../middlewares/validateAccess.js';
 import { ContentRepository } from '../persistence/content/content.repository.js';
 import { ContentRevisionRepository } from '../persistence/contentRevision/contentRevision.repository.js';
+import { ContentTagRepository } from '../persistence/contentTag/contentTag.repository.js';
 import { ProjectRepository } from '../persistence/project/project.repository.js';
 import { ReviewRepository } from '../persistence/review/review.repository.js';
+import { TagRepository } from '../persistence/tag/tag.repository.js';
 import { TextGenerationUsageRepository } from '../persistence/textGenerationUsage/textGenerationUsage.repository.js';
 import { UserRepository } from '../persistence/user/user.repository.js';
 import { WebhookLogRepository } from '../persistence/webhookLog/webhookLog.repository.js';
@@ -19,6 +21,8 @@ import { TextGenerationService } from '../services/textGeneration.service.js';
 import { WebhookService } from '../services/webhook.service.js';
 import { ArchiveUseCase } from '../useCases/content/archive.useCase.js';
 import { archiveUseCaseSchema } from '../useCases/content/archive.useCase.schema.js';
+import { CreateContentTagsUseCase } from '../useCases/content/createContentTags.useCase.js';
+import { createContentTagsUseCaseSchema } from '../useCases/content/createContentTags.useCase.schema.js';
 import { GenerateSeoUseCase } from '../useCases/content/generateSeo.useCase.js';
 import { generateSeoUseCaseSchema } from '../useCases/content/generateSeo.useCase.schema.js';
 import { GetContentUseCase } from '../useCases/content/getContent.useCase.js';
@@ -143,6 +147,31 @@ router.post(
 
     res.json({
       seo,
+    });
+  })
+);
+
+router.post(
+  '/contents/:id/tags',
+  authenticatedUser,
+  validateAccess(['savePost']),
+  asyncHandler(async (req: Request, res: Response) => {
+    const validated = createContentTagsUseCaseSchema.safeParse({
+      id: req.params.id,
+      projectId: res.projectRole?.id,
+      names: req.body.names,
+    });
+    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
+
+    const useCase = new CreateContentTagsUseCase(
+      projectPrisma(validated.data.projectId),
+      new ContentTagRepository(),
+      new TagRepository()
+    );
+    const tags = await useCase.execute(validated.data);
+
+    res.json({
+      tags,
     });
   })
 );
