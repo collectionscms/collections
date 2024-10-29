@@ -447,7 +447,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
    * @param createdBy
    * @returns
    */
-  toPublishedContentResponse(createdBy: UserEntity): PublishedContent {
+  toPublishedContentResponse(createdBy: UserEntity, tags: TagEntity[]): PublishedContent {
     if (!this.props.publishedAt) {
       throw new RecordNotFoundException('record_not_found');
     }
@@ -471,6 +471,10 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
         name: createdBy.name,
         avatarUrl: createdBy.avatarUrl,
       },
+      tags: tags.map((tag) => ({
+        id: tag.id,
+        name: tag.name,
+      })),
     };
   }
 }

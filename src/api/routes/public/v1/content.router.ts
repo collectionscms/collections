@@ -5,8 +5,9 @@ import { asyncHandler } from '../../../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../../../middlewares/auth.js';
 import { validateAccess } from '../../../middlewares/validateAccess.js';
 import { ContentRepository } from '../../../persistence/content/content.repository.js';
-import { getPublishedContentUseCaseSchema } from '../../../useCases/content/getPublishedContent.useCase.schema.js';
+import { ContentTagRepository } from '../../../persistence/contentTag/contentTag.repository.js';
 import { GetPublishedContentUseCase } from '../../../useCases/content/getPublishedContent.useCase.js';
+import { getPublishedContentUseCaseSchema } from '../../../useCases/content/getPublishedContent.useCase.schema.js';
 
 const router = express.Router();
 
@@ -24,7 +25,8 @@ router.get(
 
     const useCase = new GetPublishedContentUseCase(
       projectPrisma(validated.data.projectId),
-      new ContentRepository()
+      new ContentRepository(),
+      new ContentTagRepository()
     );
     const content = await useCase.execute(validated.data);
 

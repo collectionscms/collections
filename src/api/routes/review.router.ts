@@ -21,6 +21,7 @@ import { GetReviewUseCase } from '../useCases/review/getReview.useCase.js';
 import { getReviewUseCaseSchema } from '../useCases/review/getReview.useCase.schema.js';
 import { GetReviewsUseCase } from '../useCases/review/getReviews.useCase.js';
 import { getReviewsUseCaseSchema } from '../useCases/review/getReviews.useCase.schema.js';
+import { ContentTagRepository } from '../persistence/contentTag/contentTag.repository.js';
 
 const router = express.Router();
 
@@ -136,7 +137,8 @@ router.patch(
       new WebhookService(
         new WebhookSettingRepository(),
         new WebhookLogRepository(),
-        new UserRepository()
+        new UserRepository(),
+        new ContentTagRepository()
       )
     );
 

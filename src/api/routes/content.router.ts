@@ -221,7 +221,8 @@ router.patch(
       new WebhookService(
         new WebhookSettingRepository(),
         new WebhookLogRepository(),
-        new UserRepository()
+        new UserRepository(),
+        new ContentTagRepository()
       )
     );
     await useCase.execute(validated.data);
@@ -249,7 +250,8 @@ router.patch(
       new WebhookService(
         new WebhookSettingRepository(),
         new WebhookLogRepository(),
-        new UserRepository()
+        new UserRepository(),
+        new ContentTagRepository()
       )
     );
     await useCase.execute(validated.data);
@@ -277,7 +279,8 @@ router.patch(
       new WebhookService(
         new WebhookSettingRepository(),
         new WebhookLogRepository(),
-        new UserRepository()
+        new UserRepository(),
+        new ContentTagRepository()
       )
     );
     await useCase.execute(validated.data);
@@ -306,7 +309,8 @@ router.patch(
       new WebhookService(
         new WebhookSettingRepository(),
         new WebhookLogRepository(),
-        new UserRepository()
+        new UserRepository(),
+        new ContentTagRepository()
       )
     );
     await useCase.execute(validated.data);
@@ -334,7 +338,8 @@ router.delete(
       new WebhookService(
         new WebhookSettingRepository(),
         new WebhookLogRepository(),
-        new UserRepository()
+        new UserRepository(),
+        new ContentTagRepository()
       )
     );
     await useCase.execute(validated.data);

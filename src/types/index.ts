@@ -106,6 +106,10 @@ export type PublishedContent = {
     name: string;
     avatarUrl: string | null;
   };
+  tags?: {
+    id: string;
+    name: string;
+  }[];
 };
 
 export type PublishedPost = {
