@@ -59,7 +59,8 @@ router.get(
     const useCase = new GetContentUseCase(
       projectPrisma(validated.data.projectId),
       new ProjectRepository(),
-      new ContentRepository()
+      new ContentRepository(),
+      new ContentTagRepository()
     );
 
     const content = await useCase.execute(validated.data);

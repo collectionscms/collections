@@ -8,6 +8,7 @@ import { PublishedContent, RevisedContent, StatusHistory } from '../../../types/
 import { ContentRevisionEntity } from '../contentRevision/contentRevision.entity.js';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 import { ProjectEntity } from '../project/project.entity.js';
+import { TagEntity } from '../tag/tag.entity.js';
 import { UserEntity } from '../user/user.entity.js';
 
 export const ContentStatus = {
@@ -409,7 +410,8 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     project: ProjectEntity,
     languageContents: { contentId: string; language: string }[],
     latestRevision: ContentRevisionEntity,
-    revisions: ContentRevisionEntity[]
+    revisions: ContentRevisionEntity[],
+    tags: TagEntity[]
   ): RevisedContent {
     const sourceLanguage = getLanguageCodeType(project.sourceLanguage);
     const targetLanguage = getLanguageCodeType(latestRevision.language);
@@ -435,6 +437,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
       sourceLanguageCode: project.sourceLanguageCode?.code ?? null,
       targetLanguageCode: this.languageCode?.code ?? null,
       revisions: revisions.map((revision) => revision.toResponse()),
+      tags: tags.map((tag) => tag.toResponse()),
     };
   }
 

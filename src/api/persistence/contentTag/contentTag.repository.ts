@@ -1,7 +1,25 @@
+import { Tag } from '@prisma/client';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
+import { TagEntity } from '../tag/tag.entity.js';
 import { ContentTagEntity } from './contentTag.entity.js';
 
 export class ContentTagRepository {
+  async findTagsByContentId(prisma: ProjectPrismaType, contentId: string): Promise<TagEntity[]> {
+    const records = await prisma.contentTag.findMany({
+      where: {
+        contentId,
+      },
+      include: {
+        tag: true,
+      },
+      orderBy: {
+        displayOrder: 'asc',
+      },
+    });
+
+    return records.map((record) => TagEntity.Reconstruct<Tag, TagEntity>(record.tag));
+  }
+
   async createMany(prisma: ProjectPrismaType, entities: ContentTagEntity[]): Promise<void> {
     for (const entity of entities) {
       entity.beforeInsertValidate();
