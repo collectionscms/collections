@@ -202,6 +202,7 @@ CREATE TABLE "ContentTag" (
     "projectId" UUID NOT NULL DEFAULT (current_setting('app.current_project_id'::text))::uuid,
     "contentId" UUID NOT NULL,
     "tagId" UUID NOT NULL,
+    "displayOrder" INTEGER NOT NULL,
     "createdAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "ContentTag_pkey" PRIMARY KEY ("id")

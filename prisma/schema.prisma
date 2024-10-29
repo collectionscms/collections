@@ -241,14 +241,15 @@ model Tag {
 }
 
 model ContentTag {
-  id        String   @id @db.Uuid
-  projectId String   @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
-  contentId String   @db.Uuid
-  tagId     String   @db.Uuid
-  createdAt DateTime @default(now()) @db.Timestamptz(6)
-  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  content   Content  @relation(fields: [contentId], references: [id], onDelete: Cascade)
-  tag       Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  id           String   @id @db.Uuid
+  projectId    String   @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
+  contentId    String   @db.Uuid
+  tagId        String   @db.Uuid
+  displayOrder Int
+  createdAt    DateTime @default(now()) @db.Timestamptz(6)
+  project      Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  content      Content  @relation(fields: [contentId], references: [id], onDelete: Cascade)
+  tag          Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade)
 }
 
 model ApiKey {
