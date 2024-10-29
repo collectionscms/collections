@@ -8,6 +8,7 @@ import { post } from './post.router.js';
 import { project } from './project.router.js';
 import { review } from './review.router.js';
 import { role } from './role.router.js';
+import { tag } from './tag.router.js';
 import { user } from './user.router.js';
 import { webhookSetting } from './webhookSetting.router.js';
 
@@ -25,3 +26,4 @@ tenantApiRouter.use(invitation);
 tenantApiRouter.use(review);
 tenantApiRouter.use(apiKey);
 tenantApiRouter.use(webhookSetting);
+tenantApiRouter.use(tag);

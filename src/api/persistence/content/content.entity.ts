@@ -411,7 +411,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     languageContents: { contentId: string; language: string }[],
     latestRevision: ContentRevisionEntity,
     revisions: ContentRevisionEntity[],
-    tags: TagEntity[]
+    tags?: TagEntity[]
   ): RevisedContent {
     const sourceLanguage = getLanguageCodeType(project.sourceLanguage);
     const targetLanguage = getLanguageCodeType(latestRevision.language);
@@ -437,7 +437,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
       sourceLanguageCode: project.sourceLanguageCode?.code ?? null,
       targetLanguageCode: this.languageCode?.code ?? null,
       revisions: revisions.map((revision) => revision.toResponse()),
-      tags: tags.map((tag) => tag.toResponse()),
+      tags: tags ? tags.map((tag) => tag.toResponse()) : [],
     };
   }
 
