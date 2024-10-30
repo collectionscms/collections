@@ -1,5 +1,6 @@
 import * as Sentry from '@sentry/node';
 import { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
+import { env } from '../../env.js';
 import { BaseException } from '../../exceptions/base.js';
 import { logger } from '../../utilities/logger.js';
 
@@ -11,7 +12,6 @@ export const errorHandler: ErrorRequestHandler = (
   res: Response,
   _next: NextFunction
 ) => {
-  Sentry.captureException(err);
   logger.error(err);
 
   let base = err as BaseException;
@@ -22,7 +22,11 @@ export const errorHandler: ErrorRequestHandler = (
     };
   }
 
-  if (process.env.NODE_ENV === 'development') {
+  if (!base || base.status >= 500) {
+    Sentry.captureException(err);
+  }
+
+  if (env.NODE_ENV === 'development') {
     base.extensions = {
       ...(base.extensions || {}),
       stack: err.stack,
