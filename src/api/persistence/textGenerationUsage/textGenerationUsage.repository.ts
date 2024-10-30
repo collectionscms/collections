@@ -21,23 +21,4 @@ export class TextGenerationUsageRepository {
       record
     );
   }
-
-  async createMany(
-    prisma: ProjectPrismaType,
-    entities: TextGenerationUsageEntity[]
-  ): Promise<TextGenerationUsageEntity[]> {
-    for (const entity of entities) {
-      entity.beforeInsertValidate();
-    }
-
-    await prisma.textGenerationUsage.createMany({
-      data: entities.map((entity) => ({
-        ...entity.toPersistence(),
-        sourceText: entity.sourceText || {},
-        generatedText: entity.generatedText || {},
-      })),
-    });
-
-    return entities;
-  }
 }
