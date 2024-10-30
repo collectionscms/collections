@@ -17,8 +17,8 @@ import { TitleTooltip } from '../ui/TitleTooltip/index.js';
 
 type Props = {
   contentId: string;
-  metaTitle: string | null;
-  metaDescription: string | null;
+  metaTitle: string;
+  metaDescription: string;
   onUpdated: (metaTitle: string | null, metaDescription: string | null) => void;
 };
 

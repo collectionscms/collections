@@ -98,7 +98,7 @@ export const TagSelector: React.FC<Props> = ({ options, values, onChange }) => {
           ...styles,
           backgroundColor: color.valueBgColor,
           padding: '0 6px',
-          borderRadius: 4,
+          borderRadius: 3,
         }),
         multiValueRemove: (styles) => ({
           ...styles,

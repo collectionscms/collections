@@ -182,8 +182,8 @@ export const Settings: React.FC<Props> = ({ open, content, onClose, onTrashed })
             <Box sx={{ pt: 5 }}>
               <SeoSettings
                 contentId={mutatedContent.id}
-                metaTitle={mutatedContent.metaTitle}
-                metaDescription={mutatedContent.metaDescription}
+                metaTitle={mutatedContent.metaTitle ?? ''}
+                metaDescription={mutatedContent.metaDescription ?? ''}
                 onUpdated={(metaTitle, metaDescription) =>
                   handleUpdatedPost({
                     metaTitle,
