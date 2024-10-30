@@ -8,7 +8,6 @@ import { ContentRevisionEntity } from '../../persistence/contentRevision/content
 import { ContentRevisionRepository } from '../../persistence/contentRevision/contentRevision.repository.js';
 import { TextGenerationUsageEntity } from '../../persistence/textGenerationUsage/textGenerationUsage.entity.js';
 import { TextGenerationUsageRepository } from '../../persistence/textGenerationUsage/textGenerationUsage.repository.js';
-import { TextGenerationService } from '../../services/textGeneration.service.js';
 import { GenerateSeoUseCaseSchemaType } from './generateSeo.useCase.schema.js';
 
 export class GenerateSeoUseCase {
@@ -17,7 +16,6 @@ export class GenerateSeoUseCase {
     private readonly contentRepository: ContentRepository,
     private readonly contentRevisionRepository: ContentRevisionRepository,
     private readonly textGenerationUsageRepository: TextGenerationUsageRepository,
-    private readonly textGenerationService: TextGenerationService,
     private readonly textGenerator: TextGenerator
   ) {}
 
@@ -52,29 +50,11 @@ export class GenerateSeoUseCase {
       throw new InvalidPayloadException('post_body_empty');
     }
 
-    // Text to English
-    const { englishText, isTranslated } =
-      await this.textGenerationService.translateToEnglishIfNeeded(
-        latestRevision.body,
-        sourceLanguage,
-        targetLanguage
-      );
-
-    const usages = isTranslated
-      ? [
-          TextGenerationUsageEntity.Construct({
-            projectId: content.projectId,
-            contentId: content.id,
-            userId,
-            sourceText: latestRevision.body,
-            generatedText: englishText,
-            context: 'translate for seo',
-          }),
-        ]
-      : [];
-
     // Generate seo
-    const seo = await this.textGenerator.generateSeo(englishText, sourceLanguage.englishName);
+    const seo = await this.textGenerator.generateSeo(
+      latestRevision.body,
+      sourceLanguage.englishName
+    );
     if (seo.title && seo.description) {
       latestRevision.updateContent({
         metaTitle: seo.title,
@@ -82,17 +62,6 @@ export class GenerateSeoUseCase {
         updatedById: userId,
       });
     }
-
-    usages.push(
-      TextGenerationUsageEntity.Construct({
-        projectId: content.projectId,
-        contentId: content.id,
-        userId,
-        sourceText: latestRevision.body,
-        generatedText: seo,
-        context: 'generate for seo',
-      })
-    );
 
     await this.prisma.$transaction(async (tx) => {
       if (latestRevision.isPublished()) {
@@ -107,7 +76,17 @@ export class GenerateSeoUseCase {
         await this.contentRevisionRepository.update(tx, latestRevision);
       }
 
-      await this.textGenerationUsageRepository.createMany(tx, usages);
+      await this.textGenerationUsageRepository.create(
+        tx,
+        TextGenerationUsageEntity.Construct({
+          projectId: content.projectId,
+          contentId: content.id,
+          userId,
+          sourceText: latestRevision.body,
+          generatedText: seo,
+          context: 'generate for seo',
+        })
+      );
     });
 
     return { metaTitle: seo.title, metaDescription: seo.description };
