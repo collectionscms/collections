@@ -2,12 +2,14 @@ import { RecordNotFoundException } from '../../../exceptions/database/recordNotF
 import { PublishedContent } from '../../../types/index.js';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
 import { ContentRepository } from '../../persistence/content/content.repository.js';
+import { ContentTagRepository } from '../../persistence/contentTag/contentTag.repository.js';
 import { GetPublishedContentUseCaseSchemaType } from './getPublishedContent.useCase.schema.js';
 
 export class GetPublishedContentUseCase {
   constructor(
     private readonly prisma: ProjectPrismaType,
-    private readonly contentRepository: ContentRepository
+    private readonly contentRepository: ContentRepository,
+    private readonly contentTagRepository: ContentTagRepository
   ) {}
 
   async execute(props: GetPublishedContentUseCaseSchemaType): Promise<PublishedContent> {
@@ -16,6 +18,11 @@ export class GetPublishedContentUseCase {
       throw new RecordNotFoundException('record_not_found');
     }
 
-    return record.content.toPublishedContentResponse(record.createdBy);
+    const tags = await this.contentTagRepository.findTagsByContentId(
+      this.prisma,
+      record.content.id
+    );
+
+    return record.content.toPublishedContentResponse(record.createdBy, tags);
   }
 }

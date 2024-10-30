@@ -1,14 +1,6 @@
 import { LoadingOutlined } from '@ant-design/icons';
 import { yupResolver } from '@hookform/resolvers/yup';
-import {
-  Box,
-  Button,
-  FormHelperText,
-  IconButton,
-  Stack,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Button, FormHelperText, Stack, TextField, Typography } from '@mui/material';
 import { enqueueSnackbar } from 'notistack';
 import React, { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
@@ -25,8 +17,8 @@ import { TitleTooltip } from '../ui/TitleTooltip/index.js';
 
 type Props = {
   contentId: string;
-  metaTitle: string | null;
-  metaDescription: string | null;
+  metaTitle: string;
+  metaDescription: string;
   onUpdated: (metaTitle: string | null, metaDescription: string | null) => void;
 };
 
@@ -119,42 +111,50 @@ export const SeoSettings: React.FC<Props> = ({
       </Stack>
       <MainCard>
         <form onSubmit={handleSubmit(onSubmit)}>
-          {isEditingMeta ? (
-            <Stack gap={2}>
-              <Stack gap={1}>
-                <TitleTooltip tooltip={t('seo_title_tooltip')} title={t('seo_title')} />
-                <Controller
-                  name="metaTitle"
-                  control={control}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      type="text"
-                      sx={{ flexGrow: 1 }}
-                      error={errors.metaTitle !== undefined}
-                    />
-                  )}
-                />
-              </Stack>
-              <FormHelperText error>{errors.metaTitle?.message}</FormHelperText>
-              <Stack gap={1}>
-                <TitleTooltip tooltip={t('seo_description_tooltip')} title={t('seo_description')} />
-                <Controller
-                  name="metaDescription"
-                  control={control}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      type="text"
-                      multiline
-                      rows={3}
-                      sx={{ flexGrow: 1 }}
-                      error={errors.metaDescription !== undefined}
-                    />
-                  )}
-                />
-              </Stack>
-              <FormHelperText error>{errors.metaDescription?.message}</FormHelperText>
+          <Stack gap={2}>
+            <Stack gap={1}>
+              <TitleTooltip tooltip={t('seo_title_tooltip')} title={t('seo_title')} />
+              <Controller
+                name="metaTitle"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    type="text"
+                    sx={{ flexGrow: 1 }}
+                    onChange={(e) => {
+                      setIsEditingMeta(true);
+                      field.onChange(e.target.value);
+                    }}
+                    error={errors.metaTitle !== undefined}
+                  />
+                )}
+              />
+            </Stack>
+            <FormHelperText error>{errors.metaTitle?.message}</FormHelperText>
+            <Stack gap={1}>
+              <TitleTooltip tooltip={t('seo_description_tooltip')} title={t('seo_description')} />
+              <Controller
+                name="metaDescription"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    type="text"
+                    multiline
+                    rows={3}
+                    sx={{ flexGrow: 1 }}
+                    onChange={(e) => {
+                      setIsEditingMeta(true);
+                      field.onChange(e.target.value);
+                    }}
+                    error={errors.metaDescription !== undefined}
+                  />
+                )}
+              />
+            </Stack>
+            <FormHelperText error>{errors.metaDescription?.message}</FormHelperText>
+            {isEditingMeta && (
               <Stack direction="row" justifyContent="flex-end" spacing={1}>
                 <Button
                   variant="outlined"
@@ -167,27 +167,8 @@ export const SeoSettings: React.FC<Props> = ({
                   {t('save')}
                 </Button>
               </Stack>
-            </Stack>
-          ) : (
-            <Stack direction="row" alignItems="center" gap={1}>
-              <Box flexGrow="1">
-                <Stack gap={1} sx={{ mb: 3 }}>
-                  <TitleTooltip tooltip={t('seo_title_tooltip')} title={t('seo_title')} />
-                  <Typography>{metaTitle ?? t('not_set')}</Typography>
-                </Stack>
-                <Stack gap={1}>
-                  <TitleTooltip
-                    tooltip={t('seo_description_tooltip')}
-                    title={t('seo_description')}
-                  />
-                  <Typography>{metaDescription ?? t('not_set')}</Typography>
-                </Stack>
-              </Box>
-              <IconButton color="secondary" onClick={() => setIsEditingMeta(true)}>
-                <Icon name="Pencil" size={16} />
-              </IconButton>
-            </Stack>
-          )}
+            )}
+          </Stack>
         </form>
       </MainCard>
     </>

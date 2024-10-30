@@ -153,6 +153,9 @@
   "remove_subtitle": "Remove subtitle",
   "upload_image": "Upload an image",
   "exit_editing": "Exit editing",
+  "tags": "Tags",
+  "add_tags": "Add tags",
+  "tags_hint": "Any tag changes are immediately reflected in published post.",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",

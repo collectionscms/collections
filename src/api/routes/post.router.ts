@@ -8,6 +8,7 @@ import { authenticatedUser } from '../middlewares/auth.js';
 import { validateAccess } from '../middlewares/validateAccess.js';
 import { ContentRepository } from '../persistence/content/content.repository.js';
 import { ContentRevisionRepository } from '../persistence/contentRevision/contentRevision.repository.js';
+import { ContentTagRepository } from '../persistence/contentTag/contentTag.repository.js';
 import { PermissionEntity } from '../persistence/permission/permission.entity.js';
 import { PostRepository } from '../persistence/post/post.repository.js';
 import { ProjectRepository } from '../persistence/project/project.repository.js';
@@ -158,7 +159,8 @@ router.delete(
       new WebhookService(
         new WebhookSettingRepository(),
         new WebhookLogRepository(),
-        new UserRepository()
+        new UserRepository(),
+        new ContentTagRepository()
       )
     );
     await useCase.execute(validated.data);

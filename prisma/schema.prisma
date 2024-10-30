@@ -31,6 +31,7 @@ model Project {
   webhookSettings      WebhookSetting[]
   webhookLogs          WebhookLog[]
   textGenerationUsages TextGenerationUsage[]
+  contentTags          ContentTag[]
 }
 
 model User {
@@ -196,6 +197,7 @@ model Content {
   reviews              Review[]
   contentRevisions     ContentRevision[]
   textGenerationUsages TextGenerationUsage[]
+  contentTags          ContentTag[]
 
   @@unique([projectId, slug])
   @@unique([postId, language])
@@ -229,6 +231,25 @@ model ContentRevision {
   content         Content   @relation(fields: [contentId], references: [id], onDelete: Cascade)
   createdBy       User      @relation(name: "CreatedBy", fields: [createdById], references: [id], onDelete: NoAction)
   updatedBy       User      @relation(name: "UpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction)
+}
+
+model Tag {
+  id          String       @id @db.Uuid
+  projectId   String       @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
+  name        String       @db.VarChar(255)
+  contentTags ContentTag[]
+}
+
+model ContentTag {
+  id           String   @id @db.Uuid
+  projectId    String   @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
+  contentId    String   @db.Uuid
+  tagId        String   @db.Uuid
+  displayOrder Int
+  createdAt    DateTime @default(now()) @db.Timestamptz(6)
+  project      Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  content      Content  @relation(fields: [contentId], references: [id], onDelete: Cascade)
+  tag          Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade)
 }
 
 model ApiKey {
