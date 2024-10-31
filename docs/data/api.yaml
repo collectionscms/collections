@@ -5,197 +5,15 @@ info:
   description: Collections API
 paths:
   ## #####################################
-  ## Authentications
+  ## Posts
   ## #####################################
-  /api/authentications/login:
-    post:
-      summary: Login
-      description: Login to the platform.
-      operationId: login
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/loginRequest'
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/loginResponse'
-  /api/authentications/refresh:
-    post:
-      summary: Refresh token
-      description: Refresh access token.
-      operationId: refresh
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/refreshResponse'
-      security:
-        - bearerAuth: []
-        - apiKeyAuth: []
-
-  ## #####################################
-  ## Users
-  ## #####################################
-  /api/users/reset-password:
-    post:
-      summary: Reset password
-      description: Reset password.
-      operationId: resetPassword
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/resetPasswordRequest'
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: 'success'
-  /api/users/forgot-password:
-    post:
-      summary: Forgot password
-      description: Forgot password.
-      operationId: forgotPassword
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/forgotPasswordRequest'
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: 'success'
-
-  ## #####################################
-  ## Project Settings
-  ## #####################################
-  /api/project-settings:
+  /api/v1/posts:
     get:
-      summary: Get project settings
-      description: Return project settings.
-      operationId: getProjectSettings
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  projectSetting:
-                    $ref: '#/components/schemas/projectSettingsResponse'
-
-  ## #####################################
-  ## Me
-  ## #####################################
-  /api/me:
-    get:
-      summary: Get me
-      description: Return me information.
-      operationId: getMe
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/meResponse'
-      security:
-        - bearerAuth: []
-        - apiKeyAuth: []
-    patch:
-      summary: Update me
-      description: Update me information.
-      operationId: updateMe
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/meRequest'
-      responses:
-        '204':
-          description: ''
-      security:
-        - bearerAuth: []
-        - apiKeyAuth: []
-
-  ## #####################################
-  ## Files
-  ## #####################################
-  /api/files/{id}:
-    get:
-      summary: Get file
-      description: Return file.
-      operationId: getFile
+      summary: Get posts
+      description: Returns a list of posts with at least one content in the published status.
+      operationId: getPosts
       parameters:
-        - $ref: '#/components/parameters/uuid'
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/fileResponse'
-      security:
-        - bearerAuth: []
-        - apiKeyAuth: []
-    post:
-      summary: Create file
-      description: Create file.
-      operationId: createFile
-      requestBody:
-        content:
-          image/png:
-            schema:
-              type: string
-              format: binary
-          image/jpg:
-            schema:
-              type: string
-              format: binary
-          image/gif:
-            schema:
-              type: string
-              format: binary
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/fileResponse'
-      security:
-        - bearerAuth: []
-        - apiKeyAuth: []
-
-  ## #####################################
-  ## Models
-  ## #####################################
-  /api/models:
-    get:
-      summary: Get models
-      description: Return models.
-      operationId: getModels
+        - $ref: '#/components/parameters/language'
       responses:
         '200':
           description: ''
@@ -204,43 +22,21 @@ paths:
               schema:
                 type: object
                 properties:
-                  models:
+                  posts:
                     type: array
                     items:
-                      $ref: '#/components/schemas/modelResponse'
+                      $ref: '#/components/schemas/postResponse'
       security:
-        - bearerAuth: []
-        - apiKeyAuth: []
-  /api/models/{id}:
-    get:
-      summary: Get model
-      description: Return model.
-      operationId: getModel
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  model:
-                    $ref: '#/components/schemas/modelResponse'
-      security:
-        - bearerAuth: []
         - apiKeyAuth: []
 
-  ## #####################################
-  ## Relations
-  ## #####################################
-  /api/relations/{modelId}/{field}:
+  /api/v1/post/{id}:
     get:
-      summary: Get relations
-      description: Return relations.
-      operationId: getRelations
+      summary: Get post
+      description: Returns a post with at least one content in published status.
+      operationId: getPost
       parameters:
-        - $ref: '#/components/parameters/modelId'
-        - $ref: '#/components/parameters/field'
+        - $ref: '#/components/parameters/id'
+        - $ref: '#/components/parameters/language'
       responses:
         '200':
           description: ''
@@ -249,71 +45,21 @@ paths:
               schema:
                 type: object
                 properties:
-                  relations:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/relationResponse'
+                  post:
+                    $ref: '#/components/schemas/postResponse'
       security:
-        - bearerAuth: []
-        - apiKeyAuth: []
-
-  ## #####################################
-  ## Fields
-  ## #####################################
-  /api/models/{modelId}/fields:
-    get:
-      summary: Get fields
-      description: Returns fields defined in the model in addition to id and timestamp.
-      operationId: getFields
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  fields:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/fieldResponse'
-      security:
-        - bearerAuth: []
         - apiKeyAuth: []
 
   ## #####################################
   ## Contents
   ## #####################################
-  /api/models/{identifier}/contents:
-    get:
-      summary: Get contents
-      description: Return contents. Returns fields defined in the model in addition to id and timestamp.
-      operationId: getContents
-      parameters:
-        - $ref: '#/components/parameters/identifier'
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/contentResponse'
-      security:
-        - bearerAuth: []
-        - apiKeyAuth: []
-  /api/models/{identifier}/contents/{id}:
+  /api/v1/contents/{slug}:
     get:
       summary: Get content
-      description: Return content. Returns fields defined in the model in addition to id and timestamp.
+      description: Returns a content with published status.
       operationId: getContent
       parameters:
-        - $ref: '#/components/parameters/identifier'
-        - $ref: '#/components/parameters/id'
+        - $ref: '#/components/parameters/slug'
       responses:
         '200':
           description: ''
@@ -322,509 +68,148 @@ paths:
               schema:
                 type: object
                 properties:
-                  data:
+                  content:
                     $ref: '#/components/schemas/contentResponse'
-      security:
-        - bearerAuth: []
-        - apiKeyAuth: []
-    patch:
-      summary: Update content
-      description: Update content. Post fields defined in the model.
-      operationId: updateContent
-      parameters:
-        - $ref: '#/components/parameters/identifier'
-        - $ref: '#/components/parameters/id'
-      responses:
-        '204':
-          description: ''
-      security:
-        - bearerAuth: []
-        - apiKeyAuth: []
-    delete:
-      summary: Delete content
-      description: Delete content.
-      operationId: deleteContent
-      parameters:
-        - $ref: '#/components/parameters/identifier'
-        - $ref: '#/components/parameters/id'
-      responses:
-        '204':
-          description: ''
-      security:
-        - bearerAuth: []
-        - apiKeyAuth: []
-  /api/models/{identifier}/contents/:
-    post:
-      summary: Create content
-      description: Create content. Post fields defined in the model.
-      operationId: createContent
-      parameters:
-        - $ref: '#/components/parameters/identifier'
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    $ref: '#/components/schemas/id'
-      security:
-        - bearerAuth: []
-        - apiKeyAuth: []
-
-  ## #####################################
-  ## Permissions
-  ## #####################################
-  /api/roles/{id}/permissions:
-    get:
-      summary: Get permissions
-      description: Return permissions.
-      operationId: getPermissions
-      parameters:
-        - $ref: '#/components/parameters/id'
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  permissions:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/permissionResponse'
       security:
         - bearerAuth: []
         - apiKeyAuth: []
 
 components:
   securitySchemes:
-    bearerAuth:
+    apiKeyAuth:
       type: http
       scheme: bearer
-      bearerFormat: JWT
-    apiKeyAuth:
-      type: apiKey
-      in: header
-      name: access_token
+      bearerFormat: uuid
 
   parameters:
     id:
       name: id
       in: path
-      description: Primary Key
+      description: Primary Key (UUID)
       required: true
       schema:
         $ref: '#/components/schemas/id'
-    uuid:
-      name: id
+    slug:
+      name: slug
       in: path
-      description: Primary Key
-      required: true
-      schema:
-        $ref: '#/components/schemas/uuid'
-    modelId:
-      name: modelId
-      in: path
-      description: Primary key for model
-      required: true
-      schema:
-        $ref: '#/components/schemas/id'
-    identifier:
-      name: identifier
-      in: path
-      description: Primary key or name for model
-      required: true
-      schema:
-        $ref: '#/components/schemas/identifier'
-    field:
-      name: field
-      in: path
-      description: Field name
+      description: Slug
       required: true
       schema:
         type: string
-        example: 'animals'
+    language:
+      name: language
+      in: query
+      description: Lowercase language code
+      example: 'en-us'
+      schema:
+        $ref: '#/components/schemas/id'
 
   schemas:
     ## #####################################
     ## Common
     ## #####################################
     id:
-      description: Primary Key
-      example: 1
-      type: integer
-    uuid:
-      description: Primary Key
-      example: '087a255b-da96-44c0-99e1-c40c0e8d807a'
-      type: string
-    identifier:
-      description: Primary key or name for model
-      example:
-        - 1
-        - 'zoo'
-      type: string
-    createdAt:
-      description: Created At
-      example: '2023-09-29T00:53:20.604Z'
-      type: string
-    updatedAt:
-      description: Updated At
-      example: '2023-09-29T00:53:20.604Z'
-      type: string
-    token:
-      description: Access Token
-      example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
-      type: string
-    refreshToken:
-      description: Refresh Token
-      example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
-      type: string
-    apiKey:
-      description: Api Key
-      example: '14f7d522-b9d5-4f21-b9b6-187e8ca57e86'
-      type: string
-    email:
-      type: string
-      format: email
-      example: 'example@collections.dev'
-    password:
-      type: string
-      format: password
-      example: 'password'
-    image:
-      type: string
+      description: Primary Key (UUID)
       example: 'a8c4891c-6bc0-4f58-81c6-5e89bb572d4c'
-    imageUrl:
       type: string
-      example: 'http://localhost:4000/assets/a8c4891c-6bc0-4f58-81c6-5e89bb572d4c'
-    user:
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/id'
-        roleId:
-          $ref: '#/components/schemas/id'
-        name:
-          type: string
-          example: 'Schumi'
-        adminAccess:
-          type: boolean
-          example: true
-        appAccess:
-          type: boolean
-          example: false
-    model:
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/id'
-        model:
-          type: string
-          example: 'posts'
-        singleton:
-          type: boolean
-          example: false
-        hidden:
-          type: boolean
-          example: false
-        statusField:
-          type: string
-          example: 'status'
-        draftValue:
-          type: string
-          example: 'draft'
-        publishValue:
-          type: string
-          example: 'published'
-        archiveValue:
-          type: string
-          example: 'archived'
-        source:
-          type: string
-          example: null
-        createdAt:
-          $ref: '#/components/schemas/createdAt'
-        updatedAt:
-          $ref: '#/components/schemas/updatedAt'
-    fieldOption:
-      type: object
-      properties:
-        defaultValue:
-          type: boolean
-          example: true
 
     ## #####################################
-    ## Authentications
+    ## Post
     ## #####################################
-    loginRequest:
+    postResponse:
       type: object
       required:
-        - email
-        - password
-      properties:
-        email:
-          $ref: '#/components/schemas/email'
-        password:
-          $ref: '#/components/schemas/password'
-
-    loginResponse:
-      type: object
-      properties:
-        token:
-          $ref: '#/components/schemas/token'
-        refreshToken:
-          $ref: '#/components/schemas/refreshToken'
-        user:
-          $ref: '#/components/schemas/user'
-    refreshResponse:
-      type: object
-      properties:
-        token:
-          $ref: '#/components/schemas/token'
-        refreshToken:
-          $ref: '#/components/schemas/refreshToken'
-
-    ## #####################################
-    ## Users
-    ## #####################################
-    resetPasswordRequest:
-      type: object
-      required:
-        - token
-        - password
-      properties:
-        token:
-          $ref: '#/components/schemas/token'
-        password:
-          $ref: '#/components/schemas/password'
-    forgotPasswordRequest:
-      type: object
-      required:
-        - email
-      properties:
-        email:
-          $ref: '#/components/schemas/email'
-
-    ## #####################################
-    ## Project Settings
-    ## #####################################
-    projectSettingsResponse:
-      type: object
+        - id
+        - contents
       properties:
         id:
           $ref: '#/components/schemas/id'
-        name:
-          type: string
-          example: 'Collections'
-        beforeLogin:
-          type: string
-          example: ''
-        afterLogin:
-          type: string
-          example: ''
-        createdAt:
-          $ref: '#/components/schemas/createdAt'
-        updatedAt:
-          $ref: '#/components/schemas/updatedAt'
+        contents:
+          type: array
+          items:
+            $ref: '#/components/schemas/contentResponse'
 
     ## #####################################
-    ## Me
-    ## #####################################
-    meResponse:
-      type: object
-      properties:
-        user:
-          $ref: '#/components/schemas/user'
-        email:
-          $ref: '#/components/schemas/email'
-        apiKey:
-          $ref: '#/components/schemas/apiKey'
-        token:
-          $ref: '#/components/schemas/token'
-    meRequest:
-      type: object
-      properties:
-        name:
-          type: string
-          example: 'Schumi'
-        email:
-          $ref: '#/components/schemas/email'
-        password:
-          type: string
-          format: password
-          example: 'password'
-        isActive:
-          type: boolean
-          example: true
-        apiKey:
-          $ref: '#/components/schemas/apiKey'
-        roleId:
-          $ref: '#/components/schemas/id'
-
-    ## #####################################
-    ## Files
-    ## #####################################
-    fileResponse:
-      type: object
-      properties:
-        file:
-          type: object
-          properties:
-            id:
-              $ref: '#/components/schemas/uuid'
-            storage:
-              type: string
-              example: 'aws-s3'
-            fileName:
-              type: string
-              example: 'LF_hHDmG_400x400.jpg'
-            fileNameDisk:
-              type: string
-              example: '221e5436-55f1-4665-806d-6a2d2055c69b.jpeg'
-            type:
-              type: string
-              example: 'image/jpeg'
-            fileSize:
-              type: integer
-              example: 12345
-            width:
-              type: integer
-              example: 400
-            height:
-              type: integer
-              example: 400
-            url:
-              type: string
-              example: 'http://localhost:4000/assets/221e5436-55f1-4665-806d-6a2d2055c69b'
-            createdAt:
-              $ref: '#/components/schemas/createdAt'
-            updatedAt:
-              $ref: '#/components/schemas/updatedAt'
-
-    ## #####################################
-    ## Models
-    ## #####################################
-    modelResponse:
-      $ref: '#/components/schemas/model'
-
-    ## #####################################
-    ## Relations
-    ## #####################################
-    relationResponse:
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/id'
-        manyModel:
-          type: string
-          example: 'animal'
-        manyModelId:
-          $ref: '#/components/schemas/id'
-        manyField:
-          type: string
-          example: 'zoo_id'
-        oneModel:
-          type: string
-          example: 'zoo'
-        oneModelId:
-          description: Primary Key
-          example: 2
-          type: integer
-        oneField:
-          type: string
-          example: 'animals'
-        createdAt:
-          $ref: '#/components/schemas/createdAt'
-        updatedAt:
-          $ref: '#/components/schemas/updatedAt'
-
-    ## #####################################
-    ## Fields
-    ## #####################################
-    fieldResponse:
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/id'
-        model:
-          type: string
-          example: 'zoo'
-        modelId:
-          $ref: '#/components/schemas/id'
-        field:
-          type: string
-          example: 'name'
-        label:
-          type: string
-          example: 'Name'
-        special:
-          type: string
-          example: null
-        interface:
-          type: string
-          example: 'input'
-        options:
-          type: string
-          example: null
-        readonly:
-          type: boolean
-          example: false
-        required:
-          type: boolean
-          example: true
-        hidden:
-          type: boolean
-          example: false
-        sort:
-          type: integer
-          example: 1
-        fieldOption:
-          $ref: '#/components/schemas/fieldOption'
-        createdAt:
-          $ref: '#/components/schemas/createdAt'
-        updatedAt:
-          $ref: '#/components/schemas/updatedAt'
-
-    ## #####################################
-    ## Contents
+    ## Content
     ## #####################################
     contentResponse:
       type: object
+      description: Multilingual content
+      required:
+        - id
+        - slug
+        - title
+        - body
+        - bodyHtml
+        - status
+        - language
+        - version
+        - publishedAt
+        - author
       properties:
         id:
           $ref: '#/components/schemas/id'
-        image:
-          $ref: '#/components/schemas/image'
-        imageUrl:
-          $ref: '#/components/schemas/imageUrl'
-        createdAt:
-          $ref: '#/components/schemas/createdAt'
-        updatedAt:
-          $ref: '#/components/schemas/updatedAt'
-
-    ## #####################################
-    ## Permissions
-    ## #####################################
-    permissionResponse:
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/id'
-        model:
+        slug:
+          description: Slug
+          example: 'my-first-post'
           type: string
-          example: 'zoo'
-        modelId:
-          $ref: '#/components/schemas/id'
-        action:
+        title:
+          description: Title
+          example: 'This is a title'
           type: string
-          example: 'read'
-        roleId:
-          $ref: '#/components/schemas/id'
-        createdAt:
-          $ref: '#/components/schemas/createdAt'
-        updatedAt:
-          $ref: '#/components/schemas/updatedAt'
+        subtitle:
+          description: Subtitle
+          example: 'This is a subtitle'
+          type: string
+        body:
+          description: Body
+          example: 'This is a body'
+          type: string
+        bodyHtml:
+          description: Body HTML
+          example: '<p>This is a body</p>'
+          type: string
+        status:
+          description: Status
+          example: 'published'
+          type: string
+        language:
+          description: Lowercase language code
+          example: 'en-us'
+          type: string
+        version:
+          description: Version
+          example: 1
+          type: integer
+        coverUrl:
+          description: Cover URL
+          example: 'https://your-subdomain.collections.dev/assets/a8c4891c-6bc0-4f58-81c6-5e89bb572d4c'
+          type: string
+        metaTitle:
+          description: Seo title
+          example: 'This is a meta title'
+          type: string
+        metaDescription:
+          description: Seo description
+          example: 'This is a meta description'
+          type: string
+        publishedAt:
+          description: Date the version of the post was published
+          example: '2023-09-29T00:53:20.604Z'
+          type: string
+        author:
+          type: object
+          required:
+            - id
+            - name
+          properties:
+            id:
+              $ref: '#/components/schemas/id'
+            name:
+              description: Name
+              example: 'John Doe'
+              type: string
+            avatarUrl:
+              description: Avatar URL
+              example: 'https://your-subdomain.collections.dev/assets/a8c4891c-6bc0-4f58-81c6-5e89bb572d4c'
+              type: string
