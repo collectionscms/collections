@@ -1,4 +1,3 @@
-import React from 'react';
 import { Locale } from '@/i18n-config';
 import { getAllPosts } from '@/lib/api';
 import Container from './_components/container';
@@ -10,22 +9,25 @@ export const revalidate = 300;
 
 export default async function Index({ params: { lang } }: { params: { lang: Locale } }) {
   const allPosts = await getAllPosts(revalidate);
-  const posts = allPosts.filter((post) => post.contents[lang]);
+  const posts = allPosts.filter(
+    (post) => post.contents.filter((content) => content.language === lang).length > 0
+  );
   const heroPost = posts[0];
+  const heroPostContent = heroPost?.contents.find((content) => content.language === lang);
   const morePosts = posts.slice(1);
 
   return (
     <main>
       <Container>
         <Intro />
-        {heroPost && (
+        {heroPostContent && (
           <HeroPost
-            title={heroPost.contents[lang].title}
-            coverUrl={heroPost.contents[lang].coverUrl}
-            publishedAt={heroPost.contents[lang].publishedAt}
-            author={heroPost.contents[lang].author}
-            slug={heroPost.contents[lang].slug}
-            subtitle={heroPost.contents[lang].subtitle}
+            title={heroPostContent.title}
+            coverUrl={heroPostContent.coverUrl}
+            publishedAt={heroPostContent.publishedAt}
+            author={heroPostContent.author}
+            slug={heroPostContent.slug}
+            subtitle={heroPostContent.subtitle}
             lang={lang}
           />
         )}

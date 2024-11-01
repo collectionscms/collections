@@ -147,17 +147,13 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     }[]
   ): PublishedPost | null {
     const groupByLngContents = this.groupContentsByLanguage(contents);
-    if (language && !groupByLngContents[language]) {
-      return null;
-    }
-
     const filteredLngContents = language
       ? { [language]: groupByLngContents[language] }
       : groupByLngContents;
 
     return {
       id: this.props.id,
-      contents: filteredLngContents,
+      contents: Object.values(filteredLngContents),
     };
   }
 

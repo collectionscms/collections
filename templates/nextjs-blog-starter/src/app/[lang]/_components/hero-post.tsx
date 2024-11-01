@@ -1,4 +1,3 @@
-import React from 'react';
 import { Locale } from '@/i18n-config';
 import { Author } from '@/interfaces/author';
 import Link from 'next/link';
@@ -10,7 +9,7 @@ type Props = {
   title: string;
   coverUrl: string | null;
   publishedAt: string;
-  subtitle: string;
+  subtitle: string | null;
   author: Author;
   slug: string;
   lang: Locale;
@@ -28,17 +27,19 @@ export function HeroPost({ title, coverUrl, publishedAt, subtitle, author, slug,
         <div>
           <h3 className="mb-4 text-4xl lg:text-5xl leading-tight">
             <Link href={`${lang}/posts/${slug}`} className="hover:underline">
-              {title}
+              {title || 'Untitled'}
             </Link>
           </h3>
           <div className="mb-4 md:mb-0 text-lg">
             <DateFormatter dateString={publishedAt} />
           </div>
         </div>
-        <div>
-          <p className="text-lg leading-relaxed mb-4">{subtitle}</p>
-          <Avatar name={author.name} picture={author.avatarUrl} />
-        </div>
+        {subtitle && (
+          <div>
+            <p className="text-lg leading-relaxed mb-4">{subtitle}</p>
+            <Avatar name={author.name} picture={author.avatarUrl} />
+          </div>
+        )}
       </div>
     </section>
   );
