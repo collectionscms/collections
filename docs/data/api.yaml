@@ -86,6 +86,7 @@ components:
       name: id
       in: path
       description: Primary Key (UUID)
+      example: 'a8c4891c-6bc0-4f58-81c6-5e89bb572d4c'
       required: true
       schema:
         $ref: '#/components/schemas/id'
@@ -93,6 +94,7 @@ components:
       name: slug
       in: path
       description: Slug
+      example: 'my-first-post'
       required: true
       schema:
         type: string
@@ -106,12 +108,90 @@ components:
 
   schemas:
     ## #####################################
-    ## Common
+    ## Properties
     ## #####################################
     id:
       description: Primary Key (UUID)
       example: 'a8c4891c-6bc0-4f58-81c6-5e89bb572d4c'
       type: string
+    slug:
+      description: Slug
+      example: 'my-first-post'
+      type: string
+    title:
+      description: Title
+      example: 'This is a title'
+      type: string
+    subtitle:
+      description: Subtitle
+      example: 'This is a subtitle'
+      type: string
+    body:
+      description: Body
+      example: 'This is a body'
+      type: string
+    bodyHtml:
+      description: Body HTML
+      example: '<p>This is a body</p>'
+      type: string
+    status:
+      description: Status
+      example: 'published'
+      type: string
+    language:
+      description: Lowercase language code
+      example: 'en-us'
+      type: string
+    version:
+      description: Version
+      example: 1
+      type: integer
+    coverUrl:
+      description: Cover URL
+      example: 'https://your-subdomain.collections.dev/assets/a8c4891c-6bc0-4f58-81c6-5e89bb572d4c'
+      type: string
+    metaTitle:
+      description: Seo title
+      example: 'This is a meta title'
+      type: string
+    metaDescription:
+      description: Seo description
+      example: 'This is a meta description'
+      type: string
+    publishedAt:
+      description: Date the version of the post was published
+      example: '2023-09-29T00:53:20.604Z'
+      type: string
+    author:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          $ref: '#/components/schemas/id'
+        name:
+          description: Name
+          example: 'John Doe'
+          type: string
+        avatarUrl:
+          description: Avatar URL
+          example: 'https://your-subdomain.collections.dev/assets/a8c4891c-6bc0-4f58-81c6-5e89bb572d4c'
+          type: string
+    tags:
+      type: array
+      items:
+        type: object
+        required:
+          - id
+          - name
+        properties:
+          id:
+            $ref: '#/components/schemas/id'
+          name:
+            description: Name
+            example: 'Tag Name'
+            type: string
 
     ## #####################################
     ## Post
@@ -127,7 +207,54 @@ components:
         contents:
           type: array
           items:
-            $ref: '#/components/schemas/contentResponse'
+            $ref: '#/components/schemas/postListContentResponse'
+
+    ## #####################################
+    ## Post list content
+    ## #####################################
+    postListContentResponse:
+      type: object
+      description: Multilingual content
+      required:
+        - id
+        - slug
+        - title
+        - body
+        - bodyHtml
+        - status
+        - language
+        - version
+        - publishedAt
+        - author
+      properties:
+        id:
+          $ref: '#/components/schemas/id'
+        slug:
+          $ref: '#/components/schemas/slug'
+        title:
+          $ref: '#/components/schemas/title'
+        subtitle:
+          $ref: '#/components/schemas/subtitle'
+        body:
+          $ref: '#/components/schemas/body'
+        bodyHtml:
+          $ref: '#/components/schemas/bodyHtml'
+        status:
+          $ref: '#/components/schemas/status'
+        language:
+          $ref: '#/components/schemas/language'
+        version:
+          $ref: '#/components/schemas/version'
+        coverUrl:
+          $ref: '#/components/schemas/coverUrl'
+        metaTitle:
+          $ref: '#/components/schemas/metaTitle'
+        metaDescription:
+          $ref: '#/components/schemas/metaDescription'
+        publishedAt:
+          $ref: '#/components/schemas/publishedAt'
+        author:
+          $ref: '#/components/schemas/author'
 
     ## #####################################
     ## Content
@@ -146,70 +273,35 @@ components:
         - version
         - publishedAt
         - author
+        - tags
       properties:
         id:
           $ref: '#/components/schemas/id'
         slug:
-          description: Slug
-          example: 'my-first-post'
-          type: string
+          $ref: '#/components/schemas/slug'
         title:
-          description: Title
-          example: 'This is a title'
-          type: string
+          $ref: '#/components/schemas/title'
         subtitle:
-          description: Subtitle
-          example: 'This is a subtitle'
-          type: string
+          $ref: '#/components/schemas/subtitle'
         body:
-          description: Body
-          example: 'This is a body'
-          type: string
+          $ref: '#/components/schemas/body'
         bodyHtml:
-          description: Body HTML
-          example: '<p>This is a body</p>'
-          type: string
+          $ref: '#/components/schemas/bodyHtml'
         status:
-          description: Status
-          example: 'published'
-          type: string
+          $ref: '#/components/schemas/status'
         language:
-          description: Lowercase language code
-          example: 'en-us'
-          type: string
+          $ref: '#/components/schemas/language'
         version:
-          description: Version
-          example: 1
-          type: integer
+          $ref: '#/components/schemas/version'
         coverUrl:
-          description: Cover URL
-          example: 'https://your-subdomain.collections.dev/assets/a8c4891c-6bc0-4f58-81c6-5e89bb572d4c'
-          type: string
+          $ref: '#/components/schemas/coverUrl'
         metaTitle:
-          description: Seo title
-          example: 'This is a meta title'
-          type: string
+          $ref: '#/components/schemas/metaTitle'
         metaDescription:
-          description: Seo description
-          example: 'This is a meta description'
-          type: string
+          $ref: '#/components/schemas/metaDescription'
         publishedAt:
-          description: Date the version of the post was published
-          example: '2023-09-29T00:53:20.604Z'
-          type: string
+          $ref: '#/components/schemas/publishedAt'
         author:
-          type: object
-          required:
-            - id
-            - name
-          properties:
-            id:
-              $ref: '#/components/schemas/id'
-            name:
-              description: Name
-              example: 'John Doe'
-              type: string
-            avatarUrl:
-              description: Avatar URL
-              example: 'https://your-subdomain.collections.dev/assets/a8c4891c-6bc0-4f58-81c6-5e89bb572d4c'
-              type: string
+          $ref: '#/components/schemas/author'
+        tags:
+          $ref: '#/components/schemas/tags'
