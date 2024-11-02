@@ -12,10 +12,5 @@
     "type": "separator",
     "title": ""
   },
-  "self-hosting": "Self hosting",
-  "--3": {
-    "type": "separator",
-    "title": ""
-  },
-  "data-models": "Data Model"
+  "self-hosting": "Self hosting"
 }
