@@ -44,7 +44,6 @@ type AllowedEnvironmentVariable =
   // see: https://authjs.dev/reference/core#jwt
   // /////////////////////////////////////
   // Secret string for the project
-  | 'AUTH_SECRET'
   | 'AUTH_GITHUB_ID'
   | 'AUTH_GITHUB_SECRET'
   | 'AUTH_GOOGLE_ID'
