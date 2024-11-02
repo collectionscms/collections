@@ -1,30 +1,30 @@
 ---
-title: 'Config Options'
+title: 'Environment Variables'
 ---
 
-# Config Options
-
-## Config Files
+# Environment Variables
 
 Environment Variables are used for all settings within the Collections project.
 
-### .env
+## Config Files
 
 Collections attempts to read the `.env` file setting as an environment Variable. It has the following structure.
 
-```
-DB_CLIENT="sqlite3"
-DB_FILENAME="./data.db"
+```js filename=".env"
+AUTH_SECRET = '04a460c0bd9b99...';
+DATABASE_URL = 'postgresql://...';
 ```
 
 ## General
 
-| Variable          | Description         | Default Value           |
-| :---------------- | :------------------ | :---------------------- |
-| PUBLIC_SERVER_URL | Express Server URL  | `http://localhost:4000` |
-| SERVER_HOST       | Express Server Host | `http://localhost`      |
-| SERVER_PORT       | App Server Port     | `4000`                  |
-| ADMIN_PORT        | App Admin Port      | `4001`                  |
+| Variable                | Description                | Default Value              |
+| :---------------------- | :------------------------- | :------------------------- |
+| PUBLIC_SERVER_ORIGIN    | Express Server Origin      | `http://app.test.com:4000` |
+| PUBLIC_PORTAL_SUBDOMAIN | Subdomain of the portal    | `app`                      |
+| SERVER_HOST             | Express Server Host        | `test.com`                 |
+| SERVER_PORT             | App Server Port            | `4000`                     |
+| ADMIN_PORT              | App Admin Port             | `4001`                     |
+| NODE_ENV                | Node Execution Environment | `development`              |
 
 ## Storage
 
@@ -39,16 +39,9 @@ DB_FILENAME="./data.db"
 
 ## Database
 
-| Variable    | Description                                | Default Value |
-| :---------- | :----------------------------------------- | :------------ |
-| DB_CLIENT   | Database Client                            | --            |
-| DB_FILENAME | Path to Database file(SQLite)              | --            |
-| DB_USER     | Database Database User Information         | --            |
-| DB_PASSWORD | Database Password                          | --            |
-| DB_DATABASE | Database Database name                     | --            |
-| DB_HOST     | Database Host                              | --            |
-| DB_PORT     | Database POrt                              | --            |
-| DB_SSL      | Database SSL(PostgreSQL / `true`, `false`) | --            |
+| Variable     | Description                  | Default Value |
+| :----------- | :--------------------------- | :------------ |
+| DATABASE_URL | URL to connect to PostgreSQL | --            |
 
 ## Express
 
@@ -56,27 +49,15 @@ DB_FILENAME="./data.db"
 | :-------- | :--------------------------- | :------------ |
 | REQ_LIMIT | Maximum size of request body | `4mb`         |
 
-## Session
+## Authentication
 
-| Variable          | Description                                                          | Default Value |
-| :---------------- | :------------------------------------------------------------------- | :------------ |
-| ACCESS_TOKEN_TTL  | The validity period of the access token.                             | `15m`         |
-| REFRESH_TOKEN_TTL | Refresh token validity period; must be longer than ACCESS_TOKEN_TTL. | `24h`         |
-
-## Cookie
-
-| Variable         | Description                                                                                     | Default Value |
-| :--------------- | :---------------------------------------------------------------------------------------------- | :------------ |
-| COOKIE_SECURE    | Attribute value for sending cookies; if true, they are sent only when an HTTPS request is made. | `false`       |
-| COOKIE_SAME_SITE | You can control the sending of cookies during site-to-site requests. (`lax`, `strict`, `none`)  | `lax`         |
-| COOKIE_DOMAIN    | Specify hosts that can receive cookies.                                                         | --            |
-| COOKIE_PREFIX    | Specifies the cookie name prefix.                                                               | `collections` |
-
-## Security
-
-| Variable | Description                          | Default Value |
-| :------- | :----------------------------------- | :------------ |
-| SECRET   | Private key for JWT token generation | random        |
+| Variable              | Description                                                                        | Default Value         |
+| :-------------------- | :--------------------------------------------------------------------------------- | :-------------------- |
+| AUTH_GITHUB_ID        | ID for GitHub OAuth authentication, obtained from the GitHub Developer Portal.     | --                    |
+| AUTH_GITHUB_SECRET    | SECRET for GitHub OAuth authentication, obtained from the GitHub Developer Portal. | --                    |
+| AUTH_GOOGLE_ID        | ID for Google OAuth authentication, obtained from Google Cloud Platform.           | --                    |
+| AUTH_GOOGLE_SECRET    | SECRET for Google OAuth authentication, obtained from Google Cloud Platform.       | --                    |
+| PUBLIC_AUTH_PROVIDERS | Login method provided by the application.                                          | `email,google,github` |
 
 ## CORS
 
@@ -95,7 +76,7 @@ DB_FILENAME="./data.db"
 | Variable               | Description                                                                     | Default Value |
 | :--------------------- | :------------------------------------------------------------------------------ | :------------ |
 | PUBLIC_LOG_LEVEL       | Log output level (`fatal`, `error`, `warn`, `info`, `debug`, `trace`, `silent`) | `info`        |
-| PUBLIC_LOG_HIDE_OBJECT | Don't display detailed request/response information output by pino              | `true`        |
+| PUBLIC_LOG_HIDE_OBJECT | Don't display detailed request/response information output by pino.             | `true`        |
 
 ## Email
 
@@ -104,3 +85,15 @@ DB_FILENAME="./data.db"
 | EMAIL_TRANSPORT        | Email Sending Provider     | `sendgrid`    |
 | EMAIL_FROM             | Email Source Email Address | --            |
 | EMAIL_SENDGRID_API_KEY | API key for sendgrid       | --            |
+
+## Editor
+
+| Variable         | Description                           | Default Value |
+| :--------------- | :------------------------------------ | :------------ |
+| TIPTAP_PRO_TOKEN | Token for using the TipTap extension. | --            |
+
+## System
+
+| Variable            | Description                                               | Default Value |
+| :------------------ | :-------------------------------------------------------- | :------------ |
+| RESERVED_SUBDOMAINS | Reserved subdomains that cannot be assigned to a project. | `app`         |

@@ -6,11 +6,12 @@ import { Callout, Steps } from 'nextra/components';
 
 # Amazon Lightsail
 
-> This is a guide to deploying Collections projects on AWS Lightsail. This guide uses Let's Encrypt certificates to optimize costs.
+> This guide explains how to deploy Collections projects on AWS Lightsail, using Let's Encrypt certificates to help minimize costs.
 
 Amazon Lightsail Installation Requirements
 
-- You must have an [Amazon AWS](https://aws.amazon.com/free) account before performing the following steps.
+- You must have an [Amazon AWS](https://aws.amazon.com/free) account.
+- A PostgreSQL database is required.
 
 <Steps>
 ### Create a Lightsail instance
@@ -33,12 +34,12 @@ Log in to [Amazon Lightsail](https://lightsail.aws.amazon.com/ls/?pg=ln&cp=bn) a
 
 ### Attach a static IP address
 
-The IP address attached to a Lightsail instance is dynamic and changes each time the instance is restarted. Refer to the [official AWS documentation](https://lightsail.aws.amazon.com/ls/docs/ja_jp/articles/lightsail-create-static-ip) to attach a static IP address.
+The IP address attached to a Lightsail instance is dynamic and changes each time the instance is restarted. Refer to the [official AWS documentation](https://docs.aws.amazon.com/lightsail/latest/userguide/lightsail-create-static-ip.html) to attach a static IP address.
 After attaching, also make sure that the welcome page is displayed by accessing the static IP address.
 
 ### Routing your own domain
 
-Once the static IP address is attached, refer to the [official AWS documentation](https://lightsail.aws.amazon.com/ls/docs/ja_jp/articles/lightsail-how-to-create-dns-entry) to find the ` example.com` or other domain name to route to your Amazon Lightsail instance.
+Once the static IP address is attached, refer to the [official AWS documentation](https://docs.aws.amazon.com/lightsail/latest/userguide/lightsail-how-to-create-dns-entry.html) to find the ` example.com` or other domain name to route to your Amazon Lightsail instance.
 
 Alternatively, if your domain is already hosted on Route53, create an A record and specify a static IP address.
 
@@ -51,7 +52,7 @@ Alternatively, if your domain is already hosted on Route53, create an A record a
 
 ### SSL certificates are issued and integrated into the instance
 
-Enhance the security of your website and applications with SSL/TLS. Refer to [official AWS documentation](https://lightsail.aws.amazon.com/ls/docs/ja_jp/articles/lightsail-how-to-create-dns-entry) to issue a Let's Encrypt certificate and integrate it into your instance, Integrate it into your instance.
+Enhance the security of your website and applications with SSL/TLS. Refer to [official AWS documentation](https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-using-lets-encrypt-certificates-with-lamp.html) to issue a Let's Encrypt certificate and integrate it into your instance, Integrate it into your instance.
 
 ### Install Node.js
 
@@ -61,15 +62,6 @@ Access Lightsail via console and install Node.js.
 curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.0/install.sh | bash
 source ~/.nvm/nvm.sh
 nvm install --lts
-```
-
-### Install Collections
-
-Now it is time to install the application. First, go to the Nginx root directory, then run Collections installation.
-
-```bash
-cd /home/bitnami/stack/nginx/html
-npx create-collections-app collections
 ```
 
 ### Configure Nginx
@@ -108,10 +100,40 @@ server {
 }
 ```
 
+### Install Collections
+
+Now it is time to install the application. First, go to the Nginx root directory, then run Collections installation.
+
+```bash
+cd /home/bitnami/stack/nginx/html
+git clone git@github.com:collectionscms/collections.git
+```
+
+### Configuring .env files
+
+Copy and edit the `.env` file to set environment variables.
+
+```bash
+cd /home/bitnami/stack/nginx/html/collections
+cp .env.sample .env
+vi .env
+```
+
+### Resolving Dependencies
+
+```
+npm install
+```
+
+### DB Migration
+
+```
+npm run seed:dev
+```
+
 ### Build the application
 
 ```
-cd /home/bitnami/stack/nginx/html/collections
 npm run build
 ```
 

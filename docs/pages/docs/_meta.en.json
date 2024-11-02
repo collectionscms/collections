@@ -1,7 +1,6 @@
 {
   "home": "Home",
   "get-started": "Get Started",
-  "migration": "Migration from WordPress",
   "roadmap": "Roadmap",
   "resources": "Resources",
   "--1": {
@@ -13,11 +12,5 @@
     "type": "separator",
     "title": ""
   },
-  "deployments": "Deployments",
-  "--3": {
-    "type": "separator",
-    "title": ""
-  },
-  "data-models": "Data Model",
-  "fields": "Fields"
+  "self-hosting": "Self hosting"
 }
