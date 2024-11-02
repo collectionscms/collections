@@ -1,4 +1,4 @@
 {
   "lightsail": "Amazon Lightsail",
-  "config-options": "Config Options"
+  "env-vars": "Environment Variables"
 }

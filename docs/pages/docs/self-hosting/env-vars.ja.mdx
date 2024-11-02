@@ -1,30 +1,30 @@
 ---
-title: '設定オプション'
+title: '環境変数'
 ---
 
-# 設定オプション
-
-## 設定ファイル
+# 環境変数
 
 環境変数は、Collections プロジェクト内のすべての設定に使用されます。
 
-### .env
+## 設定ファイル
 
-Collections は、環境変数として `.env` ファイル設定を読み込もうとします。これは次のような構造になっています。
+Collections は、環境変数として `.env` ファイル設定を読み込みます。これは次のような構造になっています。
 
 ```js filename=".env"
-DB_CLIENT = 'sqlite3';
-DB_FILENAME = './data.db';
+AUTH_SECRET = '04a460c0bd9b99...';
+DATABASE_URL = 'postgresql://...';
 ```
 
-## General
+## 一般
 
-| 変数名            | 説明                    | 初期値                  |
-| :---------------- | :---------------------- | :---------------------- |
-| PUBLIC_SERVER_URL | Express サーバー URL    | `http://localhost:4000` |
-| SERVER_HOST       | Express サーバー ホスト | `http://localhost`      |
-| SERVER_PORT       | App Server ポート       | `4000`                  |
-| ADMIN_PORT        | App Admin ポート        | `4001`                  |
+| 変数名                  | 説明                      | 初期値                     |
+| :---------------------- | :------------------------ | :------------------------- |
+| PUBLIC_SERVER_ORIGIN    | Express サーバー オリジン | `http://app.test.com:4000` |
+| PUBLIC_PORTAL_SUBDOMAIN | ポータルのサブドメイン    | `app`                      |
+| SERVER_HOST             | Express サーバー ホスト   | `test.com`                 |
+| SERVER_PORT             | App Server ポート         | `4000`                     |
+| ADMIN_PORT              | App Admin ポート          | `4001`                     |
+| NODE_ENV                | Node 実行環境             | `development`              |
 
 ## Storage
 
@@ -39,16 +39,9 @@ DB_FILENAME = './data.db';
 
 ## Database
 
-| 変数名      | 説明                                       | 初期値 |
-| :---------- | :----------------------------------------- | :----- |
-| DB_CLIENT   | Database クライアント                      | --     |
-| DB_FILENAME | Database ファイルへのパス(SQLite)          | --     |
-| DB_USER     | Database ユーザー情報                      | --     |
-| DB_PASSWORD | Database パスワード                        | --     |
-| DB_DATABASE | Database データベース名                    | --     |
-| DB_HOST     | Database ホスト                            | --     |
-| DB_PORT     | Database ポート                            | --     |
-| DB_SSL      | Database SSL(PostgreSQL / `true`, `false`) | --     |
+| 変数名       | 説明                  | 初期値 |
+| :----------- | :-------------------- | :----- |
+| DATABASE_URL | PostgreSQLへの接続URL | --     |
 
 ## Express
 
@@ -56,27 +49,15 @@ DB_FILENAME = './data.db';
 | :-------- | :--------------------------- | :----- |
 | REQ_LIMIT | リクエストボディの最大サイズ | `4mb`  |
 
-## セッション
+## 認証
 
-| 変数名            | 説明                                                                            | 初期値 |
-| :---------------- | :------------------------------------------------------------------------------ | :----- |
-| ACCESS_TOKEN_TTL  | アクセストークンの有効期間。                                                    | `15m`  |
-| REFRESH_TOKEN_TTL | リフレッシュトークンの有効期間。ACCESS_TOKEN_TTL より長い期間の指定が必要です。 | `24h`  |
-
-## Cookie
-
-| 変数名           | 説明                                                                                      | 初期値        |
-| :--------------- | :---------------------------------------------------------------------------------------- | :------------ |
-| COOKIE_SECURE    | Cookie 送信の属性値。true の場合は、HTTPS のリクエスト時のみ送信されます。                | `false`       |
-| COOKIE_SAME_SITE | サイト間リクエスト時に Cookie の送信を制御することができます。（`lax`, `strict`, `none`） | `lax`         |
-| COOKIE_DOMAIN    | Cookie を受信することができるホストを指定します。                                         | --            |
-| COOKIE_PREFIX    | Cookie 名のプレフィックスを指定します。                                                   | `collections` |
-
-## セキュリティ
-
-| 変数名 | 説明                       | 初期値   |
-| :----- | :------------------------- | :------- |
-| SECRET | JWT トークン生成時の秘密鍵 | ランダム |
+| 変数名                | 説明                                                                   | 初期値                |
+| :-------------------- | :--------------------------------------------------------------------- | :-------------------- |
+| AUTH_GITHUB_ID        | GitHub OAuth 認証用の ID。GitHub Developer Portal から取得します。     | --                    |
+| AUTH_GITHUB_SECRET    | GitHub OAuth 認証用の SECRET。GitHub Developer Portal から取得します。 | --                    |
+| AUTH_GOOGLE_ID        | Google OAuth 認証用の ID。Google Cloud Platform から取得します。       | --                    |
+| AUTH_GOOGLE_SECRET    | Google OAuth 認証用の SECRET。Google Cloud Platform から取得します。   | --                    |
+| PUBLIC_AUTH_PROVIDERS | アプリケーションが提供するログイン方法                                 | `email,google,github` |
 
 ## CORS
 
@@ -90,7 +71,7 @@ DB_FILENAME = './data.db';
 | CORS_CREDENTIALS     | Access-Control-Allow-Credentials 有効化する場合は `true` を設定します。                                                           | `true`                       |
 | CORS_MAX_AGE         | Access-Control-Max-Age ヘッダを渡す場合は整数値を指定します。                                                                     | `1800`                       |
 
-## Log
+## ログ
 
 | 変数名                 | 説明                                                                             | 初期値 |
 | :--------------------- | :------------------------------------------------------------------------------- | :----- |
@@ -104,3 +85,15 @@ DB_FILENAME = './data.db';
 | EMAIL_TRANSPORT        | email の送信プロバイダ       | `sendgrid` |
 | EMAIL_FROM             | email の送信元メールアドレス | --         |
 | EMAIL_SENDGRID_API_KEY | sendgrid の API キー         | --         |
+
+## エディター
+
+| 変数名           | 説明                                | 初期値 |
+| :--------------- | :---------------------------------- | :----- |
+| TIPTAP_PRO_TOKEN | TipTap 拡張機能を使うためのトークン | --     |
+
+## システム
+
+| 変数名              | 説明                                             | 初期値 |
+| :------------------ | :----------------------------------------------- | :----- |
+| RESERVED_SUBDOMAINS | プロジェクトに割当できない予約済みのサブドメイン | `app`  |
