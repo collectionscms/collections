@@ -42,6 +42,7 @@ const ProjectListPageImpl: React.FC = () => {
         id: 'enabled',
         Header: t('status'),
         accessor: 'enabled',
+        width: 40,
         Cell: ({ row }: { row: Row }) => {
           const project = row.original as Project;
           return <EnabledDot enabled={project.enabled} />;
