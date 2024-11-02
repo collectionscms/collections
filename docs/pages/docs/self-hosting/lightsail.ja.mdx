@@ -10,7 +10,8 @@ import { Callout, Steps } from 'nextra/components';
 
 Amazon Lightsail のインストール要件
 
-- 以下の手順を実行する前に、[Amazon AWS](https://aws.amazon.com/free) アカウントを持っている必要があります。
+- [Amazon AWS](https://aws.amazon.com/free) アカウントを持っている必要があります。
+- PostgreSQL データベースが必要です。
 
 <Steps>
 ### Lightsail インスタンスを作成する
@@ -52,7 +53,7 @@ Lightsail のインスタンスにアタッチされる IP アドレスは動的
 
 ### SSL 証明書を発行しインスタンスに統合する
 
-SSL/TLS でウェブサイトとアプリケーションのセキュリティを強化します。[公式の AWS ドキュメント](https://lightsail.aws.amazon.com/ls/docs/ja_jp/articles/lightsail-how-to-create-dns-entry)を参考に、Let's Encrypt 証明書を発行し、インスタンスに統合します。
+SSL/TLS でウェブサイトとアプリケーションのセキュリティを強化します。[公式の AWS ドキュメント](https://docs.aws.amazon.com/ja_jp/lightsail/latest/userguide/amazon-lightsail-using-lets-encrypt-certificates-with-lamp.html)を参考に、Let's Encrypt 証明書を発行し、インスタンスに統合します。
 
 ### Node.jsを インストール
 
@@ -62,15 +63,6 @@ Lightsail にコンソールでアクセスし、Node.js をインストール�
 curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.0/install.sh | bash
 source ~/.nvm/nvm.sh
 nvm install --lts
-```
-
-### Collections をインストール
-
-いよいよアプリケーションのインストールです。まずは、Nginx のルートディレクトリに移動し、次に Collections のインストールを実行します。
-
-```bash
-cd /home/bitnami/stack/nginx/html
-npx create-collections-app collections
 ```
 
 ### Nginx を設定する
@@ -109,10 +101,40 @@ server {
 }
 ```
 
+### Collections をインストール
+
+いよいよアプリケーションのインストールです。まずは、Nginx のルートディレクトリに移動し、次に Collections のインストールを実行します。
+
+```bash
+cd /home/bitnami/stack/nginx/html
+git clone git@github.com:collectionscms/collections.git
+```
+
+### .env ファイルを設定する
+
+環境変数を設定するために、`.env` ファイルをコピーし、編集します。
+
+```bash
+cd /home/bitnami/stack/nginx/html/collections
+cp .env.sample .env
+vi .env
+```
+
+### 依存関係の解決
+
+```
+npm install
+```
+
+### DB マイグレーションを実行する
+
+```
+npm run seed:dev
+```
+
 ### アプリケーションをビルドする
 
 ```
-cd /home/bitnami/stack/nginx/html/collections
 npm run build
 ```
 
