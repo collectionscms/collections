@@ -12,5 +12,10 @@
     "type": "separator",
     "title": ""
   },
+  "use-cases": "ユースケース",
+  "--3": {
+    "type": "separator",
+    "title": ""
+  },
   "self-hosting": "セルフホスト"
 }

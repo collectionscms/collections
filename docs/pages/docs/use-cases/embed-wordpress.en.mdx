@@ -1,0 +1,155 @@
+---
+title: 'Embed in WordPress'
+---
+
+import { Callout, Steps } from 'nextra/components';
+
+# Embed in WordPress
+
+> This guide explains how to embed content created with Collections into WordPress, enabling partial multilingual support for your site without using a plugin.
+
+<Steps>
+### Create and publish posts in Collections
+
+This time, create a post with both English and Japanese versions.
+
+<p class="nx-mt-6 nx-leading-7 first:nx-mt-0">
+  <img
+    src="https://cdn.collections.dev/docs/embed-wp/content-en.png"
+    style={{ boxShadow: '0 0 6px #17294033', borderRadius: '4px' }}
+  />
+</p>
+
+<p class="nx-mt-6 nx-leading-7 first:nx-mt-0">
+  <img
+    src="https://cdn.collections.dev/docs/embed-wp/content-jp.png"
+    style={{ boxShadow: '0 0 6px #17294033', borderRadius: '4px' }}
+  />
+</p>
+
+### Confirm that you can retrieve the post you created in preview
+
+Once published, make sure you can retrieve the posts with the API preview.
+
+<p class="nx-mt-6 nx-leading-7 first:nx-mt-0">
+  <img
+    src="https://cdn.collections.dev/docs/embed-wp/preview-api.png"
+    style={{ boxShadow: '0 0 6px #17294033', borderRadius: '4px' }}
+  />
+</p>
+
+If you receive a response like this, it means the publication status was successfully updated.
+
+```bash
+{
+  "posts": [
+    {
+      "id": "94a79a37-0d3f-42a9-9edc-3246e925db64",
+      "contents": [
+        {
+          "id": "61b260d3-4b62-4ad5-b874-ab2d10cbabbe",
+          "slug": "090045d259",
+          "title": "Website renewed!! 🎉",
+          "subtitle": null,
+          "body": "You can visit if you like!\n\nhttps://collections.dev",
+          "bodyHtml": "<p>You can visit if you like!</p><p><a target=\"_blank\" rel=\"noopener noreferrer nofollow\" class=\"link\" href=\"https://collections.dev/ja\">https://collections.dev</a></p>",
+          ...
+        },
+        {
+          "id": "5245b61c-01a4-49b4-857e-72b99c20902e",
+          "slug": "f10d3c61c2",
+          "title": "サイトをリニューアルしました🎉",
+          "subtitle": null,
+          "body": "よかったら訪ねてみてください！\n\nhttps://collections.dev",
+          "bodyHtml": "<p>よかったら訪ねてみてください！</p><p><a target=\"_blank\" rel=\"noopener noreferrer nofollow\" class=\"link\" href=\"https://collections.dev/ja\">https://collections.dev</a></p>",
+          ...
+        }
+      ]
+    }
+  ]
+}
+
+```
+
+### Open the WordPress Theme File Editor
+
+Next, add the code to retrieve posts in WordPress. From the navigation menu, go to Tools > Theme File Editor,
+
+<p class="nx-mt-6 nx-leading-7 first:nx-mt-0">
+  <img
+    src="https://cdn.collections.dev/docs/embed-wp/menu.png"
+    style={{ boxShadow: '0 0 6px #17294033', borderRadius: '4px' }}
+  />
+</p>
+
+and select Theme Functions (functions.php).
+
+<p class="nx-mt-6 nx-leading-7 first:nx-mt-0">
+  <img
+    src="https://cdn.collections.dev/docs/embed-wp/functions.png"
+    style={{ boxShadow: '0 0 6px #17294033', borderRadius: '4px' }}
+  />
+</p>
+
+### Add code to retrieve posts
+
+Add functions and shortcodes in functions.php to retrieve posts.
+
+```php filename="functions.php"
+function getMultilingualData($atts = array()) {
+  $url = 'https://your-subdomain.collections.dev/api/v1/posts/94a79a37...';
+  $key = 'bd7ef64b...';
+  $args = array(
+    'headers' => array(
+      'Authorization' => 'Bearer ' . $key,
+    ),
+  );
+
+  $response = wp_remote_get($url, $args);
+  if (is_wp_error($response)) {
+      return 'Failed to acquire data.';
+  }
+
+  $body = wp_remote_retrieve_body($response);
+  $data = json_decode($body, true);
+  $content1 = $data["post"]["contents"][0]["bodyHtml"];
+  $content2 = $data["post"]["contents"][1]["bodyHtml"];
+
+  $result = "<ul>";
+  $result .= "<li><p>$content1</p></li>";
+  $result .= "<li><p>$content2</p></li>";
+  $result .= "</ul>";
+
+  return $result;
+}
+
+add_shortcode('multilingualData', 'getMultilingualData');
+```
+
+### Embed it in a post
+
+Finally, add the shortcode to the part of the post text where you want to embed it.
+
+<p class="nx-mt-6 nx-leading-7 first:nx-mt-0">
+  <img
+    src="https://cdn.collections.dev/docs/embed-wp/short-code.png"
+    style={{ boxShadow: '0 0 6px #17294033', borderRadius: '4px' }}
+  />
+</p>
+
+```html
+[multilingualData]
+```
+
+### Preview to confirm
+
+If the post previews successfully and the post created by Collections is embedded, you have succeeded!
+
+<p class="nx-mt-6 nx-leading-7 first:nx-mt-0">
+  <img
+    src="https://cdn.collections.dev/docs/embed-wp/preview-content.png"
+    style={{ boxShadow: '0 0 6px #17294033', borderRadius: '4px' }}
+  />
+</p>
+
+</Steps>
