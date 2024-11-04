@@ -156,6 +156,7 @@
   "tags": "タグ",
   "add_tags": "タグの追加",
   "tags_hint": "タグの変更は、公開済みの記事に即時反映されます。",
+  "documentation": "ドキュメント",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",

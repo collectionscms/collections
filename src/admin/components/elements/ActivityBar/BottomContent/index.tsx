@@ -47,12 +47,12 @@ export const BottomContent: React.FC = () => {
         anchorEl={anchorEl}
         onClose={handleMenuClose}
         anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'center',
+          vertical: 'center',
+          horizontal: 'right',
         }}
         transformOrigin={{
-          vertical: 0,
-          horizontal: 'left',
+          vertical: 'center',
+          horizontal: -10,
         }}
       >
         <List sx={{ width: '100%' }}>
