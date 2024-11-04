@@ -89,7 +89,7 @@ const EditRolePageImpl: React.FC = () => {
     <>
       <ConfirmDiscardDialog open={showPrompt} onDiscard={proceed} onKeepEditing={stay} />
       <Grid container spacing={2.5}>
-        <Grid xs={12} lg={8}>
+        <Grid xs={12} md={10}>
           <MainCard>
             <form onSubmit={handleSubmit(onSubmit)}>
               <Grid container spacing={3}>

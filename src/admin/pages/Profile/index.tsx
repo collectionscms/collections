@@ -79,7 +79,7 @@ const ProfilePageImpl: React.FC = () => {
     <>
       <ConfirmDiscardDialog open={showPrompt} onDiscard={proceed} onKeepEditing={stay} />
       <Grid container spacing={2.5} sx={{ mb: 1 }}>
-        <Grid xs={12} lg={8}>
+        <Grid xs={12} md={10}>
           <MainCard>
             <Grid container spacing={3}>
               <Grid xs={12} sm={6}>
@@ -116,7 +116,7 @@ const ProfilePageImpl: React.FC = () => {
         </Grid>
       </Grid>
       <Grid container spacing={2.5}>
-        <Grid xs={12} lg={8}>
+        <Grid xs={12} md={10}>
           <MainCard>
             <form onSubmit={handleSubmit(onSubmit)}>
               <Grid container spacing={3}>
