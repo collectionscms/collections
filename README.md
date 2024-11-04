@@ -6,9 +6,9 @@
   </a>
 </p>
 
-Collections is a headless CMS with AI. Build global sites faster with automatic translation and SEO optimization.
+Collections is a headless CMS that allows you to embed dynamic multilingual content—such as blogs, announcements, and notifications—into your website.
 
-Seamlessly add multilingual announcements and articles to your website!
+From post creation and automatic translation to AI-driven SEO optimization, we can quickly transform your existing site into a global multilingual site.
 
 ## ⭐ Why Collections Focus on multilingual?
 
@@ -20,7 +20,7 @@ However, this shift is also a great opportunity to attract future users!
 
 <hr/>
 <h4>
-<a target="_blank" href="https://app.collectionsdemo.live/admin/" rel="dofollow"><strong>Try Live Demo</strong></a>&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" href="https://collections-nextjs-blog.vercel.app/" rel="dofollow"><strong>View Blog Demo</strong></a>
+<a target="_blank" href="https://app.collectionsdemo.live/admin/" rel="dofollow"><strong>Try Live Demo</strong></a>&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" href="https://collections-nextjs-blog.vercel.app/" rel="dofollow"><strong>View Blog Demo</strong></a>&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" href="https://collections.dev/docs/home/" rel="dofollow"><strong>Documentation</strong></a>
 </h4>
 <hr/>
 
@@ -29,7 +29,7 @@ However, this shift is also a great opportunity to attract future users!
 - 🪄 SEO by AI
 - 🌐 Multilingual content
 - 🖊 Notion-like editor
-- 🕘️ Article versioning
+- 🕘️ Post versioning
 
 ## 📚 Usage & Documentation
 
