@@ -3,6 +3,7 @@ title: 'Amazon Lightsail'
 ---
 
 import { Callout, Steps } from 'nextra/components';
+import { Image } from '../../../components/Image';
 
 # Amazon Lightsail
 
@@ -25,12 +26,7 @@ Log in to [Amazon Lightsail](https://lightsail.aws.amazon.com/ls/?pg=ln&cp=bn) a
   Collections requires at least 2GB of RAM to build and deploy the management interface.
 </Callout>
 
-<p class="nx-mt-6 nx-leading-7 first:nx-mt-0">
-  <img
-    src="https://cdn.collections.dev/docs/region.png"
-    style={{ boxShadow: '0 0 6px #17294033', borderRadius: '4px' }}
-  />
-</p>
+<Image imageUrl="https://cdn.collections.dev/docs/region.png" />
 
 ### Attach a static IP address
 
@@ -43,12 +39,7 @@ Once the static IP address is attached, refer to the [official AWS documentation
 
 Alternatively, if your domain is already hosted on Route53, create an A record and specify a static IP address.
 
-<p class="nx-mt-6 nx-leading-7 first:nx-mt-0">
-  <img
-    src="https://cdn.collections.dev/docs/route53.png"
-    style={{ boxShadow: '0 0 6px #17294033', borderRadius: '4px' }}
-  />
-</p>
+<Image imageUrl="https://cdn.collections.dev/docs/route53.png" />
 
 ### SSL certificates are issued and integrated into the instance
 
