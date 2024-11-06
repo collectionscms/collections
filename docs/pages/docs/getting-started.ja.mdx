@@ -1,0 +1,38 @@
+---
+title: 'はじめに'
+---
+
+import { ChevronRight } from 'lucide-react';
+import { Card, Cards } from 'nextra-theme-docs';
+import { CardIcon } from '../../components/Icons/CardIcon';
+
+# はじめに
+
+> Collections を使ってコンテンツ管理を始める手順を学びましょう。
+
+### 基本操作
+
+<Cards>
+  <Card icon={<CardIcon />} title="プロジェクトの作成" href="./app-guides/project-registration" />
+  <Card
+    icon={<CardIcon />}
+    title="記事の作成と公開"
+    href="./app-guides/creating-and-publishing-posts"
+  />
+  <Card
+    icon={<CardIcon />}
+    title="APIキーによるデータ取得"
+    href="./app-guides/data-fetching-with-api-key"
+  />
+</Cards>
+
+### 複数人でコンテンツを管理する
+
+<Cards>
+  <Card icon={<CardIcon />} title="ユーザーを招待" href="./app-guides/invite-users" />
+  <Card
+    icon={<CardIcon />}
+    title="記事のレビューと承認"
+    href="./app-guides/review-and-approval-of-posts"
+  />
+</Cards>
