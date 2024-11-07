@@ -1,0 +1,44 @@
+---
+title: 'APIキーによるデータ取得'
+---
+
+import { Callout, Steps } from 'nextra/components';
+import { Image } from '../../../components/Image';
+
+# APIキーによるデータ取得
+
+> このガイドでは、APIキーを使って公開済みの記事を取得する手順を説明します。
+
+<Steps>
+### APIキーを作成する
+
+まずはじめに、データを取得するためのAPIキーを作成します。「Create New / 新規登録」ボタンをクリックして作成画面に進みます。
+
+<Image imageUrl="https://cdn.collections.dev/docs/data-fetching-with-api-key/key-step-2.png" />
+
+### API情報を入力する
+
+APIキーの名前を入力し、パーミッションを選択します。これでAPIキーが作成されます。
+
+<Image imageUrl="https://cdn.collections.dev/docs/data-fetching-with-api-key/key-step-3.png" />
+
+### APIプレビューを開く
+
+続いて、記事一覧からAPIプレビューを開きます。
+
+<Image imageUrl="https://cdn.collections.dev/docs/data-fetching-with-api-key/data-fetch-1.png" />
+
+### リクエストを送信する
+
+APIプレビューでは、さきほど作成したAPIキーを使ってデータ取得のリクエストを送信することができます。
+
+<Image imageUrl="https://cdn.collections.dev/docs/data-fetching-with-api-key/data-fetch-2.png" />
+
+### cURLコマンドをコピーする
+
+コピーボタンをクリックすると、同じリクエストを送信するための cURL コマンドをコピーできます。
+詳しい API のエンドポイントやパラメータについては、[ドキュメント](/reference/api)を参照してください。
+
+<Image imageUrl="https://cdn.collections.dev/docs/data-fetching-with-api-key/data-fetch-3.png" />
+
+</Steps>
