@@ -12,7 +12,7 @@
     "@redocly/cli": "^1.2.0",
     "@vercel/analytics": "^1.1.1",
     "core-js": "^3.33.0",
-    "lucide": "^0.454.0",
+    "lucide-react": "^0.454.0",
     "mobx": "^6.10.2",
     "next": "^13.0.6",
     "nextra": "^2.13.2",
