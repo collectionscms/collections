@@ -9,10 +9,10 @@
     "start": "next start -p 8000"
   },
   "dependencies": {
-    "@ant-design/icons": "^5.2.6",
     "@redocly/cli": "^1.2.0",
     "@vercel/analytics": "^1.1.1",
     "core-js": "^3.33.0",
+    "lucide-react": "^0.454.0",
     "mobx": "^6.10.2",
     "next": "^13.0.6",
     "nextra": "^2.13.2",

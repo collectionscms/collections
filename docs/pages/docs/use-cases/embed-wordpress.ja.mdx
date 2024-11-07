@@ -3,6 +3,7 @@ title: 'WordPress に埋め込む'
 ---
 
 import { Callout, Steps } from 'nextra/components';
+import { Image } from '../../../components/Image';
 
 # WordPress に埋め込む
 
@@ -13,30 +14,14 @@ import { Callout, Steps } from 'nextra/components';
 
 今回は、英語版と日本語版のある記事を作成します。
 
-<p class="nx-mt-6 nx-leading-7 first:nx-mt-0">
-  <img
-    src="https://cdn.collections.dev/docs/embed-wp/content-en.png"
-    style={{ boxShadow: '0 0 6px #17294033', borderRadius: '4px' }}
-  />
-</p>
-
-<p class="nx-mt-6 nx-leading-7 first:nx-mt-0">
-  <img
-    src="https://cdn.collections.dev/docs/embed-wp/content-jp.png"
-    style={{ boxShadow: '0 0 6px #17294033', borderRadius: '4px' }}
-  />
-</p>
+<Image imageUrl="https://cdn.collections.dev/docs/embed-wp/content-en.png" />
+<Image imageUrl="https://cdn.collections.dev/docs/embed-wp/content-jp.png" />
 
 ### プレビューで作成した記事が取得できることを確認
 
 公開したら API プレビューで記事が取得できることを確認しておきましょう。
 
-<p class="nx-mt-6 nx-leading-7 first:nx-mt-0">
-  <img
-    src="https://cdn.collections.dev/docs/embed-wp/preview-api.png"
-    style={{ boxShadow: '0 0 6px #17294033', borderRadius: '4px' }}
-  />
-</p>
+<Image imageUrl="https://cdn.collections.dev/docs/embed-wp/preview-api.png" />
 
 このようなレスポンスが返ってくればOK。公開ステータスは正しく更新されています。
 
@@ -75,21 +60,11 @@ import { Callout, Steps } from 'nextra/components';
 
 続いて、WordPress に記事を取得するコードを追加します。ナビゲーションメニューから `Tools` > `Theme File Editor` を開き
 
-<p class="nx-mt-6 nx-leading-7 first:nx-mt-0">
-  <img
-    src="https://cdn.collections.dev/docs/embed-wp/menu.png"
-    style={{ boxShadow: '0 0 6px #17294033', borderRadius: '4px' }}
-  />
-</p>
+<Image imageUrl="https://cdn.collections.dev/docs/embed-wp/menu.png" />
 
 Theme Functions (functions.php) を選択します。
 
-<p class="nx-mt-6 nx-leading-7 first:nx-mt-0">
-  <img
-    src="https://cdn.collections.dev/docs/embed-wp/functions.png"
-    style={{ boxShadow: '0 0 6px #17294033', borderRadius: '4px' }}
-  />
-</p>
+<Image imageUrl="https://cdn.collections.dev/docs/embed-wp/functions.png" />
 
 ### 記事を取得するコードを追加する
 
@@ -130,12 +105,7 @@ add_shortcode('multilingualData', 'getMultilingualData');
 
 最後に、記事本文の埋め込みたい箇所に、ショートコードを追加します。
 
-<p class="nx-mt-6 nx-leading-7 first:nx-mt-0">
-  <img
-    src="https://cdn.collections.dev/docs/embed-wp/short-code.png"
-    style={{ boxShadow: '0 0 6px #17294033', borderRadius: '4px' }}
-  />
-</p>
+<Image imageUrl="https://cdn.collections.dev/docs/embed-wp/short-code.png" />
 
 ```html
 [multilingualData]
@@ -145,11 +115,6 @@ add_shortcode('multilingualData', 'getMultilingualData');
 
 記事をプレビューし Collections で作成した記事が埋め込まれていたら成功です！
 
-<p class="nx-mt-6 nx-leading-7 first:nx-mt-0">
-  <img
-    src="https://cdn.collections.dev/docs/embed-wp/preview-content.png"
-    style={{ boxShadow: '0 0 6px #17294033', borderRadius: '4px' }}
-  />
-</p>
+<Image imageUrl="https://cdn.collections.dev/docs/embed-wp/preview-content.png" />
 
 </Steps>

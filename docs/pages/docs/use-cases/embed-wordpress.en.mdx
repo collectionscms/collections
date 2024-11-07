@@ -3,6 +3,7 @@ title: 'Embed in WordPress'
 ---
 
 import { Callout, Steps } from 'nextra/components';
+import { Image } from '../../../components/Image';
 
 # Embed in WordPress
 
@@ -13,30 +14,14 @@ import { Callout, Steps } from 'nextra/components';
 
 This time, create a post with both English and Japanese versions.
 
-<p class="nx-mt-6 nx-leading-7 first:nx-mt-0">
-  <img
-    src="https://cdn.collections.dev/docs/embed-wp/content-en.png"
-    style={{ boxShadow: '0 0 6px #17294033', borderRadius: '4px' }}
-  />
-</p>
-
-<p class="nx-mt-6 nx-leading-7 first:nx-mt-0">
-  <img
-    src="https://cdn.collections.dev/docs/embed-wp/content-jp.png"
-    style={{ boxShadow: '0 0 6px #17294033', borderRadius: '4px' }}
-  />
-</p>
+<Image imageUrl="https://cdn.collections.dev/docs/embed-wp/content-en.png" />
+<Image imageUrl="https://cdn.collections.dev/docs/embed-wp/content-jp.png" />
 
 ### Confirm that you can retrieve the post you created in preview
 
 Once published, make sure you can retrieve the posts with the API preview.
 
-<p class="nx-mt-6 nx-leading-7 first:nx-mt-0">
-  <img
-    src="https://cdn.collections.dev/docs/embed-wp/preview-api.png"
-    style={{ boxShadow: '0 0 6px #17294033', borderRadius: '4px' }}
-  />
-</p>
+<Image imageUrl="https://cdn.collections.dev/docs/embed-wp/preview-api.png" />
 
 If you receive a response like this, it means the publication status was successfully updated.
 
@@ -75,21 +60,11 @@ If you receive a response like this, it means the publication status was success
 
 Next, add the code to retrieve posts in WordPress. From the navigation menu, go to Tools > Theme File Editor,
 
-<p class="nx-mt-6 nx-leading-7 first:nx-mt-0">
-  <img
-    src="https://cdn.collections.dev/docs/embed-wp/menu.png"
-    style={{ boxShadow: '0 0 6px #17294033', borderRadius: '4px' }}
-  />
-</p>
+<Image imageUrl="https://cdn.collections.dev/docs/embed-wp/menu.png" />
 
 and select Theme Functions (functions.php).
 
-<p class="nx-mt-6 nx-leading-7 first:nx-mt-0">
-  <img
-    src="https://cdn.collections.dev/docs/embed-wp/functions.png"
-    style={{ boxShadow: '0 0 6px #17294033', borderRadius: '4px' }}
-  />
-</p>
+<Image imageUrl="https://cdn.collections.dev/docs/embed-wp/functions.png" />
 
 ### Add code to retrieve posts
 
@@ -130,12 +105,7 @@ add_shortcode('multilingualData', 'getMultilingualData');
 
 Finally, add the shortcode to the part of the post text where you want to embed it.
 
-<p class="nx-mt-6 nx-leading-7 first:nx-mt-0">
-  <img
-    src="https://cdn.collections.dev/docs/embed-wp/short-code.png"
-    style={{ boxShadow: '0 0 6px #17294033', borderRadius: '4px' }}
-  />
-</p>
+<Image imageUrl="https://cdn.collections.dev/docs/embed-wp/short-code.png" />
 
 ```html
 [multilingualData]
@@ -145,11 +115,6 @@ Finally, add the shortcode to the part of the post text where you want to embed 
 
 If the post previews successfully and the post created by Collections is embedded, you have succeeded!
 
-<p class="nx-mt-6 nx-leading-7 first:nx-mt-0">
-  <img
-    src="https://cdn.collections.dev/docs/embed-wp/preview-content.png"
-    style={{ boxShadow: '0 0 6px #17294033', borderRadius: '4px' }}
-  />
-</p>
+<Image imageUrl="https://cdn.collections.dev/docs/embed-wp/preview-content.png" />
 
 </Steps>
