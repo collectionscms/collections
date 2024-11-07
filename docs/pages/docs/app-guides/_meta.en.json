@@ -1,6 +1,9 @@
 {
   "project-creation": "Project Creation",
-  "creating-and-publishing-posts": "Creating and publishing posts",
+  "creating-and-publishing-posts": "Creating and Publishing posts",
+  "review-and-approval-of-post": "Review and Approval of Post",
+  "role-creation": "Role Creation",
+  "invite-user": "Invite User",
   "data-fetching-with-api-key": "Data Fetching with API Key",
   "languages": "Supported Languages"
 }
