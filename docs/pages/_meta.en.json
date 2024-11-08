@@ -7,6 +7,22 @@
       "layout": "full"
     }
   },
+  "privacy": {
+    "title": "privacy",
+    "type": "page",
+    "display": "hidden",
+    "theme": {
+      "layout": "full"
+    }
+  },
+  "terms": {
+    "title": "terms of service",
+    "type": "page",
+    "display": "hidden",
+    "theme": {
+      "layout": "full"
+    }
+  },
   "docs": {
     "title": "Docs",
     "type": "page"
