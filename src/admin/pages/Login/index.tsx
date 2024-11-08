@@ -8,6 +8,7 @@ import {
   Stack,
   TextField,
   Typography,
+  useTheme,
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import React, { useEffect, useState } from 'react';
@@ -29,13 +30,13 @@ const Loading = Loader(lazy(() => import('../../components/elements/Loading/inde
 
 export const Login: React.FC = () => {
   const { t } = useTranslation();
+  const theme = useTheme();
   const { me, getCsrfToken, login } = useAuth();
   const navigate = useNavigate();
   const { trigger, isMutating } = login();
   const { data } = getCsrfToken();
   const [csrfToken, setCsrfToken] = useState('');
 
-  const loginPageText = process.env.PUBLIC_LOGIN_PAGE_TEXT ?? '';
   const authProviders = process.env.PUBLIC_AUTH_PROVIDERS?.split(',') ?? [];
   const enabledEmailSignIn = authProviders.includes('email');
   const enabledGoogleSignIn = authProviders.includes('google');
@@ -78,15 +79,15 @@ export const Login: React.FC = () => {
 
   return (
     <>
-      <Box sx={{ position: 'absolute', top: 30 }}>
+      <Box sx={{ position: 'absolute', top: 30, left: 40 }}>
         <Logo variant="logo" props={{ width: 'auto', height: 28 }} />
       </Box>
-      <AuthCard sx={{ width: { xs: 400, lg: 475 } }}>
+      <AuthCard sx={{ width: { xs: 400, lg: 475 }, p: 2 }}>
         <Typography variant="h3" sx={{ mb: 1, textAlign: 'center' }}>
           {t('login_title')}
         </Typography>
-        <Typography variant="h5" sx={{ mt: 2, mb: 5, textAlign: 'center' }}>
-          {loginPageText && <Box dangerouslySetInnerHTML={{ __html: loginPageText }} />}
+        <Typography variant="body2" sx={{ mt: 1.5, mb: 5, textAlign: 'center' }}>
+          {t('login_subtitle')}
         </Typography>
         <Stack>
           <Stack gap={2}>
@@ -163,6 +164,9 @@ export const Login: React.FC = () => {
                   size="large"
                   sx={{
                     color: 'text.primary',
+                    '&:hover': {
+                      backgroundColor: theme.palette.divider,
+                    },
                   }}
                 >
                   <Stack flexDirection="row" alignItems="center" gap={1}>
@@ -195,6 +199,9 @@ export const Login: React.FC = () => {
                   size="large"
                   sx={{
                     color: 'text.primary',
+                    '&:hover': {
+                      backgroundColor: theme.palette.divider,
+                    },
                   }}
                 >
                   <Stack flexDirection="row" alignItems="center" gap={1}>
