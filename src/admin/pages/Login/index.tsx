@@ -39,6 +39,7 @@ export const Login: React.FC = () => {
   const { data } = getCsrfToken();
   const [csrfToken, setCsrfToken] = useState('');
 
+  const loginPageText = process.env.PUBLIC_LOGIN_PAGE_TEXT;
   const authProviders = process.env.PUBLIC_AUTH_PROVIDERS?.split(',') ?? [];
   const enabledEmailSignIn = authProviders.includes('email');
   const enabledGoogleSignIn = authProviders.includes('google');
@@ -90,7 +91,11 @@ export const Login: React.FC = () => {
             {t('login_title')}
           </Typography>
           <Typography variant="body2" sx={{ mt: 5, mb: 1.5, textAlign: 'center' }}>
-            {t('login_subtitle')}
+            {loginPageText ? (
+              <Box dangerouslySetInnerHTML={{ __html: loginPageText }} />
+            ) : (
+              t('login_subtitle')
+            )}
           </Typography>
           <Stack>
             <Stack gap={2}>
