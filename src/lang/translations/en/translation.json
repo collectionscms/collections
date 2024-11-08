@@ -105,7 +105,7 @@
   "open_in_new_tab": "Open in new tab",
   "edit_link": "Edit link",
   "remove_link": "Remove link",
-  "post_slug": "Post slug",
+  "content_slug": "Slug",
   "comment": "Comment",
   "add_language_content": "Add language",
   "remove_language_content": "Delete {{language}} post",
@@ -342,7 +342,7 @@
     "already_invited_email": "Already invited.",
     "unauthorized_user": "Unauthorized user.",
     "already_has_same_language_content": "Already has same language content.",
-    "already_registered_post_slug": "Already registered slug.",
+    "already_registered_content_slug": "Already registered slug.",
     "post_body_empty": "The post body is empty.",
     "source_language_post_body_empty": "The text of the source post is empty."
   },
