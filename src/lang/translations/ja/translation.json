@@ -140,7 +140,7 @@
   "not_set": "未設定",
   "general": "一般",
   "login_title": "Collections へようこそ",
-  "login_subtitle": "無料トライアル中、クレジットカードは不要です。",
+  "login_subtitle": "＼ クレジットカードの登録不要 ／",
   "sign_in_with_google": "Googleでログイン",
   "sign_in_with_github": "GitHubでログイン",
   "create_your_first_project": "Collections で最初のプロジェクトを作成しよう！",
@@ -158,6 +158,7 @@
   "add_tags": "タグの追加",
   "tags_hint": "タグの変更は、公開済みの記事に即時反映されます。",
   "documentation": "ドキュメント",
+  "terms_and_privacy": "ログインすることで <terms>利用規約</terms> および <privacy>プライバシーポリシー</privacy> に<br/>同意したものとみなされます。",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",
