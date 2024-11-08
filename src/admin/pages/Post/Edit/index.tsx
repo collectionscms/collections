@@ -384,7 +384,7 @@ export const EditPostPageImpl: React.FC = () => {
               )}
 
             {/* Actions */}
-            <Stack flexDirection="row" gap={3} sx={{ mb: 2 }}>
+            <Stack flexDirection="row" gap={1} sx={{ mb: 2 }}>
               {!uploadCover && (
                 <Button
                   variant="text"
