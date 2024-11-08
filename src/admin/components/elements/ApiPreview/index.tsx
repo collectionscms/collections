@@ -147,7 +147,19 @@ export const ApiPreview: React.FC<Props> = ({ path, apiKeys }) => {
                           type="text"
                           fullWidth
                           InputProps={{
-                            startAdornment: `${basePath}/`,
+                            startAdornment: (
+                              <Typography
+                                sx={{
+                                  whiteSpace: 'nowrap',
+                                  overflow: 'hidden',
+                                  textOverflow: 'ellipsis',
+                                  display: 'inline-block',
+                                  minWidth: '50%',
+                                }}
+                              >
+                                {basePath}/
+                              </Typography>
+                            ),
                           }}
                           error={errors.path !== undefined}
                         />
