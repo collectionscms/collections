@@ -4,6 +4,13 @@ export const Link = () => {
       defaultProps: {
         underline: 'hover',
       },
+      styleOverrides: {
+        root: {
+          '&.MuiLink-underlineHover': {
+            textUnderlineOffset: '3px',
+          },
+        },
+      },
     },
   };
 };
