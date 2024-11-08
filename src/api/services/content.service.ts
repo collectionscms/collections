@@ -26,7 +26,7 @@ export class ContentService {
     const sameSlugContent = await this.contentRepository.findOneBySlug(prisma, encodedSlug);
 
     if (sameSlugContent && sameSlugContent.content.id !== content.id) {
-      throw new RecordNotUniqueException('already_registered_post_slug');
+      throw new RecordNotUniqueException('already_registered_content_slug');
     }
 
     latestRevision.publish(userId);

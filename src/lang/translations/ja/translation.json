@@ -105,7 +105,7 @@
   "open_in_new_tab": "新しいタブで開く",
   "edit_link": "リンクを編集",
   "remove_link": "リンクを解除",
-  "post_slug": "記事のスラッグ",
+  "content_slug": "スラッグ",
   "comment": "コメント",
   "add_language_content": "言語を追加する",
   "remove_language_content": "{{language}}の記事を削除",
@@ -140,6 +140,7 @@
   "not_set": "未設定",
   "general": "一般",
   "login_title": "Collections へようこそ",
+  "login_subtitle": "＼ クレジットカードの登録不要 ／",
   "sign_in_with_google": "Googleでログイン",
   "sign_in_with_github": "GitHubでログイン",
   "create_your_first_project": "Collections で最初のプロジェクトを作成しよう！",
@@ -157,6 +158,7 @@
   "add_tags": "タグの追加",
   "tags_hint": "タグの変更は、公開済みの記事に即時反映されます。",
   "documentation": "ドキュメント",
+  "terms_and_privacy": "ログインすることで <terms>利用規約</terms> および <privacy>プライバシーポリシー</privacy> に<br/>同意したものとみなされます。",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",
@@ -342,7 +344,7 @@
     "already_invited_email": "すでに招待済みです。",
     "unauthorized_user": "不正なユーザーです。",
     "already_has_same_language_content": "すでに同じ言語のコンテンツがあります。",
-    "already_registered_post_slug": "すでに登録済みのスラッグです。",
+    "already_registered_content_slug": "すでに登録済みのスラッグです。",
     "post_body_empty": "記事の本文が空です。",
     "source_language_post_body_empty": "元記事の本文が空です。"
   },

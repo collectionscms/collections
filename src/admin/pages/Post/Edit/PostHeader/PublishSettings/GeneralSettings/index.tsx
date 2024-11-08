@@ -54,7 +54,7 @@ export const GeneralSettings: React.FC<Props> = ({ contentId, slug, onUpdated })
     <form onSubmit={handleSubmit(onSubmit)}>
       <Stack gap={2}>
         <Stack gap={1}>
-          <Typography variant="subtitle1">{t('post_slug')}</Typography>
+          <Typography variant="subtitle1">{t('content_slug')}</Typography>
           <Controller
             name="slug"
             control={control}
