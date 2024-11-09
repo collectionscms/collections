@@ -90,13 +90,13 @@ export const Login: React.FC = () => {
           <Typography variant="h3" sx={{ mb: 1, textAlign: 'center' }}>
             {t('login_title')}
           </Typography>
-          <Typography variant="body2" sx={{ mt: 5, mb: 1.5, textAlign: 'center' }}>
-            {loginPageText ? (
-              <Box dangerouslySetInnerHTML={{ __html: loginPageText }} />
-            ) : (
-              t('login_subtitle')
-            )}
-          </Typography>
+          {loginPageText ? (
+            <Box textAlign="center" dangerouslySetInnerHTML={{ __html: loginPageText }} />
+          ) : (
+            <Typography variant="body2" sx={{ mt: 5, mb: 1.5, textAlign: 'center' }}>
+              {t('login_subtitle')}
+            </Typography>
+          )}
           <Stack>
             <Stack gap={2}>
               {/* Email */}
