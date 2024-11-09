@@ -5,6 +5,7 @@ import { TFunction } from 'i18next';
 export type FormValues = {
   name: string;
   subdomain: string;
+  sourceLanguage: string;
 };
 
 export const projectSettingsValidator = (t: TFunction): ObjectSchema<FormValues> => {
@@ -14,5 +15,6 @@ export const projectSettingsValidator = (t: TFunction): ObjectSchema<FormValues>
       .string()
       .required()
       .matches(/^[a-z0-9-]+$/, t('yup.custom.alphanumeric_and_hyphens')),
+    sourceLanguage: yup.string().required(),
   });
 };
