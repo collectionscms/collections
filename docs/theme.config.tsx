@@ -219,9 +219,9 @@ const config: DocsThemeConfig = {
 const getDefaultDescription = (locale: string) => {
   switch (locale) {
     case 'ja':
-      return 'あなたのWordPressをAPIに変えるヘッドレスCMS。使い始めるのに、もう昔の記事をコピペする必要はありません。';
+      return 'Collections は、ブログ・お知らせ・通知など、Webサイトに動的な多言語コンテンツを組み込めるヘッドレスCMSです。自動翻訳やSEO対策など、コンテンツの生成もAIがアシストします。';
     default:
-      return 'A headless CMS that transforms your WordPress into an API. No need to copy and paste old posts anymore.';
+      return 'Collections is a headless CMS that allows you to embed dynamic multilingual content—such as blogs, announcements, and notifications—into your website.';
   }
 };
 
