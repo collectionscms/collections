@@ -15,6 +15,7 @@ import { useTranslation } from 'react-i18next';
 import { languages } from '../../../../constants/languages.js';
 import { logger } from '../../../../utilities/logger.js';
 import { MainCard } from '../../../@extended/components/MainCard/index.js';
+import { Confetti } from '../../../components/elements/Confetti/index.js';
 import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscardDialog/index.js';
 import { LanguageAutocomplete } from '../../../components/elements/LanguageAutocomplete/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
@@ -74,6 +75,7 @@ const CreateProjectPageImpl: React.FC = () => {
 
   return (
     <>
+      <Confetti showConfetti={showComplete} />
       <ConfirmDiscardDialog open={showPrompt} onDiscard={proceed} onKeepEditing={stay} />
       <Grid container spacing={2.5} justifyContent="center">
         <Grid xs={12} lg={6}>
