@@ -140,7 +140,7 @@
     "webpack-shell-plugin-next": "2.3.2",
     "y-prosemirror": "1.2.12",
     "y-protocols": "1.0.6",
-    "yjs": "13.6.18",
+    "yjs": "13.6.20",
     "yup": "1.4.0",
     "zod": "3.23.8"
   },
