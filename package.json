@@ -52,7 +52,7 @@
     "@collectionscms/plugin-text-generator": "1.1.0",
     "@emotion/react": "11.13.3",
     "@emotion/styled": "11.13.0",
-    "@hookform/resolvers": "3.9.0",
+    "@hookform/resolvers": "3.9.1",
     "@mui/lab": "5.0.0-alpha.173",
     "@mui/material": "5.16.7",
     "@pmmmwh/react-refresh-webpack-plugin": "0.5.15",
