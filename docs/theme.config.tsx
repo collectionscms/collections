@@ -24,7 +24,8 @@ const config: DocsThemeConfig = {
   useNextSeoProps: function SEO() {
     const { asPath, locale } = useRouter();
     const { frontMatter } = useConfig();
-    const titleTemplate = asPath !== '/' ? `%s – ${defaultTitle}` : getTopTitle(locale);
+    const topTitle = getTopTitle(locale);
+    const titleTemplate = asPath !== '/' ? `%s – ${defaultTitle}` : topTitle;
     const defaultDescription = getDefaultDescription(locale);
 
     return {
@@ -33,7 +34,7 @@ const config: DocsThemeConfig = {
       titleTemplate,
       openGraph: {
         type: 'website',
-        title: frontMatter.title ? `${frontMatter.title} - ${defaultTitle}` : defaultTitle,
+        title: frontMatter.title ? `${frontMatter.title} - ${defaultTitle}` : topTitle,
         description: frontMatter.description || defaultDescription,
         url: 'https://collections.dev',
         siteName: defaultTitle,
