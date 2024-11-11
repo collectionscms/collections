@@ -24,7 +24,7 @@ const config: DocsThemeConfig = {
   useNextSeoProps: function SEO() {
     const { asPath, locale } = useRouter();
     const { frontMatter } = useConfig();
-    const titleTemplate = asPath !== '/' ? `%s – ${defaultTitle}` : defaultTitle;
+    const titleTemplate = asPath !== '/' ? `%s – ${defaultTitle}` : getTopTitle(locale);
     const defaultDescription = getDefaultDescription(locale);
 
     return {
@@ -89,6 +89,15 @@ const config: DocsThemeConfig = {
     dark: 83,
     light: 89,
   },
+};
+
+const getTopTitle = (locale: string) => {
+  switch (locale) {
+    case 'ja':
+      return 'Collections - 翻訳内蔵の多言語ヘッドレスCMS';
+    default:
+      return 'Collections - Multilingual headless CMS with built-in translation';
+  }
 };
 
 const getDefaultDescription = (locale: string) => {
