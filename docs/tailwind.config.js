@@ -7,11 +7,12 @@ module.exports = {
         compact: '1.15',
         narrow: '1.3',
       },
-      fontSize: {
-        '7xxl': '4.9rem',
+      backgroundColor: {
+        primary: '#0A85D1',
+        'primary-hover': '#0C9EF8',
       },
       textColor: {
-        'dark-code': '#54b8d1',
+        'navbar-primary': '#89C8FF',
       },
     },
   },

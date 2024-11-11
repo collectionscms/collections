@@ -1,49 +1,46 @@
-<div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8 md:mt-20">
-  <div className="cols-span-1 lg:col-span-2">
-    <div className="block md:hidden mb-8">
-      <h1 className="text-5xl font-black leading-compact">
-        <span className="nx-text-primary-600">Headless CMS</span>
-        <span> to make your site multilingual</span>
+import Image from 'next/image';
+import Link from 'next/link';
+import symbol from '../assets/images/symbol.svg';
+import { RegisterButton } from '../components/RegisterButton';
+
+<div className="bg-black text-white py-2 flex justify-center items-start">
+  <div className="w-[90rem] px-4">
+    <div className="mt-24 mb-16">
+      <h1 className="text-7xl font-bold leading-tight">
+        Headless CMS to make your site multilingual
       </h1>
-    </div>
-    <div className="hidden md:block mb-12">
-      <h1 className="text-8xl font-black leading-compact">
-        <span className="nx-text-primary-600">Headless CMS</span>
-      </h1>
-      <h1 className="text-8xl font-black">to make your site multilingual</h1>
-    </div>
-    <h2 className="text-lg leading-relaxed">
+      <div className="mt-10 text-xl">
       Collections is a headless CMS that enables you to add multilingual content like blogs,
-      announcements, and notifications to your website, with AI support for content generation,
-      translation, and SEO.
-    </h2>
+      announcements, and notifications to your website,
+      </div>
+      <div className="mt-2 text-xl">with AI support for content generation,
+      translation, and SEO.</div>
+      <div className="mt-14">
+        <RegisterButton title="Sign up and start using" isWide={false} />
+      </div>
+    </div>
   </div>
-  <div className="mt-4">
-    <hr />
-    <a
-      target="_blank"
-      href="https://app.collectionsdemo.live/admin/"
-      rel="dofollow"
-      className="hover:nx-text-primary-600 hover:underline"
-    >
-      <div className="flex py-5">
-        <div className="flex-auto">Try Live Demo</div>
-        <div className="flex-none">↗</div>
+</div>
+<div className="py-2 flex justify-center items-start">
+  <div className="w-[90rem] px-4 py-20">
+    <div className="flex flex-col justify-center items-center">
+      <div>
+        <RegisterButton title="Sign up and start using" isWide={true} />
       </div>
-    </a>
-    <hr />
-    <a href="docs/home" className="hover:nx-text-primary-600 hover:underline">
-      <div className="flex py-5">
-        <div className="flex-auto">Read The Docs</div>
-        <div className="flex-none">↗</div>
+      <div className="mt-10">
+        <Link
+          href="https://app.collectionsdemo.live/admin"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline hover:no-underline underline-offset-4"
+        >
+          <div className="flex flex-row items-center gap-2">
+            <Image src={symbol} alt="symbol" className="h-8 w-auto" />
+            <div>Click here to try the demo version</div>
+          </div>
+        </Link>
       </div>
-    </a>
-    <hr />
-    <a href="reference/api" className="hover:nx-text-primary-600 hover:underline">
-      <div className="flex py-5">
-        <div className="flex-auto">Read The API</div>
-        <div className="flex-none">↗</div>
-      </div>
-    </a>
+    </div>
+
   </div>
 </div>
