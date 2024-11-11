@@ -4,7 +4,8 @@
 
 html,
 body {
-  font-family: '-apple-system', 'system-ui', 'sans-serif', 'Roboto', 'Helvetica', 'Meiryo';
+  font-family: 'Noto Sans', 'Noto Sans JP', '-apple-system', 'system-ui', 'sans-serif', 'Roboto',
+    'Helvetica', 'Meiryo';
 }
 
 .copyTextarea {
