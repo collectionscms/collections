@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 export const Navbar: React.FC = () => {
   const { locale } = useRouter();
   const demoTitle = locale === 'ja' ? 'デモ' : 'Demo';
-  const signUpTitle = locale === 'ja' ? '利用登録' : 'Sign Up';
+  const signUpTitle = locale === 'ja' ? '利用登録' : 'Try for free';
 
   return (
     <div className="bg-black text-white py-6 px-14 border-b-neutral-400 border-b">
