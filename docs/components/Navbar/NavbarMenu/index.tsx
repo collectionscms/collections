@@ -14,7 +14,7 @@ export const NavbarMenu: React.FC<Props> = ({ title, href, variant = 'default' }
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className={`flex flex-row items-center ${variant === 'primary' ? 'text-navbar-primary font-bold' : 'text-white'}`}
+      className={`flex flex-row items-center ${variant === 'primary' ? 'text-navbar-primary font-bold' : 'text-white'} link-underline`}
     >
       {title}
     </Link>
