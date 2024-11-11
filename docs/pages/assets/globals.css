@@ -17,3 +17,29 @@ body {
   width: 0;
   height: 1px;
 }
+
+a {
+  transition: all 0.3s ease-in-out;
+}
+
+.link-underline {
+  position: relative;
+  display: inline-block;
+
+  &:hover::after {
+    transform: scaleX(1);
+  }
+}
+
+.link-underline::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -0.3em;
+  width: 100%;
+  height: 1px;
+  background-color: currentColor;
+  transition: transform 0.2s ease-in-out;
+  transform: scaleX(0);
+  transform-origin: center;
+}
