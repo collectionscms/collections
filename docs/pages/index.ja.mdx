@@ -1,46 +1,45 @@
-<div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8 md:mt-20">
-  <div className="cols-span-1 lg:col-span-2">
-    <div className="block md:hidden mb-8">
-      <h1 className="text-4xl font-black leading-narrow">
-        <span>グローバルな多言語サイトへ進化させる</span>
-        <span className="nx-text-primary-600">ヘッドレスCMS</span>
+import Image from 'next/image';
+import Link from 'next/link';
+import symbol from '../assets/images/symbol.svg';
+import { RegisterButton } from '../components/RegisterButton';
+
+<div className="bg-black text-white py-2 flex justify-center items-start">
+  <div className="w-[90rem] px-4">
+    <div className="mt-24 mb-16">
+      <h1 className="text-7xl font-bold">
+        <div>グローバルな多言語サイトへ</div>
+        <div className="mt-8">進化させるヘッドレスCMS</div>
       </h1>
+      <div className="mt-10 text-xl">
+        Collectionsは、ブログ・お知らせ・通知など、Webサイトに動的な多言語コンテンツを組み込めるヘッドレスCMSです。
+      </div>
+      <div className="mt-2 text-xl">翻訳やSEO対策など、コンテンツの生成もAIがアシストします。</div>
+      <div className="mt-14">
+        <RegisterButton title={"に登録して利用を開始"} isWide={false} />
+      </div>
     </div>
-    <div className="hidden md:block mb-12">
-      <h1 className="text-7xxl font-black leading-narrow">グローバルな多言語サイトへ進化させる</h1>
-      <h1 className="text-7xxl font-black nx-text-primary-600 leading-narrow">ヘッドレスCMS</h1>
-    </div>
-    <h2 className="text-lg leading-relaxed">
-      Collections
-      は、ブログ・お知らせ・通知など、Webサイトに動的な多言語コンテンツを組み込めるヘッドレスCMSです。自動翻訳やSEO対策など、コンテンツの生成もAIがアシストします。
-    </h2>
   </div>
-  <div className="mt-4">
-    <hr />
-    <a
-      target="_blank"
-      href="https://app.collectionsdemo.live/admin/"
-      rel="dofollow"
-      className="hover:nx-text-primary-600 hover:underline"
-    >
-      <div className="flex py-5">
-        <div className="flex-auto">Demo を試す</div>
-        <div className="flex-none">↗</div>
+</div>
+<div className="py-2 flex justify-center items-start">
+  <div className="w-[90rem] px-4 py-20">
+    <div className="flex flex-col justify-center items-center">
+      <div>
+        <RegisterButton title={"に登録して利用を開始"} isWide={true} />
       </div>
-    </a>
-    <hr />
-    <a href="docs/home" className="hover:nx-text-primary-600 hover:underline">
-      <div className="flex py-5">
-        <div className="flex-auto">ドキュメント を読む</div>
-        <div className="flex-none">↗</div>
+      <div className="mt-10">
+        <Link
+          href="https://app.collectionsdemo.live/admin"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline hover:no-underline underline-offset-4"
+        >
+          <div className="flex flex-row items-center gap-2">
+            <Image src={symbol} alt="symbol" className="h-8 w-auto" />
+            <div>デモ版で操作を試したい方はコチラ</div>
+          </div>
+        </Link>
       </div>
-    </a>
-    <hr />
-    <a href="reference/api" className="hover:nx-text-primary-600 hover:underline">
-      <div className="flex py-5">
-        <div className="flex-auto">API を読む</div>
-        <div className="flex-none">↗</div>
-      </div>
-    </a>
+    </div>
+
   </div>
 </div>

@@ -4,37 +4,7 @@
     "type": "page",
     "display": "hidden",
     "theme": {
-      "layout": "full"
+      "layout": "raw"
     }
-  },
-  "privacy": {
-    "title": "privacy",
-    "type": "page",
-    "display": "hidden",
-    "theme": {
-      "layout": "full"
-    }
-  },
-  "terms": {
-    "title": "terms of service",
-    "type": "page",
-    "display": "hidden",
-    "theme": {
-      "layout": "full"
-    }
-  },
-  "docs": {
-    "title": "Docs",
-    "type": "page"
-  },
-  "reference": {
-    "title": "API",
-    "type": "page"
-  },
-  "demo": {
-    "title": "Demo ↗",
-    "type": "page",
-    "href": "https://app.collectionsdemo.live/admin/",
-    "newWindow": true
   }
 }
