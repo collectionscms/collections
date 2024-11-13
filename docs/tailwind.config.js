@@ -10,9 +10,11 @@ module.exports = {
       backgroundColor: {
         primary: '#0A85D1',
         'primary-hover': '#0C9EF8',
+        footer: '#232323',
       },
       textColor: {
         'navbar-primary': '#89C8FF',
+        'footer-heading': '#777777',
       },
     },
   },

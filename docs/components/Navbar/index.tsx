@@ -12,7 +12,7 @@ export const Navbar: React.FC = () => {
   const signUpTitle = locale === 'ja' ? '利用登録' : 'Try for free';
 
   return (
-    <div className="flex bg-black text-white py-4 pl-14 pr-6 border-b-neutral-400 border-b">
+    <div className="flex bg-black text-white py-4 pl-14 pr-6 border-b-neutral-400 border-b-[0.5px]">
       <div className="flex flex-row items-center gap-12 flex-grow">
         <Link href="/">
           <Image src={logo} alt="logo" className="w-36" />
