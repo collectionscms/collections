@@ -76,7 +76,7 @@ export const Footer: React.FC = () => {
               </Link>
             </div>
             <Link href="https://rocketa.co.jp/" target="_blank" rel="noopener noreferrer">
-              <Image src={rocketa} alt="company" className="w-48 opacity-30" />
+              <Image src={rocketa} alt="company" className="w-48 opacity-30 logo" />
             </Link>
           </div>
         </div>

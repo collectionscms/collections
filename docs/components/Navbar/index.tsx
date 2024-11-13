@@ -15,7 +15,7 @@ export const Navbar: React.FC = () => {
     <div className="flex bg-black text-white py-4 pl-14 pr-6 border-b-neutral-400 border-b-[0.5px]">
       <div className="flex flex-row items-center gap-12 flex-grow">
         <Link href="/">
-          <Image src={logo} alt="logo" className="w-36" />
+          <Image src={logo} alt="logo" className="w-36 logo" />
         </Link>
         <NavbarMenu href="https://app.collectionsdemo.live/admin/" title={demoTitle} />
         <NavbarMenu href="https://app.collections.dev/" title={signUpTitle} variant="primary" />
