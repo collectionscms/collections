@@ -34,7 +34,7 @@ export const Footer: React.FC = () => {
         </div>
         <div className="mt-14">
           <p className="font-bold text-footer-heading text-xl">SNS／SUPPORT</p>
-          <div className="flex flex-row mt-5">
+          <div className="flex flex-col md:flex-row mt-5 gap-6">
             <div className="flex flex-row gap-10 items-center flex-grow">
               <Link
                 href="https://x.com/collectionscms"
@@ -76,7 +76,7 @@ export const Footer: React.FC = () => {
               </Link>
             </div>
             <Link href="https://rocketa.co.jp/" target="_blank" rel="noopener noreferrer">
-              <Image src={rocketa} alt="company" className="w-48 opacity-30 logo" />
+              <Image src={rocketa} alt="company" className="w-36 md:w-48 opacity-30 logo" />
             </Link>
           </div>
         </div>
