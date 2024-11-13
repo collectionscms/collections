@@ -35,11 +35,24 @@ a {
   content: '';
   position: absolute;
   left: 0;
-  bottom: -0.3em;
+  bottom: -0.2em;
   width: 100%;
   height: 1px;
   background-color: currentColor;
   transition: transform 0.2s ease-in-out;
   transform: scaleX(0);
   transform-origin: center;
+}
+
+.logo {
+  mask-image: linear-gradient(60deg, black 25%, rgba(0, 0, 0, 0.2) 50%, black 75%);
+  mask-size: 400%;
+  mask-position: 0%;
+
+  &:hover {
+    mask-position: 100%;
+    transition:
+      mask-position 1s ease,
+      -webkit-mask-position 1s ease;
+  }
 }

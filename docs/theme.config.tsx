@@ -2,7 +2,7 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import { DocsThemeConfig, useConfig } from 'nextra-theme-docs';
-import { Footer } from './components/Footer';
+import { Footer } from './components/Footer/index';
 import { Navbar } from './components/Navbar/index';
 
 const defaultTitle = 'Collections';
@@ -74,13 +74,9 @@ const config: DocsThemeConfig = {
   },
   docsRepositoryBase: 'https://github.com/collectionscms/collections',
   footer: {
-    text: <Footer />,
+    component: Footer,
   },
   gitTimestamp: '',
-  i18n: [
-    { locale: 'en', text: 'English' },
-    { locale: 'ja', text: '日本語' },
-  ],
   primaryHue: {
     dark: 192,
     light: 199,
