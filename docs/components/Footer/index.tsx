@@ -19,7 +19,7 @@ export const Footer: React.FC = () => {
       <div className="w-[90rem] px-4">
         <Image src={logo} alt="logo" className="w-52" />
         <div className="flex flex-row mt-5 gap-10">
-          <FooterMenu href="https://app.collectionsdemo.live/admin/" title="About" target="_self" />
+          <FooterMenu href="/about" title="About" target="_self" />
           <FooterMenu
             href="https://app.collectionsdemo.live/admin/"
             title={demoTitle}
