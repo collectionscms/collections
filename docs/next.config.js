@@ -8,4 +8,12 @@ module.exports = withNextra({
     locales: ['en', 'ja'],
     defaultLocale: 'en',
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '*.collections.dev',
+      },
+    ],
+  },
 });

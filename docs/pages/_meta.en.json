@@ -6,5 +6,29 @@
     "theme": {
       "layout": "raw"
     }
+  },
+  "about": {
+    "title": "About",
+    "type": "page",
+    "display": "hidden",
+    "theme": {
+      "layout": "page"
+    }
+  },
+  "privacy": {
+    "title": "Privacy",
+    "type": "page",
+    "display": "hidden",
+    "theme": {
+      "layout": "full"
+    }
+  },
+  "terms": {
+    "title": "Terms",
+    "type": "page",
+    "display": "hidden",
+    "theme": {
+      "layout": "full"
+    }
   }
 }
