@@ -1,6 +1,11 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import symbol from '../assets/images/symbol.svg';
+import featureTranslate from '../assets/images/feature-translate.svg';
+import featureAi from '../assets/images/feature-ai.svg';
+import featureEditor from '../assets/images/feature-editor.svg';
+import featureEmbed from '../assets/images/feature-embed.svg';
+import embedContents from '../assets/images/embed-contents.svg';
 import { RegisterButton } from '../components/RegisterButton';
 
 <div className="bg-black text-white py-2 flex justify-center items-start">
@@ -10,11 +15,10 @@ import { RegisterButton } from '../components/RegisterButton';
         Headless CMS to make your site multilingual
       </h1>
       <div className="mt-10 text-xl">
-      Collections is a headless CMS that enables you to add multilingual content like blogs,
-      announcements, and notifications to your website,
+        Collections is a headless CMS that enables you to add multilingual content like blogs,
+        announcements, and notifications to your website,
       </div>
-      <div className="mt-2 text-xl">with AI support for content generation,
-      translation, and SEO.</div>
+      <div className="mt-2 text-xl">AI assists in optimizing multilingual SEO.</div>
       <div className="mt-14">
         <RegisterButton title="Try it for free" isWide={false} />
       </div>
@@ -24,14 +28,74 @@ import { RegisterButton } from '../components/RegisterButton';
 <div className="py-2 flex justify-center items-start">
   <div className="w-[90rem] px-4 py-20">
     <div>
-      <div className='text-subtitle'>Feature 01</div>
-      <div className='text-heading leading-narrow mt-2'>Multilingualization of website and WordPress</div>
-      <div className='text-xl leading-relaxed mt-4'>Simply write an article in your preferred language, translate it, and create multilingual content with ease. The generated content can then be embedded in both websites and WordPress.</div>
+      <div className="text-subtitle">Feature 01</div>
+      <div className="text-heading leading-narrow mt-2">
+        Multilingualization of website and WordPress
+      </div>
+      <div className="text-xl leading-relaxed mt-4">
+        Simply write a post in your preferred language, translate it, and create multilingual
+        content with ease. The generated content can then be embedded in both websites and
+        WordPress.
+      </div>
+      <Image src={embedContents} alt="embed-contents" className="h-64 mx-auto mt-9" />
     </div>
-    <div className='mt-12'>
-      <div className='text-subtitle'>Feature 02</div>
-      <div className='text-heading leading-narrow mt-2'>Leave SEO to AI Assist</div>
-      <div className='text-xl leading-relaxed mt-4'>AI automatically generates summaries of your created articles and content, allowing writers to focus solely on writing without worrying about translation or multilingual SEO.</div>
+    <div className="mt-12">
+      <div className="text-subtitle">Feature 02</div>
+      <div className="text-heading leading-narrow mt-2">
+        Leave multilingual SEO optimization to AI
+      </div>
+      <div className="text-xl leading-relaxed mt-4">
+        AI automatically generates summaries of your created posts and content, allowing writers to
+        focus solely on writing without worrying about translation or multilingual SEO.
+      </div>
+    </div>
+  </div>
+</div>
+<div className="py-2 flex justify-center items-start bg-feature w-full">
+  <div className="w-[90rem] px-4 pt-16 pb-20">
+    <div className="text-heading leading-narrow mt-2 text-feature">
+      The convenient features of Collections
+    </div>
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-12 mt-12">
+      <div className="flex flex-col gap-5">
+        <Image src={featureTranslate} alt="translate" className="h-36 mx-auto" />
+        <div className="text-feature-subtitle text-feature">
+          Translate into over 30 languages with just one click
+        </div>
+        <div className="leading-relaxed">
+          Write posts in your preferred language and translate them into over 30 languages with just
+          one click. Simply add the necessary languages to the posts you need—it's that easy!
+        </div>
+      </div>
+      <div className="flex flex-col gap-5">
+        <Image src={featureAi} alt="ai" className="h-36 mx-auto" />
+        <div className="text-feature-subtitle text-feature">
+          AI optimizes multilingual SEO effectively
+        </div>
+        <div className="leading-relaxed">
+          AI will generate the optimal summary based on the post you wrote.
+        </div>
+      </div>
+      <div className="flex flex-col gap-5">
+        <Image src={featureEditor} alt="editor" className="h-36 mx-auto" />
+        <div className="text-feature-subtitle text-feature">
+          An editor that lets you focus solely on writing
+        </div>
+        <div className="leading-relaxed">
+          With a Notion-like editor, you can write smoothly. Say goodbye to the days of drafting in
+          a notepad and copying/pasting into the CMS!
+        </div>
+      </div>
+      <div className="flex flex-col gap-5">
+        <Image src={featureEmbed} alt="embed" className="h-36 mx-auto" />
+        <div className="text-feature-subtitle text-feature">
+          Embedding content into an existing site
+        </div>
+        <div className="leading-relaxed">
+          You can easily request content in your desired language via API and embed it into your
+          existing site.
+        </div>
+      </div>
     </div>
     <div className="flex flex-col justify-center items-center mt-16">
       <div>
@@ -51,6 +115,5 @@ import { RegisterButton } from '../components/RegisterButton';
         </Link>
       </div>
     </div>
-
   </div>
 </div>
