@@ -16,7 +16,7 @@ export const Footer: React.FC = () => {
 
   return (
     <footer className="flex justify-center bg-footer text-white pt-16 pb-9">
-      <div className="w-[90rem] px-4">
+      <div className="w-[90rem] px-5 lg:px-8">
         <Image src={logo} alt="logo" className="w-52" />
         <div className="flex flex-row mt-5 gap-10">
           <FooterMenu href="/about" title="About" target="_self" />

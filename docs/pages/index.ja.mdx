@@ -9,24 +9,27 @@ import symbol from '../assets/images/symbol.svg';
 import { RegisterButton } from '../components/RegisterButton';
 
 <div className="bg-black text-white py-2 flex justify-center items-start">
-  <div className="w-[90rem] px-4">
-    <div className="mt-24 mb-16">
-      <h1 className="text-7xl font-bold">
-        <div>グローバルな多言語サイトへ</div>
-        <div className="mt-8">進化させるヘッドレスCMS</div>
+  <div className="w-full lg:w-[90rem] px-5 lg:px-8">
+    <div className="mt-7 lg:mt-20 mb-12 lg:mb-16">
+      <h1 className="text-4xl md:text-6xl font-bold">
+        <div className="leading-relaxed block md:hidden">
+          グローバルな多言語サイトへ進化させるヘッドレスCMS
+        </div>
+        <div className="leading-narrow hidden md:block">グローバルな多言語サイトへ</div>
+        <div className="leading-narrow mt-2 hidden md:block">進化させるヘッドレスCMS</div>
       </h1>
-      <div className="mt-10 text-xl leading-loose">
+      <div className="mt-10 text-xl leading-loose tracking-wider">
         Collectionsは、ブログ・お知らせ・通知など、Webサイトに動的な多言語コンテンツを組み込めるヘッドレスCMSです。
       </div>
-      <div className="mt-2 text-xl">多言語のSEO対策もAIがアシストします。</div>
-      <div className="mt-14">
+      <div className="mt-2 text-xl tracking-wider">多言語のSEO対策もAIがアシストします。</div>
+      <div className="mt-14 flex justify-center md:block">
         <RegisterButton title={'に登録して利用を開始'} isWide={false} />
       </div>
     </div>
   </div>
 </div>
 <div className="py-2 flex justify-center items-start">
-  <div className="w-[90rem] px-4 pt-16 pb-20">
+  <div className="w-full lg:w-[90rem] px-5 lg:px-8 pt-16 pb-20">
     <div>
       <div className="text-subtitle">Feature 01</div>
       <div className="text-heading leading-narrow mt-2">WebサイトやWordPressの多言語化</div>
@@ -45,7 +48,7 @@ import { RegisterButton } from '../components/RegisterButton';
   </div>
 </div>
 <div className="py-2 flex justify-center items-start bg-feature w-full">
-  <div className="w-[90rem] px-4 pt-16 pb-20">
+  <div className="w-full lg:w-[90rem] px-5 lg:px-8 pt-16 pb-20">
     <div className="text-heading leading-narrow mt-2 text-feature">Collectionsの便利な機能</div>
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-12 mt-12">
       <div className="flex flex-col gap-5">

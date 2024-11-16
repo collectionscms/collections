@@ -18,6 +18,11 @@ body {
   height: 1px;
 }
 
+.zero-h-br {
+  line-height: 0;
+  display: block;
+}
+
 a {
   transition: all 0.3s ease-in-out;
 }
