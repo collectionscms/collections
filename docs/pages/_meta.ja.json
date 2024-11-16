@@ -7,6 +7,10 @@
       "layout": "raw"
     }
   },
+  "docs": {
+    "title": "Docs",
+    "type": "page"
+  },
   "about": {
     "title": "About",
     "type": "page",

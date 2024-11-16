@@ -100,9 +100,9 @@ const getTopTitle = (locale: string) => {
 const getDefaultDescription = (locale: string) => {
   switch (locale) {
     case 'ja':
-      return 'Collections は、ブログ・お知らせ・通知など、Webサイトに動的な多言語コンテンツを組み込めるヘッドレスCMSです。翻訳やSEO対策のコンテンツ生成も、AIがアシストします。';
+      return 'Collections は、ブログ・お知らせ・通知など、Webサイトに動的な多言語コンテンツを組み込めるヘッドレスCMSです。多言語のSEO対策もAIがアシストします。';
     default:
-      return 'Collections is a headless CMS that allows you to embed dynamic multilingual content—such as blogs, announcements, and notifications—into your website.';
+      return 'Collections is a headless CMS that enables you to add multilingual content like blogs, announcements to your website. AI assists in optimizing multilingual SEO.';
   }
 };
 
