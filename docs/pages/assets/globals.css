@@ -8,6 +8,33 @@ body {
     'Helvetica', 'Meiryo';
 }
 
+.rayContainer {
+  --gradient-opacity: 0.85;
+  --ray-gradient: radial-gradient(
+    rgba(83, 196, 255, var(--gradient-opacity)) 0%,
+    rgba(43, 166, 255, 0) 100%
+  );
+  transition: opacity 0.25s linear;
+  position: fixed;
+  top: 0;
+  inset: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+.lightRay {
+  position: absolute;
+  border-radius: 100%;
+  width: 480px;
+  height: 680px;
+  transform: rotate(80deg);
+  top: -540px;
+  left: 40%;
+  filter: blur(110px);
+  z-index: 9999;
+  background-color: rgba(204, 204, 204, 0.6);
+}
+
 .copyTextarea {
   position: absolute;
   opacity: 0;
