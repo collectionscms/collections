@@ -8,6 +8,10 @@ body {
     'Helvetica', 'Meiryo';
 }
 
+.menuOpen {
+  overflow: hidden;
+}
+
 .rayContainer {
   --gradient-opacity: 0.85;
   --ray-gradient: radial-gradient(

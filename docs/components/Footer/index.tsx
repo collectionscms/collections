@@ -33,7 +33,7 @@ export const Footer: React.FC = () => {
           />
         </div>
         <div className="mt-14">
-          <p className="font-bold text-footer-heading text-xl">SNS／SUPPORT</p>
+          <div className="font-bold text-footer-heading text-xl">SNS／SUPPORT</div>
           <div className="flex flex-col md:flex-row mt-5 gap-6">
             <div className="flex flex-row gap-10 items-center flex-grow flex-wrap">
               <Link
