@@ -1,6 +1,7 @@
 import * as Tabs from '@radix-ui/react-tabs';
 import { useRouter } from 'next/router';
 import React from 'react';
+import styles from './index.module.css';
 
 export const LanguageSwitcher: React.FC = () => {
   const router = useRouter();
@@ -20,15 +21,15 @@ export const LanguageSwitcher: React.FC = () => {
 
   return (
     <Tabs.Root
-      className="language-switch"
+      className={styles.languageSwitch}
       defaultValue={locale}
       onValueChange={handleLanguageChange}
     >
-      <Tabs.List className="language-switch__list">
-        <Tabs.Trigger className="language-switch__trigger" value="en">
+      <Tabs.List className={styles.languageSwitchList}>
+        <Tabs.Trigger className={styles.languageSwitchTrigger} value="en">
           EN
         </Tabs.Trigger>
-        <Tabs.Trigger className="language-switch__trigger" value="ja">
+        <Tabs.Trigger className={styles.languageSwitchTrigger} value="ja">
           JP
         </Tabs.Trigger>
       </Tabs.List>
