@@ -77,14 +77,22 @@ const config: DocsThemeConfig = {
     component: Footer,
   },
   gitTimestamp: '',
-  primaryHue: {
-    dark: 192,
-    light: 199,
-  },
   darkMode: false,
-  primarySaturation: {
-    dark: 83,
-    light: 89,
+  nextThemes: {
+    defaultTheme: 'light',
+    forcedTheme: 'light',
+  },
+  banner: {
+    key: 'launch-to-product-hunt',
+    text: (
+      <a
+        href="https://www.producthunt.com/products/collections-dev"
+        target="_blank"
+        rel="noreferrer"
+      >
+        Launching soon on Product Hunt 🚀
+      </a>
+    ),
   },
 };
 
