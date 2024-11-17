@@ -1,11 +1,13 @@
-import './assets/redoc.css';
-import './assets/globals.css';
 import { Analytics } from '@vercel/analytics/react';
+import { BottomContactButton } from '../components/BottomContactButton';
+import './assets/globals.css';
+import './assets/redoc.css';
 
 export default function App({ Component, pageProps }) {
   return (
     <>
       <Component {...pageProps} />
+      <BottomContactButton />
       <Analytics />
     </>
   );

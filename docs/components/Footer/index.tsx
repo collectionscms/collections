@@ -15,7 +15,7 @@ export const Footer: React.FC = () => {
   const signUpTitle = locale === 'ja' ? '利用登録' : 'Try for free';
 
   return (
-    <footer className="flex justify-center bg-footer text-white pt-10 md:pt-16 pb-9">
+    <footer className="flex justify-center bg-footer text-white pt-10 md:pt-16 pb-20 sm:pb-9">
       <div className="w-[90rem] px-5 lg:px-8">
         <Image src={logo} alt="logo" className="w-52" />
         <div className="flex flex-row mt-5 gap-10">
@@ -35,7 +35,7 @@ export const Footer: React.FC = () => {
         <div className="mt-14">
           <div className="font-bold text-footer-heading text-xl">SNS／SUPPORT</div>
           <div className="flex flex-col md:flex-row mt-5 gap-6">
-            <div className="flex flex-row gap-10 items-center flex-grow flex-wrap">
+            <div className="flex flex-row gap-x-10 gap-y-4 items-center flex-grow flex-wrap">
               <Link
                 href="https://x.com/collectionscms"
                 target="_blank"
