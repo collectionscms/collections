@@ -1,28 +1,32 @@
-.language-switch {
+.languageSwitch {
   display: flex;
   flex-direction: column;
   width: 124px;
 }
 
-.language-switch__list {
+.languageSwitchList {
   display: flex;
   color: #fff;
 }
 
-.language-switch__trigger {
+.languageSwitchTrigger {
   font-family: 'Noto Sans JP';
   flex: 1;
-  padding: 8px 16px;
-  font-size: 14px;
+  padding: 10px 21px;
+  font-size: 16px;
   cursor: pointer;
   background-color: transparent;
   border: none;
-  color: #fff;
-  background-color: rgba(255, 255, 255, 0.2);
   transition: all 0.3s ease-in-out;
 }
 
-.language-switch__trigger[data-state='active'] {
+.languageSwitchTrigger[data-state='inactive'] {
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.2);
+  font-weight: normal;
+}
+
+.languageSwitchTrigger[data-state='active'] {
   background-color: #fff;
   color: #000;
   font-weight: bold;

@@ -1,0 +1,47 @@
+.hamburgerMenuBg {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 9;
+  background-color: rgba(0, 0, 0, 0.25);
+  transition: opacity 0.3s ease-out;
+  transform: translateX(100%);
+
+  &.open {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  &.close {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
+.hamburgerMenu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 300px;
+  z-index: 10;
+  background-color: #474747;
+  overflow-y: auto;
+
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+
+  transform: translateX(100%);
+  transition: transform 0.3s ease-in-out;
+
+  &.open {
+    transform: translateX(0);
+  }
+
+  &.close {
+    transform: translateX(100%);
+  }
+}

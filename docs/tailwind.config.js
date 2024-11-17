@@ -9,6 +9,7 @@ module.exports = {
       },
       fontSize: {
         'feature-subtitle': '22px',
+        'heading-sp': '32px',
         heading: '40px',
       },
       backgroundColor: {

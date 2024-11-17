@@ -15,7 +15,7 @@ export const Footer: React.FC = () => {
   const signUpTitle = locale === 'ja' ? '利用登録' : 'Try for free';
 
   return (
-    <footer className="flex justify-center bg-footer text-white pt-16 pb-9">
+    <footer className="flex justify-center bg-footer text-white pt-10 md:pt-16 pb-20 sm:pb-9">
       <div className="w-[90rem] px-5 lg:px-8">
         <Image src={logo} alt="logo" className="w-52" />
         <div className="flex flex-row mt-5 gap-10">
@@ -33,9 +33,9 @@ export const Footer: React.FC = () => {
           />
         </div>
         <div className="mt-14">
-          <p className="font-bold text-footer-heading text-xl">SNS／SUPPORT</p>
+          <div className="font-bold text-footer-heading text-xl">SNS／SUPPORT</div>
           <div className="flex flex-col md:flex-row mt-5 gap-6">
-            <div className="flex flex-row gap-10 items-center flex-grow">
+            <div className="flex flex-row gap-x-10 gap-y-4 items-center flex-grow flex-wrap">
               <Link
                 href="https://x.com/collectionscms"
                 target="_blank"
@@ -75,12 +75,25 @@ export const Footer: React.FC = () => {
                 API
               </Link>
             </div>
-            <Link href="https://rocketa.co.jp/" target="_blank" rel="noopener noreferrer">
+            <Link
+              href="https://rocketa.co.jp/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden md:block"
+            >
               <Image src={rocketa} alt="company" className="w-36 md:w-48 opacity-30 logo" />
             </Link>
           </div>
         </div>
-        <div className="mt-16 text-center">
+        <div className="mt-20 md:mt-16 text-center">
+          <Link
+            href="https://rocketa.co.jp/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="align-center inline-block md:hidden mb-5"
+          >
+            <Image src={rocketa} alt="company" className="w-36 md:w-48 opacity-30 logo" />
+          </Link>
           <p className="text-sm">
             &copy; {new Date().getFullYear()} Rocketa, Inc. All rights reserved.
           </p>
