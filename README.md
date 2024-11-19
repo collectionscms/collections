@@ -6,17 +6,17 @@
   </a>
 </p>
 
-Collections is a headless CMS that allows you to embed dynamic multilingual content—such as blogs, announcements, and notifications—into your website.
+Collections is a headless CMS with built-in multilingual support. Content created for blogs and announcements can be embedded into websites and WordPress to quickly transform them into multilingual sites.
 
-From post creation and automatic translation to AI-driven SEO optimization, we can quickly transform your existing site into a global multilingual site.
+Contents are translated into over 30 languages, and AI automatically generates multilingual SEO.
 
 ## ⭐ Why Collections Focus on multilingual?
 
-AI search has transformed the way search for information.
+Today, customer journeys begin not with keywords but with questions. Consumers expect answers across various channels—search, chat, and voice—in multiple languages, and AI delivers by recommending the most relevant content based on search intent.
 
-Instead of keywords, users now ask questions in their native language, and AI recommends the most relevant content based on search intent. Multilingual support is becoming essential for websites to connect with potential customers.
+In this "Ask AI" era, a website that cannot respond to consumer questions risks losing its value. Optimizing content for AI-driven searches has become an essential priority that can no longer be overlooked.
 
-However, this shift is also a great opportunity to attract future users!
+Collections harnesses this shift to help businesses capture global potential customers. By enabling multilingual content management and AI-powered assistance, it accelerates website globalization.
 
 <hr/>
 <h4>
