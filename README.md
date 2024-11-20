@@ -6,7 +6,7 @@
   </a>
 </p>
 
-Collections is a headless CMS with built-in multilingual support. Content created for blogs and announcements can be embedded into websites and WordPress to quickly transform them into multilingual sites.
+Collections is a headless CMS with built-in multilingual support. Content created for blogs and announcements can be embedded into websites and WordPress to quickly turn them into multilingual sites.
 
 Contents are translated into over 30 languages, and AI automatically generates multilingual SEO.
 
