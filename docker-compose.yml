@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: ./
+      args:
+        - TIPTAP_PRO_TOKEN=${TIPTAP_PRO_TOKEN}
+    environment:
+      - DATABASE_URL={DATABASE_URL}
+    container_name: app
+    tty: true
+    ports:
+      - 4000:4000
+    volumes:
+      - ./:/app
+    networks:
+      - default
+    command: sh -c "yarn start"
