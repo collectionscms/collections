@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  nginx:
+    volumes:
+      - ./docker/nginx/dev:/etc/nginx/conf.d
+      - /etc/ssl:/etc/nginx/ssl
+
+  app:
+    environment:
+      - DATABASE_URL=${DOCKER_DATABASE_URL}

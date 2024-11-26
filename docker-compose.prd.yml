@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  nginx:
+    volumes:
+      - ./docker/nginx/prd:/etc/nginx/conf.d
+
+  app:
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
