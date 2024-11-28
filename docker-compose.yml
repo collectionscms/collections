@@ -3,6 +3,7 @@ version: '3.8'
 services:
   nginx:
     image: nginx:alpine
+    platform: linux/amd64
     container_name: nginx
     ports:
       - '80:80'
@@ -12,16 +13,15 @@ services:
 
   app:
     build:
-      context: ./
-      dockerfile: ./docker/Dockerfile
+      context: .
+      dockerfile: docker/Dockerfile
       args:
         - TIPTAP_PRO_TOKEN=${TIPTAP_PRO_TOKEN}
+    platform: linux/amd64
     container_name: app
     tty: true
     ports:
       - 4000:4000
-    volumes:
-      - ./:/app
     networks:
       - custom-network
     command: sh -c "yarn start"
