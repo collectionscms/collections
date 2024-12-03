@@ -1,31 +1,15 @@
-version: '3.8'
-
 services:
-  nginx:
-    image: nginx:alpine
-    platform: linux/amd64
-    container_name: nginx
-    ports:
-      - '80:80'
-      - '443:443'
-    networks:
-      - custom-network
-
   app:
     build:
       context: .
       dockerfile: docker/Dockerfile
       args:
         - TIPTAP_PRO_TOKEN=${TIPTAP_PRO_TOKEN}
+    environment:
+      - AUTH_SECRET=${AUTH_SECRET}
     platform: linux/amd64
     container_name: app
     tty: true
     ports:
       - 4000:4000
-    networks:
-      - custom-network
     command: sh -c "yarn start"
-
-networks:
-  custom-network:
-    driver: bridge

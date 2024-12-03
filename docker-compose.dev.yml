@@ -1,5 +1,11 @@
 services:
   nginx:
+    image: nginx:alpine
+    platform: linux/amd64
+    container_name: nginx
+    ports:
+      - '80:80'
+      - '443:443'
     volumes:
       - ./docker/nginx/dev:/etc/nginx/conf.d
       - /etc/ssl:/etc/nginx/ssl
