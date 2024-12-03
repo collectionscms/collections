@@ -22,6 +22,7 @@ app.use(
       defaultSrc: ["'self'"],
       connectSrc: ["'self'", '*.amplitude.com', '*.sentry.io'],
       imgSrc: ["'self'", 'https://cdn.collections.dev'],
+      formAction: null,
     },
   })
 );
