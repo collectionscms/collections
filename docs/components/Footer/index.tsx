@@ -13,6 +13,8 @@ export const Footer: React.FC = () => {
   const { locale } = useRouter();
   const demoTitle = locale === 'ja' ? 'デモ' : 'Demo';
   const signUpTitle = locale === 'ja' ? '利用登録' : 'Try for free';
+  const terms = locale === 'ja' ? '利用規約' : 'Terms of Service';
+  const privacy = locale === 'ja' ? 'プライバシーポリシー' : 'Privacy Policy';
 
   return (
     <footer className="flex justify-center bg-footer text-white pt-10 md:pt-16 pb-20 sm:pb-9">
@@ -20,6 +22,8 @@ export const Footer: React.FC = () => {
         <Image src={logo} alt="logo" className="w-52" />
         <div className="flex flex-row mt-5 gap-10">
           <FooterMenu href="/about" title="About" target="_self" />
+          <FooterMenu href="/terms" title={terms} target="_self" />
+          <FooterMenu href="/privacy" title={privacy} target="_self" />
           <FooterMenu
             href="https://app.collectionsdemo.live/admin/"
             title={demoTitle}
