@@ -10,7 +10,7 @@ export const TemplatePage: React.FC = () => {
   return (
     <Grid container spacing={3}>
       <TemplateCard
-        coverUrl="http://cdn.collections.dev/nextjs-blog-starter.png"
+        coverUrl="https://cdn.collections.dev/nextjs-blog-starter.png"
         title="Next.js Blog Starter"
         description={t('nextjs_blog_starter_description')}
         gitHubUrl="https://github.com/collectionscms/collections/tree/main/templates/nextjs-blog-starter"

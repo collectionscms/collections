@@ -1,19 +1,15 @@
-version: '3.7'
 services:
-  postgres:
-    build: ./docker
-    restart: always
+  app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      args:
+        - TIPTAP_PRO_TOKEN=${TIPTAP_PRO_TOKEN}
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=postgres
-      - APP_USER=app
-      - APP_PASSWORD=password
-      - APP_DB=collections
+      - AUTH_SECRET=${AUTH_SECRET}
+    platform: linux/amd64
+    container_name: app
+    tty: true
     ports:
-      - '6002:5432'
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
-
-volumes:
-  postgres-data:
+      - 4000:4000
+    command: sh -c "yarn start"
