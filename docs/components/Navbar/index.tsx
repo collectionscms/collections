@@ -27,7 +27,7 @@ export const Navbar: React.FC = () => {
   };
 
   return (
-    <div className="sticky top-0 z-10 flex bg-black text-white py-4 pl-5 lg:pl-8 2xl:pl-14 pr-4 md:pr-6 border-b-neutral-400 border-b-[0.5px]">
+    <div className="sticky top-0 z-20 flex bg-black text-white py-4 pl-5 lg:pl-8 2xl:pl-14 pr-4 md:pr-6 border-b-neutral-400 border-b-[0.5px]">
       <div className="rayContainer">
         <div className="lightRay" />
       </div>
