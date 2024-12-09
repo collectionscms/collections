@@ -20,7 +20,7 @@ export const Footer: React.FC = () => {
     <footer className="flex justify-center bg-footer text-white pt-10 md:pt-16 pb-20 sm:pb-9">
       <div className="w-[90rem] px-5 lg:px-8">
         <Image src={logo} alt="logo" className="w-52" />
-        <div className="flex flex-row mt-5 gap-10">
+        <div className="flex flex-row mt-5 gap-x-10 gap-y-4 flex-wrap">
           <FooterMenu href="/about" title="About" target="_self" />
           <FooterMenu href="/terms" title={terms} target="_self" />
           <FooterMenu href="/privacy" title={privacy} target="_self" />
