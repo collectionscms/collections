@@ -22,9 +22,7 @@ export const errorHandler: ErrorRequestHandler = (
     };
   }
 
-  if (!base || base.status >= 500) {
-    Sentry.captureException(err);
-  }
+  Sentry.captureException(err);
 
   if (env.NODE_ENV === 'development') {
     base.extensions = {
