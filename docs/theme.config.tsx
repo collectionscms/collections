@@ -82,18 +82,6 @@ const config: DocsThemeConfig = {
     defaultTheme: 'light',
     forcedTheme: 'light',
   },
-  banner: {
-    key: 'launch-to-product-hunt',
-    text: (
-      <a
-        href="https://www.producthunt.com/products/collections-dev"
-        target="_blank"
-        rel="noreferrer"
-      >
-        Launching soon on Product Hunt 🚀
-      </a>
-    ),
-  },
 };
 
 const getTopTitle = (locale: string) => {
