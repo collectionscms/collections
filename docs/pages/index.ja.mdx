@@ -13,8 +13,18 @@ import { RegisterButton } from '../components/RegisterButton';
   title="お問い合わせ"
   url="https://collectionscms.notion.site/14128b1165c6801aa6fff8546d711fc9"
 />
-<div className="bg-black text-white py-2 flex justify-center items-start">
-  <div className="w-full lg:w-[90rem] px-5 lg:px-8">
+<div className="relative bg-black text-white py-2 flex justify-center items-start">
+  <video
+    autoPlay
+    muted
+    loop
+    playsInline
+    className="absolute top-0 left-0 w-full h-full object-cover z-0"
+  >
+    <source src="https://cdn.collections.dev/docs/mv.mp4" type="video/mp4" />
+  </video>
+  <div className="absolute top-0 left-0 w-full h-full bg-black opacity-[80%] z-1" />
+  <div className="relative w-full lg:w-[90rem] px-5 lg:px-8 z-1">
     <div className="mt-16 lg:mt-20 mb-12 lg:mb-16">
       <h1 className="text-4xl md:text-6xl font-bold">
         <div className="leading-relaxed block lg:hidden">
