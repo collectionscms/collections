@@ -58,7 +58,7 @@ export const multipartHandler: RequestHandler = (req, res, next) => {
         projectId,
         storage: env.STORAGE_DRIVER,
         fileName: fileName,
-        fileNameDisk: `${id}.${extension(type)}`,
+        fileNameDisk: `${projectId}/${id}.${extension(type)}`,
         fileSize: fileData.byteLength,
         type: type,
         width,

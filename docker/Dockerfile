@@ -16,6 +16,7 @@ RUN rm -f .npmrc
 COPY . .
 
 COPY env.prd .env
+RUN echo "PUBLIC_AMPLITUDE_API_KEY=${PUBLIC_PRD_AMPLITUDE_API_KEY}" >> .env
 
 RUN npx prisma generate
 
