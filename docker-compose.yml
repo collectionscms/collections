@@ -5,6 +5,7 @@ services:
       dockerfile: docker/Dockerfile
       args:
         - TIPTAP_PRO_TOKEN=${TIPTAP_PRO_TOKEN}
+        - PUBLIC_AMPLITUDE_API_KEY=${PUBLIC_PRD_AMPLITUDE_API_KEY}
     environment:
       - AUTH_SECRET=${AUTH_SECRET}
     platform: linux/amd64

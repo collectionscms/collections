@@ -11,5 +11,8 @@ services:
       - /etc/ssl:/etc/nginx/ssl
 
   app:
+    build:
+      args:
+        - PUBLIC_AMPLITUDE_API_KEY=${PUBLIC_AMPLITUDE_API_KEY}
     environment:
       - DATABASE_URL=${DOCKER_DATABASE_URL}
