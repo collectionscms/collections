@@ -3521,12 +3521,12 @@
   resolved "https://registry.yarnpkg.com/@tiptap/extension-underline/-/extension-underline-2.7.2.tgz#820dc9cacb5c23b6600be75e1bd8000b7517a4e1"
   integrity sha512-c3tPjxOusNZAlF/LG2RcTOPQrpUEKSjB9xwpEIJa/pZ59zQdivOdZGdOoCe6zqkDOT+Sh7sBoQKKwzIPi1csTQ==
 
-"@tiptap/html@2.7.2":
-  version "2.7.2"
-  resolved "https://registry.yarnpkg.com/@tiptap/html/-/html-2.7.2.tgz#179e1b4f0dec2ec1671b7ae88028f3d3e22e9f18"
-  integrity sha512-0cNjbOE5sv0RSRPzzH/iT1Hf6Tt3/FPTcTY793Z9Y2/Q0PAx3Tk+pN3a9WT2o/ulpPJ+ymUdK0OXHDro1vRMZQ==
+"@tiptap/html@2.10.3":
+  version "2.10.3"
+  resolved "https://registry.yarnpkg.com/@tiptap/html/-/html-2.10.3.tgz#64d29773fbc3d9cc46943a4f8dc4d6dd052608ef"
+  integrity sha512-ERfehdfRN8TRfZCLOWHnZDaP3tTO3+wov791p/b7vuJOKCiPHlGZ1dX72Bysvfn4F98ZLJBHKtuVLqti7qRo5w==
   dependencies:
-    zeed-dom "^0.10.11"
+    zeed-dom "^0.15.1"
 
 "@tiptap/pm@2.7.2", "@tiptap/pm@^2.7.2":
   version "2.7.2"
@@ -5930,6 +5930,11 @@ entities@^4.4.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/entities/-/entities-4.5.0.tgz#5d268ea5e7113ec74c4d033b79ea5a35a488fb48"
   integrity sha512-V0hjH4dGPh9Ao5p0MoRY6BVqtwCjhz6vI5LT8AJ55H+4g9/4vbHx1I54fS0XuclLhDHArPQCiMjDxjaL8fPxhw==
+
+entities@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/entities/-/entities-5.0.0.tgz#b2ab51fe40d995817979ec79dd621154c3c0f62b"
+  integrity sha512-BeJFvFRJddxobhvEdm5GqHzRV/X+ACeuw0/BuuxsCh1EUZcAIz8+kYmBp/LrQuloy6K1f3a0M7+IhmZ7QnkISA==
 
 env-paths@^2.2.1:
   version "2.2.1"
@@ -11980,12 +11985,13 @@ yup@1.4.0:
     toposort "^2.0.2"
     type-fest "^2.19.0"
 
-zeed-dom@^0.10.11:
-  version "0.10.11"
-  resolved "https://registry.yarnpkg.com/zeed-dom/-/zeed-dom-0.10.11.tgz#36c7ded1aa4e638794049d90d1f6b0369000c9ac"
-  integrity sha512-7ukbu6aQKx34OQ7PfUIxOuAhk2MvyZY/t4/IJsVzy76zuMzfhE74+Dbyp8SHiUJPTPkF0FflP1KVrGJ7gk9IHw==
+zeed-dom@^0.15.1:
+  version "0.15.1"
+  resolved "https://registry.yarnpkg.com/zeed-dom/-/zeed-dom-0.15.1.tgz#dceb759d8a6e7aec042701ebe6684850baaf6193"
+  integrity sha512-dtZ0aQSFyZmoJS0m06/xBN1SazUBPL5HpzlAcs/KcRW0rzadYw12deQBjeMhGKMMeGEp7bA9vmikMLaO4exBcg==
   dependencies:
     css-what "^6.1.0"
+    entities "^5.0.0"
 
 zod@3.23.8:
   version "3.23.8"
