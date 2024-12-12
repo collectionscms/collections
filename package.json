@@ -146,7 +146,7 @@
     "zod": "3.23.8"
   },
   "devDependencies": {
-    "@commitlint/cli": "19.4.0",
+    "@commitlint/cli": "19.6.0",
     "@commitlint/config-conventional": "19.5.0",
     "@faker-js/faker": "9.0.1",
     "@sentry/webpack-plugin": "2.22.6",
