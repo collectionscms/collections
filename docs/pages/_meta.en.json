@@ -24,7 +24,7 @@
     "type": "page",
     "display": "hidden",
     "theme": {
-      "layout": "full"
+      "layout": "page"
     }
   },
   "terms": {
@@ -32,7 +32,7 @@
     "type": "page",
     "display": "hidden",
     "theme": {
-      "layout": "full"
+      "layout": "page"
     }
   }
 }

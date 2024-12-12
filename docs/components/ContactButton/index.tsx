@@ -13,7 +13,7 @@ export const ContactButton: React.FC<Props> = ({ title, url }) => {
       href={url}
       target="_blank"
       rel="noopener noreferrer"
-      className="absolute inline-flex justify-center items-center rounded-full py-4 px-5 sm:px-10 leading-none sm:leading-snug bg-white text-black top-20 sm:top-24 right-4 sm:right-6 z-1 hover:bg-white/80"
+      className="absolute inline-flex justify-center items-center rounded-full py-4 px-5 sm:px-10 leading-none sm:leading-snug bg-white text-black top-20 sm:top-24 right-4 sm:right-6 z-10 hover:bg-white/80"
     >
       <div className="flex flex-row items-center">
         <div className="text-md">{title}</div>
