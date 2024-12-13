@@ -94,7 +94,7 @@
     "cors": "2.8.5",
     "css-loader": "7.1.2",
     "dayjs": "1.11.13",
-    "dotenv": "16.4.5",
+    "dotenv": "16.4.7",
     "express": "4.21.2",
     "fs-extra": "11.2.0",
     "helmet": "7.1.0",
