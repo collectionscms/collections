@@ -19,7 +19,7 @@ type Props = {
 export const HamburgerMenu: React.FC<Props> = ({ open, close }) => {
   const { locale } = useRouter();
   const demoTitle = locale === 'ja' ? 'デモ' : 'Demo';
-  const signUpTitle = locale === 'ja' ? '利用登録' : 'Try for free';
+  const signUpTitle = locale === 'ja' ? '利用開始' : 'Try for free';
 
   return (
     <>
