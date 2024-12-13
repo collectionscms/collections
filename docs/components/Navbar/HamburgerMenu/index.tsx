@@ -19,7 +19,7 @@ type Props = {
 export const HamburgerMenu: React.FC<Props> = ({ open, close }) => {
   const { locale } = useRouter();
   const demoTitle = locale === 'ja' ? 'デモ' : 'Demo';
-  const signUpTitle = locale === 'ja' ? '利用登録' : 'Try for free';
+  const signUpTitle = locale === 'ja' ? '利用開始' : 'Try for free';
 
   return (
     <>
@@ -31,6 +31,10 @@ export const HamburgerMenu: React.FC<Props> = ({ open, close }) => {
         <div className="p-5 flex flex-col gap-5">
           <Image src={logo} alt="logo" className="w-36 logo" />
           <LanguageSwitcher />
+          <hr />
+          <Link href="/about" onClick={close}>
+            About
+          </Link>
           <hr />
           <NavbarMenu href="https://app.collectionsdemo.live/admin/" title={demoTitle} />
           <hr />
