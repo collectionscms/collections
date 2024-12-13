@@ -32,6 +32,10 @@ export const HamburgerMenu: React.FC<Props> = ({ open, close }) => {
           <Image src={logo} alt="logo" className="w-36 logo" />
           <LanguageSwitcher />
           <hr />
+          <Link href="/about" onClick={close}>
+            About
+          </Link>
+          <hr />
           <NavbarMenu href="https://app.collectionsdemo.live/admin/" title={demoTitle} />
           <hr />
           <NavbarMenu href="https://app.collections.dev/" title={signUpTitle} variant="primary" />
