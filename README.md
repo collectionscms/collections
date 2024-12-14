@@ -12,11 +12,10 @@ Contents are translated into over 30 languages, and AI automatically generates m
 
 ## ⭐ Why Collections Focus on multilingual?
 
-Today, customer journeys begin not with keywords but with questions. Consumers expect answers across various channels—search, chat, and voice—in multiple languages, and AI delivers by recommending the most relevant content based on search intent.
+In the era of "Ask AI," keywords are becoming less relevant. What matters most are websites that provide clear answers to consumers' questions in their native language.
 
-In this "Ask AI" era, a website that cannot respond to consumer questions risks losing its value. Optimizing content for AI-driven searches has become an essential priority that can no longer be overlooked.
-
-Collections harnesses this shift to help businesses capture global potential customers. By enabling multilingual content management and AI-powered assistance, it accelerates website globalization.
+Collections, a multilingual CMS, streamlines and accelerates the globalization of existing websites with greater speed and simplicity. Moving forward, it will continue to evolve as a CMS that aligns with the
+advancements in AI-driven search.
 
 <hr/>
 <h4>
