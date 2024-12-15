@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "next dev -p 8000",
+    "postbuild": "next-sitemap --config next-sitemap.config.mjs",
     "build": "next build",
     "start": "next start -p 8000"
   },
@@ -16,6 +17,7 @@
     "lucide-react": "^0.454.0",
     "mobx": "^6.10.2",
     "next": "^13.0.6",
+    "next-sitemap": "^4.2.3",
     "nextra": "^2.13.2",
     "nextra-theme-docs": "^2.13.2",
     "react": "^18.2.0",

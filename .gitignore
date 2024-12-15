@@ -32,3 +32,9 @@ uploads/
 
 # Coverage
 coverage
+
+### docs
+
+# sitemap
+docs/public/robots.txt
+docs/public/sitemap*.xml

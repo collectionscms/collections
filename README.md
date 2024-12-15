@@ -23,7 +23,7 @@ advancements in AI-driven search.
 </h4>
 <hr/>
 
-### Features
+## Features
 
 - 🪄 SEO by AI
 - 🌐 Multilingual content
