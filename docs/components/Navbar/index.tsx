@@ -8,6 +8,7 @@ import { LanguageSwitcher } from '../LanguageSwitcher';
 import { NavbarMenu } from './NavbarMenu';
 import { AlignJustify } from 'lucide-react';
 import { HamburgerMenu } from './HamburgerMenu';
+import github from '../../assets/images/github.svg';
 
 export const Navbar: React.FC = () => {
   const { locale } = useRouter();
@@ -39,6 +40,16 @@ export const Navbar: React.FC = () => {
           <NavbarMenu href="https://app.collectionsdemo.live/admin/" title={demoTitle} />
           <NavbarMenu href="https://app.collections.dev/" title={signUpTitle} variant="primary" />
         </div>
+      </div>
+      <div className="hidden md:flex items-center mr-6">
+        <Link
+          href="https://github.com/collectionscms/collections"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="link-underline after:-bottom-2"
+        >
+          <Image src={github} alt="discord" className="h-6 w-fit" />
+        </Link>
       </div>
       <div className="hidden sm:block">
         <LanguageSwitcher />
