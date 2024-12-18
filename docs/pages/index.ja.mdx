@@ -5,7 +5,7 @@ import featureAi from '../assets/images/feature-ai.svg';
 import featureEditor from '../assets/images/feature-editor.svg';
 import featureEmbed from '../assets/images/feature-embed.svg';
 import featureTranslate from '../assets/images/feature-translate.svg';
-import hosting from '../assets/images/hosting.svg';
+import oss from '../assets/images/oss.svg';
 import symbol from '../assets/images/symbol.svg';
 import { ContactButton } from '../components/ContactButton';
 import { RegisterButton } from '../components/RegisterButton';
@@ -38,7 +38,7 @@ import { RegisterButton } from '../components/RegisterButton';
         Collectionsは、ブログ・お知らせ・通知など、Webサイトに動的な多言語コンテンツを組み込めるヘッドレスCMSです。
       </div>
       <div className="text-xl leading-loose tracking-wider">
-        多言語のSEO対策もAIがアシストします。
+        SEOも記事にあわせてAIが最適な要約を作成します。
       </div>
       <div className="mt-7 md:mt-14 flex justify-center md:block">
         <div className='flex flex-col md:flex-row items-center gap-4 md:gap-8'>
@@ -117,17 +117,12 @@ import { RegisterButton } from '../components/RegisterButton';
         </div>
       </div>
       <div className="flex flex-col gap-5">
-        <Image src={hosting} alt="editor" className="h-36 mx-auto" />
+        <Image src={oss} alt="editor" className="h-36 mx-auto" />
         <div className="text-xl md:text-feature-subtitle text-feature">
-          お好みの環境にセルフホスト
+          オープンソースプラットフォーム
         </div>
         <div className="leading-relaxed">
-          <Link
-            href="https://github.com/collectionscms/collections"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline hover:no-underline underline-offset-4"
-          >オープンソースとして公開</Link>しているため、ご自身のサーバーにセルフホストすることも可能です。
+          オープンソースとして公開しているため、お好みの環境にセルフホストすることも可能です。
         </div>
       </div>
     </div>
