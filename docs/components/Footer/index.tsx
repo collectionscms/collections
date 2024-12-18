@@ -6,6 +6,7 @@ import discord from '../../assets/images/discord.svg';
 import github from '../../assets/images/github.svg';
 import logo from '../../assets/images/logo.svg';
 import rocketa from '../../assets/images/rocketa.svg';
+import zenn from '../../assets/images/zenn.svg';
 import x from '../../assets/images/x.svg';
 import { FooterMenu } from './FooterMenu';
 
@@ -49,20 +50,20 @@ export const Footer: React.FC = () => {
                 <Image src={x} alt="x" className="h-5 w-fit" />
               </Link>
               <Link
+                href="https://zenn.dev/p/collections"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="link-underline after:-bottom-2"
+              >
+                <Image src={zenn} alt="zenn" className="h-5 w-fit" />
+              </Link>
+              <Link
                 href="https://discord.gg/a6FYDkV3Vk"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="link-underline after:-bottom-2"
               >
                 <Image src={discord} alt="discord" className="h-5 w-fit" />
-              </Link>
-              <Link
-                href="https://blog.collections.dev/"
-                className="link-underline"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Blog
               </Link>
               <Link
                 href="https://github.com/collectionscms/collections"
