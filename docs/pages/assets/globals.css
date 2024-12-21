@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --nextra-primary-hue: 202deg;
+}
+
 html,
 body {
   font-family: 'Noto Sans', 'Noto Sans JP', '-apple-system', 'system-ui', 'sans-serif', 'Roboto',
