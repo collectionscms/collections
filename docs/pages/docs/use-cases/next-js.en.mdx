@@ -1,0 +1,103 @@
+---
+title: 'Integration with Next.js app'
+---
+
+import { Callout, Steps } from 'nextra/components';
+import { Image } from '../../../components/Image';
+
+# Integration with Next.js app
+
+> A guide to retrieving content created with Collections using the App Router in Next.js.
+
+We’ve published a blog template that integrates the Next.js Blog Starter Kit with Collections on [GitHub](https://github.com/collectionscms/collections/tree/main/templates/nextjs-blog-starter). Feel free to use it as a reference for your implementation.
+
+<Steps>
+### Create and publish posts in Collections
+
+This time, create a post with both English and Japanese versions.
+
+<Image imageUrl="https://cdn.collections.dev/docs/embed-wp/content-en.png" />
+
+### Confirm that you can retrieve the post you created in preview
+
+Once published, make sure you can retrieve the posts with the API preview.
+
+<Image imageUrl="https://cdn.collections.dev/docs/embed-wp/preview-api.png" />
+
+If you receive a response like this, it means the publication status was successfully updated.
+
+```bash
+{
+  "posts": [
+    {
+      "id": "94a79a37-0d3f-42a9-9edc-3246e925db64",
+      "contents": [
+        {
+          "id": "61b260d3-4b62-4ad5-b874-ab2d10cbabbe",
+          "slug": "090045d259",
+          "title": "Website renewed!! 🎉",
+          "subtitle": null,
+          "body": "You can visit if you like!\n\nhttps://collections.dev",
+          "bodyHtml": "<p>You can visit if you like!</p><p><a target=\"_blank\" rel=\"noopener noreferrer nofollow\" class=\"link\" href=\"https://collections.dev/ja\">https://collections.dev</a></p>",
+          ...
+        }
+      ]
+    }
+  ]
+}
+
+```
+
+### Add the code to fetch the list of articles
+
+```js filename="api.ts"
+const apiOrigin = process.env.COLLECTIONS_API_ORIGIN;
+const apiKey = process.env.COLLECTIONS_API_KEY;
+
+export async function getAllPosts(revalidate: number): Promise<Post[]> {
+  const res = await fetch(`${apiOrigin}/api/v1/posts`, {
+    next: { revalidate },
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+    },
+  });
+  const data = await res.json();
+  return data?.posts || [];
+}
+```
+
+### Display the list of articles on the page
+
+```tsx filename="pages/index.tsx"
+export default async function Index({ params: { lang } }: { params: { lang: Locale } }) {
+  const posts = await getAllPosts(revalidate);
+
+  return (
+    <main>
+      {posts.map((post) => {
+        const languageContent = post.contents.find((content) => content.language === lang);
+        return (
+          <PostPreview
+            key={languageContent.slug}
+            title={languageContent.title}
+            coverUrl={languageContent.coverUrl}
+            publishedAt={languageContent.publishedAt}
+            author={languageContent.author}
+            slug={languageContent.slug}
+            subtitle={languageContent.subtitle}
+            lang={lang}
+          />
+        );
+      })}
+    </main>
+  );
+}
+```
+
+### Preview to confirm
+
+Preview the article, and if the content created in Collections is displayed, you’ve successfully set it up!
+
+<Image imageUrl="https://cdn.collections.dev/docs/next-js/preview-content-en.png" />
+
+</Steps>

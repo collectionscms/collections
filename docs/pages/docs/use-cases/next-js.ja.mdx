@@ -1,0 +1,103 @@
+---
+title: 'Next.jsアプリとの統合'
+---
+
+import { Callout, Steps } from 'nextra/components';
+import { Image } from '../../../components/Image';
+
+# Next.jsアプリとの統合
+
+> Next.js の App Router で Collections で作成したコンテンツを取得するガイドです。
+
+Next.js Blog Starter Kit と Collections を統合したブログテンプレートを [GitHubに公開](https://github.com/collectionscms/collections/tree/main/templates/nextjs-blog-starter) しています。こちらも実装時の参考にしてください。
+
+<Steps>
+### Collections で記事を作成し公開する
+
+今回は、このような記事を作成します。
+
+<Image imageUrl="https://cdn.collections.dev/docs/embed-wp/content-jp.png" />
+
+### プレビューで作成した記事が取得できることを確認
+
+公開したら API プレビューで記事が取得できることを確認しておきましょう。
+
+<Image imageUrl="https://cdn.collections.dev/docs/embed-wp/preview-api.png" />
+
+このようなレスポンスが返ってくればOK。公開ステータスは正しく更新されています。
+
+```bash
+{
+  "posts": [
+    {
+      "id": "94a79a37-0d3f-42a9-9edc-3246e925db64",
+      "contents": [
+        {
+          "id": "5245b61c-01a4-49b4-857e-72b99c20902e",
+          "slug": "f10d3c61c2",
+          "title": "サイトをリニューアルしました🎉",
+          "subtitle": null,
+          "body": "よかったら訪ねてみてください！\n\nhttps://collections.dev",
+          "bodyHtml": "<p>よかったら訪ねてみてください！</p><p><a target=\"_blank\" rel=\"noopener noreferrer nofollow\" class=\"link\" href=\"https://collections.dev/ja\">https://collections.dev</a></p>",
+          ...
+        }
+      ]
+    }
+  ]
+}
+
+```
+
+### 記事一覧を取得するコードを追加する
+
+```js filename="api.ts"
+const apiOrigin = process.env.COLLECTIONS_API_ORIGIN;
+const apiKey = process.env.COLLECTIONS_API_KEY;
+
+export async function getAllPosts(revalidate: number): Promise<Post[]> {
+  const res = await fetch(`${apiOrigin}/api/v1/posts`, {
+    next: { revalidate },
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+    },
+  });
+  const data = await res.json();
+  return data?.posts || [];
+}
+```
+
+### ページに記事一覧を表示する
+
+```tsx filename="pages/index.tsx"
+export default async function Index({ params: { lang } }: { params: { lang: Locale } }) {
+  const posts = await getAllPosts(revalidate);
+
+  return (
+    <main>
+      {posts.map((post) => {
+        const languageContent = post.contents.find((content) => content.language === lang);
+        return (
+          <PostPreview
+            key={languageContent.slug}
+            title={languageContent.title}
+            coverUrl={languageContent.coverUrl}
+            publishedAt={languageContent.publishedAt}
+            author={languageContent.author}
+            slug={languageContent.slug}
+            subtitle={languageContent.subtitle}
+            lang={lang}
+          />
+        );
+      })}
+    </main>
+  );
+}
+```
+
+### プレビューして確認する
+
+記事をプレビューし Collections で作成した記事が表示されたら成功です！
+
+<Image imageUrl="https://cdn.collections.dev/docs/next-js/preview-content-ja.png" />
+
+</Steps>
