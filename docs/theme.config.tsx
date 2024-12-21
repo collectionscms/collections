@@ -87,9 +87,9 @@ const config: DocsThemeConfig = {
 const getTopTitle = (locale: string) => {
   switch (locale) {
     case 'ja':
-      return 'Collections - 翻訳内蔵の多言語ヘッドレスCMS';
+      return 'Collections - AI翻訳内蔵の多言語ヘッドレスCMS';
     default:
-      return 'Collections - Multilingual headless CMS with built-in translation';
+      return 'Collections - Multilingual headless CMS with built-in AI translation';
   }
 };
 
