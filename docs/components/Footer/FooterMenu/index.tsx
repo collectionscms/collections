@@ -15,9 +15,11 @@ export const FooterMenu: React.FC<Props> = ({ title, href, target, variant = 'de
       href={href}
       target={target}
       rel={target === '_blank' ? 'noopener noreferrer' : ''}
-      className={`flex flex-row items-center ${variant === 'primary' ? 'text-navbar-primary' : 'text-white'} link-underline`}
+      className={`flex flex-row items-center ${variant === 'primary' ? 'text-navbar-primary' : 'text-white'}`}
     >
-      {title}
+      <div className="inline-block bg-underline duration-600 bg-no-repeat pb-0.5 ease-underline bg-[100%_calc(100%_-_0.06em)] bg-underline-size hover:bg-[0%_calc(100%_-_0.06em)] transition-all">
+        {title}
+      </div>
     </Link>
   );
 };

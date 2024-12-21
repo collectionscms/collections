@@ -1,3 +1,4 @@
+import { ChevronRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import embedContentsJa from '../assets/images/embed-contents-ja.svg';
@@ -55,6 +56,13 @@ import { RegisterButton } from '../components/RegisterButton';
       <div className="text-heading-sp md:text-heading leading-narrow mt-2">Webサイトの多言語化</div>
       <div className="text-md md:text-xl leading-relaxed mt-4">
         得意な言語で記事を書き、翻訳するだけで簡単に多言語コンテンツを作成できます。作成したコンテンツは、Webサイトに埋め込むことができるため、サイト移行を伴わず多言語化できるのがヘッドレスの大きな特徴です。
+      </div>
+      <div className="mt-4">
+        <Link href="/docs/use-cases/embed-wordpress">
+          <div className="inline-block bg-underline duration-600 bg-no-repeat pb-0.5 ease-underline bg-[100%_calc(100%_-_0.06em)] bg-underline-size hover:bg-[0%_calc(100%_-_0.06em)] transition-all">
+            さらに詳しく
+          </div>
+        </Link>
       </div>
       <Image src={embedContentsJa} alt="embed-contents" className="h-64 mx-auto mt-9" />
     </div>
@@ -139,11 +147,12 @@ import { RegisterButton } from '../components/RegisterButton';
           href="https://app.collectionsdemo.live/admin"
           target="_blank"
           rel="noopener noreferrer"
-          className="underline hover:no-underline underline-offset-4"
         >
           <div className="flex flex-row items-center gap-2">
             <Image src={symbol} alt="symbol" className="h-8 w-auto" />
-            <div>デモ版で操作感を試したい方はコチラ</div>
+            <div className="inline-block bg-underline duration-600 bg-no-repeat pb-0.5 ease-underline bg-[100%_calc(100%_-_0.06em)] bg-underline-size hover:bg-[0%_calc(100%_-_0.06em)] transition-all">
+              デモ版で操作感を試したい方はコチラ
+            </div>
           </div>
         </Link>
       </div>
