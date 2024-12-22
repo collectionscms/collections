@@ -13,7 +13,7 @@ import { FooterMenu } from './FooterMenu';
 export const Footer: React.FC = () => {
   const { locale } = useRouter();
   const demoTitle = locale === 'ja' ? 'デモ' : 'Demo';
-  const signUpTitle = locale === 'ja' ? '利用開始' : 'Try for free';
+  const signUpTitle = locale === 'ja' ? '無料ではじめる' : 'Try for free';
   const terms = locale === 'ja' ? '利用規約' : 'Terms of Service';
   const privacy = locale === 'ja' ? 'プライバシーポリシー' : 'Privacy Policy';
 

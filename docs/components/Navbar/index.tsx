@@ -13,7 +13,7 @@ import github from '../../assets/images/github.svg';
 export const Navbar: React.FC = () => {
   const { locale } = useRouter();
   const demoTitle = locale === 'ja' ? 'デモ' : 'Demo';
-  const signUpTitle = locale === 'ja' ? '利用開始' : 'Try for free';
+  const signUpTitle = locale === 'ja' ? '無料ではじめる' : 'Try for free';
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
