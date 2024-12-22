@@ -38,7 +38,11 @@ export const Navbar: React.FC = () => {
         </Link>
         <div className="hidden sm:flex flex-row items-center gap-12">
           <NavbarMenu href="https://app.collectionsdemo.live/admin/" title={demoTitle} />
-          <NavbarMenu href="https://app.collections.dev/" title={signUpTitle} variant="primary" />
+          <NavbarMenu
+            href="https://app.collections.dev/admin/auth/login"
+            title={signUpTitle}
+            variant="primary"
+          />
         </div>
       </div>
       <div className="hidden md:flex items-center mr-6">

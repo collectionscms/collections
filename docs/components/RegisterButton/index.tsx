@@ -12,7 +12,7 @@ type Props = {
 export const RegisterButton: React.FC<Props> = ({ title, isWide }) => {
   return (
     <Link
-      href="https://app.collections.dev/"
+      href="https://app.collections.dev/admin/auth/login"
       target="_blank"
       rel="noopener noreferrer"
       className={`bg-primary hover:bg-primary-hover inline-block text-white py-5 rounded-full ${isWide ? 'px-6 md:px-40' : 'px-6 md:px-8'}`}
