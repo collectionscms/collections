@@ -238,6 +238,8 @@ model Tag {
   projectId   String       @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
   name        String       @db.VarChar(255)
   contentTags ContentTag[]
+
+  @@unique([projectId, name])
 }
 
 model ContentTag {
