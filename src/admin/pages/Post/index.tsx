@@ -229,7 +229,13 @@ export const PostPageImpl: React.FC = () => {
         title={<></>}
         secondary={
           <Stack direction="row" alignItems="center" spacing={1}>
-            <ApiPreview path="posts" apiKeys={apiKeys} />
+            <ApiPreview
+              path="posts"
+              apiKeys={apiKeys}
+              buttonProps={{
+                color: 'secondary',
+              }}
+            />
             {hasPermission('savePost') && <CreateNewButton onClick={handleCreatePost} />}
           </Stack>
         }

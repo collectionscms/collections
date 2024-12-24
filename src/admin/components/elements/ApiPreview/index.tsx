@@ -4,6 +4,7 @@ import {
   Button,
   Drawer,
   FormControl,
+  IconButtonProps,
   Link,
   MenuItem,
   Select,
@@ -22,6 +23,7 @@ import { useTranslation } from 'react-i18next';
 import { IconButton } from '../../../@extended/components/IconButton/index.js';
 import { MainCard } from '../../../@extended/components/MainCard/index.js';
 import { SyntaxHighlighter } from '../../../@extended/components/SyntaxHighlighter/index.js';
+import { ButtonVariantProps, IconButtonShapeProps } from '../../../@extended/types/extended.js';
 import { ScrollBar } from '../../../components/elements/ScrollBar/index.js';
 import {
   FormValues,
@@ -34,9 +36,10 @@ import { TabPanel } from '../TabPanel/index.js';
 type Props = {
   path: string;
   apiKeys: ApiKey[];
+  buttonProps: IconButtonProps & { shape?: IconButtonShapeProps; variant?: ButtonVariantProps };
 };
 
-export const ApiPreview: React.FC<Props> = ({ path, apiKeys }) => {
+export const ApiPreview: React.FC<Props> = ({ path, buttonProps, apiKeys }) => {
   const { hasPermission } = useAuth();
   const [open, setOpen] = useState(false);
   const [tabIndex] = useState(0);
@@ -216,7 +219,7 @@ export const ApiPreview: React.FC<Props> = ({ path, apiKeys }) => {
 
       {/* Button */}
       <Tooltip title={t('api_preview')} arrow placement="top">
-        <IconButton color="secondary" onClick={toggleDrawer(true)}>
+        <IconButton {...buttonProps} onClick={toggleDrawer(true)}>
           <Icon name="SendHorizontal" size={18} />
         </IconButton>
       </Tooltip>
