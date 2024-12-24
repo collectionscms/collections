@@ -4,7 +4,12 @@ import { getLanguageCodeType, LanguageCode } from '../../../constants/languages.
 import { env } from '../../../env.js';
 import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
 import { UnexpectedException } from '../../../exceptions/unexpected.js';
-import { PublishedContent, RevisedContent, StatusHistory } from '../../../types/index.js';
+import {
+  PublishedContent,
+  PublishedListContent,
+  RevisedContent,
+  StatusHistory,
+} from '../../../types/index.js';
 import { ContentRevisionEntity } from '../contentRevision/contentRevision.entity.js';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 import { ProjectEntity } from '../project/project.entity.js';
@@ -442,9 +447,25 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
   }
 
   /**
-   * Returns published content results for external use.
-   * @param content
+   * Returns published list content results for external use.
    * @param createdBy
+   * @returns
+   */
+  toPublishedListContentResponse(createdBy: UserEntity): PublishedListContent {
+    if (!this.props.publishedAt) {
+      throw new RecordNotFoundException('record_not_found');
+    }
+
+    return {
+      ...this.toCommonPublishedContentResponse(createdBy),
+      publishedAt: this.props.publishedAt as Date,
+    };
+  }
+
+  /**
+   * Returns published content results for external use.
+   * @param createdBy
+   * @param tags
    * @returns
    */
   toPublishedContentResponse(createdBy: UserEntity, tags: TagEntity[]): PublishedContent {
@@ -452,6 +473,17 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
       throw new RecordNotFoundException('record_not_found');
     }
 
+    return {
+      ...this.toCommonPublishedContentResponse(createdBy),
+      publishedAt: this.props.publishedAt as Date,
+      tags: tags.map((tag) => ({
+        id: tag.id,
+        name: tag.name,
+      })),
+    };
+  }
+
+  private toCommonPublishedContentResponse(createdBy: UserEntity) {
     return {
       id: this.props.id,
       slug: this.props.slug,
@@ -471,10 +503,6 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
         name: createdBy.name,
         avatarUrl: createdBy.avatarUrl,
       },
-      tags: tags.map((tag) => ({
-        id: tag.id,
-        name: tag.name,
-      })),
     };
   }
 }
