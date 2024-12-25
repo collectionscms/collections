@@ -4,6 +4,7 @@ import { UnexpectedException } from '../../../exceptions/unexpected.js';
 import {
   LocalizedContentItem,
   PublishedContent,
+  PublishedListContent,
   PublishedPost,
   SourceLanguagePostItem,
   StatusHistory,
@@ -162,7 +163,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       content: ContentEntity;
       createdBy: UserEntity;
     }[]
-  ): { [language: string]: PublishedContent } {
+  ): { [language: string]: PublishedListContent } {
     return contents.reduce(
       (acc, c) => {
         const content = c.content;
@@ -193,7 +194,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
 
         return acc;
       },
-      {} as { [language: string]: PublishedContent }
+      {} as { [language: string]: PublishedListContent }
     );
   }
 }

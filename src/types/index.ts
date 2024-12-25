@@ -117,7 +117,7 @@ export type PublishedContent = {
 
 export type PublishedPost = {
   id: string;
-  contents: PublishedContent[];
+  contents: PublishedListContent[];
 };
 
 export type UploadFile = {
