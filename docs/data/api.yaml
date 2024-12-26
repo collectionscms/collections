@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 1.0.1
+  version: 2.1.0
   title: Collections API
   description: Collections API
 paths:
