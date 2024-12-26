@@ -87,7 +87,7 @@ export type RevisedContent = {
   tags: Tag[];
 };
 
-export type PublishedContent = {
+export type PublishedListContent = {
   id: string;
   slug: string;
   title: string;
@@ -106,15 +106,18 @@ export type PublishedContent = {
     name: string;
     avatarUrl: string | null;
   };
-  tags?: {
+};
+
+export type PublishedContent = {
+  tags: {
     id: string;
     name: string;
   }[];
-};
+} & PublishedListContent;
 
 export type PublishedPost = {
   id: string;
-  contents: PublishedContent[];
+  contents: PublishedListContent[];
 };
 
 export type UploadFile = {
