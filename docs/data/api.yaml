@@ -71,7 +71,33 @@ paths:
                   content:
                     $ref: '#/components/schemas/contentResponse'
       security:
-        - bearerAuth: []
+        - apiKeyAuth: []
+
+  ## #####################################
+  ## Tags
+  ## #####################################
+  /api/v1/tags/{tagName}/contents:
+    get:
+      summary: Get tag contents
+      description: Returns a list of contents with the tag.
+      operationId: getTagContents
+      parameters:
+        - $ref: '#/components/parameters/tagName'
+        - $ref: '#/components/parameters/language'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  contents:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/listContentResponse'
+
+      security:
         - apiKeyAuth: []
 
 components:
@@ -95,6 +121,14 @@ components:
       in: path
       description: Slug
       example: 'my-first-post'
+      required: true
+      schema:
+        type: string
+    tagName:
+      name: tagName
+      in: path
+      description: Tag name
+      example: 'seo'
       required: true
       schema:
         type: string
@@ -207,61 +241,14 @@ components:
         contents:
           type: array
           items:
-            $ref: '#/components/schemas/postListContentResponse'
-
-    ## #####################################
-    ## Post list content
-    ## #####################################
-    postListContentResponse:
-      type: object
-      description: Multilingual content
-      required:
-        - id
-        - slug
-        - title
-        - body
-        - bodyHtml
-        - status
-        - language
-        - version
-        - publishedAt
-        - author
-      properties:
-        id:
-          $ref: '#/components/schemas/id'
-        slug:
-          $ref: '#/components/schemas/slug'
-        title:
-          $ref: '#/components/schemas/title'
-        subtitle:
-          $ref: '#/components/schemas/subtitle'
-        body:
-          $ref: '#/components/schemas/body'
-        bodyHtml:
-          $ref: '#/components/schemas/bodyHtml'
-        status:
-          $ref: '#/components/schemas/status'
-        language:
-          $ref: '#/components/schemas/language'
-        version:
-          $ref: '#/components/schemas/version'
-        coverUrl:
-          $ref: '#/components/schemas/coverUrl'
-        metaTitle:
-          $ref: '#/components/schemas/metaTitle'
-        metaDescription:
-          $ref: '#/components/schemas/metaDescription'
-        publishedAt:
-          $ref: '#/components/schemas/publishedAt'
-        author:
-          $ref: '#/components/schemas/author'
+            $ref: '#/components/schemas/listContentResponse'
 
     ## #####################################
     ## Content
     ## #####################################
     contentResponse:
       type: object
-      description: Multilingual content
+      description: Content
       required:
         - id
         - slug
@@ -305,3 +292,47 @@ components:
           $ref: '#/components/schemas/author'
         tags:
           $ref: '#/components/schemas/tags'
+
+    listContentResponse:
+      type: object
+      description: List content
+      required:
+        - id
+        - slug
+        - title
+        - body
+        - bodyHtml
+        - status
+        - language
+        - version
+        - publishedAt
+        - author
+      properties:
+        id:
+          $ref: '#/components/schemas/id'
+        slug:
+          $ref: '#/components/schemas/slug'
+        title:
+          $ref: '#/components/schemas/title'
+        subtitle:
+          $ref: '#/components/schemas/subtitle'
+        body:
+          $ref: '#/components/schemas/body'
+        bodyHtml:
+          $ref: '#/components/schemas/bodyHtml'
+        status:
+          $ref: '#/components/schemas/status'
+        language:
+          $ref: '#/components/schemas/language'
+        version:
+          $ref: '#/components/schemas/version'
+        coverUrl:
+          $ref: '#/components/schemas/coverUrl'
+        metaTitle:
+          $ref: '#/components/schemas/metaTitle'
+        metaDescription:
+          $ref: '#/components/schemas/metaDescription'
+        publishedAt:
+          $ref: '#/components/schemas/publishedAt'
+        author:
+          $ref: '#/components/schemas/author'
