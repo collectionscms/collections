@@ -25,7 +25,9 @@ export class GetTagPublishedListContentsUseCase {
       this.prisma,
       tag.id
     );
-    const filteredRecords = records.filter((record) => record.content.language === language);
+    const filteredRecords = language
+      ? records.filter((record) => record.content.language === language)
+      : records;
 
     return filteredRecords
       .map((record) => record.content.toPublishedListContentResponse(record.createdBy))
