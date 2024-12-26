@@ -21,7 +21,7 @@ describe('GetTagPublishedListContentsUseCase', () => {
 
   it('should return published list contents for a given tag', async () => {
     const records = await useCase.execute({
-      name: 'tag',
+      tagName: 'tag',
       projectId,
     });
 
@@ -43,7 +43,7 @@ describe('GetTagPublishedListContentsUseCase', () => {
       ]);
 
     const records = await useCase.execute({
-      name: 'tag',
+      tagName: 'tag',
       projectId,
       language: 'en-us',
     });
@@ -58,7 +58,7 @@ describe('GetTagPublishedListContentsUseCase', () => {
 
     await expect(
       useCase.execute({
-        name: 'tag',
+        tagName: 'tag',
         projectId,
       })
     ).rejects.toThrow();

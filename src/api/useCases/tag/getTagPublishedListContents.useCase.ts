@@ -14,9 +14,9 @@ export class GetTagPublishedListContentsUseCase {
 
   async execute({
     language,
-    name,
+    tagName,
   }: GetTagPublishedListContentsUseCaseSchemaType): Promise<PublishedListContent[]> {
-    const tag = await this.tagRepository.findOneByName(this.prisma, name);
+    const tag = await this.tagRepository.findOneByName(this.prisma, tagName);
     if (!tag) {
       throw new RecordNotFoundException('record_not_found');
     }

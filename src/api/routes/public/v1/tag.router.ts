@@ -13,14 +13,14 @@ import { getTagPublishedListContentsUseCaseSchema } from '../../../useCases/tag/
 const router = express.Router();
 
 router.get(
-  '/tags/:name/contents',
+  '/tags/:tagName/contents',
   authenticatedUser,
   validateAccess(['readPublishedPost']),
   asyncHandler(async (req: Request, res: Response) => {
     const validated = getTagPublishedListContentsUseCaseSchema.safeParse({
       projectId: res.projectRole?.id,
       language: req.query?.language,
-      name: req.params.name,
+      tagName: req.params.tagName,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
