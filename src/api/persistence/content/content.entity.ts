@@ -10,6 +10,7 @@ import {
   RevisedContent,
   StatusHistory,
 } from '../../../types/index.js';
+import { generateKey } from '../../utilities/generateKey.js';
 import { ContentRevisionEntity } from '../contentRevision/contentRevision.entity.js';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 import { ProjectEntity } from '../project/project.entity.js';
@@ -64,7 +65,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
   } {
     const now = new Date();
     const contentId = v4();
-    const slug = props.slug ?? this.generateSlug();
+    const slug = props.slug ?? generateKey();
 
     const contentRevision = ContentRevisionEntity.Construct({
       projectId: props.projectId,
@@ -223,10 +224,6 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
   get languageCode(): LanguageCode | null {
     return getLanguageCodeType(this.language);
   }
-
-  static generateSlug = () => {
-    return v4().trim().replace(/-/g, '').substring(0, 10);
-  };
 
   draft(updatedById: string) {
     this.props.status = ContentStatus.draft;
