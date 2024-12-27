@@ -471,10 +471,6 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
    * @returns
    */
   toPublishedContentResponse(createdBy: UserEntity, tags: TagEntity[]): PublishedContent {
-    if (!this.props.publishedAt) {
-      throw new RecordNotFoundException('record_not_found');
-    }
-
     return {
       ...this.toCommonPublishedContentResponse(createdBy),
       publishedAt: this.props.publishedAt as Date,
