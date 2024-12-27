@@ -1,6 +1,7 @@
 import { Content } from '@prisma/client';
 import { v4 } from 'uuid';
 import { IsoLanguageCode } from '../../../constants/languages.js';
+import { generateKey } from '../../utilities/generateKey.js';
 import { ContentEntity, ContentStatus } from './content.entity.js';
 
 const defaultValue = {
@@ -19,6 +20,7 @@ const defaultValue = {
   language: IsoLanguageCode['en-us'],
   status: ContentStatus.published,
   currentVersion: 1,
+  draftKey: generateKey(),
   publishedAt: new Date(),
   deletedAt: null,
   createdById: v4(),

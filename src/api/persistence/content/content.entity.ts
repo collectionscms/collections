@@ -39,6 +39,7 @@ type ContentProps = Omit<
   | 'metaDescription'
   | 'coverUrl'
   | 'currentVersion'
+  | 'draftKey'
   | 'status'
   | 'updatedById'
   | 'publishedAt'
@@ -66,6 +67,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     const now = new Date();
     const contentId = v4();
     const slug = props.slug ?? generateKey();
+    const draftKey = generateKey();
 
     const contentRevision = ContentRevisionEntity.Construct({
       projectId: props.projectId,
@@ -83,6 +85,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
       language: props.language,
       publishedAt: null,
       version: props.currentVersion ?? 1,
+      draftKey,
       createdById: props.createdById,
       updatedById: props.createdById,
       deletedAt: null,
@@ -105,6 +108,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
       status: ContentStatus.draft,
       publishedAt: null,
       currentVersion: props.currentVersion ?? 1,
+      draftKey,
       createdById: props.createdById,
       updatedById: props.createdById,
       deletedAt: null,
