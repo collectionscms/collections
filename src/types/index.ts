@@ -83,6 +83,7 @@ export type RevisedContent = {
   canTranslate: boolean;
   sourceLanguageCode: string | null;
   targetLanguageCode: string | null;
+  draftKey: string | null;
   revisions: ContentRevision[];
   tags: Tag[];
 };
