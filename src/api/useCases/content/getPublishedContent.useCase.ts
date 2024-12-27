@@ -1,3 +1,4 @@
+import { Content } from '@prisma/client';
 import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
 import { PublishedContent } from '../../../types/index.js';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
@@ -26,7 +27,9 @@ export class GetPublishedContentUseCase {
     }
 
     return {
-      content: record.contentRevision.toContentResponse(),
+      content: ContentEntity.Reconstruct<Content, ContentEntity>(
+        record.contentRevision.toContentResponse()
+      ),
       createdBy: record.createdBy,
     };
   };
