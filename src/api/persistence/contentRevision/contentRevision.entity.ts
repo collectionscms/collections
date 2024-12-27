@@ -1,7 +1,7 @@
 import { Content, ContentRevision } from '@prisma/client';
 import { v4 } from 'uuid';
 import { UnexpectedException } from '../../../exceptions/unexpected.js';
-import { ContentStatus } from '../content/content.entity.js';
+import { ContentEntity, ContentStatus } from '../content/content.entity.js';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 
 type ContentRevisionProps = Omit<ContentRevision, 'id' | 'status' | 'createdAt' | 'updatedAt'>;
@@ -105,6 +105,10 @@ export class ContentRevisionEntity extends PrismaBaseEntity<ContentRevision> {
     return this.props.version;
   }
 
+  get draftKey(): string {
+    return this.props.draftKey;
+  }
+
   get createdById(): string {
     return this.props.createdById;
   }
@@ -174,7 +178,9 @@ export class ContentRevisionEntity extends PrismaBaseEntity<ContentRevision> {
   }
 
   getDraftKey(): string | null {
-    return this.props.status !== ContentStatus.published ? this.props.draftKey : null;
+    return this.props.status === ContentStatus.draft || this.props.status === ContentStatus.review
+      ? this.props.draftKey
+      : null;
   }
 
   draft() {
@@ -205,11 +211,13 @@ export class ContentRevisionEntity extends PrismaBaseEntity<ContentRevision> {
     return this.copyProps();
   }
 
-  toContentResponse(): Content {
-    return {
-      ...this.copyProps(),
+  toContentResponse(): ContentEntity {
+    const { version, contentId, ...content } = this.copyProps();
+
+    return ContentEntity.Reconstruct<Content, ContentEntity>({
+      ...content,
       id: this.props.contentId,
       currentVersion: this.props.version,
-    };
+    });
   }
 }
