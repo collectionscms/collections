@@ -173,6 +173,10 @@ export class ContentRevisionEntity extends PrismaBaseEntity<ContentRevision> {
     return this.props.status === ContentStatus.published;
   }
 
+  getDraftKey(): string | null {
+    return this.props.status !== ContentStatus.published ? this.props.draftKey : null;
+  }
+
   draft() {
     this.props.status = ContentStatus.draft;
   }

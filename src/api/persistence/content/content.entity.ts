@@ -442,6 +442,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
       canTranslate: this.isTranslationEnabled(sourceLanguage, targetLanguage),
       sourceLanguageCode: project.sourceLanguageCode?.code ?? null,
       targetLanguageCode: this.languageCode?.code ?? null,
+      draftKey: latestRevision.getDraftKey(),
       revisions: revisions.map((revision) => revision.toResponse()),
       tags: tags ? tags.map((tag) => tag.toResponse()) : [],
     };
