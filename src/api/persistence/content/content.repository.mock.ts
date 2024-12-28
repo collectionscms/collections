@@ -17,4 +17,15 @@ export class InMemoryContentRepository extends ContentRepository {
       createdBy: buildUserEntity(),
     });
   }
+
+  async findPublishedContentsByCreatedById(
+    _prisma: ProjectPrismaType,
+    userId: string
+  ): Promise<ContentEntity[]> {
+    return Promise.resolve([
+      buildContentEntity({
+        createdById: userId,
+      }),
+    ]);
+  }
 }

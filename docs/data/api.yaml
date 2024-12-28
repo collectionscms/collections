@@ -80,7 +80,7 @@ paths:
   /api/v1/tags/{tagName}/contents:
     get:
       summary: Get tag contents
-      description: Returns a list of contents with the tag.
+      description: Returns a list of tagged contents.
       operationId: getTagContents
       parameters:
         - $ref: '#/components/parameters/tagName'
@@ -97,7 +97,31 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/listContentResponse'
+      security:
+        - apiKeyAuth: []
 
+  ## #####################################
+  ## Users
+  ## #####################################
+  /api/v1/users/{id}/contents:
+    get:
+      summary: Get user contents
+      description: Returns a list of the authors's contents.
+      operationId: getUserContents
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  contents:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/listContentResponse'
       security:
         - apiKeyAuth: []
 

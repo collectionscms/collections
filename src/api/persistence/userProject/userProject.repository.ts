@@ -31,6 +31,7 @@ export class UserProjectRepository {
     userId: string
   ): Promise<{
     project: ProjectEntity;
+    user: UserEntity;
     role: RoleEntity;
     permissions: PermissionEntity[];
   } | null> {
@@ -40,6 +41,7 @@ export class UserProjectRepository {
       },
       include: {
         project: true,
+        user: true,
         role: {
           include: {
             rolePermissions: {
@@ -56,6 +58,7 @@ export class UserProjectRepository {
 
     return {
       project: ProjectEntity.Reconstruct<Project, ProjectEntity>(record.project),
+      user: UserEntity.Reconstruct<User, UserEntity>(record.user),
       role: RoleEntity.Reconstruct<Role, RoleEntity>(record.role),
       permissions: record.role.rolePermissions.map((rolePermission) =>
         PermissionEntity.Reconstruct<Permission, PermissionEntity>(rolePermission.permission)

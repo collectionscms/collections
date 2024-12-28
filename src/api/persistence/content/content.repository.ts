@@ -152,6 +152,27 @@ export class ContentRepository {
     }));
   }
 
+  async findPublishedContentsByCreatedById(
+    prisma: ProjectPrismaType,
+    userId: string
+  ): Promise<ContentEntity[]> {
+    const now = new Date();
+    const records = await prisma.content.findMany({
+      where: {
+        createdById: userId,
+        status: 'published',
+        publishedAt: {
+          lte: now,
+        },
+      },
+      orderBy: {
+        publishedAt: 'desc',
+      },
+    });
+
+    return records.map((record) => ContentEntity.Reconstruct<Content, ContentEntity>(record));
+  }
+
   async create(
     prisma: ProjectPrismaType,
     contentEntity: ContentEntity

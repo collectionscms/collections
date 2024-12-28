@@ -44,6 +44,11 @@ export class ContentTagRepository {
           },
         },
       },
+      orderBy: {
+        content: {
+          publishedAt: 'desc',
+        },
+      },
     });
 
     return records.map((record) => ({
