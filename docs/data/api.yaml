@@ -60,6 +60,7 @@ paths:
       operationId: getContent
       parameters:
         - $ref: '#/components/parameters/slug'
+        - $ref: '#/components/parameters/draftKey'
       responses:
         '200':
           description: ''
@@ -139,6 +140,13 @@ components:
       example: 'en-us'
       schema:
         $ref: '#/components/schemas/id'
+    draftKey:
+      name: draftKey
+      in: query
+      description: Key to fetch draft content
+      example: 'c486dc26c7'
+      schema:
+        type: string
 
   schemas:
     ## #####################################

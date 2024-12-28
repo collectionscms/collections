@@ -51,7 +51,7 @@ export const PostFooter: React.FC<Props> = ({ content, characters, onTrashed, on
       </Stack>
       <Stack flexDirection="row" gap={2}>
         <ApiPreview
-          path={`contents/${content.slug}`}
+          path={`contents/${content.slug}${content.draftKey ? `?draftKey=${content.draftKey}` : ''}`}
           apiKeys={apiKeys}
           buttonProps={{
             color: 'secondary',

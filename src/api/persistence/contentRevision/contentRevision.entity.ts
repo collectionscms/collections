@@ -105,6 +105,10 @@ export class ContentRevisionEntity extends PrismaBaseEntity<ContentRevision> {
     return this.props.version;
   }
 
+  get draftKey(): string {
+    return this.props.draftKey;
+  }
+
   get createdById(): string {
     return this.props.createdById;
   }
@@ -173,6 +177,12 @@ export class ContentRevisionEntity extends PrismaBaseEntity<ContentRevision> {
     return this.props.status === ContentStatus.published;
   }
 
+  getDraftKey(): string | null {
+    return this.props.status === ContentStatus.draft || this.props.status === ContentStatus.review
+      ? this.props.draftKey
+      : null;
+  }
+
   draft() {
     this.props.status = ContentStatus.draft;
   }
@@ -202,8 +212,10 @@ export class ContentRevisionEntity extends PrismaBaseEntity<ContentRevision> {
   }
 
   toContentResponse(): Content {
+    const { version, contentId, ...content } = this.copyProps();
+
     return {
-      ...this.copyProps(),
+      ...content,
       id: this.props.contentId,
       currentVersion: this.props.version,
     };
