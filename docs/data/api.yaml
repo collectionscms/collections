@@ -103,10 +103,10 @@ paths:
   ## #####################################
   ## Users
   ## #####################################
-  /api/v1/users/{userId}/contents:
+  /api/v1/users/{id}/contents:
     get:
       summary: Get user contents
-      description: Returns a list of the creator's contents.
+      description: Returns a list of the authors's contents.
       operationId: getUserContents
       parameters:
         - $ref: '#/components/parameters/id'

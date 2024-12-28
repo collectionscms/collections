@@ -19,7 +19,7 @@ router.get(
   asyncHandler(async (req: Request, res: Response) => {
     const validated = getUserPublishedListContentsUseCaseSchema.safeParse({
       projectId: res.projectRole?.id,
-      userId: req.params.id,
+      id: req.params.id,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 

@@ -20,7 +20,7 @@ describe('GetUserPublishedListContentsUseCase', () => {
   it('should return published list contents for a given user', async () => {
     const records = await useCase.execute({
       projectId,
-      userId: v4(),
+      id: v4(),
     });
 
     expect(records).toBeDefined();
@@ -31,6 +31,6 @@ describe('GetUserPublishedListContentsUseCase', () => {
       .spyOn(InMemoryUserProjectRepository.prototype, 'findOneWithRoleByUserId')
       .mockResolvedValue(null);
 
-    await expect(useCase.execute({ projectId, userId: v4() })).rejects.toThrow();
+    await expect(useCase.execute({ projectId, id: v4() })).rejects.toThrow();
   });
 });

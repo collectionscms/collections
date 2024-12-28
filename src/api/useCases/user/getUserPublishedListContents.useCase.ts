@@ -13,12 +13,9 @@ export class GetUserPublishedListContentsUseCase {
   ) {}
 
   async execute({
-    userId,
+    id,
   }: GetUserPublishedListContentsUseCaseSchemaType): Promise<PublishedListContent[]> {
-    const userProject = await this.userProjectRepository.findOneWithRoleByUserId(
-      this.prisma,
-      userId
-    );
+    const userProject = await this.userProjectRepository.findOneWithRoleByUserId(this.prisma, id);
 
     if (!userProject) {
       throw new RecordNotFoundException('record_not_found');
