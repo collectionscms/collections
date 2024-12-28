@@ -29,8 +29,8 @@ export class GetTagPublishedListContentsUseCase {
       ? records.filter((record) => record.content.language === language)
       : records;
 
-    return filteredRecords
-      .map((record) => record.content.toPublishedListContentResponse(record.createdBy))
-      .sort((a, b) => b.publishedAt.getTime() - a.publishedAt.getTime());
+    return filteredRecords.map((record) =>
+      record.content.toPublishedListContentResponse(record.createdBy)
+    );
   }
 }
