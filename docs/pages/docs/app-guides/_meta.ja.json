@@ -4,6 +4,7 @@
   "review-and-approval-of-post": "記事のレビューと承認",
   "role-creation": "ロールの作成",
   "invite-user": "ユーザーの招待",
+  "webhook-creation": "Webhookの作成",
   "data-fetching-with-api-key": "APIキーによるデータ取得",
   "languages": "対応言語"
 }
