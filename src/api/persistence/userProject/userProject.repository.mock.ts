@@ -19,13 +19,13 @@ export class InMemoryUserProjectRepository extends UserProjectRepository {
     role: RoleEntity;
     permissions: PermissionEntity[];
   } | null> {
-    return Promise.resolve({
+    return {
       project: buildProjectEntity(),
       user: buildUserEntity({
         id: userId,
       }),
       role: buildRoleEntity(),
       permissions: [buildPermissionEntity()],
-    });
+    };
   }
 }
