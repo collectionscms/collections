@@ -1,8 +1,6 @@
-import { Review } from '@prisma/client';
+import { ContentRevision, Review } from '@prisma/client';
 import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
-import { ContentRepository } from '../../persistence/content/content.repository.js';
-import { ContentRevisionEntity } from '../../persistence/contentRevision/contentRevision.entity.js';
 import { ContentRevisionRepository } from '../../persistence/contentRevision/contentRevision.repository.js';
 import { ReviewRepository } from '../../persistence/review/review.repository.js';
 import { CloseReviewUseCaseSchemaType } from './closeReview.useCase.schema.js';
@@ -11,14 +9,16 @@ export class CloseReviewUseCase {
   constructor(
     private readonly prisma: ProjectPrismaClient,
     private readonly reviewRepository: ReviewRepository,
-    private readonly contentRepository: ContentRepository,
     private readonly contentRevisionRepository: ContentRevisionRepository
   ) {}
 
   async execute(
     { userId, reviewId }: CloseReviewUseCaseSchemaType,
     hasReadAllReview: boolean
-  ): Promise<Review> {
+  ): Promise<{
+    revision: ContentRevision;
+    review: Review;
+  }> {
     const reviewWithContent = hasReadAllReview
       ? await this.reviewRepository.findOneWithContentAndParticipant(this.prisma, reviewId)
       : await this.reviewRepository.findOwnOneWithContentAndParticipant(
@@ -31,36 +31,29 @@ export class CloseReviewUseCase {
       throw new RecordNotFoundException('record_not_found');
     }
 
-    const { review } = reviewWithContent;
-    review.close();
-
-    const contentWithRevisions = await this.contentRepository.findOneWithRevisionsById(
+    const { review, content } = reviewWithContent;
+    const latestRevision = await this.contentRevisionRepository.findLatestOneByContentId(
       this.prisma,
-      review.contentId
+      content.id
     );
 
-    if (!contentWithRevisions) {
+    if (!latestRevision) {
       throw new RecordNotFoundException('record_not_found');
     }
 
-    const { content, revisions } = contentWithRevisions;
-
-    const latestRevision = ContentRevisionEntity.getLatestRevisionOfLanguage(
-      revisions,
-      content.language
-    );
+    review.close();
     latestRevision.draft();
-
-    content.draft(userId);
 
     const updatedReview = await this.prisma.$transaction(async (tx) => {
       await this.contentRevisionRepository.update(tx, latestRevision);
-      await this.contentRepository.updateStatus(tx, content);
-      const result = await this.reviewRepository.updateStatus(tx, review);
+      const closedReview = await this.reviewRepository.updateStatus(tx, review);
 
-      return result;
+      return { revision: latestRevision, review: closedReview };
     });
 
-    return updatedReview.toResponse();
+    return {
+      revision: updatedReview.revision.toResponse(),
+      review: updatedReview.review.toResponse(),
+    };
   }
 }

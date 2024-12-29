@@ -6,6 +6,7 @@ import { authenticatedUser } from '../middlewares/auth.js';
 import { validateAccess } from '../middlewares/validateAccess.js';
 import { ContentRepository } from '../persistence/content/content.repository.js';
 import { ContentRevisionRepository } from '../persistence/contentRevision/contentRevision.repository.js';
+import { ContentTagRepository } from '../persistence/contentTag/contentTag.repository.js';
 import { PermissionEntity } from '../persistence/permission/permission.entity.js';
 import { ReviewRepository } from '../persistence/review/review.repository.js';
 import { UserRepository } from '../persistence/user/user.repository.js';
@@ -21,7 +22,6 @@ import { GetReviewUseCase } from '../useCases/review/getReview.useCase.js';
 import { getReviewUseCaseSchema } from '../useCases/review/getReview.useCase.schema.js';
 import { GetReviewsUseCase } from '../useCases/review/getReviews.useCase.js';
 import { getReviewsUseCaseSchema } from '../useCases/review/getReviews.useCase.schema.js';
-import { ContentTagRepository } from '../persistence/contentTag/contentTag.repository.js';
 
 const router = express.Router();
 
@@ -102,7 +102,6 @@ router.patch(
     const useCase = new CloseReviewUseCase(
       projectPrisma(validated.data.projectId),
       new ReviewRepository(),
-      new ContentRepository(),
       new ContentRevisionRepository()
     );
 
