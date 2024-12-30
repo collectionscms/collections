@@ -184,7 +184,7 @@ model Content {
   language             String                @db.VarChar(255)
   status               String                @db.VarChar(255)
   currentVersion       Int                   @default(1)
-  draftKey             String                @db.VarChar(255)
+  draftKey             String                @default(dbgenerated("substring(md5(random()::text), 1, 10)")) @db.VarChar(255)
   publishedAt          DateTime?             @db.Timestamptz(6)
   deletedAt            DateTime?             @db.Timestamptz(6)
   createdById          String                @db.Uuid
@@ -221,7 +221,7 @@ model ContentRevision {
   language        String    @db.VarChar(255)
   status          String    @db.VarChar(255)
   version         Int       @default(1)
-  draftKey        String    @db.VarChar(255)
+  draftKey        String    @default(dbgenerated("substring(md5(random()::text), 1, 10)")) @db.VarChar(255)
   publishedAt     DateTime? @db.Timestamptz(6)
   deletedAt       DateTime? @db.Timestamptz(6)
   createdById     String    @db.Uuid

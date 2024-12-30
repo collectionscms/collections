@@ -6,7 +6,7 @@
 
 */
 -- AlterTable
-ALTER TABLE "Content" ADD COLUMN     "draftKey" VARCHAR(255) NOT NULL;
+ALTER TABLE "Content" ADD COLUMN     "draftKey" VARCHAR(255) NOT NULL DEFAULT substring(md5(random()::text), 1, 10);
 
 -- AlterTable
-ALTER TABLE "ContentRevision" ADD COLUMN     "draftKey" VARCHAR(255) NOT NULL;
+ALTER TABLE "ContentRevision" ADD COLUMN     "draftKey" VARCHAR(255) NOT NULL DEFAULT substring(md5(random()::text), 1, 10);
