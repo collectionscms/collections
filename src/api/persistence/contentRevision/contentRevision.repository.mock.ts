@@ -17,4 +17,20 @@ export class InMemoryContentRevisionRepository extends ContentRevisionRepository
       createdBy: buildUserEntity(),
     };
   }
+
+  async findLatestOneByContentId(
+    _prisma: ProjectPrismaType,
+    contentId: string
+  ): Promise<ContentRevisionEntity | null> {
+    return buildContentRevisionEntity({
+      contentId,
+    });
+  }
+
+  async update(
+    _prisma: ProjectPrismaType,
+    entity: ContentRevisionEntity
+  ): Promise<ContentRevisionEntity> {
+    return entity;
+  }
 }
