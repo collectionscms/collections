@@ -96,7 +96,7 @@ const getTopTitle = (locale: string) => {
 const getDefaultDescription = (locale: string) => {
   switch (locale) {
     case 'ja':
-      return 'Collectionsは、30言語以上をサポートする多言語ヘッドレスCMSです。AIが生成する多言語コンテンツと連携して、インバウンド、海外ビジネスを加速させます。';
+      return 'Collectionsは、30言語以上をサポートするAI翻訳内蔵の多言語ヘッドレスCMSです。コンテンツをAPIで連携して組み込むことで、簡単にWebサイトを多言語化することができます。インバウンド・外国語ユーザー対応を加速させ、新たな潜在顧客にリーチします。';
     default:
       return 'Collections is a multilingual headless CMS that supports 30. Combine it with AI-generated multilingual content to accelerate business.';
   }
