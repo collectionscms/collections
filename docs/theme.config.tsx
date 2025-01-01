@@ -76,7 +76,21 @@ const config: DocsThemeConfig = {
   footer: {
     component: Footer,
   },
-  gitTimestamp: '',
+  gitTimestamp: function GitTimestamp({ timestamp }) {
+    const { locale } = useRouter();
+    return (
+      <span>
+        {locale === 'ja' ? '最終更新日:' : 'Last updated on:'}{' '}
+        <time dateTime={timestamp.toISOString()}>
+          {timestamp.toLocaleDateString(locale, {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+          })}
+        </time>
+      </span>
+    );
+  },
   darkMode: false,
   nextThemes: {
     defaultTheme: 'light',
