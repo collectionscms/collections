@@ -8,8 +8,8 @@ export const BottomContactButton: React.FC = () => {
   const title = locale === 'ja' ? 'お問い合わせ' : 'Contact';
   const url =
     locale === 'ja'
-      ? 'https://collectionscms.notion.site/14128b1165c6801aa6fff8546d711fc9'
-      : 'https://collectionscms.notion.site/Contact-14128b1165c6804ca20ce91bc01397e3';
+      ? 'https://collectionscms.notion.site/15728b1165c68127a17adea12818b022'
+      : 'https://collectionscms.notion.site/15728b1165c681d3a3bafd0fb0b9edb8';
 
   const [isScrolled, setIsScrolled] = useState(false);
 
