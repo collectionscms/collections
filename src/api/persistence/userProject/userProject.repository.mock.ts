@@ -7,6 +7,7 @@ import { buildRoleEntity } from '../role/role.entity.fixture.js';
 import { RoleEntity } from '../role/role.entity.js';
 import { buildUserEntity } from '../user/user.entity.fixture.js';
 import { UserEntity } from '../user/user.entity.js';
+import { UserProjectEntity } from './userProject.entity.js';
 import { UserProjectRepository } from './userProject.repository.js';
 
 export class InMemoryUserProjectRepository extends UserProjectRepository {
@@ -27,5 +28,9 @@ export class InMemoryUserProjectRepository extends UserProjectRepository {
       role: buildRoleEntity(),
       permissions: [buildPermissionEntity()],
     };
+  }
+
+  async create(_prisma: ProjectPrismaType, entity: UserProjectEntity): Promise<UserProjectEntity> {
+    return entity;
   }
 }
