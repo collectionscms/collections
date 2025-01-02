@@ -128,7 +128,7 @@ export const PostHeader: React.FC<Props> = ({
               onClick={onOpenPublishSettings}
               sx={{ padding: '5px 15px' }}
             >
-              {t('publish_settings')}
+              {t('next')}
             </Button>
           </Stack>
         </Toolbar>
