@@ -80,14 +80,19 @@ export const PublishSettings: React.FC<Props> = ({ open, content, onClose }) => 
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
-      status: content.status.isPublished ? 'published' : 'review',
+      status: hasPermission('publishPost') ? 'published' : 'review',
       comment: '',
     },
     resolver: yupResolver(editContentValidator()),
   });
 
   useEffect(() => {
-    setValue('status', content.status.isPublished ? 'published' : 'review');
+    const status = content.status.isPublished
+      ? hasPermission('publishPost')
+        ? 'published'
+        : 'archived'
+      : 'review';
+    setValue('status', status);
   }, [content.status.currentStatus]);
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
