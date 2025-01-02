@@ -6,7 +6,7 @@ import { NationalFlagIcon } from '../NationalFlagIcon/index.js';
 
 type Props = {
   languages: readonly LanguageCode[];
-  value?: LanguageCode;
+  value?: LanguageCode | null;
   onChange: (event: React.SyntheticEvent, newValue: LanguageCode | null) => void;
 };
 

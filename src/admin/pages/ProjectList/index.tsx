@@ -57,7 +57,14 @@ const ProjectListPageImpl: React.FC = () => {
       <MainCard
         content={false}
         title={<></>}
-        secondary={<CreateNewButton onClick={() => navigate('projects/create')} />}
+        secondary={
+          <CreateNewButton
+            onClick={() => navigate('projects/create')}
+            options={{
+              subject: t('create_project'),
+            }}
+          />
+        }
       >
         <ScrollX>
           <ReactTable
@@ -65,16 +72,13 @@ const ProjectListPageImpl: React.FC = () => {
             data={projects}
             emptyComponent={
               <>
-                <Typography align="center" variant="h5" sx={{ pt: 2 }}>
+                <Typography align="center" variant="h5" sx={{ py: 2 }}>
                   {t('create_your_first_project')}
-                </Typography>
-                <Typography align="center" variant="subtitle2" color="secondary" sx={{ pb: 3 }}>
-                  {t('invitation_from_existing_project')}
                 </Typography>
                 <Button variant="contained" onClick={() => navigate('projects/create')}>
                   <Stack direction="row" alignItems="center" gap={0.5}>
                     <Icon name="Plus" size={14} />
-                    {t('create_new')}
+                    {t('create_project')}
                   </Stack>
                 </Button>
               </>
