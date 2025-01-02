@@ -43,10 +43,10 @@ export class CreateProjectUseCase {
       projectId: projectEntity.id,
       name: t('seed.role.admin'),
       description: t('seed.role.admin_description'),
+      isAdmin: true,
     });
-    roleEntity.changeToAdmin();
 
-    const entity = UserProjectEntity.Construct({
+    const userProjectEntity = UserProjectEntity.Construct({
       userId: userId,
       projectId: projectEntity.id,
       roleId: roleEntity.id,
@@ -55,7 +55,7 @@ export class CreateProjectUseCase {
     const createdProject = await this.prisma.$transaction(async (tx) => {
       const result = await this.projectRepository.create(tx, projectEntity);
       await this.roleRepository.create(tx, roleEntity);
-      await this.userProjectRepository.create(tx, entity);
+      await this.userProjectRepository.create(tx, userProjectEntity);
 
       return result;
     });
