@@ -31,6 +31,8 @@ describe('GetUserPublishedListContentsUseCase', () => {
       .spyOn(InMemoryUserProjectRepository.prototype, 'findOneWithRoleByUserId')
       .mockResolvedValue(null);
 
-    await expect(useCase.execute({ projectId, id: v4() })).rejects.toThrow();
+    await expect(useCase.execute({ projectId, id: v4() })).rejects.toMatchObject({
+      code: 'record_not_found',
+    });
   });
 });

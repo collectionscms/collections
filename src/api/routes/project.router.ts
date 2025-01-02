@@ -4,17 +4,19 @@ import { bypassPrisma, projectPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';
 import { validateAccess } from '../middlewares/validateAccess.js';
+import { ApiKeyRepository } from '../persistence/apiKey/apiKey.repository.js';
+import { ApiKeyPermissionRepository } from '../persistence/apiKeyPermission/apiKeyPermission.repository.js';
 import { ProjectRepository } from '../persistence/project/project.repository.js';
 import { RoleRepository } from '../persistence/role/role.repository.js';
 import { UserProjectRepository } from '../persistence/userProject/userProject.repository.js';
-import { createProjectUseCaseSchema } from '../useCases/project/createProject.useCase.schema.js';
 import { CreateProjectUseCase } from '../useCases/project/createProject.useCase.js';
-import { getMyProjectUseCaseSchema } from '../useCases/project/getMyProject.useCase.schema.js';
+import { createProjectUseCaseSchema } from '../useCases/project/createProject.useCase.schema.js';
 import { GetMyProjectUseCase } from '../useCases/project/getMyProject.useCase.js';
-import { getSubdomainAvailabilityUseCaseSchema } from '../useCases/project/getSubdomainAvailability.useCase.schema.js';
+import { getMyProjectUseCaseSchema } from '../useCases/project/getMyProject.useCase.schema.js';
 import { GetSubdomainAvailabilityUseCase } from '../useCases/project/getSubdomainAvailability.useCase.js';
-import { updateProjectUseCaseSchema } from '../useCases/project/updateProject.useCase.schema.js';
+import { getSubdomainAvailabilityUseCaseSchema } from '../useCases/project/getSubdomainAvailability.useCase.schema.js';
 import { UpdateProjectUseCase } from '../useCases/project/updateProject.useCase.js';
+import { updateProjectUseCaseSchema } from '../useCases/project/updateProject.useCase.schema.js';
 
 const router = express.Router();
 
@@ -70,7 +72,9 @@ router.post(
       bypassPrisma,
       new ProjectRepository(),
       new UserProjectRepository(),
-      new RoleRepository()
+      new RoleRepository(),
+      new ApiKeyRepository(),
+      new ApiKeyPermissionRepository()
     );
     const project = await useCase.execute(validated.data);
 
