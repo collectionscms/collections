@@ -60,7 +60,9 @@ describe('CloseReviewUseCase', () => {
 
       await expect(
         useCase.execute({ projectId, userId, reviewId, isAdmin, permissions: [] }, hasReadAllReview)
-      ).rejects.toThrow();
+      ).rejects.toMatchObject({
+        code: 'record_not_found',
+      });
     });
 
     it('should throw an error if the content revision not found', async () => {
@@ -81,7 +83,9 @@ describe('CloseReviewUseCase', () => {
 
       await expect(
         useCase.execute({ projectId, userId, reviewId, isAdmin, permissions: [] }, hasReadAllReview)
-      ).rejects.toThrow();
+      ).rejects.toMatchObject({
+        code: 'record_not_found',
+      });
     });
   });
 
@@ -119,7 +123,9 @@ describe('CloseReviewUseCase', () => {
 
       await expect(
         useCase.execute({ projectId, userId, reviewId, isAdmin, permissions: [] }, hasReadAllReview)
-      ).rejects.toThrow();
+      ).rejects.toMatchObject({
+        code: 'record_not_found',
+      });
     });
 
     it('should throw an error if the content revision not found', async () => {
@@ -140,7 +146,9 @@ describe('CloseReviewUseCase', () => {
 
       await expect(
         useCase.execute({ projectId, userId, reviewId, isAdmin, permissions: [] }, hasReadAllReview)
-      ).rejects.toThrow();
+      ).rejects.toMatchObject({
+        code: 'record_not_found',
+      });
     });
   });
 });

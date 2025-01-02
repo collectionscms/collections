@@ -61,6 +61,8 @@ describe('GetTagPublishedListContentsUseCase', () => {
         tagName: 'tag',
         projectId,
       })
-    ).rejects.toThrow();
+    ).rejects.toMatchObject({
+      code: 'record_not_found',
+    });
   });
 });

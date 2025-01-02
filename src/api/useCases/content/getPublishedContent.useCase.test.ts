@@ -43,7 +43,9 @@ describe('GetPublishedContentUseCase', () => {
           projectId,
           slug: 'slug',
         })
-      ).rejects.toThrow();
+      ).rejects.toMatchObject({
+        code: 'record_not_found',
+      });
     });
   });
 
@@ -72,7 +74,9 @@ describe('GetPublishedContentUseCase', () => {
           slug: 'slug',
           draftKey: 'draftKey',
         })
-      ).rejects.toThrow();
+      ).rejects.toMatchObject({
+        code: 'record_not_found',
+      });
     });
 
     it('should throw an error if the draft key does not match the draft content', async () => {
@@ -91,7 +95,9 @@ describe('GetPublishedContentUseCase', () => {
           slug: 'slug',
           draftKey: 'draftKey',
         })
-      ).rejects.toThrow();
+      ).rejects.toMatchObject({
+        code: 'record_not_found',
+      });
     });
   });
 });
