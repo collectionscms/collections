@@ -48,12 +48,16 @@ export const EditPostPageImpl: React.FC = () => {
   const [isDirty, setIsDirty] = useState(false);
   const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
 
+  const [showSubtitle, setShowSubtitle] = useState(content.subtitle ? true : false);
+
   if (!content) return <></>;
 
   // On mount, or update content when language is changed
   useEffect(() => {
     setPostTitle(content.title);
-    setPostSubtitle(content.subtitle);
+    setPostSubtitle(content.subtitle ?? '');
+    const showSubtitle = content.subtitle ? true : false;
+    setShowSubtitle(showSubtitle);
     setUploadCover(content.coverUrl ?? null);
     editor?.commands.setContent(toJson(content.bodyJson));
   }, [content.language]);
@@ -96,8 +100,6 @@ export const EditPostPageImpl: React.FC = () => {
     e.preventDefault();
     editor?.commands.focus();
   };
-
-  const [showSubtitle, setShowSubtitle] = useState(content.subtitle ? true : false);
 
   const handleHideSubtitle = () => {
     setPostSubtitle('');
