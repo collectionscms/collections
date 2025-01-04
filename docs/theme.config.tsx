@@ -40,7 +40,7 @@ const config: DocsThemeConfig = {
         siteName: defaultTitle,
         images: [
           {
-            url: 'https://cdn.collections.dev/og-image.png',
+            url: getOgImage(locale),
             width: 1200,
             height: 630,
             alt: 'collections og image',
@@ -96,6 +96,15 @@ const config: DocsThemeConfig = {
     defaultTheme: 'light',
     forcedTheme: 'light',
   },
+};
+
+const getOgImage = (locale: string) => {
+  switch (locale) {
+    case 'ja':
+      return 'https://cdn.collections.dev/docs/og-image-ja.png';
+    default:
+      return 'https://cdn.collections.dev/og-image.png';
+  }
 };
 
 const getTopTitle = (locale: string) => {
