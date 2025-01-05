@@ -1,14 +1,13 @@
 /* eslint-disable max-len */
+import { AlignJustify } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import logo from '../../assets/images/logo.svg';
 import { LanguageSwitcher } from '../LanguageSwitcher';
-import { NavbarMenu } from './NavbarMenu';
-import { AlignJustify } from 'lucide-react';
 import { HamburgerMenu } from './HamburgerMenu';
-import github from '../../assets/images/github.svg';
+import { NavbarMenu } from './NavbarMenu';
 
 export const Navbar: React.FC = () => {
   const { locale } = useRouter();
@@ -44,16 +43,6 @@ export const Navbar: React.FC = () => {
             variant="primary"
           />
         </div>
-      </div>
-      <div className="hidden md:flex items-center mr-6">
-        <Link
-          href="https://github.com/collectionscms/collections"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="link-underline after:-bottom-2"
-        >
-          <Image src={github} alt="discord" className="h-6 w-fit" />
-        </Link>
       </div>
       <div className="hidden sm:block">
         <LanguageSwitcher />
