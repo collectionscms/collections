@@ -30,7 +30,7 @@ export const BottomContactButton: React.FC = () => {
 
   return (
     <div
-      className={`fixed w-full left-0 bottom-0 py-4 px-5 sm:px-6 pointer-events-none flex duration-300 justify-end sm:justify-end ${isScrolled ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+      className={`fixed right-0 bottom-0 py-4 px-5 sm:px-6 pointer-events-none flex duration-300 justify-end sm:justify-end ${isScrolled ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
     >
       <Link
         href={url}
