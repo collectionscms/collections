@@ -26,11 +26,24 @@ describe('GetPublishedContentUseCase', () => {
     it('should return published content by slug', async () => {
       const record = await useCase.execute({
         projectId,
-        slug: 'slug',
+        identifier: 'slug',
       });
 
       expect(record).toMatchObject({
         slug: 'slug',
+        status: 'published',
+      });
+    });
+
+    it('should return published content by id', async () => {
+      const id = v4();
+      const record = await useCase.execute({
+        projectId,
+        identifier: id,
+      });
+
+      expect(record).toMatchObject({
+        id,
         status: 'published',
       });
     });
@@ -41,7 +54,7 @@ describe('GetPublishedContentUseCase', () => {
       await expect(
         useCase.execute({
           projectId,
-          slug: 'slug',
+          identifier: 'slug',
         })
       ).rejects.toMatchObject({
         code: 'record_not_found',
@@ -53,12 +66,26 @@ describe('GetPublishedContentUseCase', () => {
     it('should return draft content by slug and draft key', async () => {
       const record = await useCase.execute({
         projectId,
-        slug: 'slug',
+        identifier: 'slug',
         draftKey: 'draftKey',
       });
 
       expect(record).toMatchObject({
         slug: 'slug',
+        status: 'draft',
+      });
+    });
+
+    it('should return draft content by id and draft key', async () => {
+      const contentId = v4();
+      const record = await useCase.execute({
+        projectId,
+        identifier: contentId,
+        draftKey: 'draftKey',
+      });
+
+      expect(record).toMatchObject({
+        id: contentId,
         status: 'draft',
       });
     });
@@ -71,7 +98,7 @@ describe('GetPublishedContentUseCase', () => {
       await expect(
         useCase.execute({
           projectId,
-          slug: 'slug',
+          identifier: 'slug',
           draftKey: 'draftKey',
         })
       ).rejects.toMatchObject({
@@ -92,7 +119,7 @@ describe('GetPublishedContentUseCase', () => {
       await expect(
         useCase.execute({
           projectId,
-          slug: 'slug',
+          identifier: 'slug',
           draftKey: 'draftKey',
         })
       ).rejects.toMatchObject({

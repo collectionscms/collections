@@ -13,14 +13,14 @@ import { getPublishedContentUseCaseSchema } from '../../../useCases/content/getP
 const router = express.Router();
 
 router.get(
-  '/contents/:slug',
+  '/contents/:identifier',
   authenticatedUser,
   validateAccess(['readPublishedPost']),
   asyncHandler(async (req: Request, res: Response) => {
     const validated = getPublishedContentUseCaseSchema.safeParse({
       projectId: res.projectRole?.id,
       language: req.query?.language,
-      slug: req.params.slug,
+      identifier: req.params.identifier,
       draftKey: req.query?.draftKey,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);

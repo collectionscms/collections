@@ -63,7 +63,39 @@ export class ContentRevisionRepository {
     const record = await prisma.contentRevision.findFirst({
       where: {
         slug,
-        deletedAt: null,
+      },
+      orderBy: {
+        version: 'desc',
+      },
+      include: {
+        createdBy: true,
+      },
+    });
+
+    if (!record) return null;
+
+    return {
+      contentRevision: ContentRevisionEntity.Reconstruct<ContentRevision, ContentRevisionEntity>(
+        record
+      ),
+      createdBy: UserEntity.Reconstruct<User, UserEntity>(record.createdBy),
+    };
+  }
+
+  async findLatestOneByContentIdOrSlug(
+    prisma: ProjectPrismaType,
+    identifier: string
+  ): Promise<{ contentRevision: ContentRevisionEntity; createdBy: UserEntity } | null> {
+    const record = await prisma.contentRevision.findFirst({
+      where: {
+        OR: [
+          {
+            contentId: identifier,
+          },
+          {
+            slug: identifier,
+          },
+        ],
       },
       orderBy: {
         version: 'desc',

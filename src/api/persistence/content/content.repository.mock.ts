@@ -18,6 +18,18 @@ export class InMemoryContentRepository extends ContentRepository {
     };
   }
 
+  async findOneByIdOrSlug(
+    _prisma: ProjectPrismaType,
+    identifier: string
+  ): Promise<{ content: ContentEntity; createdBy: UserEntity } | null> {
+    return {
+      content: buildContentEntity({
+        id: identifier,
+      }),
+      createdBy: buildUserEntity(),
+    };
+  }
+
   async findPublishedContentsByCreatedById(
     _prisma: ProjectPrismaType,
     userId: string

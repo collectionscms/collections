@@ -1,4 +1,5 @@
 import { Content } from '@prisma/client';
+import { z } from 'zod';
 import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
 import { PublishedContent } from '../../../types/index.js';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
@@ -17,12 +18,20 @@ export class GetPublishedContentUseCase {
     private readonly contentRevisionRepository: ContentRevisionRepository
   ) {}
 
-  getDraftContentBySlug = async (
-    slug: string,
+  getDraftContentByIdentifier = async (
+    identifier: string,
+    isUuid: boolean,
     draftKey: string
   ): Promise<{ content: ContentEntity; createdBy: UserEntity }> => {
-    const record = await this.contentRevisionRepository.findLatestOneBySlug(this.prisma, slug);
-    if (!record || record.contentRevision.draftKey !== draftKey) {
+    const record = isUuid
+      ? await this.contentRevisionRepository.findLatestOneByContentIdOrSlug(this.prisma, identifier)
+      : await this.contentRevisionRepository.findLatestOneBySlug(this.prisma, identifier);
+
+    if (
+      !record ||
+      record.contentRevision.deletedAt ||
+      record.contentRevision.draftKey !== draftKey
+    ) {
       throw new RecordNotFoundException('record_not_found');
     }
 
@@ -34,11 +43,15 @@ export class GetPublishedContentUseCase {
     };
   };
 
-  getContentBySlug = async (
-    slug: string
+  getContentByIdentifier = async (
+    identifier: string,
+    isUuid: boolean
   ): Promise<{ content: ContentEntity; createdBy: UserEntity }> => {
-    const record = await this.contentRepository.findOneBySlug(this.prisma, slug);
-    if (!record || !record.content.isPublished()) {
+    const record = isUuid
+      ? await this.contentRepository.findOneByIdOrSlug(this.prisma, identifier)
+      : await this.contentRepository.findOneBySlug(this.prisma, identifier);
+
+    if (!record || !record?.content.isPublished()) {
       throw new RecordNotFoundException('record_not_found');
     }
 
@@ -46,13 +59,15 @@ export class GetPublishedContentUseCase {
   };
 
   async execute({
-    slug,
+    identifier,
     draftKey,
   }: GetPublishedContentUseCaseSchemaType): Promise<PublishedContent> {
-    const encodedSlug = encodeURI(slug);
+    const encodedIdentifier = encodeURI(identifier);
+    const isUuid = z.string().uuid().safeParse(identifier).success;
+
     const { content, createdBy } = draftKey
-      ? await this.getDraftContentBySlug(encodedSlug, draftKey)
-      : await this.getContentBySlug(encodedSlug);
+      ? await this.getDraftContentByIdentifier(encodedIdentifier, isUuid, draftKey)
+      : await this.getContentByIdentifier(encodedIdentifier, isUuid);
 
     const tags = await this.contentTagRepository.findTagsByContentId(this.prisma, content.id);
 
