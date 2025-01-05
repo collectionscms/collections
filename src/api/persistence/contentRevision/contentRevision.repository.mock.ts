@@ -18,6 +18,18 @@ export class InMemoryContentRevisionRepository extends ContentRevisionRepository
     };
   }
 
+  async findLatestOneByContentIdOrSlug(
+    _prisma: ProjectPrismaType,
+    identifier: string
+  ): Promise<{ contentRevision: ContentRevisionEntity; createdBy: UserEntity } | null> {
+    return {
+      contentRevision: buildContentRevisionEntity({
+        contentId: identifier,
+      }),
+      createdBy: buildUserEntity(),
+    };
+  }
+
   async findLatestOneByContentId(
     _prisma: ProjectPrismaType,
     contentId: string
