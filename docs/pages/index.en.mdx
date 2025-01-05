@@ -1,12 +1,16 @@
+import { ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import discordDark from '../assets/images/discord-dark.svg';
 import embedContents from '../assets/images/embed-contents.svg';
 import featureAi from '../assets/images/feature-ai.svg';
 import featureEditor from '../assets/images/feature-editor.svg';
 import featureEmbed from '../assets/images/feature-embed.svg';
 import featureTranslate from '../assets/images/feature-translate.svg';
-import oss from '../assets/images/oss.svg';
+import githubDark from '../assets/images/github-dark.svg';
+import hosting from '../assets/images/hosting.svg';
 import symbol from '../assets/images/symbol.svg';
+import xDark from '../assets/images/x-dark.svg';
 import { ContactButton } from '../components/ContactButton';
 import { RegisterButton } from '../components/RegisterButton';
 
@@ -137,8 +141,10 @@ import { RegisterButton } from '../components/RegisterButton';
         </div>
       </div>
       <div className="flex flex-col gap-5">
-        <Image src={oss} alt="editor" className="h-36 mx-auto" />
-        <div className="text-xl md:text-feature-subtitle text-feature">Open-source platform</div>
+        <Image src={hosting} alt="editor" className="h-36 mx-auto" />
+        <div className="text-xl md:text-feature-subtitle text-feature">
+          Self-hosted on your own server
+        </div>
         <div className="leading-relaxed">
           As an open-source platform, it can be self-hosted in your preferred environment.
         </div>
@@ -166,7 +172,7 @@ import { RegisterButton } from '../components/RegisterButton';
   </div>
 </div>
 <div className="py-2 flex justify-center items-start">
-  <div className="w-full lg:w-[90rem] px-5 lg:px-8 pt-7 md:pt-16 pb-10 md:pb-20">
+  <div className="w-full lg:w-[90rem] px-5 lg:px-8 pt-7 md:pt-16">
     <div>
       <div className="text-heading-sp md:text-heading leading-narrow mt-2">Why Use Collections</div>
       <div className="text-md md:text-xl leading-relaxed mt-4">
@@ -181,6 +187,71 @@ import { RegisterButton } from '../components/RegisterButton';
         enabling seamless creation of new websites and efficient multilingual support for existing
         ones.
       </div>
+    </div>
+  </div>
+</div>
+<div className="py-2 flex justify-center items-start">
+  <div className="w-full lg:w-[90rem] px-5 lg:px-8 pt-7 md:pt-16 pb-8 md:pb-16">
+    <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      <Link
+        target="_blank"
+        rel="nofollow noreferrer"
+        className="group"
+        href="https://x.com/collectionscms"
+      >
+        <div className="mb-4">
+          <Image src={xDark} alt="X" />
+        </div>
+        <h3 className="text-base font-bold mb-2 leading-[140%]">
+          <span className="line-through">Twitter</span> X
+        </h3>
+        <div className="text-base leading-[140%]">
+          Follow X to stay updated with the latest information.
+        </div>
+        <div className="mt-4">
+          <button className="text-white bg-black p-1 hover:text-black hover:bg-white transition-colors duration-300">
+            <ArrowRight size={16} />
+          </button>
+        </div>
+      </Link>
+      <Link
+        target="_blank"
+        rel="nofollow noreferrer"
+        className="group"
+        href="https://discord.gg/a6FYDkV3Vk"
+      >
+        <div className="mb-4">
+          <Image src={discordDark} alt="Discord" />
+        </div>
+        <h3 className="text-base font-bold mb-2 leading-[140%]">Discord</h3>
+        <div className="text-base leading-[140%]">
+          Connect with the Collections developer community.
+        </div>
+        <div className="mt-4">
+          <button className="text-white bg-black p-1 hover:text-black hover:bg-white transition-colors duration-300">
+            <ArrowRight size={16} />
+          </button>
+        </div>
+      </Link>
+      <Link
+        target="_blank"
+        rel="nofollow noreferrer"
+        className="group"
+        href="https://github.com/collectionscms/collections"
+      >
+        <div className="mb-4">
+          <Image src={githubDark} alt="GitHub" />
+        </div>
+        <h3 className="text-base font-bold mb-2 leading-[140%]">GitHub</h3>
+        <div className="text-base leading-[140%]">
+          All core features are available as open-source.
+        </div>
+        <div className="mt-4">
+          <button className="text-white bg-black p-1 hover:text-black hover:bg-white transition-colors duration-300">
+            <ArrowRight size={16} />
+          </button>
+        </div>
+      </Link>
     </div>
   </div>
 </div>
