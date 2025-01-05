@@ -53,13 +53,13 @@ paths:
   ## #####################################
   ## Contents
   ## #####################################
-  /api/v1/contents/{slug}:
+  /api/v1/contents/{identifier}:
     get:
       summary: Get content
       description: Returns a content with published status.
       operationId: getContent
       parameters:
-        - $ref: '#/components/parameters/slug'
+        - $ref: '#/components/parameters/identifier'
         - $ref: '#/components/parameters/draftKey'
       responses:
         '200':
@@ -141,11 +141,17 @@ components:
       required: true
       schema:
         $ref: '#/components/schemas/id'
-    slug:
-      name: slug
+    identifier:
+      name: identifier
       in: path
-      description: Slug
-      example: 'my-first-post'
+      description: Id or Slug
+      examples:
+        id:
+          summary: Id
+          value: 'a8c4891c-6bc0-4f58-81c6-5e89bb572d4c'
+        slug:
+          summary: Slug
+          value: 'my-first-post'
       required: true
       schema:
         type: string
