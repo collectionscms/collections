@@ -1,7 +1,8 @@
-import { LoadingOutlined } from '@ant-design/icons';
 import {
+  Backdrop,
   Box,
   Button,
+  CircularProgress,
   Container,
   Stack,
   TextField,
@@ -305,6 +306,13 @@ export const EditPostPageImpl: React.FC = () => {
 
   return (
     <>
+      <Backdrop
+        sx={(theme) => ({ color: '#fff', zIndex: theme.zIndex.drawer + 1 })}
+        open={isTranslating}
+        onClick={() => setIsTranslating(false)}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <Button ref={ref} onClick={handleSaveContent} />
       <ConfirmDiscardDialog open={showPrompt} onDiscard={proceed} onKeepEditing={stay} />
       <PostHeader
@@ -352,36 +360,24 @@ export const EditPostPageImpl: React.FC = () => {
                       ),
                     })}
                   </Typography>
-                  {isTranslating ? (
-                    <Box
-                      width={64}
-                      height={40}
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="center"
-                    >
-                      <LoadingOutlined size={14} />
-                    </Box>
-                  ) : (
-                    <Button
-                      variant="text"
-                      size="small"
-                      color="secondary"
-                      sx={{
-                        width: 40,
-                        height: 40,
-                        textDecoration: 'underline',
-                        textDecorationStyle: 'dotted',
-                        textUnderlineOffset: '0.3rem',
-                        '&:hover': {
-                          backgroundColor: 'transparent',
-                        },
-                      }}
-                      onClick={handleTranslate}
-                    >
-                      {t('i_do')}
-                    </Button>
-                  )}
+                  <Button
+                    variant="text"
+                    size="small"
+                    color="secondary"
+                    sx={{
+                      width: 40,
+                      height: 40,
+                      textDecoration: 'underline',
+                      textDecorationStyle: 'dotted',
+                      textUnderlineOffset: '0.3rem',
+                      '&:hover': {
+                        backgroundColor: 'transparent',
+                      },
+                    }}
+                    onClick={handleTranslate}
+                  >
+                    {t('i_do')}
+                  </Button>
                 </Stack>
               )}
 
