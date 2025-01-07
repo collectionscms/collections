@@ -56,7 +56,6 @@ export class TranslateContentUseCase {
       body,
       sourceLang: sourceLanguageCode.sourceLanguageCode,
       targetLang: targetLanguageCode.targetLanguageCode,
-      targetLangEnglishName: targetLanguageCode.englishName,
     });
 
     const usage = TextGenerationUsageEntity.Construct({
