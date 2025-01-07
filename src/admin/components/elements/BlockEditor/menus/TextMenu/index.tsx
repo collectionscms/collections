@@ -87,7 +87,7 @@ export const TextMenu: React.FC<Props> = ({ editor }) => {
             <Icon name="Heading1" size={16} />
           </ToolbarButton>
           <ToolbarButton
-            tooltip={`${t('editor.heading')}`}
+            tooltip={`${t('editor.subheading')}`}
             color="inherit"
             sx={{ backgroundColor: getBackgroundColor(editor.isActive('heading', { level: 2 })) }}
             onClick={commands.onSubheading}
@@ -95,7 +95,7 @@ export const TextMenu: React.FC<Props> = ({ editor }) => {
             <Icon name="Heading2" size={16} />
           </ToolbarButton>
           <ToolbarButton
-            tooltip={`${t('editor.heading')}`}
+            tooltip={`${t('editor.subtitle')}`}
             color="inherit"
             sx={{ backgroundColor: getBackgroundColor(editor.isActive('heading', { level: 3 })) }}
             onClick={commands.onSubtitle}
