@@ -20,6 +20,8 @@ import { ContentService } from '../services/content.service.js';
 import { WebhookService } from '../services/webhook.service.js';
 import { ArchiveUseCase } from '../useCases/content/archive.useCase.js';
 import { archiveUseCaseSchema } from '../useCases/content/archive.useCase.schema.js';
+import { CompleteSentenceUseCase } from '../useCases/content/completeSentence.useCase.js';
+import { completeSentenceUseCaseSchema } from '../useCases/content/completeSentence.useCase.schema.js';
 import { CreateContentTagsUseCase } from '../useCases/content/createContentTags.useCase.js';
 import { createContentTagsUseCaseSchema } from '../useCases/content/createContentTags.useCase.schema.js';
 import { GenerateSeoUseCase } from '../useCases/content/generateSeo.useCase.js';
@@ -147,6 +149,31 @@ router.post(
     res.json({
       seo,
     });
+  })
+);
+
+router.post(
+  '/contents/:id/complete-sentence',
+  authenticatedUser,
+  validateAccess(['savePost']),
+  asyncHandler(async (req: Request, res: Response) => {
+    const validated = completeSentenceUseCaseSchema.safeParse({
+      projectId: res.projectRole?.id,
+      id: req.params.id,
+      userId: res.user.id,
+      text: req.body.text,
+    });
+    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
+
+    const useCase = new CompleteSentenceUseCase(
+      projectPrisma(validated.data.projectId),
+      new ContentRepository(),
+      new TextGenerationUsageRepository(),
+      new TextGenerator(env.TEXT_GENERATOR_API_KEY, env.TEXT_GENERATOR_MODEL)
+    );
+    const text = await useCase.execute(validated.data);
+
+    res.json(text);
   })
 );
 
