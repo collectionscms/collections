@@ -363,7 +363,7 @@ export const EditPostPageImpl: React.FC = () => {
                   <Button
                     variant="text"
                     size="small"
-                    color="secondary"
+                    color="inherit"
                     sx={{
                       width: 40,
                       height: 40,
