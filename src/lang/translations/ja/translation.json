@@ -186,7 +186,8 @@
     "move_to_trash": "ごみ箱へ移動しました",
     "post_restored": "記事を復元しました",
     "copied": "コピーしました",
-    "post_reverted": "バージョンを戻しました"
+    "post_reverted": "バージョンを戻しました",
+    "edited": "添削しました"
   },
   "create": {
     "user": "ユーザー 新規登録",
@@ -279,7 +280,9 @@
     "italic": "斜体",
     "underline": "下線",
     "strike_through": "取り消し線",
-    "code": "コード"
+    "code": "コード",
+    "editing_by_ai": "AI添削",
+    "editing_by_ai_description": "選択された文章をAIが添削"
   },
   "post_review_status": {
     "pending": "申請中",
