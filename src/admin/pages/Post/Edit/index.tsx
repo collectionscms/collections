@@ -30,6 +30,7 @@ import { PostContextProvider, usePost } from '../Context/index.js';
 import { PostFooter } from './PostFooter/index.js';
 import { PostHeader } from './PostHeader/index.js';
 import { PublishSettings } from './PostHeader/PublishSettings/index.js';
+import { enqueueSnackbar } from 'notistack';
 
 const toJson = (value?: string | null) => {
   return value ? JSON.parse(value) : '';
@@ -41,10 +42,12 @@ export const EditPostPageImpl: React.FC = () => {
   const { id } = useParams();
   if (!id) throw new Error('id is not defined');
 
-  const { getContent, updateContent, createFileImage, translateContent } = usePost();
+  const { getContent, updateContent, createFileImage, translateContent, simplifySentence } =
+    usePost();
   const { data: content, mutate } = getContent(id);
   const { trigger: updateContentTrigger, isMutating: isSaving } = updateContent(content.id);
   const { trigger: translateTrigger } = translateContent(content.postId);
+  const { trigger: simplifySentenceTrigger } = simplifySentence(content.id);
 
   const [isDirty, setIsDirty] = useState(false);
   const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
@@ -304,6 +307,34 @@ export const EditPostPageImpl: React.FC = () => {
     }
   };
 
+  // /////////////////////////////////////
+  // Editing by AI
+  // /////////////////////////////////////
+
+  const handleEditingByAI = async (from: number, to: number, text: string) => {
+    if (!editor) return;
+
+    try {
+      const result = await simplifySentenceTrigger({
+        text,
+      });
+
+      const { tr, schema } = editor.state;
+      const textNode = schema.text(result.text);
+      tr.replaceWith(from, to, textNode);
+      editor.view.dispatch(tr);
+
+      enqueueSnackbar(t('toast.edited'), {
+        anchorOrigin: {
+          vertical: 'bottom',
+          horizontal: 'center',
+        },
+      });
+    } catch (error) {
+      logger.error(error);
+    }
+  };
+
   return (
     <>
       <Backdrop
@@ -363,7 +394,7 @@ export const EditPostPageImpl: React.FC = () => {
                   <Button
                     variant="text"
                     size="small"
-                    color="secondary"
+                    color="inherit"
                     sx={{
                       width: 40,
                       height: 40,
@@ -534,7 +565,7 @@ export const EditPostPageImpl: React.FC = () => {
               </Box>
             )}
           </Box>
-          <BlockEditor editor={editor} />
+          <BlockEditor editor={editor} onEditingByAI={handleEditingByAI} />
         </Container>
       </Box>
       <AddLanguage
