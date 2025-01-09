@@ -101,7 +101,7 @@ const config: DocsThemeConfig = {
 const getOgImage = (locale: string) => {
   switch (locale) {
     case 'ja':
-      return 'https://cdn.collections.dev/docs/og-image-ja.png';
+      return 'https://cdn.collections.dev/docs/og-ja.png';
     default:
       return 'https://cdn.collections.dev/og-image.png';
   }
@@ -110,18 +110,18 @@ const getOgImage = (locale: string) => {
 const getTopTitle = (locale: string) => {
   switch (locale) {
     case 'ja':
-      return 'Collections - AI翻訳内蔵の多言語ヘッドレスCMS';
+      return 'Collections - AI添削内蔵の多言語ヘッドレスCMS';
     default:
-      return 'Collections - Multilingual headless CMS with built-in AI translation';
+      return 'Collections - Multilingual headless CMS with built-in AI editing';
   }
 };
 
 const getDefaultDescription = (locale: string) => {
   switch (locale) {
     case 'ja':
-      return 'Collectionsは、30言語以上をサポートするAI翻訳内蔵の多言語ヘッドレスCMSです。コンテンツをAPIで連携して組み込むことで、簡単にWebサイトを多言語化することができます。インバウンド・外国語ユーザー対応を加速させ、新たな潜在顧客にリーチします。';
+      return 'Collectionsは、30以上の言語に自動翻訳可能な多言語ヘッドレスCMSです。AIによる文章の添削・SEO対策で、Webサイトの多言語化を加速させます。インバウンド・外国語ユーザー対応を強化し、新たな潜在顧客にリーチしましょう。';
     default:
-      return 'Collections is a multilingual headless CMS that supports 30. Combine it with AI-generated multilingual content to accelerate business.';
+      return 'Collections is a multilingual headless CMS enabling translation into 30+ languages, with AI editing and SEO to speed up website globalization.';
   }
 };
 
