@@ -41,6 +41,14 @@ export const PostHeader: React.FC<Props> = ({
   const theme = useTheme();
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const sortedLanguages = content.languageContents.sort((a, b) => {
+    if (a.language === currentLanguage) return -1;
+    if (b.language === currentLanguage) return 1;
+    return 0;
+  });
+  const listLanguages = sortedLanguages.length < 3 ? sortedLanguages : sortedLanguages.slice(0, 3);
+  const menuLanguages =
+    sortedLanguages.length >= 3 ? sortedLanguages.slice(3, sortedLanguages.length) : [];
 
   const appBar: AppBarProps = {
     position: 'fixed',
@@ -58,14 +66,11 @@ export const PostHeader: React.FC<Props> = ({
   };
 
   // /////////////////////////////////////
-  // Language Menu
+  // Other Language Menu
   // /////////////////////////////////////
 
   const anchorRef = useRef<any>(null);
   const [languageOpen, setLanguageOpen] = useState(false);
-  const handleLanguageOpen = () => {
-    setLanguageOpen((open) => !open);
-  };
 
   const handleCloseLanguage = (event: MouseEvent | TouchEvent) => {
     if (anchorRef.current && anchorRef.current.contains(event.target)) {
@@ -75,13 +80,12 @@ export const PostHeader: React.FC<Props> = ({
   };
 
   const handleChangeLanguage = (contentId: string) => {
-    onChangeLanguage(contentId);
     setLanguageOpen(false);
+    onChangeLanguage(contentId);
   };
 
   const handleAddLanguage = () => {
     onOpenAddLanguage();
-    setLanguageOpen(false);
   };
 
   return (
@@ -116,22 +120,66 @@ export const PostHeader: React.FC<Props> = ({
               </Typography>
             </Stack>
           </Stack>
-          <Stack direction="row" alignItems="center" gap={2}>
-            <Button variant="text" color="secondary" ref={anchorRef} onClick={handleLanguageOpen}>
-              <Stack direction="row" alignItems="center" gap={1}>
-                <NationalFlagIcon code={currentLanguage} props={{ width: 20 }} />
-                <Icon name="ChevronDown" size={14} />
+          <Stack direction="row" alignItems="center" gap={1} sx={{ mr: 2 }}>
+            {listLanguages.map(({ contentId, language }) => (
+              <Stack key={contentId} direction="column">
+                <IconButton
+                  key={contentId}
+                  color="inherit"
+                  onClick={() => handleChangeLanguage(contentId)}
+                  sx={{
+                    height: 26,
+                    width: 26,
+                  }}
+                >
+                  <NationalFlagIcon code={language} props={{ width: 18 }} />
+                </IconButton>
+                <Divider
+                  sx={{
+                    borderColor: language === currentLanguage ? 'primary.main' : 'transparent',
+                  }}
+                />
               </Stack>
-            </Button>
-            <Button
-              variant="contained"
-              onClick={onOpenPublishSettings}
-              sx={{ padding: '5px 15px' }}
-            >
-              {t('next')}
-            </Button>
+            ))}
+            {menuLanguages.length > 0 && (
+              <IconButton
+                sx={{
+                  height: 26,
+                  width: 26,
+                }}
+                ref={anchorRef}
+                variant="text"
+                color="secondary"
+                onClick={() => setLanguageOpen(true)}
+              >
+                <Typography variant="caption">+</Typography>
+                <Typography variant="caption" sx={{ ml: 0.2 }}>
+                  {menuLanguages.length}
+                </Typography>
+              </IconButton>
+            )}
+            <Tooltip title={t('add_language_content')} placement="bottom">
+              <IconButton
+                color="secondary"
+                shape="rounded"
+                sx={{
+                  p: 0.5,
+                  m: 1,
+                  height: 20,
+                  width: 20,
+                  border: '1px dashed',
+                }}
+                onClick={handleAddLanguage}
+              >
+                <Icon name="Plus" size={12} />
+              </IconButton>
+            </Tooltip>
           </Stack>
+          <Button variant="contained" onClick={onOpenPublishSettings} sx={{ padding: '5px 15px' }}>
+            {t('next')}
+          </Button>
         </Toolbar>
+
         {/* Language menu */}
         <Menu
           anchorEl={anchorRef.current}
@@ -146,7 +194,7 @@ export const PostHeader: React.FC<Props> = ({
           open={languageOpen}
           onClose={handleCloseLanguage}
         >
-          {content.languageContents.map(({ contentId, language }) => (
+          {menuLanguages.map(({ contentId, language }) => (
             <MenuItem
               onClick={() => handleChangeLanguage(contentId)}
               selected={currentLanguage === language}
@@ -158,11 +206,6 @@ export const PostHeader: React.FC<Props> = ({
               </Typography>
             </MenuItem>
           ))}
-          {/* Add localized content */}
-          <MenuItem onClick={handleAddLanguage}>
-            <Icon name="Plus" size={16} />
-            <Typography sx={{ pl: 1 }}>{t('add_to')}</Typography>
-          </MenuItem>
         </Menu>
       </AppBarStyled>
     </>
