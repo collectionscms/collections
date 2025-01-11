@@ -66,6 +66,7 @@ export const AddLanguage: React.FC<Props> = ({ open, content, onAdd, onClose }) 
           <Stack spacing={1} direction="column" sx={{ width: 400 }}>
             <LanguageAutocomplete
               languages={enabledLanguages}
+              autofocus={true}
               onChange={(_event, newValue) => {
                 setValue('language', newValue === null ? '' : newValue.code);
               }}
