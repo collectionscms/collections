@@ -123,7 +123,7 @@
   "language_publish_settings": "{{language}} Publish Settings",
   "danger_zone": "Danger Zone",
   "post_info": "Post info",
-  "other_localized_languages": "( {{count}} other languages )",
+  "other_localized_languages": "( +{{count}} languages )",
   "requester": "Requester",
   "untitled": "Untitled",
   "webhook": "Webhook",

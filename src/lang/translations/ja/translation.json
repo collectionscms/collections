@@ -123,7 +123,7 @@
   "language_publish_settings": "{{language}}の公開設定",
   "danger_zone": "Danger Zone",
   "post_info": "記事情報",
-  "other_localized_languages": "（他 {{count}} 言語）",
+  "other_localized_languages": "（ +{{count}} 言語 ）",
   "requester": "申請者",
   "untitled": "無題",
   "webhook": "Webhook",
