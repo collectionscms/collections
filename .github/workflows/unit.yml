@@ -1,4 +1,4 @@
-name: Integration Tests
+name: Unit Tests
 
 on:
   pull_request:
@@ -6,8 +6,7 @@ on:
       - main
 
 jobs:
-  integration:
-    name: ${{ matrix.database }}
+  unit:
     runs-on: ubuntu-latest
     env:
       TIPTAP_PRO_TOKEN: ${{ secrets.TIPTAP_PRO_TOKEN }}
@@ -16,8 +15,6 @@ jobs:
       fail-fast: false
       matrix:
         node-version: ['20.14.x']
-        database:
-          - postgres
 
     steps:
       - name: Checkout repository
@@ -30,8 +27,5 @@ jobs:
       - name: Yarn install
         run: yarn install
 
-      - name: Start Services
-        run: docker compose -f test/docker-compose.yml up ${{ matrix.database }} -d --quiet-pull --wait
-
       - name: Run Tests
-        run: TEST_DB=${{ matrix.database }} yarn test:int --runInBand
+        run: yarn test:unit --runInBand
