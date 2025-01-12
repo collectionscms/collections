@@ -1164,10 +1164,10 @@
   resolved "https://registry.npmjs.org/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@collectionscms/plugin-text-generator@1.2.14":
-  version "1.2.14"
-  resolved "https://registry.yarnpkg.com/@collectionscms/plugin-text-generator/-/plugin-text-generator-1.2.14.tgz#c826472028c8aecc062f803cde01b335f1274388"
-  integrity sha512-Jvw/CnDOM7NlkopFODVfc+BcLMFhj6rHDnIOoemO0T1HzL3PhutpXwzl1IW5hH78OSQPPLY02BvoCBYVUoX9aA==
+"@collectionscms/plugin-text-generator@1.2.16":
+  version "1.2.16"
+  resolved "https://registry.yarnpkg.com/@collectionscms/plugin-text-generator/-/plugin-text-generator-1.2.16.tgz#97ecaebd9f33a0a6c61ac13207cb228108f002ad"
+  integrity sha512-kcyRPOsmMI+sPHAE7iK1BvOHh9kM85ZkpNYNXSsTOMFyAOI2IGAA5QEsGx0N+mjD/Nq676DJFQKwAVQL968BlQ==
   dependencies:
     deepl-node "1.14.0"
     openai "4.65.0"
