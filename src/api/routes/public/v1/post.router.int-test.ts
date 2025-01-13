@@ -1,6 +1,6 @@
 import express from 'express';
 import request from 'supertest';
-import { apiKey, project } from '../../../../../tests/common/variables.js';
+import { apiKey, project } from '../../../../../test/common/variables.js';
 import { extractToken } from '../../../middlewares/auth.js';
 import { post } from './post.router.js';
 

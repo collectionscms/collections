@@ -6,8 +6,8 @@ export default {
   coverageProvider: 'v8',
   testEnvironment: 'node',
   testMatch: ['**/admin/**/*test.ts'],
-  globalSetup: './tests/setups/setup.ts',
-  globalTeardown: './tests/setups/teardown.ts',
+  globalSetup: './test/setups/setup.ts',
+  globalTeardown: './test/setups/teardown.ts',
   moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.js$': '$1',
   },

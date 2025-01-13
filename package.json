@@ -15,7 +15,7 @@
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx}\" --ignore-path .gitignore",
     "prepare": "husky install",
     "typecheck": "tsc -p . --noEmit",
-    "test:int": "node --loader ts-node/esm --experimental-vm-modules node_modules/jest/bin/jest.js --config=jest.integrations.config.mjs",
+    "test:int": "FORCE_REFRESH=true node --loader ts-node/esm --experimental-vm-modules node_modules/jest/bin/jest.js --config=jest.integrations.config.mjs",
     "test:unit": "node --loader ts-node/esm --experimental-vm-modules node_modules/jest/bin/jest.js --config=jest.config.mjs",
     "test:components": "node --loader ts-node/esm --experimental-vm-modules node_modules/jest/bin/jest.js --config=jest.components.config.mjs",
     "dev": "node --loader ts-node/esm --no-warnings ./src/bin.ts dev",
