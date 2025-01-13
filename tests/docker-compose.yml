@@ -3,7 +3,7 @@ services:
   postgres:
     image: postgres:15.0
     environment:
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: collections
+      POSTGRES_PASSWORD: pw
+      POSTGRES_DB: collectionstest
     ports:
       - 30200:5432
