@@ -41,6 +41,10 @@ model User {
   password                     String?               @db.VarChar(255)
   isActive                     Boolean               @default(true)
   avatarUrl                    String?               @db.VarChar(255)
+  confirmationToken            String?               @db.VarChar(255)
+  confirmedAt                  DateTime?
+  resetPasswordToken           String?               @db.VarChar(255)
+  resetPasswordExpiration      DateTime?
   provider                     String                @db.VarChar(255)
   providerId                   String                @db.VarChar(255)
   createdAt                    DateTime              @default(now()) @db.Timestamptz(6)
@@ -59,6 +63,7 @@ model User {
   textGenerationUsages         TextGenerationUsage[]
 
   @@unique([provider, providerId])
+  @@unique([provider, email])
 }
 
 model UserProject {
