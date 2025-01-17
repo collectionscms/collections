@@ -35,14 +35,14 @@ model Project {
 }
 
 model User {
-  id                           String                @id @db.Uuid
-  name                         String                @db.VarChar(255)
-  email                        String
+  id                           String                @id @default(uuid()) @db.Uuid
+  name                         String?               @db.VarChar(255)
+  email                        String                @unique
+  emailVerified                DateTime?
+  image                        String?
   password                     String?               @db.VarChar(255)
   isActive                     Boolean               @default(true)
   avatarUrl                    String?               @db.VarChar(255)
-  provider                     String                @db.VarChar(255)
-  providerId                   String                @db.VarChar(255)
   createdAt                    DateTime              @default(now()) @db.Timestamptz(6)
   updatedAt                    DateTime              @updatedAt @db.Timestamptz(6)
   userProjects                 UserProject[]
@@ -57,8 +57,35 @@ model User {
   createdByHasContentRevisions ContentRevision[]     @relation("CreatedBy")
   updatedByHasContentRevisions ContentRevision[]     @relation("UpdatedBy")
   textGenerationUsages         TextGenerationUsage[]
+  accounts                     Account[]
+}
 
-  @@unique([provider, providerId])
+model Account {
+  userId            String   @db.Uuid
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?  @map("refreshToken")
+  access_token      String?  @map("accessToken")
+  expires_at        Int?     @map("expiresAt")
+  token_type        String?  @map("tokenType")
+  scope             String?
+  id_token          String?  @map("idToken")
+  session_state     String?  @map("sessionState")
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@id([identifier, token])
 }
 
 model UserProject {
