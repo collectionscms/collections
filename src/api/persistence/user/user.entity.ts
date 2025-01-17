@@ -1,39 +1,28 @@
 import { User } from '@prisma/client';
 import { v4 } from 'uuid';
+import { UnexpectedException } from '../../../exceptions/unexpected.js';
 import { oneWayHash } from '../../utilities/oneWayHash.js';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
-import { UnexpectedException } from '../../../exceptions/unexpected.js';
-
-export const AuthProvider = {
-  email: 'email',
-  github: 'github',
-  google: 'google',
-} as const;
-export type AuthProviderType = (typeof AuthProvider)[keyof typeof AuthProvider];
 
 export class UserEntity extends PrismaBaseEntity<User> {
   static Construct({
     name,
     email,
     isActive,
-    provider,
-    providerId,
   }: {
     name: string;
     email: string;
     isActive: boolean;
-    provider: AuthProviderType;
-    providerId: string;
   }): UserEntity {
     const now = new Date();
     return new UserEntity({
       id: v4(),
       name,
       email,
+      emailVerified: null,
       password: null,
+      image: null,
       isActive,
-      provider,
-      providerId,
       avatarUrl: null,
       createdAt: now,
       updatedAt: now,
@@ -63,7 +52,7 @@ export class UserEntity extends PrismaBaseEntity<User> {
   }
 
   get name(): string {
-    return this.props.name;
+    return this.props.name ?? '';
   }
 
   get password(): string | null {
@@ -76,14 +65,6 @@ export class UserEntity extends PrismaBaseEntity<User> {
 
   get avatarUrl(): string | null {
     return this.props.avatarUrl;
-  }
-
-  get provider(): string {
-    return this.props.provider;
-  }
-
-  get providerId(): string {
-    return this.props.providerId;
   }
 
   get updatedAt(): Date {
