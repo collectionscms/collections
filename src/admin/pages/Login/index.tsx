@@ -167,6 +167,11 @@ export const Login: React.FC = () => {
               {enabledMagicLinks && (
                 <Stack component="form" action="/api/auth/signin/sendgrid" method="POST">
                   <input type="hidden" name="csrfToken" value={csrfToken} />
+                  <input
+                    type="hidden"
+                    name="callbackUrl"
+                    value={`/api/auth/providers/sendgrid${requestParams}`}
+                  />
                   <Grid container gap={1}>
                     <Grid xs={12}>
                       <Stack spacing={1}>
