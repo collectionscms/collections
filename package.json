@@ -51,7 +51,7 @@
     "@auth/express": "0.6.0",
     "@aws-sdk/client-s3": "3.654.0",
     "@collectionscms/plugin-text-generator": "1.2.16",
-    "@emotion/react": "11.13.3",
+    "@emotion/react": "11.14.0",
     "@emotion/styled": "11.13.0",
     "@hookform/resolvers": "3.9.1",
     "@mui/lab": "5.0.0-alpha.173",
