@@ -1,7 +1,7 @@
 import { env } from '../../../env.js';
 import i18n from '../../../lang/translations/config.js';
 import { InvitationEntity } from '../../persistence/invitation/invitation.entity.js';
-import { MailService } from '../mail.service.js';
+import { MailService } from './mail.service.js';
 
 export class InvitationMailService extends MailService {
   async sendInvitation(

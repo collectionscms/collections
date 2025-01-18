@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import { MailService } from '../mail.service.js';
+import { MailService } from './mail.service.js';
 
 export class VerificationRequestMail extends MailService {
   async sendVerificationRequest(email: string, url: string, from: string) {

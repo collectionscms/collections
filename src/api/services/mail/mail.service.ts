@@ -1,8 +1,8 @@
 import { Transporter } from 'nodemailer';
-import { mailer } from '../../email/mailer.js';
-import { Message } from '../../email/types.js';
-import { env } from '../../env.js';
-import { logger } from '../../utilities/logger.js';
+import { mailer } from '../../../email/mailer.js';
+import { Message } from '../../../email/types.js';
+import { env } from '../../../env.js';
+import { logger } from '../../../utilities/logger.js';
 
 export class MailService {
   mailer: Transporter;
