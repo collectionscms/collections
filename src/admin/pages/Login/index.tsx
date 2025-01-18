@@ -85,7 +85,9 @@ export const Login: React.FC = () => {
   return (
     <>
       <Box sx={{ position: 'absolute', top: 30, left: 40 }}>
-        <Logo variant="logo" props={{ width: 'auto', height: 28 }} />
+        <Link href="https://collections.dev">
+          <Logo variant="logo" props={{ width: 'auto', height: 28 }} />
+        </Link>
       </Box>
       <Stack sx={{ width: { xs: 400, lg: 475 }, gap: 3 }}>
         <AuthCard sx={{ p: 2 }}>
@@ -121,7 +123,7 @@ export const Login: React.FC = () => {
                               {...field}
                               id="email"
                               type="text"
-                              placeholder="editor@collections.dev"
+                              placeholder="mail@example.com"
                               error={errors.email !== undefined}
                             />
                           )}

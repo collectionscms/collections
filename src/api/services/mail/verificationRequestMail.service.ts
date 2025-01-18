@@ -29,7 +29,7 @@ export class VerificationRequestMail extends MailService {
       <tr>
         <td align="center"
           style="padding: 10px 0px; font-size: 22px; font-family: Helvetica, Arial, sans-serif; color: ${color.text};">
-          Welcome to <strong>Collections</strong>
+          Sign in to <strong>Collections</strong>
         </td>
       </tr>
       <tr>

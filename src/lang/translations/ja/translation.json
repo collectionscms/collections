@@ -158,6 +158,9 @@
   "tags_hint": "タグの変更は、公開済みの記事に即時反映されます。",
   "documentation": "ドキュメント",
   "terms_and_privacy": "ログインすることで <terms>利用規約</terms> および <privacy>プライバシーポリシー</privacy> に<br/>同意したものとみなされます。",
+  "check_your_email": "メールを確認してください",
+  "we_send_verification_email": "アカウント確認のためメールをお送りしました。メールをご確認いただき、リンクをクリックしてアカウントを有効化してください。",
+  "back_to_login": "ログインに戻る",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",

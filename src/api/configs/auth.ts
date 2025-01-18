@@ -114,4 +114,7 @@ export const authConfig: Omit<AuthConfig, 'raw'> = {
       },
     },
   },
+  pages: {
+    verifyRequest: '/admin/auth/verify-request',
+  },
 };
