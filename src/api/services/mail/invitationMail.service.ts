@@ -18,6 +18,7 @@ export class InvitationMailService extends MailService {
       to: entity.email,
       subject: t('emails.invitation.subject', { projectName }),
       html,
+      text: html,
     });
   }
 }

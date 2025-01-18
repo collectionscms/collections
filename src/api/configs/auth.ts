@@ -9,6 +9,7 @@ import { env } from '../../env.js';
 import { logger } from '../../utilities/logger.js';
 import { bypassPrisma } from '../database/prisma/client.js';
 import { UserRepository } from '../persistence/user/user.repository.js';
+import { VerificationRequestMail } from '../services/mail/verificationRequestMail.service.js';
 import { LoginUseCase } from '../useCases/auth/login.useCase.js';
 
 const useSecureCookies = env.PUBLIC_SERVER_ORIGIN.startsWith('https://');
@@ -66,6 +67,16 @@ export const authConfig: Omit<AuthConfig, 'raw'> = {
     Sendgrid({
       apiKey: env.EMAIL_SENDGRID_API_KEY,
       from: env.EMAIL_FROM,
+      async sendVerificationRequest(params) {
+        const {
+          identifier: email,
+          url,
+          provider: { from },
+        } = params;
+
+        const mailService = new VerificationRequestMail();
+        await mailService.sendVerificationRequest(email, url, from);
+      },
     }),
     CredentialsProvider({
       id: 'login',
