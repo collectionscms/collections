@@ -45,7 +45,6 @@ export const authConfig: Omit<AuthConfig, 'raw'> = {
         return {
           email: profile.email,
           name: profile.name,
-          avatarUrl: profile.avatar_url, // todo remove later
           image: profile.avatar_url,
         };
       },
@@ -57,7 +56,6 @@ export const authConfig: Omit<AuthConfig, 'raw'> = {
         return {
           email: profile.email,
           name: profile.name,
-          avatarUrl: profile.picture, // todo remove later
           image: profile.picture,
         };
       },

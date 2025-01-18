@@ -10,7 +10,6 @@ const defaultValue = {
   emailVerified: null,
   password: null,
   isActive: true,
-  avatarUrl: faker.image.avatarGitHub(),
   image: faker.image.avatarGitHub(),
   providerId: v4(),
   createdAt: new Date(),

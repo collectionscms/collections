@@ -23,7 +23,6 @@ export class UserEntity extends PrismaBaseEntity<User> {
       password: null,
       image: null,
       isActive,
-      avatarUrl: null,
       createdAt: now,
       updatedAt: now,
     });
@@ -63,8 +62,8 @@ export class UserEntity extends PrismaBaseEntity<User> {
     return this.props.isActive;
   }
 
-  get avatarUrl(): string | null {
-    return this.props.avatarUrl;
+  get image(): string | null {
+    return this.props.image;
   }
 
   get updatedAt(): Date {

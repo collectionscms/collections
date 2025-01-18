@@ -42,7 +42,6 @@ model User {
   image                        String?
   password                     String?               @db.VarChar(255)
   isActive                     Boolean               @default(true)
-  avatarUrl                    String?               @db.VarChar(255)
   createdAt                    DateTime              @default(now()) @db.Timestamptz(6)
   updatedAt                    DateTime              @updatedAt @db.Timestamptz(6)
   userProjects                 UserProject[]

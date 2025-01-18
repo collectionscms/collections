@@ -1,6 +1,7 @@
 /*
   Warnings:
 
+  - You are about to drop the column `avatarUrl` on the `User` table. All the data in the column will be lost.
   - You are about to drop the column `provider` on the `User` table. All the data in the column will be lost.
   - You are about to drop the column `providerId` on the `User` table. All the data in the column will be lost.
   - A unique constraint covering the columns `[email]` on the table `User` will be added. If there are existing duplicate values, this will fail.
@@ -16,7 +17,8 @@ ALTER TABLE "Content" ALTER COLUMN "draftKey" SET DEFAULT substring(md5(random()
 ALTER TABLE "ContentRevision" ALTER COLUMN "draftKey" SET DEFAULT substring(md5(random()::text), 1, 10);
 
 -- AlterTable
-ALTER TABLE "User" DROP COLUMN "provider",
+ALTER TABLE "User" DROP COLUMN "avatarUrl",
+DROP COLUMN "provider",
 DROP COLUMN "providerId",
 ADD COLUMN     "emailVerified" TIMESTAMP(3),
 ADD COLUMN     "image" TEXT,
