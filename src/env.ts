@@ -122,7 +122,7 @@ export const defaults: Partial<Record<AllowedEnvironmentVariable, any>> = {
   REQ_LIMIT: '4mb',
 
   // Auth
-  PUBLIC_AUTH_PROVIDERS: 'email,google,github',
+  PUBLIC_AUTH_PROVIDERS: 'credentials',
 
   // CORS
   CORS_ENABLED: false,
