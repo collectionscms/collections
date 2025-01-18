@@ -3,6 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Box,
   Button,
+  Divider,
   FormHelperText,
   InputLabel,
   Link,
@@ -19,6 +20,7 @@ import { useNavigate } from 'react-router-dom';
 import { privacyUrl, termsUrl } from '../../../constants/externalLinks.js';
 import { logger } from '../../../utilities/logger.js';
 import { AuthCard } from '../../@extended/components/AuthCard/index.js';
+import { Icon } from '../../components/elements/Icon/index.js';
 import { Loader } from '../../components/elements/Loader/index.js';
 import { Logo } from '../../components/elements/Logo/index.js';
 import { useAuth } from '../../components/utilities/Auth/index.js';
@@ -41,9 +43,9 @@ export const Login: React.FC = () => {
 
   const loginPageText = process.env.PUBLIC_LOGIN_PAGE_TEXT;
   const authProviders = process.env.PUBLIC_AUTH_PROVIDERS?.split(',') ?? [];
-  const enabledEmailSignIn = authProviders.includes('email');
-  const enabledGoogleSignIn = authProviders.includes('google');
-  const enabledGitHubSignIn = authProviders.includes('github');
+  const enabledCredentials = authProviders.includes('credentials');
+  const enabledMagicLinks = authProviders.includes('magicLinks');
+  const enabledOAuth = authProviders.includes('oAuth');
 
   const inviteToken = new URLSearchParams(location.search).get('inviteToken') ?? '';
   const requestParams = inviteToken ? `?inviteToken=${inviteToken}` : '';
@@ -99,8 +101,8 @@ export const Login: React.FC = () => {
           )}
           <Stack>
             <Stack gap={2}>
-              {/* Email */}
-              {enabledEmailSignIn && (
+              {/* Credentials */}
+              {enabledCredentials && (
                 <Stack
                   component="form"
                   onSubmit={handleSubmit(onSubmit)}
@@ -119,6 +121,7 @@ export const Login: React.FC = () => {
                               {...field}
                               id="email"
                               type="text"
+                              placeholder="editor@collections.dev"
                               error={errors.email !== undefined}
                             />
                           )}
@@ -160,69 +163,118 @@ export const Login: React.FC = () => {
                 </Stack>
               )}
 
-              {/* Google */}
-              {enabledGoogleSignIn && (
-                <form action="/api/auth/signin/google" method="POST">
+              {/* Magic Links */}
+              {enabledMagicLinks && (
+                <Stack component="form" action="/api/auth/signin/sendgrid" method="POST">
                   <input type="hidden" name="csrfToken" value={csrfToken} />
-                  <input
-                    type="hidden"
-                    name="callbackUrl"
-                    value={`/api/auth/providers/google${requestParams}`}
-                  />
-                  <Button
-                    fullWidth
-                    variant="outlined"
-                    color="secondary"
-                    type="submit"
-                    size="large"
-                    sx={{
-                      color: 'text.primary',
-                      '&:hover': {
-                        backgroundColor: theme.palette.divider,
-                      },
-                    }}
-                  >
-                    <Stack flexDirection="row" alignItems="center" gap={1}>
-                      <Box
-                        component="img"
-                        src={`https://cdn.collections.dev/google-logo.svg`}
-                        sx={{ width: 20, height: 20 }}
-                        alt="google-logo"
-                      />
-                      <Typography sx={{ fontSize: 16 }}>{t('sign_in_with_google')}</Typography>
-                    </Stack>
-                  </Button>
-                </form>
+                  <Grid container gap={1}>
+                    <Grid xs={12}>
+                      <Stack spacing={1}>
+                        <InputLabel htmlFor="email">{t('email')}</InputLabel>
+                        <Controller
+                          name="email"
+                          control={control}
+                          render={({ field }) => (
+                            <TextField
+                              {...field}
+                              id="email"
+                              type="text"
+                              placeholder="mail@example.com"
+                              error={errors.email !== undefined}
+                            />
+                          )}
+                        />
+                        <FormHelperText error>{errors.email?.message}</FormHelperText>
+                      </Stack>
+                    </Grid>
+                    <Grid xs={12}>
+                      <Button
+                        disableElevation
+                        fullWidth
+                        variant="contained"
+                        type="submit"
+                        size="large"
+                        disabled={isMutating}
+                      >
+                        <Stack flexDirection="row" alignItems="center" gap={1}>
+                          <Icon name="Mail" size={18} />
+                          <Typography sx={{ fontSize: 16 }}>{t('sign_in_with_email')}</Typography>
+                        </Stack>
+                      </Button>
+                    </Grid>
+                  </Grid>
+                </Stack>
               )}
 
-              {/* GitHub */}
-              {enabledGitHubSignIn && (
-                <form action="/api/auth/signin/github" method="POST">
-                  <input type="hidden" name="csrfToken" value={csrfToken} />
-                  <input
-                    type="hidden"
-                    name="callbackUrl"
-                    value={`/api/auth/providers/github${requestParams}`}
-                  />
-                  <Button
-                    fullWidth
-                    variant="outlined"
-                    color="secondary"
-                    type="submit"
-                    size="large"
-                    sx={{
-                      color: 'text.primary',
-                      '&:hover': {
-                        backgroundColor: theme.palette.divider,
-                      },
-                    }}
-                  >
-                    <Stack flexDirection="row" alignItems="center" gap={1}>
-                      <GithubOutlined style={{ fontSize: 20 }} />
-                      <Typography sx={{ fontSize: 16 }}>{t('sign_in_with_github')}</Typography>
-                    </Stack>
-                  </Button>
-                </form>
+              {enabledMagicLinks && enabledOAuth && (
+                <Divider sx={{ my: 1 }}>
+                  <Typography variant="body1" color="text.secondary">
+                    OR
+                  </Typography>
+                </Divider>
+              )}
+
+              {/* OAuth */}
+              {enabledOAuth && (
+                <>
+                  <Stack component="form" action="/api/auth/signin/google" method="POST">
+                    <input type="hidden" name="csrfToken" value={csrfToken} />
+                    <input
+                      type="hidden"
+                      name="callbackUrl"
+                      value={`/api/auth/providers/google${requestParams}`}
+                    />
+                    <Button
+                      fullWidth
+                      variant="outlined"
+                      color="secondary"
+                      type="submit"
+                      size="large"
+                      sx={{
+                        color: 'text.primary',
+                        '&:hover': {
+                          backgroundColor: theme.palette.divider,
+                        },
+                      }}
+                    >
+                      <Stack flexDirection="row" alignItems="center" gap={1}>
+                        <Box
+                          component="img"
+                          src={`https://cdn.collections.dev/google-logo.svg`}
+                          sx={{ width: 20, height: 20 }}
+                          alt="google-logo"
+                        />
+                        <Typography sx={{ fontSize: 16 }}>{t('sign_in_with_google')}</Typography>
+                      </Stack>
+                    </Button>
+                  </Stack>
+                  <Stack component="form" action="/api/auth/signin/github" method="POST">
+                    <input type="hidden" name="csrfToken" value={csrfToken} />
+                    <input
+                      type="hidden"
+                      name="callbackUrl"
+                      value={`/api/auth/providers/github${requestParams}`}
+                    />
+                    <Button
+                      fullWidth
+                      variant="outlined"
+                      color="secondary"
+                      type="submit"
+                      size="large"
+                      sx={{
+                        color: 'text.primary',
+                        '&:hover': {
+                          backgroundColor: theme.palette.divider,
+                        },
+                      }}
+                    >
+                      <Stack flexDirection="row" alignItems="center" gap={1}>
+                        <GithubOutlined style={{ fontSize: 20 }} />
+                        <Typography sx={{ fontSize: 16 }}>{t('sign_in_with_github')}</Typography>
+                      </Stack>
+                    </Button>
+                  </Stack>
+                </>
               )}
             </Stack>
           </Stack>
