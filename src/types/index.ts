@@ -29,8 +29,6 @@ export type ProjectRole = {
 export type Me = {
   id: string;
   email: string;
-  provider: string;
-  providerId: string;
 };
 
 export type ApiError = {

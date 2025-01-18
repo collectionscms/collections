@@ -48,7 +48,7 @@ const ProfilePageImpl: React.FC = () => {
     formState: { isDirty, errors },
   } = useForm<FormValues>({
     defaultValues: {
-      name: user?.name,
+      name: user?.name ?? '',
     },
     resolver: yupResolver(updateUserSchema(t)),
   });

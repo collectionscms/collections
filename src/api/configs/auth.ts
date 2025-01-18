@@ -3,14 +3,14 @@ import { CredentialsSignin } from '@auth/express';
 import CredentialsProvider from '@auth/express/providers/credentials';
 import GitHub from '@auth/express/providers/github';
 import Google from '@auth/express/providers/google';
+import Sendgrid from '@auth/express/providers/sendgrid';
+import { PrismaAdapter } from '@auth/prisma-adapter';
 import { env } from '../../env.js';
 import { logger } from '../../utilities/logger.js';
 import { bypassPrisma } from '../database/prisma/client.js';
-import { AuthProvider } from '../persistence/user/user.entity.js';
 import { UserRepository } from '../persistence/user/user.repository.js';
+import { VerificationRequestMail } from '../services/mail/verificationRequestMail.service.js';
 import { LoginUseCase } from '../useCases/auth/login.useCase.js';
-import { OAuthSignInUseCase } from '../useCases/auth/oAuthSignIn.useCase.js';
-import { oAuthSingInUseCaseSchema } from '../useCases/auth/oAuthSignIn.useCase.schema.js';
 
 const useSecureCookies = env.PUBLIC_SERVER_ORIGIN.startsWith('https://');
 const hostName = env.SERVER_HOST;
@@ -26,20 +26,7 @@ export const authConfig: Omit<AuthConfig, 'raw'> = {
     async jwt(params: any) {
       const { token, user } = params;
       if (!user) return token;
-
-      if (user.provider !== AuthProvider.email) {
-        // OAuth
-        const validated = oAuthSingInUseCaseSchema.safeParse(user);
-        if (validated.success) {
-          const useCase = new OAuthSignInUseCase(bypassPrisma, new UserRepository());
-          token.user = await useCase.execute(validated.data);
-        } else {
-          logger.error(validated.error);
-          throw new InvalidLoginError();
-        }
-      } else {
-        token.user = user;
-      }
+      token.user = user;
 
       return token;
     },
@@ -59,10 +46,10 @@ export const authConfig: Omit<AuthConfig, 'raw'> = {
           email: profile.email,
           name: profile.name,
           image: profile.avatar_url,
-          provider: 'github',
-          providerId: profile.id.toString(),
         };
       },
+      // todo remove later
+      allowDangerousEmailAccountLinking: true,
     }),
     Google({
       profile(profile) {
@@ -70,9 +57,23 @@ export const authConfig: Omit<AuthConfig, 'raw'> = {
           email: profile.email,
           name: profile.name,
           image: profile.picture,
-          provider: 'google',
-          providerId: profile.sub,
         };
+      },
+      // todo remove later
+      allowDangerousEmailAccountLinking: true,
+    }),
+    Sendgrid({
+      apiKey: env.EMAIL_SENDGRID_API_KEY,
+      from: env.EMAIL_FROM,
+      async sendVerificationRequest(params) {
+        const {
+          identifier: email,
+          url,
+          provider: { from },
+        } = params;
+
+        const mailService = new VerificationRequestMail();
+        await mailService.sendVerificationRequest(email, url, from);
       },
     }),
     CredentialsProvider({
@@ -95,6 +96,10 @@ export const authConfig: Omit<AuthConfig, 'raw'> = {
       },
     }),
   ],
+  adapter: PrismaAdapter(bypassPrisma),
+  session: {
+    strategy: 'jwt',
+  },
   cookies: {
     sessionToken: {
       name: 'authjs.session-token',
@@ -106,5 +111,8 @@ export const authConfig: Omit<AuthConfig, 'raw'> = {
         secure: useSecureCookies,
       },
     },
+  },
+  pages: {
+    verifyRequest: '/admin/auth/verify-request',
   },
 };

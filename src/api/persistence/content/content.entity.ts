@@ -499,7 +499,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
       author: {
         id: createdBy.id,
         name: createdBy.name,
-        avatarUrl: createdBy.avatarUrl,
+        avatarUrl: createdBy.image,
       },
     };
   }

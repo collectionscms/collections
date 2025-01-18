@@ -139,6 +139,7 @@
   "general": "General",
   "login_title": "Welcome to Collections",
   "login_subtitle": "No credit card required, try for free!",
+  "sign_in_with_email": "Sign in with Email",
   "sign_in_with_google": "Sign in with Google",
   "sign_in_with_github": "Sign in with GitHub",
   "create_your_first_project": "Create your first project on Collections!",
@@ -157,6 +158,9 @@
   "tags_hint": "Any tag changes are immediately reflected in published post.",
   "documentation": "Documentation",
   "terms_and_privacy": "By logging in to Collections, you agree to our<br/><terms>terms of service</terms> and <privacy>privacy policy</privacy>.",
+  "check_your_email": "Check your email",
+  "we_send_verification_email": "We've sent you an email to verify your account. Please check your email and click the link to verify your account.",
+  "back_to_login": "Back to login",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",

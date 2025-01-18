@@ -1,16 +1,16 @@
 import { faker } from '@faker-js/faker';
 import { User } from '@prisma/client';
 import { v4 } from 'uuid';
-import { AuthProvider, UserEntity } from './user.entity.js';
+import { UserEntity } from './user.entity.js';
 
 const defaultValue = {
   id: v4(),
   name: faker.person.firstName() + ' ' + faker.person.lastName(),
   email: faker.internet.email(),
+  emailVerified: null,
   password: null,
   isActive: true,
-  avatarUrl: faker.image.avatarGitHub(),
-  provider: AuthProvider.google,
+  image: faker.image.avatarGitHub(),
   providerId: v4(),
   createdAt: new Date(),
   updatedAt: new Date(),

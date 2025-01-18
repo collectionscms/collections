@@ -1,6 +1,6 @@
-import { env } from '../../env.js';
-import i18n from '../../lang/translations/config.js';
-import { InvitationEntity } from '../persistence/invitation/invitation.entity.js';
+import { env } from '../../../env.js';
+import i18n from '../../../lang/translations/config.js';
+import { InvitationEntity } from '../../persistence/invitation/invitation.entity.js';
 import { MailService } from './mail.service.js';
 
 export class InvitationMailService extends MailService {
@@ -18,6 +18,7 @@ export class InvitationMailService extends MailService {
       to: entity.email,
       subject: t('emails.invitation.subject', { projectName }),
       html,
+      text: html,
     });
   }
 }

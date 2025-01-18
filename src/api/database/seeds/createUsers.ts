@@ -20,11 +20,8 @@ export const createUsers = async (
         id: user.id,
         name: faker.person.firstName() + ' ' + faker.person.lastName(),
         email: user.email,
-        avatarUrl: faker.image.avatarGitHub(),
         password: await oneWayHash(user.password),
         isActive: true,
-        provider: 'email',
-        providerId: v4(),
         userProjects: {
           create: user.userProjects.map((userProject) => ({
             id: v4(),
