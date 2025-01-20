@@ -12,6 +12,8 @@ jobs:
   upload-sourcemaps:
     name: Upload source maps
     runs-on: ubuntu-latest
+    env:
+      TIPTAP_PRO_TOKEN: ${{ secrets.TIPTAP_PRO_TOKEN }}
 
     steps:
       - name: Checkout code
