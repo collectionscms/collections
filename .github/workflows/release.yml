@@ -45,7 +45,7 @@ jobs:
           SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
         run: |
           # Extract tag name and create a Sentry release
-          RELEASE_NAME=${GITHUB_REF#refs/tags/}
+          RELEASE_NAME="pr-${{ github.event.pull_request.number }}-${{ github.sha }}"
           echo "Uploading source maps for release: $RELEASE_NAME"
 
           sentry-cli releases new "$RELEASE_NAME"
