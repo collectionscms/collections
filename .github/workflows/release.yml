@@ -15,14 +15,18 @@ jobs:
     env:
       TIPTAP_PRO_TOKEN: ${{ secrets.TIPTAP_PRO_TOKEN }}
 
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: ['20.14.x']
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up node.js
-        uses: actions/setup-node@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: ${{ matrix.node-version }}
 
       - name: Install Sentry Cli
         run: |
