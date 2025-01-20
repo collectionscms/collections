@@ -1,0 +1,48 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  upload-sourcemaps:
+    name: Upload source maps
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install Sentry Cli
+        run: |
+          curl -sL https://sentry.io/get-cli/ | bash
+
+      - name: Yarn Install
+        run: yarn install
+
+      - name: Build Application
+        run: yarn build
+
+      - name: Upload Source Maps to Sentry
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+        run: |
+          # Extract tag name and create a Sentry release
+          RELEASE_NAME=${GITHUB_REF#refs/tags/}
+          echo "Uploading source maps for release: $RELEASE_NAME"
+
+          sentry-cli releases new "$RELEASE_NAME"
+
+          # Upload source maps (adjust the path to match your build output)
+          sentry-cli releases files "$RELEASE_NAME" upload-sourcemaps ./dist
+
+          # Finalize the release
+          sentry-cli releases finalize "$RELEASE_NAME"
