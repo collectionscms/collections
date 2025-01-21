@@ -12,6 +12,7 @@ if (env.SENTRY_DSN) {
     dsn: env.SENTRY_DSN,
     environment: env.NODE_ENV,
     release: `collections@${env.npm_package_version}`,
+    dist: env.npm_package_version,
   });
   Sentry.setupExpressErrorHandler(app);
 }
