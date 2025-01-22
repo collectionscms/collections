@@ -7,7 +7,6 @@ on:
 
 jobs:
   integration:
-    name: ${{ matrix.database }}
     runs-on: ubuntu-latest
     env:
       TIPTAP_PRO_TOKEN: ${{ secrets.TIPTAP_PRO_TOKEN }}
@@ -34,4 +33,4 @@ jobs:
         run: docker compose -f test/docker-compose.yml up ${{ matrix.database }} -d --quiet-pull --wait
 
       - name: Run Tests
-        run: TEST_DB=${{ matrix.database }} yarn test:int --runInBand
+        run: yarn test:int --runInBand

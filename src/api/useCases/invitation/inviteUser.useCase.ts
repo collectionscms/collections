@@ -5,7 +5,7 @@ import { InvitationEntity } from '../../persistence/invitation/invitation.entity
 import { InvitationRepository } from '../../persistence/invitation/invitation.repository.js';
 import { ProjectRepository } from '../../persistence/project/project.repository.js';
 import { UserProjectRepository } from '../../persistence/userProject/userProject.repository.js';
-import { InvitationMailService } from '../../services/invitationMail.service.js';
+import { InvitationMailService } from '../../services/mail/invitationMail.service.js';
 import { InviteUserUseCaseSchemaType } from './inviteUser.useCase.schema.js';
 
 export class InviteUserUseCase {

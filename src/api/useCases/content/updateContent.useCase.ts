@@ -24,14 +24,14 @@ export class UpdateContentUseCase {
     revision.updateContent({
       coverUrl: props.coverUrl,
       title: props.title,
-      subtitle: props.subtitle || null,
+      subtitle: props.subtitle,
       body: props.body,
       bodyJson: props.bodyJson,
       bodyHtml: props.bodyHtml,
       slug: props.slug,
       updatedById: props.userId,
-      metaTitle: props.metaTitle || null,
-      metaDescription: props.metaDescription || null,
+      metaTitle: props.metaTitle,
+      metaDescription: props.metaDescription,
     });
 
     const createdOrUpdatedRevision = await this.prisma.$transaction(async (tx) => {

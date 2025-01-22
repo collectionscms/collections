@@ -36,21 +36,6 @@ export class UserRepository {
     return UserEntity.Reconstruct<User, UserEntity>(record);
   }
 
-  async findOneByProvider(
-    prisma: BypassPrismaType,
-    provider: string,
-    providerId: string
-  ): Promise<UserEntity | null> {
-    const user = await prisma.user.findFirst({
-      where: {
-        provider,
-        providerId,
-      },
-    });
-
-    return user ? UserEntity.Reconstruct<User, UserEntity>(user) : null;
-  }
-
   async findOneWithUserRole(
     prisma: ProjectPrismaType,
     userId: string
@@ -148,18 +133,6 @@ export class UserRepository {
         };
       }),
     };
-  }
-
-  async upsert(prisma: BypassPrismaType, entity: UserEntity): Promise<UserEntity> {
-    const user = await prisma.user.upsert({
-      update: entity.toPersistence(),
-      create: entity.toPersistence(),
-      where: {
-        id: entity.id,
-      },
-    });
-
-    return UserEntity.Reconstruct<User, UserEntity>(user);
   }
 
   async updateProfile(prisma: BypassPrismaType, user: UserEntity): Promise<UserEntity> {

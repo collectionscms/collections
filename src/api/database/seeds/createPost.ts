@@ -1,5 +1,6 @@
 import { v4 } from 'uuid';
 import { ContentStatus } from '../../persistence/content/content.entity.js';
+import { generateKey } from '../../utilities/generateKey.js';
 import { BypassPrismaType } from '../prisma/client.js';
 
 export const createPost = async (
@@ -47,6 +48,7 @@ export const createPost = async (
       bodyJson: content.bodyJson,
       bodyHtml: content.bodyHtml,
       coverUrl: content.coverUrl,
+      draftKey: generateKey(),
       createdById: user.id,
       updatedById: user.id,
     });
@@ -66,6 +68,7 @@ export const createPost = async (
       bodyJson: content.bodyJson,
       bodyHtml: content.bodyHtml,
       coverUrl: content.coverUrl,
+      draftKey: generateKey(),
       createdById: user.id,
       updatedById: user.id,
     });

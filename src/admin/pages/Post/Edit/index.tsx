@@ -1,7 +1,8 @@
-import { LoadingOutlined } from '@ant-design/icons';
 import {
+  Backdrop,
   Box,
   Button,
+  CircularProgress,
   Container,
   Stack,
   TextField,
@@ -29,6 +30,7 @@ import { PostContextProvider, usePost } from '../Context/index.js';
 import { PostFooter } from './PostFooter/index.js';
 import { PostHeader } from './PostHeader/index.js';
 import { PublishSettings } from './PostHeader/PublishSettings/index.js';
+import { enqueueSnackbar } from 'notistack';
 
 const toJson = (value?: string | null) => {
   return value ? JSON.parse(value) : '';
@@ -40,20 +42,26 @@ export const EditPostPageImpl: React.FC = () => {
   const { id } = useParams();
   if (!id) throw new Error('id is not defined');
 
-  const { getContent, updateContent, createFileImage, translateContent } = usePost();
+  const { getContent, updateContent, createFileImage, translateContent, simplifySentence } =
+    usePost();
   const { data: content, mutate } = getContent(id);
   const { trigger: updateContentTrigger, isMutating: isSaving } = updateContent(content.id);
   const { trigger: translateTrigger } = translateContent(content.postId);
+  const { trigger: simplifySentenceTrigger } = simplifySentence(content.id);
 
   const [isDirty, setIsDirty] = useState(false);
   const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
+
+  const [showSubtitle, setShowSubtitle] = useState(content.subtitle ? true : false);
 
   if (!content) return <></>;
 
   // On mount, or update content when language is changed
   useEffect(() => {
     setPostTitle(content.title);
-    setPostSubtitle(content.subtitle);
+    setPostSubtitle(content.subtitle ?? '');
+    const showSubtitle = content.subtitle ? true : false;
+    setShowSubtitle(showSubtitle);
     setUploadCover(content.coverUrl ?? null);
     editor?.commands.setContent(toJson(content.bodyJson));
   }, [content.language]);
@@ -96,8 +104,6 @@ export const EditPostPageImpl: React.FC = () => {
     e.preventDefault();
     editor?.commands.focus();
   };
-
-  const [showSubtitle, setShowSubtitle] = useState(content.subtitle ? true : false);
 
   const handleHideSubtitle = () => {
     setPostSubtitle('');
@@ -301,8 +307,43 @@ export const EditPostPageImpl: React.FC = () => {
     }
   };
 
+  // /////////////////////////////////////
+  // Editing by AI
+  // /////////////////////////////////////
+
+  const handleEditingByAI = async (from: number, to: number, text: string) => {
+    if (!editor) return;
+
+    try {
+      const result = await simplifySentenceTrigger({
+        text,
+      });
+
+      const { tr, schema } = editor.state;
+      const textNode = schema.text(result.text);
+      tr.replaceWith(from, to, textNode);
+      editor.view.dispatch(tr);
+
+      enqueueSnackbar(t('toast.edited'), {
+        anchorOrigin: {
+          vertical: 'bottom',
+          horizontal: 'center',
+        },
+      });
+    } catch (error) {
+      logger.error(error);
+    }
+  };
+
   return (
     <>
+      <Backdrop
+        sx={(theme) => ({ color: '#fff', zIndex: theme.zIndex.drawer + 1 })}
+        open={isTranslating}
+        onClick={() => setIsTranslating(false)}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <Button ref={ref} onClick={handleSaveContent} />
       <ConfirmDiscardDialog open={showPrompt} onDiscard={proceed} onKeepEditing={stay} />
       <PostHeader
@@ -350,36 +391,24 @@ export const EditPostPageImpl: React.FC = () => {
                       ),
                     })}
                   </Typography>
-                  {isTranslating ? (
-                    <Box
-                      width={64}
-                      height={40}
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="center"
-                    >
-                      <LoadingOutlined size={14} />
-                    </Box>
-                  ) : (
-                    <Button
-                      variant="text"
-                      size="small"
-                      color="secondary"
-                      sx={{
-                        width: 40,
-                        height: 40,
-                        textDecoration: 'underline',
-                        textDecorationStyle: 'dotted',
-                        textUnderlineOffset: '0.3rem',
-                        '&:hover': {
-                          backgroundColor: 'transparent',
-                        },
-                      }}
-                      onClick={handleTranslate}
-                    >
-                      {t('i_do')}
-                    </Button>
-                  )}
+                  <Button
+                    variant="text"
+                    size="small"
+                    color="inherit"
+                    sx={{
+                      width: 40,
+                      height: 40,
+                      textDecoration: 'underline',
+                      textDecorationStyle: 'dotted',
+                      textUnderlineOffset: '0.3rem',
+                      '&:hover': {
+                        backgroundColor: 'transparent',
+                      },
+                    }}
+                    onClick={handleTranslate}
+                  >
+                    {t('i_do')}
+                  </Button>
                 </Stack>
               )}
 
@@ -536,7 +565,7 @@ export const EditPostPageImpl: React.FC = () => {
               </Box>
             )}
           </Box>
-          <BlockEditor editor={editor} />
+          <BlockEditor editor={editor} onEditingByAI={handleEditingByAI} />
         </Container>
       </Box>
       <AddLanguage

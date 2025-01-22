@@ -1,0 +1,45 @@
+---
+title: 'Webhook Creation'
+---
+
+import { Callout, Steps } from 'nextra/components';
+import { Image } from '../../../components/Image';
+
+# Webhook Creation
+
+> A webhook is a feature that sends a notification to a specified URL when specific events occur, such as publishing or updating an article. This guide explains the steps to create a webhook, using triggering Vercel’s Deploy Hook as an example.
+
+<Steps>
+### Creating a Deploy Hook in Vercel
+
+In Vercel, go to Project Settings > Deploy Hooks to create a new Deploy Hook and obtain its URL.
+
+<Image imageUrl="https://cdn.collections.dev/docs/webhook-creation/webhook-step-1.png" />
+
+### Proceed to Webhook creation page
+
+Click the "Create New" button to proceed to the creation page.
+
+<Image imageUrl="https://cdn.collections.dev/docs/webhook-creation/webhook-step-2.png" />
+
+### Enter Webhook information
+
+This time, we’ll set it up as a trigger for Vercel. Enter a name for the webhook and paste the URL.
+
+<Image imageUrl="https://cdn.collections.dev/docs/webhook-creation/webhook-step-3.png" />
+
+### Webhook creation complete
+
+That’s it! The setup is complete. Check the webhook list to ensure the newly created webhook is displayed.
+
+### Webhook testing
+
+Finally, confirm that the webhook is functioning correctly.
+
+<Image imageUrl="https://cdn.collections.dev/docs/webhook-creation/webhook-step-4.png" />
+
+If you can confirm that publishing an article triggers a build in Vercel, the webhook has been set up correctly.
+
+<Image imageUrl="https://cdn.collections.dev/docs/webhook-creation/webhook-step-5.png" />
+
+</Steps>

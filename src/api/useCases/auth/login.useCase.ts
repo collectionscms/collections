@@ -14,8 +14,6 @@ export class LoginUseCase {
     return {
       id: user.id,
       email: user.email,
-      provider: user.provider,
-      providerId: user.providerId,
     };
   }
 }

@@ -1,0 +1,45 @@
+---
+title: 'Webhookの作成'
+---
+
+import { Callout, Steps } from 'nextra/components';
+import { Image } from '../../../components/Image';
+
+# Webhookの作成
+
+> Webhookは、記事の公開や更新など特定のイベントが発生した際に、指定したURLに通知を送信する機能です。このガイドでは、VercelのDeploy Hookへのトリガーを事例に、Webhookの作成手順を説明します。
+
+<Steps>
+### VercelのDeploy Hookを作成する
+
+Vercelの Project Settings > Deploy Hooks で新しいDeploy Hookを作成しURLを取得します。
+
+<Image imageUrl="https://cdn.collections.dev/docs/webhook-creation/webhook-step-1.png" />
+
+### Webhook作成画面に進む
+
+「Create New / 新規登録」ボタンをクリックして作成画面に進みます。
+
+<Image imageUrl="https://cdn.collections.dev/docs/webhook-creation/webhook-step-2.png" />
+
+### Webhook情報を入力する
+
+今回は、Vercelのトリガーとして設定します。Webhookの名前を入力し、URLを貼り付けます。
+
+<Image imageUrl="https://cdn.collections.dev/docs/webhook-creation/webhook-step-3.png" />
+
+### Webhookの作成完了
+
+以上で作成完了です。Webhook一覧から新しく作成したWebhookが表示されていることを確認してください。
+
+### Webhookのテスト
+
+最後に、Webhookが正しく動作するかを確認します。記事を公開して
+
+<Image imageUrl="https://cdn.collections.dev/docs/webhook-creation/webhook-step-4.png" />
+
+Vercelのビルドが開始されるのが確認できれば、Webhookは正常に設定されています。
+
+<Image imageUrl="https://cdn.collections.dev/docs/webhook-creation/webhook-step-5.png" />
+
+</Steps>

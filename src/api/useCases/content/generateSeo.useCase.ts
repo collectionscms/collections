@@ -1,5 +1,4 @@
 import { TextGenerator } from '@collectionscms/plugin-text-generator';
-import { getLanguageCodeType } from '../../../constants/languages.js';
 import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
 import { InvalidPayloadException } from '../../../exceptions/invalidPayload.js';
 import { ProjectPrismaClient } from '../../database/prisma/client.js';
@@ -35,9 +34,7 @@ export class GenerateSeoUseCase {
     const { content, revisions } = contentWithRevisions;
 
     const sourceLanguage = content?.languageCode;
-    const targetLanguage = getLanguageCodeType('en-us');
-
-    if (!sourceLanguage || !targetLanguage) {
+    if (!sourceLanguage) {
       throw new RecordNotFoundException('record_not_found');
     }
 

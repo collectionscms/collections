@@ -30,11 +30,12 @@ const UserPageImpl: React.FC = () => {
         accessor: 'name',
         Cell: ({ row }: { row: Row }) => {
           const user = row.original as UserProfile;
+          const title = user.name || user.email;
           if (user.isRegistered) {
             return hasPermission('updateUser') ? (
-              <Link href={`${user.id}`}>{user.name}</Link>
+              <Link href={`${user.id}`}>{title}</Link>
             ) : (
-              <Typography>{user.name}</Typography>
+              <Typography>{title}</Typography>
             );
           } else {
             return (

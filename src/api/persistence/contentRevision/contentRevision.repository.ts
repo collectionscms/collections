@@ -1,5 +1,6 @@
-import { ContentRevision } from '@prisma/client';
+import { ContentRevision, User } from '@prisma/client';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
+import { UserEntity } from '../user/user.entity.js';
 import { ContentRevisionEntity } from './contentRevision.entity.js';
 
 export class ContentRevisionRepository {
@@ -53,6 +54,65 @@ export class ContentRevisionRepository {
     if (!record) return null;
 
     return ContentRevisionEntity.Reconstruct<ContentRevision, ContentRevisionEntity>(record);
+  }
+
+  async findLatestOneBySlug(
+    prisma: ProjectPrismaType,
+    slug: string
+  ): Promise<{ contentRevision: ContentRevisionEntity; createdBy: UserEntity } | null> {
+    const record = await prisma.contentRevision.findFirst({
+      where: {
+        slug,
+      },
+      orderBy: {
+        version: 'desc',
+      },
+      include: {
+        createdBy: true,
+      },
+    });
+
+    if (!record) return null;
+
+    return {
+      contentRevision: ContentRevisionEntity.Reconstruct<ContentRevision, ContentRevisionEntity>(
+        record
+      ),
+      createdBy: UserEntity.Reconstruct<User, UserEntity>(record.createdBy),
+    };
+  }
+
+  async findLatestOneByContentIdOrSlug(
+    prisma: ProjectPrismaType,
+    identifier: string
+  ): Promise<{ contentRevision: ContentRevisionEntity; createdBy: UserEntity } | null> {
+    const record = await prisma.contentRevision.findFirst({
+      where: {
+        OR: [
+          {
+            contentId: identifier,
+          },
+          {
+            slug: identifier,
+          },
+        ],
+      },
+      orderBy: {
+        version: 'desc',
+      },
+      include: {
+        createdBy: true,
+      },
+    });
+
+    if (!record) return null;
+
+    return {
+      contentRevision: ContentRevisionEntity.Reconstruct<ContentRevision, ContentRevisionEntity>(
+        record
+      ),
+      createdBy: UserEntity.Reconstruct<User, UserEntity>(record.createdBy),
+    };
   }
 
   async findManyTrashed(prisma: ProjectPrismaType): Promise<ContentRevisionEntity[]> {

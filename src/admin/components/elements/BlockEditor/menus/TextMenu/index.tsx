@@ -1,4 +1,4 @@
-import { Divider, Paper, Stack, useTheme } from '@mui/material';
+import { Button, Divider, Paper, Stack, Tooltip, Typography, useTheme } from '@mui/material';
 import { BubbleMenu, Editor } from '@tiptap/react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -10,9 +10,10 @@ import { EditLinkPopover } from './EditLinkPopover.js';
 
 type Props = {
   editor: Editor;
+  onEditingByAI: (startOffset: number, endOffset: number, text: string) => void;
 };
 
-export const TextMenu: React.FC<Props> = ({ editor }) => {
+export const TextMenu: React.FC<Props> = ({ editor, onEditingByAI }) => {
   const { t } = useTranslation();
   const theme = useTheme();
   const commands = useTextMenuCommands(editor);
@@ -20,6 +21,14 @@ export const TextMenu: React.FC<Props> = ({ editor }) => {
 
   const getBackgroundColor = (isActive: boolean) => {
     return isActive ? theme.palette.secondary.lighter : 'transparent';
+  };
+
+  const handleTextSelection = () => {
+    const { view, state } = editor;
+    const { from, to } = view.state.selection;
+    const selectedText = state.doc.textBetween(from, to, ' ');
+
+    onEditingByAI(from, to, selectedText);
   };
 
   return (
@@ -41,6 +50,19 @@ export const TextMenu: React.FC<Props> = ({ editor }) => {
         }}
       >
         <Stack direction="row" gap={0.5} alignItems="center">
+          <Tooltip title={t('editor.editing_by_ai_description')} placement="top">
+            <Button
+              color="inherit"
+              onClick={handleTextSelection}
+              sx={{ px: 1, py: 0.5, borderRadius: 1.5 }}
+            >
+              <Stack direction="row" alignItems="center">
+                <Icon name="Sparkles" size={16} />
+                <Typography sx={{ ml: 0.5 }}>{t('editor.editing_by_ai')}</Typography>
+              </Stack>
+            </Button>
+          </Tooltip>
+          <Divider orientation="vertical" flexItem sx={{ mx: 1, my: 0.5 }} />
           <ToolbarButton
             tooltip={`${t('editor.bold')}`}
             shortcuts={['Mod', 'B']}
@@ -87,7 +109,7 @@ export const TextMenu: React.FC<Props> = ({ editor }) => {
             <Icon name="Heading1" size={16} />
           </ToolbarButton>
           <ToolbarButton
-            tooltip={`${t('editor.heading')}`}
+            tooltip={`${t('editor.subheading')}`}
             color="inherit"
             sx={{ backgroundColor: getBackgroundColor(editor.isActive('heading', { level: 2 })) }}
             onClick={commands.onSubheading}
@@ -95,7 +117,7 @@ export const TextMenu: React.FC<Props> = ({ editor }) => {
             <Icon name="Heading2" size={16} />
           </ToolbarButton>
           <ToolbarButton
-            tooltip={`${t('editor.heading')}`}
+            tooltip={`${t('editor.subtitle')}`}
             color="inherit"
             sx={{ backgroundColor: getBackgroundColor(editor.isActive('heading', { level: 3 })) }}
             onClick={commands.onSubtitle}

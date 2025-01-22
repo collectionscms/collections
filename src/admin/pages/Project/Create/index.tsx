@@ -9,10 +9,10 @@ import {
   Typography,
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { languages } from '../../../../constants/languages.js';
+import { getLanguageCodeType, LanguageCode, languages } from '../../../../constants/languages.js';
 import { logger } from '../../../../utilities/logger.js';
 import { MainCard } from '../../../@extended/components/MainCard/index.js';
 import { Confetti } from '../../../components/elements/Confetti/index.js';
@@ -32,6 +32,17 @@ const CreateProjectPageImpl: React.FC = () => {
   const { createProject, checkSubdomainAvailability } = useProject();
   const { trigger: checkSubdomainTrigger } = checkSubdomainAvailability();
   const { trigger: createProjectTrigger, isMutating } = createProject();
+  const [languageCode, setLanguageCode] = useState<LanguageCode | null>(null);
+
+  // Set user language as default source language
+  useEffect(() => {
+    const userLanguage = navigator.language || navigator.languages[0];
+    const languageCode = getLanguageCodeType(userLanguage.toLowerCase());
+    if (languageCode) {
+      setValue('sourceLanguage', languageCode.code);
+      setLanguageCode(languageCode);
+    }
+  }, []);
 
   const [showComplete, setShowComplete] = useState(false);
   const {
@@ -142,20 +153,23 @@ const CreateProjectPageImpl: React.FC = () => {
                   </Grid>
                   <Grid xs={12} sx={{ mt: 3 }}>
                     <InputLabel htmlFor="projectName">{t('source_language')}</InputLabel>
-                    <Typography variant="body2" gutterBottom sx={{ my: 1 }} color="text.secondary">
-                      {t('source_language_tips')}
-                    </Typography>
                   </Grid>
-                  <Grid xs={12} lg={6}>
+                  <Grid xs={12} lg={6} sx={{ mt: 1 }}>
                     <Stack spacing={1} direction="column">
                       <LanguageAutocomplete
                         languages={languages}
+                        value={languageCode}
                         onChange={(_event, newValue) => {
                           setValue('sourceLanguage', newValue === null ? '' : newValue.code);
                         }}
                       />
                       <FormHelperText error>{errors.sourceLanguage?.message}</FormHelperText>
                     </Stack>
+                  </Grid>
+                  <Grid xs={12}>
+                    <Typography variant="body2" gutterBottom color="text.secondary">
+                      {t('source_language_tips')}
+                    </Typography>
                   </Grid>
                   <Grid xs={12} sx={{ mt: 3 }}>
                     <Stack direction="row" justifyContent="flex-end">

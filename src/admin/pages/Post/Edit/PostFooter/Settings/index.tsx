@@ -7,6 +7,7 @@ import {
   Divider,
   Stack,
   Toolbar,
+  Tooltip,
   Typography,
   useTheme,
 } from '@mui/material';
@@ -28,13 +29,11 @@ import { SeoSettings } from '../../PostHeader/PublishSettings/SeoSettings/index.
 import { TagSettings } from '../../PostHeader/PublishSettings/TagSettings/index.js';
 
 export type Props = {
-  open: boolean;
   content: RevisedContent;
-  onClose: () => void;
   onTrashed: () => void;
 };
 
-export const Settings: React.FC<Props> = ({ open, content, onClose, onTrashed }) => {
+export const Settings: React.FC<Props> = ({ content, onTrashed }) => {
   const theme = useTheme();
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -47,6 +46,11 @@ export const Settings: React.FC<Props> = ({ open, content, onClose, onTrashed })
 
   const [openContentTrash, setOpenContentTrash] = useState(false);
   const [openPostTrash, setOpenPostTrash] = useState(false);
+
+  const [openSettings, setOpenSettings] = useState(false);
+  const toggleOpenSettings = async () => {
+    setOpenSettings(!openSettings);
+  };
 
   const appBar: AppBarProps = {
     position: 'fixed',
@@ -71,6 +75,7 @@ export const Settings: React.FC<Props> = ({ open, content, onClose, onTrashed })
     try {
       await trashContentTrigger();
       onTrashed();
+      toggleOpenSettings();
       toggleOpenLanguageContent();
       enqueueSnackbar(t('toast.move_to_trash'), {
         anchorOrigin: {
@@ -136,14 +141,33 @@ export const Settings: React.FC<Props> = ({ open, content, onClose, onTrashed })
         execute={{ label: t('move_to_trash'), action: handleTrashPost }}
         cancel={{ label: t('cancel'), action: toggleOpenPostTrash }}
       />
+      <Tooltip title={t('setting')}>
+        <IconButton
+          color="secondary"
+          shape="rounded"
+          variant="contained"
+          sx={{
+            color: 'text.primary',
+            backgroundColor: theme.palette.grey[200],
+            '&:hover': { backgroundColor: theme.palette.grey[300] },
+          }}
+          onClick={toggleOpenSettings}
+        >
+          <Icon strokeWidth={2} name="Settings" />
+        </IconButton>
+      </Tooltip>
       <Dialog
-        open={open}
+        open={openSettings}
         fullScreen
         sx={{ '& .MuiDialog-paper': { bgcolor: 'background.default', backgroundImage: 'none' } }}
       >
         <AppBarStyled open={true} {...appBar}>
           <Toolbar>
-            <IconButton color="secondary" onClick={onClose} sx={{ p: 0, position: 'absolute' }}>
+            <IconButton
+              color="secondary"
+              onClick={toggleOpenSettings}
+              sx={{ p: 0, position: 'absolute' }}
+            >
               <Icon name="X" size={28} />
             </IconButton>
             <Box width="100%">

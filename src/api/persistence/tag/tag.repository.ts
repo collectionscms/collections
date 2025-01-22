@@ -3,6 +3,15 @@ import { ProjectPrismaType } from '../../database/prisma/client.js';
 import { TagEntity } from './tag.entity.js';
 
 export class TagRepository {
+  async findOneByName(prisma: ProjectPrismaType, name: string): Promise<TagEntity | null> {
+    const record = await prisma.tag.findFirst({
+      where: {
+        name,
+      },
+    });
+    return record ? TagEntity.Reconstruct<Tag, TagEntity>(record) : null;
+  }
+
   async findMany(prisma: ProjectPrismaType): Promise<TagEntity[]> {
     const records = await prisma.tag.findMany();
     return records.map((record) => TagEntity.Reconstruct<Tag, TagEntity>(record));

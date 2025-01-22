@@ -43,6 +43,36 @@ export class ContentRepository {
     };
   }
 
+  async findOneByIdOrSlug(
+    prisma: ProjectPrismaType,
+    identifier: string
+  ): Promise<{ content: ContentEntity; createdBy: UserEntity } | null> {
+    const record = await prisma.content.findFirst({
+      where: {
+        OR: [
+          {
+            id: identifier,
+          },
+          {
+            slug: identifier,
+          },
+        ],
+      },
+      include: {
+        createdBy: true,
+      },
+    });
+
+    if (!record) {
+      return null;
+    }
+
+    return {
+      content: ContentEntity.Reconstruct<Content, ContentEntity>(record),
+      createdBy: UserEntity.Reconstruct<User, UserEntity>(record.createdBy),
+    };
+  }
+
   async findOneWithRevisionsById(
     prisma: ProjectPrismaType,
     id: string
@@ -150,6 +180,27 @@ export class ContentRepository {
         ContentRevisionEntity.Reconstruct<ContentRevision, ContentRevisionEntity>(r)
       ),
     }));
+  }
+
+  async findPublishedContentsByCreatedById(
+    prisma: ProjectPrismaType,
+    userId: string
+  ): Promise<ContentEntity[]> {
+    const now = new Date();
+    const records = await prisma.content.findMany({
+      where: {
+        createdById: userId,
+        status: 'published',
+        publishedAt: {
+          lte: now,
+        },
+      },
+      orderBy: {
+        publishedAt: 'desc',
+      },
+    });
+
+    return records.map((record) => ContentEntity.Reconstruct<Content, ContentEntity>(record));
   }
 
   async create(

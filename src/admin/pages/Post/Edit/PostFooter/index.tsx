@@ -1,9 +1,10 @@
-import { Stack, Tooltip, useTheme } from '@mui/material';
-import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { Stack, useTheme } from '@mui/material';
+import { ApiKey } from '@prisma/client';
+import React, { useEffect, useState } from 'react';
 import { RevisedContent } from '../../../../../types/index.js';
-import { IconButton } from '../../../../@extended/components/IconButton/index.js';
-import { Icon } from '../../../../components/elements/Icon/index.js';
+import { ApiPreview } from '../../../../components/elements/ApiPreview/index.js';
+import { useAuth } from '../../../../components/utilities/Auth/index.js';
+import { usePost } from '../../Context/index.js';
 import { Information } from './Information/index.js';
 import { Revision } from './Revision/index.js';
 import { Settings } from './Settings/index.js';
@@ -16,17 +17,22 @@ export type Props = {
 };
 
 export const PostFooter: React.FC<Props> = ({ content, characters, onTrashed, onReverted }) => {
-  const { t } = useTranslation();
   const theme = useTheme();
+  const { hasPermission } = useAuth();
+  const { getApiKeys } = usePost();
+  const { trigger: getApiKeyTrigger } = getApiKeys();
 
-  // /////////////////////////////////////
-  // Open settings
-  // /////////////////////////////////////
+  const [apiKeys, setApiKeys] = useState<ApiKey[]>([]);
+  useEffect(() => {
+    const fetchApiKeys = async () => {
+      const apiKeys = await getApiKeyTrigger();
+      setApiKeys(apiKeys);
+    };
 
-  const [openSettings, setOpenSettings] = useState(false);
-  const handleOpenSettings = async () => {
-    setOpenSettings((open) => !open);
-  };
+    if (hasPermission('readApiKey')) {
+      fetchApiKeys();
+    }
+  }, []);
 
   return (
     <Stack
@@ -43,30 +49,23 @@ export const PostFooter: React.FC<Props> = ({ content, characters, onTrashed, on
         <Revision content={content} onReverted={onReverted} />
         <Information characters={characters} />
       </Stack>
-      <Tooltip title={t('setting')}>
-        <IconButton
-          color="secondary"
-          shape="rounded"
-          variant="contained"
-          sx={{
-            color: 'text.primary',
-            backgroundColor: theme.palette.grey[200],
-            '&:hover': { backgroundColor: theme.palette.grey[300] },
+      <Stack flexDirection="row" gap={2}>
+        <ApiPreview
+          path={`contents/${content.slug}${content.draftKey ? `?draftKey=${content.draftKey}` : ''}`}
+          apiKeys={apiKeys}
+          buttonProps={{
+            color: 'secondary',
+            shape: 'rounded',
+            variant: 'contained',
+            sx: {
+              color: 'text.primary',
+              backgroundColor: theme.palette.grey[200],
+              '&:hover': { backgroundColor: theme.palette.grey[300] },
+            },
           }}
-          onClick={handleOpenSettings}
-        >
-          <Icon strokeWidth={2} name="Settings" />
-        </IconButton>
-      </Tooltip>
-      <Settings
-        content={content}
-        open={openSettings}
-        onClose={handleOpenSettings}
-        onTrashed={() => {
-          handleOpenSettings();
-          onTrashed();
-        }}
-      />
+        />
+        <Settings content={content} onTrashed={onTrashed} />
+      </Stack>
     </Stack>
   );
 };

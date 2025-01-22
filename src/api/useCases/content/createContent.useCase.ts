@@ -5,6 +5,8 @@ import { ContentEntity } from '../../persistence/content/content.entity.js';
 import { ContentRepository } from '../../persistence/content/content.repository.js';
 import { ContentRevisionRepository } from '../../persistence/contentRevision/contentRevision.repository.js';
 import { CreateContentUseCaseSchemaType } from './createContent.useCase.schema.js';
+import { generateKey } from '../../utilities/generateKey.js';
+import language from 'react-syntax-highlighter/dist/esm/languages/hljs/1c';
 
 export class CreateContentUseCase {
   constructor(
@@ -34,7 +36,7 @@ export class CreateContentUseCase {
       projectId: projectId,
       postId: id,
       language: language,
-      slug: ContentEntity.generateSlug(),
+      slug: generateKey(),
       createdById: userId,
       currentVersion: 1,
     });

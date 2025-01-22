@@ -5,7 +5,8 @@ export default {
   coverageDirectory: 'coverage',
   coverageProvider: 'v8',
   testEnvironment: 'node',
-  testMatch: ['**/test/**/*test.ts'],
+  testMatch: ['**/api/**/?(*.)test.ts', '!**/api/**/?(*.)int.test.ts'],
+  coveragePathIgnorePatterns: ['/node_modules/', '.*\\.mock\\.ts$', '.*\\.fixture\\.ts$'],
   globalSetup: './test/setups/setup.ts',
   globalTeardown: './test/setups/teardown.ts',
   moduleNameMapper: {

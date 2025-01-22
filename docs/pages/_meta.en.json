@@ -4,7 +4,8 @@
     "type": "page",
     "display": "hidden",
     "theme": {
-      "layout": "raw"
+      "layout": "raw",
+      "timestamp": false
     }
   },
   "docs": {
@@ -16,7 +17,7 @@
     "type": "page",
     "display": "hidden",
     "theme": {
-      "layout": "page"
+      "timestamp": false
     }
   },
   "privacy": {
@@ -24,7 +25,7 @@
     "type": "page",
     "display": "hidden",
     "theme": {
-      "layout": "page"
+      "timestamp": false
     }
   },
   "terms": {
@@ -32,7 +33,7 @@
     "type": "page",
     "display": "hidden",
     "theme": {
-      "layout": "page"
+      "timestamp": false
     }
   }
 }

@@ -4,7 +4,13 @@ import { getLanguageCodeType, LanguageCode } from '../../../constants/languages.
 import { env } from '../../../env.js';
 import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
 import { UnexpectedException } from '../../../exceptions/unexpected.js';
-import { PublishedContent, RevisedContent, StatusHistory } from '../../../types/index.js';
+import {
+  PublishedContent,
+  PublishedListContent,
+  RevisedContent,
+  StatusHistory,
+} from '../../../types/index.js';
+import { generateKey } from '../../utilities/generateKey.js';
 import { ContentRevisionEntity } from '../contentRevision/contentRevision.entity.js';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 import { ProjectEntity } from '../project/project.entity.js';
@@ -33,6 +39,7 @@ type ContentProps = Omit<
   | 'metaDescription'
   | 'coverUrl'
   | 'currentVersion'
+  | 'draftKey'
   | 'status'
   | 'updatedById'
   | 'publishedAt'
@@ -59,7 +66,8 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
   } {
     const now = new Date();
     const contentId = v4();
-    const slug = props.slug ?? this.generateSlug();
+    const slug = props.slug ?? generateKey();
+    const draftKey = generateKey();
 
     const contentRevision = ContentRevisionEntity.Construct({
       projectId: props.projectId,
@@ -77,6 +85,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
       language: props.language,
       publishedAt: null,
       version: props.currentVersion ?? 1,
+      draftKey,
       createdById: props.createdById,
       updatedById: props.createdById,
       deletedAt: null,
@@ -99,6 +108,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
       status: ContentStatus.draft,
       publishedAt: null,
       currentVersion: props.currentVersion ?? 1,
+      draftKey,
       createdById: props.createdById,
       updatedById: props.createdById,
       deletedAt: null,
@@ -218,10 +228,6 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
   get languageCode(): LanguageCode | null {
     return getLanguageCodeType(this.language);
   }
-
-  static generateSlug = () => {
-    return v4().trim().replace(/-/g, '').substring(0, 10);
-  };
 
   draft(updatedById: string) {
     this.props.status = ContentStatus.draft;
@@ -436,22 +442,46 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
       canTranslate: this.isTranslationEnabled(sourceLanguage, targetLanguage),
       sourceLanguageCode: project.sourceLanguageCode?.code ?? null,
       targetLanguageCode: this.languageCode?.code ?? null,
+      draftKey: latestRevision.getDraftKey(),
       revisions: revisions.map((revision) => revision.toResponse()),
       tags: tags ? tags.map((tag) => tag.toResponse()) : [],
     };
   }
 
   /**
-   * Returns published content results for external use.
-   * @param content
+   * Returns published list content results for external use.
    * @param createdBy
    * @returns
    */
-  toPublishedContentResponse(createdBy: UserEntity, tags: TagEntity[]): PublishedContent {
+  toPublishedListContentResponse(createdBy: UserEntity): PublishedListContent {
     if (!this.props.publishedAt) {
       throw new RecordNotFoundException('record_not_found');
     }
 
+    return {
+      ...this.toCommonPublishedContentResponse(createdBy),
+      publishedAt: this.props.publishedAt as Date,
+    };
+  }
+
+  /**
+   * Returns published content results for external use.
+   * @param createdBy
+   * @param tags
+   * @returns
+   */
+  toPublishedContentResponse(createdBy: UserEntity, tags: TagEntity[]): PublishedContent {
+    return {
+      ...this.toCommonPublishedContentResponse(createdBy),
+      publishedAt: this.props.publishedAt as Date,
+      tags: tags.map((tag) => ({
+        id: tag.id,
+        name: tag.name,
+      })),
+    };
+  }
+
+  private toCommonPublishedContentResponse(createdBy: UserEntity) {
     return {
       id: this.props.id,
       slug: this.props.slug,
@@ -469,12 +499,8 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
       author: {
         id: createdBy.id,
         name: createdBy.name,
-        avatarUrl: createdBy.avatarUrl,
+        avatarUrl: createdBy.image,
       },
-      tags: tags.map((tag) => ({
-        id: tag.id,
-        name: tag.name,
-      })),
     };
   }
 }

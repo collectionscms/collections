@@ -55,7 +55,6 @@
   "link": "Link",
   "posts": "Posts",
   "title": "Title",
-  "publish_settings": "Publish Settings",
   "saving": "Saving...",
   "publish": "Publish",
   "review": "Review",
@@ -64,8 +63,8 @@
   "publish_for_review": "Publish for Review",
   "write_the_text": "Write the text",
   "characters": "Characters",
-  "source_language": "Source Language",
-  "source_language_tips": "Select the language for the post you're writing. This language will also be used as the source language for automatic translation.",
+  "source_language": "Main Language",
+  "source_language_tips": "This language is used as the source language for automatic translation.",
   "can_change_later": "* Can be changed later",
   "add_to": "Add",
   "add_cover": "Add Cover",
@@ -124,7 +123,7 @@
   "language_publish_settings": "{{language}} Publish Settings",
   "danger_zone": "Danger Zone",
   "post_info": "Post info",
-  "other_localized_languages": "( {{count}} other languages )",
+  "other_localized_languages": "( +{{count}} languages )",
   "requester": "Requester",
   "untitled": "Untitled",
   "webhook": "Webhook",
@@ -140,10 +139,11 @@
   "general": "General",
   "login_title": "Welcome to Collections",
   "login_subtitle": "No credit card required, try for free!",
+  "sign_in_with_email": "Sign in with Email",
   "sign_in_with_google": "Sign in with Google",
   "sign_in_with_github": "Sign in with GitHub",
   "create_your_first_project": "Create your first project on Collections!",
-  "invitation_from_existing_project": "Alternatively, you may receive an invitation to join an existing project.",
+  "create_project": "Create Project",
   "revert_to": "Revert to v{{version}}",
   "generate_with_ai": "Generate with AI",
   "untranslatable": "Untranslatable",
@@ -158,6 +158,9 @@
   "tags_hint": "Any tag changes are immediately reflected in published post.",
   "documentation": "Documentation",
   "terms_and_privacy": "By logging in to Collections, you agree to our<br/><terms>terms of service</terms> and <privacy>privacy policy</privacy>.",
+  "check_your_email": "Check your email",
+  "we_send_verification_email": "We've sent you an email to verify your account. Please check your email and click the link to verify your account.",
+  "back_to_login": "Back to login",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",
@@ -187,7 +190,8 @@
     "move_to_trash": "Move to trash",
     "post_restored": "Restored post",
     "copied": "Copied",
-    "post_reverted": "Restored version"
+    "post_reverted": "Restored version",
+    "edited": "Edited"
   },
   "create": {
     "user": "Create User",
@@ -280,7 +284,9 @@
     "italic": "Italic",
     "underline": "Underline",
     "strike_through": "Strike-through",
-    "code": "Code"
+    "code": "Code",
+    "editing_by_ai": "Editing by AI",
+    "editing_by_ai_description": "The selected text will be edited by AI."
   },
   "post_review_status": {
     "pending": "Pending",

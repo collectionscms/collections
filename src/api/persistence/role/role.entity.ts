@@ -8,17 +8,19 @@ export class RoleEntity extends PrismaBaseEntity<Role> {
     projectId,
     name,
     description,
+    isAdmin,
   }: {
     projectId: string;
     name: string;
     description: string | null;
+    isAdmin?: boolean;
   }): RoleEntity {
     return new RoleEntity({
       id: v4(),
       projectId,
       name,
       description,
-      isAdmin: false,
+      isAdmin: isAdmin || false,
       createdAt: new Date(),
       updatedAt: new Date(),
     });
@@ -45,10 +47,6 @@ export class RoleEntity extends PrismaBaseEntity<Role> {
   get isAdmin(): boolean {
     return this.props.isAdmin;
   }
-
-  changeToAdmin = () => {
-    this.props.isAdmin = true;
-  };
 
   update = (params: { name: string; description: string | null }) => {
     this.props.name = params.name;

@@ -29,8 +29,6 @@ export type ProjectRole = {
 export type Me = {
   id: string;
   email: string;
-  provider: string;
-  providerId: string;
 };
 
 export type ApiError = {
@@ -83,11 +81,12 @@ export type RevisedContent = {
   canTranslate: boolean;
   sourceLanguageCode: string | null;
   targetLanguageCode: string | null;
+  draftKey: string | null;
   revisions: ContentRevision[];
   tags: Tag[];
 };
 
-export type PublishedContent = {
+export type PublishedListContent = {
   id: string;
   slug: string;
   title: string;
@@ -106,15 +105,18 @@ export type PublishedContent = {
     name: string;
     avatarUrl: string | null;
   };
-  tags?: {
+};
+
+export type PublishedContent = {
+  tags: {
     id: string;
     name: string;
   }[];
-};
+} & PublishedListContent;
 
 export type PublishedPost = {
   id: string;
-  contents: PublishedContent[];
+  contents: PublishedListContent[];
 };
 
 export type UploadFile = {

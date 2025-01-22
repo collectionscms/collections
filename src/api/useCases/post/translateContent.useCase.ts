@@ -45,17 +45,18 @@ export class TranslateContentUseCase {
     const subtitle = sourceLngRevision.subtitle?.trim() ?? '';
     const body = sourceLngRevision.bodyHtml.trim();
 
-    // Exclude blank texts
-    const nonEmptyTexts = [title, subtitle, body].filter((text) => text !== '');
-    if (nonEmptyTexts.length === 0) {
+    // If all fields are empty, throw an error
+    if (!title && !subtitle && !body) {
       throw new InvalidPayloadException('source_language_post_body_empty');
     }
 
-    let textResults = await this.translator.translate(
-      nonEmptyTexts,
-      sourceLanguageCode.sourceLanguageCode,
-      targetLanguageCode.targetLanguageCode
-    );
+    const translatedContent = await this.translator.translate({
+      title,
+      subtitle,
+      body,
+      sourceLang: sourceLanguageCode.sourceLanguageCode,
+      targetLang: targetLanguageCode.targetLanguageCode,
+    });
 
     const usage = TextGenerationUsageEntity.Construct({
       projectId: sourceLngRevision.projectId,
@@ -65,20 +66,15 @@ export class TranslateContentUseCase {
         title,
         body,
       },
-      generatedText: textResults,
+      generatedText: translatedContent,
       context: 'translate',
     });
     this.textGenerationUsageRepository.create(this.prisma, usage);
 
-    const fields = [title, subtitle, body];
-    fields.forEach((field, index) => {
-      if (!field) textResults.splice(index, 0, { text: '' });
-    });
-
     return {
-      title: textResults[0].text,
-      subtitle: textResults[1].text,
-      body: textResults[2].text,
+      title: translatedContent.title,
+      subtitle: translatedContent.subtitle,
+      body: translatedContent.body,
     };
   }
 }
