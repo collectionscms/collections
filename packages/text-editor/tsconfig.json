@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "es2020",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "jsx": "react",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true, // Ignore node_modules during type check.
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true
+  }
+}

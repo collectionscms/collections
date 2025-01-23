@@ -139,7 +139,7 @@
   dependencies:
     "@auth/core" "0.34.2"
 
-"@auth/prisma-adapter@^2.7.4":
+"@auth/prisma-adapter@2.7.4":
   version "2.7.4"
   resolved "https://registry.yarnpkg.com/@auth/prisma-adapter/-/prisma-adapter-2.7.4.tgz#4890be47a9f227f449832302d955c565c02879ee"
   integrity sha512-3T/X94R9J1sxOLQtsD3ijIZ0JGHPXlZQxRr/8NpnZBJ3KGxun/mNsZ1MwMRhTxy0mmn9JWXk7u9+xCcVn0pu3A==
