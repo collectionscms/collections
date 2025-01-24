@@ -20,7 +20,7 @@
     "project": ["./tsconfig.json", "./docs/tsconfig.json"]
   },
   "plugins": ["react", "@typescript-eslint"],
-  "ignorePatterns": ["misc/*", "dist/*", "**/*.js", "**/*.mjs", "templates/*"],
+  "ignorePatterns": ["misc/*", "dist/*", "**/*.js", "**/*.mjs", "templates/*", "packages/*"],
   "rules": {
     "max-len": ["error", { "code": 120 }]
   }
