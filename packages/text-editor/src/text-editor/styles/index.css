@@ -1,0 +1,71 @@
+@import './partials/placeholder.css';
+@import './partials/typography.css';
+@import './partials/lists.css';
+@import './partials/code.css';
+@import './partials/blocks.css';
+
+*,
+:after,
+:before {
+  box-sizing: border-box;
+  border: 0 solid #e2e8f0cc;
+}
+
+.ProseMirror {
+  outline: 0;
+  z-index: 0;
+  font-size: 1rem;
+
+  & > :first-child {
+    margin-top: 0;
+  }
+
+  & > *:first-child,
+  [data-type='column'] > * {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  & > * + * {
+    margin-top: 0.75em;
+  }
+
+  &:focus-visible {
+    outline: none;
+  }
+
+  .selection {
+    display: inline;
+  }
+
+  & > .react-renderer {
+    margin-top: 2.1rem;
+    margin-bottom: 2.1rem;
+
+    &:first-child {
+      margin-top: 0;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &.resize-cursor {
+    cursor: col-resize;
+  }
+
+  [data-type='horizontalRule'] {
+    margin-top: 2em;
+    margin-bottom: 2em;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    transition: all 0.1s ease-in-out;
+    cursor: pointer;
+  }
+}
+
+.selection,
+*::selection {
+  background-color: rgba(0, 0, 0, 0.1);
+}

@@ -9,5 +9,7 @@
     "skipLibCheck": true, // Ignore node_modules during type check.
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true
-  }
+  },
+  "include": ["src/**/*", "src/**/*.stories.tsx"],
+  "exclude": []
 }
