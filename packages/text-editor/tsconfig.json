@@ -6,10 +6,10 @@
     "jsx": "react",
     "strict": true,
     "esModuleInterop": true,
-    "skipLibCheck": true, // Ignore node_modules during type check.
+    "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true
   },
-  "include": ["src/**/*", "src/**/*.stories.tsx"],
+  "include": ["src/**/*", "src/**/*.stories.tsx", "tsconfig.production.json"],
   "exclude": []
 }
