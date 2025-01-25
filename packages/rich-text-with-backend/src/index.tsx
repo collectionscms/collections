@@ -16,7 +16,7 @@ type Props = {
   onInit?: (id: string) => void;
 };
 
-export const TextEditor = ({
+export const RichText = ({
   projectId,
   apiKey,
   id,

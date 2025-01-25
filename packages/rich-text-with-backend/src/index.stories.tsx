@@ -1,11 +1,11 @@
 import { Meta, StoryFn } from '@storybook/react';
 import { http, HttpResponse } from 'msw';
 import React from 'react';
-import { TextEditor } from './index';
+import { RichText } from './index';
 
 export default {
-  title: 'Components/TextEditor',
-  component: TextEditor,
+  title: 'Components/RichText',
+  component: RichText,
   parameters: {
     msw: {
       handlers: [
@@ -37,9 +37,9 @@ export default {
       ],
     },
   },
-} as Meta<typeof TextEditor>;
+} as Meta<typeof RichText>;
 
-const Template: StoryFn<typeof TextEditor> = (args) => <TextEditor {...args} />;
+const Template: StoryFn<typeof RichText> = (args) => <RichText {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
