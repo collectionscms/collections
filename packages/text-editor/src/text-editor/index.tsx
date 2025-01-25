@@ -7,10 +7,15 @@ import i18n from './locales/localization';
 import './styles/index.css';
 
 type Props = {
-  language?: 'en' | 'ja';
+  projectId: string;
+  slug: string;
+  apiKey: string;
+  options?: {
+    language?: 'en' | 'ja';
+  };
 };
 
-export const TextEditor = ({ language = 'en' }: Props) => {
+export const TextEditor = ({ projectId, slug, apiKey, options = { language: 'en' } }: Props) => {
   const { t } = useTranslation();
 
   const { editor, characterCount } = useBlockEditor({
@@ -23,7 +28,7 @@ export const TextEditor = ({ language = 'en' }: Props) => {
   });
 
   useEffect(() => {
-    i18n.changeLanguage(language);
+    i18n.changeLanguage(options.language);
     const style = document.createElement('style');
     style.textContent = `
       .ProseMirror {
@@ -40,7 +45,11 @@ export const TextEditor = ({ language = 'en' }: Props) => {
     return () => {
       document.head.removeChild(style);
     };
-  }, [language]);
+  }, [options.language]);
+
+  useEffect(() => {
+    console.log('changed', editor?.getText());
+  }, [editor?.getText()]);
 
   return (
     <>
