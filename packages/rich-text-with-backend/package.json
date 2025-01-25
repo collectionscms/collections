@@ -1,5 +1,5 @@
 {
-  "name": "@collectionscms/text-editor",
+  "name": "@collectionscms/rich-text-with-backend",
   "description": "A rich text editor with backend.",
   "version": "1.0.0-alpha.1",
   "license": "MIT",
