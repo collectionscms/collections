@@ -38,8 +38,3 @@ coverage
 # sitemap
 docs/public/robots.txt
 docs/public/sitemap*.xml
-
-### plugins
-
-# storybook
-packages/**/.storybook
