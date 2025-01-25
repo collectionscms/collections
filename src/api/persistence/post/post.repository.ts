@@ -59,6 +59,32 @@ export class PostRepository {
     };
   }
 
+  async findOneByIsInit(prisma: ProjectPrismaType): Promise<{
+    post: PostEntity;
+    content: ContentEntity;
+    revision: ContentRevisionEntity;
+  } | null> {
+    const record = await prisma.post.findFirst({
+      where: {
+        isInit: true,
+      },
+      include: {
+        contents: true,
+        contentRevisions: true,
+      },
+    });
+
+    return record
+      ? {
+          post: PostEntity.Reconstruct<Post, PostEntity>(record),
+          content: ContentEntity.Reconstruct<Content, ContentEntity>(record.contents[0]),
+          revision: ContentRevisionEntity.Reconstruct<ContentRevision, ContentRevisionEntity>(
+            record.contentRevisions[0]
+          ),
+        }
+      : null;
+  }
+
   async findMany(
     prisma: ProjectPrismaType,
     options?: {
@@ -92,6 +118,7 @@ export class PostRepository {
         },
       },
       where: {
+        isInit: false,
         createdById: options?.userId,
       },
       orderBy: {
