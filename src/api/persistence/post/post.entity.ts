@@ -28,6 +28,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     const post = new PostEntity({
       id: postId,
       projectId,
+      isInit: true,
       createdById,
       createdAt: new Date(),
       updatedAt: new Date(),
