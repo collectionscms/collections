@@ -8,6 +8,8 @@ async function main() {
       displayOrder: 1,
     },
   });
+
+  console.log('Success!');
 }
 
 main().catch((e) => {
