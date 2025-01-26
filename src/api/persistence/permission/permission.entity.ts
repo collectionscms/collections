@@ -17,7 +17,7 @@ export const roleActions = {
 };
 
 export const apiKeyActions = {
-  post: ['readPublishedPost'],
+  post: ['readPublishedPost', 'savePost'],
 };
 
 export class PermissionEntity extends PrismaBaseEntity<Permission> {
