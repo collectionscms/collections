@@ -7,6 +7,13 @@ import { UserEntity } from '../user/user.entity.js';
 import { PostEntity } from './post.entity.js';
 
 export class PostRepository {
+  async findOneById(prisma: ProjectPrismaType, id: string): Promise<PostEntity | null> {
+    const record = await prisma.post.findUnique({
+      where: { id },
+    });
+    return record ? PostEntity.Reconstruct<Post, PostEntity>(record) : null;
+  }
+
   async findOnePublishedById(
     prisma: ProjectPrismaType,
     id: string
@@ -194,6 +201,17 @@ export class PostRepository {
     postEntity.beforeInsertValidate();
 
     const record = await prisma.post.create({
+      data: postEntity.toPersistence(),
+    });
+
+    return PostEntity.Reconstruct<Post, PostEntity>(record);
+  }
+
+  async update(prisma: ProjectPrismaType, postEntity: PostEntity): Promise<PostEntity> {
+    postEntity.beforeUpdateValidate();
+
+    const record = await prisma.post.update({
+      where: { id: postEntity.id },
       data: postEntity.toPersistence(),
     });
 

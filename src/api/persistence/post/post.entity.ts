@@ -66,6 +66,14 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     return this.props.projectId;
   }
 
+  get isInit(): boolean {
+    return this.props.isInit;
+  }
+
+  unsetInit() {
+    this.props.isInit = false;
+  }
+
   /**
    * Convert entity to source language post item response
    * @param sourceLanguage
