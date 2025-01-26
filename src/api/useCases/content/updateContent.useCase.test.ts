@@ -5,6 +5,7 @@ import { InMemoryContentRevisionRepository } from '../../persistence/contentRevi
 import { buildPostEntity } from '../../persistence/post/post.entity.fixture.js';
 import { InMemoryPostRepository } from '../../persistence/post/post.repository.mock.js';
 import { UpdateContentUseCase } from './updateContent.useCase.js';
+import { buildContentRevisionEntity } from '../../persistence/contentRevision/contentRevision.entity.fixture.js';
 
 describe('UpdateContentUseCase', () => {
   const contentId = v4();
@@ -24,6 +25,29 @@ describe('UpdateContentUseCase', () => {
       new InMemoryPostRepository()
     );
     jest.clearAllMocks();
+  });
+
+  it('should update the current revision’s content successfully', async () => {
+    const updatedTitle = 'updated title';
+
+    const updateSpy = jest
+      .spyOn(InMemoryContentRevisionRepository.prototype, 'update')
+      .mockResolvedValue(
+        buildContentRevisionEntity({
+          title: updatedTitle,
+        })
+      );
+
+    const result = await updateContentUseCase.execute({
+      id: contentId,
+      projectId,
+      userId,
+    });
+
+    expect(updateSpy).toHaveBeenCalled();
+    expect(result).toMatchObject({
+      title: updatedTitle,
+    });
   });
 
   it('should unset isInit on post if post.isInit is true', async () => {
