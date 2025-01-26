@@ -63,7 +63,7 @@ router.get(
 router.post(
   '/posts',
   authenticatedUser,
-  validateAccess(['savePost']),
+  validateAccess(['savePostByApi']),
   asyncHandler(async (req: Request, res: Response) => {
     const validated = createPostUseCaseSchema.safeParse({
       projectId: res.projectRole?.id,

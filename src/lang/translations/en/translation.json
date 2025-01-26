@@ -323,7 +323,8 @@
       "readWebhookSetting": "Read",
       "createWebhookSetting": "Create",
       "updateWebhookSetting": "Edit",
-      "deleteWebhookSetting": "Delete"
+      "deleteWebhookSetting": "Delete",
+      "savePostByApi": "Create / Update"
     }
   },
   "date_format": {

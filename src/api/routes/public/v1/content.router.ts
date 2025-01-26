@@ -43,7 +43,7 @@ router.get(
 router.patch(
   '/contents/:id',
   authenticatedUser,
-  validateAccess(['savePost']),
+  validateAccess(['savePostByApi']),
   asyncHandler(async (req: Request, res: Response) => {
     const validated = updateContentUseCaseSchema.safeParse({
       projectId: res.projectRole?.id,

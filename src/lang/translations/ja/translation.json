@@ -323,7 +323,8 @@
       "readWebhookSetting": "閲覧",
       "createWebhookSetting": "登録",
       "updateWebhookSetting": "編集",
-      "deleteWebhookSetting": "削除"
+      "deleteWebhookSetting": "削除",
+      "savePostByApi": "登録・編集"
     }
   },
   "date_format": {
