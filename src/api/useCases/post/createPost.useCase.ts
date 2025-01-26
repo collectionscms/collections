@@ -21,6 +21,17 @@ export class CreatePostUseCase {
 
     const project = await this.projectRepository.findOneById(this.prisma, props.projectId);
 
+    // find isInit post
+    const initPost = await this.postRepository.findOneByIsInit(this.prisma);
+    if (initPost) {
+      return initPost.content.toRevisedContentResponse(
+        project,
+        [{ contentId: initPost.content.id, language: initPost.content.language }],
+        initPost.revision,
+        [initPost.revision]
+      );
+    }
+
     const { post, content, contentRevision } = PostEntity.Construct({
       projectId: projectId,
       language: sourceLanguage,

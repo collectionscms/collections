@@ -6,10 +6,11 @@
   "extends": ["plugin:react/recommended", "prettier"],
   "overrides": [
     {
-      "files": ["test/**/*.test.ts"],
+      "files": ["*.test.ts"],
       "rules": {
         "no-restricted-syntax": ["error", "ForInStatement"],
-        "no-await-in-loop": 0
+        "no-await-in-loop": 0,
+        "max-len": "off"
       }
     }
   ],

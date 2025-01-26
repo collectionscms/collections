@@ -28,6 +28,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     const post = new PostEntity({
       id: postId,
       projectId,
+      isInit: true,
       createdById,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -63,6 +64,14 @@ export class PostEntity extends PrismaBaseEntity<Post> {
 
   get projectId(): string {
     return this.props.projectId;
+  }
+
+  get isInit(): boolean {
+    return this.props.isInit;
+  }
+
+  unsetInit() {
+    this.props.isInit = false;
   }
 
   /**
