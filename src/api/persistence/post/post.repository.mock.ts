@@ -28,6 +28,10 @@ export class InMemoryPostRepository extends PostRepository {
     };
   }
 
+  async create(_prisma: ProjectPrismaType, postEntity: PostEntity): Promise<PostEntity> {
+    return postEntity;
+  }
+
   async update(_prisma: ProjectPrismaType, post: PostEntity): Promise<PostEntity> {
     return post;
   }

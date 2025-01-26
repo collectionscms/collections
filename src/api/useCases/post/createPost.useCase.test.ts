@@ -8,6 +8,7 @@ import { InMemoryContentRevisionRepository } from '../../persistence/contentRevi
 import { buildPostEntity } from '../../persistence/post/post.entity.fixture.js';
 import { InMemoryPostRepository } from '../../persistence/post/post.repository.mock.js';
 import { InMemoryProjectRepository } from '../../persistence/project/project.repository.mock.js';
+import { buildUserEntity } from '../../persistence/user/user.entity.fixture.js';
 import { CreatePostUseCase } from './createPost.useCase.js';
 
 describe('CreatePostUseCase', () => {
@@ -29,6 +30,29 @@ describe('CreatePostUseCase', () => {
       new InMemoryContentRevisionRepository()
     );
     jest.clearAllMocks();
+  });
+
+  it('should create a new post successfully', async () => {
+    jest.spyOn(InMemoryPostRepository.prototype, 'findOneByIsInit').mockResolvedValue(null);
+    const createSpy = jest.spyOn(InMemoryContentRepository.prototype, 'create').mockResolvedValue({
+      content: buildContentEntity({
+        projectId,
+        language: 'ja',
+        createdById: userId,
+      }),
+      createdBy: buildUserEntity(),
+    });
+
+    const result = await createPostUseCase.execute({
+      projectId,
+      userId,
+      sourceLanguage: 'ja',
+    });
+
+    expect(createSpy).toHaveBeenCalled();
+    expect(result).toMatchObject({
+      language: 'ja',
+    });
   });
 
   it('should return init post if initPost exists', async () => {
