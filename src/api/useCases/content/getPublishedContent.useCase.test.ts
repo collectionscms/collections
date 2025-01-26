@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import { jest } from '@jest/globals';
 import { v4 } from 'uuid';
 import { projectPrisma } from '../../database/prisma/client.js';
