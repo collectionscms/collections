@@ -12,9 +12,14 @@ describe('UpdateContentUseCase', () => {
   const userId = v4();
   let updateContentUseCase: UpdateContentUseCase;
 
+  const prisma = projectPrisma(projectId);
+  jest.spyOn(prisma, '$transaction').mockImplementation(async (fn) => {
+    return await fn(prisma);
+  });
+
   beforeEach(() => {
     updateContentUseCase = new UpdateContentUseCase(
-      projectPrisma(projectId),
+      prisma,
       new InMemoryContentRevisionRepository(),
       new InMemoryPostRepository()
     );
