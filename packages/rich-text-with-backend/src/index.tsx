@@ -64,7 +64,7 @@ export const RichText = ({
   ) => {
     try {
       await fetch(`https://${projectId}.collections.dev/api/v1/contents/${contentId}`, {
-        method: 'PUT',
+        method: 'PATCH',
         headers: {
           Authorization: `Bearer ${apiKey}`,
         },
