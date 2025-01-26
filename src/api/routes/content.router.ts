@@ -9,6 +9,7 @@ import { validateAccess } from '../middlewares/validateAccess.js';
 import { ContentRepository } from '../persistence/content/content.repository.js';
 import { ContentRevisionRepository } from '../persistence/contentRevision/contentRevision.repository.js';
 import { ContentTagRepository } from '../persistence/contentTag/contentTag.repository.js';
+import { PostRepository } from '../persistence/post/post.repository.js';
 import { ProjectRepository } from '../persistence/project/project.repository.js';
 import { ReviewRepository } from '../persistence/review/review.repository.js';
 import { TagRepository } from '../persistence/tag/tag.repository.js';
@@ -20,8 +21,6 @@ import { ContentService } from '../services/content.service.js';
 import { WebhookService } from '../services/webhook.service.js';
 import { ArchiveUseCase } from '../useCases/content/archive.useCase.js';
 import { archiveUseCaseSchema } from '../useCases/content/archive.useCase.schema.js';
-import { SimplifySentenceUseCase } from '../useCases/content/simplifySentence.useCase.js';
-import { simplifySentenceUseCaseSchema } from '../useCases/content/simplifySentence.useCase.schema.js';
 import { CreateContentTagsUseCase } from '../useCases/content/createContentTags.useCase.js';
 import { createContentTagsUseCaseSchema } from '../useCases/content/createContentTags.useCase.schema.js';
 import { GenerateSeoUseCase } from '../useCases/content/generateSeo.useCase.js';
@@ -38,6 +37,8 @@ import { RestoreContentUseCase } from '../useCases/content/restoreContent.useCas
 import { restoreContentUseCaseSchema } from '../useCases/content/restoreContent.useCase.schema.js';
 import { RevertContentUseCase } from '../useCases/content/revertContent.useCase.js';
 import { revertContentUseCaseSchema } from '../useCases/content/revertContent.useCase.schema.js';
+import { SimplifySentenceUseCase } from '../useCases/content/simplifySentence.useCase.js';
+import { simplifySentenceUseCaseSchema } from '../useCases/content/simplifySentence.useCase.schema.js';
 import { TrashContentUseCase } from '../useCases/content/trashContent.useCase.js';
 import { trashContentUseCaseSchema } from '../useCases/content/trashContent.useCase.schema.js';
 import { UpdateContentUseCase } from '../useCases/content/updateContent.useCase.js';
@@ -117,7 +118,8 @@ router.patch(
 
     const useCase = new UpdateContentUseCase(
       projectPrisma(validated.data.projectId),
-      new ContentRevisionRepository()
+      new ContentRevisionRepository(),
+      new PostRepository()
     );
     await useCase.execute(validated.data);
 

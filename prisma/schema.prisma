@@ -166,6 +166,7 @@ model File {
 model Post {
   id               String            @id @db.Uuid
   projectId        String            @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
+  isInit           Boolean           @default(false)
   createdById      String            @db.Uuid
   createdAt        DateTime          @default(now()) @db.Timestamptz(6)
   updatedAt        DateTime          @updatedAt @db.Timestamptz(6)
@@ -210,7 +211,7 @@ model Content {
   language             String                @db.VarChar(255)
   status               String                @db.VarChar(255)
   currentVersion       Int                   @default(1)
-  draftKey             String                @default(dbgenerated("substring(md5(random()::text), 1, 10)")) @db.VarChar(255)
+  draftKey             String                @db.VarChar(255)
   publishedAt          DateTime?             @db.Timestamptz(6)
   deletedAt            DateTime?             @db.Timestamptz(6)
   createdById          String                @db.Uuid
@@ -247,7 +248,7 @@ model ContentRevision {
   language        String    @db.VarChar(255)
   status          String    @db.VarChar(255)
   version         Int       @default(1)
-  draftKey        String    @default(dbgenerated("substring(md5(random()::text), 1, 10)")) @db.VarChar(255)
+  draftKey        String    @db.VarChar(255)
   publishedAt     DateTime? @db.Timestamptz(6)
   deletedAt       DateTime? @db.Timestamptz(6)
   createdById     String    @db.Uuid

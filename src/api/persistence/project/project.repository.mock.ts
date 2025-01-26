@@ -4,6 +4,10 @@ import { ProjectEntity } from './project.entity.js';
 import { ProjectRepository } from './project.repository.js';
 
 export class InMemoryProjectRepository extends ProjectRepository {
+  async findOneById(_prisma: ProjectPrismaType, id: string): Promise<ProjectEntity> {
+    return buildProjectEntity({ id });
+  }
+
   async findOneBySubdomain(
     _prisma: BypassPrismaType,
     subdomain: string

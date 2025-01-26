@@ -4,11 +4,13 @@ import { ProjectPrismaClient } from '../../database/prisma/client.js';
 import { ContentRevisionEntity } from '../../persistence/contentRevision/contentRevision.entity.js';
 import { ContentRevisionRepository } from '../../persistence/contentRevision/contentRevision.repository.js';
 import { UpdateContentUseCaseSchemaType } from './updateContent.useCase.schema.js';
+import { PostRepository } from '../../persistence/post/post.repository.js';
 
 export class UpdateContentUseCase {
   constructor(
     private readonly prisma: ProjectPrismaClient,
-    private readonly contentRevisionRepository: ContentRevisionRepository
+    private readonly contentRevisionRepository: ContentRevisionRepository,
+    private readonly postRepository: PostRepository
   ) {}
 
   async execute(props: UpdateContentUseCaseSchemaType): Promise<Content> {
@@ -34,7 +36,14 @@ export class UpdateContentUseCase {
       metaDescription: props.metaDescription,
     });
 
+    const post = await this.postRepository.findOneById(this.prisma, revision.postId);
+
     const createdOrUpdatedRevision = await this.prisma.$transaction(async (tx) => {
+      if (post?.isInit) {
+        post.unsetInit();
+        await this.postRepository.update(tx, post);
+      }
+
       if (revision.isPublished()) {
         // create new version revision
         const contentRevision = ContentRevisionEntity.Construct({
