@@ -10,8 +10,8 @@ import { ContentTagRepository } from '../../../persistence/contentTag/contentTag
 import { PostRepository } from '../../../persistence/post/post.repository.js';
 import { GetPublishedContentUseCase } from '../../../useCases/content/getPublishedContent.useCase.js';
 import { getPublishedContentUseCaseSchema } from '../../../useCases/content/getPublishedContent.useCase.schema.js';
-import { UpdateContentUseCase } from '../../../useCases/content/updateContent.useCase.js';
-import { updateContentUseCaseSchema } from '../../../useCases/content/updateContent.useCase.schema.js';
+import { UpdateContentUseCase } from '../../../useCases/public/content/updateContent.useCase.js';
+import { updateContentUseCaseSchema } from '../../../useCases/public/content/updateContent.useCase.schema.js';
 
 const router = express.Router();
 
@@ -48,7 +48,6 @@ router.patch(
     const validated = updateContentUseCaseSchema.safeParse({
       projectId: res.projectRole?.id,
       id: req.params.id,
-      userId: res.user.id,
       title: req.body.title,
       subtitle: req.body.subtitle,
       body: req.body.body,
