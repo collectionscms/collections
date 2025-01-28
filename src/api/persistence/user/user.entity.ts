@@ -4,25 +4,35 @@ import { UnexpectedException } from '../../../exceptions/unexpected.js';
 import { oneWayHash } from '../../utilities/oneWayHash.js';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 
+type UserProps = Omit<
+  User,
+  | 'id'
+  | 'emailVerified'
+  | 'password'
+  | 'image'
+  | 'bio'
+  | 'bioUrl'
+  | 'employer'
+  | 'jobTitle'
+  | 'createdAt'
+  | 'updatedAt'
+>;
+
 export class UserEntity extends PrismaBaseEntity<User> {
-  static Construct({
-    name,
-    email,
-    isActive,
-  }: {
-    name: string;
-    email: string;
-    isActive: boolean;
-  }): UserEntity {
+  static Construct(props: UserProps): UserEntity {
     const now = new Date();
     return new UserEntity({
       id: v4(),
-      name,
-      email,
+      name: props.name,
+      email: props.email,
       emailVerified: null,
       password: null,
       image: null,
-      isActive,
+      isActive: props.isActive,
+      bio: null,
+      bioUrl: null,
+      employer: null,
+      jobTitle: null,
       createdAt: now,
       updatedAt: now,
     });

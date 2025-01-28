@@ -32,6 +32,8 @@ model Project {
   webhookLogs          WebhookLog[]
   textGenerationUsages TextGenerationUsage[]
   contentTags          ContentTag[]
+  experiences          Experience[]
+  userExperiences      UserExperience[]
 }
 
 model User {
@@ -42,6 +44,10 @@ model User {
   image                        String?
   password                     String?               @db.VarChar(255)
   isActive                     Boolean               @default(true)
+  bio                          String?
+  bioUrl                       String?
+  employer                     String?               @db.VarChar(255)
+  jobTitle                     String?               @db.VarChar(255)
   createdAt                    DateTime              @default(now()) @db.Timestamptz(6)
   updatedAt                    DateTime              @updatedAt @db.Timestamptz(6)
   userProjects                 UserProject[]
@@ -57,6 +63,94 @@ model User {
   updatedByHasContentRevisions ContentRevision[]     @relation("UpdatedBy")
   textGenerationUsages         TextGenerationUsage[]
   accounts                     Account[]
+  userExperiences              UserExperience[]
+  socialProfiles               SocialProfile[]
+  awards                       Award[]
+  spokenLanguages              SpokenLanguage[]
+  alumni                       Alumnus[]
+}
+
+model UserExperience {
+  id           String     @id @db.Uuid
+  projectId    String     @db.Uuid
+  userId       String     @db.Uuid
+  experienceId String     @db.Uuid
+  createdAt    DateTime   @default(now()) @db.Timestamptz(6)
+  updatedAt    DateTime   @updatedAt @db.Timestamptz(6)
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  experience   Experience @relation(fields: [experienceId], references: [id], onDelete: Cascade)
+  project      Project    @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, experienceId])
+}
+
+model Experience {
+  id                  String               @id @db.Uuid
+  projectId           String               @db.Uuid
+  name                String               @db.VarChar(255)
+  url                 String?
+  createdAt           DateTime             @default(now()) @db.Timestamptz(6)
+  updatedAt           DateTime             @updatedAt @db.Timestamptz(6)
+  project             Project              @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  experienceResources ExperienceResource[]
+  userExperiences     UserExperience[]
+
+  @@unique([projectId, name])
+}
+
+model ExperienceResource {
+  id           String     @id @db.Uuid
+  experienceId String     @db.Uuid
+  url          String
+  createdAt    DateTime   @default(now()) @db.Timestamptz(6)
+  updatedAt    DateTime   @updatedAt @db.Timestamptz(6)
+  experience   Experience @relation(fields: [experienceId], references: [id], onDelete: Cascade)
+
+  @@unique([experienceId, url])
+}
+
+model Alumnus {
+  id        String   @id @db.Uuid
+  userId    String   @db.Uuid
+  name      String   @db.VarChar(255)
+  url       String?
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime @updatedAt @db.Timestamptz(6)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model SocialProfile {
+  id        String   @id @db.Uuid
+  userId    String   @db.Uuid
+  provider  String
+  url       String
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime @updatedAt @db.Timestamptz(6)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, provider])
+}
+
+model Award {
+  id        String   @id @db.Uuid
+  userId    String   @db.Uuid
+  name      String   @db.VarChar(255)
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime @updatedAt @db.Timestamptz(6)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, name])
+}
+
+model SpokenLanguage {
+  id        String   @id @db.Uuid
+  userId    String   @db.Uuid
+  language  String   @db.VarChar(255)
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime @updatedAt @db.Timestamptz(6)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, language])
 }
 
 model Account {

@@ -12,6 +12,10 @@ const defaultValue = {
   isActive: true,
   image: faker.image.avatarGitHub(),
   providerId: v4(),
+  bio: null,
+  bioUrl: null,
+  employer: null,
+  jobTitle: null,
   createdAt: new Date(),
   updatedAt: new Date(),
 };
