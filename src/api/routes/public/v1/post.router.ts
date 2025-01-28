@@ -8,12 +8,12 @@ import { ContentRepository } from '../../../persistence/content/content.reposito
 import { ContentRevisionRepository } from '../../../persistence/contentRevision/contentRevision.repository.js';
 import { PostRepository } from '../../../persistence/post/post.repository.js';
 import { ProjectRepository } from '../../../persistence/project/project.repository.js';
-import { CreatePostUseCase } from '../../../useCases/post/createPost.useCase.js';
-import { createPostUseCaseSchema } from '../../../useCases/post/createPost.useCase.schema.js';
 import { GetPublishedPostUseCase } from '../../../useCases/post/getPublishedPost.useCase.js';
 import { getPublishedPostUseCaseSchema } from '../../../useCases/post/getPublishedPost.useCase.schema.js';
 import { GetPublishedPostsUseCase } from '../../../useCases/post/getPublishedPosts.useCase.js';
 import { getPublishedPostsUseCaseSchema } from '../../../useCases/post/getPublishedPosts.useCase.schema.js';
+import { CreatePostUseCase } from '../../../useCases/public/post/createPost.useCase.js';
+import { createPostUseCaseSchema } from '../../../useCases/public/post/createPost.useCase.schema.js';
 
 const router = express.Router();
 
@@ -67,7 +67,6 @@ router.post(
   asyncHandler(async (req: Request, res: Response) => {
     const validated = createPostUseCaseSchema.safeParse({
       projectId: res.projectRole?.id,
-      userId: res.user.id,
       sourceLanguage: res.projectRole?.sourceLanguage,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);

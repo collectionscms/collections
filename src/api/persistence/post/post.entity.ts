@@ -3,7 +3,6 @@ import { v4 } from 'uuid';
 import { UnexpectedException } from '../../../exceptions/unexpected.js';
 import {
   LocalizedContentItem,
-  PublishedContent,
   PublishedListContent,
   PublishedPost,
   SourceLanguagePostItem,
@@ -14,31 +13,34 @@ import { ContentRevisionEntity } from '../contentRevision/contentRevision.entity
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 import { UserEntity } from '../user/user.entity.js';
 
+type PostProps = Omit<Post, 'id' | 'isInit' | 'createdAt' | 'updatedAt'> & {
+  createdById?: string | null;
+};
+
 export class PostEntity extends PrismaBaseEntity<Post> {
-  static Construct({
-    projectId,
-    language,
-    createdById,
-  }: {
-    projectId: string;
-    language: string;
-    createdById: string;
-  }): { post: PostEntity; content: ContentEntity; contentRevision: ContentRevisionEntity } {
+  static Construct(
+    props: PostProps,
+    language: string
+  ): {
+    post: PostEntity;
+    content: ContentEntity;
+    contentRevision: ContentRevisionEntity;
+  } {
     const postId = v4();
     const post = new PostEntity({
       id: postId,
-      projectId,
+      projectId: props.projectId,
       isInit: true,
-      createdById,
+      createdById: props.createdById,
       createdAt: new Date(),
       updatedAt: new Date(),
     });
 
     const { content, contentRevision } = ContentEntity.Construct({
-      projectId,
+      projectId: props.projectId,
       postId,
       language,
-      createdById,
+      createdById: props.createdById,
     });
 
     return { post, content, contentRevision };

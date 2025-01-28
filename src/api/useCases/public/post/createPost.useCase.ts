@@ -1,10 +1,10 @@
-import { RevisedContent } from '../../../types/index.js';
-import { ProjectPrismaClient } from '../../database/prisma/client.js';
-import { ContentRepository } from '../../persistence/content/content.repository.js';
-import { ContentRevisionRepository } from '../../persistence/contentRevision/contentRevision.repository.js';
-import { PostEntity } from '../../persistence/post/post.entity.js';
-import { PostRepository } from '../../persistence/post/post.repository.js';
-import { ProjectRepository } from '../../persistence/project/project.repository.js';
+import { RevisedContent } from '../../../../types/index.js';
+import { ProjectPrismaClient } from '../../../database/prisma/client.js';
+import { ContentRepository } from '../../../persistence/content/content.repository.js';
+import { ContentRevisionRepository } from '../../../persistence/contentRevision/contentRevision.repository.js';
+import { PostEntity } from '../../../persistence/post/post.entity.js';
+import { PostRepository } from '../../../persistence/post/post.repository.js';
+import { ProjectRepository } from '../../../persistence/project/project.repository.js';
 import { CreatePostUseCaseSchemaType } from './createPost.useCase.schema.js';
 
 export class CreatePostUseCase {
@@ -17,7 +17,7 @@ export class CreatePostUseCase {
   ) {}
 
   async execute(props: CreatePostUseCaseSchemaType): Promise<RevisedContent> {
-    const { userId, projectId, sourceLanguage } = props;
+    const { projectId, sourceLanguage } = props;
 
     const project = await this.projectRepository.findOneById(this.prisma, props.projectId);
 
@@ -35,7 +35,7 @@ export class CreatePostUseCase {
     const { post, content, contentRevision } = PostEntity.Construct(
       {
         projectId: projectId,
-        createdById: userId,
+        createdById: null,
       },
       sourceLanguage
     );
