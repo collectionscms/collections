@@ -13,7 +13,7 @@ import {
   ImageBlock,
   // ImageUpload,
   Link,
-  SlashCommand,
+  // SlashCommand,
 } from '../extensions/index';
 
 const lowlight = createLowlight(common);
@@ -21,9 +21,14 @@ const lowlight = createLowlight(common);
 type UseBlockEditorProps = {
   initialContent: string;
   extensions?: Extension[];
+  immediatelyRender: boolean;
 };
 
-export const useBlockEditor = ({ initialContent, extensions = [] }: UseBlockEditorProps) => {
+export const useBlockEditor = ({
+  initialContent,
+  extensions = [],
+  immediatelyRender,
+}: UseBlockEditorProps) => {
   const { t } = useTranslation();
 
   const editor = useEditor({
@@ -54,9 +59,10 @@ export const useBlockEditor = ({ initialContent, extensions = [] }: UseBlockEdit
       }),
       // ImageUpload,
       ImageBlock,
-      SlashCommand(t),
+      // SlashCommand(t),
       ...extensions,
     ],
+    immediatelyRender
   });
 
   const characterCount = editor?.storage.characterCount || { characters: () => 0 };

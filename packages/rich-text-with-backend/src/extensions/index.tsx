@@ -11,4 +11,4 @@ export { HorizontalRule } from './HorizontalRule/index';
 export { ImageBlock } from './ImageBlock/index';
 // export { ImageUpload } from './ImageUpload/ImageUpload';
 export { Link } from './Link/index';
-export { SlashCommand } from './SlashCommand/index';
+// export { SlashCommand } from './SlashCommand/index';
