@@ -25,7 +25,7 @@ export class ContentTagRepository {
   async findPublishedContentsByTagId(
     prisma: ProjectPrismaType,
     tagId: string
-  ): Promise<{ content: ContentEntity; createdBy: UserEntity }[]> {
+  ): Promise<{ content: ContentEntity; createdBy: UserEntity | null }[]> {
     const now = new Date();
     const records = await prisma.contentTag.findMany({
       where: {
@@ -53,7 +53,9 @@ export class ContentTagRepository {
 
     return records.map((record) => ({
       content: ContentEntity.Reconstruct<Content, ContentEntity>(record.content),
-      createdBy: UserEntity.Reconstruct<User, UserEntity>(record.content.createdBy),
+      createdBy: record.content.createdBy
+        ? UserEntity.Reconstruct<User, UserEntity>(record.content.createdBy)
+        : null,
     }));
   }
 

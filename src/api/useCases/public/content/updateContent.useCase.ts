@@ -33,7 +33,7 @@ export class UpdateContentUseCase {
       slug: props.slug,
       metaTitle: props.metaTitle,
       metaDescription: props.metaDescription,
-      updatedById: revision.updatedById, // Not updated when via api
+      updatedById: null,
     });
 
     const post = await this.postRepository.findOneById(this.prisma, revision.postId);

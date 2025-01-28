@@ -59,7 +59,7 @@ export class ContentRevisionRepository {
   async findLatestOneBySlug(
     prisma: ProjectPrismaType,
     slug: string
-  ): Promise<{ contentRevision: ContentRevisionEntity; createdBy: UserEntity } | null> {
+  ): Promise<{ contentRevision: ContentRevisionEntity; createdBy: UserEntity | null } | null> {
     const record = await prisma.contentRevision.findFirst({
       where: {
         slug,
@@ -78,14 +78,16 @@ export class ContentRevisionRepository {
       contentRevision: ContentRevisionEntity.Reconstruct<ContentRevision, ContentRevisionEntity>(
         record
       ),
-      createdBy: UserEntity.Reconstruct<User, UserEntity>(record.createdBy),
+      createdBy: record.createdBy
+        ? UserEntity.Reconstruct<User, UserEntity>(record.createdBy)
+        : null,
     };
   }
 
   async findLatestOneByContentIdOrSlug(
     prisma: ProjectPrismaType,
     identifier: string
-  ): Promise<{ contentRevision: ContentRevisionEntity; createdBy: UserEntity } | null> {
+  ): Promise<{ contentRevision: ContentRevisionEntity; createdBy: UserEntity | null } | null> {
     const record = await prisma.contentRevision.findFirst({
       where: {
         OR: [
@@ -111,7 +113,9 @@ export class ContentRevisionRepository {
       contentRevision: ContentRevisionEntity.Reconstruct<ContentRevision, ContentRevisionEntity>(
         record
       ),
-      createdBy: UserEntity.Reconstruct<User, UserEntity>(record.createdBy),
+      createdBy: record.createdBy
+        ? UserEntity.Reconstruct<User, UserEntity>(record.createdBy)
+        : null,
     };
   }
 

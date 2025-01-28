@@ -35,7 +35,9 @@ export class WebhookService {
       newContent.projectId
     );
 
-    const createdBy = await this.userRepository.findOneById(prisma, newContent.createdById);
+    const createdBy = newContent.createdById
+      ? await this.userRepository.findOneById(prisma, newContent.createdById)
+      : null;
     const tags = await this.contentTagRepository.findTagsByContentId(prisma, newContent.id);
 
     for (const setting of settings) {

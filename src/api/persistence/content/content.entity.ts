@@ -213,11 +213,11 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     return this.props.currentVersion;
   }
 
-  get createdById(): string {
+  get createdById(): string | null {
     return this.props.createdById;
   }
 
-  get updatedById(): string {
+  get updatedById(): string | null {
     return this.props.updatedById;
   }
 
@@ -267,7 +267,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     status: string;
     publishedAt: Date | null;
     version: number;
-    updatedById: string;
+    updatedById: string | null;
   }) {
     Object.assign(this.props, {
       title,
@@ -453,7 +453,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
    * @param createdBy
    * @returns
    */
-  toPublishedListContentResponse(createdBy: UserEntity): PublishedListContent {
+  toPublishedListContentResponse(createdBy: UserEntity | null): PublishedListContent {
     if (!this.props.publishedAt) {
       throw new RecordNotFoundException('record_not_found');
     }
@@ -470,7 +470,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
    * @param tags
    * @returns
    */
-  toPublishedContentResponse(createdBy: UserEntity, tags: TagEntity[]): PublishedContent {
+  toPublishedContentResponse(createdBy: UserEntity | null, tags: TagEntity[]): PublishedContent {
     return {
       ...this.toCommonPublishedContentResponse(createdBy),
       publishedAt: this.props.publishedAt as Date,
@@ -481,7 +481,7 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     };
   }
 
-  private toCommonPublishedContentResponse(createdBy: UserEntity) {
+  private toCommonPublishedContentResponse(createdBy: UserEntity | null) {
     return {
       id: this.props.id,
       slug: this.props.slug,
@@ -497,9 +497,9 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
       metaDescription: this.props.metaDescription,
       publishedAt: this.props.publishedAt,
       author: {
-        id: createdBy.id,
-        name: createdBy.name,
-        avatarUrl: createdBy.image,
+        id: createdBy?.id ?? '',
+        name: createdBy?.name ?? '',
+        avatarUrl: createdBy?.image ?? '',
       },
     };
   }

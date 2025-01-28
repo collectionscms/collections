@@ -23,7 +23,7 @@ export class ContentRepository {
   async findOneBySlug(
     prisma: ProjectPrismaType,
     slug: string
-  ): Promise<{ content: ContentEntity; createdBy: UserEntity } | null> {
+  ): Promise<{ content: ContentEntity; createdBy: UserEntity | null } | null> {
     const record = await prisma.content.findFirst({
       where: {
         slug,
@@ -39,14 +39,16 @@ export class ContentRepository {
 
     return {
       content: ContentEntity.Reconstruct<Content, ContentEntity>(record),
-      createdBy: UserEntity.Reconstruct<User, UserEntity>(record.createdBy),
+      createdBy: record.createdBy
+        ? UserEntity.Reconstruct<User, UserEntity>(record.createdBy)
+        : null,
     };
   }
 
   async findOneByIdOrSlug(
     prisma: ProjectPrismaType,
     identifier: string
-  ): Promise<{ content: ContentEntity; createdBy: UserEntity } | null> {
+  ): Promise<{ content: ContentEntity; createdBy: UserEntity | null } | null> {
     const record = await prisma.content.findFirst({
       where: {
         OR: [
@@ -69,7 +71,9 @@ export class ContentRepository {
 
     return {
       content: ContentEntity.Reconstruct<Content, ContentEntity>(record),
-      createdBy: UserEntity.Reconstruct<User, UserEntity>(record.createdBy),
+      createdBy: record.createdBy
+        ? UserEntity.Reconstruct<User, UserEntity>(record.createdBy)
+        : null,
     };
   }
 
@@ -113,7 +117,7 @@ export class ContentRepository {
   async findManyByPostId(
     prisma: ProjectPrismaType,
     postId: string
-  ): Promise<{ content: ContentEntity; createdBy: UserEntity }[]> {
+  ): Promise<{ content: ContentEntity; createdBy: UserEntity | null }[]> {
     const records = await prisma.content.findMany({
       where: {
         postId,
@@ -129,7 +133,9 @@ export class ContentRepository {
 
     return records.map((record) => ({
       content: ContentEntity.Reconstruct<Content, ContentEntity>(record),
-      createdBy: UserEntity.Reconstruct<User, UserEntity>(record.createdBy),
+      createdBy: record.createdBy
+        ? UserEntity.Reconstruct<User, UserEntity>(record.createdBy)
+        : null,
     }));
   }
 
@@ -150,7 +156,7 @@ export class ContentRepository {
     prisma: ProjectPrismaType,
     postId: string
   ): Promise<
-    { content: ContentEntity; createdBy: UserEntity; revisions: ContentRevisionEntity[] }[]
+    { content: ContentEntity; createdBy: UserEntity | null; revisions: ContentRevisionEntity[] }[]
   > {
     const records = await prisma.content.findMany({
       where: {
@@ -175,7 +181,9 @@ export class ContentRepository {
 
     return records.map((record) => ({
       content: ContentEntity.Reconstruct<Content, ContentEntity>(record),
-      createdBy: UserEntity.Reconstruct<User, UserEntity>(record.createdBy),
+      createdBy: record.createdBy
+        ? UserEntity.Reconstruct<User, UserEntity>(record.createdBy)
+        : null,
       revisions: record.contentRevisions.map((r) =>
         ContentRevisionEntity.Reconstruct<ContentRevision, ContentRevisionEntity>(r)
       ),
@@ -206,7 +214,7 @@ export class ContentRepository {
   async create(
     prisma: ProjectPrismaType,
     contentEntity: ContentEntity
-  ): Promise<{ content: ContentEntity; createdBy: UserEntity }> {
+  ): Promise<{ content: ContentEntity; createdBy: UserEntity | null }> {
     contentEntity.beforeInsertValidate();
 
     const record = await prisma.content.create({
@@ -218,7 +226,9 @@ export class ContentRepository {
 
     return {
       content: ContentEntity.Reconstruct<Content, ContentEntity>(record),
-      createdBy: UserEntity.Reconstruct<User, UserEntity>(record.createdBy),
+      createdBy: record.createdBy
+        ? UserEntity.Reconstruct<User, UserEntity>(record.createdBy)
+        : null,
     };
   }
 

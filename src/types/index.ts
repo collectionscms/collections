@@ -101,8 +101,8 @@ export type PublishedListContent = {
   metaDescription: string | null;
   publishedAt: Date;
   author: {
-    id: string;
-    name: string;
+    id: string | null;
+    name: string | null;
     avatarUrl: string | null;
   };
 };

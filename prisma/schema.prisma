@@ -167,11 +167,11 @@ model Post {
   id               String            @id @db.Uuid
   projectId        String            @default(dbgenerated("(current_setting('app.current_project_id'::text))::uuid")) @db.Uuid
   isInit           Boolean           @default(false)
-  createdById      String            @db.Uuid
+  createdById      String?           @db.Uuid
   createdAt        DateTime          @default(now()) @db.Timestamptz(6)
   updatedAt        DateTime          @updatedAt @db.Timestamptz(6)
   project          Project           @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  createdBy        User              @relation(name: "CreatedBy", fields: [createdById], references: [id], onDelete: NoAction)
+  createdBy        User?             @relation(name: "CreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
   contents         Content[]
   reviews          Review[]
   contentRevisions ContentRevision[]
@@ -214,14 +214,14 @@ model Content {
   draftKey             String                @db.VarChar(255)
   publishedAt          DateTime?             @db.Timestamptz(6)
   deletedAt            DateTime?             @db.Timestamptz(6)
-  createdById          String                @db.Uuid
-  updatedById          String                @db.Uuid
+  createdById          String?               @db.Uuid
+  updatedById          String?               @db.Uuid
   createdAt            DateTime              @default(now()) @db.Timestamptz(6)
   updatedAt            DateTime              @updatedAt @db.Timestamptz(6)
   project              Project               @relation(fields: [projectId], references: [id], onDelete: Cascade)
   post                 Post                  @relation(fields: [postId], references: [id], onDelete: Cascade)
-  createdBy            User                  @relation(name: "CreatedBy", fields: [createdById], references: [id], onDelete: NoAction)
-  updatedBy            User                  @relation(name: "UpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction)
+  createdBy            User?                 @relation(name: "CreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
+  updatedBy            User?                 @relation(name: "UpdatedBy", fields: [updatedById], references: [id], onDelete: SetNull)
   reviews              Review[]
   contentRevisions     ContentRevision[]
   textGenerationUsages TextGenerationUsage[]
@@ -251,15 +251,15 @@ model ContentRevision {
   draftKey        String    @db.VarChar(255)
   publishedAt     DateTime? @db.Timestamptz(6)
   deletedAt       DateTime? @db.Timestamptz(6)
-  createdById     String    @db.Uuid
-  updatedById     String    @db.Uuid
+  createdById     String?   @db.Uuid
+  updatedById     String?   @db.Uuid
   createdAt       DateTime  @default(now()) @db.Timestamptz(6)
   updatedAt       DateTime  @updatedAt @db.Timestamptz(6)
   project         Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
   post            Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
   content         Content   @relation(fields: [contentId], references: [id], onDelete: Cascade)
-  createdBy       User      @relation(name: "CreatedBy", fields: [createdById], references: [id], onDelete: NoAction)
-  updatedBy       User      @relation(name: "UpdatedBy", fields: [updatedById], references: [id], onDelete: NoAction)
+  createdBy       User?     @relation(name: "CreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
+  updatedBy       User?     @relation(name: "UpdatedBy", fields: [updatedById], references: [id], onDelete: SetNull)
 }
 
 model Tag {

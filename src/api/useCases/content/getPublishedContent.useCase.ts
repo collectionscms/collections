@@ -22,7 +22,7 @@ export class GetPublishedContentUseCase {
     identifier: string,
     isUuid: boolean,
     draftKey: string
-  ): Promise<{ content: ContentEntity; createdBy: UserEntity }> => {
+  ): Promise<{ content: ContentEntity; createdBy: UserEntity | null }> => {
     const record = isUuid
       ? await this.contentRevisionRepository.findLatestOneByContentIdOrSlug(this.prisma, identifier)
       : await this.contentRevisionRepository.findLatestOneBySlug(this.prisma, identifier);
@@ -46,7 +46,7 @@ export class GetPublishedContentUseCase {
   getContentByIdentifier = async (
     identifier: string,
     isUuid: boolean
-  ): Promise<{ content: ContentEntity; createdBy: UserEntity }> => {
+  ): Promise<{ content: ContentEntity; createdBy: UserEntity | null }> => {
     const record = isUuid
       ? await this.contentRepository.findOneByIdOrSlug(this.prisma, identifier)
       : await this.contentRepository.findOneBySlug(this.prisma, identifier);

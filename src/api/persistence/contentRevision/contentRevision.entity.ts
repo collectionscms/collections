@@ -109,11 +109,11 @@ export class ContentRevisionEntity extends PrismaBaseEntity<ContentRevision> {
     return this.props.draftKey;
   }
 
-  get createdById(): string {
+  get createdById(): string | null {
     return this.props.createdById;
   }
 
-  get updatedById(): string {
+  get updatedById(): string | null {
     return this.props.updatedById;
   }
 
@@ -157,7 +157,7 @@ export class ContentRevisionEntity extends PrismaBaseEntity<ContentRevision> {
     slug?: string;
     metaTitle?: string | null;
     metaDescription?: string | null;
-    updatedById: string;
+    updatedById: string | null;
   }): void {
     Object.assign(this.props, {
       ...(title !== undefined && { title }),

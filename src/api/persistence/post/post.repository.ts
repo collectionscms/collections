@@ -21,8 +21,8 @@ export class PostRepository {
     post: PostEntity;
     contents: {
       content: ContentEntity;
-      createdBy: UserEntity;
-      updatedBy: UserEntity;
+      createdBy: UserEntity | null;
+      updatedBy: UserEntity | null;
     }[];
   } | null> {
     const record = await prisma.post.findFirst({
@@ -56,8 +56,12 @@ export class PostRepository {
     const post = PostEntity.Reconstruct<Post, PostEntity>(record);
     const contents = record.contents.map((content) => ({
       content: ContentEntity.Reconstruct<Content, ContentEntity>(content),
-      createdBy: UserEntity.Reconstruct<User, UserEntity>(content.createdBy),
-      updatedBy: UserEntity.Reconstruct<User, UserEntity>(content.updatedBy),
+      createdBy: content.createdBy
+        ? UserEntity.Reconstruct<User, UserEntity>(content.createdBy)
+        : null,
+      updatedBy: content.updatedBy
+        ? UserEntity.Reconstruct<User, UserEntity>(content.updatedBy)
+        : null,
     }));
 
     return {
@@ -158,7 +162,7 @@ export class PostRepository {
       post: PostEntity;
       contents: {
         content: ContentEntity;
-        createdBy: UserEntity;
+        createdBy: UserEntity | null;
       }[];
     }[]
   > {
@@ -187,7 +191,9 @@ export class PostRepository {
       const post = PostEntity.Reconstruct<Post, PostEntity>(record);
       const contents = record.contents.map((content) => ({
         content: ContentEntity.Reconstruct<Content, ContentEntity>(content),
-        createdBy: UserEntity.Reconstruct<User, UserEntity>(content.createdBy),
+        createdBy: content.createdBy
+          ? UserEntity.Reconstruct<User, UserEntity>(content.createdBy)
+          : null,
       }));
 
       return {

@@ -111,7 +111,9 @@ export class PostEntity extends PrismaBaseEntity<Post> {
       ...this.toLocalizedContentItem(
         sourceLngContentRevision.toContentResponse(),
         sourceLngContent.content.getStatusHistory(sourceLngContentRevision),
-        userMap[sourceLngContentRevision.updatedById]?.name ?? ''
+        sourceLngContentRevision.updatedById
+          ? (userMap[sourceLngContentRevision.updatedById]?.name ?? '')
+          : ''
       ),
       localizedContents: otherLngContents.map((otherLngContent) => {
         const otherLngContentRevision = ContentRevisionEntity.getLatestRevisionOfLanguage(
@@ -122,7 +124,9 @@ export class PostEntity extends PrismaBaseEntity<Post> {
         return this.toLocalizedContentItem(
           otherLngContentRevision.toContentResponse(),
           otherLngContent.content.getStatusHistory(otherLngContentRevision),
-          userMap[otherLngContentRevision.updatedById]?.name ?? ''
+          otherLngContentRevision.updatedById
+            ? (userMap[otherLngContentRevision.updatedById]?.name ?? '')
+            : ''
         );
       }),
     };
@@ -155,7 +159,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
     language: string | null,
     contents: {
       content: ContentEntity;
-      createdBy: UserEntity;
+      createdBy: UserEntity | null;
     }[]
   ): PublishedPost | null {
     const groupByLngContents = this.groupContentsByLanguage(contents);
@@ -172,7 +176,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
   private groupContentsByLanguage(
     contents: {
       content: ContentEntity;
-      createdBy: UserEntity;
+      createdBy: UserEntity | null;
     }[]
   ): { [language: string]: PublishedListContent } {
     return contents.reduce(
@@ -196,9 +200,9 @@ export class PostEntity extends PrismaBaseEntity<Post> {
             metaDescription: content.metaDescription,
             publishedAt: content.publishedAt,
             author: {
-              id: createdBy.id,
-              name: createdBy.name,
-              avatarUrl: createdBy.image,
+              id: createdBy?.id ?? '',
+              name: createdBy?.name ?? '',
+              avatarUrl: createdBy?.image ?? '',
             },
           };
         }
