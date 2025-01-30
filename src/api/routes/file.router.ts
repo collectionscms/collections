@@ -30,7 +30,7 @@ router.post(
       new FileRepository(),
       new ProjectRepository()
     );
-    const response = await useCase.execute(validated.data.projectId, files);
+    const response = await useCase.execute(validated.data.projectId ?? null, files);
 
     res.json(response);
   })

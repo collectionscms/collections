@@ -11,6 +11,7 @@ import { FileService } from '../services/file.service.js';
 
 export const multipartHandler: RequestHandler = (req, res, next) => {
   const projectId = res.projectRole?.id ?? null;
+  const userId = res.user?.id ?? null;
   const busboy = Busboy({ headers: req.headers });
   const service = new FileService();
 
@@ -58,7 +59,7 @@ export const multipartHandler: RequestHandler = (req, res, next) => {
         projectId,
         storage: env.STORAGE_DRIVER,
         fileName: fileName,
-        fileNameDisk: `${projectId}/${id}.${extension(type)}`,
+        fileNameDisk: `${projectId || userId}/${id}.${extension(type)}`,
         fileSize: fileData.byteLength,
         type: type,
         width,
