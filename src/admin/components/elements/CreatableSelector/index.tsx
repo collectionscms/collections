@@ -1,15 +1,16 @@
 import { useTheme } from '@mui/material';
 import React, { useState } from 'react';
 import CreatableSelect from 'react-select/creatable';
-import { useColorMode } from '../../../../../../../components/utilities/ColorMode/index.js';
+import { useColorMode } from '../../utilities/ColorMode/index.js';
 
 type Props = {
   options: Record<string, string>[];
   values: Record<string, string>[];
+  placeholder: string;
   onChange: (names: string[]) => void;
 };
 
-export const TagSelector: React.FC<Props> = ({ options, values, onChange }) => {
+export const CreatableSelector: React.FC<Props> = ({ options, values, placeholder, onChange }) => {
   const { mode } = useColorMode();
   const theme = useTheme();
   const color =
@@ -26,7 +27,7 @@ export const TagSelector: React.FC<Props> = ({ options, values, onChange }) => {
         };
 
   const [inputtedValues, setInputtedValues] = useState(values);
-  const handleTagChange = (value: Record<string, string>[]) => {
+  const handleValueChange = (value: Record<string, string>[]) => {
     setInputtedValues(value);
     onChange(value.map((v) => v.value));
   };
@@ -37,8 +38,9 @@ export const TagSelector: React.FC<Props> = ({ options, values, onChange }) => {
       options={options}
       value={inputtedValues}
       unstyled={true}
+      placeholder={placeholder}
       onChange={(value) =>
-        handleTagChange(
+        handleValueChange(
           value.map((v) => {
             return { value: v.value, label: v.label };
           })

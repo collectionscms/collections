@@ -4,7 +4,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { logger } from '../../../../../../../utilities/logger.js';
 import { usePost } from '../../../../Context/index.js';
-import { TagSelector } from '../ui/TagSelector/index.js';
+import { CreatableSelector } from '../../../../../../components/elements/CreatableSelector/index.js';
 
 type Props = {
   contentId: string;
@@ -42,7 +42,12 @@ export const TagSettings: React.FC<Props> = ({ contentId, inputtedTags }) => {
   return (
     <Stack gap={1}>
       <Typography variant="subtitle1">{t('add_tags')}</Typography>
-      <TagSelector options={options} values={values} onChange={handleTagChange} />
+      <CreatableSelector
+        options={options}
+        values={values}
+        placeholder={t('tags_placeholder')}
+        onChange={handleTagChange}
+      />
       <Typography variant="caption" color="text.secondary">
         {t('tags_hint')}
       </Typography>
