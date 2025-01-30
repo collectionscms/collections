@@ -161,6 +161,10 @@
   "check_your_email": "Check your email",
   "we_send_verification_email": "We've sent you an email to verify your account. Please check your email and click the link to verify your account.",
   "back_to_login": "Back to login",
+  "bio": "Bio",
+  "personal_information": "Personal Information",
+  "author_seo": "Author SEO",
+  "author_seo_description": "Providing detailed author information as structured data enhances your visibility in search engines.",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",

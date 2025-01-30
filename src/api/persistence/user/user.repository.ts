@@ -144,6 +144,8 @@ export class UserRepository {
       },
       data: {
         name: user.name,
+        bio: user.bio,
+        image: user.image,
       },
     });
 

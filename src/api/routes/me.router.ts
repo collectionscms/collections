@@ -64,6 +64,8 @@ router.patch(
     const validated = updateProfileUseCaseSchema.safeParse({
       userId: res.user.id,
       name: req.body.name,
+      bio: req.body.bio,
+      image: req.body.image,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 

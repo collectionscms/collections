@@ -161,6 +161,10 @@
   "check_your_email": "メールを確認してください",
   "we_send_verification_email": "アカウント確認のためメールをお送りしました。メールをご確認いただき、リンクをクリックしてアカウントを有効化してください。",
   "back_to_login": "ログインに戻る",
+  "bio": "自己紹介",
+  "personal_information": "個人情報",
+  "author_seo": "著者SEO",
+  "author_seo_description": "詳細な著者情報を構造化データとして提供することで、検索エンジンでの視認性が向上します。",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",

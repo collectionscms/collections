@@ -10,11 +10,13 @@ export class UpdateProfileUseCase {
   ) {}
 
   async execute(props: UpdateProfileUseCaseSchemaType): Promise<User> {
-    const { name, userId } = props;
+    const { name, userId, bio, image } = props;
 
     const user = await this.userRepository.findOneById(this.prisma, userId);
-    user.update({
-      name: name,
+    user.updateUser({
+      name,
+      bio,
+      image,
     });
 
     const updatedUser = await this.userRepository.updateProfile(this.prisma, user);

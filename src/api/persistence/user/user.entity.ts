@@ -64,6 +64,10 @@ export class UserEntity extends PrismaBaseEntity<User> {
     return this.props.name ?? '';
   }
 
+  get bio(): string | null {
+    return this.props.bio;
+  }
+
   get password(): string | null {
     return this.props.password;
   }
@@ -84,9 +88,19 @@ export class UserEntity extends PrismaBaseEntity<User> {
     this.props.password = await oneWayHash(password);
   }
 
-  update(params: { name?: string }) {
-    if (params.name) {
-      this.props.name = params.name;
-    }
+  updateUser({
+    name,
+    bio,
+    image,
+  }: {
+    name?: string | null;
+    bio?: string | null;
+    image?: string | null;
+  }): void {
+    Object.assign(this.props, {
+      ...(name !== undefined && { name }),
+      ...(bio !== undefined && { bio }),
+      ...(image !== undefined && { image }),
+    });
   }
 }
