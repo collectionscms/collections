@@ -65,6 +65,9 @@ router.patch(
       userId: res.user.id,
       name: req.body.name,
       bio: req.body.bio,
+      bioUrl: req.body.bioUrl,
+      employer: req.body.employer,
+      jobTitle: req.body.jobTitle,
       image: req.body.image,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);

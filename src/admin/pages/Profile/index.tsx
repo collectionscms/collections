@@ -13,13 +13,10 @@ import {
   Radio,
   RadioGroup,
   Select,
-  SelectCha,
-  TypographyngeEvent,
+  SelectChangeEvent,
   Stack,
   TextField,
   useTheme,
-  SelectChangeEvent,
-  Typography,
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { enqueueSnackbar } from 'notistack';
@@ -41,7 +38,6 @@ import {
 import { useUnsavedChangesPrompt } from '../../hooks/useUnsavedChangesPrompt.js';
 import lazy from '../../utilities/lazy.js';
 import { ProfileContextProvider, useProfile } from './Context/index.js';
-import { TitleTooltip } from '../Post/Edit/PostHeader/PublishSettings/ui/TitleTooltip/index.js';
 
 const Loading = Loader(lazy(() => import('../../components/elements/Loading/index.js'), 'Loading'));
 
@@ -62,6 +58,9 @@ const ProfilePageImpl: React.FC = () => {
     defaultValues: {
       name: user?.name ?? '',
       bio: user?.bio ?? '',
+      bioUrl: user?.bioUrl ?? '',
+      employer: user?.employer ?? '',
+      jobTitle: user?.jobTitle ?? '',
     },
     resolver: yupResolver(updateUserSchema(t)),
   });
@@ -233,6 +232,96 @@ const ProfilePageImpl: React.FC = () => {
                 </Grid>
                 <Grid xs={12}>
                   <Stack spacing={1}>
+                    <InputLabel>{t('alumni_of')}</InputLabel>
+                    {/* <Controller
+                      name="employer"
+                      control={control}
+                      render={({ field }) => (
+                        <TextField
+                          {...field}
+                          type="text"
+                          fullWidth
+                          error={errors.employer !== undefined}
+                        />
+                      )}
+                    />
+                    <FormHelperText error>{errors.employer?.message}</FormHelperText> */}
+                  </Stack>
+                </Grid>
+                <Grid xs={12} sm={6}>
+                  <Stack spacing={1}>
+                    <InputLabel>{t('employer')}</InputLabel>
+                    <Controller
+                      name="employer"
+                      control={control}
+                      render={({ field }) => (
+                        <TextField
+                          {...field}
+                          type="text"
+                          fullWidth
+                          error={errors.employer !== undefined}
+                        />
+                      )}
+                    />
+                    <FormHelperText error>{errors.employer?.message}</FormHelperText>
+                  </Stack>
+                </Grid>
+                <Grid xs={12} sm={6}>
+                  <Stack spacing={1}>
+                    <InputLabel>{t('job_title')}</InputLabel>
+                    <Controller
+                      name="jobTitle"
+                      control={control}
+                      render={({ field }) => (
+                        <TextField
+                          {...field}
+                          type="text"
+                          fullWidth
+                          error={errors.jobTitle !== undefined}
+                        />
+                      )}
+                    />
+                    <FormHelperText error>{errors.jobTitle?.message}</FormHelperText>
+                  </Stack>
+                </Grid>
+                <Grid xs={12} sm={6}>
+                  <Stack spacing={1}>
+                    <InputLabel>{t('awards')}</InputLabel>
+                    {/* <Controller
+                      name="jobTitle"
+                      control={control}
+                      render={({ field }) => (
+                        <TextField
+                          {...field}
+                          type="text"
+                          fullWidth
+                          error={errors.jobTitle !== undefined}
+                        />
+                      )}
+                    />
+                    <FormHelperText error>{errors.jobTitle?.message}</FormHelperText> */}
+                  </Stack>
+                </Grid>
+                <Grid xs={12} sm={6}>
+                  <Stack spacing={1}>
+                    <InputLabel>{t('spoken_languages')}</InputLabel>
+                    {/* <Controller
+                      name="jobTitle"
+                      control={control}
+                      render={({ field }) => (
+                        <TextField
+                          {...field}
+                          type="text"
+                          fullWidth
+                          error={errors.jobTitle !== undefined}
+                        />
+                      )}
+                    />
+                    <FormHelperText error>{errors.jobTitle?.message}</FormHelperText> */}
+                  </Stack>
+                </Grid>
+                <Grid xs={12}>
+                  <Stack spacing={1}>
                     <InputLabel>{t('bio')}</InputLabel>
                     <Controller
                       name="bio"
@@ -249,6 +338,42 @@ const ProfilePageImpl: React.FC = () => {
                       )}
                     />
                     <FormHelperText error>{errors.bio?.message}</FormHelperText>
+                  </Stack>
+                </Grid>
+                <Grid xs={12}>
+                  <Stack spacing={1}>
+                    <InputLabel>{t('bio_url')}</InputLabel>
+                    <Controller
+                      name="bioUrl"
+                      control={control}
+                      render={({ field }) => (
+                        <TextField
+                          {...field}
+                          type="text"
+                          fullWidth
+                          error={errors.bioUrl !== undefined}
+                        />
+                      )}
+                    />
+                    <FormHelperText error>{errors.bioUrl?.message}</FormHelperText>
+                  </Stack>
+                </Grid>
+                <Grid xs={12}>
+                  <Stack spacing={1}>
+                    <InputLabel>{t('social_profiles')}</InputLabel>
+                    {/* <Controller
+                      name="bioUrl"
+                      control={control}
+                      render={({ field }) => (
+                        <TextField
+                          {...field}
+                          type="text"
+                          fullWidth
+                          error={errors.bioUrl !== undefined}
+                        />
+                      )}
+                    />
+                    <FormHelperText error>{errors.bioUrl?.message}</FormHelperText> */}
                   </Stack>
                 </Grid>
                 <Grid xs={12}>

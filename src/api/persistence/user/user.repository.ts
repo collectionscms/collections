@@ -145,6 +145,9 @@ export class UserRepository {
       data: {
         name: user.name,
         bio: user.bio,
+        bioUrl: user.bioUrl,
+        employer: user.employer,
+        jobTitle: user.jobTitle,
         image: user.image,
       },
     });

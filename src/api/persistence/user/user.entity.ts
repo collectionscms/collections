@@ -68,6 +68,18 @@ export class UserEntity extends PrismaBaseEntity<User> {
     return this.props.bio;
   }
 
+  get bioUrl(): string | null {
+    return this.props.bioUrl;
+  }
+
+  get employer(): string | null {
+    return this.props.employer;
+  }
+
+  get jobTitle(): string | null {
+    return this.props.jobTitle;
+  }
+
   get password(): string | null {
     return this.props.password;
   }
@@ -91,15 +103,24 @@ export class UserEntity extends PrismaBaseEntity<User> {
   updateUser({
     name,
     bio,
+    bioUrl,
+    employer,
+    jobTitle,
     image,
   }: {
     name?: string | null;
     bio?: string | null;
+    bioUrl?: string | null;
+    employer?: string | null;
+    jobTitle?: string | null;
     image?: string | null;
   }): void {
     Object.assign(this.props, {
       ...(name !== undefined && { name }),
       ...(bio !== undefined && { bio }),
+      ...(bioUrl !== undefined && { bioUrl }),
+      ...(employer !== undefined && { employer }),
+      ...(jobTitle !== undefined && { jobTitle }),
       ...(image !== undefined && { image }),
     });
   }
