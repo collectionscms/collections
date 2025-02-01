@@ -14,20 +14,6 @@ export class InMemoryPostRepository extends PostRepository {
     });
   }
 
-  async findOneByIsInit(_prisma: ProjectPrismaType): Promise<{
-    post: PostEntity;
-    content: ContentEntity;
-    revision: ContentRevisionEntity;
-  } | null> {
-    return {
-      post: buildPostEntity({
-        isInit: false,
-      }),
-      content: buildContentEntity({}),
-      revision: buildContentRevisionEntity({}),
-    };
-  }
-
   async update(_prisma: ProjectPrismaType, post: PostEntity): Promise<PostEntity> {
     return post;
   }
