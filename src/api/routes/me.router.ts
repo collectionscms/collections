@@ -5,6 +5,10 @@ import { authConfig } from '../configs/auth.js';
 import { bypassPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';
+import { AlumnusRepository } from '../persistence/alumnus/alumnus.repository.js';
+import { AwardRepository } from '../persistence/award/award.repository.js';
+import { SocialProfileRepository } from '../persistence/socialProfile/socialProfile.repository.js';
+import { SpokenLanguageRepository } from '../persistence/spokenLanguage/spokenLanguage.repository.js';
 import { UserRepository } from '../persistence/user/user.repository.js';
 import { GetMyProfileUseCase } from '../useCases/me/getMyProfile.useCase.js';
 import { getMyProfileUseCaseSchema } from '../useCases/me/getMyProfile.useCase.schema.js';
@@ -69,10 +73,24 @@ router.patch(
       employer: req.body.employer,
       jobTitle: req.body.jobTitle,
       image: req.body.image,
+      xUrl: req.body.xUrl,
+      instagramUrl: req.body.instagramUrl,
+      facebookUrl: req.body.facebookUrl,
+      linkedInUrl: req.body.linkedInUrl,
+      awards: req.body.awards,
+      spokenLanguages: req.body.spokenLanguages,
+      alumni: req.body.alumni,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
-    const useCase = new UpdateProfileUseCase(bypassPrisma, new UserRepository());
+    const useCase = new UpdateProfileUseCase(
+      bypassPrisma,
+      new UserRepository(),
+      new AwardRepository(),
+      new AlumnusRepository(),
+      new SocialProfileRepository(),
+      new SpokenLanguageRepository()
+    );
     await useCase.execute(validated.data);
 
     res.status(204).end();
