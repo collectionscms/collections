@@ -6,7 +6,9 @@ import { InMemoryContentRevisionRepository } from '../../persistence/contentRevi
 import { InMemoryPostRepository } from '../../persistence/post/post.repository.mock.js';
 import { InMemoryProjectRepository } from '../../persistence/project/project.repository.mock.js';
 import { CreatePostUseCase } from './createPost.useCase.js';
-import { beforeEach } from 'node:test';
+import { buildPostEntity } from '../../persistence/post/post.entity.fixture.js';
+import { buildContentEntity } from '../../persistence/content/content.entity.fixture.js';
+import { buildUserEntity } from '../../persistence/user/user.entity.fixture.js';
 
 describe('CreatePostUseCase', () => {
   const projectId = v4();
@@ -27,5 +29,30 @@ describe('CreatePostUseCase', () => {
       new InMemoryContentRevisionRepository()
     );
     jest.clearAllMocks();
+  });
+
+  it('should return content with draft status', async () => {
+    const postId = v4();
+
+    jest.spyOn(InMemoryContentRepository.prototype, 'create').mockResolvedValue({
+      content: buildContentEntity({
+        postId,
+      }),
+      createdBy: buildUserEntity(),
+    });
+
+    const result = await createPostUseCase.execute({
+      projectId,
+      userId,
+      sourceLanguage: 'ja',
+    });
+
+    expect(result).toMatchObject({
+      postId,
+      language: 'ja',
+      status: {
+        currentStatus: 'draft',
+      },
+    });
   });
 });
