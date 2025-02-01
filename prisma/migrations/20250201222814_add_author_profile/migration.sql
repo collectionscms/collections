@@ -56,7 +56,7 @@ CREATE TABLE "SocialProfile" (
     "id" UUID NOT NULL,
     "userId" UUID NOT NULL,
     "provider" TEXT NOT NULL,
-    "url" TEXT NOT NULL,
+    "url" TEXT,
     "createdAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMPTZ(6) NOT NULL,
 
