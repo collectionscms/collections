@@ -39,6 +39,13 @@ export class InMemoryContentRevisionRepository extends ContentRevisionRepository
     });
   }
 
+  async create(
+    _prisma: ProjectPrismaType,
+    entity: ContentRevisionEntity
+  ): Promise<ContentRevisionEntity> {
+    return entity;
+  }
+
   async update(
     _prisma: ProjectPrismaType,
     entity: ContentRevisionEntity

@@ -40,4 +40,14 @@ export class InMemoryContentRepository extends ContentRepository {
       }),
     ];
   }
+
+  async create(
+    _prisma: ProjectPrismaType,
+    contentEntity: ContentEntity
+  ): Promise<{ content: ContentEntity; createdBy: UserEntity }> {
+    return {
+      content: contentEntity,
+      createdBy: buildUserEntity(),
+    };
+  }
 }
