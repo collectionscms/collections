@@ -12,6 +12,12 @@ import { UserEntity } from './user.entity.js';
 import { UserRepository } from './user.repository.js';
 
 export class InMemoryUserRepository extends UserRepository {
+  async findOneById(_prisma: BypassPrismaType, userId: string): Promise<UserEntity> {
+    return buildUserEntity({
+      id: userId,
+    });
+  }
+
   async findOneByIdWithProfiles(
     _prisma: BypassPrismaType,
     userId: string
@@ -31,5 +37,9 @@ export class InMemoryUserRepository extends UserRepository {
       spokenLanguages: [buildSpokenLanguageEntity()],
       awards: [buildAwardEntity()],
     };
+  }
+
+  async updateProfile(_prisma: BypassPrismaType, user: UserEntity): Promise<UserEntity> {
+    return user;
   }
 }
