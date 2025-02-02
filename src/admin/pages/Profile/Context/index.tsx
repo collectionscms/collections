@@ -3,11 +3,11 @@ import React, { createContext, useContext, useMemo } from 'react';
 import useSWR, { SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
 import { api } from '../../../utilities/api.js';
-import { UploadFile } from '../../../../types/index.js';
+import { AuthorProfile, UploadFile } from '../../../../types/index.js';
 
 type ProfileContext = {
   getProfile: () => SWRResponse<
-    User,
+    AuthorProfile,
     Error,
     {
       suspense: true;
@@ -26,7 +26,7 @@ const Context = createContext({} as ProfileContext);
 
 export const ProfileContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const getProfile = () =>
-    useSWR('/me/profile', (url) => api.get<{ user: User }>(url).then((res) => res.data.user), {
+    useSWR('/me/profile', (url) => api.get<AuthorProfile>(url).then((res) => res.data), {
       suspense: true,
     });
 

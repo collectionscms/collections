@@ -8,6 +8,7 @@ import {
   FormControlLabel,
   FormHelperText,
   FormLabel,
+  IconButton,
   InputLabel,
   MenuItem,
   Radio,
@@ -16,11 +17,12 @@ import {
   SelectChangeEvent,
   Stack,
   TextField,
+  Typography,
   useTheme,
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { enqueueSnackbar } from 'notistack';
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { logger } from '../../../utilities/logger.js';
@@ -38,6 +40,8 @@ import {
 import { useUnsavedChangesPrompt } from '../../hooks/useUnsavedChangesPrompt.js';
 import lazy from '../../utilities/lazy.js';
 import { ProfileContextProvider, useProfile } from './Context/index.js';
+import { Award } from './parts/Award/index.js';
+import { SpokenLanguage } from './parts/SpokenLanguage/index.js';
 
 const Loading = Loader(lazy(() => import('../../components/elements/Loading/index.js'), 'Loading'));
 
@@ -46,12 +50,21 @@ const ProfilePageImpl: React.FC = () => {
   const { mode, setMode, autoMode } = useColorMode();
   const theme = useTheme();
   const { getProfile, updateMe, createFileImage } = useProfile();
-  const { data: user } = getProfile();
+  const {
+    data: { user, socialProfiles, alumni, spokenLanguages, awards },
+  } = getProfile();
+
   const { trigger, isMutating } = updateMe();
   const { trigger: createFileImageTrigger } = createFileImage();
+
+  const getSocialUrl = (provider: string): string =>
+    socialProfiles.find((profile) => profile.provider === provider)?.url ?? '';
+
   const {
     reset,
     control,
+    watch,
+    setValue,
     handleSubmit,
     formState: { isDirty, errors },
   } = useForm<FormValues>({
@@ -61,6 +74,17 @@ const ProfilePageImpl: React.FC = () => {
       bioUrl: user?.bioUrl ?? '',
       employer: user?.employer ?? '',
       jobTitle: user?.jobTitle ?? '',
+      image: user?.image ?? '',
+      xUrl: getSocialUrl('x'),
+      instagramUrl: getSocialUrl('instagram'),
+      facebookUrl: getSocialUrl('facebook'),
+      linkedInUrl: getSocialUrl('linkedIn'),
+      awards: awards.map((award) => award.name),
+      spokenLanguages: spokenLanguages.map((spokenLanguage) => spokenLanguage.language),
+      alumni: alumni.map((alumnus) => ({
+        name: alumnus.name,
+        url: alumnus.url,
+      })),
     },
     resolver: yupResolver(updateUserSchema(t)),
   });
@@ -71,10 +95,32 @@ const ProfilePageImpl: React.FC = () => {
   };
 
   // /////////////////////////////////////
-  // Avatar
+  // Alumni
   // /////////////////////////////////////
 
-  const [avatar, setAvatar] = useState<string | undefined>(user?.image ?? undefined);
+  const handleAddAlumni = () => {
+    setValue('alumni', [...(watch('alumni') ?? []), { name: '', url: '' }]);
+  };
+
+  const handleChangeAlumni = (index: number, key: 'name' | 'url', value: string) => {
+    const newAlumniValues = [...(watch('alumni') ?? [])];
+    newAlumniValues[index][key] = value;
+    setValue('alumni', newAlumniValues);
+  };
+
+  const handleRemoveAlumni = (index: number) => {
+    const alumni = watch('alumni') ?? [];
+    if (alumni.length === 1) {
+      setValue('alumni', [{ name: '', url: '' }]);
+    } else {
+      const newAlumniValues = alumni.filter((_, i) => i !== index);
+      setValue('alumni', newAlumniValues);
+    }
+  };
+
+  // /////////////////////////////////////
+  // Avatar
+  // /////////////////////////////////////
 
   const handleUploadImage = async (file: File | undefined) => {
     if (!file) return;
@@ -84,16 +130,13 @@ const ProfilePageImpl: React.FC = () => {
 
     const res = await createFileImageTrigger(params);
     const uploadedFile = res.files[0];
-    setAvatar(uploadedFile.url);
+    setValue('image', uploadedFile.url);
   };
 
   const onSubmit: SubmitHandler<FormValues> = async (form: FormValues) => {
     try {
       reset(form);
-      await trigger({
-        ...form,
-        image: avatar,
-      });
+      await trigger(form);
       enqueueSnackbar(t('toast.updated_successfully'), {
         anchorOrigin: {
           vertical: 'bottom',
@@ -188,7 +231,11 @@ const ProfilePageImpl: React.FC = () => {
                         cursor: 'pointer',
                       }}
                     >
-                      <Avatar alt="avatar" src={avatar} sx={{ width: 76, height: 76 }} />
+                      <Avatar
+                        alt="avatar"
+                        src={watch('image') ?? ''}
+                        sx={{ width: 76, height: 76 }}
+                      />
                       <Box
                         sx={{
                           position: 'absolute',
@@ -232,20 +279,48 @@ const ProfilePageImpl: React.FC = () => {
                 </Grid>
                 <Grid xs={12}>
                   <Stack spacing={1}>
-                    <InputLabel>{t('alumni_of')}</InputLabel>
-                    {/* <Controller
-                      name="employer"
-                      control={control}
-                      render={({ field }) => (
-                        <TextField
-                          {...field}
-                          type="text"
-                          fullWidth
-                          error={errors.employer !== undefined}
-                        />
-                      )}
-                    />
-                    <FormHelperText error>{errors.employer?.message}</FormHelperText> */}
+                    <MainCard title={t('alumni_of')} content={false}>
+                      <Grid spacing={3} sx={{ py: 2, px: 3 }}>
+                        <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 1 }}>
+                          <Typography sx={{ width: '400px' }}>{t('institution_name')}</Typography>
+                          <Typography>{t('institution_url')}</Typography>
+                        </Stack>
+                        <Stack spacing={2}>
+                          {watch('alumni')?.map((value, index) => (
+                            <Stack direction="row" spacing={1} alignItems="center" key={index}>
+                              <TextField
+                                id="name"
+                                type="text"
+                                value={value.name}
+                                sx={{ width: '400px' }}
+                                onChange={(e) => handleChangeAlumni(index, 'name', e.target.value)}
+                              />
+                              <TextField
+                                id="url"
+                                type="text"
+                                value={value.url}
+                                sx={{ flexGrow: 1 }}
+                                placeholder="https://..."
+                                onChange={(e) => handleChangeAlumni(index, 'url', e.target.value)}
+                              />
+                              <IconButton onClick={() => handleRemoveAlumni(index)}>
+                                <Icon name="Trash2" size={16} />
+                              </IconButton>
+                            </Stack>
+                          ))}
+                        </Stack>
+                        <Button
+                          variant="contained"
+                          color="secondary"
+                          size="small"
+                          startIcon={<Icon name="Plus" size={16} />}
+                          sx={{ mt: 2 }}
+                          onClick={handleAddAlumni}
+                        >
+                          <Typography>{t('add_row')}</Typography>
+                        </Button>
+                      </Grid>
+                    </MainCard>
                   </Stack>
                 </Grid>
                 <Grid xs={12} sm={6}>
@@ -287,37 +362,23 @@ const ProfilePageImpl: React.FC = () => {
                 <Grid xs={12} sm={6}>
                   <Stack spacing={1}>
                     <InputLabel>{t('awards')}</InputLabel>
-                    {/* <Controller
-                      name="jobTitle"
-                      control={control}
-                      render={({ field }) => (
-                        <TextField
-                          {...field}
-                          type="text"
-                          fullWidth
-                          error={errors.jobTitle !== undefined}
-                        />
-                      )}
+                    <Award
+                      initialAwards={watch('awards') ?? []}
+                      onChange={(values) => {
+                        setValue('awards', values);
+                      }}
                     />
-                    <FormHelperText error>{errors.jobTitle?.message}</FormHelperText> */}
                   </Stack>
                 </Grid>
                 <Grid xs={12} sm={6}>
                   <Stack spacing={1}>
                     <InputLabel>{t('spoken_languages')}</InputLabel>
-                    {/* <Controller
-                      name="jobTitle"
-                      control={control}
-                      render={({ field }) => (
-                        <TextField
-                          {...field}
-                          type="text"
-                          fullWidth
-                          error={errors.jobTitle !== undefined}
-                        />
-                      )}
+                    <SpokenLanguage
+                      initialLanguages={watch('spokenLanguages') ?? []}
+                      onChange={(values) => {
+                        setValue('spokenLanguages', values);
+                      }}
                     />
-                    <FormHelperText error>{errors.jobTitle?.message}</FormHelperText> */}
                   </Stack>
                 </Grid>
                 <Grid xs={12}>
@@ -351,6 +412,7 @@ const ProfilePageImpl: React.FC = () => {
                           {...field}
                           type="text"
                           fullWidth
+                          placeholder="https://..."
                           error={errors.bioUrl !== undefined}
                         />
                       )}
@@ -358,22 +420,93 @@ const ProfilePageImpl: React.FC = () => {
                     <FormHelperText error>{errors.bioUrl?.message}</FormHelperText>
                   </Stack>
                 </Grid>
-                <Grid xs={12}>
+                {/* Social Profiles */}
+                <Grid xs={12} sm={6}>
                   <Stack spacing={1}>
-                    <InputLabel>{t('social_profiles')}</InputLabel>
-                    {/* <Controller
-                      name="bioUrl"
+                    <Stack direction="row" alignItems="center" spacing={1}>
+                      <Icon name="X" size={20} />
+                      <InputLabel>{t('x_url')}</InputLabel>
+                    </Stack>
+                    <Controller
+                      name="xUrl"
                       control={control}
                       render={({ field }) => (
                         <TextField
                           {...field}
                           type="text"
                           fullWidth
-                          error={errors.bioUrl !== undefined}
+                          placeholder="https://..."
+                          error={errors.xUrl !== undefined}
                         />
                       )}
                     />
-                    <FormHelperText error>{errors.bioUrl?.message}</FormHelperText> */}
+                    <FormHelperText error>{errors.xUrl?.message}</FormHelperText>
+                  </Stack>
+                </Grid>
+                <Grid xs={12} sm={6}>
+                  <Stack spacing={1}>
+                    <Stack direction="row" alignItems="center" spacing={1}>
+                      <Icon name="Facebook" size={20} />
+                      <InputLabel>{t('facebook_url')}</InputLabel>
+                    </Stack>
+                    <Controller
+                      name="facebookUrl"
+                      control={control}
+                      render={({ field }) => (
+                        <TextField
+                          {...field}
+                          type="text"
+                          fullWidth
+                          placeholder="https://..."
+                          error={errors.facebookUrl !== undefined}
+                        />
+                      )}
+                    />
+                    <FormHelperText error>{errors.facebookUrl?.message}</FormHelperText>
+                  </Stack>
+                </Grid>
+                <Grid xs={12} sm={6}>
+                  <Stack spacing={1}>
+                    <Stack direction="row" alignItems="center" spacing={1}>
+                      <Icon name="Instagram" size={20} />
+                      <InputLabel>{t('instagram_url')}</InputLabel>
+                    </Stack>
+                    <Controller
+                      name="instagramUrl"
+                      control={control}
+                      render={({ field }) => (
+                        <TextField
+                          {...field}
+                          type="text"
+                          fullWidth
+                          placeholder="https://..."
+                          error={errors.instagramUrl !== undefined}
+                        />
+                      )}
+                    />
+                    <FormHelperText error>{errors.instagramUrl?.message}</FormHelperText>
+                  </Stack>
+                </Grid>
+                <Grid xs={12} sm={6}>
+                  <Stack spacing={1}>
+                    <Stack direction="row" alignItems="center" spacing={1}>
+                      <Icon name="Linkedin" size={20} />
+                      <InputLabel>{t('linkedin_url')}</InputLabel>
+                    </Stack>
+                    <Controller
+                      name="linkedInUrl"
+                      control={control}
+                      render={({ field }) => (
+                        <TextField
+                          {...field}
+                          type="text"
+                          fullWidth
+                          placeholder="https://..."
+                          error={errors.linkedInUrl !== undefined}
+                        />
+                      )}
+                    />
+                    <FormHelperText error>{errors.linkedInUrl?.message}</FormHelperText>
                   </Stack>
                 </Grid>
                 <Grid xs={12}>
