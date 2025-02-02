@@ -164,6 +164,8 @@
   "personal_information": "Personal Information",
   "author_seo": "Author SEO",
   "author_seo_description": "Author information is provided via an API as structured data alongside each article. Publishing it on the website improves visibility in search engines.",
+  "author_experience_topics": "Author Experience",
+  "author_experience_topics_description": "An author’s experience contributes to the “Experience” evaluation in Google’s E-E-A-T guidelines. By setting a topic here, you can add that information to your profile page.",
   "employer": "Employer",
   "job_title": "Job Title",
   "alumni_of": "Alumni of",
@@ -311,6 +313,10 @@
     "pending": "Pending",
     "approved": "Approved",
     "closed": "Closed"
+  },
+  "project_settings_menu": {
+    "general": "General",
+    "seo": "SEO"
   },
   "permissions": {
     "action": {

@@ -164,6 +164,8 @@
   "personal_information": "個人情報",
   "author_seo": "著者SEO",
   "author_seo_description": "これらの著者情報は、記事と合わせて構造化データとしてAPIで提供します。Webサイトに公開することで、検索エンジンでの視認性が向上します。",
+  "author_experience_topics": "著者の経験",
+  "author_experience_topics_description": "著者の経験は、Google E-E-A-Tガイドラインの「Experience」評価に寄与します。ここでトピックを設定すると、プロフィールページからその情報を追加できるようになります。",
   "employer": "所属企業",
   "job_title": "役職",
   "alumni_of": "経歴",
@@ -311,6 +313,10 @@
     "pending": "申請中",
     "approved": "承認済み",
     "closed": "終了済み"
+  },
+  "project_settings_menu": {
+    "general": "一般",
+    "seo": "SEO"
   },
   "permissions": {
     "action": {
