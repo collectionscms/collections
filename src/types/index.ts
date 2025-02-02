@@ -1,5 +1,7 @@
 import {
+  Alumnus,
   ApiKey,
+  Award,
   Content,
   ContentRevision,
   File,
@@ -7,7 +9,10 @@ import {
   Project,
   Review,
   Role,
+  SocialProfile,
+  SpokenLanguage,
   Tag,
+  User,
 } from '@prisma/client';
 
 export type UserProfile = {
@@ -29,6 +34,14 @@ export type ProjectRole = {
 export type Me = {
   id: string;
   email: string;
+};
+
+export type AuthorProfile = {
+  user: User;
+  socialProfiles: SocialProfile[];
+  alumni: Alumnus[];
+  spokenLanguages: SpokenLanguage[];
+  awards: Award[];
 };
 
 export type ApiError = {

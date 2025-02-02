@@ -2,7 +2,7 @@ import { SocialProfile } from '@prisma/client';
 import { v4 } from 'uuid';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 
-export type SocialProfileProvider = 'x' | 'instagram' | 'facebook' | 'linkedInUrl';
+export type SocialProfileProvider = 'x' | 'instagram' | 'facebook' | 'linkedIn';
 
 export class SocialProfileEntity extends PrismaBaseEntity<SocialProfile> {
   static Construct({

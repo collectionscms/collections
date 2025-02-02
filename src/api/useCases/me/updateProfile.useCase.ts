@@ -75,7 +75,7 @@ export class UpdateProfileUseCase {
         url: facebookUrl,
       },
       {
-        provider: 'linkedInUrl',
+        provider: 'linkedIn',
         url: linkedInUrl,
       },
     ];

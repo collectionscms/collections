@@ -39,9 +39,9 @@ router.get(
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
     const useCase = new GetMyProfileUseCase(bypassPrisma, new UserRepository());
-    const user = await useCase.execute(validated.data.userId);
+    const authorProfile = await useCase.execute(validated.data.userId);
 
-    return res.json({ user });
+    return res.json(authorProfile);
   })
 );
 
