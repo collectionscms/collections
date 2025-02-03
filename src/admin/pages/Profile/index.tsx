@@ -283,7 +283,7 @@ const ProfilePageImpl: React.FC = () => {
                       <Grid spacing={3} sx={{ py: 2, px: 3 }}>
                         <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 1 }}>
                           <Typography sx={{ width: '400px' }}>{t('institution_name')}</Typography>
-                          <Typography>{t('institution_url')}</Typography>
+                          <Typography>{t('url')}</Typography>
                         </Stack>
                         <Stack spacing={2}>
                           {watch('alumni')?.map((value, index) => (
