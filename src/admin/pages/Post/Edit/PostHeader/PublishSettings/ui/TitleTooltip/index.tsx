@@ -3,7 +3,7 @@ import React from 'react';
 import { Icon } from '../../../../../../../components/elements/Icon/index.js';
 
 type Props = {
-  tooltip: string;
+  tooltip: React.ReactNode;
   title: string;
   variant?: 'subtitle1' | 'body1';
 };
