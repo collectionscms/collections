@@ -1,6 +1,6 @@
 import { Box, Tab, Tabs } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 import { MainCard } from '../../../@extended/components/MainCard/index.js';
@@ -45,11 +45,7 @@ export const ProjectSettingsTab: React.FC<Props> = ({ children }) => {
       <Grid xs={12} md={10}>
         <MainCard content={false} sx={{ p: 2.5 }}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '100%' }}>
-            <Tabs
-              value={activeTab}
-              onChange={(e: ChangeEvent<{}>, value: string) => setActiveTab(value)}
-              sx={{ borderBottom: 1, borderColor: 'divider' }}
-            >
+            <Tabs value={activeTab} sx={{ borderBottom: 1, borderColor: 'divider' }}>
               {menus.map((menu: { label: string; icon: React.JSX.Element }, index: number) => (
                 <Tab
                   label={t(

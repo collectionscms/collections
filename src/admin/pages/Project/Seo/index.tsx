@@ -15,6 +15,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Trans, useTranslation } from 'react-i18next';
 import { MainCard } from '../../../@extended/components/MainCard/index.js';
+import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscardDialog/index.js';
 import { Icon } from '../../../components/elements/Icon/index.js';
 import {
   FormValues,
@@ -69,6 +70,7 @@ export const EditSeo: React.FC = () => {
 
   return (
     <>
+      <ConfirmDiscardDialog open={showPrompt} onDiscard={proceed} onKeepEditing={stay} />
       <Box>
         <CardHeader
           title={t('author_experience')}
