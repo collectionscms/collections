@@ -123,7 +123,7 @@ export const EditSeo: React.FC = () => {
                 <Stack spacing={1}>
                   {watch('experiences')?.map((value, index) => (
                     <Grid container spacing={1} sx={{ p: 0 }} key={index}>
-                      <Grid xs={3}>
+                      <Grid xs={3} sx={{ pl: 0 }}>
                         <TextField
                           id="name"
                           type="text"
