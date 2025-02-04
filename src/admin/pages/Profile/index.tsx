@@ -86,7 +86,7 @@ const ProfilePageImpl: React.FC = () => {
         url: alumnus.url,
       })),
     },
-    resolver: yupResolver(updateUserSchema(t)),
+    resolver: yupResolver(updateUserSchema()),
   });
   const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
 
@@ -293,28 +293,38 @@ const ProfilePageImpl: React.FC = () => {
                           {watch('alumni')?.map((value, index) => (
                             <Grid container spacing={1} sx={{ p: 0 }} key={index}>
                               <Grid xs={4} sx={{ pl: 0 }}>
-                                <TextField
-                                  id="name"
-                                  type="text"
-                                  fullWidth
-                                  value={value.name}
-                                  onChange={(e) =>
-                                    handleChangeAlumni(index, 'name', e.target.value)
-                                  }
-                                />
+                                <Stack spacing={1}>
+                                  <TextField
+                                    id="name"
+                                    type="text"
+                                    fullWidth
+                                    value={value.name}
+                                    onChange={(e) =>
+                                      handleChangeAlumni(index, 'name', e.target.value)
+                                    }
+                                  />
+                                  <FormHelperText error>
+                                    {errors.alumni?.[index]?.name?.message}
+                                  </FormHelperText>
+                                </Stack>
                               </Grid>
                               <Grid xs={8}>
                                 <Stack direction="row" spacing={1} alignItems="center">
-                                  <TextField
-                                    id="url"
-                                    type="text"
-                                    fullWidth
-                                    value={value.url}
-                                    placeholder="https://..."
-                                    onChange={(e) =>
-                                      handleChangeAlumni(index, 'url', e.target.value)
-                                    }
-                                  />
+                                  <Stack spacing={1} sx={{ width: '100%' }}>
+                                    <TextField
+                                      id="url"
+                                      type="text"
+                                      fullWidth
+                                      value={value.url}
+                                      placeholder="https://..."
+                                      onChange={(e) =>
+                                        handleChangeAlumni(index, 'url', e.target.value)
+                                      }
+                                    />
+                                    <FormHelperText error>
+                                      {errors.alumni?.[index]?.url?.message}
+                                    </FormHelperText>
+                                  </Stack>
                                   <IconButton onClick={() => handleRemoveAlumni(index)}>
                                     <Icon name="Trash2" size={16} />
                                   </IconButton>
