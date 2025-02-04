@@ -10,7 +10,7 @@ import { useAuth } from '../../utilities/Auth/index.js';
 
 // Project
 const Project = Loader(lazy(() => import('../../../pages/Project/index.js'), 'Project'));
-const EditSeo = Loader(lazy(() => import('../../../pages/Project/Seo/index.js'), 'EditSeo'));
+const EditSeo = Loader(lazy(() => import('../../../pages/Project/Seo/index.js'), 'EditSeoPage'));
 
 // Role
 const Role = Loader(lazy(() => import('../../../pages/Role/index.js'), 'RolePage'));

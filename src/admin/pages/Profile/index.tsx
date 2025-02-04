@@ -81,10 +81,13 @@ const ProfilePageImpl: React.FC = () => {
       linkedInUrl: getSocialUrl('linkedIn'),
       awards: awards.map((award) => award.name),
       spokenLanguages: spokenLanguages.map((spokenLanguage) => spokenLanguage.language),
-      alumni: alumni.map((alumnus) => ({
-        name: alumnus.name,
-        url: alumnus.url,
-      })),
+      alumni:
+        alumni.length > 0
+          ? alumni.map((alumnus) => ({
+              name: alumnus.name,
+              url: alumnus.url,
+            }))
+          : [{ name: '', url: '' }],
     },
     resolver: yupResolver(updateUserSchema()),
   });

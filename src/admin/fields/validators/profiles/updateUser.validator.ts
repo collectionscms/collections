@@ -14,7 +14,7 @@ export type FormValues = {
   instagramUrl?: string | null;
   facebookUrl?: string | null;
   linkedInUrl?: string | null;
-  alumni?: { name: string; url?: string | null }[] | null;
+  alumni?: { name?: string; url?: string | null }[] | null;
 };
 
 export const updateUser = (): ObjectSchema<FormValues> => {
@@ -33,8 +33,8 @@ export const updateUser = (): ObjectSchema<FormValues> => {
     linkedInUrl: yup.string().url().nullable(),
     alumni: yup.array().of(
       yup.object().shape({
-        name: yup.string().required().max(250),
-        url: yup.string().url().optional(),
+        name: yup.string().max(250),
+        url: yup.string().url().nullable(),
       })
     ),
   });

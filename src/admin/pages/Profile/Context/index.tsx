@@ -1,9 +1,8 @@
-import { User } from '@prisma/client';
 import React, { createContext, useContext, useMemo } from 'react';
 import useSWR, { SWRResponse } from 'swr';
 import useSWRMutation, { SWRMutationResponse } from 'swr/mutation';
-import { api } from '../../../utilities/api.js';
 import { AuthorProfile, UploadFile } from '../../../../types/index.js';
+import { api } from '../../../utilities/api.js';
 
 type ProfileContext = {
   getProfile: () => SWRResponse<
