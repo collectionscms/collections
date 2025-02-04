@@ -23,7 +23,8 @@ router.post(
 
     const useCase = new CreateExperienceUseCase(
       projectPrisma(validated.data.projectId),
-      new ExperienceRepository()
+      new ExperienceRepository(),
+      new ExperienceResourceRepository()
     );
     const experiences = await useCase.execute(validated.data);
 
