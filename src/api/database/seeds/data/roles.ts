@@ -21,7 +21,7 @@ export const projectRoles = {
 
 export const editorPermissions = [
   ...roleActions.post,
-  'readProject',
+  ...roleActions.project,
   'readRole',
   'createRole',
   'readUser',
