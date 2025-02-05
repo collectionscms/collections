@@ -31,6 +31,7 @@ CREATE TABLE "Experience" (
 -- CreateTable
 CREATE TABLE "ExperienceResource" (
     "id" UUID NOT NULL,
+    "projectId" UUID NOT NULL,
     "experienceId" UUID NOT NULL,
     "url" TEXT NOT NULL,
     "createdAt" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -92,7 +93,7 @@ CREATE UNIQUE INDEX "UserExperience_userId_experienceId_key" ON "UserExperience"
 CREATE UNIQUE INDEX "Experience_projectId_name_key" ON "Experience"("projectId", "name");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "ExperienceResource_experienceId_url_key" ON "ExperienceResource"("experienceId", "url");
+CREATE UNIQUE INDEX "ExperienceResource_projectId_experienceId_url_key" ON "ExperienceResource"("projectId", "experienceId", "url");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "SocialProfile_userId_provider_key" ON "SocialProfile"("userId", "provider");
@@ -114,6 +115,9 @@ ALTER TABLE "UserExperience" ADD CONSTRAINT "UserExperience_projectId_fkey" FORE
 
 -- AddForeignKey
 ALTER TABLE "Experience" ADD CONSTRAINT "Experience_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Project"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ExperienceResource" ADD CONSTRAINT "ExperienceResource_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Project"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "ExperienceResource" ADD CONSTRAINT "ExperienceResource_experienceId_fkey" FOREIGN KEY ("experienceId") REFERENCES "Experience"("id") ON DELETE CASCADE ON UPDATE CASCADE;

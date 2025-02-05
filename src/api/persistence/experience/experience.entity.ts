@@ -28,6 +28,7 @@ export class ExperienceEntity extends PrismaBaseEntity<Experience> {
 
     const experienceResourceEntities = resourceUrls.map((resourceUrl) =>
       ExperienceResourceEntity.Construct({
+        projectId,
         experienceId: experienceEntity.id,
         url: resourceUrl,
       })

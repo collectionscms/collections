@@ -34,6 +34,7 @@ model Project {
   contentTags          ContentTag[]
   experiences          Experience[]
   userExperiences      UserExperience[]
+  experienceResources  ExperienceResource[]
 }
 
 model User {
@@ -100,13 +101,15 @@ model Experience {
 
 model ExperienceResource {
   id           String     @id @db.Uuid
+  projectId    String     @db.Uuid
   experienceId String     @db.Uuid
   url          String
   createdAt    DateTime   @default(now()) @db.Timestamptz(6)
   updatedAt    DateTime   @updatedAt @db.Timestamptz(6)
+  project      Project    @relation(fields: [projectId], references: [id], onDelete: Cascade)
   experience   Experience @relation(fields: [experienceId], references: [id], onDelete: Cascade)
 
-  @@unique([experienceId, url])
+  @@unique([projectId, experienceId, url])
 }
 
 model Alumnus {
