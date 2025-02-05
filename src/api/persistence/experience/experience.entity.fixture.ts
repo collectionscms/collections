@@ -2,7 +2,7 @@ import { Experience } from '@prisma/client';
 import { ExperienceEntity } from './experience.entity.js';
 import { v4 } from 'uuid';
 
-const defaultValue = {
+export const defaultValue = {
   id: v4(),
   projectId: v4(),
   name: 'React',
