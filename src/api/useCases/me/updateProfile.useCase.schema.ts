@@ -1,14 +1,5 @@
 import { z } from 'zod';
-
-const isValidUrl = (val: string | null): boolean => {
-  if (val === null || val === '') return true;
-  try {
-    new URL(val);
-    return true;
-  } catch {
-    return false;
-  }
-};
+import { isValidUrl } from '../../utilities/isValidUrl.js';
 
 export const updateProfileUseCaseSchema = z.object({
   userId: z.string().uuid(),

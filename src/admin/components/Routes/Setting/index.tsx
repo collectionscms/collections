@@ -4,10 +4,13 @@ import { Navigate } from 'react-router-dom';
 import lazy from '../../../utilities/lazy.js';
 import { Loader } from '../../elements/Loader/index.js';
 import { MainHeader } from '../../elements/MainHeader/index.js';
+import { ProjectSettingsTab } from '../../elements/ProjectSettingsTab/index.js';
 import { NavContentLayout } from '../../layouts/NavContentLayout/index.js';
 import { useAuth } from '../../utilities/Auth/index.js';
 
+// Project
 const Project = Loader(lazy(() => import('../../../pages/Project/index.js'), 'Project'));
+const EditSeo = Loader(lazy(() => import('../../../pages/Project/Seo/index.js'), 'EditSeoPage'));
 
 // Role
 const Role = Loader(lazy(() => import('../../../pages/Role/index.js'), 'RolePage'));
@@ -61,9 +64,27 @@ export const SettingRoutes = () => {
   if (hasPermission('readProject')) {
     children.push({
       path: 'project',
+      element: <Navigate to="general" replace />,
+    });
+
+    children.push({
+      path: 'project/general',
       element: (
         <MainHeader label={t('project_setting')}>
-          <Project />
+          <ProjectSettingsTab>
+            <Project />
+          </ProjectSettingsTab>
+        </MainHeader>
+      ),
+    });
+
+    children.push({
+      path: 'project/seo',
+      element: (
+        <MainHeader label={t('project_setting')}>
+          <ProjectSettingsTab>
+            <EditSeo />
+          </ProjectSettingsTab>
         </MainHeader>
       ),
     });

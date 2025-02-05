@@ -164,6 +164,8 @@
   "personal_information": "Personal Information",
   "author_seo": "Author SEO",
   "author_seo_description": "Author information is provided via an API as structured data alongside each article. Publishing it on the website improves visibility in search engines.",
+  "author_experience": "Author Experience",
+  "author_experience_description": "An author’s experience contributes to the “Experience” score in Google’s E-E-A-T guidelines. When you register a topic here, you can later add it to the <knows>Profile Page > Knows About</knows> section.",
   "employer": "Employer",
   "job_title": "Job Title",
   "alumni_of": "Alumni of",
@@ -173,12 +175,18 @@
   "award_placeholder": "Enter your awards",
   "spoken_languages": "Spoken Languages",
   "spoken_languages_placeholder": "Enter the language you speak",
+  "experience_name": "Name",
+  "experience_name_tips": "Areas of expertise and experience.\nex) Amazon, SEO",
+  "experience_url_tips": "URL of an authoritative website or page.\nex) https://www.amazon.com",
+  "resource_url": "Related URL",
+  "resource_url_placeholder": "Enter additional related URLs",
+  "resource_url_tips": "Additional related URLs.\nex) https://en.wikipedia.org/wiki/Amazon_(company)",
   "x_url": "X(Twitter) URL",
   "instagram_url": "Instagram URL",
   "facebook_url": "Facebook URL",
   "linkedin_url": "LinkedIn URL",
   "institution_name": "The name of the school or university you attended.",
-  "institution_url": "URL",
+  "url": "URL",
   "add_row": "Add row",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
@@ -312,6 +320,10 @@
     "approved": "Approved",
     "closed": "Closed"
   },
+  "project_settings_menu": {
+    "general": "General",
+    "seo": "SEO"
+  },
   "permissions": {
     "action": {
       "readOwnPost": "Read (Own)",
@@ -325,8 +337,10 @@
       "readAllReview": "Read (All)",
       "approveReview": "Approve",
       "closeReview": "Close",
-      "readProject": "Read",
-      "updateProject": "Update",
+      "readProject": "Project Settings Read",
+      "updateProject": "Project Settings Update",
+      "readSeo": "SEO Read",
+      "saveSeo": "SEO Create / Update",
       "readUser": "Read",
       "inviteUser": "Invite to project",
       "updateUser": "Update",

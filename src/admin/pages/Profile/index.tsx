@@ -81,12 +81,15 @@ const ProfilePageImpl: React.FC = () => {
       linkedInUrl: getSocialUrl('linkedIn'),
       awards: awards.map((award) => award.name),
       spokenLanguages: spokenLanguages.map((spokenLanguage) => spokenLanguage.language),
-      alumni: alumni.map((alumnus) => ({
-        name: alumnus.name,
-        url: alumnus.url,
-      })),
+      alumni:
+        alumni.length > 0
+          ? alumni.map((alumnus) => ({
+              name: alumnus.name,
+              url: alumnus.url,
+            }))
+          : [{ name: '', url: '' }],
     },
-    resolver: yupResolver(updateUserSchema(t)),
+    resolver: yupResolver(updateUserSchema()),
   });
   const { showPrompt, proceed, stay } = useUnsavedChangesPrompt(isDirty);
 
@@ -110,12 +113,8 @@ const ProfilePageImpl: React.FC = () => {
 
   const handleRemoveAlumni = (index: number) => {
     const alumni = watch('alumni') ?? [];
-    if (alumni.length === 1) {
-      setValue('alumni', [{ name: '', url: '' }]);
-    } else {
-      const newAlumniValues = alumni.filter((_, i) => i !== index);
-      setValue('alumni', newAlumniValues);
-    }
+    const newAlumniValues = alumni.filter((_, i) => i !== index);
+    setValue('alumni', newAlumniValues);
   };
 
   // /////////////////////////////////////
@@ -281,32 +280,56 @@ const ProfilePageImpl: React.FC = () => {
                   <Stack spacing={1}>
                     <MainCard title={t('alumni_of')} content={false}>
                       <Grid spacing={3} sx={{ py: 2, px: 3 }}>
-                        <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 1 }}>
-                          <Typography sx={{ width: '400px' }}>{t('institution_name')}</Typography>
-                          <Typography>{t('institution_url')}</Typography>
-                        </Stack>
+                        <Grid container spacing={1} sx={{ p: 0, mb: 0.5 }}>
+                          <Grid xs={4}>
+                            <Typography>{t('institution_name')}</Typography>
+                          </Grid>
+                          <Grid xs={8}>
+                            <Typography>{t('url')}</Typography>
+                          </Grid>
+                        </Grid>
                         <Stack spacing={2}>
                           {watch('alumni')?.map((value, index) => (
-                            <Stack direction="row" spacing={1} alignItems="center" key={index}>
-                              <TextField
-                                id="name"
-                                type="text"
-                                value={value.name}
-                                sx={{ width: '400px' }}
-                                onChange={(e) => handleChangeAlumni(index, 'name', e.target.value)}
-                              />
-                              <TextField
-                                id="url"
-                                type="text"
-                                value={value.url}
-                                sx={{ flexGrow: 1 }}
-                                placeholder="https://..."
-                                onChange={(e) => handleChangeAlumni(index, 'url', e.target.value)}
-                              />
-                              <IconButton onClick={() => handleRemoveAlumni(index)}>
-                                <Icon name="Trash2" size={16} />
-                              </IconButton>
-                            </Stack>
+                            <Grid container spacing={1} sx={{ p: 0 }} key={index}>
+                              <Grid xs={4} sx={{ pl: 0 }}>
+                                <Stack spacing={1}>
+                                  <TextField
+                                    id="name"
+                                    type="text"
+                                    fullWidth
+                                    value={value.name}
+                                    onChange={(e) =>
+                                      handleChangeAlumni(index, 'name', e.target.value)
+                                    }
+                                  />
+                                  <FormHelperText error>
+                                    {errors.alumni?.[index]?.name?.message}
+                                  </FormHelperText>
+                                </Stack>
+                              </Grid>
+                              <Grid xs={8}>
+                                <Stack direction="row" spacing={1} alignItems="center">
+                                  <Stack spacing={1} sx={{ width: '100%' }}>
+                                    <TextField
+                                      id="url"
+                                      type="text"
+                                      fullWidth
+                                      value={value.url}
+                                      placeholder="https://..."
+                                      onChange={(e) =>
+                                        handleChangeAlumni(index, 'url', e.target.value)
+                                      }
+                                    />
+                                    <FormHelperText error>
+                                      {errors.alumni?.[index]?.url?.message}
+                                    </FormHelperText>
+                                  </Stack>
+                                  <IconButton onClick={() => handleRemoveAlumni(index)}>
+                                    <Icon name="Trash2" size={16} />
+                                  </IconButton>
+                                </Stack>
+                              </Grid>
+                            </Grid>
                           ))}
                         </Stack>
                         <Button

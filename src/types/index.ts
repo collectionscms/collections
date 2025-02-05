@@ -4,6 +4,8 @@ import {
   Award,
   Content,
   ContentRevision,
+  Experience,
+  ExperienceResource,
   File,
   Permission,
   Project,
@@ -155,4 +157,8 @@ export type ReviewWithContentAndParticipant = Review & {
   content: Content;
   revieweeName: string;
   reviewerName: string | null;
+};
+
+export type ExperienceWithResourceUrl = Experience & {
+  resourceUrls: string[];
 };

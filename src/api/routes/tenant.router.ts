@@ -1,6 +1,7 @@
 import express from 'express';
 import { apiKey } from './apiKey.router.js';
 import { content } from './content.router.js';
+import { experience } from './experience.router.js';
 import { file } from './file.router.js';
 import { invitation } from './invitation.router.js';
 import { me } from './me.router.js';
@@ -27,3 +28,4 @@ tenantApiRouter.use(review);
 tenantApiRouter.use(apiKey);
 tenantApiRouter.use(webhookSetting);
 tenantApiRouter.use(tag);
+tenantApiRouter.use(experience);
