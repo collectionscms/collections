@@ -74,12 +74,8 @@ export const EditSeoPageImpl: React.FC = () => {
 
   const handleRemoveExperience = (index: number) => {
     const experiences = watch('experiences') ?? [];
-    if (experiences.length === 1) {
-      setValue('experiences', [{ name: '', url: '', resourceUrls: [] }]);
-    } else {
-      const newExperienceValues = experiences.filter((_, i) => i !== index);
-      setValue('experiences', newExperienceValues);
-    }
+    const newExperienceValues = experiences.filter((_, i) => i !== index);
+    setValue('experiences', newExperienceValues);
   };
 
   const handleChangeResourceUrls = (index: number, values: string[]) => {

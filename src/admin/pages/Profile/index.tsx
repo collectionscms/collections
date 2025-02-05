@@ -113,12 +113,8 @@ const ProfilePageImpl: React.FC = () => {
 
   const handleRemoveAlumni = (index: number) => {
     const alumni = watch('alumni') ?? [];
-    if (alumni.length === 1) {
-      setValue('alumni', [{ name: '', url: '' }]);
-    } else {
-      const newAlumniValues = alumni.filter((_, i) => i !== index);
-      setValue('alumni', newAlumniValues);
-    }
+    const newAlumniValues = alumni.filter((_, i) => i !== index);
+    setValue('alumni', newAlumniValues);
   };
 
   // /////////////////////////////////////
