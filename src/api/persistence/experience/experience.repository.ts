@@ -30,10 +30,26 @@ export class ExperienceRepository {
     });
   }
 
-  async deleteManyByProjectId(prisma: ProjectPrismaType, projectId: string): Promise<void> {
+  async update(prisma: ProjectPrismaType, experience: ExperienceEntity): Promise<ExperienceEntity> {
+    const result = await prisma.experience.update({
+      where: {
+        id: experience.id,
+      },
+      data: {
+        name: experience.name,
+        url: experience.url,
+      },
+    });
+
+    return ExperienceEntity.Reconstruct<Experience, ExperienceEntity>(result);
+  }
+
+  async deleteManyById(prisma: ProjectPrismaType, experiences: ExperienceEntity[]): Promise<void> {
     await prisma.experience.deleteMany({
       where: {
-        projectId,
+        id: {
+          in: experiences.map((experience) => experience.id),
+        },
       },
     });
   }

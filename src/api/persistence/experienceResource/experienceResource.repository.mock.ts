@@ -9,4 +9,11 @@ export class InMemoryExperienceResourceRepository extends ExperienceResourceRepo
   ): Promise<void> {
     return;
   }
+
+  async deleteManyByExperienceIds(
+    _prisma: ProjectPrismaType,
+    _experienceIds: string[]
+  ): Promise<void> {
+    return;
+  }
 }

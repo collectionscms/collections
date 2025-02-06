@@ -49,6 +49,7 @@ export const EditSeoPageImpl: React.FC = () => {
       experiences:
         experiences.length > 0
           ? experiences.map((experience) => ({
+              id: experience.id,
               name: experience.name,
               url: experience.url,
               resourceUrls: experience.resourceUrls,

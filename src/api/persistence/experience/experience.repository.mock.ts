@@ -19,7 +19,17 @@ export class InMemoryExperienceRepository extends ExperienceRepository {
     return;
   }
 
-  async deleteMany(_prisma: ProjectPrismaType, _experiences: ExperienceEntity[]): Promise<void> {
+  async update(
+    _prisma: ProjectPrismaType,
+    experience: ExperienceEntity
+  ): Promise<ExperienceEntity> {
+    return experience;
+  }
+
+  async deleteManyById(
+    _prisma: ProjectPrismaType,
+    _experiences: ExperienceEntity[]
+  ): Promise<void> {
     return;
   }
 }

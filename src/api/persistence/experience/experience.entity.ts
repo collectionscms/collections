@@ -45,6 +45,21 @@ export class ExperienceEntity extends PrismaBaseEntity<Experience> {
     return this.props.projectId;
   }
 
+  get name(): string {
+    return this.props.name;
+  }
+
+  get url(): string | null {
+    return this.props.url;
+  }
+
+  updateExperience({ name, url }: { name?: string | null; url?: string | null }): void {
+    Object.assign(this.props, {
+      ...(name !== undefined && { name }),
+      ...(url !== undefined && { url }),
+    });
+  }
+
   toWithResourcesResponse(
     experienceResources: ExperienceResourceEntity[]
   ): ExperienceWithResourceUrl {
