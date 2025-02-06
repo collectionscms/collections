@@ -10,7 +10,7 @@ import { UserProjectRepository } from '../../../persistence/userProject/userProj
 import { GetUserPublishedListContentsUseCase } from '../../../useCases/user/getUserPublishedListContents.useCase.js';
 import { getUserPublishedListContentsUseCaseSchema } from '../../../useCases/user/getUserPublishedListContents.useCase.schema.js';
 
-export const router = express.Router();
+const router = express.Router();
 
 router.get(
   '/users/:id/contents',

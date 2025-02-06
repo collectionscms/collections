@@ -5,13 +5,17 @@ import { UserEntity } from './user.entity.js';
 
 const defaultValue = {
   id: v4(),
-  name: faker.person.firstName() + ' ' + faker.person.lastName(),
-  email: faker.internet.email(),
+  name: 'John Doe',
+  email: 'john.doe@example.com',
   emailVerified: null,
   password: null,
   isActive: true,
   image: faker.image.avatarGitHub(),
   providerId: v4(),
+  bio: null,
+  bioUrl: null,
+  employer: null,
+  jobTitle: null,
   createdAt: new Date(),
   updatedAt: new Date(),
 };

@@ -2,7 +2,7 @@ import { Project } from '@prisma/client';
 import { v4 } from 'uuid';
 import { ProjectEntity } from './project.entity.js';
 
-const defaultValue = {
+export const defaultValue = {
   id: v4(),
   name: 'name',
   description: 'description',

@@ -4,25 +4,35 @@ import { UnexpectedException } from '../../../exceptions/unexpected.js';
 import { oneWayHash } from '../../utilities/oneWayHash.js';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 
+type UserProps = Omit<
+  User,
+  | 'id'
+  | 'emailVerified'
+  | 'password'
+  | 'image'
+  | 'bio'
+  | 'bioUrl'
+  | 'employer'
+  | 'jobTitle'
+  | 'createdAt'
+  | 'updatedAt'
+>;
+
 export class UserEntity extends PrismaBaseEntity<User> {
-  static Construct({
-    name,
-    email,
-    isActive,
-  }: {
-    name: string;
-    email: string;
-    isActive: boolean;
-  }): UserEntity {
+  static Construct(props: UserProps): UserEntity {
     const now = new Date();
     return new UserEntity({
       id: v4(),
-      name,
-      email,
+      name: props.name,
+      email: props.email,
       emailVerified: null,
       password: null,
       image: null,
-      isActive,
+      isActive: props.isActive,
+      bio: null,
+      bioUrl: null,
+      employer: null,
+      jobTitle: null,
       createdAt: now,
       updatedAt: now,
     });
@@ -54,6 +64,22 @@ export class UserEntity extends PrismaBaseEntity<User> {
     return this.props.name ?? '';
   }
 
+  get bio(): string | null {
+    return this.props.bio;
+  }
+
+  get bioUrl(): string | null {
+    return this.props.bioUrl;
+  }
+
+  get employer(): string | null {
+    return this.props.employer;
+  }
+
+  get jobTitle(): string | null {
+    return this.props.jobTitle;
+  }
+
   get password(): string | null {
     return this.props.password;
   }
@@ -74,9 +100,28 @@ export class UserEntity extends PrismaBaseEntity<User> {
     this.props.password = await oneWayHash(password);
   }
 
-  update(params: { name?: string }) {
-    if (params.name) {
-      this.props.name = params.name;
-    }
+  updateUser({
+    name,
+    bio,
+    bioUrl,
+    employer,
+    jobTitle,
+    image,
+  }: {
+    name?: string | null;
+    bio?: string | null;
+    bioUrl?: string | null;
+    employer?: string | null;
+    jobTitle?: string | null;
+    image?: string | null;
+  }): void {
+    Object.assign(this.props, {
+      ...(name !== undefined && { name }),
+      ...(bio !== undefined && { bio }),
+      ...(bioUrl !== undefined && { bioUrl }),
+      ...(employer !== undefined && { employer }),
+      ...(jobTitle !== undefined && { jobTitle }),
+      ...(image !== undefined && { image }),
+    });
   }
 }

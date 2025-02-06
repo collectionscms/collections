@@ -1,13 +1,20 @@
 import {
+  Alumnus,
   ApiKey,
+  Award,
   Content,
   ContentRevision,
+  Experience,
+  ExperienceResource,
   File,
   Permission,
   Project,
   Review,
   Role,
+  SocialProfile,
+  SpokenLanguage,
   Tag,
+  User,
 } from '@prisma/client';
 
 export type UserProfile = {
@@ -29,6 +36,15 @@ export type ProjectRole = {
 export type Me = {
   id: string;
   email: string;
+};
+
+export type AuthorProfile = {
+  user: User;
+  socialProfiles: SocialProfile[];
+  alumni: Alumnus[];
+  spokenLanguages: SpokenLanguage[];
+  awards: Award[];
+  experiences: Experience[];
 };
 
 export type ApiError = {
@@ -138,8 +154,16 @@ export type ProjectWithRole = Project & {
   }[];
 };
 
+export type ProjectWithExperiences = Project & {
+  experiences: Experience[];
+};
+
 export type ReviewWithContentAndParticipant = Review & {
   content: Content;
   revieweeName: string;
   reviewerName: string | null;
+};
+
+export type ExperienceWithResourceUrl = Experience & {
+  resourceUrls: string[];
 };

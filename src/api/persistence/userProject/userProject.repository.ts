@@ -1,5 +1,10 @@
-import { Permission, Project, Role, User, UserProject } from '@prisma/client';
-import { ProjectPrismaClient, ProjectPrismaType } from '../../database/prisma/client.js';
+import { Experience, Permission, Project, Role, User, UserProject } from '@prisma/client';
+import {
+  BypassPrismaType,
+  ProjectPrismaClient,
+  ProjectPrismaType,
+} from '../../database/prisma/client.js';
+import { ExperienceEntity } from '../experience/experience.entity.js';
 import { PermissionEntity } from '../permission/permission.entity.js';
 import { ProjectEntity } from '../project/project.entity.js';
 import { RoleEntity } from '../role/role.entity.js';
@@ -7,25 +12,6 @@ import { UserEntity } from '../user/user.entity.js';
 import { UserProjectEntity } from './userProject.entity.js';
 
 export class UserProjectRepository {
-  async findMany(
-    prisma: ProjectPrismaType
-  ): Promise<{ userProject: UserProjectEntity; user: UserEntity; role: RoleEntity }[]> {
-    const records = await prisma.userProject.findMany({
-      include: {
-        user: true,
-        role: true,
-      },
-    });
-
-    return records.map((record) => {
-      return {
-        userProject: UserProjectEntity.Reconstruct<UserProject, UserProjectEntity>(record),
-        user: UserEntity.Reconstruct<User, UserEntity>(record.user),
-        role: RoleEntity.Reconstruct<Role, RoleEntity>(record.role),
-      };
-    });
-  }
-
   async findOneWithRoleByUserId(
     prisma: ProjectPrismaType,
     userId: string
@@ -103,6 +89,50 @@ export class UserProjectRepository {
         PermissionEntity.Reconstruct<Permission, PermissionEntity>(rolePermission.permission)
       ),
     };
+  }
+
+  async findMany(
+    prisma: ProjectPrismaType
+  ): Promise<{ userProject: UserProjectEntity; user: UserEntity; role: RoleEntity }[]> {
+    const records = await prisma.userProject.findMany({
+      include: {
+        user: true,
+        role: true,
+      },
+    });
+
+    return records.map((record) => {
+      return {
+        userProject: UserProjectEntity.Reconstruct<UserProject, UserProjectEntity>(record),
+        user: UserEntity.Reconstruct<User, UserEntity>(record.user),
+        role: RoleEntity.Reconstruct<Role, RoleEntity>(record.role),
+      };
+    });
+  }
+
+  async findManyWithProjectExperiencesByUserId(
+    prisma: BypassPrismaType,
+    userId: string
+  ): Promise<{ project: ProjectEntity; experiences: ExperienceEntity[] }[]> {
+    const records = await prisma.userProject.findMany({
+      where: {
+        userId,
+      },
+      include: {
+        project: {
+          include: {
+            experiences: true,
+          },
+        },
+      },
+    });
+
+    return records.map((record) => ({
+      project: ProjectEntity.Reconstruct<Project, ProjectEntity>(record.project),
+      experiences: record.project.experiences.map((experience) =>
+        ExperienceEntity.Reconstruct<Experience, ExperienceEntity>(experience)
+      ),
+    }));
   }
 
   async create(prisma: ProjectPrismaType, entity: UserProjectEntity): Promise<UserProjectEntity> {

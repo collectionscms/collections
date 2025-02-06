@@ -1,4 +1,6 @@
-import { ProjectPrismaType } from '../../database/prisma/client.js';
+import { BypassPrismaType, ProjectPrismaType } from '../../database/prisma/client.js';
+import { buildExperienceEntity } from '../experience/experience.entity.fixture.js';
+import { ExperienceEntity } from '../experience/experience.entity.js';
 import { buildPermissionEntity } from '../permission/permission.entity.fixture.js';
 import { PermissionEntity } from '../permission/permission.entity.js';
 import { buildProjectEntity } from '../project/project.entity.fixture.js';
@@ -28,6 +30,18 @@ export class InMemoryUserProjectRepository extends UserProjectRepository {
       role: buildRoleEntity(),
       permissions: [buildPermissionEntity()],
     };
+  }
+
+  async findManyWithProjectExperiencesByUserId(
+    _prisma: BypassPrismaType,
+    _userId: string
+  ): Promise<{ project: ProjectEntity; experiences: ExperienceEntity[] }[]> {
+    return [
+      {
+        project: buildProjectEntity(),
+        experiences: [buildExperienceEntity()],
+      },
+    ];
   }
 
   async create(_prisma: ProjectPrismaType, entity: UserProjectEntity): Promise<UserProjectEntity> {

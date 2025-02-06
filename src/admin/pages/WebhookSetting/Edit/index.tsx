@@ -256,7 +256,7 @@ const EditWebhookSettingPageImpl: React.FC = () => {
                         {t('cancel')}
                       </Button>
                       <Button variant="contained" type="submit" disabled={isMutating}>
-                        {t('save')}
+                        {t('update')}
                       </Button>
                     </Stack>
                   </Stack>

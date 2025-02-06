@@ -74,7 +74,7 @@ export const settingsGroupNavItems = (): Group => {
   if (hasPermission('readProject')) {
     items.push({
       label: 'project_setting',
-      href: `${path}/project`,
+      href: `${path}/project/general`,
       icon: 'Settings',
     });
   }

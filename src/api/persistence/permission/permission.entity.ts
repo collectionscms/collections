@@ -3,7 +3,7 @@ import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 
 export const roleActions = {
   post: ['readOwnPost', 'readAllPost', 'savePost', 'trashPost', 'publishPost', 'archivePost'],
-  project: ['readProject', 'updateProject'],
+  project: ['readProject', 'updateProject', 'readSeo', 'saveSeo'],
   role: ['readRole', 'createRole', 'updateRole', 'deleteRole'],
   user: ['readUser', 'inviteUser', 'updateUser', 'deleteUser'],
   review: ['readOwnReview', 'readAllReview', 'approveReview', 'closeReview'],

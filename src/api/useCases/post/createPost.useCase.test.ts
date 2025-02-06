@@ -1,14 +1,13 @@
 import { jest } from '@jest/globals';
 import { v4 } from 'uuid';
 import { projectPrisma } from '../../database/prisma/client.js';
+import { buildContentEntity } from '../../persistence/content/content.entity.fixture.js';
 import { InMemoryContentRepository } from '../../persistence/content/content.repository.mock.js';
 import { InMemoryContentRevisionRepository } from '../../persistence/contentRevision/contentRevision.repository.mock.js';
 import { InMemoryPostRepository } from '../../persistence/post/post.repository.mock.js';
 import { InMemoryProjectRepository } from '../../persistence/project/project.repository.mock.js';
-import { CreatePostUseCase } from './createPost.useCase.js';
-import { buildPostEntity } from '../../persistence/post/post.entity.fixture.js';
-import { buildContentEntity } from '../../persistence/content/content.entity.fixture.js';
 import { buildUserEntity } from '../../persistence/user/user.entity.fixture.js';
+import { CreatePostUseCase } from './createPost.useCase.js';
 
 describe('CreatePostUseCase', () => {
   const projectId = v4();

@@ -5,9 +5,17 @@ import { authConfig } from '../configs/auth.js';
 import { bypassPrisma } from '../database/prisma/client.js';
 import { asyncHandler } from '../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../middlewares/auth.js';
+import { AlumnusRepository } from '../persistence/alumnus/alumnus.repository.js';
+import { AwardRepository } from '../persistence/award/award.repository.js';
+import { SocialProfileRepository } from '../persistence/socialProfile/socialProfile.repository.js';
+import { SpokenLanguageRepository } from '../persistence/spokenLanguage/spokenLanguage.repository.js';
 import { UserRepository } from '../persistence/user/user.repository.js';
+import { UserExperienceRepository } from '../persistence/userExperience/userExperience.repository.js';
+import { UserProjectRepository } from '../persistence/userProject/userProject.repository.js';
 import { GetMyProfileUseCase } from '../useCases/me/getMyProfile.useCase.js';
 import { getMyProfileUseCaseSchema } from '../useCases/me/getMyProfile.useCase.schema.js';
+import { GetMyProjectExperiencesUseCase } from '../useCases/me/getMyProjectExperiences.useCase.js';
+import { getMyProjectExperiencesUseCaseSchema } from '../useCases/me/getMyProjectExperiences.useCase.schema.js';
 import { GetMyProjectsUseCase } from '../useCases/me/getMyProjects.useCase.js';
 import { getMyProjectsUseCaseSchema } from '../useCases/me/getMyProjects.useCase.schema.js';
 import { UpdateProfileUseCase } from '../useCases/me/updateProfile.useCase.js';
@@ -35,9 +43,9 @@ router.get(
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
     const useCase = new GetMyProfileUseCase(bypassPrisma, new UserRepository());
-    const user = await useCase.execute(validated.data.userId);
+    const authorProfile = await useCase.execute(validated.data.userId);
 
-    return res.json({ user });
+    return res.json(authorProfile);
   })
 );
 
@@ -57,6 +65,22 @@ router.get(
   })
 );
 
+router.get(
+  '/me/project-experiences',
+  authenticatedUser,
+  asyncHandler(async (_req: Request, res: Response) => {
+    const validated = getMyProjectExperiencesUseCaseSchema.safeParse({
+      userId: res.user.id,
+    });
+    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
+
+    const useCase = new GetMyProjectExperiencesUseCase(bypassPrisma, new UserProjectRepository());
+    const projectExperiences = await useCase.execute(validated.data);
+
+    res.json({ projectExperiences });
+  })
+);
+
 router.patch(
   '/me',
   authenticatedUser,
@@ -64,10 +88,32 @@ router.patch(
     const validated = updateProfileUseCaseSchema.safeParse({
       userId: res.user.id,
       name: req.body.name,
+      bio: req.body.bio,
+      bioUrl: req.body.bioUrl,
+      employer: req.body.employer,
+      jobTitle: req.body.jobTitle,
+      image: req.body.image,
+      xUrl: req.body.xUrl,
+      instagramUrl: req.body.instagramUrl,
+      facebookUrl: req.body.facebookUrl,
+      linkedInUrl: req.body.linkedInUrl,
+      awards: req.body.awards,
+      spokenLanguages: req.body.spokenLanguages,
+      alumni: req.body.alumni,
+      experiences: req.body.experiences,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
-    const useCase = new UpdateProfileUseCase(bypassPrisma, new UserRepository());
+    const useCase = new UpdateProfileUseCase(
+      bypassPrisma,
+      new UserRepository(),
+      new AwardRepository(),
+      new AlumnusRepository(),
+      new SocialProfileRepository(),
+      new SpokenLanguageRepository(),
+      new UserExperienceRepository(),
+      new UserProjectRepository()
+    );
     await useCase.execute(validated.data);
 
     res.status(204).end();

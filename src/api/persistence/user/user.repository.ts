@@ -1,11 +1,25 @@
 import { User } from '@auth/express';
-import { Permission, Project, Role } from '@prisma/client';
+import {
+  Alumnus,
+  Award,
+  Experience,
+  Permission,
+  Project,
+  Role,
+  SocialProfile,
+  SpokenLanguage,
+} from '@prisma/client';
 import { InvalidCredentialsException } from '../../../exceptions/invalidCredentials.js';
 import { BypassPrismaType, ProjectPrismaType } from '../../database/prisma/client.js';
 import { comparePasswords } from '../../utilities/comparePasswords.js';
+import { AlumnusEntity } from '../alumnus/alumnus.entity.js';
+import { AwardEntity } from '../award/award.entity.js';
+import { ExperienceEntity } from '../experience/experience.entity.js';
 import { PermissionEntity } from '../permission/permission.entity.js';
 import { ProjectEntity } from '../project/project.entity.js';
 import { RoleEntity } from '../role/role.entity.js';
+import { SocialProfileEntity } from '../socialProfile/socialProfile.entity.js';
+import { SpokenLanguageEntity } from '../spokenLanguage/spokenLanguage.entity.js';
 import { UserEntity } from './user.entity.js';
 
 export class UserRepository {
@@ -58,34 +72,52 @@ export class UserRepository {
     };
   }
 
-  async findMany(prisma: ProjectPrismaType): Promise<UserEntity[]> {
-    const records = await prisma.userProject.findMany({
+  async findOneByIdWithProfiles(
+    prisma: BypassPrismaType,
+    userId: string
+  ): Promise<{
+    user: UserEntity;
+    socialProfiles: SocialProfileEntity[];
+    alumni: AlumnusEntity[];
+    spokenLanguages: SpokenLanguageEntity[];
+    awards: AwardEntity[];
+    experiences: ExperienceEntity[];
+  } | null> {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
       include: {
-        user: true,
-        role: true,
+        socialProfiles: true,
+        alumni: true,
+        spokenLanguages: true,
+        awards: true,
+        userExperiences: {
+          include: {
+            experience: true,
+          },
+        },
       },
     });
 
-    return records.map((record) => UserEntity.Reconstruct<User, UserEntity>(record.user));
-  }
-
-  async findManyWithUserRoles(
-    prisma: ProjectPrismaType
-  ): Promise<{ user: UserEntity; role: RoleEntity; updatedAt: Date }[]> {
-    const records = await prisma.userProject.findMany({
-      include: {
-        user: true,
-        role: true,
-      },
-    });
-
-    return records.map((record) => {
-      return {
-        user: UserEntity.Reconstruct<User, UserEntity>(record.user),
-        role: RoleEntity.Reconstruct<Role, RoleEntity>(record.role),
-        updatedAt: record.updatedAt,
-      };
-    });
+    return user
+      ? {
+          user: UserEntity.Reconstruct<User, UserEntity>(user),
+          socialProfiles: user.socialProfiles.map((socialProfile) =>
+            SocialProfileEntity.Reconstruct<SocialProfile, SocialProfileEntity>(socialProfile)
+          ),
+          alumni: user.alumni.map((alumnus) =>
+            AlumnusEntity.Reconstruct<Alumnus, AlumnusEntity>(alumnus)
+          ),
+          spokenLanguages: user.spokenLanguages.map((spokenLanguage) =>
+            SpokenLanguageEntity.Reconstruct<SpokenLanguage, SpokenLanguageEntity>(spokenLanguage)
+          ),
+          awards: user.awards.map((award) => AwardEntity.Reconstruct<Award, AwardEntity>(award)),
+          experiences: user.userExperiences.map((userExperience) =>
+            ExperienceEntity.Reconstruct<Experience, ExperienceEntity>(userExperience.experience)
+          ),
+        }
+      : null;
   }
 
   async findOneWithProjects(
@@ -135,6 +167,36 @@ export class UserRepository {
     };
   }
 
+  async findMany(prisma: ProjectPrismaType): Promise<UserEntity[]> {
+    const records = await prisma.userProject.findMany({
+      include: {
+        user: true,
+        role: true,
+      },
+    });
+
+    return records.map((record) => UserEntity.Reconstruct<User, UserEntity>(record.user));
+  }
+
+  async findManyWithUserRoles(
+    prisma: ProjectPrismaType
+  ): Promise<{ user: UserEntity; role: RoleEntity; updatedAt: Date }[]> {
+    const records = await prisma.userProject.findMany({
+      include: {
+        user: true,
+        role: true,
+      },
+    });
+
+    return records.map((record) => {
+      return {
+        user: UserEntity.Reconstruct<User, UserEntity>(record.user),
+        role: RoleEntity.Reconstruct<Role, RoleEntity>(record.role),
+        updatedAt: record.updatedAt,
+      };
+    });
+  }
+
   async updateProfile(prisma: BypassPrismaType, user: UserEntity): Promise<UserEntity> {
     user.beforeUpdateValidate();
 
@@ -144,6 +206,11 @@ export class UserRepository {
       },
       data: {
         name: user.name,
+        bio: user.bio,
+        bioUrl: user.bioUrl,
+        employer: user.employer,
+        jobTitle: user.jobTitle,
+        image: user.image,
       },
     });
 
