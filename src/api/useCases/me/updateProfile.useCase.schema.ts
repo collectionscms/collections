@@ -16,6 +16,7 @@ export const updateProfileUseCaseSchema = z.object({
   awards: z.array(z.string()),
   spokenLanguages: z.array(z.string()),
   alumni: z.array(z.object({ name: z.string(), url: z.string() })),
+  experiences: z.array(z.object({ label: z.string(), value: z.string() })),
 });
 
 export type UpdateProfileUseCaseSchemaType = z.infer<typeof updateProfileUseCaseSchema>;

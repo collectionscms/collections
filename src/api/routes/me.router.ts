@@ -80,6 +80,7 @@ router.patch(
       awards: req.body.awards,
       spokenLanguages: req.body.spokenLanguages,
       alumni: req.body.alumni,
+      experiences: req.body.experiences,
     });
     if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
 
@@ -89,7 +90,9 @@ router.patch(
       new AwardRepository(),
       new AlumnusRepository(),
       new SocialProfileRepository(),
-      new SpokenLanguageRepository()
+      new SpokenLanguageRepository(),
+      new UserExperienceRepository(),
+      new UserProjectRepository()
     );
     await useCase.execute(validated.data);
 

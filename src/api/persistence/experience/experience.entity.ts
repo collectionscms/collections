@@ -41,6 +41,10 @@ export class ExperienceEntity extends PrismaBaseEntity<Experience> {
     return this.props.id;
   }
 
+  get projectId(): string {
+    return this.props.projectId;
+  }
+
   toWithResourcesResponse(
     experienceResources: ExperienceResourceEntity[]
   ): ExperienceWithResourceUrl {
