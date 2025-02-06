@@ -44,6 +44,7 @@ export type AuthorProfile = {
   alumni: Alumnus[];
   spokenLanguages: SpokenLanguage[];
   awards: Award[];
+  experiences: Experience[];
 };
 
 export type ApiError = {
@@ -151,6 +152,10 @@ export type ProjectWithRole = Project & {
   permissions: {
     action: string;
   }[];
+};
+
+export type ProjectWithExperiences = Project & {
+  experiences: Experience[];
 };
 
 export type ReviewWithContentAndParticipant = Review & {

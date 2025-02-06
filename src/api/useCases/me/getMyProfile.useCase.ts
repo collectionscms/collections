@@ -19,6 +19,7 @@ export class GetMyProfileUseCase {
       alumni: result.alumni.map((alumnus) => alumnus.toResponse()),
       spokenLanguages: result.spokenLanguages.map((spokenLanguage) => spokenLanguage.toResponse()),
       awards: result.awards.map((award) => award.toResponse()),
+      experiences: result.experiences.map((experience) => experience.toResponse()),
     };
   }
 }

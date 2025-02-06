@@ -2,6 +2,7 @@ import { User } from '@auth/express';
 import {
   Alumnus,
   Award,
+  Experience,
   Permission,
   Project,
   Role,
@@ -13,6 +14,7 @@ import { BypassPrismaType, ProjectPrismaType } from '../../database/prisma/clien
 import { comparePasswords } from '../../utilities/comparePasswords.js';
 import { AlumnusEntity } from '../alumnus/alumnus.entity.js';
 import { AwardEntity } from '../award/award.entity.js';
+import { ExperienceEntity } from '../experience/experience.entity.js';
 import { PermissionEntity } from '../permission/permission.entity.js';
 import { ProjectEntity } from '../project/project.entity.js';
 import { RoleEntity } from '../role/role.entity.js';
@@ -79,6 +81,7 @@ export class UserRepository {
     alumni: AlumnusEntity[];
     spokenLanguages: SpokenLanguageEntity[];
     awards: AwardEntity[];
+    experiences: ExperienceEntity[];
   } | null> {
     const user = await prisma.user.findUnique({
       where: {
@@ -89,6 +92,11 @@ export class UserRepository {
         alumni: true,
         spokenLanguages: true,
         awards: true,
+        userExperiences: {
+          include: {
+            experience: true,
+          },
+        },
       },
     });
 
@@ -105,6 +113,9 @@ export class UserRepository {
             SpokenLanguageEntity.Reconstruct<SpokenLanguage, SpokenLanguageEntity>(spokenLanguage)
           ),
           awards: user.awards.map((award) => AwardEntity.Reconstruct<Award, AwardEntity>(award)),
+          experiences: user.userExperiences.map((userExperience) =>
+            ExperienceEntity.Reconstruct<Experience, ExperienceEntity>(userExperience.experience)
+          ),
         }
       : null;
   }
