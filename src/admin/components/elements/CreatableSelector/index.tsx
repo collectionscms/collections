@@ -1,5 +1,5 @@
 import { useTheme } from '@mui/material';
-import React, { useState } from 'react';
+import React from 'react';
 import CreatableSelect from 'react-select/creatable';
 import { useColorMode } from '../../utilities/ColorMode/index.js';
 
@@ -26,9 +26,7 @@ export const CreatableSelector: React.FC<Props> = ({ options, values, placeholde
           valueBgColor: theme.palette.grey[300],
         };
 
-  const [inputtedValues, setInputtedValues] = useState(values);
   const handleValueChange = (value: Record<string, string>[]) => {
-    setInputtedValues(value);
     onChange(value.map((v) => v.value));
   };
 
@@ -36,7 +34,7 @@ export const CreatableSelector: React.FC<Props> = ({ options, values, placeholde
     <CreatableSelect
       isMulti
       options={options}
-      value={inputtedValues}
+      value={values}
       unstyled={true}
       placeholder={placeholder}
       onChange={(value) =>

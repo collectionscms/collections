@@ -193,6 +193,7 @@ export const EditSeoPageImpl: React.FC = () => {
                           <Stack direction="row" spacing={1} alignItems="center">
                             <Box sx={{ width: '100%' }}>
                               <ResourceUrl
+                                optionUrls={experiences?.[index]?.resourceUrls ?? []}
                                 initialUrls={value.resourceUrls ?? []}
                                 onChange={(values) => {
                                   handleChangeResourceUrls(index, values);

@@ -392,6 +392,7 @@ const ProfilePageImpl: React.FC = () => {
                   <Stack spacing={1}>
                     <InputLabel>{t('awards')}</InputLabel>
                     <Award
+                      optionAwards={awards.map((award) => award.name)}
                       initialAwards={watch('awards') ?? []}
                       onChange={(values) => {
                         setValue('awards', values);
@@ -403,6 +404,7 @@ const ProfilePageImpl: React.FC = () => {
                   <Stack spacing={1}>
                     <InputLabel>{t('spoken_languages')}</InputLabel>
                     <SpokenLanguage
+                      optionLanguages={spokenLanguages.map((language) => language.language)}
                       initialLanguages={watch('spokenLanguages') ?? []}
                       onChange={(values) => {
                         setValue('spokenLanguages', values);
