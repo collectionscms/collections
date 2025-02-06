@@ -74,7 +74,9 @@ export class CreateExperienceUseCase {
       // Delete
       // /////////////////////////////////////
 
-      await this.experienceRepository.deleteManyById(tx, deleteExperiences);
+      if (deleteExperiences.length > 0) {
+        await this.experienceRepository.deleteManyById(tx, deleteExperiences);
+      }
 
       // /////////////////////////////////////
       // Update
@@ -89,10 +91,12 @@ export class CreateExperienceUseCase {
       }
 
       // delete and create experience resources
-      await this.experienceResourceRepository.deleteManyByExperienceIds(
-        tx,
-        updateExperiences.map((updateExperience) => updateExperience.id)
-      );
+      if (updateExperiences.length > 0) {
+        await this.experienceResourceRepository.deleteManyByExperienceIds(
+          tx,
+          updateExperiences.map((updateExperience) => updateExperience.id)
+        );
+      }
 
       await this.experienceResourceRepository.createMany(
         tx,
