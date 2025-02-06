@@ -10,8 +10,12 @@ import { AwardRepository } from '../persistence/award/award.repository.js';
 import { SocialProfileRepository } from '../persistence/socialProfile/socialProfile.repository.js';
 import { SpokenLanguageRepository } from '../persistence/spokenLanguage/spokenLanguage.repository.js';
 import { UserRepository } from '../persistence/user/user.repository.js';
+import { UserExperienceRepository } from '../persistence/userExperience/userExperience.repository.js';
+import { UserProjectRepository } from '../persistence/userProject/userProject.repository.js';
 import { GetMyProfileUseCase } from '../useCases/me/getMyProfile.useCase.js';
 import { getMyProfileUseCaseSchema } from '../useCases/me/getMyProfile.useCase.schema.js';
+import { GetMyProjectExperiencesUseCase } from '../useCases/me/getMyProjectExperiences.useCase.js';
+import { getMyProjectExperiencesUseCaseSchema } from '../useCases/me/getMyProjectExperiences.useCase.schema.js';
 import { GetMyProjectsUseCase } from '../useCases/me/getMyProjects.useCase.js';
 import { getMyProjectsUseCaseSchema } from '../useCases/me/getMyProjects.useCase.schema.js';
 import { UpdateProfileUseCase } from '../useCases/me/updateProfile.useCase.js';
@@ -58,6 +62,22 @@ router.get(
     const projects = await useCase.execute(validated.data.userId);
 
     return res.json(projects);
+  })
+);
+
+router.get(
+  '/me/project-experiences',
+  authenticatedUser,
+  asyncHandler(async (_req: Request, res: Response) => {
+    const validated = getMyProjectExperiencesUseCaseSchema.safeParse({
+      userId: res.user.id,
+    });
+    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
+
+    const useCase = new GetMyProjectExperiencesUseCase(bypassPrisma, new UserProjectRepository());
+    const projectExperiences = await useCase.execute(validated.data);
+
+    res.json({ projectExperiences });
   })
 );
 
