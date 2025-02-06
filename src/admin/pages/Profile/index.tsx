@@ -41,6 +41,7 @@ import { useUnsavedChangesPrompt } from '../../hooks/useUnsavedChangesPrompt.js'
 import lazy from '../../utilities/lazy.js';
 import { ProfileContextProvider, useProfile } from './Context/index.js';
 import { Award } from './parts/Award/index.js';
+import { Experience } from './parts/Experience/index.js';
 import { SpokenLanguage } from './parts/SpokenLanguage/index.js';
 
 const Loading = Loader(lazy(() => import('../../components/elements/Loading/index.js'), 'Loading'));
@@ -49,10 +50,11 @@ const ProfilePageImpl: React.FC = () => {
   const { t, i18n } = useTranslation();
   const { mode, setMode, autoMode } = useColorMode();
   const theme = useTheme();
-  const { getProfile, updateMe, createFileImage } = useProfile();
+  const { getProfile, getMyProjectExperiences, updateMe, createFileImage } = useProfile();
   const {
-    data: { user, socialProfiles, alumni, spokenLanguages, awards },
+    data: { user, socialProfiles, alumni, spokenLanguages, awards, experiences },
   } = getProfile();
+  const { data: projectWithExperiences } = getMyProjectExperiences();
 
   const { trigger, isMutating } = updateMe();
   const { trigger: createFileImageTrigger } = createFileImage();
@@ -81,6 +83,10 @@ const ProfilePageImpl: React.FC = () => {
       linkedInUrl: getSocialUrl('linkedIn'),
       awards: awards.map((award) => award.name),
       spokenLanguages: spokenLanguages.map((spokenLanguage) => spokenLanguage.language),
+      experiences: experiences.map((experience) => ({
+        label: experience.name,
+        value: experience.id,
+      })),
       alumni:
         alumni.length > 0
           ? alumni.map((alumnus) => ({
@@ -400,6 +406,18 @@ const ProfilePageImpl: React.FC = () => {
                       initialLanguages={watch('spokenLanguages') ?? []}
                       onChange={(values) => {
                         setValue('spokenLanguages', values);
+                      }}
+                    />
+                  </Stack>
+                </Grid>
+                <Grid xs={12}>
+                  <Stack spacing={1}>
+                    <InputLabel>{t('experiences')}</InputLabel>
+                    <Experience
+                      options={projectWithExperiences}
+                      values={watch('experiences') ?? []}
+                      onChange={(values) => {
+                        setValue('experiences', values);
                       }}
                     />
                   </Stack>
