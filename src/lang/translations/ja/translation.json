@@ -190,6 +190,7 @@
   "add_row": "行を追加",
   "experiences": "経験してきたこと",
   "search_experiences": "経験を検索",
+  "add_author_experience_description": "著者が執筆するテーマや専門分野。<knows>プロジェクト設定 > SEO > 著者の経験</knows> から追加できます。",
   "dialog": {
     "confirm_deletion_title": "削除の確認",
     "confirm_deletion": "一度削除すると復元できません。削除してよろしいですか？",

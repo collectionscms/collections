@@ -10,6 +10,7 @@ import {
   FormLabel,
   IconButton,
   InputLabel,
+  Link,
   MenuItem,
   Radio,
   RadioGroup,
@@ -24,7 +25,7 @@ import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { enqueueSnackbar } from 'notistack';
 import React, { ChangeEvent } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { logger } from '../../../utilities/logger.js';
 import { MainCard } from '../../@extended/components/MainCard/index.js';
 import { ConfirmDiscardDialog } from '../../components/elements/ConfirmDiscardDialog/index.js';
@@ -39,6 +40,7 @@ import {
 } from '../../fields/validators/profiles/updateUser.validator.js';
 import { useUnsavedChangesPrompt } from '../../hooks/useUnsavedChangesPrompt.js';
 import lazy from '../../utilities/lazy.js';
+import { getUrlForTenant } from '../../utilities/urlGenerator.js';
 import { ProfileContextProvider, useProfile } from './Context/index.js';
 import { Award } from './parts/Award/index.js';
 import { Experience } from './parts/Experience/index.js';
@@ -422,6 +424,23 @@ const ProfilePageImpl: React.FC = () => {
                         setValue('experiences', values);
                       }}
                     />
+                    <Typography color="text.secondary">
+                      <Trans
+                        i18nKey="add_author_experience_description"
+                        components={{
+                          knows: projectWithExperiences[0] ? (
+                            <Link
+                              href={getUrlForTenant(
+                                projectWithExperiences[0].subdomain,
+                                '/admin/settings/project/seo'
+                              )}
+                            />
+                          ) : (
+                            <></>
+                          ),
+                        }}
+                      />
+                    </Typography>
                   </Stack>
                 </Grid>
                 <Grid xs={12}>

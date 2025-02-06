@@ -190,6 +190,7 @@
   "add_row": "Add row",
   "experiences": "Experiences",
   "search_experiences": "Search experiences",
+  "add_author_experience_description": "The topics and areas of expertise that the author writes about. These can be added via <knows>Project Settings > SEO > Author Experience</knows>.",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",
