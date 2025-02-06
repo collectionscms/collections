@@ -28,6 +28,7 @@ export class ExperienceEntity extends PrismaBaseEntity<Experience> {
 
     const experienceResourceEntities = resourceUrls.map((resourceUrl) =>
       ExperienceResourceEntity.Construct({
+        projectId,
         experienceId: experienceEntity.id,
         url: resourceUrl,
       })
@@ -38,6 +39,25 @@ export class ExperienceEntity extends PrismaBaseEntity<Experience> {
 
   get id(): string {
     return this.props.id;
+  }
+
+  get projectId(): string {
+    return this.props.projectId;
+  }
+
+  get name(): string {
+    return this.props.name;
+  }
+
+  get url(): string | null {
+    return this.props.url;
+  }
+
+  updateExperience({ name, url }: { name?: string | null; url?: string | null }): void {
+    Object.assign(this.props, {
+      ...(name !== undefined && { name }),
+      ...(url !== undefined && { url }),
+    });
   }
 
   toWithResourcesResponse(

@@ -4,6 +4,7 @@ import { ExperienceResourceEntity } from './experienceResource.entity.js';
 
 export const defaultValue = {
   id: v4(),
+  projectId: v4(),
   experienceId: v4(),
   url: 'https://example.com',
   createdAt: new Date(),

@@ -10,4 +10,17 @@ export class ExperienceResourceRepository {
       data: experienceResources.map((experienceResource) => experienceResource.toPersistence()),
     });
   }
+
+  async deleteManyByExperienceIds(
+    prisma: ProjectPrismaType,
+    experienceIds: string[]
+  ): Promise<void> {
+    await prisma.experienceResource.deleteMany({
+      where: {
+        experienceId: {
+          in: experienceIds.map((experienceId) => experienceId),
+        },
+      },
+    });
+  }
 }

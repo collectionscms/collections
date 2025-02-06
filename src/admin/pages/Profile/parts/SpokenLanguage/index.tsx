@@ -1,37 +1,36 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { CreatableSelector } from '../../../../components/elements/CreatableSelector/index.js';
 
 type Props = {
+  optionLanguages: string[];
   initialLanguages: string[];
   onChange: (initialLanguages: string[]) => void;
 };
 
-export const SpokenLanguage: React.FC<Props> = ({ initialLanguages, onChange }) => {
+export const SpokenLanguage: React.FC<Props> = ({
+  optionLanguages,
+  initialLanguages,
+  onChange,
+}) => {
   const { t } = useTranslation();
-  const [languages, setLanguages] = useState<string[]>(initialLanguages);
 
-  const options = initialLanguages.map((language) => ({
+  const options = optionLanguages.map((language) => ({
     value: language,
     label: language,
   }));
 
-  const inputtedValues = languages.map((language) => ({
+  const values = initialLanguages.map((language) => ({
     value: language,
     label: language,
   }));
-
-  const handleValueChange = async (names: string[]) => {
-    setLanguages(names);
-    onChange(names);
-  };
 
   return (
     <CreatableSelector
       options={options}
-      values={inputtedValues}
+      values={values}
       placeholder={t('spoken_languages_placeholder')}
-      onChange={handleValueChange}
+      onChange={onChange}
     />
   );
 };

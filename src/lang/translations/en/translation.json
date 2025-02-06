@@ -165,7 +165,7 @@
   "author_seo": "Author SEO",
   "author_seo_description": "Author information is provided via an API as structured data alongside each article. Publishing it on the website improves visibility in search engines.",
   "author_experience": "Author Experience",
-  "author_experience_description": "An author’s experience contributes to the “Experience” score in Google’s E-E-A-T guidelines. When you register a topic here, you can later add it to the <knows>Profile Page > Knows About</knows> section.",
+  "author_experience_description": "An author’s experience contributes to the “Experience” score in Google’s E-E-A-T guidelines. When you register a topic here, you can later add it to the <knows>Profile Page > Experiences</knows> section.",
   "employer": "Employer",
   "job_title": "Job Title",
   "alumni_of": "Alumni of",
@@ -188,6 +188,9 @@
   "institution_name": "The name of the school or university you attended.",
   "url": "URL",
   "add_row": "Add row",
+  "experiences": "Experiences",
+  "search_experiences": "Search experiences",
+  "add_author_experience_description": "The topics and areas of expertise that the author writes about. These can be added via <knows>Project Settings > SEO > Author Experience</knows>.",
   "dialog": {
     "confirm_deletion_title": "Confirm deletion",
     "confirm_deletion": "Once deleted, it cannot be restored. Are you sure you want to delete it?",

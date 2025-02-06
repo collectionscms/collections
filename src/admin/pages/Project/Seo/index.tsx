@@ -49,6 +49,7 @@ export const EditSeoPageImpl: React.FC = () => {
       experiences:
         experiences.length > 0
           ? experiences.map((experience) => ({
+              id: experience.id,
               name: experience.name,
               url: experience.url,
               resourceUrls: experience.resourceUrls,
@@ -192,6 +193,7 @@ export const EditSeoPageImpl: React.FC = () => {
                           <Stack direction="row" spacing={1} alignItems="center">
                             <Box sx={{ width: '100%' }}>
                               <ResourceUrl
+                                optionUrls={experiences?.[index]?.resourceUrls ?? []}
                                 initialUrls={value.resourceUrls ?? []}
                                 onChange={(values) => {
                                   handleChangeResourceUrls(index, values);

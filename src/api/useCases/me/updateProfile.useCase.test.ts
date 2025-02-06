@@ -7,6 +7,8 @@ import { InMemoryAwardRepository } from '../../persistence/award/award.repositor
 import { InMemorySocialProfileRepository } from '../../persistence/socialProfile/socialProfile.repository.mock.js';
 import { InMemorySpokenLanguageRepository } from '../../persistence/spokenLanguage/spokenLanguage.repository.mock.js';
 import { InMemoryUserRepository } from '../../persistence/user/user.repository.mock.js';
+import { InMemoryUserExperienceRepository } from '../../persistence/userExperience/userExperience.repository.mock.js';
+import { InMemoryUserProjectRepository } from '../../persistence/userProject/userProject.repository.mock.js';
 import { UpdateProfileUseCase } from './updateProfile.useCase.js';
 
 describe('UpdateProfileUseCase', () => {
@@ -23,7 +25,9 @@ describe('UpdateProfileUseCase', () => {
       new InMemoryAwardRepository(),
       new InMemoryAlumnusRepository(),
       new InMemorySocialProfileRepository(),
-      new InMemorySpokenLanguageRepository()
+      new InMemorySpokenLanguageRepository(),
+      new InMemoryUserExperienceRepository(),
+      new InMemoryUserProjectRepository()
     );
   });
 
@@ -55,6 +59,10 @@ describe('UpdateProfileUseCase', () => {
       awards: ['Best Award'],
       spokenLanguages: ['English', 'Spanish'],
       alumni: [{ name: 'University A', url: 'http://uni-a.edu' }],
+      experiences: [
+        { label: 'React', value: v4() },
+        { label: 'SEO', value: v4() },
+      ],
     });
 
     expect(result).toMatchObject({

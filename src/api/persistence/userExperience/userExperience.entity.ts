@@ -1,29 +1,25 @@
-import { ExperienceResource } from '@prisma/client';
+import { UserExperience } from '@prisma/client';
 import { v4 } from 'uuid';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 
-export class ExperienceResourceEntity extends PrismaBaseEntity<ExperienceResource> {
+export class UserExperienceEntity extends PrismaBaseEntity<UserExperience> {
   static Construct({
+    userId,
     projectId,
     experienceId,
-    url,
   }: {
+    userId: string;
     projectId: string;
     experienceId: string;
-    url: string;
-  }): ExperienceResourceEntity {
+  }): UserExperienceEntity {
     const now = new Date();
-    return new ExperienceResourceEntity({
+    return new UserExperienceEntity({
       id: v4(),
       projectId,
+      userId,
       experienceId,
-      url,
       createdAt: now,
       updatedAt: now,
     });
-  }
-
-  get url(): string {
-    return this.props.url;
   }
 }

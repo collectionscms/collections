@@ -10,6 +10,7 @@ export type FormValues = {
   jobTitle?: string | null;
   awards?: string[] | null;
   spokenLanguages?: string[] | null;
+  experiences?: { label: string; value: string }[] | null;
   xUrl?: string | null;
   instagramUrl?: string | null;
   facebookUrl?: string | null;
@@ -27,6 +28,7 @@ export const updateUser = (): ObjectSchema<FormValues> => {
     jobTitle: yup.string().nullable(),
     awards: yup.array().nullable(),
     spokenLanguages: yup.array().nullable(),
+    experiences: yup.array().nullable(),
     xUrl: yup.string().url().nullable(),
     instagramUrl: yup.string().url().nullable(),
     facebookUrl: yup.string().url().nullable(),

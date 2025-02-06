@@ -10,6 +10,7 @@ import {
   FormLabel,
   IconButton,
   InputLabel,
+  Link,
   MenuItem,
   Radio,
   RadioGroup,
@@ -24,7 +25,7 @@ import Grid from '@mui/material/Unstable_Grid2/Grid2.js';
 import { enqueueSnackbar } from 'notistack';
 import React, { ChangeEvent } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { logger } from '../../../utilities/logger.js';
 import { MainCard } from '../../@extended/components/MainCard/index.js';
 import { ConfirmDiscardDialog } from '../../components/elements/ConfirmDiscardDialog/index.js';
@@ -39,8 +40,10 @@ import {
 } from '../../fields/validators/profiles/updateUser.validator.js';
 import { useUnsavedChangesPrompt } from '../../hooks/useUnsavedChangesPrompt.js';
 import lazy from '../../utilities/lazy.js';
+import { getUrlForTenant } from '../../utilities/urlGenerator.js';
 import { ProfileContextProvider, useProfile } from './Context/index.js';
 import { Award } from './parts/Award/index.js';
+import { Experience } from './parts/Experience/index.js';
 import { SpokenLanguage } from './parts/SpokenLanguage/index.js';
 
 const Loading = Loader(lazy(() => import('../../components/elements/Loading/index.js'), 'Loading'));
@@ -49,10 +52,11 @@ const ProfilePageImpl: React.FC = () => {
   const { t, i18n } = useTranslation();
   const { mode, setMode, autoMode } = useColorMode();
   const theme = useTheme();
-  const { getProfile, updateMe, createFileImage } = useProfile();
+  const { getProfile, getMyProjectExperiences, updateMe, createFileImage } = useProfile();
   const {
-    data: { user, socialProfiles, alumni, spokenLanguages, awards },
+    data: { user, socialProfiles, alumni, spokenLanguages, awards, experiences },
   } = getProfile();
+  const { data: projectWithExperiences } = getMyProjectExperiences();
 
   const { trigger, isMutating } = updateMe();
   const { trigger: createFileImageTrigger } = createFileImage();
@@ -81,6 +85,10 @@ const ProfilePageImpl: React.FC = () => {
       linkedInUrl: getSocialUrl('linkedIn'),
       awards: awards.map((award) => award.name),
       spokenLanguages: spokenLanguages.map((spokenLanguage) => spokenLanguage.language),
+      experiences: experiences.map((experience) => ({
+        label: experience.name,
+        value: experience.id,
+      })),
       alumni:
         alumni.length > 0
           ? alumni.map((alumnus) => ({
@@ -386,6 +394,7 @@ const ProfilePageImpl: React.FC = () => {
                   <Stack spacing={1}>
                     <InputLabel>{t('awards')}</InputLabel>
                     <Award
+                      optionAwards={awards.map((award) => award.name)}
                       initialAwards={watch('awards') ?? []}
                       onChange={(values) => {
                         setValue('awards', values);
@@ -397,11 +406,41 @@ const ProfilePageImpl: React.FC = () => {
                   <Stack spacing={1}>
                     <InputLabel>{t('spoken_languages')}</InputLabel>
                     <SpokenLanguage
+                      optionLanguages={spokenLanguages.map((language) => language.language)}
                       initialLanguages={watch('spokenLanguages') ?? []}
                       onChange={(values) => {
                         setValue('spokenLanguages', values);
                       }}
                     />
+                  </Stack>
+                </Grid>
+                <Grid xs={12}>
+                  <Stack spacing={1}>
+                    <InputLabel>{t('experiences')}</InputLabel>
+                    <Experience
+                      options={projectWithExperiences}
+                      values={watch('experiences') ?? []}
+                      onChange={(values) => {
+                        setValue('experiences', values);
+                      }}
+                    />
+                    <Typography color="text.secondary">
+                      <Trans
+                        i18nKey="add_author_experience_description"
+                        components={{
+                          knows: projectWithExperiences[0] ? (
+                            <Link
+                              href={getUrlForTenant(
+                                projectWithExperiences[0].subdomain,
+                                '/admin/settings/project/seo'
+                              )}
+                            />
+                          ) : (
+                            <></>
+                          ),
+                        }}
+                      />
+                    </Typography>
                   </Stack>
                 </Grid>
                 <Grid xs={12}>
