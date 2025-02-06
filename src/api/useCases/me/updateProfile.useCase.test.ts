@@ -4,6 +4,8 @@ import { v4 } from 'uuid';
 import { bypassPrisma } from '../../database/prisma/client.js';
 import { InMemoryAlumnusRepository } from '../../persistence/alumnus/alumnus.repository.mock.js';
 import { InMemoryAwardRepository } from '../../persistence/award/award.repository.mock.js';
+import { buildExperienceEntity } from '../../persistence/experience/experience.entity.fixture.js';
+import { buildProjectEntity } from '../../persistence/project/project.entity.fixture.js';
 import { InMemorySocialProfileRepository } from '../../persistence/socialProfile/socialProfile.repository.mock.js';
 import { InMemorySpokenLanguageRepository } from '../../persistence/spokenLanguage/spokenLanguage.repository.mock.js';
 import { InMemoryUserRepository } from '../../persistence/user/user.repository.mock.js';
@@ -43,6 +45,16 @@ describe('UpdateProfileUseCase', () => {
     const image = faker.image.url();
     const bio = faker.lorem.sentence();
     const bioUrl = faker.internet.url();
+    const experienceId = v4();
+
+    jest
+      .spyOn(InMemoryUserProjectRepository.prototype, 'findManyWithProjectExperiencesByUserId')
+      .mockResolvedValue([
+        {
+          project: buildProjectEntity({}),
+          experiences: [buildExperienceEntity({ id: experienceId })],
+        },
+      ]);
 
     const result = await updateProfileUseCase.execute({
       name,
@@ -59,10 +71,7 @@ describe('UpdateProfileUseCase', () => {
       awards: ['Best Award'],
       spokenLanguages: ['English', 'Spanish'],
       alumni: [{ name: 'University A', url: 'http://uni-a.edu' }],
-      experiences: [
-        { label: 'React', value: v4() },
-        { label: 'SEO', value: v4() },
-      ],
+      experiences: [{ label: 'React', value: experienceId }],
     });
 
     expect(result).toMatchObject({

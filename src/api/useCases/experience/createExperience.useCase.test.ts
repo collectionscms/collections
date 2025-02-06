@@ -18,7 +18,7 @@ describe('CreateExperienceUseCase', () => {
 
   beforeEach(() => {
     createExperienceUseCase = new CreateExperienceUseCase(
-      projectPrisma(projectId),
+      prisma,
       new InMemoryExperienceRepository(),
       new InMemoryExperienceResourceRepository()
     );
