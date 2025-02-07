@@ -416,7 +416,7 @@ const ProfilePageImpl: React.FC = () => {
                 </Grid>
                 <Grid xs={12}>
                   <Stack spacing={1}>
-                    <InputLabel>{t('experiences')}</InputLabel>
+                    <InputLabel>{t('knows_about')}</InputLabel>
                     <Experience
                       options={projectWithExperiences}
                       values={watch('experiences') ?? []}
