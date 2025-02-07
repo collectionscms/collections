@@ -24,4 +24,8 @@ export class SocialProfileEntity extends PrismaBaseEntity<SocialProfile> {
       updatedAt: now,
     });
   }
+
+  get url() {
+    return this.props.url;
+  }
 }

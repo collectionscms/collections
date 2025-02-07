@@ -22,4 +22,12 @@ export class AlumnusEntity extends PrismaBaseEntity<Alumnus> {
       updatedAt: now,
     });
   }
+
+  get name() {
+    return this.props.name;
+  }
+
+  get url() {
+    return this.props.url;
+  }
 }
