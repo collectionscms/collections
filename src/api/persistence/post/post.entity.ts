@@ -197,6 +197,10 @@ export class PostEntity extends PrismaBaseEntity<Post> {
               id: createdBy.id,
               name: createdBy.name,
               avatarUrl: createdBy.image,
+              bio: createdBy.bio,
+              bioUrl: createdBy.bioUrl,
+              employer: createdBy.employer,
+              jobTitle: createdBy.jobTitle,
             },
           };
         }
