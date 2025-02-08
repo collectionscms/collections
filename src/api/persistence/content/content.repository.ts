@@ -20,33 +20,20 @@ export class ContentRepository {
     return ContentEntity.Reconstruct<Content, ContentEntity>(record);
   }
 
-  async findOneBySlug(
-    prisma: ProjectPrismaType,
-    slug: string
-  ): Promise<{ content: ContentEntity; createdBy: UserEntity } | null> {
+  async findOneBySlug(prisma: ProjectPrismaType, slug: string): Promise<ContentEntity | null> {
     const record = await prisma.content.findFirst({
       where: {
         slug,
       },
-      include: {
-        createdBy: true,
-      },
     });
 
-    if (!record) {
-      return null;
-    }
-
-    return {
-      content: ContentEntity.Reconstruct<Content, ContentEntity>(record),
-      createdBy: UserEntity.Reconstruct<User, UserEntity>(record.createdBy),
-    };
+    return record ? ContentEntity.Reconstruct<Content, ContentEntity>(record) : null;
   }
 
   async findOneByIdOrSlug(
     prisma: ProjectPrismaType,
     identifier: string
-  ): Promise<{ content: ContentEntity; createdBy: UserEntity } | null> {
+  ): Promise<ContentEntity | null> {
     const record = await prisma.content.findFirst({
       where: {
         OR: [
@@ -58,19 +45,9 @@ export class ContentRepository {
           },
         ],
       },
-      include: {
-        createdBy: true,
-      },
     });
 
-    if (!record) {
-      return null;
-    }
-
-    return {
-      content: ContentEntity.Reconstruct<Content, ContentEntity>(record),
-      createdBy: UserEntity.Reconstruct<User, UserEntity>(record.createdBy),
-    };
+    return record ? ContentEntity.Reconstruct<Content, ContentEntity>(record) : null;
   }
 
   async findOneWithRevisionsById(
