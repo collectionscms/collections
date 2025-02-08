@@ -74,7 +74,15 @@ export class GetPublishedContentUseCase {
 
     const tags = await this.contentTagRepository.findTagsByContentId(this.prisma, content.id);
 
-    const publishedContent = content.toPublishedContentResponse(userWithProfiles.user, tags);
+    const publishedContent = content.toPublishedContentResponse(
+      userWithProfiles.user,
+      tags,
+      userWithProfiles.spokenLanguages,
+      userWithProfiles.awards,
+      userWithProfiles.socialProfiles,
+      userWithProfiles.alumni,
+      userWithProfiles.experienceWithResources
+    );
     const jsonLd = await this.jsonLdService.toBlogJsonLd({
       content,
       tags,

@@ -25,6 +25,10 @@ export class SocialProfileEntity extends PrismaBaseEntity<SocialProfile> {
     });
   }
 
+  get provider() {
+    return this.props.provider;
+  }
+
   get url() {
     return this.props.url;
   }

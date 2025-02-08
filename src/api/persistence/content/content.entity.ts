@@ -11,9 +11,15 @@ import {
   StatusHistory,
 } from '../../../types/index.js';
 import { generateKey } from '../../utilities/generateKey.js';
+import { AlumnusEntity } from '../alumnus/alumnus.entity.js';
+import { AwardEntity } from '../award/award.entity.js';
 import { ContentRevisionEntity } from '../contentRevision/contentRevision.entity.js';
+import { ExperienceEntity } from '../experience/experience.entity.js';
+import { ExperienceResourceEntity } from '../experienceResource/experienceResource.entity.js';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 import { ProjectEntity } from '../project/project.entity.js';
+import { SocialProfileEntity } from '../socialProfile/socialProfile.entity.js';
+import { SpokenLanguageEntity } from '../spokenLanguage/spokenLanguage.entity.js';
 import { TagEntity } from '../tag/tag.entity.js';
 import { UserEntity } from '../user/user.entity.js';
 
@@ -459,30 +465,6 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
     }
 
     return {
-      ...this.toCommonPublishedContentResponse(createdBy),
-      publishedAt: this.props.publishedAt as Date,
-    };
-  }
-
-  /**
-   * Returns published content results for external use.
-   * @param createdBy
-   * @param tags
-   * @returns
-   */
-  toPublishedContentResponse(createdBy: UserEntity, tags: TagEntity[]): PublishedContent {
-    return {
-      ...this.toCommonPublishedContentResponse(createdBy),
-      publishedAt: this.props.publishedAt as Date,
-      tags: tags.map((tag) => ({
-        id: tag.id,
-        name: tag.name,
-      })),
-    };
-  }
-
-  private toCommonPublishedContentResponse(createdBy: UserEntity) {
-    return {
       id: this.props.id,
       slug: this.props.slug,
       title: this.props.title ?? '',
@@ -500,7 +482,80 @@ export class ContentEntity extends PrismaBaseEntity<Content> {
         id: createdBy.id,
         name: createdBy.name,
         avatarUrl: createdBy.image,
+        bio: createdBy.bio,
+        bioUrl: createdBy.bioUrl,
+        employer: createdBy.employer,
+        jobTitle: createdBy.jobTitle,
       },
+    };
+  }
+
+  /**
+   * Returns published content results for external use.
+   * @param createdBy
+   * @param tags
+   * @returns
+   */
+  toPublishedContentResponse(
+    createdBy: UserEntity,
+    tags: TagEntity[],
+    spokenLanguages: SpokenLanguageEntity[],
+    awards: AwardEntity[],
+    socialProfiles: SocialProfileEntity[],
+    alumni: AlumnusEntity[],
+    experienceWithResources: {
+      experience: ExperienceEntity;
+      resources: ExperienceResourceEntity[];
+    }[]
+  ): PublishedContent {
+    return {
+      id: this.props.id,
+      slug: this.props.slug,
+      title: this.props.title ?? '',
+      subtitle: this.props.subtitle,
+      body: this.props.body ?? '',
+      bodyHtml: this.props.bodyHtml ?? '',
+      status: this.props.status,
+      language: this.props.language,
+      version: this.props.currentVersion,
+      coverUrl: this.props.coverUrl,
+      metaTitle: this.props.metaTitle,
+      metaDescription: this.props.metaDescription,
+      publishedAt: this.props.publishedAt as Date,
+      author: {
+        id: createdBy.id,
+        name: createdBy.name,
+        avatarUrl: createdBy.image,
+        bio: createdBy.bio,
+        bioUrl: createdBy.bioUrl,
+        employer: createdBy.employer,
+        jobTitle: createdBy.jobTitle,
+        spokenLanguages: spokenLanguages.map((spokenLanguage) => ({
+          language: spokenLanguage.language,
+        })),
+        awards: awards.map((award) => ({
+          name: award.name,
+        })),
+        socialProfiles: socialProfiles.map((socialProfile) => ({
+          provider: socialProfile.provider,
+          url: socialProfile.url,
+        })),
+        alumni: alumni.map((alumnus) => ({
+          name: alumnus.name,
+          url: alumnus.url,
+        })),
+        experiences: experienceWithResources.map((experienceWithResource) => ({
+          name: experienceWithResource.experience.name,
+          url: experienceWithResource.experience.url,
+          resources: experienceWithResource.resources.map((resource) => ({
+            url: resource.url,
+          })),
+        })),
+      },
+      tags: tags.map((tag) => ({
+        id: tag.id,
+        name: tag.name,
+      })),
     };
   }
 }
