@@ -5,7 +5,8 @@ import { InMemoryContentRepository } from '../../persistence/content/content.rep
 import { buildContentRevisionEntity } from '../../persistence/contentRevision/contentRevision.entity.fixture.js';
 import { InMemoryContentRevisionRepository } from '../../persistence/contentRevision/contentRevision.repository.mock.js';
 import { InMemoryContentTagRepository } from '../../persistence/contentTag/contentTag.repository.mock.js';
-import { buildUserEntity } from '../../persistence/user/user.entity.fixture.js';
+import { InMemoryUserRepository } from '../../persistence/user/user.repository.mock.js';
+import { JsonLdService } from '../../services/jsonLd.service.js';
 import { GetPublishedContentUseCase } from './getPublishedContent.useCase.js';
 
 describe('GetPublishedContentUseCase', () => {
@@ -14,7 +15,9 @@ describe('GetPublishedContentUseCase', () => {
     projectPrisma(projectId),
     new InMemoryContentRepository(),
     new InMemoryContentTagRepository(),
-    new InMemoryContentRevisionRepository()
+    new InMemoryContentRevisionRepository(),
+    new InMemoryUserRepository(),
+    new JsonLdService()
   );
 
   afterEach(() => {
@@ -108,12 +111,11 @@ describe('GetPublishedContentUseCase', () => {
     it('should throw an error if the draft key does not match the draft content', async () => {
       jest
         .spyOn(InMemoryContentRevisionRepository.prototype, 'findLatestOneBySlug')
-        .mockResolvedValue({
-          contentRevision: buildContentRevisionEntity({
+        .mockResolvedValue(
+          buildContentRevisionEntity({
             draftKey: 'anotherDraftKey',
-          }),
-          createdBy: buildUserEntity(),
-        });
+          })
+        );
 
       await expect(
         useCase.execute({

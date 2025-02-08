@@ -25,7 +25,7 @@ export class ContentService {
     const encodedSlug = encodeURIComponent(latestRevision.slug);
     const sameSlugContent = await this.contentRepository.findOneBySlug(prisma, encodedSlug);
 
-    if (sameSlugContent && sameSlugContent.content.id !== content.id) {
+    if (sameSlugContent && sameSlugContent.id !== content.id) {
       throw new RecordNotUniqueException('already_registered_content_slug');
     }
 
