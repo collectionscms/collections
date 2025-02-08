@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { RecordNotFoundException } from '../../exceptions/database/recordNotFound.js';
 import { logger } from '../../utilities/logger.js';
 import { ProjectPrismaType } from '../database/prisma/client.js';
 import { ContentEntity } from '../persistence/content/content.entity.js';
@@ -35,7 +36,15 @@ export class WebhookService {
       newContent.projectId
     );
 
-    const createdBy = await this.userRepository.findOneById(prisma, newContent.createdById);
+    const userWithProfiles = await this.userRepository.findOneWithProfilesById(
+      prisma,
+      newContent.createdById
+    );
+
+    if (!userWithProfiles) {
+      throw new RecordNotFoundException('record_not_found');
+    }
+
     const tags = await this.contentTagRepository.findTagsByContentId(prisma, newContent.id);
 
     for (const setting of settings) {
@@ -47,7 +56,15 @@ export class WebhookService {
           response = await axios.post(setting.url, {
             id: newContent.id,
             triggerEvent,
-            new: newContent.toPublishedContentResponse(createdBy, tags),
+            new: newContent.toPublishedContentResponse(
+              userWithProfiles.user,
+              tags,
+              userWithProfiles.spokenLanguages,
+              userWithProfiles.awards,
+              userWithProfiles.socialProfiles,
+              userWithProfiles.alumni,
+              userWithProfiles.experienceWithResources
+            ),
           });
         }
       } catch (error) {

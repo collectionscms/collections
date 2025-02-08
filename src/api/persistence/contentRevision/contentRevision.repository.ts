@@ -1,6 +1,5 @@
-import { ContentRevision, User } from '@prisma/client';
+import { ContentRevision } from '@prisma/client';
 import { ProjectPrismaType } from '../../database/prisma/client.js';
-import { UserEntity } from '../user/user.entity.js';
 import { ContentRevisionEntity } from './contentRevision.entity.js';
 
 export class ContentRevisionRepository {
@@ -59,33 +58,26 @@ export class ContentRevisionRepository {
   async findLatestOneBySlug(
     prisma: ProjectPrismaType,
     slug: string
-  ): Promise<{ contentRevision: ContentRevisionEntity; createdBy: UserEntity } | null> {
+  ): Promise<ContentRevisionEntity | null> {
     const record = await prisma.contentRevision.findFirst({
       where: {
         slug,
+        deletedAt: null,
       },
       orderBy: {
         version: 'desc',
       },
-      include: {
-        createdBy: true,
-      },
     });
 
-    if (!record) return null;
-
-    return {
-      contentRevision: ContentRevisionEntity.Reconstruct<ContentRevision, ContentRevisionEntity>(
-        record
-      ),
-      createdBy: UserEntity.Reconstruct<User, UserEntity>(record.createdBy),
-    };
+    return record
+      ? ContentRevisionEntity.Reconstruct<ContentRevision, ContentRevisionEntity>(record)
+      : null;
   }
 
   async findLatestOneByContentIdOrSlug(
     prisma: ProjectPrismaType,
     identifier: string
-  ): Promise<{ contentRevision: ContentRevisionEntity; createdBy: UserEntity } | null> {
+  ): Promise<ContentRevisionEntity | null> {
     const record = await prisma.contentRevision.findFirst({
       where: {
         OR: [
@@ -96,23 +88,16 @@ export class ContentRevisionRepository {
             slug: identifier,
           },
         ],
+        deletedAt: null,
       },
       orderBy: {
         version: 'desc',
       },
-      include: {
-        createdBy: true,
-      },
     });
 
-    if (!record) return null;
-
-    return {
-      contentRevision: ContentRevisionEntity.Reconstruct<ContentRevision, ContentRevisionEntity>(
-        record
-      ),
-      createdBy: UserEntity.Reconstruct<User, UserEntity>(record.createdBy),
-    };
+    return record
+      ? ContentRevisionEntity.Reconstruct<ContentRevision, ContentRevisionEntity>(record)
+      : null;
   }
 
   async findManyTrashed(prisma: ProjectPrismaType): Promise<ContentRevisionEntity[]> {

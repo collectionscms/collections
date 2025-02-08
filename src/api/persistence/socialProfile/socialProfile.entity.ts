@@ -2,7 +2,15 @@ import { SocialProfile } from '@prisma/client';
 import { v4 } from 'uuid';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
 
-export type SocialProfileProvider = 'x' | 'instagram' | 'facebook' | 'linkedIn';
+export const SocialProfileProvider = {
+  X: 'x',
+  Instagram: 'instagram',
+  Facebook: 'facebook',
+  LinkedIn: 'linkedIn',
+} as const;
+
+export type SocialProfileProvider =
+  (typeof SocialProfileProvider)[keyof typeof SocialProfileProvider];
 
 export class SocialProfileEntity extends PrismaBaseEntity<SocialProfile> {
   static Construct({
@@ -23,5 +31,13 @@ export class SocialProfileEntity extends PrismaBaseEntity<SocialProfile> {
       createdAt: now,
       updatedAt: now,
     });
+  }
+
+  get provider() {
+    return this.props.provider;
+  }
+
+  get url() {
+    return this.props.url;
   }
 }

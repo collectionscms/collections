@@ -7,6 +7,8 @@ import { validateAccess } from '../../../middlewares/validateAccess.js';
 import { ContentRepository } from '../../../persistence/content/content.repository.js';
 import { ContentRevisionRepository } from '../../../persistence/contentRevision/contentRevision.repository.js';
 import { ContentTagRepository } from '../../../persistence/contentTag/contentTag.repository.js';
+import { UserRepository } from '../../../persistence/user/user.repository.js';
+import { JsonLdService } from '../../../services/jsonLd.service.js';
 import { GetPublishedContentUseCase } from '../../../useCases/content/getPublishedContent.useCase.js';
 import { getPublishedContentUseCaseSchema } from '../../../useCases/content/getPublishedContent.useCase.schema.js';
 
@@ -29,11 +31,13 @@ router.get(
       projectPrisma(validated.data.projectId),
       new ContentRepository(),
       new ContentTagRepository(),
-      new ContentRevisionRepository()
+      new ContentRevisionRepository(),
+      new UserRepository(),
+      new JsonLdService()
     );
-    const content = await useCase.execute(validated.data);
+    const contentWithJsonLd = await useCase.execute(validated.data);
 
-    res.json({ content });
+    res.json({ ...contentWithJsonLd });
   })
 );
 

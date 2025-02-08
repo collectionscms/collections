@@ -3,6 +3,7 @@ import {
   Alumnus,
   Award,
   Experience,
+  ExperienceResource,
   Permission,
   Project,
   Role,
@@ -15,6 +16,7 @@ import { comparePasswords } from '../../utilities/comparePasswords.js';
 import { AlumnusEntity } from '../alumnus/alumnus.entity.js';
 import { AwardEntity } from '../award/award.entity.js';
 import { ExperienceEntity } from '../experience/experience.entity.js';
+import { ExperienceResourceEntity } from '../experienceResource/experienceResource.entity.js';
 import { PermissionEntity } from '../permission/permission.entity.js';
 import { ProjectEntity } from '../project/project.entity.js';
 import { RoleEntity } from '../role/role.entity.js';
@@ -164,6 +166,68 @@ export class UserRepository {
           ),
         };
       }),
+    };
+  }
+
+  async findOneWithProfilesById(
+    prisma: BypassPrismaType,
+    userId: string
+  ): Promise<{
+    user: UserEntity;
+    socialProfiles: SocialProfileEntity[];
+    alumni: AlumnusEntity[];
+    spokenLanguages: SpokenLanguageEntity[];
+    awards: AwardEntity[];
+    experienceWithResources: {
+      experience: ExperienceEntity;
+      resources: ExperienceResourceEntity[];
+    }[];
+  } | null> {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+      include: {
+        socialProfiles: true,
+        alumni: true,
+        spokenLanguages: true,
+        awards: true,
+        userExperiences: {
+          include: {
+            experience: {
+              include: {
+                experienceResources: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (!user) return null;
+
+    return {
+      user: UserEntity.Reconstruct<User, UserEntity>(user),
+      socialProfiles: user.socialProfiles.map((socialProfile) =>
+        SocialProfileEntity.Reconstruct<SocialProfile, SocialProfileEntity>(socialProfile)
+      ),
+      alumni: user.alumni.map((alumnus) =>
+        AlumnusEntity.Reconstruct<Alumnus, AlumnusEntity>(alumnus)
+      ),
+      spokenLanguages: user.spokenLanguages.map((spokenLanguage) =>
+        SpokenLanguageEntity.Reconstruct<SpokenLanguage, SpokenLanguageEntity>(spokenLanguage)
+      ),
+      awards: user.awards.map((award) => AwardEntity.Reconstruct<Award, AwardEntity>(award)),
+      experienceWithResources: user.userExperiences.map((userExperience) => ({
+        experience: ExperienceEntity.Reconstruct<Experience, ExperienceEntity>(
+          userExperience.experience
+        ),
+        resources: userExperience.experience.experienceResources.map((resource) =>
+          ExperienceResourceEntity.Reconstruct<ExperienceResource, ExperienceResourceEntity>(
+            resource
+          )
+        ),
+      })),
     };
   }
 

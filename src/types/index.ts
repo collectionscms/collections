@@ -5,7 +5,6 @@ import {
   Content,
   ContentRevision,
   Experience,
-  ExperienceResource,
   File,
   Permission,
   Project,
@@ -120,10 +119,37 @@ export type PublishedListContent = {
     id: string;
     name: string;
     avatarUrl: string | null;
+    bio: string | null;
+    bioUrl: string | null;
+    employer: string | null;
+    jobTitle: string | null;
   };
 };
 
 export type PublishedContent = {
+  author: {
+    spokenLanguages: {
+      language: string;
+    }[];
+    awards: {
+      name: string;
+    }[];
+    socialProfiles: {
+      provider: string;
+      url: string | null;
+    }[];
+    alumni: {
+      name: string;
+      url: string | null;
+    }[];
+    experiences: {
+      name: string;
+      url: string | null;
+      resources: {
+        url: string | null;
+      }[];
+    }[];
+  };
   tags: {
     id: string;
     name: string;

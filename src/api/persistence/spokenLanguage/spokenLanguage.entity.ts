@@ -19,4 +19,8 @@ export class SpokenLanguageEntity extends PrismaBaseEntity<SpokenLanguage> {
       updatedAt: now,
     });
   }
+
+  get language() {
+    return this.props.language;
+  }
 }

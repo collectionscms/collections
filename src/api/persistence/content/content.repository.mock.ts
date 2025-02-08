@@ -6,28 +6,19 @@ import { ContentEntity } from './content.entity.js';
 import { ContentRepository } from './content.repository.js';
 
 export class InMemoryContentRepository extends ContentRepository {
-  async findOneBySlug(
-    _prisma: ProjectPrismaType,
-    slug: string
-  ): Promise<{ content: ContentEntity; createdBy: UserEntity } | null> {
-    return {
-      content: buildContentEntity({
-        slug,
-      }),
-      createdBy: buildUserEntity(),
-    };
+  async findOneBySlug(_prisma: ProjectPrismaType, slug: string): Promise<ContentEntity | null> {
+    return buildContentEntity({
+      slug,
+    });
   }
 
   async findOneByIdOrSlug(
     _prisma: ProjectPrismaType,
     identifier: string
-  ): Promise<{ content: ContentEntity; createdBy: UserEntity } | null> {
-    return {
-      content: buildContentEntity({
-        id: identifier,
-      }),
-      createdBy: buildUserEntity(),
-    };
+  ): Promise<ContentEntity | null> {
+    return buildContentEntity({
+      id: identifier,
+    });
   }
 
   async findPublishedContentsByCreatedById(

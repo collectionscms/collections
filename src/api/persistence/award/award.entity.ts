@@ -13,4 +13,8 @@ export class AwardEntity extends PrismaBaseEntity<Award> {
       updatedAt: now,
     });
   }
+
+  get name() {
+    return this.props.name;
+  }
 }
