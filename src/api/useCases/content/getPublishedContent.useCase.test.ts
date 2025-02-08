@@ -32,8 +32,10 @@ describe('GetPublishedContentUseCase', () => {
       });
 
       expect(record).toMatchObject({
-        slug: 'slug',
-        status: 'published',
+        content: {
+          slug: 'slug',
+          status: 'published',
+        },
       });
     });
 
@@ -45,8 +47,10 @@ describe('GetPublishedContentUseCase', () => {
       });
 
       expect(record).toMatchObject({
-        id,
-        status: 'published',
+        content: {
+          id,
+          status: 'published',
+        },
       });
     });
 
@@ -73,8 +77,10 @@ describe('GetPublishedContentUseCase', () => {
       });
 
       expect(record).toMatchObject({
-        slug: 'slug',
-        status: 'draft',
+        content: {
+          slug: 'slug',
+          status: 'draft',
+        },
       });
     });
 
@@ -87,8 +93,10 @@ describe('GetPublishedContentUseCase', () => {
       });
 
       expect(record).toMatchObject({
-        id: contentId,
-        status: 'draft',
+        content: {
+          id: contentId,
+          status: 'draft',
+        },
       });
     });
 
