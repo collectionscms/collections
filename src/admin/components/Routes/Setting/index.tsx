@@ -77,7 +77,9 @@ export const SettingRoutes = () => {
         </MainHeader>
       ),
     });
+  }
 
+  if (hasPermission('readSeo')) {
     children.push({
       path: 'project/seo',
       element: (
