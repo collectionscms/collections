@@ -74,27 +74,28 @@ export class UpdateProfileUseCase {
       image,
     });
 
-    const socialProfiles: {
-      provider: SocialProfileProvider;
-      url: string | null;
-    }[] = [
+    // filter out empty urls
+    const socialProfiles = [
       {
-        provider: 'x',
+        provider: SocialProfileProvider.X,
         url: xUrl,
       },
       {
-        provider: 'instagram',
+        provider: SocialProfileProvider.Instagram,
         url: instagramUrl,
       },
       {
-        provider: 'facebook',
+        provider: SocialProfileProvider.Facebook,
         url: facebookUrl,
       },
       {
-        provider: 'linkedIn',
+        provider: SocialProfileProvider.LinkedIn,
         url: linkedInUrl,
       },
-    ];
+    ].filter((profile) => profile.url);
+
+    // filter out empty strings
+    const filteredAlumni = alumni.filter((alumnus) => alumnus.name || alumnus.url);
 
     const projectWithExperiences =
       await this.userProjectRepository.findManyWithProjectExperiencesByUserId(this.prisma, userId);
@@ -137,7 +138,7 @@ export class UpdateProfileUseCase {
         })
       );
 
-      const alumnusEntities = alumni.map((alumnus) =>
+      const alumnusEntities = filteredAlumni.map((alumnus) =>
         AlumnusEntity.Construct({
           name: alumnus.name,
           url: alumnus.url,
