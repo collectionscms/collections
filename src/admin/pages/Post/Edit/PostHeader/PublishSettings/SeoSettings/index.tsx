@@ -13,7 +13,7 @@ import {
   updateMetaValidator,
 } from '../../../../../../fields/validators/posts/updateMeta.validator.js';
 import { usePost } from '../../../../Context/index.js';
-import { TitleTooltip } from '../ui/TitleTooltip/index.js';
+import { TitleTooltip } from '../parts/TitleTooltip/index.js';
 
 type Props = {
   contentId: string;

@@ -30,7 +30,7 @@ export const ContentStatus = {
   archived: 'archived',
   trashed: 'trashed',
 } as const;
-export type ContentStatusType = (typeof ContentStatus)[keyof typeof ContentStatus];
+export type ContentStatus = (typeof ContentStatus)[keyof typeof ContentStatus];
 
 type ContentProps = Omit<
   Content,

@@ -20,6 +20,7 @@ import { logger } from '../../../../utilities/logger.js';
 import { MainCard } from '../../../@extended/components/MainCard/index.js';
 import { ConfirmDiscardDialog } from '../../../components/elements/ConfirmDiscardDialog/index.js';
 import { Icon } from '../../../components/elements/Icon/index.js';
+import { useAuth } from '../../../components/utilities/Auth/index.js';
 import { ComposeWrapper } from '../../../components/utilities/ComposeWrapper/index.js';
 import {
   FormValues,
@@ -27,11 +28,12 @@ import {
 } from '../../../fields/validators/experiences/updateExperience.validator.js';
 import { useUnsavedChangesPrompt } from '../../../hooks/useUnsavedChangesPrompt.js';
 import { getMeUrl } from '../../../utilities/urlGenerator.js';
-import { TitleTooltip } from '../../Post/Edit/PostHeader/PublishSettings/ui/TitleTooltip/index.js';
+import { TitleTooltip } from '../../Post/Edit/PostHeader/PublishSettings/parts/TitleTooltip/index.js';
 import { SeoContextProvider, useSeo } from './Context/index.js';
 import { ResourceUrl } from './parts/ResourceUrl/index.js';
 
 export const EditSeoPageImpl: React.FC = () => {
+  const { hasPermission } = useAuth();
   const { t } = useTranslation();
   const knowsUrl = getMeUrl();
   const { getExperiences, createExperience } = useSeo();
@@ -222,13 +224,15 @@ export const EditSeoPageImpl: React.FC = () => {
               </MainCard>
             </Stack>
           </Grid>
-          <Grid xs={12}>
-            <Stack direction="row" alignItems="right" justifyContent="right">
-              <Button variant="contained" type="submit" disabled={isMutating}>
-                {t('save')}
-              </Button>
-            </Stack>
-          </Grid>
+          {hasPermission('saveSeo') && (
+            <Grid xs={12}>
+              <Stack direction="row" alignItems="right" justifyContent="right">
+                <Button variant="contained" type="submit" disabled={isMutating}>
+                  {t('save')}
+                </Button>
+              </Stack>
+            </Grid>
+          )}
         </Grid>
       </form>
     </>

@@ -16,7 +16,7 @@ import {
   updateProjectValidator,
 } from '../../fields/validators/projects/updateProject.validator.js';
 import { useUnsavedChangesPrompt } from '../../hooks/useUnsavedChangesPrompt.js';
-import { TitleTooltip } from '../Post/Edit/PostHeader/PublishSettings/ui/TitleTooltip/index.js';
+import { TitleTooltip } from '../Post/Edit/PostHeader/PublishSettings/parts/TitleTooltip/index.js';
 import { ProjectContextProvider, useProject } from './Context/index.js';
 
 const ProjectImpl: React.FC = () => {

@@ -2,7 +2,7 @@ import { Divider, Link, Paper } from '@mui/material';
 import { t } from 'i18next';
 import React from 'react';
 import { Icon } from '../../../Icon/index.js';
-import { ToolbarButton } from '../../ui/ToolbarButton/index.js';
+import { ToolbarButton } from '../../parts/ToolbarButton/index.js';
 
 export type Props = {
   url: string;

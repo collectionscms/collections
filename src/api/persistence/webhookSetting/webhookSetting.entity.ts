@@ -2,13 +2,13 @@ import { WebhookSetting } from '@prisma/client';
 import { v4 } from 'uuid';
 import { UnexpectedException } from '../../../exceptions/unexpected.js';
 import { PrismaBaseEntity } from '../prismaBaseEntity.js';
-import { WebhookTriggerEvent, WebhookTriggerEventType } from '../webhookLog/webhookLog.entity.js';
+import { WebhookTriggerEvent } from '../webhookLog/webhookLog.entity.js';
 
 export const WebhookProvider = {
   vercel: 'vercel',
   custom: 'custom',
 } as const;
-export type WebhookProviderType = (typeof WebhookProvider)[keyof typeof WebhookProvider];
+export type WebhookProvider = (typeof WebhookProvider)[keyof typeof WebhookProvider];
 
 export type WebhookSettingProps = Omit<WebhookSetting, 'id' | 'createdAt' | 'updatedAt'>;
 
@@ -52,7 +52,7 @@ export class WebhookSettingEntity extends PrismaBaseEntity<WebhookSetting> {
     return this.props.enabled;
   }
 
-  canSend(triggerEvent: WebhookTriggerEventType): boolean {
+  canSend(triggerEvent: WebhookTriggerEvent): boolean {
     if (!this.props.enabled) return false;
 
     switch (triggerEvent) {

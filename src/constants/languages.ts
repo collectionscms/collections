@@ -39,10 +39,10 @@ export const IsoLanguageCode = {
   'zh-cn': 'zh-cn',
   'zh-tw': 'zh-tw',
 } as const;
-export type IsoLanguageCodeType = (typeof IsoLanguageCode)[keyof typeof IsoLanguageCode];
+export type IsoLanguageCode = (typeof IsoLanguageCode)[keyof typeof IsoLanguageCode];
 
 export type LanguageCode = {
-  code: IsoLanguageCodeType;
+  code: IsoLanguageCode;
   sourceLanguageCode: SourceLanguageCode | null;
   targetLanguageCode: TargetLanguageCode | null;
   englishName: string;

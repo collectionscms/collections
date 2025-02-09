@@ -1,7 +1,7 @@
 import { Box, Paper, Stack, Typography, useTheme } from '@mui/material';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Icon } from '../../../Icon/index.js';
-import { DropdownButton } from '../../ui/DropdownButton/index.js';
+import { DropdownButton } from '../../parts/DropdownButton/index.js';
 import { Command, MenuListProps } from '../SlashCommand/groups.js';
 
 export const MenuList = React.forwardRef((props: MenuListProps, ref) => {

@@ -7,7 +7,7 @@ type Props = {
   options: Record<string, string>[];
   values: Record<string, string>[];
   placeholder: string;
-  onChange: (names: string[]) => void;
+  onChange: (selectedValues: string[]) => void;
 };
 
 export const CreatableSelector: React.FC<Props> = ({ options, values, placeholder, onChange }) => {

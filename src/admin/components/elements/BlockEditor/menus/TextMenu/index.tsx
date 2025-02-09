@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Icon } from '../../../Icon/index.js';
 import { useTextMenuCommands } from '../../hooks/useTextMenuCommands.js';
 import { useTextMenuStates } from '../../hooks/useTextMenuStates.js';
-import { ToolbarButton } from '../../ui/ToolbarButton/index.js';
+import { ToolbarButton } from '../../parts/ToolbarButton/index.js';
 import { EditLinkPopover } from './EditLinkPopover.js';
 
 type Props = {

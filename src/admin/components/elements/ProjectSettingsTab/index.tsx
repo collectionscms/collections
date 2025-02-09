@@ -4,26 +4,32 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 import { MainCard } from '../../../@extended/components/MainCard/index.js';
+import { useAuth } from '../../utilities/Auth/index.js';
 import { Icon } from '../Icon/index.js';
 
 export type Props = {
   children?: React.ReactNode;
 };
 
-const menus = [
-  {
-    label: 'general',
-    icon: <Icon name="FileText" size={16} classNames={{ marginRight: 8 }} />,
-  },
-  {
-    label: 'seo',
-    icon: <Icon name="Search" size={16} classNames={{ marginRight: 8 }} />,
-  },
-];
-
 export const ProjectSettingsTab: React.FC<Props> = ({ children }) => {
   const { t } = useTranslation();
   const { pathname } = useLocation();
+  const { hasPermission } = useAuth();
+
+  const menus = [
+    {
+      label: 'general',
+      icon: <Icon name="FileText" size={16} classNames={{ marginRight: 8 }} />,
+    },
+    ...(hasPermission('readSeo')
+      ? [
+          {
+            label: 'seo',
+            icon: <Icon name="Search" size={16} classNames={{ marginRight: 8 }} />,
+          },
+        ]
+      : []),
+  ];
 
   const [activeTab, setActiveTab] = useState<string>(menus[0].label);
 
