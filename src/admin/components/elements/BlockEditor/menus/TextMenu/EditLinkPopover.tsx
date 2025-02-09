@@ -3,7 +3,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Icon } from '../../../Icon/index.js';
 import { LinkEditorPanel } from '../../panels/LinkEditorPanel/index.js';
-import { ToolbarButton } from '../../ui/ToolbarButton/index.js';
+import { ToolbarButton } from '../../parts/ToolbarButton/index.js';
 
 export type EditLinkPopoverProps = {
   onSetLink: (link: string, openInNewTab?: boolean) => void;

@@ -5,8 +5,8 @@ import { Editor } from '@tiptap/react';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Icon } from '../../../Icon/index.js';
-import { DropdownButton } from '../../ui/DropdownButton/index.js';
-import { ToolbarButton } from '../../ui/ToolbarButton/index.js';
+import { DropdownButton } from '../../parts/DropdownButton/index.js';
+import { ToolbarButton } from '../../parts/ToolbarButton/index.js';
 import { useContentItemActions } from './hooks/useContentItemActions.js';
 import { useData } from './hooks/useData.js';
 

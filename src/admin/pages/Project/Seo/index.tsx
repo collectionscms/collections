@@ -28,7 +28,7 @@ import {
 } from '../../../fields/validators/experiences/updateExperience.validator.js';
 import { useUnsavedChangesPrompt } from '../../../hooks/useUnsavedChangesPrompt.js';
 import { getMeUrl } from '../../../utilities/urlGenerator.js';
-import { TitleTooltip } from '../../Post/Edit/PostHeader/PublishSettings/ui/TitleTooltip/index.js';
+import { TitleTooltip } from '../../Post/Edit/PostHeader/PublishSettings/parts/TitleTooltip/index.js';
 import { SeoContextProvider, useSeo } from './Context/index.js';
 import { ResourceUrl } from './parts/ResourceUrl/index.js';
 
