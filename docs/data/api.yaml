@@ -56,7 +56,7 @@ paths:
   /api/v1/contents/{identifier}:
     get:
       summary: Get content
-      description: Returns a content with published status.
+      description: Returns content that is in a published state. Additionally, it provides a JSON‑LD formatted response for enhanced author SEO.
       operationId: getContent
       parameters:
         - $ref: '#/components/parameters/identifier'
@@ -71,6 +71,8 @@ paths:
                 properties:
                   content:
                     $ref: '#/components/schemas/contentResponse'
+                  jsonLd:
+                    $ref: '#/components/schemas/contentByJsonLd'
       security:
         - apiKeyAuth: []
 
@@ -250,6 +252,110 @@ components:
           description: Avatar URL
           example: 'https://your-subdomain.collections.dev/assets/a8c4891c-6bc0-4f58-81c6-5e89bb572d4c'
           type: string
+        bio:
+          description: 'Used as Person.description in JSON-LD'
+          example: 'This is a bio'
+          type: string
+        bioUrl:
+          description: 'Used as Person.sameAs in JSON-LD'
+          example: 'https://john-doe.com'
+          type: string
+        employer:
+          description: 'Used as worksFor in JSON-LD'
+          example: 'John Doe Inc.'
+          type: string
+    authorWithProfile:
+      allOf:
+        - $ref: '#/components/schemas/author'
+        - type: object
+          properties:
+            spokenLanguages:
+              type: array
+              description: 'Used as knowsLanguage in JSON-LD'
+              items:
+                type: object
+                required:
+                  - language
+                properties:
+                  language:
+                    description: language
+                    example: 'en-us'
+                    type: string
+            awards:
+              type: array
+              description: 'Used as award in JSON-LD'
+              items:
+                type: object
+                required:
+                  - name
+                properties:
+                  name:
+                    description: Name
+                    example: 'Award Name'
+                    type: string
+            socialProfiles:
+              type: array
+              description: 'Used as Person.sameAs in JSON-LD'
+              items:
+                type: object
+                required:
+                  - platform
+                  - url
+                properties:
+                  platform:
+                    description: Platform
+                    example: 'x'
+                    type: string
+                  url:
+                    description: URL
+                    example: 'https://x.com/john-doe'
+                    type: string
+            alumni:
+              type: array
+              description: 'Used as alumniOf in JSON-LD'
+              items:
+                type: object
+                required:
+                  - name
+                  - url
+                properties:
+                  name:
+                    description: Name
+                    example: 'Alumnus Name'
+                    type: string
+                  url:
+                    description: URL
+                    example: 'https://alumnus.com'
+                    type: string
+            experiences:
+              type: array
+              description: 'Used as knowsAbout in JSON-LD'
+              items:
+                type: object
+                required:
+                  - name
+                  - url
+                  - responses
+                properties:
+                  name:
+                    description: Name
+                    example: 'Experience Name'
+                    type: string
+                  url:
+                    description: URL
+                    example: 'https://experience.com'
+                    type: string
+                  responses:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - url
+                      properties:
+                        url:
+                          description: URL
+                          example: 'https://response.com'
+                          type: string
     tags:
       type: array
       items:
@@ -327,7 +433,7 @@ components:
         publishedAt:
           $ref: '#/components/schemas/publishedAt'
         author:
-          $ref: '#/components/schemas/author'
+          $ref: '#/components/schemas/authorWithProfile'
         tags:
           $ref: '#/components/schemas/tags'
 
@@ -374,3 +480,145 @@ components:
           $ref: '#/components/schemas/publishedAt'
         author:
           $ref: '#/components/schemas/author'
+
+    ## #####################################
+    ## JSON-LD
+    ## #####################################
+    contentByJsonLd:
+      type: object
+      description: JSON-LD
+      properties:
+        '@type':
+          type: string
+          example: 'BlogPosting'
+        '@context':
+          type: string
+          example: 'https://schema.org'
+        name:
+          type: string
+          example: 'This is a title'
+        datePublished:
+          type: string
+          example: '2023-09-29T00:53:20.604Z'
+        dateModified:
+          type: string
+          example: '2023-09-29T00:53:20.604Z'
+        description:
+          type: string
+          example: 'This is a description'
+        inLanguage:
+          type: string
+          example: 'en-us'
+        articleSection:
+          type: array
+          items:
+            type: string
+          example: ['Technology', 'Software Development']
+        author:
+          type: object
+          properties:
+            '@type':
+              type: string
+              example: 'Person'
+            name:
+              type: string
+              example: 'John Doe'
+            description:
+              type: string
+              example: 'This is a bio'
+            image:
+              type: object
+              properties:
+                '@type':
+                  type: string
+                  example: 'ImageObject'
+                url:
+                  type: string
+                  example: 'https://john-doe.com/avatar.jpg'
+            jobTitle:
+              type: string
+              example: 'Software Engineer'
+            worksFor:
+              type: object
+              properties:
+                '@type':
+                  type: string
+                  example: 'Organization'
+                name:
+                  type: string
+                  example: 'John Doe Inc.'
+            knowsLanguage:
+              type: array
+              items:
+                type: object
+                properties:
+                  '@type':
+                    type: string
+                    example: 'Language'
+                  name:
+                    type: string
+                    example: 'English'
+            award:
+              type: array
+              items:
+                type: string
+              example: ['Award 1', 'Award 2']
+            sameAs:
+              type: array
+              items:
+                type: string
+              example: ['https://x.com/john-doe', 'https://linkedin.com/in/john-doe']
+            alumniOf:
+              type: array
+              items:
+                type: object
+                properties:
+                  '@type':
+                    type: string
+                    example: 'EducationalOrganization'
+                  name:
+                    type: string
+                    example: 'Alumni Name'
+                  url:
+                    type: string
+                    example: 'https://alumni.com'
+            knowsAbout:
+              type: array
+              items:
+                type: object
+                properties:
+                  '@type':
+                    type: string
+                    example: 'Thing'
+                  name:
+                    type: string
+                    example: 'Knowledge about'
+                  url:
+                    type: string
+                    example: 'https://knowledge.com'
+                  sameAs:
+                    type: array
+                    items:
+                      type: string
+                      example: 'https://response.com'
+        mainEntityOfPage:
+          type: object
+          properties:
+            '@type':
+              type: string
+              example: 'WebPage'
+            name:
+              type: string
+              example: 'This is a title'
+            description:
+              type: string
+              example: 'This is a description'
+            inLanguage:
+              type: string
+              example: 'en-us'
+            datePublished:
+              type: string
+              example: '2023-09-29T00:53:20.604Z'
+            dateModified:
+              type: string
+              example: '2023-09-29T00:53:20.604Z'

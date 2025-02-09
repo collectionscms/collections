@@ -86,9 +86,14 @@ export class JsonLdService {
         ...(awards.length > 0 && {
           award: awards.map((award) => award.name),
         }),
-        ...(socialProfiles.length > 0 && {
-          sameAs: socialProfiles.map((socialProfile) => socialProfile.url),
-        }),
+        ...(socialProfiles.length > 0 || user.bioUrl
+          ? {
+              sameAs: [
+                ...socialProfiles.map((socialProfile) => socialProfile.url),
+                ...(user.bioUrl ? [user.bioUrl] : []),
+              ],
+            }
+          : {}),
         ...(alumni.length > 0 && {
           alumniOf: [
             ...alumni.map((alumnus) => ({

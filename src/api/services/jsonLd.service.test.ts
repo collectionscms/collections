@@ -35,6 +35,7 @@ describe('JsonLdService', () => {
           name: 'John Doe',
           image: 'https://example.com/image.jpg',
           bio: 'bio',
+          bioUrl: 'https://example.com/bio',
           jobTitle: 'ceo',
           employer: 'Banana',
         }),
@@ -101,7 +102,11 @@ describe('JsonLdService', () => {
             },
           ],
           award: ['Black Belt'],
-          sameAs: ['https://x.com/john_doe', 'https://www.facebook.com/john_doe'],
+          sameAs: [
+            'https://x.com/john_doe',
+            'https://www.facebook.com/john_doe',
+            'https://example.com/bio',
+          ],
           alumniOf: [
             {
               name: 'SEO',
