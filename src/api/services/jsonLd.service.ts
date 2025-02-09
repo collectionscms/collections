@@ -37,17 +37,19 @@ export class JsonLdService {
     const doc = {
       '@context': 'https://schema.org',
       '@type': 'BlogPosting',
-      dateModified: dayjs(content.updatedAt).format('YYYY-MM-DD'),
+      dateModified: dayjs(content.updatedAt).format('YYYY-MM-DDThh:mm:ssZ'),
       inLanguage: content.language,
       ...((content.title || content.metaTitle) && {
         name: content.metaTitle || content.title.slice(0, 160),
-        headline: content.metaTitle || content.title.slice(0, 160),
+      }),
+      ...(content.subtitle && {
+        headline: content.subtitle,
       }),
       ...((content.metaDescription || content.body) && {
         description: content.metaDescription || content.body.slice(0, 160),
       }),
       ...(content.publishedAt && {
-        datePublished: dayjs(content.publishedAt).format('YYYY-MM-DD'),
+        datePublished: dayjs(content.publishedAt).format('YYYY-MM-DDThh:mm:ssZ'),
       }),
       ...(tags.length > 0 && {
         articleSection: tags.map((tag) => tag.name),
