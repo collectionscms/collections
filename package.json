@@ -1,6 +1,6 @@
 {
   "name": "@collectionscms/collections",
-  "version": "2.3.3",
+  "version": "2.4.0",
   "description": "Automatic translation and AI SEO generation. Headless CMS for fast global site launch.",
   "license": "MIT",
   "type": "module",
