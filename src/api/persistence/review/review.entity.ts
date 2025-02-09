@@ -8,7 +8,7 @@ export const ReviewStatus = {
   Approved: 'approved',
   Closed: 'closed',
 } as const;
-export type ReviewStatusType = (typeof ReviewStatus)[keyof typeof ReviewStatus];
+export type ReviewStatus = (typeof ReviewStatus)[keyof typeof ReviewStatus];
 
 export class ReviewEntity extends PrismaBaseEntity<Review> {
   static Construct({

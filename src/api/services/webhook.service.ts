@@ -7,7 +7,7 @@ import { ContentTagRepository } from '../persistence/contentTag/contentTag.repos
 import { UserRepository } from '../persistence/user/user.repository.js';
 import {
   WebhookLogEntity,
-  WebhookTriggerEventType,
+  WebhookTriggerEvent,
 } from '../persistence/webhookLog/webhookLog.entity.js';
 import { WebhookLogRepository } from '../persistence/webhookLog/webhookLog.repository';
 import { WebhookSettingRepository } from '../persistence/webhookSetting/webhookSetting.repository';
@@ -28,7 +28,7 @@ export class WebhookService {
    */
   async send(
     prisma: ProjectPrismaType,
-    triggerEvent: WebhookTriggerEventType,
+    triggerEvent: WebhookTriggerEvent,
     newContent: ContentEntity
   ): Promise<void> {
     const settings = await this.webhookSettingRepository.findEnabledManyByProjectId(

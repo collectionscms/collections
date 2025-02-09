@@ -10,8 +10,7 @@ export const WebhookTriggerEvent = {
   restorePublished: 'restorePublished',
   revert: 'revert',
 } as const;
-export type WebhookTriggerEventType =
-  (typeof WebhookTriggerEvent)[keyof typeof WebhookTriggerEvent];
+export type WebhookTriggerEvent = (typeof WebhookTriggerEvent)[keyof typeof WebhookTriggerEvent];
 
 type WebhookLogProps = Omit<WebhookLog, 'id' | 'createdAt'>;
 
