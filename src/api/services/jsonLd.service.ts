@@ -37,20 +37,20 @@ export class JsonLdService {
     const doc = {
       '@context': 'https://schema.org',
       '@type': 'BlogPosting',
-      dateModified: dayjs(content.updatedAt).format('YYYY-MM-DDThh:mm:ssZ'),
-      inLanguage: content.language,
       ...((content.title || content.metaTitle) && {
         name: content.metaTitle || content.title.slice(0, 160),
       }),
       ...(content.subtitle && {
         headline: content.subtitle,
       }),
-      ...((content.metaDescription || content.body) && {
-        description: content.metaDescription || content.body.slice(0, 160),
-      }),
       ...(content.publishedAt && {
         datePublished: dayjs(content.publishedAt).format('YYYY-MM-DDThh:mm:ssZ'),
       }),
+      dateModified: dayjs(content.updatedAt).format('YYYY-MM-DDThh:mm:ssZ'),
+      ...((content.metaDescription || content.body) && {
+        description: content.metaDescription || content.body.slice(0, 160),
+      }),
+      inLanguage: content.language,
       ...(tags.length > 0 && {
         articleSection: tags.map((tag) => tag.name),
       }),
@@ -110,6 +110,20 @@ export class JsonLdService {
             })),
           ],
         }),
+      },
+      mainEntityOfPage: {
+        '@type': 'WebPage',
+        ...((content.title || content.metaTitle) && {
+          name: content.metaTitle || content.title.slice(0, 160),
+        }),
+        ...((content.metaDescription || content.body) && {
+          description: content.metaDescription || content.body.slice(0, 160),
+        }),
+        inLanguage: content.language,
+        ...(content.publishedAt && {
+          datePublished: dayjs(content.publishedAt).format('YYYY-MM-DDThh:mm:ssZ'),
+        }),
+        dateModified: dayjs(content.updatedAt).format('YYYY-MM-DDThh:mm:ssZ'),
       },
     };
 

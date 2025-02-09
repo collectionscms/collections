@@ -116,6 +116,13 @@ describe('JsonLdService', () => {
             },
           ],
         },
+        mainEntityOfPage: {
+          name: 'sample post',
+          description: 'My first blog!',
+          inLanguage: 'ja',
+          datePublished: publishedAt.format('YYYY-MM-DDThh:mm:ssZ'),
+          dateModified: updatedAt.format('YYYY-MM-DDThh:mm:ssZ'),
+        },
       });
     });
 
