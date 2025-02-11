@@ -7,6 +7,7 @@ import { ApiKeyEntity } from '../../persistence/apiKey/apiKey.entity.js';
 import { ApiKeyRepository } from '../../persistence/apiKey/apiKey.repository.js';
 import { ApiKeyPermissionEntity } from '../../persistence/apiKeyPermission/apiKeyPermission.entity.js';
 import { ApiKeyPermissionRepository } from '../../persistence/apiKeyPermission/apiKeyPermission.repository.js';
+import { apiKeyActions } from '../../persistence/permission/permission.entity.js';
 import { ProjectEntity } from '../../persistence/project/project.entity.js';
 import { ProjectRepository } from '../../persistence/project/project.repository.js';
 import { RoleEntity } from '../../persistence/role/role.entity.js';
@@ -64,18 +65,20 @@ export class CreateProjectUseCase {
       createdById: userId,
     });
 
-    const permissionEntity = ApiKeyPermissionEntity.Construct({
-      apiKeyId: apiKeyEntity.id,
-      projectId: projectEntity.id,
-      permissionAction: 'readPublishedPost',
-    });
+    const apiKeyPermissions = apiKeyActions.post.map((action) =>
+      ApiKeyPermissionEntity.Construct({
+        apiKeyId: apiKeyEntity.id,
+        projectId: projectEntity.id,
+        permissionAction: action,
+      })
+    );
 
     const createdProject = await this.prisma.$transaction(async (tx) => {
       const result = await this.projectRepository.create(tx, projectEntity);
       await this.roleRepository.create(tx, roleEntity);
       await this.userProjectRepository.create(tx, userProjectEntity);
       await this.apiKeyRepository.create(tx, apiKeyEntity);
-      await this.apiKeyPermissionRepository.createMany(tx, [permissionEntity]);
+      await this.apiKeyPermissionRepository.createMany(tx, apiKeyPermissions);
 
       return result;
     });
