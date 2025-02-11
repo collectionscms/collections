@@ -5,9 +5,9 @@ import { InvalidTokenException } from '../../exceptions/invalidToken.js';
 import { UnauthorizedException } from '../../exceptions/unauthorized.js';
 import { ProjectWithRole } from '../../types/index.js';
 import { authConfig } from '../configs/auth.js';
+import { bypassPrisma } from '../database/prisma/client.js';
 import { ApiKeyRepository } from '../persistence/apiKey/apiKey.repository.js';
 import { UserRepository } from '../persistence/user/user.repository.js';
-import { bypassPrisma } from '../database/prisma/client.js';
 import { GetApiKeyProjectRolesUseCase } from '../useCases/apiKey/getApiKeyProjectRoles.useCase.js';
 import { GetMyProjectRolesUseCase } from '../useCases/me/getMyProjectRoles.useCase.js';
 import { errorHandler } from './errorHandler.js';
@@ -51,8 +51,14 @@ export const authenticatedUser = async (req: Request, res: Response, next: NextF
       projectRoles = record.projectRoles;
     } else if (token) {
       const useCase = new GetApiKeyProjectRolesUseCase(bypassPrisma, new ApiKeyRepository());
-      const record = await useCase.execute(token);
+      const { createdBy, ...record } = await useCase.execute(token);
       projectRoles = { [record.subdomain]: record };
+
+      // set api key creator as user
+      res.user = {
+        id: createdBy.id,
+        email: createdBy.email,
+      };
     }
   } catch (error) {
     return errorHandler(error, req, res, next);

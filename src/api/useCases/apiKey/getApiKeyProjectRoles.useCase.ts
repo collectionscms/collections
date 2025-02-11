@@ -1,3 +1,4 @@
+import { User } from '@prisma/client';
 import { RecordNotFoundException } from '../../../exceptions/database/recordNotFound.js';
 import { UnauthorizedException } from '../../../exceptions/unauthorized.js';
 import { ProjectWithRole } from '../../../types/index.js';
@@ -10,7 +11,7 @@ export class GetApiKeyProjectRolesUseCase {
     private readonly apiKeyRepository: ApiKeyRepository
   ) {}
 
-  async execute(key: string): Promise<ProjectWithRole> {
+  async execute(key: string): Promise<ProjectWithRole & { createdBy: User }> {
     const apiKeyWithProject = await this.apiKeyRepository.findOneWithProjectByKey(this.prisma, key);
     if (!apiKeyWithProject) {
       throw new UnauthorizedException();
@@ -30,6 +31,7 @@ export class GetApiKeyProjectRolesUseCase {
       permissions: apiKeyWithPermission.permissions.map((permission) => ({
         action: permission.permissionAction,
       })),
+      createdBy: apiKeyWithPermission.createdBy.toPersistence(),
     };
   }
 }
