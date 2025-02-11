@@ -1,0 +1,69 @@
+{
+  "name": "@collectionscms/rich-text-with-backend",
+  "description": "A rich text editor with backend.",
+  "version": "1.0.0-alpha.1",
+  "license": "MIT",
+  "type": "module",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "typecheck": "tsc -p . --noEmit",
+    "copyfiles": "cpy './README.md' './package.json' dist/",
+    "copyfiles:styles": "cpy './src/styles/**/*' dist/styles",
+    "compile:tsc": "tsc -p ./tsconfig.production.json",
+    "compile": "yarn clean && yarn compile:tsc && yarn copyfiles && yarn copyfiles:styles",
+    "clean": "rimraf dist",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
+  },
+  "author": {
+    "email": "hello@rocketa.co.jp",
+    "name": "Rocketa Inc.",
+    "url": "https://rocketa.co.jp"
+  },
+  "dependencies": {
+    "@mui/material": "^6.4.1",
+    "@tiptap/core": "^2.11.3",
+    "@tiptap/extension-bullet-list": "^2.11.3",
+    "@tiptap/extension-code-block": "^2.11.3",
+    "@tiptap/extension-code-block-lowlight": "^2.11.3",
+    "@tiptap/extension-image": "^2.11.3",
+    "@tiptap/extension-link": "^2.11.3",
+    "@tiptap/extension-ordered-list": "^2.11.3",
+    "@tiptap/extension-paragraph": "^2.11.3",
+    "@tiptap/extension-placeholder": "^2.11.3",
+    "@tiptap/extension-underline": "^2.11.3",
+    "@tiptap/react": "^2.11.3",
+    "@tiptap/starter-kit": "^2.11.3",
+    "@tiptap/suggestion": "^2.11.3",
+    "i18next": "^24.2.2",
+    "lowlight": "^3.3.0",
+    "lucide-react": "^0.474.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-i18next": "^15.4.0"
+  },
+  "devDependencies": {
+    "@chromatic-com/storybook": "3.2.4",
+    "@storybook/addon-essentials": "8.5.0",
+    "@storybook/addon-interactions": "8.5.0",
+    "@storybook/addon-onboarding": "8.5.0",
+    "@storybook/blocks": "8.5.0",
+    "@storybook/react": "8.5.0",
+    "@storybook/react-vite": "8.5.0",
+    "@storybook/test": "8.5.0",
+    "@types/node": "^22.10.10",
+    "@types/react": "^19.0.8",
+    "cpy-cli": "5.0.0",
+    "msw": "2.7.0",
+    "msw-storybook-addon": "2.0.4",
+    "storybook": "8.5.0",
+    "typescript": "5.7.3",
+    "vite": "6.0.11"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
+  }
+}

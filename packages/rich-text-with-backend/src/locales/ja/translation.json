@@ -1,0 +1,32 @@
+{
+  "write_the_text": "本文を書く",
+  "editor": {
+    "placeholder": "コマンドの場合は '/' を入力してください",
+    "text": "Text",
+    "text_description": "プレーンテキスト",
+    "heading": "見出し",
+    "heading_description": "大見出しのタイトル",
+    "subheading": "中見出し",
+    "subheading_description": "中見出しのタイトル",
+    "subtitle": "小見出し",
+    "subtitle_description": "小見出しのタイトル",
+    "list": "List",
+    "list_description": "項目順序のないリスト",
+    "numbered_list": "Numbered List",
+    "numbered_list_description": "項目順序のあるリスト",
+    "quote": "Quote",
+    "quote_description": "引用文",
+    "code_block": "Code Block",
+    "code_block_description": "ハイライトされたコードブロック",
+    "image": "Image",
+    "image_description": "画像を挿入する",
+    "divider": "Divider",
+    "divider_description": "区切り線を挿入する",
+    "guide": "エディターガイド",
+    "bold": "強調",
+    "italic": "斜体",
+    "underline": "下線",
+    "strike_through": "取り消し線",
+    "code": "コード"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "write_the_text": "Write the text",
+  "editor": {
+    "placeholder": "Type '/' for commands",
+    "text": "Text",
+    "text_description": "Writing in plain text",
+    "heading": "Heading 1",
+    "heading_description": "High priority section title.",
+    "subheading": "Heading 2",
+    "subheading_description": "Medium priority section title.",
+    "subtitle": "Heading 3",
+    "subtitle_description": "Low priority section title.",
+    "list": "List",
+    "list_description": "Unordered list of items.",
+    "numbered_list": "Numbered List",
+    "numbered_list_description": "Ordered list of items.",
+    "quote": "Quote",
+    "quote_description": "Element for quoting.",
+    "code_block": "Code Block",
+    "code_block_description": "Code block with syntax highlighting.",
+    "image": "Image",
+    "image_description": "Insert an image.",
+    "divider": "Divider",
+    "divider_description": "Insert an image.",
+    "guide": "Editor Guide",
+    "bold": "Bold",
+    "italic": "Italic",
+    "underline": "Underline",
+    "strike_through": "Strike-through",
+    "code": "Code"
+  }
+}
