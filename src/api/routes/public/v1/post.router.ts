@@ -4,11 +4,16 @@ import { projectPrisma } from '../../../database/prisma/client.js';
 import { asyncHandler } from '../../../middlewares/asyncHandler.js';
 import { authenticatedUser } from '../../../middlewares/auth.js';
 import { validateAccess } from '../../../middlewares/validateAccess.js';
+import { ContentRepository } from '../../../persistence/content/content.repository.js';
+import { ContentRevisionRepository } from '../../../persistence/contentRevision/contentRevision.repository.js';
 import { PostRepository } from '../../../persistence/post/post.repository.js';
-import { getPublishedPostUseCaseSchema } from '../../../useCases/post/getPublishedPost.useCase.schema.js';
+import { ProjectRepository } from '../../../persistence/project/project.repository.js';
 import { GetPublishedPostUseCase } from '../../../useCases/post/getPublishedPost.useCase.js';
-import { getPublishedPostsUseCaseSchema } from '../../../useCases/post/getPublishedPosts.useCase.schema.js';
+import { getPublishedPostUseCaseSchema } from '../../../useCases/post/getPublishedPost.useCase.schema.js';
 import { GetPublishedPostsUseCase } from '../../../useCases/post/getPublishedPosts.useCase.js';
+import { getPublishedPostsUseCaseSchema } from '../../../useCases/post/getPublishedPosts.useCase.schema.js';
+import { CreatePostUseCase } from '../../../useCases/public/post/createPost.useCase.js';
+import { createPostUseCaseSchema } from '../../../useCases/public/post/createPost.useCase.schema.js';
 
 const router = express.Router();
 
@@ -52,6 +57,33 @@ router.get(
     const post = await useCase.execute(validated.data);
 
     res.json({ post });
+  })
+);
+
+router.post(
+  '/posts',
+  authenticatedUser,
+  validateAccess(['savePostByApi']),
+  asyncHandler(async (req: Request, res: Response) => {
+    const validated = createPostUseCaseSchema.safeParse({
+      projectId: res.projectRole?.id,
+      userId: res.user?.id,
+      sourceLanguage: res.projectRole?.sourceLanguage,
+    });
+    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
+
+    const useCase = new CreatePostUseCase(
+      projectPrisma(validated.data.projectId),
+      new ProjectRepository(),
+      new PostRepository(),
+      new ContentRepository(),
+      new ContentRevisionRepository()
+    );
+    const content = await useCase.execute(validated.data);
+
+    res.json({
+      content,
+    });
   })
 );
 
