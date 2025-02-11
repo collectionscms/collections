@@ -9607,10 +9607,10 @@ pino-abstract-transport@^2.0.0:
   dependencies:
     split2 "^4.0.0"
 
-pino-http@10.3.0:
-  version "10.3.0"
-  resolved "https://registry.yarnpkg.com/pino-http/-/pino-http-10.3.0.tgz#c1999d9a5243748cdb1f66833a1f566c0cc40ef2"
-  integrity sha512-kaHQqt1i5S9LXWmyuw6aPPqYW/TjoDPizPs4PnDW4hSpajz2Uo/oisNliLf7We1xzpiLacdntmw8yaZiEkppQQ==
+pino-http@10.4.0:
+  version "10.4.0"
+  resolved "https://registry.yarnpkg.com/pino-http/-/pino-http-10.4.0.tgz#a97911138fd5170e6da92ae8882c2a6357e84115"
+  integrity sha512-vjQsKBE+VN1LVchjbfLE7B6nBeGASZNRNKsR68VS0DolTm5R3zo+47JX1wjm0O96dcbvA7vnqt8YqOWlG5nN0w==
   dependencies:
     get-caller-file "^2.0.5"
     pino "^9.0.0"
