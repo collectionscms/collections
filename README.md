@@ -1,20 +1,14 @@
-# Collections CMS
-
 <p align="center">
   <a href="https://collections.dev/">
-    <img src="https://cdn.collections.dev/logo/icon-light-1024.png" width="140px" alt="Collections CMS" />
+    <img src="https://cdn.collections.dev/logo/github-banner.png" alt="Collections CMS" />
   </a>
 </p>
 
-Collections is a multilingual headless CMS that supports automatic translation into +30 languages.
+# Collections CMS
 
-AI-powered editing and SEO optimization accelerate the multilingual expansion of your website.
+Collections is a headless CMS optimized for AI searches such as AI Overviews, ChatGPT, and Perplexity.
 
-## ⭐ Why Collections Focus on multilingual?
-
-In the future, AI search dominates information experiences. Keywords turn into questions, and users expect AI-generated answers instead of website lists.
-
-This makes websites more accessible, reaching a broader audience. Multilingual support, easy for both humans and AI, is key to this.
+It enables you to create optimized content using SEO(Google E-E-A-T, structured data), automated translation, and AI-powered editing.
 
 <hr/>
 <h4>
@@ -24,10 +18,11 @@ This makes websites more accessible, reaching a broader audience. Multilingual s
 
 ## Features
 
+- 🔎 Google E-E-A-T
 - 🪄 Editing & SEO by AI
 - 🌐 Multilingual content
 - 🖊 Notion-like editor
-- 🕘️ Post versioning
+- 🏢 Multitenancy
 
 ## 📚 Usage & Documentation
 
