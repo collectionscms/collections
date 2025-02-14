@@ -101,9 +101,9 @@ const config: DocsThemeConfig = {
 const getOgImage = (locale: string) => {
   switch (locale) {
     case 'ja':
-      return 'https://cdn.collections.dev/docs/og-ja.png';
+      return 'https://cdn.collections.dev/logo/og-ja.png';
     default:
-      return 'https://cdn.collections.dev/og-image.png';
+      return 'https://cdn.collections.dev/logo/og-en.png';
   }
 };
 
