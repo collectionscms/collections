@@ -1,6 +1,7 @@
 import { ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import featureSeo from '../assets/images/feature-seo.svg';
 import discordDark from '../assets/images/discord-dark.svg';
 import embedContents from '../assets/images/embed-contents.svg';
 import featureAi from '../assets/images/feature-ai.svg';
@@ -32,14 +33,14 @@ import { RegisterButton } from '../components/RegisterButton';
   <div className="relative w-full lg:w-[90rem] px-5 lg:px-8 z-1">
     <div className="mt-16 lg:mt-24 mb-12 lg:mb-16">
       <h1 className="text-5xl md:text-6xl font-bold !leading-snug">
-        Reach your potential customers with multilingual content
+        Is your website properly understood by AI?
       </h1>
       <div className="mt-3 md:mt-10 text-xl leading-relaxed tracking-wider">
-        Collections is a multilingual headless CMS that supports over 30 languages.
+        Collections is a headless CMS optimized for AI-driven search.
       </div>
       <div className="mt-2 text-xl leading-relaxed tracking-wider">
-        With AI-powered editing, SEO optimization, and automatic translation, it accelerates the
-        creation of multilingual content.
+        It enables you to create optimized content using SEO, multilingual support, and AI-powered
+        editing.
       </div>
       <div className="mt-7 md:mt-14 flex justify-center md:block">
         <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8">
@@ -52,41 +53,41 @@ import { RegisterButton } from '../components/RegisterButton';
 <div className="py-2 flex justify-center items-start">
   <div className="w-full lg:w-[90rem] px-5 lg:px-8 pt-7 md:pt-16 pb-10 md:pb-20">
     <div>
-      <div className="text-subtitle">Feature 01</div>
+      <div className="text-subtitle">What is Collections?</div>
       <div className="text-heading-sp md:text-heading leading-narrow mt-2">
-        Embedding Multilingual Content
+        API-based content management
       </div>
       <div className="text-md md:text-xl leading-relaxed mt-4">
-        Write articles in your preferred language and easily create multilingual content through
-        translation. The content you create can be embedded into websites or WordPress via API. A
-        key advantage of headless architecture is the ability to implement multilingual capabilities
-        without requiring a major migration.
-      </div>
-      <div className="mt-4">
-        <Link href="/docs/use-cases">
-          <div className="inline-block bg-underline duration-600 bg-no-repeat pb-0.5 ease-underline bg-[100%_calc(100%_-_0.06em)] bg-underline-size hover:bg-[0%_calc(100%_-_0.06em)] transition-all">
-            Learn More
-          </div>
-        </Link>
+        A backend system that allows content submission via a management dashboard and distributes
+        it to multiple websites through an API. By integrating it with a custom frontend, you can
+        deliver an exceptional user experience.
       </div>
       <Image src={embedContents} alt="embed-contents" className="h-64 mx-auto mt-9" />
     </div>
     <div className="mt-12">
-      <div className="text-subtitle">Feature 02</div>
-      <div className="text-heading-sp md:text-heading leading-narrow mt-2">Product Enhancement</div>
+      <div className="text-subtitle">for AI search engines</div>
+      <div className="text-heading-sp md:text-heading leading-narrow mt-2">
+        Optimized for AI search engines
+      </div>
       <div className="text-md md:text-xl leading-relaxed mt-4">
-        By localizing member-exclusive content, such as announcements and push notifications, you
-        can enhance the customer experience.
+        Supports Google E-E-A-T, which is recognized as effective for GEO (Generative Engine
+        Optimization) and AEO (Answer Engine Optimization), providing it as structured data via API.
+      </div>
+      <div className="text-md md:text-xl leading-relaxed mt-4">
+        Additionally, AI-powered content refinement and automatic summarization further strengthen
+        SEO.
       </div>
     </div>
     <div className="mt-12">
-      <div className="text-subtitle">Feature 03</div>
+      <div className="text-subtitle">for Human</div>
       <div className="text-heading-sp md:text-heading leading-narrow mt-2">
-        Leave multilingual SEO optimization to AI
+        Automatic translation into +30 languages
       </div>
       <div className="text-md md:text-xl leading-relaxed mt-4">
-        AI automatically generates summaries of your created posts and content, allowing writers to
-        focus solely on writing without worrying about translation or multilingual SEO.
+        Effortlessly create multilingual content by writing in your preferred language and
+        leveraging automatic translation. While many AI engines are optimized for English due to its
+        vast training data, the content is ultimately consumed by people who speak various
+        languages.
       </div>
     </div>
   </div>
@@ -96,7 +97,15 @@ import { RegisterButton } from '../components/RegisterButton';
     <div className="text-heading-sp md:text-heading leading-narrow mt-2 text-feature">
       The convenient features of Collections
     </div>
-    <div className="grid grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-12 mt-6 md:mt-12">
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-12 mt-6 md:mt-12">
+      <div className="flex flex-col gap-5">
+        <Image src={featureSeo} alt="translate" className="h-36 mx-auto" />
+        <div className="text-xl md:text-feature-subtitle text-feature">Supports Google E-E-A-T</div>
+        <div className="leading-relaxed">
+          Register E-E-A-T (Experience, Expertise, Authoritativeness, and Trustworthiness)
+          information for each author and provide it via API in JSON-LD format.
+        </div>
+      </div>
       <div className="flex flex-col gap-5">
         <Image src={featureTranslate} alt="translate" className="h-36 mx-auto" />
         <div className="text-xl md:text-feature-subtitle text-feature">
@@ -110,7 +119,7 @@ import { RegisterButton } from '../components/RegisterButton';
       <div className="flex flex-col gap-5">
         <Image src={featureAi} alt="ai" className="h-36 mx-auto" />
         <div className="text-xl md:text-feature-subtitle text-feature">
-          AI optimizes multilingual content and SEO
+          AI optimizes content and SEO
         </div>
         <div className="leading-relaxed">AI edits your articles and creates optimal summaries.</div>
       </div>
@@ -122,27 +131,6 @@ import { RegisterButton } from '../components/RegisterButton';
         <div className="leading-relaxed">
           With a Notion-like editor, you can write smoothly. Say goodbye to the days of drafting in
           a notepad and copying/pasting into the CMS!
-        </div>
-      </div>
-    </div>
-    <div className="grid grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-12 mt-6 md:mt-12">
-      <div className="flex flex-col gap-5">
-        <Image src={featureEmbed} alt="embed" className="h-36 mx-auto" />
-        <div className="text-xl md:text-feature-subtitle text-feature">
-          Embedding content into an existing site
-        </div>
-        <div className="leading-relaxed">
-          You can easily request content in your desired language via API and embed it into your
-          existing site.
-        </div>
-      </div>
-      <div className="flex flex-col gap-5">
-        <Image src={hosting} alt="editor" className="h-36 mx-auto" />
-        <div className="text-xl md:text-feature-subtitle text-feature">
-          Self-hosted on your own server
-        </div>
-        <div className="leading-relaxed">
-          As an open-source platform, it can be self-hosted in your preferred environment.
         </div>
       </div>
     </div>
@@ -172,16 +160,11 @@ import { RegisterButton } from '../components/RegisterButton';
     <div>
       <div className="text-heading-sp md:text-heading leading-narrow mt-2">Why Use Collections</div>
       <div className="text-md md:text-xl leading-relaxed mt-4">
-        The growing demand for inbound services and the diversification of user demographics have
-        led to a surge in the need for multilingual support. However, traditional CMSs often support
-        only a single language or rely on plugins, resulting in instability and limited
-        functionality.
+        Your customers are already searching for information using ChatGPT and Perplexity.
       </div>
       <div className="text-md md:text-xl leading-relaxed mt-8">
-        Collections is a headless CMS that delivers content via APIs, without a built-in frontend
-        (visual interface). This approach allows for complete flexibility in frontend development,
-        enabling seamless creation of new websites and efficient multilingual support for existing
-        ones.
+        By leveraging Collections, you can optimize your content for Google AI Overviews,
+        Perplexity, ChatGPT, and more. The future of AI search optimization is already here.
       </div>
     </div>
   </div>

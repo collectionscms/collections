@@ -101,27 +101,27 @@ const config: DocsThemeConfig = {
 const getOgImage = (locale: string) => {
   switch (locale) {
     case 'ja':
-      return 'https://cdn.collections.dev/docs/og-ja.png';
+      return 'https://cdn.collections.dev/logo/og-ja.png';
     default:
-      return 'https://cdn.collections.dev/og-image.png';
+      return 'https://cdn.collections.dev/logo/og-en.png';
   }
 };
 
 const getTopTitle = (locale: string) => {
   switch (locale) {
     case 'ja':
-      return 'Collections - 自動翻訳内蔵の多言語ヘッドレスCMS';
+      return 'Collections - AI検索最適化のためのヘッドレスCMS';
     default:
-      return 'Collections - Multilingual headless CMS with automatic translation';
+      return 'Collections - Headless CMS optimized for AI search engines';
   }
 };
 
 const getDefaultDescription = (locale: string) => {
   switch (locale) {
     case 'ja':
-      return 'Collections は、30以上の言語をサポートする多言語ヘッドレスCMSです。AI添削やSEO対策、自動翻訳により、多言語コンテンツの制作を高速化します。インバウンド・外国語ユーザー対応を強化し、新たな潜在顧客にリーチしましょう。';
+      return 'Collectionsは、AI Overviews、ChatGPT、Perplexity などのAI検索に最適化されたヘッドレスCMSです。SEO対策（Google E-E-A-T、構造化データ）、多言語対応、AIによる添削を活用し、最適化されたコンテンツを作成できます。';
     default:
-      return 'Collections is a multilingual headless CMS supporting 30+, accelerating content creation with AI editing, SEO optimization, and automatic translation.';
+      return 'Collections is a headless CMS optimized for AI search engines such as AI Overviews, ChatGPT, Perplexity. It helps you create optimized content with SEO, multilingual support, and AI editing.';
   }
 };
 

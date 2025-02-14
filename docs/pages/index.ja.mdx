@@ -6,6 +6,7 @@ import embedContentsJa from '../assets/images/embed-contents-ja.svg';
 import featureAi from '../assets/images/feature-ai.svg';
 import featureEditor from '../assets/images/feature-editor.svg';
 import featureEmbed from '../assets/images/feature-embed.svg';
+import featureSeo from '../assets/images/feature-seo.svg';
 import featureTranslate from '../assets/images/feature-translate.svg';
 import githubDark from '../assets/images/github-dark.svg';
 import hosting from '../assets/images/hosting.svg';
@@ -33,16 +34,16 @@ import { RegisterButton } from '../components/RegisterButton';
     <div className="mt-16 lg:mt-20 mb-12 lg:mb-16">
       <h1 className="text-4xl md:text-6xl font-bold">
         <div className="leading-relaxed block lg:hidden">
-          多言語コンテンツで潜在顧客にリーチしよう
+          AIに評価されるWebサイトになっていますか？
         </div>
-        <div className="leading-snug hidden lg:block">多言語コンテンツで</div>
-        <div className="leading-snug mt-2 hidden lg:block">潜在顧客にリーチしよう</div>
+        <div className="leading-snug hidden lg:block">AIに評価される</div>
+        <div className="leading-snug mt-2 hidden lg:block">Webサイトになっていますか？</div>
       </h1>
       <div className="mt-3 md:mt-10 text-xl leading-loose tracking-wider">
-        Collections は、30以上の言語をサポートする多言語ヘッドレス CMS です。
+        Collections は、AI検索向けに最適化されたヘッドレス CMS です。
       </div>
       <div className="text-xl leading-loose tracking-wider">
-        AI 添削や SEO 対策、自動翻訳により、多言語コンテンツの作成を加速させます。
+        SEO 対策、多言語化、AI による添削を活用し、効果的なコンテンツを作成できます。
       </div>
       <div className="mt-7 md:mt-14 flex justify-center md:block">
         <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8">
@@ -56,36 +57,33 @@ import { RegisterButton } from '../components/RegisterButton';
 <div className="py-2 flex justify-center items-start">
   <div className="w-full lg:w-[90rem] px-5 lg:px-8 pt-7 md:pt-16 pb-10 md:pb-20">
     <div>
-      <div className="text-subtitle">Feature 01</div>
-      <div className="text-heading-sp md:text-heading leading-narrow mt-2">多言語コンテンツの埋め込み</div>
+      <div className="text-subtitle">What is Collections?</div>
+      <div className="text-heading-sp md:text-heading leading-narrow mt-2">API ベースのコンテンツ管理</div>
       <div className="text-md md:text-xl leading-relaxed mt-4">
-        得意な言語で記事を書き、翻訳するだけで簡単に多言語コンテンツを作成できます。作成したコンテンツは、API 経由で Web サイトや WordPress にも埋め込むことが可能です。大規模な移行なしに多言語化できるのが、ヘッドレスの大きな特徴です。
-      </div>
-      <div className="mt-4">
-        <Link href="/docs/use-cases">
-          <div className="inline-block bg-underline duration-600 bg-no-repeat pb-0.5 ease-underline bg-[100%_calc(100%_-_0.06em)] bg-underline-size hover:bg-[0%_calc(100%_-_0.06em)] transition-all">
-            さらに詳しく
-          </div>
-        </Link>
+        管理画面から入稿し、API 経由で複数の Web サイトにコンテンツを配信するバックエンドシステムです。独自のフロントエンドと組み合わせることで、優れたユーザー体験を提供することができます。
       </div>
       <Image src={embedContentsJa} alt="embed-contents" className="h-64 mx-auto mt-9" />
     </div>
     <div className="mt-12">
-      <div className="text-subtitle">Feature 02</div>
-      <div className="text-heading-sp md:text-heading leading-narrow mt-2">プロダクトの強化</div>
+      <div className="text-subtitle">for AI search engines</div>
+      <div className="text-heading-sp md:text-heading leading-narrow mt-2">AI 検索向けに最適化</div>
       <div className="text-md md:text-xl leading-relaxed mt-4">
-        お知らせやプッシュ通知など、会員向けコンテンツを多言語化することで、顧客体験を向上させることができます。
+        GEO（Generative Engine Optimization）や AEO（Answer Engine Optimization）に効果的とされる Google E-E-A-T をサポートし、これを構造化データとして API 経由で提供します。
+      </div>
+      <div className="text-md md:text-xl leading-relaxed mt-4">
+        また、AI によるコンテンツ添削や要約の自動生成により、SEO をさらに強化することが可能です。
       </div>
     </div>
     <div className="mt-12">
-      <div className="text-subtitle">Feature 03</div>
+      <div className="text-subtitle">for Human</div>
       <div className="text-heading-sp md:text-heading leading-narrow mt-2">
-        多言語 SEO も AI にお任せ
+        30言語以上への自動翻訳
       </div>
       <div className="text-md md:text-xl leading-relaxed mt-4">
-        作成した記事やコンテンツの内容を、AI が要約して自動生成を行います。翻訳や多言語での SEO 対策に悩まされることなく、執筆者は記事を書くことに集中できます。
+        得意な言語で記事を執筆し、自動翻訳することで、簡単に多言語コンテンツを作成できます。多くの AI エンジンは膨大な学習データから英語に最適化されていますが、コンテンツは最終的に様々な言語を話す人々によって消費されます。
       </div>
     </div>
+
   </div>
 </div>
 <div className="py-2 flex justify-center items-start bg-feature w-full">
@@ -93,7 +91,16 @@ import { RegisterButton } from '../components/RegisterButton';
     <div className="text-heading-sp md:text-heading leading-narrow mt-2 text-feature">
       Collections の便利な機能
     </div>
-    <div className="grid grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-12 mt-6 md:mt-12">
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-12 mt-6 md:mt-12">
+      <div className="flex flex-col gap-5">
+        <Image src={featureSeo} alt="translate" className="h-36 mx-auto" />
+        <div className="text-xl md:text-feature-subtitle text-feature">
+          Google E-E-A-T をサポート
+        </div>
+        <div className="leading-relaxed">
+          著者ごとの E-E-A-T（経験、専門性、権威性、信頼性）の情報を登録し、JSON-LD 形式で API 経由で提供します。
+        </div>
+      </div>
       <div className="flex flex-col gap-5">
         <Image src={featureTranslate} alt="translate" className="h-36 mx-auto" />
         <div className="text-xl md:text-feature-subtitle text-feature">
@@ -106,7 +113,7 @@ import { RegisterButton } from '../components/RegisterButton';
       <div className="flex flex-col gap-5">
         <Image src={featureAi} alt="ai" className="h-36 mx-auto" />
         <div className="text-xl md:text-feature-subtitle text-feature">
-          多言語の文章・SEO も AI が最適化
+          文章・SEO も AI が最適化
         </div>
         <div className="leading-relaxed">
           あなたが書いた記事をAIが添削したり、最適な要約を作成します。
@@ -119,26 +126,6 @@ import { RegisterButton } from '../components/RegisterButton';
         </div>
         <div className="leading-relaxed">
           Notion ライクなエディターで、スラスラ書ける。メモ帳に下書きして CMS にコピペする作業から、もう卒業です！
-        </div>
-      </div>
-    </div>
-    <div className="grid grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-12 mt-6 md:mt-12">
-      <div className="flex flex-col gap-5">
-        <Image src={featureEmbed} alt="embed" className="h-36 mx-auto" />
-        <div className="text-xl md:text-feature-subtitle text-feature">
-          既存サイトへのコンテンツの埋め込み
-        </div>
-        <div className="leading-relaxed">
-          欲しい言語のコンテンツを API でリクエストして、簡単に既存サイトに埋め込むことができます。
-        </div>
-      </div>
-      <div className="flex flex-col gap-5">
-        <Image src={hosting} alt="editor" className="h-36 mx-auto" />
-        <div className="text-xl md:text-feature-subtitle text-feature">
-          お好みの環境にセルフホスト
-        </div>
-        <div className="leading-relaxed">
-          オープンソースとして公開しています。お好みの環境にセルフホストすることも可能です。
         </div>
       </div>
     </div>
@@ -171,10 +158,10 @@ import { RegisterButton } from '../components/RegisterButton';
         Collections を使う理由
       </div>
       <div className="text-md md:text-xl leading-relaxed mt-4">
-        インバウンド需要やユーザー層の多様化により、多言語対応のニーズが急増しています。一方で、従来の CMS は単一言語対応のみであったり、プラグインに依存し動作も不安定といった課題を抱えています。
+        あなたの顧客はすでに、ChatGPT や Perplexity で情報を検索しています。
       </div>
       <div className="text-md md:text-xl leading-relaxed mt-8">
-        Collections は、フロントエンド（見た目の部分）を持たず、API を通じてコンテンツを配信します。この仕組みにより、フロントエンドを自由に構築し、新規サイトの立ち上げや既存サイトの多言語化を柔軟に実現できます。
+        Collections を活用すれば、Google AI Overviews、Perplexity、ChatGPT などに向けてコンテンツを最適化できます。AI 検索最適化の未来は、すでに始まっています。
       </div>
     </div>
   </div>
