@@ -8,10 +8,10 @@ import './assets/redoc.css';
 export default function App({ Component, pageProps }) {
   return (
     <>
+      {gtmId && <GoogleTagManager gtmId={gtmId} />}
       <Component {...pageProps} />
       <BottomContactButton />
       <Analytics />
-      {gtmId && <GoogleTagManager gtmId={gtmId} />}
     </>
   );
 }
