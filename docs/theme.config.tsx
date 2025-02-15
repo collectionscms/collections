@@ -25,7 +25,8 @@ const config: DocsThemeConfig = {
     const { asPath, locale } = useRouter();
     const { frontMatter } = useConfig();
     const topTitle = getTopTitle(locale);
-    const titleTemplate = asPath !== '/' ? `%s – ${defaultTitle}` : topTitle;
+    const isRootPath = asPath === '/' || asPath.startsWith('/?');
+    const titleTemplate = isRootPath ? topTitle : `%s – ${defaultTitle}`;
     const defaultDescription = getDefaultDescription(locale);
 
     return {
