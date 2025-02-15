@@ -1,5 +1,7 @@
 import { Analytics } from '@vercel/analytics/react';
 import { BottomContactButton } from '../components/BottomContactButton';
+import { GoogleTagManager } from '../components/GoogleTagManager';
+import { gtmId } from '../lib/gtm';
 import './assets/globals.css';
 import './assets/redoc.css';
 
@@ -9,6 +11,7 @@ export default function App({ Component, pageProps }) {
       <Component {...pageProps} />
       <BottomContactButton />
       <Analytics />
+      {gtmId && <GoogleTagManager gtmId={gtmId} />}
     </>
   );
 }
