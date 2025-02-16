@@ -111,18 +111,18 @@ const getOgImage = (locale: string) => {
 const getTopTitle = (locale: string) => {
   switch (locale) {
     case 'ja':
-      return 'Collections - AI検索最適化のためのヘッドレスCMS';
+      return 'Collections - AI検索向けに設計されたヘッドレスCMS';
     default:
-      return 'Collections - Headless CMS optimized for AI search engines';
+      return 'Collections - Headless CMS designed for AI searches';
   }
 };
 
 const getDefaultDescription = (locale: string) => {
   switch (locale) {
     case 'ja':
-      return 'Collectionsは、AI Overviews、ChatGPT、Perplexity などのAI検索に最適化されたヘッドレスCMSです。SEO対策（Google E-E-A-T、構造化データ）、多言語対応、AIによる添削を活用し、最適化されたコンテンツを作成できます。';
+      return 'Collectionsは、AI Overviews、ChatGPT、Perplexity などのAI検索に設計されたヘッドレスCMSです。SEO対策（Google E-E-A-T、構造化データ）、多言語対応、AIによる添削を活用し、最適化されたコンテンツを作成できます。';
     default:
-      return 'Collections is a headless CMS optimized for AI search engines such as AI Overviews, ChatGPT, Perplexity. It helps you create optimized content with SEO, multilingual support, and AI editing.';
+      return 'Collections is a headless CMS designed for AI searches such as AI Overviews, ChatGPT, Perplexity. It helps you create optimized content with SEO, multilingual support, and AI editing.';
   }
 };
 

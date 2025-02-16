@@ -6,7 +6,7 @@
 
 # Collections CMS
 
-Collections is a headless CMS optimized for AI search engines such as AI Overviews, ChatGPT, and Perplexity.
+Collections is a headless CMS designed for AI searches such as AI Overviews, ChatGPT, and Perplexity.
 
 It enables you to create optimized content using SEO(Google E-E-A-T, structured data), multilingual support, and AI-powered editing.
 
