@@ -3,7 +3,7 @@ import { bypassPrisma } from '../../src/api/database/prisma/client.js';
 async function main() {
   await bypassPrisma.permission.create({
     data: {
-      action: 'savePost',
+      action: 'savePostByApi',
       group: 'post',
       displayOrder: 1,
     },
