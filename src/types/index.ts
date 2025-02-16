@@ -108,6 +108,7 @@ export type PublishedListContent = {
   subtitle: string | null;
   body: string;
   bodyHtml: string;
+  bodyJson: string;
   status: string;
   language: string;
   version: number;
