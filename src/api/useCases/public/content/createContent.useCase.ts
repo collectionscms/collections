@@ -5,9 +5,9 @@ import { ContentRevisionRepository } from '../../../persistence/contentRevision/
 import { PostEntity } from '../../../persistence/post/post.entity.js';
 import { PostRepository } from '../../../persistence/post/post.repository.js';
 import { ProjectRepository } from '../../../persistence/project/project.repository.js';
-import { CreatePostUseCaseSchemaType } from './createPost.useCase.schema.js';
+import { CreateContentUseCaseSchemaType } from './createContent.useCase.schema.js';
 
-export class CreatePostUseCase {
+export class CreateContentUseCase {
   constructor(
     private readonly prisma: ProjectPrismaClient,
     private readonly projectRepository: ProjectRepository,
@@ -16,7 +16,7 @@ export class CreatePostUseCase {
     private readonly contentRevisionRepository: ContentRevisionRepository
   ) {}
 
-  async execute(props: CreatePostUseCaseSchemaType): Promise<RevisedContent> {
+  async execute(props: CreateContentUseCaseSchemaType): Promise<RevisedContent> {
     const { projectId, userId, sourceLanguage } = props;
 
     const project = await this.projectRepository.findOneById(this.prisma, props.projectId);
@@ -25,6 +25,22 @@ export class CreatePostUseCase {
       projectId,
       createdById: userId,
       language: sourceLanguage,
+    });
+
+    post.unsetInit();
+
+    content.updateContent({
+      body: props.body,
+      bodyJson: props.bodyJson,
+      bodyHtml: props.bodyHtml,
+      updatedById: userId,
+    });
+
+    contentRevision.updateContent({
+      body: props.body,
+      bodyJson: props.bodyJson,
+      bodyHtml: props.bodyHtml,
+      updatedById: userId,
     });
 
     const result = await this.prisma.$transaction(async (tx) => {

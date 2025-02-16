@@ -14,6 +14,9 @@ import { GetPublishedContentUseCase } from '../../../useCases/content/getPublish
 import { getPublishedContentUseCaseSchema } from '../../../useCases/content/getPublishedContent.useCase.schema.js';
 import { UpdateContentUseCase } from '../../../useCases/public/content/updateContent.useCase.js';
 import { updateContentUseCaseSchema } from '../../../useCases/public/content/updateContent.useCase.schema.js';
+import { createContentUseCaseSchema } from '../../../useCases/public/content/createContent.useCase.schema.js';
+import { ProjectRepository } from '../../../persistence/project/project.repository.js';
+import { CreateContentUseCase } from '../../../useCases/public/content/createContent.useCase.js';
 
 const router = express.Router();
 
@@ -41,6 +44,37 @@ router.get(
     const contentWithJsonLd = await useCase.execute(validated.data);
 
     res.json({ ...contentWithJsonLd });
+  })
+);
+
+router.post(
+  '/contents',
+  authenticatedUser,
+  validateAccess(['savePostByApi']),
+  asyncHandler(async (req: Request, res: Response) => {
+    const validated = createContentUseCaseSchema.safeParse({
+      projectId: res.projectRole?.id,
+      userId: res.user?.id,
+      sourceLanguage: res.projectRole?.sourceLanguage,
+      body: req.body.body,
+      bodyJson: req.body.bodyJson,
+      bodyHtml: req.body.bodyHtml,
+    });
+
+    if (!validated.success) throw new InvalidPayloadException('bad_request', validated.error);
+
+    const useCase = new CreateContentUseCase(
+      projectPrisma(validated.data.projectId),
+      new ProjectRepository(),
+      new PostRepository(),
+      new ContentRepository(),
+      new ContentRevisionRepository()
+    );
+    const content = await useCase.execute(validated.data);
+
+    res.json({
+      content,
+    });
   })
 );
 
