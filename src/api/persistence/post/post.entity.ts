@@ -3,7 +3,6 @@ import { v4 } from 'uuid';
 import { UnexpectedException } from '../../../exceptions/unexpected.js';
 import {
   LocalizedContentItem,
-  PublishedContent,
   PublishedListContent,
   PublishedPost,
   SourceLanguagePostItem,
@@ -186,6 +185,7 @@ export class PostEntity extends PrismaBaseEntity<Post> {
             subtitle: content.subtitle,
             body: content.body ?? '',
             bodyHtml: content.bodyHtml ?? '',
+            bodyJson: content.bodyJson ?? '',
             status: content.status,
             language: content.language,
             version: content.currentVersion,
