@@ -1,6 +1,6 @@
 import { Meta, StoryFn } from '@storybook/react';
 import React from 'react';
-import { RichText } from './index';
+import { RichText } from './RichText';
 
 export default {
   title: 'Components/RichText',
