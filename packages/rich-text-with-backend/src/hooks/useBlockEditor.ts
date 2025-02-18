@@ -10,8 +10,9 @@ import {
   CodeBlockLowlight,
   HorizontalRule,
   ImageBlock,
-  // ImageUpload,
+  ImageUpload,
   Link,
+  SlashCommand,
 } from '../extensions/index';
 
 const lowlight = createLowlight(common);
@@ -55,9 +56,9 @@ export const useBlockEditor = ({
       CodeBlockLowlight.configure({
         lowlight,
       }),
-      // ImageUpload,
+      ImageUpload,
       ImageBlock,
-      // SlashCommand(t),
+      SlashCommand(t),
       ...extensions,
     ],
     immediatelyRender,

@@ -1,7 +1,10 @@
+import { Box } from '@mui/material';
 import { Placeholder } from '@tiptap/extension-placeholder';
 import { EditorContent, JSONContent } from '@tiptap/react';
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import { LinkMenu } from '../extensions/menus/LinkMenu';
+import { TextMenu } from '../extensions/menus/TextMenu';
 import { useBlockEditor } from '../hooks/useBlockEditor';
 import i18n from '../locales/localization';
 import '../styles/index.css';
@@ -29,6 +32,7 @@ export const RichText = ({
   onChange,
 }: Props) => {
   const { t } = useTranslation();
+  const menuContainerRef = useRef(null);
   const { editor } = useBlockEditor({
     initialContent,
     extensions: [
@@ -71,5 +75,15 @@ export const RichText = ({
     };
   }, []);
 
-  return <EditorContent editor={editor} />;
+  if (!editor) {
+    return null;
+  }
+
+  return (
+    <Box sx={{ position: 'relative' }} ref={menuContainerRef}>
+      <EditorContent editor={editor} />
+      <LinkMenu editor={editor} appendTo={menuContainerRef} />
+      <TextMenu editor={editor} />
+    </Box>
+  );
 };
