@@ -1,4 +1,4 @@
-import { Box, Paper, Stack, Typography, useTheme } from '@mui/material';
+import { Box, Paper, Typography, useTheme } from '@mui/material';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { DropdownButton } from '../parts/DropdownButton/index.js';
 import { Icon } from '../parts/Icon/index.js';
@@ -127,9 +127,9 @@ export const MenuList = React.forwardRef((props: MenuListProps, ref) => {
       }}
       ref={scrollContainer}
     >
-      <Stack gap={2}>
+      <div className="flex flex-col gap-2">
         {props.items.map((group, groupIndex: number) => (
-          <Box key={`${group.title}`}>
+          <div key={`${group.title}`}>
             <Typography
               variant="subtitle2"
               color={theme.palette.text.secondary}
@@ -145,7 +145,7 @@ export const MenuList = React.forwardRef((props: MenuListProps, ref) => {
             >
               {group.title}
             </Typography>
-            <Stack rowGap={0.5}>
+            <div className="flex flex-col gap-0.5">
               {group.commands.map((command: Command, commandIndex: number) => (
                 <DropdownButton
                   key={`${command.label}`}
@@ -168,19 +168,18 @@ export const MenuList = React.forwardRef((props: MenuListProps, ref) => {
                   >
                     <Icon name={command.iconName} size={22} strokeWidth={2} />
                   </Box>
-
-                  <Stack sx={{ ml: 2, textAlign: 'left' }}>
+                  <div className="ml-2 text-left">
                     <Typography>{command.label}</Typography>
                     <Typography variant="caption" color="text.secondary">
                       {command.description}
                     </Typography>
-                  </Stack>
+                  </div>
                 </DropdownButton>
               ))}
-            </Stack>
-          </Box>
+            </div>
+          </div>
         ))}
-      </Stack>
+      </div>
     </Paper>
   );
 });

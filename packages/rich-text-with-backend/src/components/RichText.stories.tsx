@@ -11,7 +11,7 @@ const Template: StoryFn<typeof RichText> = (args) => <RichText {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
-  initialContent: '<p>Hello, world!</p>',
+  initialContent: '',
   options: {
     language: 'ja',
   },

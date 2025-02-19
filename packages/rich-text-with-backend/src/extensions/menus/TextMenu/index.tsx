@@ -1,4 +1,4 @@
-import { Divider, Paper, Stack, useTheme } from '@mui/material';
+import { Divider, Paper, useTheme } from '@mui/material';
 import { BubbleMenu, Editor } from '@tiptap/react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -40,7 +40,7 @@ export const TextMenu: React.FC<Props> = ({ editor }) => {
           boxShadow: 'rgba(0, 0, 0, 0.1) 0px 2px 6px 0px',
         }}
       >
-        <Stack direction="row" gap={0.5} alignItems="center">
+        <div className="flex flex-row gap-0.5 items-center">
           <ToolbarButton
             tooltip={`${t('editor.bold')}`}
             shortcuts={['Mod', 'B']}
@@ -114,7 +114,7 @@ export const TextMenu: React.FC<Props> = ({ editor }) => {
             <Icon name="Code" size={16} />
           </ToolbarButton>
           <EditLinkPopover onSetLink={commands.onLink} />
-        </Stack>
+        </div>
       </Paper>
     </BubbleMenu>
   );

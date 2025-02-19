@@ -4,7 +4,6 @@ import {
   FormControlLabel,
   FormGroup,
   Paper,
-  Stack,
   Switch,
   TextField,
 } from '@mui/material';
@@ -63,7 +62,7 @@ export const LinkEditorPanel = ({ initialUrl, initialOpenInNewTab, onSetLink }: 
       }}
     >
       <form onSubmit={state.handleSubmit}>
-        <Stack direction="row" gap={1}>
+        <div className="flex flex-row gap-1">
           <TextField
             type="text"
             fullWidth
@@ -78,7 +77,7 @@ export const LinkEditorPanel = ({ initialUrl, initialOpenInNewTab, onSetLink }: 
           <Button variant="contained" type="submit" size="small">
             {t('apply')}
           </Button>
-        </Stack>
+        </div>
         <FormControl component="fieldset" sx={{ px: 1, pt: 1 }}>
           <FormGroup row>
             <FormControlLabel

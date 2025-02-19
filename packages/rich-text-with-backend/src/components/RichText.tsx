@@ -1,4 +1,3 @@
-import { Box } from '@mui/material';
 import { Placeholder } from '@tiptap/extension-placeholder';
 import { EditorContent, JSONContent } from '@tiptap/react';
 import React, { useEffect, useRef } from 'react';
@@ -80,10 +79,10 @@ export const RichText = ({
   }
 
   return (
-    <Box sx={{ position: 'relative' }} ref={menuContainerRef}>
+    <div className="relative" ref={menuContainerRef}>
       <EditorContent editor={editor} />
       <LinkMenu editor={editor} appendTo={menuContainerRef} />
       <TextMenu editor={editor} />
-    </Box>
+    </div>
   );
 };

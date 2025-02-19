@@ -1,4 +1,4 @@
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import React, { ChangeEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Icon } from '../parts/Icon/index.js';
@@ -29,10 +29,10 @@ export const ImageUploader = ({ onUpload }: { onUpload: (url: string) => void })
         cursor: 'pointer',
       }}
     >
-      <Stack gap={1.5} direction="row" alignItems="center" color="text.secondary">
+      <div className="flex flex-row items-center gap-1.5">
         <Icon name="Image" />
         <Typography variant="caption">{t('upload_image')}</Typography>
-      </Stack>
+      </div>
       <input
         hidden
         ref={ref}

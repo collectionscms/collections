@@ -1,6 +1,6 @@
-import { IconButton, Stack, Tooltip, Typography } from '@mui/material';
-import React, { forwardRef } from 'react';
+import { IconButton, Tooltip } from '@mui/material';
 import { SxProps } from '@mui/system';
+import React, { forwardRef } from 'react';
 
 type Props = {
   children: React.ReactNode;
@@ -15,14 +15,14 @@ const isMac = typeof window !== 'undefined' ? /Mac/i.test(navigator.userAgent) :
 
 export const ShortcutKey: React.FC<{ shortcut: string }> = ({ shortcut }) => {
   if (shortcut === 'Mod') {
-    return <Typography>{isMac ? '⌘' : 'Ctrl'}</Typography>;
+    return <p>{isMac ? '⌘' : 'Ctrl'}</p>;
   }
 
   if (shortcut === 'Shift') {
-    return <Typography>⇧</Typography>;
+    return <p>⇧</p>;
   }
 
-  return <Typography>{shortcut}</Typography>;
+  return <p>{shortcut}</p>;
 };
 
 export const ToolbarButton = forwardRef<HTMLButtonElement, Props>(
@@ -44,16 +44,16 @@ export const ToolbarButton = forwardRef<HTMLButtonElement, Props>(
       return (
         <Tooltip
           title={
-            <Stack gap={1} direction="row">
-              <Typography>{tooltip}</Typography>
+            <div className="flex flex-row gap-1">
+              <p>{tooltip}</p>
               {shortcuts && (
-                <Stack gap={0.5} direction="row">
+                <div className="flex flex-row gap-0.5">
                   {shortcuts.map((shortcut, index) => (
                     <ShortcutKey shortcut={shortcut} key={index} />
                   ))}
-                </Stack>
+                </div>
               )}
-            </Stack>
+            </div>
           }
           placement="top"
         >
