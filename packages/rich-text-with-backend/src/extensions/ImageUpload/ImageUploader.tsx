@@ -1,4 +1,3 @@
-import { Box } from '@mui/material';
 import React, { ChangeEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Icon } from '../parts/Icon/index.js';
@@ -13,21 +12,10 @@ export const ImageUploader = ({ onUpload }: { onUpload: (url: string) => void })
   };
 
   return (
-    <Box
+    <div
       contentEditable={false}
       onClick={handleUploadClick}
-      sx={{
-        border: 1.5,
-        borderColor: 'text.secondary',
-        borderStyle: 'dashed',
-        borderRadius: 1.5,
-        transition: 'border-color 0.3s ease-in-out',
-        '&:hover': {
-          borderColor: 'text.primary',
-        },
-        p: 2,
-        cursor: 'pointer',
-      }}
+      className="!border border-dashed border-gray-500 transition-colors duration-300 ease-in-out hover:border-gray-900 p-2 cursor-pointer"
     >
       <div className="flex flex-row items-center gap-1.5">
         <Icon name="Image" />
@@ -40,7 +28,7 @@ export const ImageUploader = ({ onUpload }: { onUpload: (url: string) => void })
         accept=".jpg,.jpeg,.png,.webp,.gif"
         onChange={onFileChange}
       />
-    </Box>
+    </div>
   );
 };
 

@@ -1,11 +1,10 @@
-import { Box, Paper, useTheme } from '@mui/material';
+import { Paper } from '@mui/material';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { DropdownButton } from '../parts/DropdownButton/index.js';
 import { Icon } from '../parts/Icon/index.js';
 import { Command, MenuListProps } from '../SlashCommand/groups.js';
 
 export const MenuList = React.forwardRef((props: MenuListProps, ref) => {
-  const theme = useTheme();
   const scrollContainer = useRef<HTMLDivElement>(null);
   const activeItem = useRef<HTMLButtonElement>(null);
   const [selectedGroupIndex, setSelectedGroupIndex] = useState(0);
@@ -142,20 +141,9 @@ export const MenuList = React.forwardRef((props: MenuListProps, ref) => {
                   }
                   onClick={createCommandClickHandler(groupIndex, commandIndex)}
                 >
-                  <Box
-                    sx={{
-                      width: 38,
-                      height: 38,
-                      border: 1,
-                      borderColor: 'divider',
-                      borderRadius: 1,
-                      display: 'flex',
-                    }}
-                    alignItems="center"
-                    justifyContent="center"
-                  >
+                  <div className="w-9 h-9 border border-gray-300 rounded flex items-center justify-center">
                     <Icon name={command.iconName} size={22} strokeWidth={2} />
-                  </Box>
+                  </div>
                   <div className="ml-2 text-left">
                     <p>{command.label}</p>
                     <p className="text-xs text-gray-400">{command.description}</p>
