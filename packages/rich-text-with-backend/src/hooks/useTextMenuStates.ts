@@ -26,6 +26,9 @@ export const useTextMenuStates = (editor: Editor) => {
     isStrike: editor.isActive('strike'),
     isUnderline: editor.isActive('underline'),
     isCode: editor.isActive('code'),
+    isHeading: editor.isActive('heading', { level: 1 }),
+    isSubHeading: editor.isActive('heading', { level: 2 }),
+    isSubTitle: editor.isActive('heading', { level: 3 }),
     shouldShow,
   };
 };
