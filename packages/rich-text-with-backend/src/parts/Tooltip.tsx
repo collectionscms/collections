@@ -1,6 +1,21 @@
 import Tippy from '@tippyjs/react/headless';
-import React, { useCallback, JSX } from 'react';
-import { TippyProps, TooltipProps } from './types';
+import React, { JSX, useCallback } from 'react';
+import { Placement, Props } from 'tippy.js';
+
+export interface TooltipProps {
+  children?: string | React.ReactNode;
+  enabled?: boolean;
+  title?: string;
+  shortcut?: string[];
+  tippyOptions?: Omit<Partial<Props>, 'content'>;
+  content?: React.ReactNode;
+}
+
+export interface TippyProps {
+  'data-placement': Placement;
+  'data-reference-hidden'?: string;
+  'data-escaped'?: string;
+}
 
 const isMac =
   typeof window !== 'undefined' ? navigator.platform.toUpperCase().indexOf('MAC') >= 0 : false;

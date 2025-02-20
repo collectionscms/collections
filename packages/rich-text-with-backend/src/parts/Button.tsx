@@ -1,9 +1,8 @@
 import React from 'react';
-import { cn } from '../../lib/utils/cn';
+import { cn } from '../lib/utils/cn';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'tertiary' | 'quaternary' | 'ghost';
 export type ButtonSize = 'medium' | 'small' | 'icon' | 'iconSmall';
-
 export type ButtonProps = {
   variant?: ButtonVariant;
   active?: boolean;

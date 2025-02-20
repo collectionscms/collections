@@ -1,5 +1,11 @@
 import { Editor } from '@tiptap/react';
-import { CodeBlock, HorizontalRule, ImageBlock, ImageUpload, Link } from '../extensions/index.js';
+import {
+  CodeBlock,
+  HorizontalRule,
+  ImageBlock,
+  ImageUpload,
+  Link,
+} from '../../extensions/index.js';
 
 export const isCustomNodeSelected = (editor: Editor) => {
   const customNodes = [

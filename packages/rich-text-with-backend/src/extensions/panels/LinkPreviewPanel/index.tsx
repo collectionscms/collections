@@ -1,7 +1,7 @@
 import React from 'react';
 import { Surface } from '../../../parts/Surface';
 import { Toolbar } from '../../../parts/Toolbar';
-import Tooltip from '../../../parts/Tooltip/index';
+import Tooltip from '../../../parts/Tooltip';
 import { Icon } from '../../parts/Icon/index';
 
 export type Props = {
