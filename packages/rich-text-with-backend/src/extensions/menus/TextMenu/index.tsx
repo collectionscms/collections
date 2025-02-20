@@ -1,9 +1,10 @@
-import { Divider, Paper, useTheme } from '@mui/material';
+import { Paper } from '@mui/material';
 import { BubbleMenu, Editor } from '@tiptap/react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useTextMenuCommands } from '../../../hooks/useTextMenuCommands';
 import { useTextMenuStates } from '../../../hooks/useTextMenuStates';
+import { Toolbar } from '../../../parts/Toolbar';
 import { Icon } from '../../parts/Icon';
 import { ToolbarButton } from '../../parts/ToolbarButton';
 import { EditLinkPopover } from './EditLinkPopover';
@@ -14,12 +15,11 @@ type Props = {
 
 export const TextMenu: React.FC<Props> = ({ editor }) => {
   const { t } = useTranslation();
-  const theme = useTheme();
   const commands = useTextMenuCommands(editor);
   const states = useTextMenuStates(editor);
 
   const getBackgroundColor = (isActive: boolean) => {
-    return isActive ? theme.palette.secondary.main : 'transparent';
+    return isActive ? '#eee' : 'transparent';
   };
 
   return (
@@ -78,7 +78,7 @@ export const TextMenu: React.FC<Props> = ({ editor }) => {
           >
             <Icon name="Strikethrough" size={16} />
           </ToolbarButton>
-          <Divider orientation="vertical" flexItem sx={{ mx: 1, my: 0.5 }} />
+          <Toolbar.Divider />
           <ToolbarButton
             tooltip={`${t('editor.heading')}`}
             color="inherit"
@@ -103,7 +103,7 @@ export const TextMenu: React.FC<Props> = ({ editor }) => {
           >
             <Icon name="Heading3" size={16} />
           </ToolbarButton>
-          <Divider orientation="vertical" flexItem sx={{ mx: 1, my: 0.5 }} />
+          <Toolbar.Divider />
           <ToolbarButton
             tooltip={`${t('editor.code')}`}
             shortcuts={['Mod', 'E']}
