@@ -1,15 +1,8 @@
-import {
-  Button,
-  FormControl,
-  FormControlLabel,
-  FormGroup,
-  Paper,
-  Switch,
-  TextField,
-} from '@mui/material';
 import { t } from 'i18next';
 import React, { useCallback, useMemo, useState } from 'react';
-import { Icon } from '../../parts/Icon';
+import { Button } from '../../../parts/Button';
+import { Surface } from '../../../parts/Surface';
+import { Toggle } from '../../../parts/Toggle';
 
 type Props = {
   initialUrl?: string;
@@ -52,48 +45,27 @@ export const LinkEditorPanel = ({ initialUrl, initialOpenInNewTab, onSetLink }: 
   const state = useLinkEditorState({ onSetLink, initialOpenInNewTab, initialUrl });
 
   return (
-    <Paper
-      sx={{
-        borderRadius: 2,
-        border: '1px solid',
-        borderColor: 'divider',
-        p: 1,
-        boxShadow: 'rgba(0, 0, 0, 0.1) 0px 2px 6px 0px',
-      }}
-    >
+    <Surface className="p-2">
       <form onSubmit={state.handleSubmit}>
         <div className="flex flex-row gap-1">
-          <TextField
-            type="text"
-            fullWidth
-            size="small"
+          <input
+            type="url"
+            className="flex-1 bg-transparent outline-none min-w-[12rem] text-black text-sm dark:text-white"
             placeholder="https://..."
-            InputProps={{
-              startAdornment: <Icon name="Link" size={16} />,
-            }}
             value={state.url}
             onChange={state.onChange}
           />
-          <Button variant="contained" type="submit" size="small">
+          <Button variant="primary" buttonSize="small" type="submit" disabled={!state.isValidUrl}>
             {t('apply')}
           </Button>
         </div>
-        <FormControl component="fieldset" sx={{ px: 1, pt: 1 }}>
-          <FormGroup row>
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={state.openInNewTab}
-                  size="small"
-                  onChange={(e) => state.setOpenInNewTab(Boolean(e.target.checked))}
-                />
-              }
-              label={t('open_in_new_tab')}
-              labelPlacement="end"
-            />
-          </FormGroup>
-        </FormControl>
+        <div className="mt-3">
+          <label className="flex items-center justify-start gap-2 text-sm font-semibold cursor-pointer select-none text-neutral-500 dark:text-neutral-400">
+            {t('open_in_new_tab')}
+            <Toggle active={state.openInNewTab} onChange={state.setOpenInNewTab} />
+          </label>
+        </div>
       </form>
-    </Paper>
+    </Surface>
   );
 };

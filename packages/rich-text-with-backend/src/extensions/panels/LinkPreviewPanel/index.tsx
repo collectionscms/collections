@@ -1,9 +1,8 @@
-import { Link, Paper } from '@mui/material';
-import { t } from 'i18next';
 import React from 'react';
-import { Toolbar } from '../../../parts/Toolbar.js';
-import { Icon } from '../../parts/Icon/index.js';
-import { ToolbarButton } from '../../parts/ToolbarButton/index.js';
+import { Surface } from '../../../parts/Surface';
+import { Toolbar } from '../../../parts/Toolbar';
+import Tooltip from '../../../parts/Tooltip/index';
+import { Icon } from '../../parts/Icon/index';
 
 export type Props = {
   url: string;
@@ -12,36 +11,29 @@ export type Props = {
 };
 
 export const LinkPreviewPanel = ({ onClear, onEdit, url }: Props) => {
+  const sanitizedLink = url?.startsWith('javascript:') ? '' : url;
+
   return (
-    <Paper
-      sx={{
-        borderRadius: 2,
-        border: '1px solid',
-        borderColor: 'divider',
-        py: 1,
-        px: 2,
-        boxShadow: 'rgba(0, 0, 0, 0.1) 0px 2px 6px 0px',
-        display: 'flex',
-        alignItems: 'center',
-        gap: 1,
-      }}
-    >
-      <Link
-        href={url}
+    <Surface className="flex items-center gap-2 p-2">
+      <a
+        href={sanitizedLink}
         target="_blank"
         rel="noopener noreferrer"
-        color="inherit"
-        sx={{ wordBreak: 'break-all' }}
+        className="text-sm underline break-all"
       >
         {url}
-      </Link>
+      </a>
       <Toolbar.Divider />
-      <ToolbarButton tooltip={`${t('edit_link')}`} color="inherit" onClick={onEdit}>
-        <Icon name="Pen" size={16} />
-      </ToolbarButton>
-      <ToolbarButton tooltip={`${t('remove_link')}`} color="inherit" onClick={onClear}>
-        <Icon name="Trash2" size={16} />
-      </ToolbarButton>
-    </Paper>
+      <Tooltip title="Edit link">
+        <Toolbar.Button onClick={onEdit}>
+          <Icon name="Pen" size={16} />
+        </Toolbar.Button>
+      </Tooltip>
+      <Tooltip title="Remove link">
+        <Toolbar.Button onClick={onClear}>
+          <Icon name="Trash2" size={16} />
+        </Toolbar.Button>
+      </Tooltip>
+    </Surface>
   );
 };

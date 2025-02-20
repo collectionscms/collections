@@ -1,9 +1,9 @@
 import * as Popover from '@radix-ui/react-popover';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Icon } from '../../parts/Icon';
+import { Toolbar } from '../../../parts/Toolbar';
 import { LinkEditorPanel } from '../../panels/LinkEditorPanel/index.js';
-import { ToolbarButton } from '../../parts/ToolbarButton/index.js';
+import { Icon } from '../../parts/Icon';
 
 export type EditLinkPopoverProps = {
   onSetLink: (link: string, openInNewTab?: boolean) => void;
@@ -15,9 +15,9 @@ export const EditLinkPopover = ({ onSetLink }: EditLinkPopoverProps) => {
   return (
     <Popover.Root>
       <Popover.Trigger asChild>
-        <ToolbarButton color="inherit" tooltip={t('link')}>
+        <Toolbar.Button tooltip={t('link')}>
           <Icon name="Link" size={16} />
-        </ToolbarButton>
+        </Toolbar.Button>
       </Popover.Trigger>
       <Popover.Content>
         <LinkEditorPanel onSetLink={onSetLink} />
