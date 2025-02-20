@@ -84,7 +84,7 @@ export const TextMenu: React.FC<Props> = ({ editor }) => {
           tooltip={`${t('editor.code')}`}
           tooltipShortcut={['Mod', 'E']}
           onClick={commands.onCode}
-          active={states.isSubTitle}
+          active={states.isCode}
         >
           <Icon name="Code" size={16} />
         </Toolbar.Button>

@@ -1,5 +1,5 @@
-import { Paper } from '@mui/material';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { Surface } from '../../parts/Surface.js';
 import { DropdownButton } from '../parts/DropdownButton/index.js';
 import { Icon } from '../parts/Icon/index.js';
 import { Command, MenuListProps } from '../SlashCommand/groups.js';
@@ -111,20 +111,9 @@ export const MenuList = React.forwardRef((props: MenuListProps, ref) => {
   }
 
   return (
-    <Paper
-      sx={{
-        borderRadius: 2,
-        border: '1px solid',
-        borderColor: 'divider',
-        overflowY: 'auto',
-        maxHeight: 'min(80vh, 20rem)',
-        flexWrap: 'wrap',
-        marginBottom: 2,
-        p: 1,
-        width: 300,
-        boxShadow: '0px 9px 24px rgba(0, 0, 0, 0.1)',
-      }}
+    <Surface
       ref={scrollContainer}
+      className="text-black max-h-[min(80vh,24rem)] overflow-auto flex-wrap mb-8 p-2"
     >
       <div className="flex flex-col gap-2">
         {props.items.map((group, groupIndex: number) => (
@@ -154,7 +143,7 @@ export const MenuList = React.forwardRef((props: MenuListProps, ref) => {
           </div>
         ))}
       </div>
-    </Paper>
+    </Surface>
   );
 });
 

@@ -22,9 +22,6 @@
     "url": "https://rocketa.co.jp"
   },
   "dependencies": {
-    "@emotion/react": "11.14.0",
-    "@emotion/styled": "11.14.0",
-    "@mui/material": "6.4.1",
     "@radix-ui/react-popover": "1.1.6",
     "@tippyjs/react": "4.2.6",
     "@tiptap/core": "2.11.3",
