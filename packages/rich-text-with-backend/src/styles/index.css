@@ -66,6 +66,10 @@
   }
 }
 
+[data-theme='slash-command'] {
+  width: 1000vw;
+}
+
 .selection,
 *::selection {
   background-color: rgba(0, 0, 0, 0.1);

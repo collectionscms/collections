@@ -4,15 +4,18 @@ import { ReactRenderer } from '@tiptap/react';
 import Suggestion, { SuggestionKeyDownProps, SuggestionProps } from '@tiptap/suggestion';
 import { TFunction } from 'i18next';
 import tippy from 'tippy.js';
-import { MenuList } from '../MenuList/index.js';
-import { groups } from './groups.js';
+import { groups } from './groups';
+import { MenuList } from './MenuList';
 
 const extensionName = 'slashCommand';
+
 let popup: any;
 
 export const SlashCommand = (t: TFunction) =>
   Extension.create({
     name: extensionName,
+
+    priority: 200,
 
     onCreate() {
       popup = tippy('body', {
@@ -20,7 +23,7 @@ export const SlashCommand = (t: TFunction) =>
         trigger: 'manual',
         placement: 'bottom-start',
         theme: 'slash-command',
-        maxWidth: '300px',
+        maxWidth: '16rem',
         offset: [16, 8],
         popperOptions: {
           strategy: 'fixed',
@@ -186,7 +189,15 @@ export const SlashCommand = (t: TFunction) =>
                     return props.editor.storage[extensionName].rect;
                   }
 
-                  return new DOMRect(rect.x, rect.y, rect.width, rect.height);
+                  let yPos = rect.y;
+
+                  if (rect.top + component.element.offsetHeight + 40 > window.innerHeight) {
+                    const diff =
+                      rect.top + component.element.offsetHeight - window.innerHeight + 40;
+                    yPos = rect.y - diff;
+                  }
+
+                  return new DOMRect(rect.x, yPos, rect.width, rect.height);
                 };
 
                 let scrollHandler = () => {
@@ -224,7 +235,7 @@ export const SlashCommand = (t: TFunction) =>
                   popup?.[0].show();
                 }
 
-                return component?.ref?.onKeyDown(props);
+                return component.ref?.onKeyDown(props);
               },
 
               onExit(props) {
@@ -233,7 +244,7 @@ export const SlashCommand = (t: TFunction) =>
                   const { view } = props.editor;
                   view.dom.parentElement?.removeEventListener('scroll', scrollHandler);
                 }
-                component?.destroy();
+                component.destroy();
               },
             };
           },
@@ -254,3 +265,5 @@ export const SlashCommand = (t: TFunction) =>
       };
     },
   });
+
+export default SlashCommand;
