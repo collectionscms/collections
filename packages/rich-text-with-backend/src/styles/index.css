@@ -1,16 +1,11 @@
 @import 'tailwindcss';
+
+@import './editor.css';
 @import './partials/placeholder.css';
 @import './partials/typography.css';
 @import './partials/lists.css';
 @import './partials/code.css';
 @import './partials/blocks.css';
-
-*,
-:after,
-:before {
-  box-sizing: border-box;
-  border: 0;
-}
 
 .ProseMirror {
   outline: 0;
