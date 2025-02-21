@@ -53,11 +53,11 @@
   }
 
   a.link {
-    @apply text-blue-500 font-extrabold dark:text-blue-400;
+    @apply text-blue-500 font-extrabold;
   }
 
   mark {
-    @apply bg-red-500 rounded-sm decoration-clone text-inherit py-1 px-0 dark:bg-red-400;
+    @apply bg-red-500 rounded-sm decoration-clone text-inherit py-1 px-0;
   }
 
   & img {
@@ -68,21 +68,19 @@
     @apply my-8 py-4 transition-all duration-100 ease-in-out cursor-pointer;
 
     &.ProseMirror-selectednode {
-      @apply bg-black/5 dark:bg-white/10;
+      @apply bg-black/5;
 
       hr {
-        @apply border-t-black/30 dark:border-t-white/30;
+        @apply border-t-black/30;
       }
     }
 
     &:hover:not(&.ProseMirror-selectednode) {
       @apply bg-black/5;
-      @apply dark:bg-white/10;
     }
 
     hr {
       @apply border-0 border-t border-black/20 bg-black/80;
-      @apply dark:border-white/20 dark:bg-white/80;
     }
   }
 

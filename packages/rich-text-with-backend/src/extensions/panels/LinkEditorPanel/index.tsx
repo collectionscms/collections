@@ -50,7 +50,7 @@ export const LinkEditorPanel = ({ initialUrl, initialOpenInNewTab, onSetLink }: 
         <div className="flex flex-row gap-1">
           <input
             type="url"
-            className="flex-1 bg-transparent outline-none min-w-[12rem] text-black text-sm dark:text-white"
+            className="flex-1 bg-transparent outline-none min-w-[12rem] text-black text-sm"
             placeholder="https://..."
             value={state.url}
             onChange={state.onChange}
@@ -60,7 +60,7 @@ export const LinkEditorPanel = ({ initialUrl, initialOpenInNewTab, onSetLink }: 
           </Button>
         </div>
         <div className="mt-3">
-          <label className="flex items-center justify-start gap-2 text-sm font-semibold cursor-pointer select-none text-neutral-500 dark:text-neutral-400">
+          <label className="flex items-center justify-start gap-2 text-sm font-semibold cursor-pointer select-none text-neutral-500">
             {t('open_in_new_tab')}
             <Toggle active={state.openInNewTab} onChange={state.setOpenInNewTab} />
           </label>
