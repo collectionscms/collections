@@ -1,5 +1,9 @@
 {
   "write_the_text": "Write the text",
+  "open_in_new_tab": "Open in new tab",
+  "apply": "Apply",
+  "edit_link": "Edit link",
+  "remove_link": "Remove link",
   "editor": {
     "placeholder": "Type '/' for commands",
     "text": "Text",
@@ -27,6 +31,7 @@
     "italic": "Italic",
     "underline": "Underline",
     "strike_through": "Strike-through",
-    "code": "Code"
+    "code": "Code",
+    "link": "Link"
   }
 }

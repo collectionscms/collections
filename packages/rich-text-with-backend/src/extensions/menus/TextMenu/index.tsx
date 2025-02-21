@@ -66,7 +66,7 @@ export const TextMenu: React.FC<Props> = ({ editor }) => {
           <Icon name="Heading1" size={16} />
         </Toolbar.Button>
         <Toolbar.Button
-          tooltip={`${t('editor.heading')}`}
+          tooltip={`${t('editor.subheading')}`}
           onClick={commands.onSubheading}
           active={states.isSubHeading}
         >

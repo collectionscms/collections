@@ -1,5 +1,9 @@
 {
   "write_the_text": "本文を書く",
+  "open_in_new_tab": "新しいタブで開く",
+  "apply": "適用",
+  "edit_link": "リンクを編集",
+  "remove_link": "リンクを解除",
   "editor": {
     "placeholder": "コマンドの場合は '/' を入力してください",
     "text": "Text",
@@ -27,6 +31,7 @@
     "italic": "斜体",
     "underline": "下線",
     "strike_through": "取り消し線",
-    "code": "コード"
+    "code": "コード",
+    "link": "リンク"
   }
 }

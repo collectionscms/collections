@@ -15,7 +15,7 @@ export const EditLinkPopover = ({ onSetLink }: EditLinkPopoverProps) => {
   return (
     <Popover.Root>
       <Popover.Trigger asChild>
-        <Toolbar.Button tooltip={t('link')}>
+        <Toolbar.Button tooltip={t('editor.link')}>
           <Icon name="Link" size={16} />
         </Toolbar.Button>
       </Popover.Trigger>

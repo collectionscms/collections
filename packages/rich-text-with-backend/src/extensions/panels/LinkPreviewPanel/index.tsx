@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Surface } from '../../../parts/Surface';
 import { Toolbar } from '../../../parts/Toolbar';
 import Tooltip from '../../../parts/Tooltip';
@@ -11,6 +12,7 @@ export type Props = {
 };
 
 export const LinkPreviewPanel = ({ onClear, onEdit, url }: Props) => {
+  const { t } = useTranslation();
   const sanitizedLink = url?.startsWith('javascript:') ? '' : url;
 
   return (
@@ -24,12 +26,12 @@ export const LinkPreviewPanel = ({ onClear, onEdit, url }: Props) => {
         {url}
       </a>
       <Toolbar.Divider />
-      <Tooltip title="Edit link">
+      <Tooltip title={t('edit_link')}>
         <Toolbar.Button onClick={onEdit}>
           <Icon name="Pen" size={16} />
         </Toolbar.Button>
       </Tooltip>
-      <Tooltip title="Remove link">
+      <Tooltip title={t('remove_link')}>
         <Toolbar.Button onClick={onClear}>
           <Icon name="Trash2" size={16} />
         </Toolbar.Button>

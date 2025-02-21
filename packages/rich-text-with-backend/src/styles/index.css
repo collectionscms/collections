@@ -65,6 +65,11 @@
   width: 1000vw;
 }
 
+[role='button'],
+button {
+  cursor: pointer;
+}
+
 .selection,
 *::selection {
   background-color: rgba(0, 0, 0, 0.1);

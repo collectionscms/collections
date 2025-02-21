@@ -1,8 +1,9 @@
-import { t } from 'i18next';
 import React, { useCallback, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '../../../parts/Button';
 import { Surface } from '../../../parts/Surface';
 import { Toggle } from '../../../parts/Toggle';
+import { Icon } from '../../parts/Icon';
 
 type Props = {
   initialUrl?: string;
@@ -42,30 +43,32 @@ export const useLinkEditorState = ({ initialUrl, initialOpenInNewTab, onSetLink 
 };
 
 export const LinkEditorPanel = ({ initialUrl, initialOpenInNewTab, onSetLink }: Props) => {
+  const { t } = useTranslation();
   const state = useLinkEditorState({ onSetLink, initialOpenInNewTab, initialUrl });
 
   return (
     <Surface className="p-2">
-      <form onSubmit={state.handleSubmit}>
-        <div className="flex flex-row gap-1">
+      <form onSubmit={state.handleSubmit} className="flex items-center gap-2">
+        <label className="flex items-center gap-2 p-2 rounded-lg bg-neutral-100 cursor-text">
+          <Icon name="Link" className="flex-none text-black " />
           <input
             type="url"
-            className="flex-1 bg-transparent outline-none min-w-[12rem] text-black text-sm"
-            placeholder="https://..."
+            className="flex-1 bg-transparent outline-none min-w-[12rem] text-black text-smwhite"
+            placeholder="Enter URL"
             value={state.url}
             onChange={state.onChange}
           />
-          <Button variant="primary" buttonSize="small" type="submit" disabled={!state.isValidUrl}>
-            {t('apply')}
-          </Button>
-        </div>
-        <div className="mt-3">
-          <label className="flex items-center justify-start gap-2 text-sm font-semibold cursor-pointer select-none text-neutral-500">
-            {t('open_in_new_tab')}
-            <Toggle active={state.openInNewTab} onChange={state.setOpenInNewTab} />
-          </label>
-        </div>
+        </label>
+        <Button variant="primary" buttonSize="small" type="submit" disabled={!state.isValidUrl}>
+          {t('apply')}
+        </Button>
       </form>
+      <div className="mt-3">
+        <label className="flex items-center justify-start gap-2 text-sm font-semibold cursor-pointer select-none text-neutral-500 ">
+          {t('open_in_new_tab')}
+          <Toggle active={state.openInNewTab} onChange={state.setOpenInNewTab} />
+        </label>
+      </div>
     </Surface>
   );
 };
