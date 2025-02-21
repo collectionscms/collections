@@ -1,4 +1,3 @@
-import { Placeholder } from '@tiptap/extension-placeholder';
 import { EditorContent, JSONContent } from '@tiptap/react';
 import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -11,7 +10,7 @@ import '../styles/index.css';
 type Props = {
   initialContent?: string;
   options?: {
-    language?: 'en' | 'ja';
+    language: 'en' | 'ja';
     immediatelyRender?: boolean;
   };
   onChange?: ({
@@ -34,12 +33,8 @@ export const RichText = ({
   const menuContainerRef = useRef(null);
   const { editor } = useBlockEditor({
     initialContent,
-    extensions: [
-      Placeholder.configure({
-        placeholder: t('editor.placeholder'),
-      }),
-    ],
     immediatelyRender: options.immediatelyRender ?? true,
+    language: options.language,
   });
 
   editor?.on('update', () => {

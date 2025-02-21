@@ -21,12 +21,14 @@ type UseBlockEditorProps = {
   initialContent: string;
   extensions?: Extension[];
   immediatelyRender: boolean;
+  language: string;
 };
 
 export const useBlockEditor = ({
   initialContent,
   extensions = [],
   immediatelyRender,
+  language,
 }: UseBlockEditorProps) => {
   const { t } = useTranslation();
 
@@ -38,7 +40,7 @@ export const useBlockEditor = ({
 
     extensions: [
       Underline,
-      Placeholder.configure({ placeholder: `${t('write_the_text')}…` }),
+      Placeholder.configure({ placeholder: `${t('write_the_text', { lng: language })}...` }),
       Link.configure({
         openOnClick: false,
         autolink: true,
