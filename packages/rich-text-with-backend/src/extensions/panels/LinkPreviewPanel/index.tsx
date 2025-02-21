@@ -28,12 +28,12 @@ export const LinkPreviewPanel = ({ onClear, onEdit, url }: Props) => {
       <Toolbar.Divider />
       <Tooltip title={t('edit_link')}>
         <Toolbar.Button onClick={onEdit}>
-          <Icon name="Pen" size={16} />
+          <Icon name="Pen" />
         </Toolbar.Button>
       </Tooltip>
       <Tooltip title={t('remove_link')}>
         <Toolbar.Button onClick={onClear}>
-          <Icon name="Trash2" size={16} />
+          <Icon name="Trash2" />
         </Toolbar.Button>
       </Tooltip>
     </Surface>

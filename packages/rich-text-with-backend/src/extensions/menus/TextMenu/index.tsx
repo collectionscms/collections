@@ -31,7 +31,7 @@ export const TextMenu: React.FC<Props> = ({ editor }) => {
           onClick={commands.onBold}
           active={states.isBold}
         >
-          <Icon name="Bold" size={16} />
+          <Icon name="Bold" />
         </Toolbar.Button>
         <Toolbar.Button
           tooltip={`${t('editor.italic')}`}
@@ -39,7 +39,7 @@ export const TextMenu: React.FC<Props> = ({ editor }) => {
           onClick={commands.onItalic}
           active={states.isItalic}
         >
-          <Icon name="Italic" size={16} />
+          <Icon name="Italic" />
         </Toolbar.Button>
         <Toolbar.Button
           tooltip={`${t('editor.underline')}`}
@@ -47,7 +47,7 @@ export const TextMenu: React.FC<Props> = ({ editor }) => {
           onClick={commands.onUnderline}
           active={states.isUnderline}
         >
-          <Icon name="Underline" size={16} />
+          <Icon name="Underline" />
         </Toolbar.Button>
         <Toolbar.Button
           tooltip={`${t('editor.strike_through')}`}
@@ -55,7 +55,7 @@ export const TextMenu: React.FC<Props> = ({ editor }) => {
           onClick={commands.onStrike}
           active={states.isStrike}
         >
-          <Icon name="Strikethrough" size={16} />
+          <Icon name="Strikethrough" />
         </Toolbar.Button>
         <Toolbar.Divider />
         <Toolbar.Button
@@ -63,21 +63,21 @@ export const TextMenu: React.FC<Props> = ({ editor }) => {
           onClick={commands.onHeading}
           active={states.isHeading}
         >
-          <Icon name="Heading1" size={16} />
+          <Icon name="Heading1" />
         </Toolbar.Button>
         <Toolbar.Button
           tooltip={`${t('editor.subheading')}`}
           onClick={commands.onSubheading}
           active={states.isSubHeading}
         >
-          <Icon name="Heading2" size={16} />
+          <Icon name="Heading2" />
         </Toolbar.Button>
         <Toolbar.Button
           tooltip={`${t('editor.subtitle')}`}
           onClick={commands.onSubtitle}
           active={states.isSubTitle}
         >
-          <Icon name="Heading3" size={16} />
+          <Icon name="Heading3" />
         </Toolbar.Button>
         <Toolbar.Divider />
         <Toolbar.Button
@@ -86,7 +86,7 @@ export const TextMenu: React.FC<Props> = ({ editor }) => {
           onClick={commands.onCode}
           active={states.isCode}
         >
-          <Icon name="Code" size={16} />
+          <Icon name="Code" />
         </Toolbar.Button>
         <EditLinkPopover onSetLink={commands.onLink} />
       </Toolbar.Wrapper>
