@@ -1,8 +1,8 @@
 import { Editor } from '@tiptap/react';
 import { useCallback } from 'react';
-import { ShouldShowProps } from '@/extensions/menus/TextMenu/types';
-import isCustomNodeSelected from '@/lib/utils/isCustomNodeSelected';
-import isTextSelected from '@/lib/utils/isTextSelected';
+import { ShouldShowProps } from '../extensions/menus/TextMenu/types';
+import isCustomNodeSelected from '../lib/utils/isCustomNodeSelected';
+import isTextSelected from '../lib/utils/isTextSelected';
 
 export const useTextMenuStates = (editor: Editor) => {
   const shouldShow = useCallback(

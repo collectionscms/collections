@@ -1,9 +1,9 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button } from '@/parts/Button';
-import { Surface } from '@/parts/Surface';
-import { Toggle } from '@/parts/Toggle';
-import { Icon } from '@/extensions/parts/Icon';
+import { Icon } from '../../../extensions/parts/Icon';
+import { Button } from '../../../parts/Button';
+import { Surface } from '../../../parts/Surface';
+import { Toggle } from '../../../parts/Toggle';
 
 type Props = {
   initialUrl?: string;

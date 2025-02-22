@@ -1,9 +1,9 @@
-import { Icon } from '@/extensions/parts/Icon';
-import { cn } from '@/lib/utils/cn';
-import { Button } from '@/parts/Button';
-import { Spinner } from '@/parts/Spinner';
 import React, { ChangeEvent, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Icon } from '../../../extensions/parts/Icon';
+import { cn } from '../../../lib/utils/cn';
+import { Button } from '../../../parts/Button';
+import { Spinner } from '../../../parts/Spinner';
 import { useDropZone, useFileUpload, useUploader } from './hooks';
 
 export const ImageUploader = ({

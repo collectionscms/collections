@@ -1,8 +1,8 @@
-import { Icon } from '@/extensions/parts/Icon';
-import { Button } from '@/parts/Button';
 import { Node } from '@tiptap/pm/model';
 import { Editor, NodeViewWrapper } from '@tiptap/react';
 import React, { useCallback, useRef, useState } from 'react';
+import { Icon } from '../../extensions/parts/Icon';
+import { Button } from '../../parts/Button';
 
 interface ImageBlockViewProps {
   editor: Editor;

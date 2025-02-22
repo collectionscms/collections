@@ -4,8 +4,8 @@ import { ReactRenderer } from '@tiptap/react';
 import Suggestion, { SuggestionKeyDownProps, SuggestionProps } from '@tiptap/suggestion';
 import { TFunction } from 'i18next';
 import tippy from 'tippy.js';
-import { groups } from '@/extensions/SlashCommand/groups';
-import { MenuList } from '@/extensions/SlashCommand/MenuList';
+import { groups } from '../../extensions/SlashCommand/groups';
+import { MenuList } from '../../extensions/SlashCommand/MenuList';
 
 const extensionName = 'slashCommand';
 

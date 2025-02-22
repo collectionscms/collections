@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Surface } from '@/parts/Surface';
-import { DropdownButton } from '@/extensions/parts/DropdownButton';
-import { Icon } from '@/extensions/parts/Icon';
-import { Command, MenuListProps } from '@/extensions/SlashCommand/types';
+import { DropdownButton } from '../../extensions/parts/DropdownButton';
+import { Icon } from '../../extensions/parts/Icon';
+import { Command, MenuListProps } from '../../extensions/SlashCommand/types';
+import { Surface } from '../../parts/Surface';
 
 export const MenuList = React.forwardRef((props: MenuListProps, ref) => {
   const scrollContainer = useRef<HTMLDivElement>(null);
