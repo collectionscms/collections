@@ -4,6 +4,8 @@
   "apply": "Apply",
   "edit_link": "Edit link",
   "remove_link": "Remove link",
+  "upload_image": "Upload an image",
+  "drag_and_drop_image": "Drag & drop or",
   "editor": {
     "placeholder": "Type '/' for commands",
     "text": "Text",

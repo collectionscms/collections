@@ -57,16 +57,16 @@
   }
 
   .node-imageUpload {
-    @apply rounded border-2 border-dotted border-black p-2;
+    @apply rounded border-2 border-dotted border-black/10 p-2;
     transition: border 160ms cubic-bezier(0.45, 0.05, 0.55, 0.95);
 
     &:hover {
-      @apply opacity-30;
+      @apply border-black/30;
     }
 
     &:has(.is-active),
     &.has-focus {
-      @apply opacity-40;
+      @apply border-black/40;
     }
   }
 

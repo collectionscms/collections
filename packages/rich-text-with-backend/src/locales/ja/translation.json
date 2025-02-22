@@ -4,6 +4,8 @@
   "apply": "適用",
   "edit_link": "リンクを編集",
   "remove_link": "リンクを解除",
+  "upload_image": "画像をアップロード",
+  "drag_and_drop_image": "ドラッグ＆ドロップまたは",
   "editor": {
     "placeholder": "コマンドの場合は '/' を入力してください",
     "text": "テキスト",

@@ -8,6 +8,6 @@ export { Underline } from '@tiptap/extension-underline';
 export { StarterKit } from '@tiptap/starter-kit';
 export { HorizontalRule } from './HorizontalRule';
 export { ImageBlock } from './ImageBlock';
-export { ImageUpload } from './ImageUpload/ImageUpload';
+export { ImageUpload } from './ImageUpload';
 export { Link } from './Link';
 export { SlashCommand } from './SlashCommand';
