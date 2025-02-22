@@ -13,7 +13,7 @@ import {
   ImageUpload,
   Link,
   SlashCommand,
-} from '../extensions/index';
+} from '@/extensions';
 
 const lowlight = createLowlight(common);
 

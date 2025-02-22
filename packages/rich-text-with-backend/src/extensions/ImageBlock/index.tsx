@@ -1,7 +1,7 @@
 import { mergeAttributes, Range } from '@tiptap/core';
 import { ReactNodeViewRenderer } from '@tiptap/react';
-import { Image } from '../Image/image.js';
-import { ImageBlockView } from './ImageBlockView.js';
+import { Image } from '@/extensions/Image/image';
+import { ImageBlockView } from '@/extensions/ImageBlock/ImageBlockView';
 
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {

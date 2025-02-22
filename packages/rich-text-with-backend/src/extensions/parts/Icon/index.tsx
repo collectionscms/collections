@@ -1,6 +1,6 @@
 import { icons } from 'lucide-react';
 import React, { memo } from 'react';
-import { cn } from '../../../lib/utils/cn';
+import { cn } from '@/lib/utils/cn';
 
 export type Props = {
   name: keyof typeof icons;

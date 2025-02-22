@@ -1,8 +1,8 @@
 import { BubbleMenu } from '@tiptap/react';
 import React, { JSX, useCallback, useState } from 'react';
-import { LinkEditorPanel } from '../../panels/LinkEditorPanel/index.js';
-import { LinkPreviewPanel } from '../../panels/LinkPreviewPanel/index.js';
-import { MenuProps } from '../types';
+import { LinkEditorPanel } from '@/extensions/panels/LinkEditorPanel';
+import { LinkPreviewPanel } from '@/extensions/panels/LinkPreviewPanel';
+import { MenuProps } from '@/extensions/menus/types';
 
 export const LinkMenu = ({ editor, appendTo }: MenuProps): JSX.Element => {
   const [showEdit, setShowEdit] = useState(false);

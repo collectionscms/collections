@@ -1,11 +1,11 @@
 import { BubbleMenu, Editor } from '@tiptap/react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { useTextMenuCommands } from '../../../hooks/useTextMenuCommands';
-import { useTextMenuStates } from '../../../hooks/useTextMenuStates';
-import { Toolbar } from '../../../parts/Toolbar';
-import { Icon } from '../../parts/Icon';
-import { EditLinkPopover } from './EditLinkPopover';
+import { useTextMenuCommands } from '@/hooks/useTextMenuCommands';
+import { useTextMenuStates } from '@/hooks/useTextMenuStates';
+import { Toolbar } from '@/parts/Toolbar';
+import { Icon } from '@/extensions/parts/Icon';
+import { EditLinkPopover } from '@/extensions/menus/TextMenu/EditLinkPopover';
 
 type Props = {
   editor: Editor;

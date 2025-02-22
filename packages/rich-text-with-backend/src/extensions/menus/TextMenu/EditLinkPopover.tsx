@@ -1,9 +1,9 @@
 import * as Popover from '@radix-ui/react-popover';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Toolbar } from '../../../parts/Toolbar';
-import { LinkEditorPanel } from '../../panels/LinkEditorPanel/index.js';
-import { Icon } from '../../parts/Icon';
+import { Toolbar } from '@/parts/Toolbar';
+import { LinkEditorPanel } from '@/extensions/panels/LinkEditorPanel';
+import { Icon } from '@/extensions/parts/Icon';
 
 export type EditLinkPopoverProps = {
   onSetLink: (link: string, openInNewTab?: boolean) => void;

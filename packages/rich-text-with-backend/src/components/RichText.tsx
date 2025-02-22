@@ -1,11 +1,11 @@
 import { EditorContent, JSONContent } from '@tiptap/react';
 import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { LinkMenu } from '../extensions/menus/LinkMenu';
-import { TextMenu } from '../extensions/menus/TextMenu';
-import { useBlockEditor } from '../hooks/useBlockEditor';
-import i18n from '../locales/localization';
-import '../styles/index.css';
+import { LinkMenu } from '@/extensions/menus/LinkMenu';
+import { TextMenu } from '@/extensions/menus/TextMenu';
+import { useBlockEditor } from '@/hooks/useBlockEditor';
+import i18n from '@/locales/localization';
+import '@/styles/index.css';
 
 type Props = {
   initialContent?: string;

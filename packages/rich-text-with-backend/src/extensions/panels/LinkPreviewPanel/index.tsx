@@ -1,9 +1,9 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Surface } from '../../../parts/Surface';
-import { Toolbar } from '../../../parts/Toolbar';
-import Tooltip from '../../../parts/Tooltip';
-import { Icon } from '../../parts/Icon/index';
+import { Surface } from '@/parts/Surface';
+import { Toolbar } from '@/parts/Toolbar';
+import Tooltip from '@/parts/Tooltip';
+import { Icon } from '@/extensions/parts/Icon';
 
 export type Props = {
   url: string;
