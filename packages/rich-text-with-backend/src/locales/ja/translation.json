@@ -6,7 +6,7 @@
   "remove_link": "リンクを解除",
   "editor": {
     "placeholder": "コマンドの場合は '/' を入力してください",
-    "text": "Text",
+    "text": "テキスト",
     "text_description": "プレーンテキスト",
     "heading": "見出し",
     "heading_description": "大見出しのタイトル",
