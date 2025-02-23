@@ -11,6 +11,8 @@ export type Props = {
 };
 
 export const LinkPreviewPanel = ({ onClear, onEdit, url }: Props) => {
+  const sanitizedLink = url?.startsWith('javascript:') ? '' : url;
+
   return (
     <Paper
       sx={{
@@ -26,7 +28,7 @@ export const LinkPreviewPanel = ({ onClear, onEdit, url }: Props) => {
       }}
     >
       <Link
-        href={url}
+        href={sanitizedLink}
         target="_blank"
         rel="noopener noreferrer"
         color="inherit"
