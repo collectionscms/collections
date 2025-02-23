@@ -1,0 +1,84 @@
+.ProseMirror {
+  code {
+    padding: 0.2rem 0.3rem;
+    border-radius: 4px;
+    font-size: 85%;
+    background: rgba(135, 131, 120, 0.15);
+    color: #eb5757;
+  }
+
+  pre {
+    caret-color: white;
+    background-color: #3f3f46;
+    color: white;
+    border-radius: 0.5rem;
+    margin: 3rem auto;
+    padding: 1rem;
+    border: 1px solid #262626;
+    background-color: #171717;
+
+    *::selection {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    code {
+      background-color: inherit;
+      color: inherit;
+      padding: 0;
+      box-shadow: none;
+      font-size: 1em;
+    }
+
+    .hljs-comment,
+    .hljs-quote {
+      color: #a3a3a3;
+    }
+
+    .hljs-variable,
+    .hljs-template-variable,
+    .hljs-attribute,
+    .hljs-tag,
+    .hljs-name,
+    .hljs-regexp,
+    .hljs-link,
+    .hljs-name,
+    .hljs-selector-id,
+    .hljs-selector-class {
+      color: #fca5a5;
+    }
+
+    .hljs-number,
+    .hljs-meta,
+    .hljs-built_in,
+    .hljs-builtin-name,
+    .hljs-literal,
+    .hljs-type,
+    .hljs-params {
+      color: #fdba74;
+    }
+
+    .hljs-string,
+    .hljs-symbol,
+    .hljs-bullet {
+      color: #bef264;
+    }
+
+    .hljs-title,
+    .hljs-section {
+      color: #fde047;
+    }
+
+    .hljs-keyword,
+    .hljs-selector-tag {
+      color: #5eead4;
+    }
+
+    .hljs-emphasis {
+      font-style: italic;
+    }
+
+    .hljs-strong {
+      font-weight: 700;
+    }
+  }
+}

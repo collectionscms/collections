@@ -1,7 +1,8 @@
-import { ApiKey, ApiKeyPermission, Project } from '@prisma/client';
+import { ApiKey, ApiKeyPermission, Project, User } from '@prisma/client';
 import { BypassPrismaType, ProjectPrismaType } from '../../database/prisma/client.js';
 import { ApiKeyPermissionEntity } from '../apiKeyPermission/apiKeyPermission.entity.js';
 import { ProjectEntity } from '../project/project.entity.js';
+import { UserEntity } from '../user/user.entity.js';
 import { ApiKeyEntity } from './apiKey.entity.js';
 
 export class ApiKeyRepository {
@@ -42,6 +43,7 @@ export class ApiKeyRepository {
   ): Promise<{
     apiKey: ApiKeyEntity;
     permissions: ApiKeyPermissionEntity[];
+    createdBy: UserEntity;
   } | null> {
     const record = await prisma.apiKey.findUnique({
       where: {
@@ -49,6 +51,7 @@ export class ApiKeyRepository {
       },
       include: {
         apiKeyPermissions: true,
+        createdBy: true,
       },
     });
 
@@ -59,6 +62,7 @@ export class ApiKeyRepository {
       permissions: record.apiKeyPermissions.map((permission) =>
         ApiKeyPermissionEntity.Reconstruct<ApiKeyPermission, ApiKeyPermissionEntity>(permission)
       ),
+      createdBy: UserEntity.Reconstruct<User, UserEntity>(record.createdBy),
     };
   }
 
