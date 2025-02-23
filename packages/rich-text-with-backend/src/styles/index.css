@@ -1,5 +1,4 @@
-@import 'tailwindcss';
-
+@import './tailwind.css';
 @import './editor.css';
 @import './partials/placeholder.css';
 @import './partials/typography.css';
