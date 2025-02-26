@@ -38,7 +38,7 @@ export const Navbar: React.FC = () => {
         <div className="hidden sm:flex flex-row items-center gap-12">
           <NavbarMenu href="https://app.collectionsdemo.live/admin/" title={demoTitle} />
           <NavbarMenu
-            href="https://app.collections.dev/admin/auth/login"
+            href="https://app.collectionscms.com/admin/auth/login"
             title={signUpTitle}
             variant="primary"
           />

@@ -31,7 +31,7 @@ export const Footer: React.FC = () => {
             target="_blank"
           />
           <FooterMenu
-            href="https://app.collections.dev/admin/auth/login"
+            href="https://app.collectionscms.com/admin/auth/login"
             title={signUpTitle}
             target="_blank"
             variant="primary"
