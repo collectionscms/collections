@@ -52,7 +52,7 @@ Access Lightsail via console and install Node.js.
 ```bash
 curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.0/install.sh | bash
 source ~/.nvm/nvm.sh
-nvm install --lts
+nvm install v20.14.0
 ```
 
 ### Configure Nginx
@@ -64,14 +64,21 @@ server {
     root /home/bitnami/stack/nginx/html/collections;
     include "/opt/bitnami/nginx/conf/bitnami/*.conf";
 
-    server_name collections.dev app.collectionsdemo.live;
+    server_name collections.dev app.collections.live;
 
     location / {
-            proxy_pass http://localhost:4000;
+        proxy_pass http://localhost:4000;
+        proxy_set_header    Host                $http_host;
+        proxy_set_header    X-Real-IP           $remote_addr;
+        proxy_set_header    X-Forwarded-Host    $host;
+        proxy_set_header    X-Forwarded-Server  $host;
+        proxy_set_header    X-Forwarded-Proto   $scheme;
+        proxy_set_header    X-Forwarded-Port    $server_port;
+        proxy_set_header    X-Forwarded-For     $proxy_add_x_forwarded_for;
     }
 
-    listen [::]:443 ssl ipv6only=on; # managed by Certbot
-    listen 443 ssl; # managed by Certbot
+    listen [::]:443 ssl ipv6only=on;
+    listen 443 ssl;
     ssl_certificate /etc/letsencrypt/live/collections.dev/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/collections.dev/privkey.pem;
 
@@ -113,7 +120,7 @@ vi .env
 ### Resolving Dependencies
 
 ```
-npm install
+npm install --legacy-peer-deps
 ```
 
 ### DB Migration
