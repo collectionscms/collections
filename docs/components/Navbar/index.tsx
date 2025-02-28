@@ -36,7 +36,6 @@ export const Navbar: React.FC = () => {
           <Image src={logo} alt="logo" className="w-36 logo" />
         </Link>
         <div className="hidden sm:flex flex-row items-center gap-12">
-          <NavbarMenu href="https://app.collectionsdemo.live/admin/" title={demoTitle} />
           <NavbarMenu
             href="https://app.collectionscms.com/admin/auth/login"
             title={signUpTitle}

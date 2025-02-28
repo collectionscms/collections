@@ -36,8 +36,6 @@ export const HamburgerMenu: React.FC<Props> = ({ open, close }) => {
             About
           </Link>
           <hr />
-          <NavbarMenu href="https://app.collectionsdemo.live/admin/" title={demoTitle} />
-          <hr />
           <NavbarMenu
             href="https://app.collectionscms.com/admin/auth/login"
             title={signUpTitle}

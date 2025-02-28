@@ -26,11 +26,6 @@ export const Footer: React.FC = () => {
           <FooterMenu href="/terms" title={terms} target="_self" />
           <FooterMenu href="/privacy" title={privacy} target="_self" />
           <FooterMenu
-            href="https://app.collectionsdemo.live/admin/"
-            title={demoTitle}
-            target="_blank"
-          />
-          <FooterMenu
             href="https://app.collectionscms.com/admin/auth/login"
             title={signUpTitle}
             target="_blank"
