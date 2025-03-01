@@ -3626,10 +3626,10 @@
     "@tiptap/extension-text" "^2.7.2"
     "@tiptap/pm" "^2.7.2"
 
-"@tiptap/suggestion@2.7.2":
-  version "2.7.2"
-  resolved "https://registry.yarnpkg.com/@tiptap/suggestion/-/suggestion-2.7.2.tgz#88834bb31e81872ae00ce251e0c2e12fefb8118f"
-  integrity sha512-ZJMNuorzQQiKyzoisyeHgPH3kywv0cvQnyz5guZWiAtFWCUbFyB9MSLNuoijubwHWfnZMe4XiW5EqVt1dBmxBw==
+"@tiptap/suggestion@2.11.5":
+  version "2.11.5"
+  resolved "https://registry.yarnpkg.com/@tiptap/suggestion/-/suggestion-2.11.5.tgz#e2f3c9c9744ab65905b6c469418dcba54409b994"
+  integrity sha512-uafwGgB5YuKX/xLRjnt2H5eA21I8HcNXpdbH4Du2gg3KM71RpUbkyjaV7KEMA/5qwCEo+sddlpuErj4wBycZ5Q==
 
 "@tsconfig/node10@^1.0.7":
   version "1.0.9"
