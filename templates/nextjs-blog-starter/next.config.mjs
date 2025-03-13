@@ -2,12 +2,12 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "*.collections.dev",
+        protocol: 'https',
+        hostname: '*.collections.dev',
       },
       {
-        protocol: "https",
-        hostname: "*.collectionsdemo.live",
+        protocol: 'https',
+        hostname: '*.collectionscms.com',
       },
     ],
   },
