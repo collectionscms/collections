@@ -1,9 +1,3 @@
-<p align="center">
-  <a href="https://collections.dev/">
-    <img src="https://cdn.collections.dev/logo/github-banner.png" alt="Collections CMS" />
-  </a>
-</p>
-
 # Collections CMS
 
 Collections is a headless CMS designed for AI searches such as AI Overviews, ChatGPT, and Perplexity.
